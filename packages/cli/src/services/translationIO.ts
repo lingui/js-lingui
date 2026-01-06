@@ -9,7 +9,17 @@ import { CliExtractOptions } from "../lingui-extract"
 
 type POItem = InstanceType<typeof PO.Item>
 
-type TranslationIoSegment = {
+type TranslationIoSyncRequest = {
+  client: "lingui"
+  version: string
+  source_language: string
+  target_languages: string[]
+  segments: TranslationIoSegment[]
+
+  purge?: boolean
+}
+
+export type TranslationIoSegment = {
   type: string
   source: string
   target?: string
@@ -22,6 +32,26 @@ type TranslationIoProject = {
   name: string
   url: string
 }
+
+export type TranslationIoResponse = {
+  errors?: string[]
+  project?: TranslationIoProject
+  segments?: { [locale: string]: TranslationIoSegment[] }
+}
+
+// type TranslationIoResponse =
+//   | TranslationIoErrorResponse
+//   | TranslationProjectResponse
+//
+// type TranslationIoErrorResponse = {
+//   errors: string[]
+// }
+//
+// type TranslationProjectResponse = {
+//   errors: null
+//   project: TranslationIoProject
+//   segments: { [locale: string]: TranslationIoSegment[] }
+// }
 
 const EXPLICIT_ID_FLAG = "js-lingui-explicit-id"
 const EXPLICIT_ID_AND_CONTEXT_FLAG = "js-lingui-explicit-id-and-context"
@@ -53,7 +83,8 @@ const validCatalogFormat = (config: LinguiConfigNormalized): boolean => {
 // Main sync method, call "Init" or "Sync" depending on the project context
 export default async function syncProcess(
   config: LinguiConfigNormalized,
-  options: CliExtractOptions
+  options: CliExtractOptions,
+  httpRequest: HttpRequestFunction = postTio
 ) {
   if (!validCatalogFormat(config)) {
     console.error(
@@ -77,26 +108,33 @@ export default async function syncProcess(
       )
     }
 
-    init(config, options, successCallback, (errors) => {
-      if (
-        errors.length &&
-        errors[0] === "This project has already been initialized."
-      ) {
-        sync(config, options, successCallback, failCallback)
-      } else {
-        failCallback(errors)
-      }
-    })
+    init(
+      config,
+      options,
+      successCallback,
+      (errors) => {
+        if (
+          errors.length &&
+          errors[0] === "This project has already been initialized."
+        ) {
+          sync(config, options, successCallback, failCallback, httpRequest)
+        } else {
+          failCallback(errors)
+        }
+      },
+      httpRequest
+    )
   })
 }
 
 // Initialize project with source and existing translations (only first time!)
 // Cf. https://translation.io/docs/create-library#initialization
-function init(
+export function init(
   config: LinguiConfigNormalized,
   options: CliExtractOptions,
   successCallback: (project: TranslationIoProject) => void,
-  failCallback: (errors: string[]) => void
+  failCallback: (errors: string[]) => void,
+  httpRequest: HttpRequestFunction = postTio
 ) {
   const sourceLocale = config.sourceLocale || "en"
   const targetLocales = getTargetLocales(config)
@@ -138,7 +176,7 @@ function init(
     })
   })
 
-  const request = {
+  const request: TranslationIoSyncRequest = {
     client: "lingui",
     version: require("@lingui/core/package.json").version,
     source_language: sourceLocale,
@@ -146,11 +184,11 @@ function init(
     segments: segments,
   }
 
-  postTio(
+  httpRequest(
     "init",
     request,
     config.service.apiKey,
-    (response: any) => {
+    (response: TranslationIoResponse) => {
       if (response.errors) {
         failCallback(response.errors)
       } else {
@@ -168,11 +206,12 @@ function init(
 
 // Send all source text from PO to Translation.io and create new PO based on received translations
 // Cf. https://translation.io/docs/create-library#synchronization
-function sync(
+export function sync(
   config: LinguiConfigNormalized,
   options: CliExtractOptions,
   successCallback: (project: TranslationIoProject) => void,
-  failCallback: (errors: string[]) => void
+  failCallback: (errors: string[]) => void,
+  httpRequest: HttpRequestFunction = postTio
 ) {
   const sourceLocale = config.sourceLocale || "en"
   const targetLocales = getTargetLocales(config)
@@ -194,7 +233,7 @@ function sync(
       })
   })
 
-  const request = {
+  const request: TranslationIoSyncRequest = {
     client: "lingui",
     version: require("@lingui/core/package.json").version,
     source_language: sourceLocale,
@@ -205,11 +244,11 @@ function sync(
     purge: Boolean(options.clean),
   }
 
-  postTio(
+  httpRequest(
     "sync",
     request,
     config.service.apiKey,
-    (response: any) => {
+    (response: TranslationIoResponse) => {
       if (response.errors) {
         failCallback(response.errors)
       } else {
@@ -225,7 +264,7 @@ function sync(
   )
 }
 
-function createSegmentFromPoItem(item: POItem) {
+export function createSegmentFromPoItem(item: POItem) {
   const itemHasExplicitId = item.extractedComments.includes(EXPLICIT_ID_FLAG)
   const itemHasContext = item.msgctxt != null
 
@@ -272,7 +311,7 @@ function createSegmentFromPoItem(item: POItem) {
   return segment
 }
 
-function createPoItemFromSegment(segment: TranslationIoSegment) {
+export function createPoItemFromSegment(segment: TranslationIoSegment) {
   const segmentHasExplicitId = segment.comment?.includes(EXPLICIT_ID_FLAG)
   const segmentHasExplicitIdAndContext = segment.comment?.includes(
     EXPLICIT_ID_AND_CONTEXT_FLAG
@@ -307,7 +346,7 @@ function createPoItemFromSegment(segment: TranslationIoSegment) {
   return item
 }
 
-function saveSegmentsToTargetPos(
+export function saveSegmentsToTargetPos(
   config: LinguiConfigNormalized,
   paths: { [locale: string]: string[] },
   segmentsPerLocale: { [locale: string]: TranslationIoSegment[] }
@@ -342,12 +381,9 @@ function saveSegmentsToTargetPos(
     const po = new PO()
     po.headers = getCreateHeaders(targetLocale)
 
-    const items: POItem[] = []
-
-    segments.forEach((segment: TranslationIoSegment) => {
-      const item = createPoItemFromSegment(segment)
-      items.push(item)
-    })
+    const items = segments.map<POItem>((segment: TranslationIoSegment) =>
+      createPoItemFromSegment(segment)
+    )
 
     // Sort items by messageId
     po.items = items.sort((a, b) => {
@@ -373,7 +409,7 @@ function saveSegmentsToTargetPos(
   })
 }
 
-function poPathsPerLocale(config: LinguiConfigNormalized) {
+export function poPathsPerLocale(config: LinguiConfigNormalized) {
   const paths: { [locale: string]: string[] } = {}
 
   config.locales.forEach((locale) => {
@@ -397,11 +433,19 @@ function poPathsPerLocale(config: LinguiConfigNormalized) {
   return paths
 }
 
-function postTio(
+export type HttpRequestFunction = (
   action: "init" | "sync",
   request: unknown,
   apiKey: string,
-  successCallback: (resp: unknown) => void,
+  successCallback: (resp: TranslationIoResponse) => void,
+  failCallback: (resp: unknown) => void
+) => void
+
+export function postTio(
+  action: "init" | "sync",
+  request: unknown,
+  apiKey: string,
+  successCallback: (resp: TranslationIoResponse) => void,
   failCallback: (resp: unknown) => void
 ) {
   const jsonRequest = JSON.stringify(request)
