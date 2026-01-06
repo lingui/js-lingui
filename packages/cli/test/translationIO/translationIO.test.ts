@@ -6,7 +6,7 @@ import syncProcess, {
   saveSegmentsToTargetPos,
   poPathsPerLocale,
 } from "../../src/services/translationIO"
-import { makeConfig, LinguiConfigNormalized } from "@lingui/conf"
+import { makeConfig, LinguiConfig } from "@lingui/conf"
 import fs from "fs"
 import path from "path"
 import PO from "pofile"
@@ -42,7 +42,7 @@ async function prepareTestDir(subdir: string) {
 }
 
 describe("TranslationIO Integration", () => {
-  let config: LinguiConfigNormalized
+  let config: LinguiConfig
   let options: CliExtractOptions
 
   beforeAll(() => {
@@ -59,7 +59,7 @@ describe("TranslationIO Integration", () => {
   beforeEach(async () => {
     const outputDir = await prepareTestDir("current")
 
-    config = makeConfig({
+    config = {
       rootDir: outputDir,
       locales: ["en", "fr", "es"],
       sourceLocale: "en",
@@ -74,7 +74,7 @@ describe("TranslationIO Integration", () => {
         name: "TranslationIO",
         apiKey: "test-api-key-123",
       },
-    })
+    }
 
     options = {
       verbose: false,
@@ -88,7 +88,7 @@ describe("TranslationIO Integration", () => {
 
   describe("poPathsPerLocale", () => {
     it("should return paths for all locales", () => {
-      const paths = poPathsPerLocale(config)
+      const paths = poPathsPerLocale(makeConfig(config))
 
       expect(paths).toMatchInlineSnapshot(`
         {
@@ -1295,10 +1295,10 @@ describe("TranslationIO Integration", () => {
       expect(calls).toEqual(["init", "sync"])
       expect(result).toMatchInlineSnapshot(`
 
-                ----------
-                Project successfully synchronized. Please use this URL to translate: https://translation.io/test
-                ----------
-            `)
+                        ----------
+                        Project successfully synchronized. Please use this URL to translate: https://translation.io/test
+                        ----------
+                  `)
     })
 
     it("should call only init if not initialized", async () => {
@@ -1349,10 +1349,10 @@ describe("TranslationIO Integration", () => {
       expect(calls).toHaveLength(1)
       expect(result).toMatchInlineSnapshot(`
 
-        ----------
-        Project successfully synchronized. Please use this URL to translate: https://translation.io/test
-        ----------
-      `)
+                ----------
+                Project successfully synchronized. Please use this URL to translate: https://translation.io/test
+                ----------
+            `)
     })
 
     it("should handle errors with proper error format", async () => {
@@ -1388,14 +1388,13 @@ describe("TranslationIO Integration", () => {
         })
       )
 
-      const result = await syncProcess(testConfig, options)
+      await expect(syncProcess(testConfig, options)).rejects
+        .toMatchInlineSnapshot(`
 
-      expect(result).toMatchInlineSnapshot(`
-
-        ----------
-        Synchronization with Translation.io failed: Network error, Connection timeout
-        ----------
-      `)
+                ----------
+                Synchronization with Translation.io failed: Network error, Connection timeout
+                ----------
+            `)
     })
 
     it("should handle network errors during syncProcess", async () => {
@@ -1440,30 +1439,13 @@ describe("TranslationIO Integration", () => {
         rootDir: outputDir,
       })
 
-      // Mock process.exit to prevent test from exiting
-      const originalExit = process.exit
-      const mockExit = jest.fn() as any
-      process.exit = mockExit
+      await expect(syncProcess(invalidConfig, options)).rejects
+        .toMatchInlineSnapshot(`
 
-      mswServer.use(
-        http.post("https://translation.io/api/v1/*", () => {
-          return HttpResponse.json<TranslationIoResponse>({
-            project: { name: "Test", url: "https://test.com" },
-            segments: {},
-          })
-        })
-      )
-
-      try {
-        await syncProcess(invalidConfig, options)
-      } catch (err) {
-        // Expected to fail
-      }
-
-      expect(mockExit).toHaveBeenCalledWith(1)
-
-      // Restore process.exit
-      process.exit = originalExit
+        ----------
+        Translation.io service is only compatible with the "po" format. Please update your Lingui configuration accordingly.
+        ----------
+      `)
     })
   })
 
