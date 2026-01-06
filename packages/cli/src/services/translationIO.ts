@@ -1,9 +1,7 @@
 import fs from "fs"
 import { dirname } from "path"
-import PO from "pofile"
 import { globSync } from "glob"
-import { format as formatDate } from "date-fns"
-import { LinguiConfigNormalized } from "@lingui/conf"
+import { CatalogType, LinguiConfigNormalized, MessageType } from "@lingui/conf"
 import { CliExtractOptions } from "../lingui-extract"
 import {
   tioInit,
@@ -11,21 +9,12 @@ import {
   TranslationIoProject,
   TranslationIoSegment,
 } from "./translationIO/api-client"
-import { writeFile } from "../api/utils"
-
-type POItem = InstanceType<typeof PO.Item>
+import { FormatterWrapper, getFormat } from "../api/formats"
+import { generateMessageId } from "@lingui/message-utils/generateMessageId"
+import { order } from "../api/catalog"
 
 const EXPLICIT_ID_FLAG = "js-lingui-explicit-id"
 const EXPLICIT_ID_AND_CONTEXT_FLAG = "js-lingui-explicit-id-and-context"
-
-const getCreateHeaders = (language: string) => ({
-  "POT-Creation-Date": formatDate(new Date(), "yyyy-MM-dd HH:mmxxxx"),
-  "MIME-Version": "1.0",
-  "Content-Type": "text/plain; charset=utf-8",
-  "Content-Transfer-Encoding": "8bit",
-  "X-Generator": "@lingui/cli",
-  Language: language,
-})
 
 const getTargetLocales = (config: LinguiConfigNormalized) => {
   const sourceLocale = config.sourceLocale || "en"
@@ -35,22 +24,11 @@ const getTargetLocales = (config: LinguiConfigNormalized) => {
   )
 }
 
-const validCatalogFormat = (config: LinguiConfigNormalized): boolean => {
-  if (typeof config.format === "string") {
-    return config.format === "po"
-  }
-  return config.format!.catalogExtension === ".po"
-}
-
 // Main sync method, call "Init" or "Sync" depending on the project context
 export default async function syncProcess(
   config: LinguiConfigNormalized,
   options: CliExtractOptions
 ) {
-  if (!validCatalogFormat(config)) {
-    throw `\n----------\nTranslation.io service is only compatible with the "po" format. Please update your Lingui configuration accordingly.\n----------`
-  }
-
   const reportSuccess = (project: TranslationIoProject) => {
     return `\n----------\nProject successfully synchronized. Please use this URL to translate: ${project.url}\n----------`
   }
@@ -61,14 +39,20 @@ export default async function syncProcess(
     )}\n----------`
   }
 
-  const { success, project, errors } = await init(config, options)
+  const format = await getFormat(
+    config.format,
+    config.formatOptions,
+    config.sourceLocale
+  )
+
+  const { success, project, errors } = await init(config, format)
 
   if (success) {
     return reportSuccess(project)
   }
 
   if (errors[0] === "This project has already been initialized.") {
-    const { success, project, errors } = await sync(config, options)
+    const { success, project, errors } = await sync(config, options, format)
 
     if (success) {
       return reportSuccess(project)
@@ -84,7 +68,7 @@ export default async function syncProcess(
 // Cf. https://translation.io/docs/create-library#initialization
 export async function init(
   config: LinguiConfigNormalized,
-  options: CliExtractOptions
+  format: FormatterWrapper
 ) {
   const sourceLocale = config.sourceLocale || "en"
   const targetLocales = getTargetLocales(config)
@@ -97,34 +81,30 @@ export async function init(
   })
 
   // Create segments from source locale PO items
-  paths[sourceLocale].forEach((path) => {
-    const raw = fs.readFileSync(path).toString()
-    const po = PO.parse(raw)
+  for (const path of paths[sourceLocale]) {
+    const catalog = await format.read(path, sourceLocale)
 
-    po.items
-      .filter((item) => !item["obsolete"])
-      .forEach((item) => {
-        targetLocales.forEach((targetLocale) => {
-          const newSegment = createSegmentFromPoItem(item)
+    Object.entries(catalog).forEach(([key, entry]) => {
+      if (entry.obsolete) return
 
-          segments[targetLocale].push(newSegment)
-        })
+      targetLocales.forEach((targetLocale) => {
+        segments[targetLocale].push(createSegmentFromLinguiItem(key, entry))
       })
-  })
+    })
+  }
 
   // Add translations to segments from target locale PO items
-  targetLocales.forEach((targetLocale) => {
-    paths[targetLocale].forEach((path) => {
-      const raw = fs.readFileSync(path).toString()
-      const po = PO.parse(raw)
+  for (const targetLocale of targetLocales) {
+    for (const path of paths[targetLocale]) {
+      const catalog = await format.read(path, targetLocale)
 
-      po.items
-        .filter((item) => !item["obsolete"])
-        .forEach((item, index) => {
-          segments[targetLocale][index].target = item.msgstr[0]
+      Object.entries(catalog)
+        .filter(([, entry]) => !entry.obsolete)
+        .forEach(([, entry], index) => {
+          segments[targetLocale][index].target = entry.translation
         })
-    })
-  })
+    }
+  }
 
   const { data, error } = await tioInit(
     {
@@ -145,7 +125,7 @@ export async function init(
     return { success: false, errors: data.errors } as const
   }
 
-  await saveSegmentsToTargetPos(config, paths, data.segments)
+  await saveSegmentsToTargetPos(config, paths, data.segments, format)
   return { success: true, project: data.project } as const
 }
 
@@ -153,7 +133,8 @@ export async function init(
 // Cf. https://translation.io/docs/create-library#synchronization
 export async function sync(
   config: LinguiConfigNormalized,
-  options: CliExtractOptions
+  options: CliExtractOptions,
+  format: FormatterWrapper
 ) {
   const sourceLocale = config.sourceLocale || "en"
   const targetLocales = getTargetLocales(config)
@@ -162,18 +143,15 @@ export async function sync(
   const segments: TranslationIoSegment[] = []
 
   // Create segments with correct source
-  paths[sourceLocale].forEach((path) => {
-    const raw = fs.readFileSync(path).toString()
-    const po = PO.parse(raw)
+  for (const path of paths[sourceLocale]) {
+    const catalog = await format.read(path, sourceLocale) // todo
 
-    po.items
-      .filter((item) => !item["obsolete"])
-      .forEach((item) => {
-        const newSegment = createSegmentFromPoItem(item)
+    Object.entries(catalog).forEach(([key, entry]) => {
+      if (entry.obsolete) return
 
-        segments.push(newSegment)
-      })
-  })
+      segments.push(createSegmentFromLinguiItem(key, entry))
+    })
+  }
 
   const { data, error } = await tioSync(
     {
@@ -197,13 +175,25 @@ export async function sync(
     return { success: false, errors: data.errors } as const
   }
 
-  await saveSegmentsToTargetPos(config, paths, data.segments)
+  await saveSegmentsToTargetPos(config, paths, data.segments, format)
   return { success: true, project: data.project } as const
 }
 
-export function createSegmentFromPoItem(item: POItem) {
-  const itemHasExplicitId = item.extractedComments.includes(EXPLICIT_ID_FLAG)
-  const itemHasContext = item.msgctxt != null
+function isGeneratedId(id: string, message: MessageType): boolean {
+  return id === generateMessageId(message.message, message.context)
+}
+
+const joinOrigin = (origin: [file: string, line?: number]): string =>
+  origin.join(":")
+
+const splitOrigin = (origin: string) => {
+  const [file, line] = origin.split(":")
+  return [file, line ? Number(line) : null] as [file: string, line: number]
+}
+
+export function createSegmentFromLinguiItem(key: string, item: MessageType) {
+  const itemHasExplicitId = !isGeneratedId(key, item)
+  const itemHasContext = !!item.context
 
   const segment: TranslationIoSegment = {
     type: "source", // No way to edit text for source language (inside code), so not using "key" here
@@ -215,27 +205,27 @@ export function createSegmentFromPoItem(item: POItem) {
 
   // For segment.source & segment.context, we must remain compatible with projects created/synced before Lingui V4
   if (itemHasExplicitId) {
-    segment.source = item.msgstr[0]
-    segment.context = item.msgid
+    segment.source = item.message || item.translation
+    segment.context = key
   } else {
-    segment.source = item.msgid
+    segment.source = item.message || item.translation
 
     if (itemHasContext) {
-      segment.context = item.msgctxt
+      segment.context = item.context
     }
   }
 
-  if (item.references.length) {
-    segment.references = item.references
+  if (item.origin) {
+    segment.references = item.origin.map(joinOrigin)
   }
 
   // Since Lingui v4, when using explicit IDs, Lingui automatically adds 'js-lingui-explicit-id' to the extractedComments array
-  if (item.extractedComments.length) {
-    segment.comment = item.extractedComments.join(" | ")
+  if (item.comments?.length) {
+    segment.comment = item.comments.join(" | ")
 
     if (itemHasExplicitId && itemHasContext) {
       // segment.context is already used for the explicit ID, so we need to pass the context (for translators) in segment.comment
-      segment.comment = `${item.msgctxt} | ${segment.comment}`
+      segment.comment = `${item.context} | ${segment.comment}`
 
       // Replace the flag to let us know how to recompose a target PO Item that is consistent with the source PO Item
       segment.comment = segment.comment.replace(
@@ -248,45 +238,52 @@ export function createSegmentFromPoItem(item: POItem) {
   return segment
 }
 
-export function createPoItemFromSegment(segment: TranslationIoSegment) {
+export function createLinguiItemFromSegment(segment: TranslationIoSegment) {
   const segmentHasExplicitId = segment.comment?.includes(EXPLICIT_ID_FLAG)
   const segmentHasExplicitIdAndContext = segment.comment?.includes(
     EXPLICIT_ID_AND_CONTEXT_FLAG
   )
 
-  const item = new PO.Item()
-
-  if (segmentHasExplicitId || segmentHasExplicitIdAndContext) {
-    item.msgid = segment.context!
-  } else {
-    item.msgid = segment.source
-    item.msgctxt = segment.context
+  const item: MessageType = {
+    translation: segment.target!,
+    origin: segment.references?.length
+      ? segment.references.map(splitOrigin)
+      : [],
+    message: segment.source,
+    comments: [],
   }
 
-  item.msgstr = [segment.target!]
-  item.references =
-    segment.references && segment.references.length ? segment.references : []
+  let id: string = null
+
+  if (segmentHasExplicitId || segmentHasExplicitIdAndContext) {
+    id = segment.context!
+  } else {
+    id = generateMessageId(segment.source, segment.context)
+    item.context = segment.context
+  }
 
   if (segment.comment) {
     segment.comment = segment.comment.replace(
       EXPLICIT_ID_AND_CONTEXT_FLAG,
       EXPLICIT_ID_FLAG
     )
-    item.extractedComments = segment.comment ? segment.comment.split(" | ") : []
+
+    item.comments = segment.comment ? segment.comment.split(" | ") : []
 
     // We recompose a target PO Item that is consistent with the source PO Item
     if (segmentHasExplicitIdAndContext) {
-      item.msgctxt = item.extractedComments.shift()
+      item.context = item.comments.shift()
     }
   }
 
-  return item
+  return [id, item] as const
 }
 
 export async function saveSegmentsToTargetPos(
   config: LinguiConfigNormalized,
   paths: { [locale: string]: string[] },
-  segmentsPerLocale: { [locale: string]: TranslationIoSegment[] }
+  segmentsPerLocale: { [locale: string]: TranslationIoSegment[] },
+  format: FormatterWrapper
 ) {
   for (const targetLocale of Object.keys(segmentsPerLocale)) {
     // Remove existing target POs and JS for this target locale
@@ -315,34 +312,13 @@ export async function saveSegmentsToTargetPos(
 
     const segments = segmentsPerLocale[targetLocale]
 
-    const po = new PO()
-    po.headers = getCreateHeaders(targetLocale)
-
-    const items = segments.map<POItem>((segment: TranslationIoSegment) =>
-      createPoItemFromSegment(segment)
+    const catalog: CatalogType = Object.fromEntries(
+      segments.map((segment: TranslationIoSegment) =>
+        createLinguiItemFromSegment(segment)
+      )
     )
 
-    // Sort items by messageId
-    po.items = items.sort((a, b) => {
-      if (a.msgid < b.msgid) {
-        return -1
-      }
-      if (a.msgid > b.msgid) {
-        return 1
-      }
-      return 0
-    })
-
-    // Check that localePath directory exists and save PO file
-    await fs.promises.mkdir(dirname(localePath), { recursive: true })
-
-    try {
-      await writeFile(localePath, po.toString())
-    } catch (e) {
-      console.error("Error while saving target PO files:")
-      console.error(e)
-      process.exit(1)
-    }
+    await format.write(localePath, order(config.orderBy, catalog), targetLocale)
   }
 }
 

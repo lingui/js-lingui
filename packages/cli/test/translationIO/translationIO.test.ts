@@ -1,15 +1,14 @@
 import syncProcess, {
+  createLinguiItemFromSegment,
+  createSegmentFromLinguiItem,
   init,
-  sync,
-  createSegmentFromPoItem,
-  createPoItemFromSegment,
-  saveSegmentsToTargetPos,
   poPathsPerLocale,
+  saveSegmentsToTargetPos,
+  sync,
 } from "../../src/services/translationIO"
-import { makeConfig, LinguiConfig } from "@lingui/conf"
+import { makeConfig, LinguiConfig, MessageType } from "@lingui/conf"
 import fs from "fs"
 import path from "path"
-import PO from "pofile"
 import { CliExtractOptions } from "../../src/lingui-extract"
 import MockDate from "mockdate"
 import { listingToHumanReadable, readFsToListing } from "../../src/tests"
@@ -19,6 +18,9 @@ import {
 } from "../../src/services/translationIO/api-client"
 import { setupServer } from "msw/node"
 import { DefaultBodyType, http, HttpResponse, StrictRequest } from "msw"
+import { getFormat } from "@lingui/cli/api"
+import { FormatterWrapper } from "../../src/api/formats"
+import { generateMessageId } from "@lingui/message-utils/generateMessageId"
 
 export const mswServer = setupServer()
 
@@ -44,6 +46,7 @@ async function prepareTestDir(subdir: string) {
 describe("TranslationIO Integration", () => {
   let config: LinguiConfig
   let options: CliExtractOptions
+  let format: FormatterWrapper
 
   beforeAll(() => {
     MockDate.set(new Date("2023-03-15T10:00Z"))
@@ -75,6 +78,12 @@ describe("TranslationIO Integration", () => {
         apiKey: "test-api-key-123",
       },
     }
+
+    format = await getFormat(
+      config.format,
+      config.formatOptions,
+      config.sourceLocale
+    )
 
     options = {
       verbose: false,
@@ -144,14 +153,16 @@ describe("TranslationIO Integration", () => {
     })
   })
 
-  describe("createSegmentFromPoItem", () => {
-    it("should create segment from regular PO item without explicit ID", () => {
-      const item = new PO.Item()
-      item.msgid = "Hello {name}"
-      item.msgstr = [""]
-      item.references = ["src/App.tsx:15"]
+  describe("createSegmentFromLinguiItem", () => {
+    it("should create segment from regular Lingui item without explicit ID", () => {
+      const item: MessageType = {
+        translation: "",
+        message: "Hello {name}",
+        origin: [["src/App.tsx", 15]],
+      }
+      const key = generateMessageId(item.message)
 
-      const segment = createSegmentFromPoItem(item)
+      const segment = createSegmentFromLinguiItem(key, item)
 
       expect(segment).toEqual({
         type: "source",
@@ -162,14 +173,16 @@ describe("TranslationIO Integration", () => {
       })
     })
 
-    it("should create segment from PO item with explicit ID", () => {
-      const item = new PO.Item()
-      item.msgid = "app.welcome"
-      item.msgstr = ["Welcome to our app"]
-      item.extractedComments = ["js-lingui-explicit-id"]
-      item.references = ["src/App.tsx:10"]
+    it("should create segment from Lingui item with explicit ID", () => {
+      const key = "app.welcome"
+      const item: MessageType = {
+        translation: "Welcome to our app",
+        message: "Welcome to our app",
+        origin: [["src/App.tsx", 10]],
+        comments: ["js-lingui-explicit-id"],
+      }
 
-      const segment = createSegmentFromPoItem(item)
+      const segment = createSegmentFromLinguiItem(key, item)
 
       expect(segment).toEqual({
         type: "source",
@@ -180,14 +193,17 @@ describe("TranslationIO Integration", () => {
       })
     })
 
-    it("should create segment from PO item with context but no explicit ID", () => {
-      const item = new PO.Item()
-      item.msgid = "Home"
-      item.msgctxt = "navigation"
-      item.msgstr = [""]
-      item.references = ["src/App.tsx:20"]
+    it("should create segment from Lingui item with context but no explicit ID", () => {
+      const item: MessageType = {
+        translation: "",
+        message: "Home",
+        context: "navigation",
+        origin: [["src/App.tsx", 20]],
+      }
+      // Use generateMessageId to get the actual generated key
+      const key = generateMessageId(item.message, item.context)
 
-      const segment = createSegmentFromPoItem(item)
+      const segment = createSegmentFromLinguiItem(key, item)
 
       expect(segment).toEqual({
         type: "source",
@@ -198,15 +214,17 @@ describe("TranslationIO Integration", () => {
       })
     })
 
-    it("should create segment from PO item with explicit ID and context", () => {
-      const item = new PO.Item()
-      item.msgid = "about.title"
-      item.msgctxt = "page.about"
-      item.msgstr = ["About Us"]
-      item.extractedComments = ["js-lingui-explicit-id"]
-      item.references = ["src/About.tsx:5"]
+    it("should create segment from Lingui item with explicit ID and context", () => {
+      const key = "about.title"
+      const item: MessageType = {
+        translation: "About Us",
+        message: "About Us",
+        context: "page.about",
+        origin: [["src/About.tsx", 5]],
+        comments: ["js-lingui-explicit-id"],
+      }
 
-      const segment = createSegmentFromPoItem(item)
+      const segment = createSegmentFromLinguiItem(key, item)
 
       expect(segment).toEqual({
         type: "source",
@@ -218,8 +236,8 @@ describe("TranslationIO Integration", () => {
     })
   })
 
-  describe("createPoItemFromSegment", () => {
-    it("should create PO item from segment without explicit ID", () => {
+  describe("createLinguiItemFromSegment", () => {
+    it("should create Lingui item from segment without explicit ID", () => {
       const segment: TranslationIoSegment = {
         type: "source",
         source: "Hello {name}",
@@ -229,20 +247,18 @@ describe("TranslationIO Integration", () => {
         comment: "",
       }
 
-      const item = createPoItemFromSegment(segment)
+      const [id, item] = createLinguiItemFromSegment(segment)
 
+      expect(id).toMatch(/^[a-zA-Z0-9]+$/) // Generated ID
       expect(item).toMatchObject({
-        comments: [],
-        extractedComments: [],
-        flags: {},
-        msgctxt: "greeting",
-        msgid: "Hello {name}",
-        msgstr: ["Bonjour {name}"],
-        references: ["src/App.tsx:15"],
+        translation: "Bonjour {name}",
+        message: "Hello {name}",
+        context: "greeting",
+        origin: [["src/App.tsx", 15]],
       })
     })
 
-    it("should create PO item from segment with explicit ID", () => {
+    it("should create Lingui item from segment with explicit ID", () => {
       const segment: TranslationIoSegment = {
         type: "source",
         source: "Welcome to our app",
@@ -252,15 +268,16 @@ describe("TranslationIO Integration", () => {
         comment: "js-lingui-explicit-id",
       }
 
-      const item = createPoItemFromSegment(segment)
+      const [id, item] = createLinguiItemFromSegment(segment)
 
-      expect(item.msgid).toBe("app.welcome")
-      expect(item.msgctxt == null).toBe(true) // Can be null or undefined
-      expect(item.msgstr).toEqual(["Bienvenue dans notre application"])
-      expect(item.extractedComments).toEqual(["js-lingui-explicit-id"])
+      expect(id).toBe("app.welcome")
+      expect(item.translation).toBe("Bienvenue dans notre application")
+      expect(item.message).toBe("Welcome to our app")
+      expect(item.context).toBeUndefined()
+      expect(item.comments).toEqual(["js-lingui-explicit-id"])
     })
 
-    it("should create PO item from segment with explicit ID and context", () => {
+    it("should create Lingui item from segment with explicit ID and context", () => {
       const segment: TranslationIoSegment = {
         type: "source",
         source: "About Us",
@@ -270,12 +287,13 @@ describe("TranslationIO Integration", () => {
         comment: "page.about | js-lingui-explicit-id-and-context",
       }
 
-      const item = createPoItemFromSegment(segment)
+      const [id, item] = createLinguiItemFromSegment(segment)
 
-      expect(item.msgid).toBe("about.title")
-      expect(item.msgctxt).toBe("page.about")
-      expect(item.msgstr).toEqual(["À propos"])
-      expect(item.extractedComments).toEqual(["js-lingui-explicit-id"])
+      expect(id).toBe("about.title")
+      expect(item.translation).toBe("À propos")
+      expect(item.message).toBe("About Us")
+      expect(item.context).toBe("page.about")
+      expect(item.comments).toEqual(["js-lingui-explicit-id"])
     })
   })
 
@@ -338,7 +356,12 @@ describe("TranslationIO Integration", () => {
         ],
       }
 
-      await saveSegmentsToTargetPos(testConfig, paths, segmentsPerLocale)
+      await saveSegmentsToTargetPos(
+        testConfig,
+        paths,
+        segmentsPerLocale,
+        format
+      )
 
       // Verify content
       expect(listingToHumanReadable(readFsToListing(outputDir)))
@@ -357,12 +380,10 @@ describe("TranslationIO Integration", () => {
         "Language: es\\n"
 
         #: src/App.tsx:1
-        msgctxt ""
         msgid "Hello"
         msgstr "Hola"
 
         #: src/App.tsx:2
-        msgctxt ""
         msgid "World"
         msgstr "Mundo"
 
@@ -381,12 +402,10 @@ describe("TranslationIO Integration", () => {
         "Language: fr\\n"
 
         #: src/App.tsx:1
-        msgctxt ""
         msgid "Hello"
         msgstr "Bonjour"
 
         #: src/App.tsx:2
-        msgctxt ""
         msgid "World"
         msgstr "Monde"
 
@@ -429,7 +448,12 @@ describe("TranslationIO Integration", () => {
         ],
       }
 
-      await saveSegmentsToTargetPos(testConfig, paths, segmentsPerLocale)
+      await saveSegmentsToTargetPos(
+        testConfig,
+        paths,
+        segmentsPerLocale,
+        format
+      )
 
       expect(listingToHumanReadable(readFsToListing(outputDir)))
         .toMatchInlineSnapshot(`
@@ -446,7 +470,6 @@ describe("TranslationIO Integration", () => {
         "X-Generator: @lingui/cli\\n"
         "Language: fr\\n"
 
-        msgctxt ""
         msgid "New message"
         msgstr "Nouveau message"
 
@@ -567,7 +590,7 @@ describe("TranslationIO Integration", () => {
         })
       )
 
-      await init(testConfig, options)
+      await init(testConfig, format)
 
       expect(apiCalls[0].url).toMatchInlineSnapshot(
         `https://translation.io/api/v1/segments/init.json?api_key=test-api-key-123`
@@ -720,8 +743,13 @@ describe("TranslationIO Integration", () => {
         "X-Generator: @lingui/cli\\n"
         "Language: es\\n"
 
+        #. js-lingui-explicit-id
+        #: src/About.tsx:5
+        msgctxt "page.about"
+        msgid "about.title"
+        msgstr "Acerca de"
+
         #: src/App.tsx:15
-        msgctxt ""
         msgid "Hello {name}"
         msgstr "Hola {name}"
 
@@ -729,12 +757,6 @@ describe("TranslationIO Integration", () => {
         msgctxt "navigation"
         msgid "Home"
         msgstr "Inicio"
-
-        #. js-lingui-explicit-id
-        #: src/About.tsx:5
-        msgctxt "page.about"
-        msgid "about.title"
-        msgstr "Acerca de"
 
         #. js-lingui-explicit-id
         #: src/App.tsx:10
@@ -755,8 +777,13 @@ describe("TranslationIO Integration", () => {
         "X-Generator: @lingui/cli\\n"
         "Language: fr\\n"
 
+        #. js-lingui-explicit-id
+        #: src/About.tsx:5
+        msgctxt "page.about"
+        msgid "about.title"
+        msgstr "À propos (updated)"
+
         #: src/App.tsx:15
-        msgctxt ""
         msgid "Hello {name}"
         msgstr "Bonjour {name} (updated)"
 
@@ -764,12 +791,6 @@ describe("TranslationIO Integration", () => {
         msgctxt "navigation"
         msgid "Home"
         msgstr "Accueil (updated)"
-
-        #. js-lingui-explicit-id
-        #: src/About.tsx:5
-        msgctxt "page.about"
-        msgid "about.title"
-        msgstr "À propos (updated)"
 
         #. js-lingui-explicit-id
         #: src/App.tsx:10
@@ -813,7 +834,7 @@ describe("TranslationIO Integration", () => {
         })
       )
 
-      await expect(init(testConfig, options)).resolves.toMatchInlineSnapshot(`
+      await expect(init(testConfig, format)).resolves.toMatchInlineSnapshot(`
         {
           errors: [
             API key is invalid,
@@ -853,7 +874,7 @@ describe("TranslationIO Integration", () => {
         })
       )
 
-      await expect(init(testConfig, options)).rejects.toThrow()
+      await expect(init(testConfig, format)).rejects.toThrow()
     })
   })
 
@@ -960,7 +981,7 @@ describe("TranslationIO Integration", () => {
         })
       )
 
-      await sync(testConfig, options)
+      await sync(testConfig, options, format)
 
       // Verify request
       expect(apiCalls[0].url).toMatchInlineSnapshot(
@@ -1070,8 +1091,13 @@ describe("TranslationIO Integration", () => {
         "X-Generator: @lingui/cli\\n"
         "Language: es\\n"
 
+        #. js-lingui-explicit-id
+        #: src/About.tsx:5
+        msgctxt "page.about"
+        msgid "about.title"
+        msgstr "Acerca de"
+
         #: src/App.tsx:15
-        msgctxt ""
         msgid "Hello {name}"
         msgstr "Hola {name}"
 
@@ -1079,12 +1105,6 @@ describe("TranslationIO Integration", () => {
         msgctxt "navigation"
         msgid "Home"
         msgstr "Inicio"
-
-        #. js-lingui-explicit-id
-        #: src/About.tsx:5
-        msgctxt "page.about"
-        msgid "about.title"
-        msgstr "Acerca de"
 
         #. js-lingui-explicit-id
         #: src/App.tsx:10
@@ -1105,8 +1125,13 @@ describe("TranslationIO Integration", () => {
         "X-Generator: @lingui/cli\\n"
         "Language: fr\\n"
 
+        #. js-lingui-explicit-id
+        #: src/About.tsx:5
+        msgctxt "page.about"
+        msgid "about.title"
+        msgstr "À propos"
+
         #: src/App.tsx:15
-        msgctxt ""
         msgid "Hello {name}"
         msgstr "Bonjour {name}"
 
@@ -1114,12 +1139,6 @@ describe("TranslationIO Integration", () => {
         msgctxt "navigation"
         msgid "Home"
         msgstr "Accueil"
-
-        #. js-lingui-explicit-id
-        #: src/About.tsx:5
-        msgctxt "page.about"
-        msgid "about.title"
-        msgstr "À propos"
 
         #. js-lingui-explicit-id
         #: src/App.tsx:10
@@ -1167,7 +1186,7 @@ describe("TranslationIO Integration", () => {
         })
       )
 
-      await sync(testConfig, cleanOptions)
+      await sync(testConfig, cleanOptions, format)
 
       expect(capturedRequest).toHaveProperty("purge", true)
     })
@@ -1197,7 +1216,7 @@ describe("TranslationIO Integration", () => {
         })
       )
 
-      const result = await sync(testConfig, options)
+      const result = await sync(testConfig, options, format)
 
       expect(result).toMatchInlineSnapshot(`
         {
@@ -1232,7 +1251,7 @@ describe("TranslationIO Integration", () => {
         })
       )
 
-      await expect(sync(testConfig, options)).rejects.toThrow()
+      await expect(sync(testConfig, options, format)).rejects.toThrow()
     })
   })
 
@@ -1429,43 +1448,53 @@ describe("TranslationIO Integration", () => {
 
       await expect(syncProcess(testConfig, options)).rejects.toThrow()
     })
-
-    it("should fail for non-po format", async () => {
-      const outputDir = await prepareTestDir("sync-process-invalid-format")
-
-      const invalidConfig = makeConfig({
-        ...config,
-        format: "json" as any,
-        rootDir: outputDir,
-      })
-
-      await expect(syncProcess(invalidConfig, options)).rejects
-        .toMatchInlineSnapshot(`
-
-        ----------
-        Translation.io service is only compatible with the "po" format. Please update your Lingui configuration accordingly.
-        ----------
-      `)
-    })
   })
 
   describe("Round-trip conversion", () => {
-    it("should maintain data integrity through PO item -> segment -> PO item conversion", () => {
-      const originalItem = new PO.Item()
-      originalItem.msgid = "test.message"
-      originalItem.msgstr = ["Test Message"]
-      originalItem.msgctxt = "context"
-      originalItem.extractedComments = ["js-lingui-explicit-id"]
-      originalItem.references = ["src/test.ts:10"]
+    it("should maintain data integrity through Lingui item -> segment -> Lingui item conversion", () => {
+      const originalKey = "test.message"
+      const originalItem: MessageType = {
+        translation: "Test Message",
+        message: "Test Message",
+        context: "context",
+        comments: ["js-lingui-explicit-id"],
+        origin: [["src/test.ts", 10]],
+      }
 
-      const segment = createSegmentFromPoItem(originalItem)
+      const segment = createSegmentFromLinguiItem(originalKey, originalItem)
       segment.target = "Message de test"
 
-      const newItem = createPoItemFromSegment(segment)
+      const [newKey, newItem] = createLinguiItemFromSegment(segment)
 
-      expect(newItem.msgid).toBe(originalItem.msgid)
-      expect(newItem.extractedComments).toEqual(originalItem.extractedComments)
-      expect(newItem.references).toEqual(originalItem.references)
+      expect(newKey).toBe(originalKey)
+      expect(newItem.comments).toEqual(originalItem.comments)
+      expect(newItem.origin).toEqual(originalItem.origin)
+      expect(newItem.translation).toBe("Message de test")
+    })
+
+    it("should maintain data integrity through Lingui item -> segment -> Lingui item conversion with generated id", () => {
+      const originalItem: MessageType = {
+        translation: "Test Message",
+        message: "Test Message",
+        context: "context",
+        comments: [],
+        origin: [["src/test.ts", 10]],
+      }
+
+      const originalKey = generateMessageId(
+        originalItem.message,
+        originalItem.context
+      )
+
+      const segment = createSegmentFromLinguiItem(originalKey, originalItem)
+      segment.target = "Message de test"
+
+      const [newKey, newItem] = createLinguiItemFromSegment(segment)
+
+      expect(newKey).toBe(originalKey)
+      expect(newItem.comments).toEqual(originalItem.comments)
+      expect(newItem.origin).toEqual(originalItem.origin)
+      expect(newItem.translation).toBe("Message de test")
     })
   })
 })
