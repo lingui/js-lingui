@@ -1,6 +1,6 @@
 import fs from "fs"
 import { dirname } from "path"
-import { globSync } from "glob"
+
 import { CatalogType, LinguiConfigNormalized } from "@lingui/conf"
 import { CliExtractOptions } from "../lingui-extract"
 import {
@@ -8,13 +8,14 @@ import {
   tioSync,
   TranslationIoProject,
   TranslationIoSegment,
-} from "./translationIO/api-client"
-import { FormatterWrapper, getFormat } from "../api/formats"
+} from "./translationIO/translationio-api"
+import { Catalog } from "../api/catalog"
 import { order } from "../api/catalog"
 import {
-  createSegmentFromLinguiItem,
   createLinguiItemFromSegment,
+  createSegmentFromLinguiItem,
 } from "./translationIO/segment-converters"
+import { getCatalogs } from "../api/catalog/getCatalogs"
 
 const getTargetLocales = (config: LinguiConfigNormalized) => {
   const sourceLocale = config.sourceLocale || "en"
@@ -39,20 +40,16 @@ export default async function syncProcess(
     )}\n----------`
   }
 
-  const format = await getFormat(
-    config.format,
-    config.formatOptions,
-    config.sourceLocale
-  )
+  const catalogs = await getCatalogs(config)
 
-  const { success, project, errors } = await init(config, format)
+  const { success, project, errors } = await init(config, catalogs)
 
   if (success) {
     return reportSuccess(project)
   }
 
   if (errors[0] === "This project has already been initialized.") {
-    const { success, project, errors } = await sync(config, options, format)
+    const { success, project, errors } = await sync(config, options, catalogs)
 
     if (success) {
       return reportSuccess(project)
@@ -68,11 +65,10 @@ export default async function syncProcess(
 // Cf. https://translation.io/docs/create-library#initialization
 export async function init(
   config: LinguiConfigNormalized,
-  format: FormatterWrapper
+  catalogs: Catalog[]
 ) {
   const sourceLocale = config.sourceLocale || "en"
   const targetLocales = getTargetLocales(config)
-  const paths = catalogPathsPerLocale(config)
 
   const segments: { [locale: string]: TranslationIoSegment[] } = {}
 
@@ -81,10 +77,10 @@ export async function init(
   })
 
   // Create segments from source locale PO items
-  for (const path of paths[sourceLocale]) {
-    const catalog = await format.read(path, sourceLocale)
+  for (const catalog of catalogs) {
+    const messages = await catalog.read(sourceLocale)
 
-    Object.entries(catalog).forEach(([key, entry]) => {
+    Object.entries(messages).forEach(([key, entry]) => {
       if (entry.obsolete) return
 
       targetLocales.forEach((targetLocale) => {
@@ -95,10 +91,10 @@ export async function init(
 
   // Add translations to segments from target locale PO items
   for (const targetLocale of targetLocales) {
-    for (const path of paths[targetLocale]) {
-      const catalog = await format.read(path, targetLocale)
+    for (const catalog of catalogs) {
+      const messages = await catalog.read(targetLocale)
 
-      Object.entries(catalog)
+      Object.entries(messages)
         .filter(([, entry]) => !entry.obsolete)
         .forEach(([, entry], index) => {
           segments[targetLocale][index].target = entry.translation
@@ -125,7 +121,7 @@ export async function init(
     return { success: false, errors: data.errors } as const
   }
 
-  await writeSegmentsToCatalogs(config, paths, data.segments, format)
+  await writeSegmentsToCatalogs(config, catalogs, data.segments)
   return { success: true, project: data.project } as const
 }
 
@@ -134,19 +130,18 @@ export async function init(
 export async function sync(
   config: LinguiConfigNormalized,
   options: CliExtractOptions,
-  format: FormatterWrapper
+  catalogs: Catalog[]
 ) {
   const sourceLocale = config.sourceLocale || "en"
   const targetLocales = getTargetLocales(config)
-  const paths = catalogPathsPerLocale(config)
 
   const segments: TranslationIoSegment[] = []
 
   // Create segments with correct source
-  for (const path of paths[sourceLocale]) {
-    const catalog = await format.read(path, sourceLocale) // todo
+  for (const catalog of catalogs) {
+    const messages = await catalog.read(sourceLocale)
 
-    Object.entries(catalog).forEach(([key, entry]) => {
+    Object.entries(messages).forEach(([key, entry]) => {
       if (entry.obsolete) return
 
       segments.push(createSegmentFromLinguiItem(key, entry))
@@ -175,76 +170,47 @@ export async function sync(
     return { success: false, errors: data.errors } as const
   }
 
-  await writeSegmentsToCatalogs(config, paths, data.segments, format)
+  await writeSegmentsToCatalogs(config, catalogs, data.segments)
   return { success: true, project: data.project } as const
 }
 
 export async function writeSegmentsToCatalogs(
   config: LinguiConfigNormalized,
-  paths: { [locale: string]: string[] },
-  segmentsPerLocale: { [locale: string]: TranslationIoSegment[] },
-  format: FormatterWrapper
+  catalogs: Catalog[],
+  segmentsPerLocale: { [locale: string]: TranslationIoSegment[] }
 ) {
   for (const targetLocale of Object.keys(segmentsPerLocale)) {
+    const catalog = catalogs[0]
     // Remove existing target POs and JS for this target locale
 
-    for (const path of paths[targetLocale]) {
-      // todo: format.getCatalogExtension() instead of hardcoded .po
-      const jsPath = path.replace(/\.po?$/, "") + ".js"
-      const dirPath = dirname(path)
+    const path = catalog.getFilename(targetLocale)
 
-      // todo: check tests and all these logic, maybe it could be simplified to just drop the folder
-      // Remove PO, JS and empty dir
-      if (fs.existsSync(path)) {
-        await fs.promises.unlink(path)
-      }
-      if (fs.existsSync(jsPath)) {
-        await fs.promises.unlink(jsPath)
-      }
-      if (fs.existsSync(dirPath) && fs.readdirSync(dirPath).length === 0) {
-        await fs.promises.rmdir(dirPath)
-      }
+    const jsPath =
+      path.replace(new RegExp(`${catalog.format.getCatalogExtension()}$`), "") +
+      ".js"
+
+    const dirPath = dirname(path)
+
+    // todo: check tests and all these logic, maybe it could be simplified to just drop the folder
+    // Remove PO, JS and empty dir
+    if (fs.existsSync(path)) {
+      await fs.promises.unlink(path)
     }
-
-    // Find target path (ignoring {name})
-    const localePath =
-      config
-        .catalogs![0].path.replace(/{locale}/g, targetLocale)
-        .replace(/{name}/g, "") + ".po"
+    if (fs.existsSync(jsPath)) {
+      await fs.promises.unlink(jsPath)
+    }
+    if (fs.existsSync(dirPath) && fs.readdirSync(dirPath).length === 0) {
+      await fs.promises.rmdir(dirPath)
+    }
 
     const segments = segmentsPerLocale[targetLocale]
 
-    const catalog: CatalogType = Object.fromEntries(
+    const messages: CatalogType = Object.fromEntries(
       segments.map((segment: TranslationIoSegment) =>
         createLinguiItemFromSegment(segment)
       )
     )
 
-    await format.write(localePath, order(config.orderBy, catalog), targetLocale)
+    await catalog.write(targetLocale, order(config.orderBy, messages))
   }
-}
-
-export function catalogPathsPerLocale(config: LinguiConfigNormalized) {
-  const paths: { [locale: string]: string[] } = {}
-
-  config.locales.forEach((locale) => {
-    paths[locale] = []
-
-    // todo: .po is hardcoded here
-    config.catalogs!.forEach((catalog) => {
-      const path = "".concat(
-        catalog.path.replace(/{locale}/g, locale).replace(/{name}/g, "*"),
-        ".po"
-      )
-
-      // If {name} is present (replaced by *), list all the existing POs
-      if (path.includes("*")) {
-        paths[locale] = paths[locale].concat(globSync(path))
-      } else {
-        paths[locale].push(path)
-      }
-    })
-  })
-
-  return paths
 }

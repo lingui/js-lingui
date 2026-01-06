@@ -14,6 +14,7 @@ export type TranslationIoInitRequest = {
   target_languages: string[]
   segments: { [locale: string]: TranslationIoSegment[] }
 }
+
 export type TranslationIoSegment = {
   type: string
   source: string
@@ -49,12 +50,6 @@ export type FetchResult<T> =
 //   project: TranslationIoProject
 //   segments: { [locale: string]: TranslationIoSegment[] }
 // }
-
-export type HttpRequestFunction = (
-  action: "init" | "sync",
-  request: TranslationIoSyncRequest,
-  apiKey: string
-) => Promise<FetchResult<TranslationIoResponse>>
 
 async function post<Resp>(
   url: string,
