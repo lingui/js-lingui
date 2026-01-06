@@ -6,13 +6,10 @@ import { format as formatDate } from "date-fns"
 import { LinguiConfigNormalized } from "@lingui/conf"
 import { CliExtractOptions } from "../lingui-extract"
 import {
-  FetchResult,
   tioInit,
   tioSync,
   TranslationIoProject,
-  TranslationIoResponse,
   TranslationIoSegment,
-  TranslationIoSyncRequest,
 } from "./translationIO/api-client"
 import { writeFile } from "../api/utils"
 
@@ -51,10 +48,7 @@ export default async function syncProcess(
   options: CliExtractOptions
 ) {
   if (!validCatalogFormat(config)) {
-    console.error(
-      `\n----------\nTranslation.io service is only compatible with the "po" format. Please update your Lingui configuration accordingly.\n----------`
-    )
-    process.exit(1)
+    throw `\n----------\nTranslation.io service is only compatible with the "po" format. Please update your Lingui configuration accordingly.\n----------`
   }
 
   const reportSuccess = (project: TranslationIoProject) => {
@@ -62,7 +56,7 @@ export default async function syncProcess(
   }
 
   const reportError = (errors: string[]) => {
-    return `\n----------\nSynchronization with Translation.io failed: ${errors.join(
+    throw `\n----------\nSynchronization with Translation.io failed: ${errors.join(
       ", "
     )}\n----------`
   }
@@ -375,9 +369,3 @@ export function poPathsPerLocale(config: LinguiConfigNormalized) {
 
   return paths
 }
-
-export type HttpRequestFunction = (
-  action: "init" | "sync",
-  request: TranslationIoSyncRequest,
-  apiKey: string
-) => Promise<FetchResult<TranslationIoResponse>>
