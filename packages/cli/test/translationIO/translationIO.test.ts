@@ -5,9 +5,6 @@ import syncProcess, {
   createPoItemFromSegment,
   saveSegmentsToTargetPos,
   poPathsPerLocale,
-  HttpRequestFunction,
-  TranslationIoSegment,
-  TranslationIoResponse,
 } from "../../src/services/translationIO"
 import { makeConfig, LinguiConfigNormalized } from "@lingui/conf"
 import fs from "fs"
@@ -16,27 +13,23 @@ import PO from "pofile"
 import { CliExtractOptions } from "../../src/lingui-extract"
 import MockDate from "mockdate"
 import { listingToHumanReadable, readFsToListing } from "../../src/tests"
+import {
+  TranslationIoResponse,
+  TranslationIoSegment,
+} from "../../src/services/translationIO/api-client"
+import { setupServer } from "msw/node"
+import { DefaultBodyType, http, HttpResponse, StrictRequest } from "msw"
+
+export const mswServer = setupServer()
+
+mswServer.listen({
+  onUnhandledRequest: "error",
+})
 
 const testDir = path.join(__dirname, "test-output")
 const fixturesDir = path.join(__dirname, "fixtures")
 
-// Helper to create a mock HTTP request function
-function createMockHttpRequest(
-  mockResponse: TranslationIoResponse | { error: unknown },
-  captureRequest?: (action: string, request: any, apiKey: string) => void
-): HttpRequestFunction {
-  return (action, request, apiKey, successCallback, failCallback) => {
-    if (captureRequest) {
-      captureRequest(action, request, apiKey)
-    }
-
-    if ("error" in mockResponse) {
-      failCallback(mockResponse.error)
-    } else {
-      successCallback(mockResponse)
-    }
-  }
-}
+const expectVersion = expect.stringMatching(/\d+\.\d+.\d+/)
 
 // Helper to prepare test directory
 async function prepareTestDir(subdir: string) {
@@ -46,25 +39,6 @@ async function prepareTestDir(subdir: string) {
   }
   fs.mkdirSync(dir, { recursive: true })
   return dir
-}
-
-// Helper to copy fixture files
-function copyFixtures(sourceDir: string, targetDir: string) {
-  if (!fs.existsSync(targetDir)) {
-    fs.mkdirSync(targetDir, { recursive: true })
-  }
-
-  const files = fs.readdirSync(sourceDir)
-  files.forEach((file) => {
-    const sourcePath = path.join(sourceDir, file)
-    const targetPath = path.join(targetDir, file)
-
-    if (fs.statSync(sourcePath).isDirectory()) {
-      copyFixtures(sourcePath, targetPath)
-    } else {
-      fs.copyFileSync(sourcePath, targetPath)
-    }
-  })
 }
 
 describe("TranslationIO Integration", () => {
@@ -364,10 +338,7 @@ describe("TranslationIO Integration", () => {
         ],
       }
 
-      saveSegmentsToTargetPos(testConfig, paths, segmentsPerLocale)
-
-      // Wait for async file operations
-      await new Promise((resolve) => setTimeout(resolve, 100))
+      await saveSegmentsToTargetPos(testConfig, paths, segmentsPerLocale)
 
       // Verify content
       expect(listingToHumanReadable(readFsToListing(outputDir)))
@@ -458,9 +429,7 @@ describe("TranslationIO Integration", () => {
         ],
       }
 
-      saveSegmentsToTargetPos(testConfig, paths, segmentsPerLocale)
-
-      await new Promise((resolve) => setTimeout(resolve, 100))
+      await saveSegmentsToTargetPos(testConfig, paths, segmentsPerLocale)
 
       expect(listingToHumanReadable(readFsToListing(outputDir)))
         .toMatchInlineSnapshot(`
@@ -513,112 +482,97 @@ describe("TranslationIO Integration", () => {
         ],
       })
 
-      let capturedRequest: any = null
-      let capturedAction = ""
-      let capturedApiKey = ""
+      const apiCalls: StrictRequest<DefaultBodyType>[] = []
 
-      const mockHttpRequest = createMockHttpRequest(
-        {
-          project: {
-            name: "Test Project",
-            url: "https://translation.io/test",
-          },
-          segments: {
-            fr: [
-              {
-                type: "source",
-                source: "Welcome to our app",
-                target: "Bienvenue dans notre application (updated)",
-                context: "app.welcome",
-                references: ["src/App.tsx:10"],
-                comment: "js-lingui-explicit-id",
-              },
-              {
-                type: "source",
-                source: "About Us",
-                target: "À propos (updated)",
-                context: "about.title",
-                references: ["src/About.tsx:5"],
-                comment: "page.about | js-lingui-explicit-id-and-context",
-              },
-              {
-                type: "source",
-                source: "Hello {name}",
-                target: "Bonjour {name} (updated)",
-                context: "",
-                references: ["src/App.tsx:15"],
-                comment: "",
-              },
-              {
-                type: "source",
-                source: "Home",
-                target: "Accueil (updated)",
-                context: "navigation",
-                references: ["src/App.tsx:20"],
-                comment: "",
-              },
-            ],
-            es: [
-              {
-                type: "source",
-                source: "Welcome to our app",
-                target: "Bienvenido a nuestra aplicación",
-                context: "app.welcome",
-                references: ["src/App.tsx:10"],
-                comment: "js-lingui-explicit-id",
-              },
-              {
-                type: "source",
-                source: "About Us",
-                target: "Acerca de",
-                context: "about.title",
-                references: ["src/About.tsx:5"],
-                comment: "page.about | js-lingui-explicit-id-and-context",
-              },
-              {
-                type: "source",
-                source: "Hello {name}",
-                target: "Hola {name}",
-                context: "",
-                references: ["src/App.tsx:15"],
-                comment: "",
-              },
-              {
-                type: "source",
-                source: "Home",
-                target: "Inicio",
-                context: "navigation",
-                references: ["src/App.tsx:20"],
-                comment: "",
-              },
-            ],
-          },
-        },
-        (action, request, apiKey) => {
-          capturedAction = action
-          capturedRequest = request
-          capturedApiKey = apiKey
-        }
+      mswServer.use(
+        http.post("https://translation.io/api/v1/*", ({ request }) => {
+          apiCalls.push(request)
+
+          return HttpResponse.json<TranslationIoResponse>({
+            project: {
+              name: "Test Project",
+              url: "https://translation.io/test",
+            },
+            segments: {
+              fr: [
+                {
+                  type: "source",
+                  source: "Welcome to our app",
+                  target: "Bienvenue dans notre application (updated)",
+                  context: "app.welcome",
+                  references: ["src/App.tsx:10"],
+                  comment: "js-lingui-explicit-id",
+                },
+                {
+                  type: "source",
+                  source: "About Us",
+                  target: "À propos (updated)",
+                  context: "about.title",
+                  references: ["src/About.tsx:5"],
+                  comment: "page.about | js-lingui-explicit-id-and-context",
+                },
+                {
+                  type: "source",
+                  source: "Hello {name}",
+                  target: "Bonjour {name} (updated)",
+                  context: "",
+                  references: ["src/App.tsx:15"],
+                  comment: "",
+                },
+                {
+                  type: "source",
+                  source: "Home",
+                  target: "Accueil (updated)",
+                  context: "navigation",
+                  references: ["src/App.tsx:20"],
+                  comment: "",
+                },
+              ],
+              es: [
+                {
+                  type: "source",
+                  source: "Welcome to our app",
+                  target: "Bienvenido a nuestra aplicación",
+                  context: "app.welcome",
+                  references: ["src/App.tsx:10"],
+                  comment: "js-lingui-explicit-id",
+                },
+                {
+                  type: "source",
+                  source: "About Us",
+                  target: "Acerca de",
+                  context: "about.title",
+                  references: ["src/About.tsx:5"],
+                  comment: "page.about | js-lingui-explicit-id-and-context",
+                },
+                {
+                  type: "source",
+                  source: "Hello {name}",
+                  target: "Hola {name}",
+                  context: "",
+                  references: ["src/App.tsx:15"],
+                  comment: "",
+                },
+                {
+                  type: "source",
+                  source: "Home",
+                  target: "Inicio",
+                  context: "navigation",
+                  references: ["src/App.tsx:20"],
+                  comment: "",
+                },
+              ],
+            },
+          })
+        })
       )
 
-      await new Promise<void>((resolve, reject) => {
-        init(
-          testConfig,
-          options,
-          (project) => {
-            resolve()
-          },
-          (errors) => {
-            reject(new Error(errors.join(", ")))
-          },
-          mockHttpRequest
-        )
-      })
+      await init(testConfig, options)
 
-      // Verify request
-      expect(capturedAction).toBe("init")
-      expect(capturedApiKey).toBe("test-api-key-123")
-      expect(capturedRequest).toMatchInlineSnapshot(`
+      expect(apiCalls[0].url).toMatchInlineSnapshot(
+        `https://translation.io/api/v1/segments/init.json?api_key=test-api-key-123`
+      )
+      expect(await apiCalls[0].json()).toMatchInlineSnapshot(`
         {
           client: lingui,
           segments: {
@@ -715,9 +669,6 @@ describe("TranslationIO Integration", () => {
           version: 5.7.0,
         }
       `)
-
-      // Wait for file operations
-      await new Promise((resolve) => setTimeout(resolve, 100))
 
       // Verify updated files exist
       expect(listingToHumanReadable(readFsToListing(outputDir)))
@@ -853,25 +804,23 @@ describe("TranslationIO Integration", () => {
         ],
       })
 
-      const mockHttpRequest = createMockHttpRequest({
-        errors: ["API key is invalid"],
-      })
-
-      await expect(
-        new Promise<void>((resolve, reject) => {
-          init(
-            testConfig,
-            options,
-            (project) => {
-              resolve()
-            },
-            (errors) => {
-              reject(new Error(errors.join(", ")))
-            },
-            mockHttpRequest
-          )
+      mswServer.use(
+        http.post("https://translation.io/api/v1/*", () => {
+          // todo: check what real status server return on error
+          return HttpResponse.json<TranslationIoResponse>({
+            errors: ["API key is invalid"],
+          })
         })
-      ).rejects.toThrow("API key is invalid")
+      )
+
+      await expect(init(testConfig, options)).resolves.toMatchInlineSnapshot(`
+        {
+          errors: [
+            API key is invalid,
+          ],
+          success: false,
+        }
+      `)
     })
   })
 
@@ -893,109 +842,100 @@ describe("TranslationIO Integration", () => {
         ],
       })
 
-      let capturedRequest: any = null
-      let capturedAction = ""
+      const apiCalls: StrictRequest<DefaultBodyType>[] = []
 
-      const mockHttpRequest = createMockHttpRequest(
-        {
-          project: {
-            name: "Test Project",
-            url: "https://translation.io/test",
-          },
-          segments: {
-            fr: [
-              {
-                type: "source",
-                source: "Welcome to our app",
-                target: "Bienvenue",
-                context: "app.welcome",
-                references: ["src/App.tsx:10"],
-                comment: "js-lingui-explicit-id",
-              },
-              {
-                type: "source",
-                source: "About Us",
-                target: "À propos",
-                context: "about.title",
-                references: ["src/About.tsx:5"],
-                comment: "page.about | js-lingui-explicit-id-and-context",
-              },
-              {
-                type: "source",
-                source: "Hello {name}",
-                target: "Bonjour {name}",
-                context: "",
-                references: ["src/App.tsx:15"],
-                comment: "",
-              },
-              {
-                type: "source",
-                source: "Home",
-                target: "Accueil",
-                context: "navigation",
-                references: ["src/App.tsx:20"],
-                comment: "",
-              },
-            ],
-            es: [
-              {
-                type: "source",
-                source: "Welcome to our app",
-                target: "Bienvenido",
-                context: "app.welcome",
-                references: ["src/App.tsx:10"],
-                comment: "js-lingui-explicit-id",
-              },
-              {
-                type: "source",
-                source: "About Us",
-                target: "Acerca de",
-                context: "about.title",
-                references: ["src/About.tsx:5"],
-                comment: "page.about | js-lingui-explicit-id-and-context",
-              },
-              {
-                type: "source",
-                source: "Hello {name}",
-                target: "Hola {name}",
-                context: "",
-                references: ["src/App.tsx:15"],
-                comment: "",
-              },
-              {
-                type: "source",
-                source: "Home",
-                target: "Inicio",
-                context: "navigation",
-                references: ["src/App.tsx:20"],
-                comment: "",
-              },
-            ],
-          },
-        },
-        (action, request, apiKey) => {
-          capturedAction = action
-          capturedRequest = request
-        }
+      mswServer.use(
+        http.post("https://translation.io/api/v1/*", ({ request }) => {
+          apiCalls.push(request)
+
+          return HttpResponse.json<TranslationIoResponse>({
+            project: {
+              name: "Test Project",
+              url: "https://translation.io/test",
+            },
+            segments: {
+              fr: [
+                {
+                  type: "source",
+                  source: "Welcome to our app",
+                  target: "Bienvenue",
+                  context: "app.welcome",
+                  references: ["src/App.tsx:10"],
+                  comment: "js-lingui-explicit-id",
+                },
+                {
+                  type: "source",
+                  source: "About Us",
+                  target: "À propos",
+                  context: "about.title",
+                  references: ["src/About.tsx:5"],
+                  comment: "page.about | js-lingui-explicit-id-and-context",
+                },
+                {
+                  type: "source",
+                  source: "Hello {name}",
+                  target: "Bonjour {name}",
+                  context: "",
+                  references: ["src/App.tsx:15"],
+                  comment: "",
+                },
+                {
+                  type: "source",
+                  source: "Home",
+                  target: "Accueil",
+                  context: "navigation",
+                  references: ["src/App.tsx:20"],
+                  comment: "",
+                },
+              ],
+              es: [
+                {
+                  type: "source",
+                  source: "Welcome to our app",
+                  target: "Bienvenido",
+                  context: "app.welcome",
+                  references: ["src/App.tsx:10"],
+                  comment: "js-lingui-explicit-id",
+                },
+                {
+                  type: "source",
+                  source: "About Us",
+                  target: "Acerca de",
+                  context: "about.title",
+                  references: ["src/About.tsx:5"],
+                  comment: "page.about | js-lingui-explicit-id-and-context",
+                },
+                {
+                  type: "source",
+                  source: "Hello {name}",
+                  target: "Hola {name}",
+                  context: "",
+                  references: ["src/App.tsx:15"],
+                  comment: "",
+                },
+                {
+                  type: "source",
+                  source: "Home",
+                  target: "Inicio",
+                  context: "navigation",
+                  references: ["src/App.tsx:20"],
+                  comment: "",
+                },
+              ],
+            },
+          })
+        })
       )
 
-      await new Promise<void>((resolve, reject) => {
-        sync(
-          testConfig,
-          options,
-          (project) => {
-            resolve()
-          },
-          (errors) => {
-            reject(new Error(errors.join(", ")))
-          },
-          mockHttpRequest
-        )
-      })
+      await sync(testConfig, options)
 
       // Verify request
-      expect(capturedAction).toBe("sync")
-      expect(capturedRequest).toMatchInlineSnapshot(`
+      expect(apiCalls[0].url).toMatchInlineSnapshot(
+        `https://translation.io/api/v1/segments/sync.json?api_key=test-api-key-123`
+      )
+      expect(await apiCalls[0].json()).toMatchInlineSnapshot(
+        { version: expectVersion },
+        `
         {
           client: lingui,
           purge: false,
@@ -1042,12 +982,10 @@ describe("TranslationIO Integration", () => {
             fr,
             es,
           ],
-          version: 5.7.0,
+          version: StringMatching /\\\\d\\+\\\\\\.\\\\d\\+\\.\\\\d\\+/,
         }
-      `)
-
-      // Wait for file operations
-      await new Promise((resolve) => setTimeout(resolve, 100))
+      `
+      )
 
       // Verify updated files exist
       expect(listingToHumanReadable(readFsToListing(outputDir)))
@@ -1179,35 +1117,24 @@ describe("TranslationIO Integration", () => {
       const cleanOptions = { ...options, clean: true }
       let capturedRequest: any = null
 
-      const mockHttpRequest = createMockHttpRequest(
-        {
-          project: {
-            name: "Test Project",
-            url: "https://translation.io/test",
-          },
-          segments: {
-            fr: [],
-            es: [],
-          },
-        },
-        (action, request, apiKey) => {
-          capturedRequest = request
-        }
+      mswServer.use(
+        http.post("https://translation.io/api/v1/*", async ({ request }) => {
+          capturedRequest = await request.json()
+
+          return HttpResponse.json<TranslationIoResponse>({
+            project: {
+              name: "Test Project",
+              url: "https://translation.io/test",
+            },
+            segments: {
+              fr: [],
+              es: [],
+            },
+          })
+        })
       )
 
-      await new Promise<void>((resolve, reject) => {
-        sync(
-          testConfig,
-          cleanOptions,
-          (project) => {
-            resolve()
-          },
-          (errors) => {
-            reject(new Error(errors.join(", ")))
-          },
-          mockHttpRequest
-        )
-      })
+      await sync(testConfig, cleanOptions)
 
       expect(capturedRequest).toHaveProperty("purge", true)
     })
@@ -1229,25 +1156,24 @@ describe("TranslationIO Integration", () => {
         ],
       })
 
-      const mockHttpRequest = createMockHttpRequest({
-        errors: ["Synchronization failed"],
-      })
-
-      await expect(
-        new Promise<void>((resolve, reject) => {
-          sync(
-            testConfig,
-            options,
-            (project) => {
-              resolve()
-            },
-            (errors) => {
-              reject(new Error(errors.join(", ")))
-            },
-            mockHttpRequest
-          )
+      mswServer.use(
+        http.post("https://translation.io/api/v1/*", () => {
+          return HttpResponse.json<TranslationIoResponse>({
+            errors: ["Synchronization failed"],
+          })
         })
-      ).rejects.toThrow("Synchronization failed")
+      )
+
+      const result = await sync(testConfig, options)
+
+      expect(result).toMatchInlineSnapshot(`
+        {
+          errors: [
+            Synchronization failed,
+          ],
+          success: false,
+        }
+      `)
     })
   })
 
@@ -1278,47 +1204,45 @@ describe("TranslationIO Integration", () => {
 
       const calls: string[] = []
 
-      // Mock the HTTP request to simulate "already initialized" on first call
-      const customMockRequest: HttpRequestFunction = (
-        action,
-        request,
-        apiKey,
-        successCallback,
-        failCallback
-      ) => {
-        calls.push(action)
-        if (calls.length === 1) {
-          // First init call - return error
-          successCallback({
-            errors: ["This project has already been initialized."],
-          })
-        } else {
-          // Second sync call - return success
-          successCallback({
-            project: {
-              name: "Test Project",
-              url: "https://translation.io/test",
-            },
-            segments: {
-              fr: [],
-              es: [],
-            },
-          })
-        }
-      }
+      mswServer.use(
+        http.post("https://translation.io/api/v1/*", ({ request }) => {
+          const url = new URL(request.url)
+          if (url.pathname.includes("init.json")) {
+            calls.push("init")
+            // First init call - return error indicating already initialized
+            return HttpResponse.json<TranslationIoResponse>({
+              errors: ["This project has already been initialized."],
+            })
+          } else if (url.pathname.includes("sync.json")) {
+            calls.push("sync")
+            // Second sync call - return success
+            return HttpResponse.json<TranslationIoResponse>({
+              project: {
+                name: "Test Project",
+                url: "https://translation.io/test",
+              },
+              segments: {
+                fr: [],
+                es: [],
+              },
+            })
+          }
+          return HttpResponse.json({ errors: ["Unknown endpoint"] })
+        })
+      )
 
-      const result = await syncProcess(testConfig, options, customMockRequest)
+      const result = await syncProcess(testConfig, options)
 
       expect(calls).toEqual(["init", "sync"])
       expect(result).toMatchInlineSnapshot(`
 
-                ----------
-                Project successfully synchronized. Please use this URL to translate: https://translation.io/test
-                ----------
-            `)
+                                                ----------
+                                                Project successfully synchronized. Please use this URL to translate: https://translation.io/test
+                                                ----------
+                                    `)
     })
 
-    it("should reject with proper error format", async () => {
+    it("should handle errors with proper error format", async () => {
       const outputDir = await prepareTestDir("sync-process-error")
       const sourceDir = path.join(fixturesDir, "source")
       const enPath = path.join(outputDir, "en.po")
@@ -1342,23 +1266,23 @@ describe("TranslationIO Integration", () => {
         ],
       })
 
-      const mockHttpRequest: HttpRequestFunction = (
-        action,
-        request,
-        apiKey,
-        successCallback,
-        failCallback
-      ) => {
-        successCallback({ errors: ["Network error", "Connection timeout"] })
-      }
+      mswServer.use(
+        http.post("https://translation.io/api/v1/*", () => {
+          // return Htt
+          return HttpResponse.json<TranslationIoResponse>({
+            errors: ["Network error", "Connection timeout"],
+          })
+        })
+      )
 
-      await expect(syncProcess(testConfig, options, mockHttpRequest)).rejects
-        .toMatchInlineSnapshot(`
+      const result = await syncProcess(testConfig, options)
 
-        ----------
-        Synchronization with Translation.io failed: Network error, Connection timeout
-        ----------
-      `)
+      expect(result).toMatchInlineSnapshot(`
+
+                                        ----------
+                                        Synchronization with Translation.io failed: Network error, Connection timeout
+                                        ----------
+                              `)
     })
 
     it("should fail for non-po format", async () => {
@@ -1375,13 +1299,17 @@ describe("TranslationIO Integration", () => {
       const mockExit = jest.fn() as any
       process.exit = mockExit
 
-      const mockHttpRequest = createMockHttpRequest({
-        project: { name: "Test", url: "https://test.com" },
-        segments: {},
-      })
+      mswServer.use(
+        http.post("https://translation.io/api/v1/*", () => {
+          return HttpResponse.json<TranslationIoResponse>({
+            project: { name: "Test", url: "https://test.com" },
+            segments: {},
+          })
+        })
+      )
 
       try {
-        await syncProcess(invalidConfig, options, mockHttpRequest)
+        await syncProcess(invalidConfig, options)
       } catch (err) {
         // Expected to fail
       }
