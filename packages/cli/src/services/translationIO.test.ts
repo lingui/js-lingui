@@ -3,7 +3,7 @@ import syncProcess, {
   writeSegmentsToCatalogs,
   sync,
 } from "./translationIO"
-import { LinguiConfig, makeConfig } from "@lingui/conf"
+import { LinguiConfig, makeConfig, MessageType } from "@lingui/conf"
 import fs from "fs"
 import path from "path"
 import { CliExtractOptions } from "../lingui-extract"
@@ -22,14 +22,14 @@ import { DefaultBodyType, http, HttpResponse, StrictRequest } from "msw"
 import { getFormat } from "@lingui/cli/api"
 import { Catalog } from "../api/catalog"
 import os from "os"
+import { AllCatalogsType } from "../api/types"
+import { generateMessageId } from "@lingui/message-utils/generateMessageId"
 
 export const mswServer = setupServer()
 
 mswServer.listen({
   onUnhandledRequest: "error",
 })
-
-const fixturesDir = path.join(__dirname, "fixtures")
 
 const expectVersion = expect.stringMatching(/\d+\.\d+.\d+/)
 
@@ -86,30 +86,277 @@ async function prepareTestDir() {
   )
 }
 
-async function readFixture(fixturePath: string) {
-  return await fs.promises.readFile(
-    path.join(fixturesDir, fixturePath),
-    "utf-8"
-  )
+function createMessage(msg: MessageType, explicitId?: string) {
+  return {
+    [explicitId || generateMessageId(msg.message, msg.context)]: msg,
+  }
 }
 
-// Helper to setup standard test fixtures (en.po from source, fr.po and es.po from existing)
-async function setupTestFixtures() {
-  const outputDir = await prepareTestDir()
-  const sourceDir = path.join(fixturesDir, "source")
-  const existingDir = path.join(fixturesDir, "existing")
+// Helper to create extraction result with sample messages
+function createExtractionResult(catalogs: Catalog[]) {
+  const extractionResult: {
+    catalog: Catalog
+    messagesByLocale: AllCatalogsType
+  }[] = []
 
-  // Copy source file
-  const enPath = path.join(outputDir, "en.po")
-  fs.copyFileSync(path.join(sourceDir, "en.po"), enPath)
+  // Create extraction result for the first catalog with standard test messages
+  extractionResult.push({
+    catalog: catalogs[0],
+    messagesByLocale: {
+      en: {
+        ...createMessage(
+          {
+            message: "Welcome to our app",
+            translation: "Welcome to our app",
+            origin: [["src/App.tsx", 10]],
+            comments: [],
+          },
+          "app.welcome"
+        ),
+        ...createMessage({
+          message: "Hello {name}",
+          translation: "",
+          origin: [["src/App.tsx", 15]],
+        }),
+        ...createMessage({
+          message: "Home",
+          translation: "",
+          context: "navigation",
+          origin: [["src/App.tsx", 20]],
+        }),
+        ...createMessage(
+          {
+            message: "About Us",
+            translation: "About Us",
+            context: "page.about",
+            origin: [["src/About.tsx", 5]],
+            comments: [],
+          },
+          "about.title"
+        ),
+      },
+      fr: {
+        ...createMessage(
+          {
+            message: "Welcome to our app",
+            translation: "Bienvenue dans notre application",
+            origin: [["src/App.tsx", 10]],
+            comments: ["js-lingui-explicit-id"],
+          },
+          "app.welcome"
+        ),
+        ...createMessage({
+          message: "Hello {name}",
+          translation: "Bonjour {name}",
+          origin: [["src/App.tsx", 15]],
+        }),
+        ...createMessage({
+          message: "Home",
+          translation: "Accueil",
+          context: "navigation",
+          origin: [["src/App.tsx", 20]],
+        }),
+        ...createMessage(
+          {
+            message: "About Us",
+            translation: "À propos",
+            context: "page.about",
+            origin: [["src/About.tsx", 5]],
+            comments: [],
+          },
+          "about.title"
+        ),
+      },
+      es: {
+        ...createMessage(
+          {
+            message: "Welcome to our app",
+            translation: "",
+            origin: [["src/App.tsx", 10]],
+            comments: [],
+          },
+          "app.welcome"
+        ),
+        ...createMessage({
+          message: "Hello {name}",
+          translation: "",
+          origin: [["src/App.tsx", 15]],
+        }),
+        ...createMessage({
+          message: "Home",
+          translation: "",
+          context: "navigation",
+          origin: [["src/App.tsx", 20]],
+        }),
+        ...createMessage(
+          {
+            message: "About Us",
+            translation: "",
+            context: "page.about",
+            origin: [["src/About.tsx", 5]],
+            comments: [],
+          },
+          "about.title"
+        ),
+      },
+    },
+  })
 
-  // Copy existing translations
-  const frPath = path.join(outputDir, "fr.po")
-  const esPath = path.join(outputDir, "es.po")
-  fs.copyFileSync(path.join(existingDir, "fr.po"), frPath)
-  fs.copyFileSync(path.join(existingDir, "es.po"), esPath)
+  return extractionResult
+}
 
-  return outputDir
+// Helper to create extraction result with multiple catalogs
+function createMultiCatalogExtractionResult(catalogs: Catalog[]) {
+  const extractionResult: {
+    catalog: Catalog
+    messagesByLocale: AllCatalogsType
+  }[] = []
+
+  // First catalog - messages
+  extractionResult.push({
+    catalog: catalogs[0],
+    messagesByLocale: {
+      en: {
+        ...createMessage(
+          {
+            message: "Welcome to our app",
+            translation: "",
+            origin: [["src/App.tsx", 10]],
+            comments: ["js-lingui-explicit-id"],
+          },
+          "app.welcome"
+        ),
+        ...createMessage({
+          message: "Hello {name}",
+          translation: "",
+          origin: [["src/App.tsx", 15]],
+        }),
+        ...createMessage({
+          message: "Home",
+          translation: "",
+          context: "navigation",
+          origin: [["src/App.tsx", 20]],
+        }),
+        ...createMessage(
+          {
+            message: "About Us",
+            translation: "About Us",
+            context: "page.about",
+            origin: [["src/About.tsx", 5]],
+            comments: ["js-lingui-explicit-id"],
+          },
+          "about.title"
+        ),
+      },
+      fr: {
+        ...createMessage(
+          {
+            message: "Welcome to our app",
+            translation: "Bienvenue dans notre application",
+            origin: [["src/App.tsx", 10]],
+            comments: ["js-lingui-explicit-id"],
+          },
+          "app.welcome"
+        ),
+        ...createMessage({
+          message: "Hello {name}",
+          translation: "Bonjour {name}",
+          origin: [["src/App.tsx", 15]],
+        }),
+        ...createMessage({
+          message: "Home",
+          translation: "Accueil",
+          context: "navigation",
+          origin: [["src/App.tsx", 20]],
+        }),
+        ...createMessage(
+          {
+            message: "About Us",
+            translation: "À propos",
+            context: "page.about",
+            origin: [["src/About.tsx", 5]],
+            comments: ["js-lingui-explicit-id"],
+          },
+          "about.title"
+        ),
+      },
+      es: {
+        ...createMessage({
+          message: "Welcome to our app",
+          translation: "",
+          origin: [["src/App.tsx", 10]],
+          comments: ["js-lingui-explicit-id"],
+        }),
+        ...createMessage({
+          message: "Hello {name}",
+          translation: "",
+          origin: [["src/App.tsx", 15]],
+        }),
+        ...createMessage({
+          message: "Home",
+          translation: "",
+          context: "navigation",
+          origin: [["src/App.tsx", 20]],
+        }),
+        ...createMessage(
+          {
+            message: "About Us",
+            translation: "",
+            context: "page.about",
+            origin: [["src/About.tsx", 5]],
+            comments: [],
+          },
+          "about.title"
+        ),
+      },
+    },
+  })
+
+  // Second catalog - errors
+  extractionResult.push({
+    catalog: catalogs[1],
+    messagesByLocale: {
+      en: {
+        ...createMessage({
+          message: "Error occurred",
+          translation: "",
+          origin: [["src/errors.tsx", 1]],
+        }),
+        ...createMessage({
+          message: "Not found",
+          translation: "",
+          origin: [["src/errors.tsx", 2]],
+        }),
+      },
+      fr: {
+        ...createMessage({
+          message: "Error occurred",
+          translation: "Une erreur s'est produite",
+          origin: [["src/errors.tsx", 1]],
+        }),
+
+        ...createMessage({
+          message: "Not found",
+          translation: "Non trouvé",
+          origin: [["src/errors.tsx", 2]],
+        }),
+      },
+      es: {
+        ...createMessage({
+          message: "Error occurred",
+          translation: "Ocurrió un error",
+          origin: [["src/errors.tsx", 1]],
+        }),
+        ...createMessage({
+          message: "Not found",
+          translation: "No encontrado",
+          origin: [["src/errors.tsx", 2]],
+        }),
+      },
+    },
+  })
+
+  return extractionResult
 }
 
 describe("TranslationIO Integration", () => {
@@ -137,13 +384,9 @@ describe("TranslationIO Integration", () => {
   describe.skip("writeSegmentsToCatalogs", () => {
     it("should save segments to PO files", async () => {
       const outputDir = await prepareTestDir()
-
-      // Copy source files
-      const sourceDir = path.join(fixturesDir, "source")
-      const enPath = path.join(outputDir, "en.po")
-      fs.copyFileSync(path.join(sourceDir, "en.po"), enPath)
-
       const { testConfig, catalogs } = await makeTestConfig(outputDir)
+
+      const extractionResult = createExtractionResult(catalogs)
 
       const segmentsPerLocale: { [locale: string]: TranslationIoSegment[] } = {
         fr: [
@@ -187,7 +430,7 @@ describe("TranslationIO Integration", () => {
       await writeSegmentsToCatalogs(
         testConfig,
         "en",
-        catalogs,
+        extractionResult,
         segmentsPerLocale
       )
 
@@ -262,10 +505,12 @@ describe("TranslationIO Integration", () => {
         ],
       }
 
+      const extractionResult = createExtractionResult(catalogs)
+
       await writeSegmentsToCatalogs(
         testConfig,
         "en",
-        catalogs,
+        extractionResult,
         segmentsPerLocale
       )
 
@@ -294,9 +539,11 @@ describe("TranslationIO Integration", () => {
 
   describe("init", () => {
     it("should send init request with source and target segments", async () => {
-      const outputDir = await setupTestFixtures()
-
+      const outputDir = await prepareTestDir()
       const { testConfig, catalogs } = await makeTestConfig(outputDir)
+
+      // Prepare extraction result manually
+      const extractionResult = createExtractionResult(catalogs)
 
       const apiCalls: StrictRequest<DefaultBodyType>[] = []
 
@@ -383,7 +630,7 @@ describe("TranslationIO Integration", () => {
         })
       )
 
-      await init(testConfig, catalogs)
+      await init(testConfig, extractionResult)
 
       expect(apiCalls[0].url).toMatchInlineSnapshot(
         `https://translation.io/api/v1/segments/init.json?api_key=test-api-key-123`
@@ -490,40 +737,6 @@ describe("TranslationIO Integration", () => {
       expect(listingToHumanReadable(readFsToListing(outputDir)))
         .toMatchInlineSnapshot(`
         #######################
-        Filename: en.po
-        #######################
-
-        msgid ""
-        msgstr ""
-        "POT-Creation-Date: 2023-03-15 10:00+0000\\n"
-        "MIME-Version: 1.0\\n"
-        "Content-Type: text/plain; charset=utf-8\\n"
-        "Content-Transfer-Encoding: 8bit\\n"
-        "X-Generator: @lingui/cli\\n"
-        "Language: en\\n"
-
-        #. js-lingui-explicit-id
-        #: src/App.tsx:10
-        msgid "app.welcome"
-        msgstr "Welcome to our app"
-
-        #: src/App.tsx:15
-        msgid "Hello {name}"
-        msgstr ""
-
-        #: src/App.tsx:20
-        msgctxt "navigation"
-        msgid "Home"
-        msgstr ""
-
-        #. js-lingui-explicit-id
-        #: src/About.tsx:5
-        msgctxt "page.about"
-        msgid "about.title"
-        msgstr "About Us"
-
-
-        #######################
         Filename: es.po
         #######################
 
@@ -535,11 +748,6 @@ describe("TranslationIO Integration", () => {
         "Content-Transfer-Encoding: 8bit\\n"
         "X-Generator: @lingui/cli\\n"
         "Language: es\\n"
-
-        #. js-lingui-explicit-id
-        #: src/App.tsx:10
-        msgid "app.welcome"
-        msgstr "Bienvenido a nuestra aplicación"
 
         #. js-lingui-explicit-id
         #: src/About.tsx:5
@@ -556,6 +764,11 @@ describe("TranslationIO Integration", () => {
         msgid "Home"
         msgstr "Inicio"
 
+        #. js-lingui-explicit-id
+        #: src/App.tsx:10
+        msgid "app.welcome"
+        msgstr "Bienvenido a nuestra aplicación"
+
 
         #######################
         Filename: fr.po
@@ -569,11 +782,6 @@ describe("TranslationIO Integration", () => {
         "Content-Transfer-Encoding: 8bit\\n"
         "X-Generator: @lingui/cli\\n"
         "Language: fr\\n"
-
-        #. js-lingui-explicit-id
-        #: src/App.tsx:10
-        msgid "app.welcome"
-        msgstr "Bienvenue dans notre application (updated)"
 
         #. js-lingui-explicit-id
         #: src/About.tsx:5
@@ -590,13 +798,17 @@ describe("TranslationIO Integration", () => {
         msgid "Home"
         msgstr "Accueil (updated)"
 
+        #. js-lingui-explicit-id
+        #: src/App.tsx:10
+        msgid "app.welcome"
+        msgstr "Bienvenue dans notre application (updated)"
+
 
       `)
     })
 
     it("should handle init errors", async () => {
-      const outputDir = await setupTestFixtures()
-
+      const outputDir = await prepareTestDir()
       const { testConfig, catalogs } = await makeTestConfig(outputDir)
 
       mswServer.use(
@@ -612,7 +824,9 @@ describe("TranslationIO Integration", () => {
         })
       )
 
-      await expect(init(testConfig, catalogs)).resolves.toMatchInlineSnapshot(`
+      const extractionResult = createExtractionResult(catalogs)
+      await expect(init(testConfig, extractionResult)).resolves
+        .toMatchInlineSnapshot(`
         {
           errors: [
             API key is invalid,
@@ -623,8 +837,7 @@ describe("TranslationIO Integration", () => {
     })
 
     it("should handle network errors during init", async () => {
-      const outputDir = await setupTestFixtures()
-
+      const outputDir = await prepareTestDir()
       const { testConfig, catalogs } = await makeTestConfig(outputDir)
 
       mswServer.use(
@@ -633,53 +846,12 @@ describe("TranslationIO Integration", () => {
         })
       )
 
-      await expect(init(testConfig, catalogs)).rejects.toThrow()
+      const extractionResult = createExtractionResult(catalogs)
+      await expect(init(testConfig, extractionResult)).rejects.toThrow()
     })
 
     it("should handle multiple catalogs and distribute segments correctly", async () => {
-      const outputDir = await createFixtures({
-        "messages/en.po": await readFixture("source/en.po"),
-        "messages/fr.po": await readFixture("existing/fr.po"),
-        "messages/es.po": await readFixture("existing/es.po"),
-        "errors/en.po": `msgid ""
-msgstr ""
-"POT-Creation-Date: 2023-03-15 10:00+0000\\n"
-"MIME-Version: 1.0\\n"
-"Content-Type: text/plain; charset=utf-8\\n"
-"Content-Transfer-Encoding: 8bit\\n"
-"X-Generator: @lingui/cli\\n"
-"Language: en\\n"
-
-#: src/errors.tsx:1
-msgid "Error occurred"
-msgstr ""
-
-#: src/errors.tsx:2
-msgid "Not found"
-msgstr ""
-`,
-        "errors/fr.po": `msgid ""
-msgstr ""
-"Language: fr\\n"
-
-msgid "Error occurred"
-msgstr "Une erreur s'est produite"
-
-msgid "Not found"
-msgstr "Non trouvé"
-`,
-        "errors/es.po": `msgid ""
-msgstr ""
-"Language: es\\n"
-
-msgid "Error occurred"
-msgstr "Ocurrió un error"
-
-msgid "Not found"
-msgstr "No encontrado"
-`,
-      })
-
+      const outputDir = await prepareTestDir()
       const messagesDir = path.join(outputDir, "messages")
       const errorsDir = path.join(outputDir, "errors")
 
@@ -814,45 +986,12 @@ msgstr "No encontrado"
         })
       )
 
-      await init(testConfig, catalogs)
+      const extractionResult = createMultiCatalogExtractionResult(catalogs)
+      await init(testConfig, extractionResult)
 
       // Verify that segments from Translation.io are distributed to correct catalogs
       expect(listingToHumanReadable(readFsToListing(messagesDir)))
         .toMatchInlineSnapshot(`
-        #######################
-        Filename: en.po
-        #######################
-
-        msgid ""
-        msgstr ""
-        "POT-Creation-Date: 2023-03-15 10:00+0000\\n"
-        "MIME-Version: 1.0\\n"
-        "Content-Type: text/plain; charset=utf-8\\n"
-        "Content-Transfer-Encoding: 8bit\\n"
-        "X-Generator: @lingui/cli\\n"
-        "Language: en\\n"
-
-        #. js-lingui-explicit-id
-        #: src/App.tsx:10
-        msgid "app.welcome"
-        msgstr "Welcome to our app"
-
-        #: src/App.tsx:15
-        msgid "Hello {name}"
-        msgstr ""
-
-        #: src/App.tsx:20
-        msgctxt "navigation"
-        msgid "Home"
-        msgstr ""
-
-        #. js-lingui-explicit-id
-        #: src/About.tsx:5
-        msgctxt "page.about"
-        msgid "about.title"
-        msgstr "About Us"
-
-
         #######################
         Filename: es.po
         #######################
@@ -865,11 +1004,6 @@ msgstr "No encontrado"
         "Content-Transfer-Encoding: 8bit\\n"
         "X-Generator: @lingui/cli\\n"
         "Language: es\\n"
-
-        #. js-lingui-explicit-id
-        #: src/App.tsx:10
-        msgid "app.welcome"
-        msgstr "Bienvenido a nuestra aplicación"
 
         #. js-lingui-explicit-id
         #: src/About.tsx:5
@@ -886,6 +1020,11 @@ msgstr "No encontrado"
         msgid "Home"
         msgstr "Inicio"
 
+        #. js-lingui-explicit-id
+        #: src/App.tsx:10
+        msgid "app.welcome"
+        msgstr "Bienvenido a nuestra aplicación"
+
 
         #######################
         Filename: fr.po
@@ -899,11 +1038,6 @@ msgstr "No encontrado"
         "Content-Transfer-Encoding: 8bit\\n"
         "X-Generator: @lingui/cli\\n"
         "Language: fr\\n"
-
-        #. js-lingui-explicit-id
-        #: src/App.tsx:10
-        msgid "app.welcome"
-        msgstr "Bienvenue dans notre application (updated)"
 
         #. js-lingui-explicit-id
         #: src/About.tsx:5
@@ -920,33 +1054,16 @@ msgstr "No encontrado"
         msgid "Home"
         msgstr "Accueil (updated)"
 
+        #. js-lingui-explicit-id
+        #: src/App.tsx:10
+        msgid "app.welcome"
+        msgstr "Bienvenue dans notre application (updated)"
+
 
       `)
 
       expect(listingToHumanReadable(readFsToListing(errorsDir)))
         .toMatchInlineSnapshot(`
-        #######################
-        Filename: en.po
-        #######################
-
-        msgid ""
-        msgstr ""
-        "POT-Creation-Date: 2023-03-15 10:00+0000\\n"
-        "MIME-Version: 1.0\\n"
-        "Content-Type: text/plain; charset=utf-8\\n"
-        "Content-Transfer-Encoding: 8bit\\n"
-        "X-Generator: @lingui/cli\\n"
-        "Language: en\\n"
-
-        #: src/errors.tsx:1
-        msgid "Error occurred"
-        msgstr ""
-
-        #: src/errors.tsx:2
-        msgid "Not found"
-        msgstr ""
-
-
         #######################
         Filename: es.po
         #######################
@@ -997,9 +1114,10 @@ msgstr "No encontrado"
 
   describe("sync", () => {
     it("should send sync request with source segments", async () => {
-      const outputDir = await setupTestFixtures()
-
+      const outputDir = await prepareTestDir()
       const { testConfig, catalogs } = await makeTestConfig(outputDir)
+
+      const extractionResult = createExtractionResult(catalogs)
 
       const apiCalls: StrictRequest<DefaultBodyType>[] = []
 
@@ -1086,7 +1204,7 @@ msgstr "No encontrado"
         })
       )
 
-      await sync(testConfig, options, catalogs)
+      await sync(testConfig, options, extractionResult)
 
       // Verify request
       expect(apiCalls[0].url).toMatchInlineSnapshot(
@@ -1150,40 +1268,6 @@ msgstr "No encontrado"
       expect(listingToHumanReadable(readFsToListing(outputDir)))
         .toMatchInlineSnapshot(`
         #######################
-        Filename: en.po
-        #######################
-
-        msgid ""
-        msgstr ""
-        "POT-Creation-Date: 2023-03-15 10:00+0000\\n"
-        "MIME-Version: 1.0\\n"
-        "Content-Type: text/plain; charset=utf-8\\n"
-        "Content-Transfer-Encoding: 8bit\\n"
-        "X-Generator: @lingui/cli\\n"
-        "Language: en\\n"
-
-        #. js-lingui-explicit-id
-        #: src/App.tsx:10
-        msgid "app.welcome"
-        msgstr "Welcome to our app"
-
-        #: src/App.tsx:15
-        msgid "Hello {name}"
-        msgstr ""
-
-        #: src/App.tsx:20
-        msgctxt "navigation"
-        msgid "Home"
-        msgstr ""
-
-        #. js-lingui-explicit-id
-        #: src/About.tsx:5
-        msgctxt "page.about"
-        msgid "about.title"
-        msgstr "About Us"
-
-
-        #######################
         Filename: es.po
         #######################
 
@@ -1195,11 +1279,6 @@ msgstr "No encontrado"
         "Content-Transfer-Encoding: 8bit\\n"
         "X-Generator: @lingui/cli\\n"
         "Language: es\\n"
-
-        #. js-lingui-explicit-id
-        #: src/App.tsx:10
-        msgid "app.welcome"
-        msgstr "Bienvenido"
 
         #. js-lingui-explicit-id
         #: src/About.tsx:5
@@ -1216,6 +1295,11 @@ msgstr "No encontrado"
         msgid "Home"
         msgstr "Inicio"
 
+        #. js-lingui-explicit-id
+        #: src/App.tsx:10
+        msgid "app.welcome"
+        msgstr "Bienvenido"
+
 
         #######################
         Filename: fr.po
@@ -1229,11 +1313,6 @@ msgstr "No encontrado"
         "Content-Transfer-Encoding: 8bit\\n"
         "X-Generator: @lingui/cli\\n"
         "Language: fr\\n"
-
-        #. js-lingui-explicit-id
-        #: src/App.tsx:10
-        msgid "app.welcome"
-        msgstr "Bienvenue"
 
         #. js-lingui-explicit-id
         #: src/About.tsx:5
@@ -1250,14 +1329,20 @@ msgstr "No encontrado"
         msgid "Home"
         msgstr "Accueil"
 
+        #. js-lingui-explicit-id
+        #: src/App.tsx:10
+        msgid "app.welcome"
+        msgstr "Bienvenue"
+
 
       `)
     })
 
     it("should include purge option when clean is enabled", async () => {
-      const outputDir = await setupTestFixtures()
-
+      const outputDir = await prepareTestDir()
       const { testConfig, catalogs } = await makeTestConfig(outputDir)
+
+      const extractionResult = createExtractionResult(catalogs)
 
       const cleanOptions = { ...options, clean: true }
       let capturedRequest: any = null
@@ -1279,15 +1364,16 @@ msgstr "No encontrado"
         })
       )
 
-      await sync(testConfig, cleanOptions, catalogs)
+      await sync(testConfig, cleanOptions, extractionResult)
 
       expect(capturedRequest).toHaveProperty("purge", true)
     })
 
     it("should handle sync errors", async () => {
-      const outputDir = await setupTestFixtures()
-
+      const outputDir = await prepareTestDir()
       const { testConfig, catalogs } = await makeTestConfig(outputDir)
+
+      const extractionResult = createExtractionResult(catalogs)
 
       mswServer.use(
         http.post("https://translation.io/api/v1/*", () => {
@@ -1300,7 +1386,7 @@ msgstr "No encontrado"
         })
       )
 
-      const result = await sync(testConfig, options, catalogs)
+      const result = await sync(testConfig, options, extractionResult)
 
       expect(result).toMatchInlineSnapshot(`
         {
@@ -1313,9 +1399,10 @@ msgstr "No encontrado"
     })
 
     it("should handle network errors during sync", async () => {
-      const outputDir = await setupTestFixtures()
-
+      const outputDir = await prepareTestDir()
       const { testConfig, catalogs } = await makeTestConfig(outputDir)
+
+      const extractionResult = createExtractionResult(catalogs)
 
       mswServer.use(
         http.post("https://translation.io/api/v1/*", () => {
@@ -1323,31 +1410,13 @@ msgstr "No encontrado"
         })
       )
 
-      await expect(sync(testConfig, options, catalogs)).rejects.toThrow()
+      await expect(
+        sync(testConfig, options, extractionResult)
+      ).rejects.toThrow()
     })
 
     it("should handle multiple catalogs and distribute segments correctly", async () => {
-      const outputDir = await createFixtures({
-        "messages/en.po": await readFixture("source/en.po"),
-        "errors/en.po": `msgid ""
-msgstr ""
-"POT-Creation-Date: 2023-03-15 10:00+0000\\n"
-"MIME-Version: 1.0\\n"
-"Content-Type: text/plain; charset=utf-8\\n"
-"Content-Transfer-Encoding: 8bit\\n"
-"X-Generator: @lingui/cli\\n"
-"Language: en\\n"
-
-#: src/errors.tsx:1
-msgid "Error occurred"
-msgstr ""
-
-#: src/errors.tsx:2
-msgid "Not found"
-msgstr ""
-`,
-      })
-
+      const outputDir = await prepareTestDir()
       const messagesDir = path.join(outputDir, "messages")
       const errorsDir = path.join(outputDir, "errors")
 
@@ -1486,7 +1555,8 @@ msgstr ""
         })
       )
 
-      await sync(testConfig, options, catalogs)
+      const extractionResult = createMultiCatalogExtractionResult(catalogs)
+      await sync(testConfig, options, extractionResult)
 
       // Verify that segments are sent as a flat list
       expect(await apiCalls[0].json()).toMatchObject({
@@ -1508,40 +1578,6 @@ msgstr ""
       expect(listingToHumanReadable(readFsToListing(messagesDir)))
         .toMatchInlineSnapshot(`
         #######################
-        Filename: en.po
-        #######################
-
-        msgid ""
-        msgstr ""
-        "POT-Creation-Date: 2023-03-15 10:00+0000\\n"
-        "MIME-Version: 1.0\\n"
-        "Content-Type: text/plain; charset=utf-8\\n"
-        "Content-Transfer-Encoding: 8bit\\n"
-        "X-Generator: @lingui/cli\\n"
-        "Language: en\\n"
-
-        #. js-lingui-explicit-id
-        #: src/App.tsx:10
-        msgid "app.welcome"
-        msgstr "Welcome to our app"
-
-        #: src/App.tsx:15
-        msgid "Hello {name}"
-        msgstr ""
-
-        #: src/App.tsx:20
-        msgctxt "navigation"
-        msgid "Home"
-        msgstr ""
-
-        #. js-lingui-explicit-id
-        #: src/About.tsx:5
-        msgctxt "page.about"
-        msgid "about.title"
-        msgstr "About Us"
-
-
-        #######################
         Filename: es.po
         #######################
 
@@ -1553,11 +1589,6 @@ msgstr ""
         "Content-Transfer-Encoding: 8bit\\n"
         "X-Generator: @lingui/cli\\n"
         "Language: es\\n"
-
-        #. js-lingui-explicit-id
-        #: src/App.tsx:10
-        msgid "app.welcome"
-        msgstr "Bienvenido a nuestra aplicación (from sync)"
 
         #. js-lingui-explicit-id
         #: src/About.tsx:5
@@ -1574,6 +1605,11 @@ msgstr ""
         msgid "Home"
         msgstr "Inicio (from sync)"
 
+        #. js-lingui-explicit-id
+        #: src/App.tsx:10
+        msgid "app.welcome"
+        msgstr "Bienvenido a nuestra aplicación (from sync)"
+
 
         #######################
         Filename: fr.po
@@ -1587,11 +1623,6 @@ msgstr ""
         "Content-Transfer-Encoding: 8bit\\n"
         "X-Generator: @lingui/cli\\n"
         "Language: fr\\n"
-
-        #. js-lingui-explicit-id
-        #: src/App.tsx:10
-        msgid "app.welcome"
-        msgstr "Bienvenue dans notre application (from sync)"
 
         #. js-lingui-explicit-id
         #: src/About.tsx:5
@@ -1608,33 +1639,16 @@ msgstr ""
         msgid "Home"
         msgstr "Accueil (from sync)"
 
+        #. js-lingui-explicit-id
+        #: src/App.tsx:10
+        msgid "app.welcome"
+        msgstr "Bienvenue dans notre application (from sync)"
+
 
       `)
 
       expect(listingToHumanReadable(readFsToListing(errorsDir)))
         .toMatchInlineSnapshot(`
-        #######################
-        Filename: en.po
-        #######################
-
-        msgid ""
-        msgstr ""
-        "POT-Creation-Date: 2023-03-15 10:00+0000\\n"
-        "MIME-Version: 1.0\\n"
-        "Content-Type: text/plain; charset=utf-8\\n"
-        "Content-Transfer-Encoding: 8bit\\n"
-        "X-Generator: @lingui/cli\\n"
-        "Language: en\\n"
-
-        #: src/errors.tsx:1
-        msgid "Error occurred"
-        msgstr ""
-
-        #: src/errors.tsx:2
-        msgid "Not found"
-        msgstr ""
-
-
         #######################
         Filename: es.po
         #######################
@@ -1685,9 +1699,10 @@ msgstr ""
 
   describe("syncProcess", () => {
     it("should call init first, then sync if already initialized", async () => {
-      const outputDir = await setupTestFixtures()
+      const outputDir = await prepareTestDir()
+      const { testConfig, catalogs } = await makeTestConfig(outputDir)
 
-      const { testConfig } = await makeTestConfig(outputDir)
+      const extractionResult = createExtractionResult(catalogs)
 
       const calls: string[] = []
 
@@ -1724,21 +1739,22 @@ msgstr ""
         )
       )
 
-      const result = await syncProcess(testConfig, options)
+      const result = await syncProcess(testConfig, options, extractionResult)
 
       expect(calls).toEqual(["init", "sync"])
       expect(result).toMatchInlineSnapshot(`
 
-                                        ----------
-                                        Project successfully synchronized. Please use this URL to translate: https://translation.io/test
-                                        ----------
-                              `)
+                                                                        ----------
+                                                                        Project successfully synchronized. Please use this URL to translate: https://translation.io/test
+                                                                        ----------
+                                                      `)
     })
 
     it("should call only init if not initialized", async () => {
-      const outputDir = await setupTestFixtures()
+      const outputDir = await prepareTestDir()
+      const { testConfig, catalogs } = await makeTestConfig(outputDir)
 
-      const { testConfig } = await makeTestConfig(outputDir)
+      const extractionResult = createExtractionResult(catalogs)
 
       const calls: any[] = []
 
@@ -1759,21 +1775,22 @@ msgstr ""
         })
       )
 
-      const result = await syncProcess(testConfig, options)
+      const result = await syncProcess(testConfig, options, extractionResult)
 
       expect(calls).toHaveLength(1)
       expect(result).toMatchInlineSnapshot(`
 
-                                ----------
-                                Project successfully synchronized. Please use this URL to translate: https://translation.io/test
-                                ----------
-                        `)
+                                                                ----------
+                                                                Project successfully synchronized. Please use this URL to translate: https://translation.io/test
+                                                                ----------
+                                                `)
     })
 
     it("should handle errors with proper error format", async () => {
-      const outputDir = await setupTestFixtures()
+      const outputDir = await prepareTestDir()
+      const { testConfig, catalogs } = await makeTestConfig(outputDir)
 
-      const { testConfig } = await makeTestConfig(outputDir)
+      const extractionResult = createExtractionResult(catalogs)
 
       mswServer.use(
         http.post("https://translation.io/api/v1/*", () => {
@@ -1786,19 +1803,20 @@ msgstr ""
         })
       )
 
-      await expect(syncProcess(testConfig, options)).rejects
+      await expect(syncProcess(testConfig, options, extractionResult)).rejects
         .toMatchInlineSnapshot(`
 
-                                ----------
-                                Synchronization with Translation.io failed: Network error, Connection timeout
-                                ----------
-                        `)
+                                                                ----------
+                                                                Synchronization with Translation.io failed: Network error, Connection timeout
+                                                                ----------
+                                                `)
     })
 
     it("should handle network errors during syncProcess", async () => {
-      const outputDir = await setupTestFixtures()
+      const outputDir = await prepareTestDir()
+      const { testConfig, catalogs } = await makeTestConfig(outputDir)
 
-      const { testConfig } = await makeTestConfig(outputDir)
+      const extractionResult = createExtractionResult(catalogs)
 
       mswServer.use(
         http.post("https://translation.io/api/v1/*", () => {
@@ -1806,7 +1824,9 @@ msgstr ""
         })
       )
 
-      await expect(syncProcess(testConfig, options)).rejects.toThrow()
+      await expect(
+        syncProcess(testConfig, options, extractionResult)
+      ).rejects.toThrow()
     })
   })
 })
