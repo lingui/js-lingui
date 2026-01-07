@@ -27,9 +27,7 @@ exports[`po-gettext format convertPluralsToIco handle correctly locales with 4-l
     translation: ,
   },
   message_with_id: {
-    comments: [
-      js-lingui-explicit-id,
-    ],
+    comments: [],
     context: null,
     extra: {
       flags: [],
@@ -42,7 +40,6 @@ exports[`po-gettext format convertPluralsToIco handle correctly locales with 4-l
   message_with_id_but_without_translation: {
     comments: [
       Comment made by the developers.,
-      js-lingui-explicit-id,
     ],
     context: null,
     extra: {
@@ -136,9 +133,7 @@ exports[`po-gettext format merging plurals parsing merged plural entries should 
     translation: ,
   },
   message_with_id: {
-    comments: [
-      js-lingui-explicit-id,
-    ],
+    comments: [],
     context: null,
     extra: {
       flags: [],
@@ -151,7 +146,6 @@ exports[`po-gettext format merging plurals parsing merged plural entries should 
   message_with_id_but_without_translation: {
     comments: [
       Comment made by the developers.,
-      js-lingui-explicit-id,
     ],
     context: null,
     extra: {
@@ -163,9 +157,7 @@ exports[`po-gettext format merging plurals parsing merged plural entries should 
     translation: ,
   },
   static: {
-    comments: [
-      js-lingui-explicit-id,
-    ],
+    comments: [],
     context: null,
     extra: {
       flags: [],
@@ -590,9 +582,7 @@ exports[`po-gettext format should convert gettext plurals to ICU plural messages
     translation: ,
   },
   message_with_id: {
-    comments: [
-      js-lingui-explicit-id,
-    ],
+    comments: [],
     context: null,
     extra: {
       flags: [],
@@ -605,7 +595,6 @@ exports[`po-gettext format should convert gettext plurals to ICU plural messages
   message_with_id_but_without_translation: {
     comments: [
       Comment made by the developers.,
-      js-lingui-explicit-id,
     ],
     context: null,
     extra: {
@@ -617,9 +606,7 @@ exports[`po-gettext format should convert gettext plurals to ICU plural messages
     translation: ,
   },
   static: {
-    comments: [
-      js-lingui-explicit-id,
-    ],
+    comments: [],
     context: null,
     extra: {
       flags: [],
@@ -790,7 +777,6 @@ exports[`po-gettext format using custom prefix warns and falls back to using cou
   message_with_id: {
     comments: [
       js-lingui:pluralize_on=someCount,
-      js-lingui-explicit-id,
     ],
     context: null,
     extra: {
@@ -805,7 +791,6 @@ exports[`po-gettext format using custom prefix warns and falls back to using cou
     comments: [
       Comment made by the developers.,
       js-lingui:pluralize_on=count,
-      js-lingui-explicit-id,
     ],
     context: null,
     extra: {
@@ -817,9 +802,7 @@ exports[`po-gettext format using custom prefix warns and falls back to using cou
     translation: ,
   },
   static: {
-    comments: [
-      js-lingui-explicit-id,
-    ],
+    comments: [],
     context: null,
     extra: {
       flags: [],
