@@ -472,7 +472,7 @@ exports[`Catalog make should collect and write catalogs 2`] = `
           4,
         ],
       ],
-      translation: ,
+      translation: Message with id,
     },
   },
 }
@@ -800,7 +800,7 @@ exports[`Catalog make should merge with existing catalogs 2`] = `
           4,
         ],
       ],
-      translation: ,
+      translation: Message with id,
     },
     mY42CM: {
       comments: [],
@@ -892,7 +892,7 @@ exports[`Catalog make should only update the specified locale 2`] = `
           4,
         ],
       ],
-      translation: ,
+      translation: Message with id,
     },
   },
 }
