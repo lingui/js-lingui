@@ -173,7 +173,7 @@ describe("pofile format", () => {
         msgstr ""
 
         msgid "custom.id"
-        msgstr ""
+        msgstr "with explicit id"
 
       `)
 
@@ -203,7 +203,7 @@ describe("pofile format", () => {
             },
             obsolete: false,
             origin: [],
-            translation: ,
+            translation: with explicit id,
           },
         }
       `)
@@ -236,7 +236,7 @@ describe("pofile format", () => {
 
         #. js-lingui-explicit-id
         msgid "custom.id"
-        msgstr ""
+        msgstr "with explicit id"
 
       `)
 
@@ -266,7 +266,7 @@ describe("pofile format", () => {
             },
             obsolete: false,
             origin: [],
-            translation: ,
+            translation: with explicit id,
           },
         }
       `)

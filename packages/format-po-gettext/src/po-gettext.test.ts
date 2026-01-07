@@ -78,6 +78,38 @@ describe("po-gettext format", () => {
     expect(pofile).toMatchSnapshot()
   })
 
+  it("should print source message for source locale catalog in translation for explicit id", () => {
+    const catalog: CatalogType = {
+      "custom.id": {
+        message:
+          "{count, plural, one {Singular with id but no translation} other {Plural {count} with empty id but no translation}}",
+        translation: "",
+      },
+      WGI12K: {
+        message:
+          "{anotherCount, plural, one {Singular case} other {Case number {anotherCount}}}",
+        translation:
+          "{anotherCount, plural, one {Singular case} other {Case number {anotherCount}}}",
+      },
+    }
+
+    expect(
+      format.serialize(catalog, {
+        ...defaultSerializeCtx,
+        sourceLocale: "en",
+        locale: "en",
+      })
+    ).toMatchSnapshot()
+
+    expect(
+      format.serialize(catalog, {
+        ...defaultSerializeCtx,
+        sourceLocale: "en",
+        locale: "pl",
+      })
+    ).toMatchSnapshot()
+  })
+
   it("should convert gettext plurals to ICU plural messages", () => {
     const pofile = fs
       .readFileSync(path.join(__dirname, "fixtures/messages_plural.po"))
