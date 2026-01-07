@@ -601,10 +601,14 @@ describe("TranslationIO Integration", () => {
 
       mswServer.use(
         http.post("https://translation.io/api/v1/*", () => {
-          // todo: check what real status server return on error
-          return HttpResponse.json<TranslationIoResponse>({
-            errors: ["API key is invalid"],
-          })
+          return HttpResponse.json<TranslationIoResponse>(
+            {
+              errors: ["API key is invalid"],
+            },
+            {
+              status: 400,
+            }
+          )
         })
       )
 
@@ -1287,9 +1291,12 @@ msgstr "No encontrado"
 
       mswServer.use(
         http.post("https://translation.io/api/v1/*", () => {
-          return HttpResponse.json<TranslationIoResponse>({
-            errors: ["Synchronization failed"],
-          })
+          return HttpResponse.json<TranslationIoResponse>(
+            {
+              errors: ["Synchronization failed"],
+            },
+            { status: 400 }
+          )
         })
       )
 
@@ -1685,15 +1692,22 @@ msgstr ""
       const calls: string[] = []
 
       mswServer.use(
-        http.post("https://translation.io/api/v1/*", ({ request }) => {
-          const url = new URL(request.url)
-          if (url.pathname.includes("init.json")) {
+        http.post(
+          "https://translation.io/api/v1/segments/init.json",
+          ({ request }) => {
             calls.push("init")
             // First init call - return error indicating already initialized
-            return HttpResponse.json<TranslationIoResponse>({
-              errors: ["This project has already been initialized."],
-            })
-          } else if (url.pathname.includes("sync.json")) {
+            return HttpResponse.json<TranslationIoResponse>(
+              {
+                errors: ["This project has already been initialized."],
+              },
+              { status: 400 }
+            )
+          }
+        ),
+        http.post(
+          "https://translation.io/api/v1/segments/sync.json",
+          ({ request }) => {
             calls.push("sync")
             // Second sync call - return success
             return HttpResponse.json<TranslationIoResponse>({
@@ -1707,8 +1721,7 @@ msgstr ""
               },
             })
           }
-          return HttpResponse.json({ errors: ["Unknown endpoint"] })
-        })
+        )
       )
 
       const result = await syncProcess(testConfig, options)
@@ -1764,10 +1777,12 @@ msgstr ""
 
       mswServer.use(
         http.post("https://translation.io/api/v1/*", () => {
-          // return Htt
-          return HttpResponse.json<TranslationIoResponse>({
-            errors: ["Network error", "Connection timeout"],
-          })
+          return HttpResponse.json<TranslationIoResponse>(
+            {
+              errors: ["Network error", "Connection timeout"],
+            },
+            { status: 400 }
+          )
         })
       )
 

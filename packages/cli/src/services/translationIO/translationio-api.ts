@@ -37,6 +37,7 @@ export type FetchResult<T> =
   | { data: T; error: undefined }
   | { error: { response: Response; message: string }; data: undefined }
 
+// todo: need to enable strictNullChecks to support this kind of type narrowing
 // export type TranslationIoResponse =
 //   | TranslationIoErrorResponse
 //   | TranslationProjectResponse
@@ -63,7 +64,7 @@ async function post<Resp>(
     body: JSON.stringify(request),
   })
 
-  if (!response.ok) {
+  if (!response.ok && response.status !== 400) {
     return {
       error: {
         response,
