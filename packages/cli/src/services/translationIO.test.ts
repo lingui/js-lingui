@@ -727,6 +727,422 @@ describe("TranslationIO Integration", () => {
 
       await expect(init(testConfig, catalogs)).rejects.toThrow()
     })
+
+    it("should handle multiple catalogs and distribute segments correctly", async () => {
+      const outputDir = await prepareTestDir("init-multiple-catalogs")
+
+      // Create directory structure for multiple catalogs
+      const messagesDir = path.join(outputDir, "messages")
+      const errorsDir = path.join(outputDir, "errors")
+      fs.mkdirSync(messagesDir, { recursive: true })
+      fs.mkdirSync(errorsDir, { recursive: true })
+
+      // Create source files for both catalogs
+      const sourceDir = path.join(fixturesDir, "source")
+      fs.copyFileSync(
+        path.join(sourceDir, "en.po"),
+        path.join(messagesDir, "en.po")
+      )
+
+      // Create a second catalog with different messages
+      fs.writeFileSync(
+        path.join(errorsDir, "en.po"),
+        `msgid ""
+msgstr ""
+"POT-Creation-Date: 2023-03-15 10:00+0000\\n"
+"MIME-Version: 1.0\\n"
+"Content-Type: text/plain; charset=utf-8\\n"
+"Content-Transfer-Encoding: 8bit\\n"
+"X-Generator: @lingui/cli\\n"
+"Language: en\\n"
+
+#: src/errors.tsx:1
+msgid "Error occurred"
+msgstr ""
+
+#: src/errors.tsx:2
+msgid "Not found"
+msgstr ""
+`
+      )
+
+      // Copy existing translations for messages catalog
+      const existingDir = path.join(fixturesDir, "existing")
+      fs.copyFileSync(
+        path.join(existingDir, "fr.po"),
+        path.join(messagesDir, "fr.po")
+      )
+      fs.copyFileSync(
+        path.join(existingDir, "es.po"),
+        path.join(messagesDir, "es.po")
+      )
+
+      // Create existing translations for errors catalog
+      fs.writeFileSync(
+        path.join(errorsDir, "fr.po"),
+        `msgid ""
+msgstr ""
+"Language: fr\\n"
+
+msgid "Error occurred"
+msgstr "Une erreur s'est produite"
+
+msgid "Not found"
+msgstr "Non trouvé"
+`
+      )
+
+      fs.writeFileSync(
+        path.join(errorsDir, "es.po"),
+        `msgid ""
+msgstr ""
+"Language: es\\n"
+
+msgid "Error occurred"
+msgstr "Ocurrió un error"
+
+msgid "Not found"
+msgstr "No encontrado"
+`
+      )
+
+      const testConfig = makeConfig({
+        ...config,
+        rootDir: outputDir,
+        catalogs: [
+          {
+            path: path.join(outputDir, "messages", "{locale}"),
+            include: [],
+          },
+          {
+            path: path.join(outputDir, "errors", "{locale}"),
+            include: [],
+          },
+        ],
+      })
+
+      const catalogs = [
+        new Catalog(
+          {
+            name: "messages",
+            path: path.join(outputDir, "messages", "{locale}"),
+            format,
+            include: [],
+          },
+          testConfig
+        ),
+        new Catalog(
+          {
+            name: "errors",
+            path: path.join(outputDir, "errors", "{locale}"),
+            format,
+            include: [],
+          },
+          testConfig
+        ),
+      ]
+
+      const apiCalls: StrictRequest<DefaultBodyType>[] = []
+
+      mswServer.use(
+        http.post("https://translation.io/api/v1/*", ({ request }) => {
+          apiCalls.push(request)
+
+          // Translation.io returns all segments in one namespace
+          return HttpResponse.json<TranslationIoResponse>({
+            project: {
+              name: "Test Project",
+              url: "https://translation.io/test",
+            },
+            segments: {
+              fr: [
+                // Messages from first catalog
+                {
+                  type: "source",
+                  source: "Welcome to our app",
+                  target: "Bienvenue dans notre application (updated)",
+                  context: "app.welcome",
+                  references: ["src/App.tsx:10"],
+                  comment: "js-lingui-explicit-id",
+                },
+                {
+                  type: "source",
+                  source: "About Us",
+                  target: "À propos (updated)",
+                  context: "about.title",
+                  references: ["src/About.tsx:5"],
+                  comment: "page.about | js-lingui-explicit-id-and-context",
+                },
+                {
+                  type: "source",
+                  source: "Hello {name}",
+                  target: "Bonjour {name} (updated)",
+                  context: "",
+                  references: ["src/App.tsx:15"],
+                  comment: "",
+                },
+                {
+                  type: "source",
+                  source: "Home",
+                  target: "Accueil (updated)",
+                  context: "navigation",
+                  references: ["src/App.tsx:20"],
+                  comment: "",
+                },
+                // Messages from second catalog
+                {
+                  type: "source",
+                  source: "Error occurred",
+                  target: "Une erreur s'est produite (updated)",
+                  context: "",
+                  references: ["src/errors.tsx:1"],
+                  comment: "",
+                },
+                {
+                  type: "source",
+                  source: "Not found",
+                  target: "Non trouvé (updated)",
+                  context: "",
+                  references: ["src/errors.tsx:2"],
+                  comment: "",
+                },
+              ],
+              es: [
+                // Messages from first catalog
+                {
+                  type: "source",
+                  source: "Welcome to our app",
+                  target: "Bienvenido a nuestra aplicación",
+                  context: "app.welcome",
+                  references: ["src/App.tsx:10"],
+                  comment: "js-lingui-explicit-id",
+                },
+                {
+                  type: "source",
+                  source: "About Us",
+                  target: "Acerca de",
+                  context: "about.title",
+                  references: ["src/About.tsx:5"],
+                  comment: "page.about | js-lingui-explicit-id-and-context",
+                },
+                {
+                  type: "source",
+                  source: "Hello {name}",
+                  target: "Hola {name}",
+                  context: "",
+                  references: ["src/App.tsx:15"],
+                  comment: "",
+                },
+                {
+                  type: "source",
+                  source: "Home",
+                  target: "Inicio",
+                  context: "navigation",
+                  references: ["src/App.tsx:20"],
+                  comment: "",
+                },
+                // Messages from second catalog
+                {
+                  type: "source",
+                  source: "Error occurred",
+                  target: "Ocurrió un error (updated)",
+                  context: "",
+                  references: ["src/errors.tsx:1"],
+                  comment: "",
+                },
+                {
+                  type: "source",
+                  source: "Not found",
+                  target: "No encontrado (updated)",
+                  context: "",
+                  references: ["src/errors.tsx:2"],
+                  comment: "",
+                },
+              ],
+            },
+          })
+        })
+      )
+
+      await init(testConfig, catalogs)
+
+      // Verify that segments from Translation.io are distributed to correct catalogs
+      expect(listingToHumanReadable(readFsToListing(messagesDir)))
+        .toMatchInlineSnapshot(`
+        #######################
+        Filename: en.po
+        #######################
+
+        msgid ""
+        msgstr ""
+        "POT-Creation-Date: 2023-03-15 10:00+0000\\n"
+        "MIME-Version: 1.0\\n"
+        "Content-Type: text/plain; charset=utf-8\\n"
+        "Content-Transfer-Encoding: 8bit\\n"
+        "X-Generator: @lingui/cli\\n"
+        "Language: en\\n"
+
+        #. js-lingui-explicit-id
+        #: src/App.tsx:10
+        msgid "app.welcome"
+        msgstr "Welcome to our app"
+
+        #: src/App.tsx:15
+        msgid "Hello {name}"
+        msgstr ""
+
+        #: src/App.tsx:20
+        msgctxt "navigation"
+        msgid "Home"
+        msgstr ""
+
+        #. js-lingui-explicit-id
+        #: src/About.tsx:5
+        msgctxt "page.about"
+        msgid "about.title"
+        msgstr "About Us"
+
+
+        #######################
+        Filename: es.po
+        #######################
+
+        msgid ""
+        msgstr ""
+        "POT-Creation-Date: 2023-03-15 10:00+0000\\n"
+        "MIME-Version: 1.0\\n"
+        "Content-Type: text/plain; charset=utf-8\\n"
+        "Content-Transfer-Encoding: 8bit\\n"
+        "X-Generator: @lingui/cli\\n"
+        "Language: es\\n"
+
+        #. js-lingui-explicit-id
+        #: src/App.tsx:10
+        msgid "app.welcome"
+        msgstr "Bienvenido a nuestra aplicación"
+
+        #. js-lingui-explicit-id
+        #: src/About.tsx:5
+        msgctxt "page.about"
+        msgid "about.title"
+        msgstr "Acerca de"
+
+        #: src/App.tsx:15
+        msgid "Hello {name}"
+        msgstr "Hola {name}"
+
+        #: src/App.tsx:20
+        msgctxt "navigation"
+        msgid "Home"
+        msgstr "Inicio"
+
+
+        #######################
+        Filename: fr.po
+        #######################
+
+        msgid ""
+        msgstr ""
+        "POT-Creation-Date: 2023-03-15 10:00+0000\\n"
+        "MIME-Version: 1.0\\n"
+        "Content-Type: text/plain; charset=utf-8\\n"
+        "Content-Transfer-Encoding: 8bit\\n"
+        "X-Generator: @lingui/cli\\n"
+        "Language: fr\\n"
+
+        #. js-lingui-explicit-id
+        #: src/App.tsx:10
+        msgid "app.welcome"
+        msgstr "Bienvenue dans notre application (updated)"
+
+        #. js-lingui-explicit-id
+        #: src/About.tsx:5
+        msgctxt "page.about"
+        msgid "about.title"
+        msgstr "À propos (updated)"
+
+        #: src/App.tsx:15
+        msgid "Hello {name}"
+        msgstr "Bonjour {name} (updated)"
+
+        #: src/App.tsx:20
+        msgctxt "navigation"
+        msgid "Home"
+        msgstr "Accueil (updated)"
+
+
+      `)
+
+      expect(listingToHumanReadable(readFsToListing(errorsDir)))
+        .toMatchInlineSnapshot(`
+        #######################
+        Filename: en.po
+        #######################
+
+        msgid ""
+        msgstr ""
+        "POT-Creation-Date: 2023-03-15 10:00+0000\\n"
+        "MIME-Version: 1.0\\n"
+        "Content-Type: text/plain; charset=utf-8\\n"
+        "Content-Transfer-Encoding: 8bit\\n"
+        "X-Generator: @lingui/cli\\n"
+        "Language: en\\n"
+
+        #: src/errors.tsx:1
+        msgid "Error occurred"
+        msgstr ""
+
+        #: src/errors.tsx:2
+        msgid "Not found"
+        msgstr ""
+
+
+        #######################
+        Filename: es.po
+        #######################
+
+        msgid ""
+        msgstr ""
+        "POT-Creation-Date: 2023-03-15 10:00+0000\\n"
+        "MIME-Version: 1.0\\n"
+        "Content-Type: text/plain; charset=utf-8\\n"
+        "Content-Transfer-Encoding: 8bit\\n"
+        "X-Generator: @lingui/cli\\n"
+        "Language: es\\n"
+
+        #: src/errors.tsx:1
+        msgid "Error occurred"
+        msgstr "Ocurrió un error (updated)"
+
+        #: src/errors.tsx:2
+        msgid "Not found"
+        msgstr "No encontrado (updated)"
+
+
+        #######################
+        Filename: fr.po
+        #######################
+
+        msgid ""
+        msgstr ""
+        "POT-Creation-Date: 2023-03-15 10:00+0000\\n"
+        "MIME-Version: 1.0\\n"
+        "Content-Type: text/plain; charset=utf-8\\n"
+        "Content-Transfer-Encoding: 8bit\\n"
+        "X-Generator: @lingui/cli\\n"
+        "Language: fr\\n"
+
+        #: src/errors.tsx:1
+        msgid "Error occurred"
+        msgstr "Une erreur s'est produite (updated)"
+
+        #: src/errors.tsx:2
+        msgid "Not found"
+        msgstr "Non trouvé (updated)"
+
+
+      `)
+    })
   })
 
   describe("sync", () => {
@@ -1144,6 +1560,398 @@ describe("TranslationIO Integration", () => {
       )
 
       await expect(sync(testConfig, options, catalogs)).rejects.toThrow()
+    })
+
+    it("should handle multiple catalogs and distribute segments correctly", async () => {
+      const outputDir = await prepareTestDir("sync-multiple-catalogs")
+
+      // Create directory structure for multiple catalogs
+      const messagesDir = path.join(outputDir, "messages")
+      const errorsDir = path.join(outputDir, "errors")
+      fs.mkdirSync(messagesDir, { recursive: true })
+      fs.mkdirSync(errorsDir, { recursive: true })
+
+      // Create source files for both catalogs
+      const sourceDir = path.join(fixturesDir, "source")
+      fs.copyFileSync(
+        path.join(sourceDir, "en.po"),
+        path.join(messagesDir, "en.po")
+      )
+
+      // Create a second catalog with different messages
+      fs.writeFileSync(
+        path.join(errorsDir, "en.po"),
+        `msgid ""
+msgstr ""
+"POT-Creation-Date: 2023-03-15 10:00+0000\\n"
+"MIME-Version: 1.0\\n"
+"Content-Type: text/plain; charset=utf-8\\n"
+"Content-Transfer-Encoding: 8bit\\n"
+"X-Generator: @lingui/cli\\n"
+"Language: en\\n"
+
+#: src/errors.tsx:1
+msgid "Error occurred"
+msgstr ""
+
+#: src/errors.tsx:2
+msgid "Not found"
+msgstr ""
+`
+      )
+
+      const testConfig = makeConfig({
+        ...config,
+        rootDir: outputDir,
+        catalogs: [
+          {
+            path: path.join(outputDir, "messages", "{locale}"),
+            include: [],
+          },
+          {
+            path: path.join(outputDir, "errors", "{locale}"),
+            include: [],
+          },
+        ],
+      })
+
+      const catalogs = [
+        new Catalog(
+          {
+            name: "messages",
+            path: path.join(outputDir, "messages", "{locale}"),
+            format,
+            include: [],
+          },
+          testConfig
+        ),
+        new Catalog(
+          {
+            name: "errors",
+            path: path.join(outputDir, "errors", "{locale}"),
+            format,
+            include: [],
+          },
+          testConfig
+        ),
+      ]
+
+      const apiCalls: StrictRequest<DefaultBodyType>[] = []
+
+      mswServer.use(
+        http.post("https://translation.io/api/v1/*", ({ request }) => {
+          apiCalls.push(request)
+
+          // Translation.io returns all segments in one namespace
+          return HttpResponse.json<TranslationIoResponse>({
+            project: {
+              name: "Test Project",
+              url: "https://translation.io/test",
+            },
+            segments: {
+              fr: [
+                // Messages from first catalog
+                {
+                  type: "source",
+                  source: "Welcome to our app",
+                  target: "Bienvenue dans notre application (from sync)",
+                  context: "app.welcome",
+                  references: ["src/App.tsx:10"],
+                  comment: "js-lingui-explicit-id",
+                },
+                {
+                  type: "source",
+                  source: "About Us",
+                  target: "À propos (from sync)",
+                  context: "about.title",
+                  references: ["src/About.tsx:5"],
+                  comment: "page.about | js-lingui-explicit-id-and-context",
+                },
+                {
+                  type: "source",
+                  source: "Hello {name}",
+                  target: "Bonjour {name} (from sync)",
+                  context: "",
+                  references: ["src/App.tsx:15"],
+                  comment: "",
+                },
+                {
+                  type: "source",
+                  source: "Home",
+                  target: "Accueil (from sync)",
+                  context: "navigation",
+                  references: ["src/App.tsx:20"],
+                  comment: "",
+                },
+                // Messages from second catalog
+                {
+                  type: "source",
+                  source: "Error occurred",
+                  target: "Une erreur s'est produite (from sync)",
+                  context: "",
+                  references: ["src/errors.tsx:1"],
+                  comment: "",
+                },
+                {
+                  type: "source",
+                  source: "Not found",
+                  target: "Non trouvé (from sync)",
+                  context: "",
+                  references: ["src/errors.tsx:2"],
+                  comment: "",
+                },
+              ],
+              es: [
+                // Messages from first catalog
+                {
+                  type: "source",
+                  source: "Welcome to our app",
+                  target: "Bienvenido a nuestra aplicación (from sync)",
+                  context: "app.welcome",
+                  references: ["src/App.tsx:10"],
+                  comment: "js-lingui-explicit-id",
+                },
+                {
+                  type: "source",
+                  source: "About Us",
+                  target: "Acerca de (from sync)",
+                  context: "about.title",
+                  references: ["src/About.tsx:5"],
+                  comment: "page.about | js-lingui-explicit-id-and-context",
+                },
+                {
+                  type: "source",
+                  source: "Hello {name}",
+                  target: "Hola {name} (from sync)",
+                  context: "",
+                  references: ["src/App.tsx:15"],
+                  comment: "",
+                },
+                {
+                  type: "source",
+                  source: "Home",
+                  target: "Inicio (from sync)",
+                  context: "navigation",
+                  references: ["src/App.tsx:20"],
+                  comment: "",
+                },
+                // Messages from second catalog
+                {
+                  type: "source",
+                  source: "Error occurred",
+                  target: "Ocurrió un error (from sync)",
+                  context: "",
+                  references: ["src/errors.tsx:1"],
+                  comment: "",
+                },
+                {
+                  type: "source",
+                  source: "Not found",
+                  target: "No encontrado (from sync)",
+                  context: "",
+                  references: ["src/errors.tsx:2"],
+                  comment: "",
+                },
+              ],
+            },
+          })
+        })
+      )
+
+      await sync(testConfig, options, catalogs)
+
+      // Verify that segments are sent as a flat list
+      expect(await apiCalls[0].json()).toMatchObject({
+        segments: expect.arrayContaining([
+          expect.objectContaining({
+            source: "Welcome to our app",
+            context: "app.welcome",
+          }),
+          expect.objectContaining({
+            source: "Error occurred",
+          }),
+          expect.objectContaining({
+            source: "Not found",
+          }),
+        ]),
+      })
+
+      // Verify that segments from Translation.io are distributed to correct catalogs
+      expect(listingToHumanReadable(readFsToListing(messagesDir)))
+        .toMatchInlineSnapshot(`
+        #######################
+        Filename: en.po
+        #######################
+
+        msgid ""
+        msgstr ""
+        "POT-Creation-Date: 2023-03-15 10:00+0000\\n"
+        "MIME-Version: 1.0\\n"
+        "Content-Type: text/plain; charset=utf-8\\n"
+        "Content-Transfer-Encoding: 8bit\\n"
+        "X-Generator: @lingui/cli\\n"
+        "Language: en\\n"
+
+        #. js-lingui-explicit-id
+        #: src/App.tsx:10
+        msgid "app.welcome"
+        msgstr "Welcome to our app"
+
+        #: src/App.tsx:15
+        msgid "Hello {name}"
+        msgstr ""
+
+        #: src/App.tsx:20
+        msgctxt "navigation"
+        msgid "Home"
+        msgstr ""
+
+        #. js-lingui-explicit-id
+        #: src/About.tsx:5
+        msgctxt "page.about"
+        msgid "about.title"
+        msgstr "About Us"
+
+
+        #######################
+        Filename: es.po
+        #######################
+
+        msgid ""
+        msgstr ""
+        "POT-Creation-Date: 2023-03-15 10:00+0000\\n"
+        "MIME-Version: 1.0\\n"
+        "Content-Type: text/plain; charset=utf-8\\n"
+        "Content-Transfer-Encoding: 8bit\\n"
+        "X-Generator: @lingui/cli\\n"
+        "Language: es\\n"
+
+        #. js-lingui-explicit-id
+        #: src/App.tsx:10
+        msgid "app.welcome"
+        msgstr "Bienvenido a nuestra aplicación (from sync)"
+
+        #. js-lingui-explicit-id
+        #: src/About.tsx:5
+        msgctxt "page.about"
+        msgid "about.title"
+        msgstr "Acerca de (from sync)"
+
+        #: src/App.tsx:15
+        msgid "Hello {name}"
+        msgstr "Hola {name} (from sync)"
+
+        #: src/App.tsx:20
+        msgctxt "navigation"
+        msgid "Home"
+        msgstr "Inicio (from sync)"
+
+
+        #######################
+        Filename: fr.po
+        #######################
+
+        msgid ""
+        msgstr ""
+        "POT-Creation-Date: 2023-03-15 10:00+0000\\n"
+        "MIME-Version: 1.0\\n"
+        "Content-Type: text/plain; charset=utf-8\\n"
+        "Content-Transfer-Encoding: 8bit\\n"
+        "X-Generator: @lingui/cli\\n"
+        "Language: fr\\n"
+
+        #. js-lingui-explicit-id
+        #: src/App.tsx:10
+        msgid "app.welcome"
+        msgstr "Bienvenue dans notre application (from sync)"
+
+        #. js-lingui-explicit-id
+        #: src/About.tsx:5
+        msgctxt "page.about"
+        msgid "about.title"
+        msgstr "À propos (from sync)"
+
+        #: src/App.tsx:15
+        msgid "Hello {name}"
+        msgstr "Bonjour {name} (from sync)"
+
+        #: src/App.tsx:20
+        msgctxt "navigation"
+        msgid "Home"
+        msgstr "Accueil (from sync)"
+
+
+      `)
+
+      expect(listingToHumanReadable(readFsToListing(errorsDir)))
+        .toMatchInlineSnapshot(`
+        #######################
+        Filename: en.po
+        #######################
+
+        msgid ""
+        msgstr ""
+        "POT-Creation-Date: 2023-03-15 10:00+0000\\n"
+        "MIME-Version: 1.0\\n"
+        "Content-Type: text/plain; charset=utf-8\\n"
+        "Content-Transfer-Encoding: 8bit\\n"
+        "X-Generator: @lingui/cli\\n"
+        "Language: en\\n"
+
+        #: src/errors.tsx:1
+        msgid "Error occurred"
+        msgstr ""
+
+        #: src/errors.tsx:2
+        msgid "Not found"
+        msgstr ""
+
+
+        #######################
+        Filename: es.po
+        #######################
+
+        msgid ""
+        msgstr ""
+        "POT-Creation-Date: 2023-03-15 10:00+0000\\n"
+        "MIME-Version: 1.0\\n"
+        "Content-Type: text/plain; charset=utf-8\\n"
+        "Content-Transfer-Encoding: 8bit\\n"
+        "X-Generator: @lingui/cli\\n"
+        "Language: es\\n"
+
+        #: src/errors.tsx:1
+        msgid "Error occurred"
+        msgstr "Ocurrió un error (from sync)"
+
+        #: src/errors.tsx:2
+        msgid "Not found"
+        msgstr "No encontrado (from sync)"
+
+
+        #######################
+        Filename: fr.po
+        #######################
+
+        msgid ""
+        msgstr ""
+        "POT-Creation-Date: 2023-03-15 10:00+0000\\n"
+        "MIME-Version: 1.0\\n"
+        "Content-Type: text/plain; charset=utf-8\\n"
+        "Content-Transfer-Encoding: 8bit\\n"
+        "X-Generator: @lingui/cli\\n"
+        "Language: fr\\n"
+
+        #: src/errors.tsx:1
+        msgid "Error occurred"
+        msgstr "Une erreur s'est produite (from sync)"
+
+        #: src/errors.tsx:2
+        msgid "Not found"
+        msgstr "Non trouvé (from sync)"
+
+
+      `)
     })
   })
 
