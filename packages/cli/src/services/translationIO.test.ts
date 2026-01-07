@@ -8,7 +8,11 @@ import fs from "fs"
 import path from "path"
 import { CliExtractOptions } from "../lingui-extract"
 import MockDate from "mockdate"
-import { listingToHumanReadable, readFsToListing } from "../tests"
+import {
+  createFixtures,
+  listingToHumanReadable,
+  readFsToListing,
+} from "../tests"
 import {
   TranslationIoResponse,
   TranslationIoSegment,
@@ -16,7 +20,6 @@ import {
 import { setupServer } from "msw/node"
 import { DefaultBodyType, http, HttpResponse, StrictRequest } from "msw"
 import { getFormat } from "@lingui/cli/api"
-import { FormatterWrapper } from "../api/formats"
 import { Catalog } from "../api/catalog"
 import os from "os"
 
@@ -26,22 +29,91 @@ mswServer.listen({
   onUnhandledRequest: "error",
 })
 
-const testDir = path.join(__dirname, "test-output")
 const fixturesDir = path.join(__dirname, "fixtures")
 
 const expectVersion = expect.stringMatching(/\d+\.\d+.\d+/)
 
+// Utility to create test config and catalogs
+async function makeTestConfig(
+  outputDir: string,
+  configOverrides?: Partial<LinguiConfig>
+) {
+  const config = makeConfig({
+    rootDir: outputDir,
+    locales: ["en", "fr", "es"],
+    sourceLocale: "en",
+    format: "po",
+    service: {
+      name: "TranslationIO",
+      apiKey: "test-api-key-123",
+    },
+    catalogs: [
+      {
+        name: "messages",
+        path: path.join(outputDir, "{locale}"),
+        include: [],
+      },
+    ],
+    ...configOverrides,
+  })
+
+  const format = await getFormat(
+    config.format,
+    config.formatOptions,
+    config.sourceLocale
+  )
+
+  const catalogs = config.catalogs.map(
+    (catalog) =>
+      new Catalog(
+        {
+          name: catalog.name,
+          path: catalog.path,
+          format,
+          include: catalog.include,
+        },
+        config
+      )
+  )
+
+  return { testConfig: config, catalogs }
+}
+
 // Helper to prepare test directory
-async function prepareTestDir(subdir: string) {
+async function prepareTestDir() {
   return await fs.promises.mkdtemp(
     path.join(os.tmpdir(), `test-${process.pid}`)
   )
 }
 
+async function readFixture(fixturePath: string) {
+  return await fs.promises.readFile(
+    path.join(fixturesDir, fixturePath),
+    "utf-8"
+  )
+}
+
+// Helper to setup standard test fixtures (en.po from source, fr.po and es.po from existing)
+async function setupTestFixtures() {
+  const outputDir = await prepareTestDir()
+  const sourceDir = path.join(fixturesDir, "source")
+  const existingDir = path.join(fixturesDir, "existing")
+
+  // Copy source file
+  const enPath = path.join(outputDir, "en.po")
+  fs.copyFileSync(path.join(sourceDir, "en.po"), enPath)
+
+  // Copy existing translations
+  const frPath = path.join(outputDir, "fr.po")
+  const esPath = path.join(outputDir, "es.po")
+  fs.copyFileSync(path.join(existingDir, "fr.po"), frPath)
+  fs.copyFileSync(path.join(existingDir, "es.po"), esPath)
+
+  return outputDir
+}
+
 describe("TranslationIO Integration", () => {
-  let config: LinguiConfig
   let options: CliExtractOptions
-  let format: FormatterWrapper
 
   beforeAll(() => {
     MockDate.set(new Date("2023-03-15T10:00Z"))
@@ -49,37 +121,9 @@ describe("TranslationIO Integration", () => {
 
   afterAll(() => {
     MockDate.reset()
-    if (fs.existsSync(testDir)) {
-      fs.rmSync(testDir, { recursive: true, force: true })
-    }
   })
 
   beforeEach(async () => {
-    const outputDir = await prepareTestDir("current")
-
-    config = {
-      rootDir: outputDir,
-      locales: ["en", "fr", "es"],
-      sourceLocale: "en",
-      format: "po",
-      catalogs: [
-        {
-          path: path.join(outputDir, "{locale}"),
-          include: [],
-        },
-      ],
-      service: {
-        name: "TranslationIO",
-        apiKey: "test-api-key-123",
-      },
-    }
-
-    format = await getFormat(
-      config.format,
-      config.formatOptions,
-      config.sourceLocale
-    )
-
     options = {
       verbose: false,
       clean: false,
@@ -92,35 +136,14 @@ describe("TranslationIO Integration", () => {
 
   describe.skip("writeSegmentsToCatalogs", () => {
     it("should save segments to PO files", async () => {
-      const outputDir = await prepareTestDir("save-segments")
+      const outputDir = await prepareTestDir()
 
       // Copy source files
       const sourceDir = path.join(fixturesDir, "source")
       const enPath = path.join(outputDir, "en.po")
       fs.copyFileSync(path.join(sourceDir, "en.po"), enPath)
 
-      const testConfig = makeConfig({
-        ...config,
-        rootDir: outputDir,
-        catalogs: [
-          {
-            path: path.join(outputDir, "{locale}"),
-            include: [],
-          },
-        ],
-      })
-
-      const catalogs = [
-        new Catalog(
-          {
-            name: "messages",
-            path: path.join(outputDir, "{locale}"),
-            format,
-            include: [],
-          },
-          testConfig
-        ),
-      ]
+      const { testConfig, catalogs } = await makeTestConfig(outputDir)
 
       const segmentsPerLocale: { [locale: string]: TranslationIoSegment[] } = {
         fr: [
@@ -219,36 +242,12 @@ describe("TranslationIO Integration", () => {
     })
 
     it("should remove existing files before saving", async () => {
-      const outputDir = await prepareTestDir("save-segments-replace")
-      const testConfig = makeConfig({
-        ...config,
-        rootDir: outputDir,
-        catalogs: [
-          {
-            path: path.join(outputDir, "{locale}"),
-            include: [],
-          },
-        ],
+      const outputDir = await createFixtures({
+        "fr.po": "old content",
+        "fr.js": "old js content",
       })
 
-      const catalogs = [
-        new Catalog(
-          {
-            name: "messages",
-            path: path.join(outputDir, "{locale}"),
-            format,
-            include: [],
-          },
-          testConfig
-        ),
-      ]
-
-      // Create existing files
-      fs.writeFileSync(path.join(outputDir, "fr.po"), "old content")
-      fs.writeFileSync(
-        path.join(outputDir, "fr.po").replace(".po", ".js"),
-        "old js content"
-      )
+      const { testConfig, catalogs } = await makeTestConfig(outputDir)
 
       const segmentsPerLocale: { [locale: string]: TranslationIoSegment[] } = {
         fr: [
@@ -295,42 +294,9 @@ describe("TranslationIO Integration", () => {
 
   describe("init", () => {
     it("should send init request with source and target segments", async () => {
-      const outputDir = await prepareTestDir("init-test")
+      const outputDir = await setupTestFixtures()
 
-      // Copy source files
-      const sourceDir = path.join(fixturesDir, "source")
-      const enPath = path.join(outputDir, "en.po")
-      fs.copyFileSync(path.join(sourceDir, "en.po"), enPath)
-
-      // Copy existing translations
-      const existingDir = path.join(fixturesDir, "existing")
-      const frPath = path.join(outputDir, "fr.po")
-      const esPath = path.join(outputDir, "es.po")
-      fs.copyFileSync(path.join(existingDir, "fr.po"), frPath)
-      fs.copyFileSync(path.join(existingDir, "es.po"), esPath)
-
-      const testConfig = makeConfig({
-        ...config,
-        rootDir: outputDir,
-        catalogs: [
-          {
-            path: path.join(outputDir, "{locale}"),
-            include: [],
-          },
-        ],
-      })
-
-      const catalogs = [
-        new Catalog(
-          {
-            name: "messages",
-            path: path.join(outputDir, "{locale}"),
-            format,
-            include: [],
-          },
-          testConfig
-        ),
-      ]
+      const { testConfig, catalogs } = await makeTestConfig(outputDir)
 
       const apiCalls: StrictRequest<DefaultBodyType>[] = []
 
@@ -629,40 +595,9 @@ describe("TranslationIO Integration", () => {
     })
 
     it("should handle init errors", async () => {
-      const outputDir = await prepareTestDir("init-error")
-      const sourceDir = path.join(fixturesDir, "source")
-      const enPath = path.join(outputDir, "en.po")
-      fs.copyFileSync(path.join(sourceDir, "en.po"), enPath)
+      const outputDir = await setupTestFixtures()
 
-      // Copy existing translations so init can read them
-      const existingDir = path.join(fixturesDir, "existing")
-      const frPath = path.join(outputDir, "fr.po")
-      const esPath = path.join(outputDir, "es.po")
-      fs.copyFileSync(path.join(existingDir, "fr.po"), frPath)
-      fs.copyFileSync(path.join(existingDir, "es.po"), esPath)
-
-      const testConfig = makeConfig({
-        ...config,
-        rootDir: outputDir,
-        catalogs: [
-          {
-            path: path.join(outputDir, "{locale}"),
-            include: [],
-          },
-        ],
-      })
-
-      const catalogs = [
-        new Catalog(
-          {
-            name: "messages",
-            path: path.join(outputDir, "{locale}"),
-            format,
-            include: [],
-          },
-          testConfig
-        ),
-      ]
+      const { testConfig, catalogs } = await makeTestConfig(outputDir)
 
       mswServer.use(
         http.post("https://translation.io/api/v1/*", () => {
@@ -684,40 +619,9 @@ describe("TranslationIO Integration", () => {
     })
 
     it("should handle network errors during init", async () => {
-      const outputDir = await prepareTestDir("init-network-error")
-      const sourceDir = path.join(fixturesDir, "source")
-      const enPath = path.join(outputDir, "en.po")
-      fs.copyFileSync(path.join(sourceDir, "en.po"), enPath)
+      const outputDir = await setupTestFixtures()
 
-      // Copy existing translations so init can read them
-      const existingDir = path.join(fixturesDir, "existing")
-      const frPath = path.join(outputDir, "fr.po")
-      const esPath = path.join(outputDir, "es.po")
-      fs.copyFileSync(path.join(existingDir, "fr.po"), frPath)
-      fs.copyFileSync(path.join(existingDir, "es.po"), esPath)
-
-      const testConfig = makeConfig({
-        ...config,
-        rootDir: outputDir,
-        catalogs: [
-          {
-            path: path.join(outputDir, "{locale}"),
-            include: [],
-          },
-        ],
-      })
-
-      const catalogs = [
-        new Catalog(
-          {
-            name: "messages",
-            path: path.join(outputDir, "{locale}"),
-            format,
-            include: [],
-          },
-          testConfig
-        ),
-      ]
+      const { testConfig, catalogs } = await makeTestConfig(outputDir)
 
       mswServer.use(
         http.post("https://translation.io/api/v1/*", () => {
@@ -729,25 +633,11 @@ describe("TranslationIO Integration", () => {
     })
 
     it("should handle multiple catalogs and distribute segments correctly", async () => {
-      const outputDir = await prepareTestDir("init-multiple-catalogs")
-
-      // Create directory structure for multiple catalogs
-      const messagesDir = path.join(outputDir, "messages")
-      const errorsDir = path.join(outputDir, "errors")
-      fs.mkdirSync(messagesDir, { recursive: true })
-      fs.mkdirSync(errorsDir, { recursive: true })
-
-      // Create source files for both catalogs
-      const sourceDir = path.join(fixturesDir, "source")
-      fs.copyFileSync(
-        path.join(sourceDir, "en.po"),
-        path.join(messagesDir, "en.po")
-      )
-
-      // Create a second catalog with different messages
-      fs.writeFileSync(
-        path.join(errorsDir, "en.po"),
-        `msgid ""
+      const outputDir = await createFixtures({
+        "messages/en.po": await readFixture("source/en.po"),
+        "messages/fr.po": await readFixture("existing/fr.po"),
+        "messages/es.po": await readFixture("existing/es.po"),
+        "errors/en.po": `msgid ""
 msgstr ""
 "POT-Creation-Date: 2023-03-15 10:00+0000\\n"
 "MIME-Version: 1.0\\n"
@@ -763,24 +653,8 @@ msgstr ""
 #: src/errors.tsx:2
 msgid "Not found"
 msgstr ""
-`
-      )
-
-      // Copy existing translations for messages catalog
-      const existingDir = path.join(fixturesDir, "existing")
-      fs.copyFileSync(
-        path.join(existingDir, "fr.po"),
-        path.join(messagesDir, "fr.po")
-      )
-      fs.copyFileSync(
-        path.join(existingDir, "es.po"),
-        path.join(messagesDir, "es.po")
-      )
-
-      // Create existing translations for errors catalog
-      fs.writeFileSync(
-        path.join(errorsDir, "fr.po"),
-        `msgid ""
+`,
+        "errors/fr.po": `msgid ""
 msgstr ""
 "Language: fr\\n"
 
@@ -789,12 +663,8 @@ msgstr "Une erreur s'est produite"
 
 msgid "Not found"
 msgstr "Non trouvé"
-`
-      )
-
-      fs.writeFileSync(
-        path.join(errorsDir, "es.po"),
-        `msgid ""
+`,
+        "errors/es.po": `msgid ""
 msgstr ""
 "Language: es\\n"
 
@@ -803,12 +673,13 @@ msgstr "Ocurrió un error"
 
 msgid "Not found"
 msgstr "No encontrado"
-`
-      )
+`,
+      })
 
-      const testConfig = makeConfig({
-        ...config,
-        rootDir: outputDir,
+      const messagesDir = path.join(outputDir, "messages")
+      const errorsDir = path.join(outputDir, "errors")
+
+      const { testConfig, catalogs } = await makeTestConfig(outputDir, {
         catalogs: [
           {
             path: path.join(outputDir, "messages", "{locale}"),
@@ -821,33 +692,8 @@ msgstr "No encontrado"
         ],
       })
 
-      const catalogs = [
-        new Catalog(
-          {
-            name: "messages",
-            path: path.join(outputDir, "messages", "{locale}"),
-            format,
-            include: [],
-          },
-          testConfig
-        ),
-        new Catalog(
-          {
-            name: "errors",
-            path: path.join(outputDir, "errors", "{locale}"),
-            format,
-            include: [],
-          },
-          testConfig
-        ),
-      ]
-
-      const apiCalls: StrictRequest<DefaultBodyType>[] = []
-
       mswServer.use(
-        http.post("https://translation.io/api/v1/*", ({ request }) => {
-          apiCalls.push(request)
-
+        http.post("https://translation.io/api/v1/*", () => {
           // Translation.io returns all segments in one namespace
           return HttpResponse.json<TranslationIoResponse>({
             project: {
@@ -1147,33 +993,10 @@ msgstr "No encontrado"
 
   describe("sync", () => {
     it("should send sync request with source segments", async () => {
-      const outputDir = await prepareTestDir("sync-test")
-      const sourceDir = path.join(fixturesDir, "source")
-      const enPath = path.join(outputDir, "en.po")
-      fs.copyFileSync(path.join(sourceDir, "en.po"), enPath)
+      const outputDir = await setupTestFixtures()
 
-      const testConfig = makeConfig({
-        ...config,
-        rootDir: outputDir,
-        catalogs: [
-          {
-            path: path.join(outputDir, "{locale}"),
-            include: [],
-          },
-        ],
-      })
+      const { testConfig, catalogs } = await makeTestConfig(outputDir)
 
-      const catalogs = [
-        new Catalog(
-          {
-            name: "messages",
-            path: path.join(outputDir, "{locale}"),
-            format,
-            include: [],
-          },
-          testConfig
-        ),
-      ]
       const apiCalls: StrictRequest<DefaultBodyType>[] = []
 
       mswServer.use(
@@ -1428,32 +1251,10 @@ msgstr "No encontrado"
     })
 
     it("should include purge option when clean is enabled", async () => {
-      const outputDir = await prepareTestDir("sync-purge")
-      const sourceDir = path.join(fixturesDir, "source")
-      const enPath = path.join(outputDir, "en.po")
-      fs.copyFileSync(path.join(sourceDir, "en.po"), enPath)
+      const outputDir = await setupTestFixtures()
 
-      const testConfig = makeConfig({
-        ...config,
-        rootDir: outputDir,
-        catalogs: [
-          {
-            path: path.join(outputDir, "{locale}"),
-            include: [],
-          },
-        ],
-      })
-      const catalogs = [
-        new Catalog(
-          {
-            name: "messages",
-            path: path.join(outputDir, "{locale}"),
-            format,
-            include: [],
-          },
-          testConfig
-        ),
-      ]
+      const { testConfig, catalogs } = await makeTestConfig(outputDir)
+
       const cleanOptions = { ...options, clean: true }
       let capturedRequest: any = null
 
@@ -1480,32 +1281,10 @@ msgstr "No encontrado"
     })
 
     it("should handle sync errors", async () => {
-      const outputDir = await prepareTestDir("sync-error")
-      const sourceDir = path.join(fixturesDir, "source")
-      const enPath = path.join(outputDir, "en.po")
-      fs.copyFileSync(path.join(sourceDir, "en.po"), enPath)
+      const outputDir = await setupTestFixtures()
 
-      const testConfig = makeConfig({
-        ...config,
-        rootDir: outputDir,
-        catalogs: [
-          {
-            path: path.join(outputDir, "{locale}"),
-            include: [],
-          },
-        ],
-      })
-      const catalogs = [
-        new Catalog(
-          {
-            name: "messages",
-            path: path.join(outputDir, "{locale}"),
-            format,
-            include: [],
-          },
-          testConfig
-        ),
-      ]
+      const { testConfig, catalogs } = await makeTestConfig(outputDir)
+
       mswServer.use(
         http.post("https://translation.io/api/v1/*", () => {
           return HttpResponse.json<TranslationIoResponse>({
@@ -1527,32 +1306,10 @@ msgstr "No encontrado"
     })
 
     it("should handle network errors during sync", async () => {
-      const outputDir = await prepareTestDir("sync-network-error")
-      const sourceDir = path.join(fixturesDir, "source")
-      const enPath = path.join(outputDir, "en.po")
-      fs.copyFileSync(path.join(sourceDir, "en.po"), enPath)
+      const outputDir = await setupTestFixtures()
 
-      const testConfig = makeConfig({
-        ...config,
-        rootDir: outputDir,
-        catalogs: [
-          {
-            path: path.join(outputDir, "{locale}"),
-            include: [],
-          },
-        ],
-      })
-      const catalogs = [
-        new Catalog(
-          {
-            name: "messages",
-            path: path.join(outputDir, "{locale}"),
-            format,
-            include: [],
-          },
-          testConfig
-        ),
-      ]
+      const { testConfig, catalogs } = await makeTestConfig(outputDir)
+
       mswServer.use(
         http.post("https://translation.io/api/v1/*", () => {
           return HttpResponse.error()
@@ -1563,25 +1320,9 @@ msgstr "No encontrado"
     })
 
     it("should handle multiple catalogs and distribute segments correctly", async () => {
-      const outputDir = await prepareTestDir("sync-multiple-catalogs")
-
-      // Create directory structure for multiple catalogs
-      const messagesDir = path.join(outputDir, "messages")
-      const errorsDir = path.join(outputDir, "errors")
-      fs.mkdirSync(messagesDir, { recursive: true })
-      fs.mkdirSync(errorsDir, { recursive: true })
-
-      // Create source files for both catalogs
-      const sourceDir = path.join(fixturesDir, "source")
-      fs.copyFileSync(
-        path.join(sourceDir, "en.po"),
-        path.join(messagesDir, "en.po")
-      )
-
-      // Create a second catalog with different messages
-      fs.writeFileSync(
-        path.join(errorsDir, "en.po"),
-        `msgid ""
+      const outputDir = await createFixtures({
+        "messages/en.po": await readFixture("source/en.po"),
+        "errors/en.po": `msgid ""
 msgstr ""
 "POT-Creation-Date: 2023-03-15 10:00+0000\\n"
 "MIME-Version: 1.0\\n"
@@ -1597,12 +1338,13 @@ msgstr ""
 #: src/errors.tsx:2
 msgid "Not found"
 msgstr ""
-`
-      )
+`,
+      })
 
-      const testConfig = makeConfig({
-        ...config,
-        rootDir: outputDir,
+      const messagesDir = path.join(outputDir, "messages")
+      const errorsDir = path.join(outputDir, "errors")
+
+      const { testConfig, catalogs } = await makeTestConfig(outputDir, {
         catalogs: [
           {
             path: path.join(outputDir, "messages", "{locale}"),
@@ -1614,27 +1356,6 @@ msgstr ""
           },
         ],
       })
-
-      const catalogs = [
-        new Catalog(
-          {
-            name: "messages",
-            path: path.join(outputDir, "messages", "{locale}"),
-            format,
-            include: [],
-          },
-          testConfig
-        ),
-        new Catalog(
-          {
-            name: "errors",
-            path: path.join(outputDir, "errors", "{locale}"),
-            format,
-            include: [],
-          },
-          testConfig
-        ),
-      ]
 
       const apiCalls: StrictRequest<DefaultBodyType>[] = []
 
@@ -1957,28 +1678,9 @@ msgstr ""
 
   describe("syncProcess", () => {
     it("should call init first, then sync if already initialized", async () => {
-      const outputDir = await prepareTestDir("sync-process")
-      const sourceDir = path.join(fixturesDir, "source")
-      const enPath = path.join(outputDir, "en.po")
-      fs.copyFileSync(path.join(sourceDir, "en.po"), enPath)
+      const outputDir = await setupTestFixtures()
 
-      // Copy existing translations so init can read them
-      const existingDir = path.join(fixturesDir, "existing")
-      const frPath = path.join(outputDir, "fr.po")
-      const esPath = path.join(outputDir, "es.po")
-      fs.copyFileSync(path.join(existingDir, "fr.po"), frPath)
-      fs.copyFileSync(path.join(existingDir, "es.po"), esPath)
-
-      const testConfig = makeConfig({
-        ...config,
-        rootDir: outputDir,
-        catalogs: [
-          {
-            path: path.join(outputDir, "{locale}"),
-            include: [],
-          },
-        ],
-      })
+      const { testConfig } = await makeTestConfig(outputDir)
 
       const calls: string[] = []
 
@@ -2021,28 +1723,9 @@ msgstr ""
     })
 
     it("should call only init if not initialized", async () => {
-      const outputDir = await prepareTestDir("sync-process")
-      const sourceDir = path.join(fixturesDir, "source")
-      const enPath = path.join(outputDir, "en.po")
-      fs.copyFileSync(path.join(sourceDir, "en.po"), enPath)
+      const outputDir = await setupTestFixtures()
 
-      // Copy existing translations so init can read them
-      const existingDir = path.join(fixturesDir, "existing")
-      const frPath = path.join(outputDir, "fr.po")
-      const esPath = path.join(outputDir, "es.po")
-      fs.copyFileSync(path.join(existingDir, "fr.po"), frPath)
-      fs.copyFileSync(path.join(existingDir, "es.po"), esPath)
-
-      const testConfig = makeConfig({
-        ...config,
-        rootDir: outputDir,
-        catalogs: [
-          {
-            path: path.join(outputDir, "{locale}"),
-            include: [],
-          },
-        ],
-      })
+      const { testConfig } = await makeTestConfig(outputDir)
 
       const calls: any[] = []
 
@@ -2075,28 +1758,9 @@ msgstr ""
     })
 
     it("should handle errors with proper error format", async () => {
-      const outputDir = await prepareTestDir("sync-process-error")
-      const sourceDir = path.join(fixturesDir, "source")
-      const enPath = path.join(outputDir, "en.po")
-      fs.copyFileSync(path.join(sourceDir, "en.po"), enPath)
+      const outputDir = await setupTestFixtures()
 
-      // Copy existing translations so init can read them
-      const existingDir = path.join(fixturesDir, "existing")
-      const frPath = path.join(outputDir, "fr.po")
-      const esPath = path.join(outputDir, "es.po")
-      fs.copyFileSync(path.join(existingDir, "fr.po"), frPath)
-      fs.copyFileSync(path.join(existingDir, "es.po"), esPath)
-
-      const testConfig = makeConfig({
-        ...config,
-        rootDir: outputDir,
-        catalogs: [
-          {
-            path: path.join(outputDir, "{locale}"),
-            include: [],
-          },
-        ],
-      })
+      const { testConfig } = await makeTestConfig(outputDir)
 
       mswServer.use(
         http.post("https://translation.io/api/v1/*", () => {
@@ -2117,28 +1781,9 @@ msgstr ""
     })
 
     it("should handle network errors during syncProcess", async () => {
-      const outputDir = await prepareTestDir("sync-process-network-error")
-      const sourceDir = path.join(fixturesDir, "source")
-      const enPath = path.join(outputDir, "en.po")
-      fs.copyFileSync(path.join(sourceDir, "en.po"), enPath)
+      const outputDir = await setupTestFixtures()
 
-      // Copy existing translations so init can read them
-      const existingDir = path.join(fixturesDir, "existing")
-      const frPath = path.join(outputDir, "fr.po")
-      const esPath = path.join(outputDir, "es.po")
-      fs.copyFileSync(path.join(existingDir, "fr.po"), frPath)
-      fs.copyFileSync(path.join(existingDir, "es.po"), esPath)
-
-      const testConfig = makeConfig({
-        ...config,
-        rootDir: outputDir,
-        catalogs: [
-          {
-            path: path.join(outputDir, "{locale}"),
-            include: [],
-          },
-        ],
-      })
+      const { testConfig } = await makeTestConfig(outputDir)
 
       mswServer.use(
         http.post("https://translation.io/api/v1/*", () => {
