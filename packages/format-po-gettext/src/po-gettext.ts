@@ -128,7 +128,8 @@ function serializePlurals(
         }
       } else if (
         !isGeneratedId &&
-        formatterCtx.locale === formatterCtx.sourceLocale
+        (formatterCtx.locale === formatterCtx.sourceLocale ||
+          formatterCtx.locale === null)
       ) {
         item.msgstr = messageAst.cases.map(stringifyICUCase)
       }

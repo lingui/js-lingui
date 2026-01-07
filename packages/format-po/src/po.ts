@@ -204,7 +204,10 @@ const serialize = (
       item.msgctxt = message.context
     }
 
-    if (!_isGeneratedId && ctx.locale === ctx.sourceLocale) {
+    if (
+      !_isGeneratedId &&
+      (ctx.locale === ctx.sourceLocale || ctx.locale === null)
+    ) {
       // in source lang catalog if message has explicit id, put a source message as translation
       // Otherwise, source message would be completely lost
       //   #. js-lingui-explicit-id

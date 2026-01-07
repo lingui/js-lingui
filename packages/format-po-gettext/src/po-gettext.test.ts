@@ -78,7 +78,7 @@ describe("po-gettext format", () => {
     expect(pofile).toMatchSnapshot()
   })
 
-  it("should print source message for source locale catalog in translation for explicit id", () => {
+  it("should print source message as translation for source locale catalog for explicit id", () => {
     const catalog: CatalogType = {
       "custom.id": {
         message:
@@ -99,7 +99,15 @@ describe("po-gettext format", () => {
         sourceLocale: "en",
         locale: "en",
       })
-    ).toMatchSnapshot()
+    ).toMatchSnapshot("source locale catalog")
+
+    expect(
+      format.serialize(catalog, {
+        ...defaultSerializeCtx,
+        sourceLocale: "en",
+        locale: null,
+      })
+    ).toMatchSnapshot("template locale catalog")
 
     expect(
       format.serialize(catalog, {
@@ -107,7 +115,7 @@ describe("po-gettext format", () => {
         sourceLocale: "en",
         locale: "pl",
       })
-    ).toMatchSnapshot()
+    ).toMatchSnapshot("target locale catalog")
   })
 
   it("should convert gettext plurals to ICU plural messages", () => {

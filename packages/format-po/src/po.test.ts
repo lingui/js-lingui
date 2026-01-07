@@ -131,6 +131,46 @@ describe("pofile format", () => {
     expect(actual).toMatchObject(catalog)
   })
 
+  it("should print source message as translation for source locale catalog for explicit id", () => {
+    const format = createFormatter({ origins: true })
+
+    const catalog: CatalogType = {
+      "custom.id": {
+        message: "with custom id",
+        translation: "",
+        context: "my context",
+      },
+      Dgzql1: {
+        message: "with generated id",
+        translation: "",
+        context: "my context",
+      },
+    }
+    expect(
+      format.serialize(catalog, {
+        ...defaultSerializeCtx,
+        sourceLocale: "en",
+        locale: "en",
+      })
+    ).toMatchSnapshot("source locale catalog")
+
+    expect(
+      format.serialize(catalog, {
+        ...defaultSerializeCtx,
+        sourceLocale: "en",
+        locale: null,
+      })
+    ).toMatchSnapshot("template locale catalog")
+
+    expect(
+      format.serialize(catalog, {
+        ...defaultSerializeCtx,
+        sourceLocale: "en",
+        locale: "pl",
+      })
+    ).toMatchSnapshot("target locale catalog")
+  })
+
   describe("explicitIdAsDefault", () => {
     const catalog: CatalogType = {
       // with generated id
