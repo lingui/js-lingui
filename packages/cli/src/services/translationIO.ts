@@ -15,7 +15,7 @@ import {
   createLinguiItemFromSegment,
   createSegmentFromLinguiItem,
 } from "./translationIO/segment-converters"
-import { getCatalogs } from "../api/catalog/getCatalogs"
+import { AllCatalogsType } from "../api/types"
 
 const getTargetLocales = (config: LinguiConfigNormalized) => {
   const sourceLocale = config.sourceLocale || "en"
@@ -25,10 +25,16 @@ const getTargetLocales = (config: LinguiConfigNormalized) => {
   )
 }
 
+type ExtractionResult = {
+  catalog: Catalog
+  messagesByLocale: AllCatalogsType
+}[]
+
 // Main sync method, call "Init" or "Sync" depending on the project context
 export default async function syncProcess(
   config: LinguiConfigNormalized,
-  options: CliExtractOptions
+  options: CliExtractOptions,
+  extractionResult: ExtractionResult
 ) {
   const reportSuccess = (project: TranslationIoProject) => {
     return `\n----------\nProject successfully synchronized. Please use this URL to translate: ${project.url}\n----------`
@@ -40,16 +46,18 @@ export default async function syncProcess(
     )}\n----------`
   }
 
-  const catalogs = await getCatalogs(config)
-
-  const { success, project, errors } = await init(config, catalogs)
+  const { success, project, errors } = await init(config, extractionResult)
 
   if (success) {
     return reportSuccess(project)
   }
 
   if (errors[0] === "This project has already been initialized.") {
-    const { success, project, errors } = await sync(config, options, catalogs)
+    const { success, project, errors } = await sync(
+      config,
+      options,
+      extractionResult
+    )
 
     if (success) {
       return reportSuccess(project)
@@ -65,7 +73,7 @@ export default async function syncProcess(
 // Cf. https://translation.io/docs/create-library#initialization
 export async function init(
   config: LinguiConfigNormalized,
-  catalogs: Catalog[]
+  extractionResult: ExtractionResult
 ) {
   const sourceLocale = config.sourceLocale || "en"
   const targetLocales = getTargetLocales(config)
@@ -77,8 +85,8 @@ export async function init(
   })
 
   // Create segments from source locale PO items
-  for (const catalog of catalogs) {
-    const messages = await catalog.read(sourceLocale)
+  for (const { messagesByLocale } of extractionResult) {
+    const messages = messagesByLocale[sourceLocale]
 
     Object.entries(messages).forEach(([key, entry]) => {
       if (entry.obsolete) return
@@ -90,9 +98,9 @@ export async function init(
   }
 
   // Add translations to segments from target locale PO items
-  for (const targetLocale of targetLocales) {
-    for (const catalog of catalogs) {
-      const messages = await catalog.read(targetLocale)
+  for (const { messagesByLocale } of extractionResult) {
+    for (const targetLocale of targetLocales) {
+      const messages = messagesByLocale[targetLocale]
 
       Object.entries(messages)
         .filter(([, entry]) => !entry.obsolete)
@@ -121,7 +129,12 @@ export async function init(
     return { success: false, errors: data.errors } as const
   }
 
-  await writeSegmentsToCatalogs(config, sourceLocale, catalogs, data.segments)
+  await writeSegmentsToCatalogs(
+    config,
+    sourceLocale,
+    extractionResult,
+    data.segments
+  )
   return { success: true, project: data.project } as const
 }
 
@@ -130,7 +143,7 @@ export async function init(
 export async function sync(
   config: LinguiConfigNormalized,
   options: CliExtractOptions,
-  catalogs: Catalog[]
+  extractionResult: ExtractionResult
 ) {
   const sourceLocale = config.sourceLocale || "en"
   const targetLocales = getTargetLocales(config)
@@ -138,8 +151,8 @@ export async function sync(
   const segments: TranslationIoSegment[] = []
 
   // Create segments with correct source
-  for (const catalog of catalogs) {
-    const messages = await catalog.read(sourceLocale)
+  for (const { messagesByLocale } of extractionResult) {
+    const messages = messagesByLocale[sourceLocale]
 
     Object.entries(messages).forEach(([key, entry]) => {
       if (entry.obsolete) return
@@ -170,19 +183,24 @@ export async function sync(
     return { success: false, errors: data.errors } as const
   }
 
-  await writeSegmentsToCatalogs(config, sourceLocale, catalogs, data.segments)
+  await writeSegmentsToCatalogs(
+    config,
+    sourceLocale,
+    extractionResult,
+    data.segments
+  )
   return { success: true, project: data.project } as const
 }
 
 export async function writeSegmentsToCatalogs(
   config: LinguiConfigNormalized,
   sourceLocale: string,
-  catalogs: Catalog[],
+  extractionResult: ExtractionResult,
   segmentsPerLocale: { [locale: string]: TranslationIoSegment[] }
 ) {
   // Create segments from source locale PO items
-  for (const catalog of catalogs) {
-    const sourceMessages = await catalog.read(sourceLocale)
+  for (const { catalog, messagesByLocale } of extractionResult) {
+    const sourceMessages = messagesByLocale[sourceLocale]
 
     for (const targetLocale of Object.keys(segmentsPerLocale)) {
       // Remove existing target POs and JS for this target locale

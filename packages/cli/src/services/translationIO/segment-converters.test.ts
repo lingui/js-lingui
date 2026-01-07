@@ -18,13 +18,17 @@ describe("Segment Converters", () => {
 
       const segment = createSegmentFromLinguiItem(key, item)
 
-      expect(segment).toEqual({
-        type: "source",
-        source: "Hello {name}",
-        context: "",
-        references: ["src/App.tsx:15"],
-        comment: "",
-      })
+      expect(segment).toMatchInlineSnapshot(`
+        {
+          comment: ,
+          context: ,
+          references: [
+            src/App.tsx:15,
+          ],
+          source: Hello {name},
+          type: source,
+        }
+      `)
     })
 
     it("should create segment from Lingui item with explicit ID", () => {
@@ -33,18 +37,22 @@ describe("Segment Converters", () => {
         translation: "Welcome to our app",
         message: "Welcome to our app",
         origin: [["src/App.tsx", 10]],
-        comments: ["js-lingui-explicit-id"],
+        comments: ["Comment from code"],
       }
 
       const segment = createSegmentFromLinguiItem(key, item)
 
-      expect(segment).toEqual({
-        type: "source",
-        source: "Welcome to our app",
-        context: "app.welcome",
-        references: ["src/App.tsx:10"],
-        comment: "js-lingui-explicit-id",
-      })
+      expect(segment).toMatchInlineSnapshot(`
+        {
+          comment: js-lingui-explicit-id | Comment from code,
+          context: app.welcome,
+          references: [
+            src/App.tsx:10,
+          ],
+          source: Welcome to our app,
+          type: source,
+        }
+      `)
     })
 
     it("should create segment from Lingui item with context but no explicit ID", () => {
@@ -59,13 +67,17 @@ describe("Segment Converters", () => {
 
       const segment = createSegmentFromLinguiItem(key, item)
 
-      expect(segment).toEqual({
-        type: "source",
-        source: "Home",
-        context: "navigation",
-        references: ["src/App.tsx:20"],
-        comment: "",
-      })
+      expect(segment).toMatchInlineSnapshot(`
+        {
+          comment: ,
+          context: navigation,
+          references: [
+            src/App.tsx:20,
+          ],
+          source: Home,
+          type: source,
+        }
+      `)
     })
 
     it("should create segment from Lingui item with explicit ID and context", () => {
@@ -73,20 +85,24 @@ describe("Segment Converters", () => {
       const item: MessageType = {
         translation: "About Us",
         message: "About Us",
-        context: "page.about",
+        context: "this is a context",
         origin: [["src/About.tsx", 5]],
-        comments: ["js-lingui-explicit-id"],
+        comments: ["Comment from code"],
       }
 
       const segment = createSegmentFromLinguiItem(key, item)
 
-      expect(segment).toEqual({
-        type: "source",
-        source: "About Us",
-        context: "about.title",
-        references: ["src/About.tsx:5"],
-        comment: "page.about | js-lingui-explicit-id-and-context",
-      })
+      expect(segment).toMatchInlineSnapshot(`
+        {
+          comment: this is a context | js-lingui-explicit-id-and-context | Comment from code,
+          context: about.title,
+          references: [
+            src/About.tsx:5,
+          ],
+          source: About Us,
+          type: source,
+        }
+      `)
     })
   })
 
@@ -104,12 +120,20 @@ describe("Segment Converters", () => {
       const [id, item] = createLinguiItemFromSegment(segment)
 
       expect(id).toMatch(/^[a-zA-Z0-9]+$/) // Generated ID
-      expect(item).toMatchObject({
-        translation: "Bonjour {name}",
-        message: "Hello {name}",
-        context: "greeting",
-        origin: [["src/App.tsx", 15]],
-      })
+      expect(item).toMatchInlineSnapshot(`
+        {
+          comments: [],
+          context: greeting,
+          message: Hello {name},
+          origin: [
+            [
+              src/App.tsx,
+              15,
+            ],
+          ],
+          translation: Bonjour {name},
+        }
+      `)
     })
 
     it("should create Lingui item from segment with explicit ID", () => {
@@ -125,10 +149,19 @@ describe("Segment Converters", () => {
       const [id, item] = createLinguiItemFromSegment(segment)
 
       expect(id).toBe("app.welcome")
-      expect(item.translation).toBe("Bienvenue dans notre application")
-      expect(item.message).toBe("Welcome to our app")
-      expect(item.context).toBeUndefined()
-      expect(item.comments).toEqual(["js-lingui-explicit-id"])
+      expect(item).toMatchInlineSnapshot(`
+        {
+          comments: [],
+          message: Welcome to our app,
+          origin: [
+            [
+              src/App.tsx,
+              10,
+            ],
+          ],
+          translation: Bienvenue dans notre application,
+        }
+      `)
     })
 
     it("should create Lingui item from segment with explicit ID and context", () => {
@@ -144,10 +177,20 @@ describe("Segment Converters", () => {
       const [id, item] = createLinguiItemFromSegment(segment)
 
       expect(id).toBe("about.title")
-      expect(item.translation).toBe("À propos")
-      expect(item.message).toBe("About Us")
-      expect(item.context).toBe("page.about")
-      expect(item.comments).toEqual(["js-lingui-explicit-id"])
+      expect(item).toMatchInlineSnapshot(`
+        {
+          comments: [],
+          context: page.about,
+          message: About Us,
+          origin: [
+            [
+              src/About.tsx,
+              5,
+            ],
+          ],
+          translation: À propos,
+        }
+      `)
     })
   })
 
@@ -158,7 +201,7 @@ describe("Segment Converters", () => {
         translation: "Test Message",
         message: "Test Message",
         context: "context",
-        comments: ["js-lingui-explicit-id"],
+        comments: [],
         origin: [["src/test.ts", 10]],
       }
 

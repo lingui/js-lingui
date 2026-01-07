@@ -46,20 +46,18 @@ export function createSegmentFromLinguiItem(key: string, item: MessageType) {
   }
 
   // Since Lingui v4, when using explicit IDs, Lingui automatically adds 'js-lingui-explicit-id' to the extractedComments array
-  if (item.comments?.length) {
-    segment.comment = item.comments.join(" | ")
+  const comments: string[] = []
 
-    if (itemHasExplicitId && itemHasContext) {
+  if (itemHasExplicitId) {
+    if (itemHasContext) {
       // segment.context is already used for the explicit ID, so we need to pass the context (for translators) in segment.comment
-      segment.comment = `${item.context} | ${segment.comment}`
-
-      // Replace the flag to let us know how to recompose a target PO Item that is consistent with the source PO Item
-      segment.comment = segment.comment.replace(
-        EXPLICIT_ID_FLAG,
-        EXPLICIT_ID_AND_CONTEXT_FLAG
-      )
+      comments.push(item.context, EXPLICIT_ID_AND_CONTEXT_FLAG)
+    } else {
+      comments.push(EXPLICIT_ID_FLAG)
     }
   }
+
+  segment.comment = [...comments, ...(item.comments || [])].join(" | ")
 
   return segment
 }
@@ -89,12 +87,11 @@ export function createLinguiItemFromSegment(segment: TranslationIoSegment) {
   }
 
   if (segment.comment) {
-    segment.comment = segment.comment.replace(
-      EXPLICIT_ID_AND_CONTEXT_FLAG,
-      EXPLICIT_ID_FLAG
+    item.comments = segment.comment.split(" | ").filter(
+      // drop flags from comments
+      (comment) =>
+        comment !== EXPLICIT_ID_AND_CONTEXT_FLAG && comment !== EXPLICIT_ID_FLAG
     )
-
-    item.comments = segment.comment ? segment.comment.split(" | ") : []
 
     // We recompose a target PO Item that is consistent with the source PO Item
     if (segmentHasExplicitIdAndContext) {
