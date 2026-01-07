@@ -238,9 +238,14 @@ function deserialize(
   options: PoFormatterOptions
 ): CatalogType {
   return items.reduce<CatalogType<POCatalogExtra>>((catalog, item) => {
+    const comments = item.extractedComments
+
     const message: MessageType<POCatalogExtra> = {
       translation: item.msgstr[0],
-      comments: item.extractedComments || [],
+      comments: comments.filter(
+        // drop flags from comments
+        (c) => c !== GENERATED_ID_FLAG && c !== EXPLICIT_ID_FLAG
+      ),
       context: item.msgctxt ?? null,
       obsolete: item.flags.obsolete || item.obsolete,
       origin: (item.references || []).map((ref) => splitOrigin(ref)),
@@ -255,8 +260,8 @@ function deserialize(
     // if generated id, recreate it
     if (
       options.explicitIdAsDefault
-        ? item.extractedComments.includes(GENERATED_ID_FLAG)
-        : !item.extractedComments.includes(EXPLICIT_ID_FLAG)
+        ? comments.includes(GENERATED_ID_FLAG)
+        : !comments.includes(EXPLICIT_ID_FLAG)
     ) {
       id = generateMessageId(item.msgid, item.msgctxt)
       message.message = item.msgid

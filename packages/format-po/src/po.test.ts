@@ -221,9 +221,7 @@ describe("pofile format", () => {
       expect(actual).toMatchInlineSnapshot(`
         {
           Dgzql1: {
-            comments: [
-              js-lingui-generated-id,
-            ],
+            comments: [],
             context: my context,
             extra: {
               flags: [],
@@ -296,9 +294,7 @@ describe("pofile format", () => {
             translation: ,
           },
           custom.id: {
-            comments: [
-              js-lingui-explicit-id,
-            ],
+            comments: [],
             context: null,
             extra: {
               flags: [],
