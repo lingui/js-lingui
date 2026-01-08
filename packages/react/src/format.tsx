@@ -1,4 +1,4 @@
-import React from "react"
+import { cloneElement } from "react"
 
 // match <tag>paired</tag> and <tag/> unpaired tags
 const tagRe = /<([a-zA-Z0-9]+)>([\s\S]*?)<\/\1>|<([a-zA-Z0-9]+)\/>/
@@ -65,15 +65,15 @@ function formatElements(
       }
 
       // ignore problematic element but push its children and elements after it
-      element = React.createElement(React.Fragment)
+      element = <></>
     }
 
     if (Array.isArray(element)) {
-      element = React.createElement(React.Fragment, {}, element)
+      element = <>{element}</>
     }
 
     tree.push(
-      React.cloneElement(
+      cloneElement(
         element,
         { key: uniqueId() },
 
