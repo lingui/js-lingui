@@ -9,7 +9,7 @@ const tsConfigPathMapping = pathsToModuleNameMapper(
 )
 
 const testMatch = ["**/?(*.)test.(js|ts|tsx)", "**/test/index.(js|ts|tsx)"]
-const transformIgnorePatterns = ["node_modules/(?!@messageformat)"]
+const transformIgnorePatterns = ["node_modules/(?!@messageformat|until-async)"]
 /**
  * @type {import('jest').Config}
  */
