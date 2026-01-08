@@ -56,7 +56,8 @@ function serializePlurals(
   message: MessageType,
   id: string,
   isGeneratedId: boolean,
-  options: PoGettextFormatterOptions
+  options: PoGettextFormatterOptions,
+  formatterCtx: { locale: string | null; sourceLocale: string }
 ): POItem {
   // Depending on whether custom ids are used by the developer, the (potential plural) "original", untranslated ICU
   // message can be found in `message.message` or in the item's `key` itself.
@@ -125,6 +126,12 @@ function serializePlurals(
         } else {
           item.msgstr = ast.cases.map(stringifyICUCase)
         }
+      } else if (
+        !isGeneratedId &&
+        (formatterCtx.locale === formatterCtx.sourceLocale ||
+          formatterCtx.locale === null)
+      ) {
+        item.msgstr = messageAst.cases.map(stringifyICUCase)
       }
     } catch (e) {
       console.error(`Error parsing message ICU for key "${id}":`, e)
@@ -559,7 +566,7 @@ export function formatter(
           ? generateMessageId(item.msgid, item.msgctxt)
           : item.msgid
         const message = catalog[id]
-        return serializePlurals(item, message, id, isGeneratedId, options)
+        return serializePlurals(item, message, id, isGeneratedId, options, ctx)
       })
 
       if (options.mergePlurals) {
