@@ -1,6 +1,6 @@
 {
   "name": "@lingui/detect-locale",
-  "version": "5.3.3",
+  "version": "5.7.0",
   "sideEffects": false,
   "description": "@Lingui package to help you find the correct browser/server locale",
   "main": "./dist/index.cjs",
@@ -24,6 +24,7 @@
     "name": "Sergio Moreno",
     "email": "sergiomorenoalbert@gmail.com"
   },
+  "homepage": "https://lingui.dev",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/lingui/js-lingui.git",

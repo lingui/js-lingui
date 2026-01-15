@@ -27,16 +27,13 @@ export async function copyFixture(fixtureDir: string) {
 }
 
 export const defaultMakeOptions: MakeOptions = {
-  verbose: false,
   clean: false,
   overwrite: false,
   locale: null,
-  prevFormat: null,
   orderBy: "messageId",
 }
 
 export const defaultMakeTemplateOptions: MakeTemplateOptions = {
-  verbose: false,
   orderBy: "messageId",
 }
 

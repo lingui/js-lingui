@@ -37,18 +37,6 @@ Lingui is an easy yet powerful internationalization (i18n) framework for global 
 
 - **Compatible with react-intl** - Low-level React API is very similar to react-intl and the message format is the same. It's easy to migrate an existing project.
 
-## Quickstart
-
-1. [Introduction](https://lingui.dev/introduction)
-2. [Installation and Setup](https://lingui.dev/installation)
-
-### Tutorials
-
-- [React](https://lingui.dev/tutorials/react)
-- [React Server Components](https://lingui.dev/tutorials/react-rsc)
-- [React Native](https://lingui.dev/tutorials/react-native)
-- [JavaScript](https://lingui.dev/tutorials/javascript)
-
 ## Example
 
 Short example how i18n looks with JSX:
@@ -87,6 +75,15 @@ If you are having issues, please let us know.
 - If something doesn't work as documented, documentation is missing or if you just want to suggest a new feature, [create an issue][Issues].
 - You can also [Ask Lingui JS Guru](https://gurubase.io/g/lingui-js), it is a Lingui JS focused AI to answer your questions.
 
+## Docs for LLMs
+
+For developers working with AI and language models, we provide specialized documentation files following the [llms.txt specification](https://llmstxt.org/):
+
+- [llms.txt](https://lingui.dev/llms.txt) - Concise documentation optimized for LLM context windows
+- [llms-full.txt](https://lingui.dev/llms-full.txt) - Comprehensive documentation including all referenced URLs
+
+These files provide LLM-friendly content in a standardized format, helping language models understand and work with Lingui's documentation at inference time. The format is designed to be both human and LLM readable, with structured information that can be processed programmatically.
+
 ## Contribute
 
 Contribution to open-source project is everything from spreading the word, writing documentation to implement features and fixing bugs.
@@ -103,6 +100,12 @@ This project exists thanks to [all the people][Contributors] who contribute. [[C
 ## License
 
 The project is licensed under the [MIT][License] license.
+
+<div align="center">
+  <a href="https://crowdin.com/?utm_source=lingui.dev&utm_medium=referral&utm_campaign=lingui.dev" target="_blank">
+    <img width="350" src="website/static/partner.svg" alt="Crowdin logo">
+  </a>
+</div>
 
 [Documentation]: https://lingui.dev
 [Examples]: https://github.com/lingui/js-lingui/tree/main/examples

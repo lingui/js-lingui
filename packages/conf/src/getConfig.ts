@@ -3,20 +3,19 @@ import { LinguiConfigNormalized } from "./types"
 import { lilconfigSync, LoaderSync } from "lilconfig"
 import path from "path"
 import { makeConfig } from "./makeConfig"
-import type { JITIOptions } from "jiti/dist/types"
+import { createJiti } from "jiti"
 import pico from "picocolors"
 
-function configExists(path: string) {
-  return path && fs.existsSync(path)
+function configExists(path?: string): path is string {
+  return !!path && fs.existsSync(path)
 }
 
 function JitiLoader(): LoaderSync {
   return (filepath) => {
-    const opts: JITIOptions = {
-      interopDefault: true,
-    }
-    const jiti = require("jiti")(__filename, opts)
-    return jiti(filepath)
+    const jiti = createJiti(__filename)
+
+    const mod = jiti(filepath)
+    return mod?.default ?? mod
   }
 }
 
@@ -86,6 +85,6 @@ export function getConfig({
       rootDir: result ? path.dirname(result.filepath) : defaultRootDir,
       ...userConfig,
     },
-    { skipValidation }
+    { skipValidation, resolvedConfigPath: result.filepath }
   )
 }

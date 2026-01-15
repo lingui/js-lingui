@@ -3,6 +3,57 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.7.0](https://github.com/lingui/js-lingui/compare/v5.6.1...v5.7.0) (2025-12-12)
+
+### Bug Fixes
+
+* **cli:** allow using PO formatter function with Translation.IO ([#2375](https://github.com/lingui/js-lingui/issues/2375)) ([f8b90e2](https://github.com/lingui/js-lingui/commit/f8b90e2ff05657b2af17568cb8c8279eb9484719))
+
+### Features
+
+* **cli:** add --output-prefix option to customize compiled file headers ([#2377](https://github.com/lingui/js-lingui/issues/2377)) ([ef77310](https://github.com/lingui/js-lingui/commit/ef77310e1ec664f8c059bc16179c169c818f1801))
+
+## [5.6.1](https://github.com/lingui/js-lingui/compare/v5.6.0...v5.6.1) (2025-11-28)
+
+**Note:** Version bump only for package @lingui/cli
+
+# [5.6.0](https://github.com/lingui/js-lingui/compare/v5.5.2...v5.6.0) (2025-11-12)
+
+### Features
+
+* **experimental-extractor:** reconsider includeDeps ([#2362](https://github.com/lingui/js-lingui/issues/2362)) ([a4883fc](https://github.com/lingui/js-lingui/commit/a4883fc076534f1d3e19f67aa40709733a9a5137))
+
+## [5.5.2](https://github.com/lingui/js-lingui/compare/v5.5.1...v5.5.2) (2025-10-30)
+
+### Bug Fixes
+
+* **cli:** process hang when error happend in extract ([#2349](https://github.com/lingui/js-lingui/issues/2349)) ([09ab46d](https://github.com/lingui/js-lingui/commit/09ab46d4097744975d4e76b3d713de7ce1ba30fc))
+
+## [5.5.1](https://github.com/lingui/js-lingui/compare/v5.5.0...v5.5.1) (2025-10-10)
+
+### Bug Fixes
+
+* orderByMessage should also order by context ([#2337](https://github.com/lingui/js-lingui/issues/2337)) ([e84de76](https://github.com/lingui/js-lingui/commit/e84de76e26fb7e0c26a6e0bfa7718a2bd06e36c8))
+
+# [5.5.0](https://github.com/lingui/js-lingui/compare/v5.4.1...v5.5.0) (2025-09-12)
+
+### Features
+
+* add babel parser flag for import defer * as q from '...' ([#2309](https://github.com/lingui/js-lingui/issues/2309)) ([a09c973](https://github.com/lingui/js-lingui/commit/a09c973c914e3a1ab406ea6630691feef5b0c0f9))
+* **cli:** support multithreading in all cli commands ([#2320](https://github.com/lingui/js-lingui/issues/2320)) ([86fbcd8](https://github.com/lingui/js-lingui/commit/86fbcd849b82d500f67fabd7c4f6abef7e5914f2))
+
+## [5.4.1](https://github.com/lingui/js-lingui/compare/v5.4.0...v5.4.1) (2025-08-11)
+
+### Bug Fixes
+
+* **extractor:** sort placeholders to keep them stable between runs ([#2307](https://github.com/lingui/js-lingui/issues/2307)) ([decf4cd](https://github.com/lingui/js-lingui/commit/decf4cd0e06e1d913b228018ee77d6d5b83d26c3))
+
+# [5.4.0](https://github.com/lingui/js-lingui/compare/v5.3.3...v5.4.0) (2025-08-01)
+
+### Features
+
+* full concurrency for extract / compile commands ([#2299](https://github.com/lingui/js-lingui/issues/2299)) ([489fb3a](https://github.com/lingui/js-lingui/commit/489fb3a7c999632e57286369e44a0c6e77a3407b))
+
 ## [5.3.3](https://github.com/lingui/js-lingui/compare/v5.3.2...v5.3.3) (2025-07-11)
 
 ### Bug Fixes

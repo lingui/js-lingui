@@ -4,33 +4,32 @@ import { getConfig, LinguiConfigNormalized } from "@lingui/conf"
 import nodepath from "path"
 import { getFormat } from "./api/formats"
 import fs from "fs/promises"
-import { extractFromFiles } from "./api/catalog/extractFromFiles"
 import normalizePath from "normalize-path"
 
 import { bundleSource } from "./extract-experimental/bundleSource"
-import {
-  writeCatalogs,
-  writeTemplate,
-} from "./extract-experimental/writeCatalogs"
 import { getEntryPoints } from "./extract-experimental/getEntryPoints"
 import pico from "picocolors"
+import { Pool, spawn, Worker } from "threads"
 import {
-  extractFromFileWithBabel,
-  getBabelParserOptions,
-} from "./api/extractors/babel"
+  resolveWorkersOptions,
+  WorkersOptions,
+} from "./api/resolveWorkersOptions"
+import { ExtractWorkerFunction } from "./extract-experimental/workers/extractWorker"
+import { extractFromBundleAndWrite } from "./extract-experimental/extractFromBundleAndWrite"
 
 export type CliExtractTemplateOptions = {
-  verbose: boolean
+  verbose?: boolean
   files?: string[]
   template?: boolean
   locales?: string[]
   overwrite?: boolean
   clean?: boolean
+  workersOptions: WorkersOptions
 }
 
 export default async function command(
   linguiConfig: LinguiConfigNormalized,
-  options: Partial<CliExtractTemplateOptions>
+  options: CliExtractTemplateOptions
 ): Promise<boolean> {
   options.verbose && console.log("Extracting messages from source files…")
 
@@ -74,96 +73,108 @@ export default async function command(
 
   let commandSuccess = true
 
-  const format = await getFormat(
-    linguiConfig.format,
-    linguiConfig.formatOptions,
-    linguiConfig.sourceLocale
-  )
-
-  linguiConfig.extractors = [
-    {
-      match(_filename: string) {
-        return true
-      },
-
-      async extract(filename, code, onMessageExtracted, ctx) {
-        const parserOptions = ctx.linguiConfig.extractorParserOptions
-
-        return extractFromFileWithBabel(
-          filename,
-          code,
-          onMessageExtracted,
-          ctx,
-          {
-            plugins: getBabelParserOptions(filename, parserOptions),
-          },
-          true
-        )
-      },
-    },
-  ]
-
-  for (const outFile of Object.keys(bundleResult.metafile.outputs)) {
-    const messages = await extractFromFiles([outFile], linguiConfig)
-
-    const { entryPoint } = bundleResult.metafile.outputs[outFile]
-
-    let output: string
-
-    if (!messages) {
-      commandSuccess = false
-      continue
+  if (options.workersOptions.poolSize) {
+    if (!linguiConfig.resolvedConfigPath) {
+      throw new Error(
+        "Multithreading is only supported when lingui config loaded from file system, not passed by API"
+      )
     }
 
-    if (options.template) {
-      output = (
-        await writeTemplate({
-          linguiConfig,
-          clean: options.clean,
-          format,
-          messages,
-          entryPoint,
-          outputPattern: config.output,
-        })
-      ).statMessage
-    } else {
-      output = (
-        await writeCatalogs({
-          locales: options.locales || linguiConfig.locales,
-          linguiConfig,
-          clean: options.clean,
-          format,
-          messages,
-          entryPoint,
-          overwrite: options.overwrite,
-          outputPattern: config.output,
-        })
-      ).statMessage
-    }
+    options.verbose &&
+      console.log(`Use worker pool of size ${options.workersOptions.poolSize}`)
 
-    stats.push({
-      entry: normalizePath(nodepath.relative(linguiConfig.rootDir, entryPoint)),
-      content: output,
-    })
+    const pool = Pool(
+      () =>
+        spawn<ExtractWorkerFunction>(
+          new Worker("./extract-experimental/workers/extractWorker")
+        ),
+      { size: options.workersOptions.poolSize }
+    )
+
+    try {
+      for (const outFile of Object.keys(bundleResult.metafile.outputs)) {
+        const { entryPoint } = bundleResult.metafile.outputs[outFile]
+
+        pool.queue(async (extractFromBundleAndWrite) => {
+          const { success, stat } = await extractFromBundleAndWrite(
+            linguiConfig.resolvedConfigPath,
+            entryPoint,
+            outFile,
+            config.output,
+            options.template,
+            options.locales || linguiConfig.locales,
+            options.clean,
+            options.overwrite
+          )
+
+          commandSuccess &&= success
+
+          stats.push({
+            entry: normalizePath(
+              nodepath.relative(linguiConfig.rootDir, entryPoint)
+            ),
+            content: stat,
+          })
+        })
+      }
+
+      await pool.completed()
+    } finally {
+      await pool.terminate(true)
+    }
+  } else {
+    const format = await getFormat(
+      linguiConfig.format,
+      linguiConfig.formatOptions,
+      linguiConfig.sourceLocale
+    )
+
+    for (const outFile of Object.keys(bundleResult.metafile.outputs)) {
+      const { entryPoint } = bundleResult.metafile.outputs[outFile]
+
+      const { success, stat } = await extractFromBundleAndWrite({
+        entryPoint,
+        bundleFile: outFile,
+        outputPattern: config.output,
+        format,
+        linguiConfig,
+        locales: options.locales || linguiConfig.locales,
+        overwrite: options.overwrite,
+        clean: options.clean,
+        template: options.template,
+      })
+
+      commandSuccess &&= success
+
+      stats.push({
+        entry: normalizePath(
+          nodepath.relative(linguiConfig.rootDir, entryPoint)
+        ),
+        content: stat,
+      })
+    }
   }
 
   // cleanup temp directory
   await fs.rm(tempDir, { recursive: true, force: true })
 
-  stats.forEach(({ entry, content }) => {
-    console.log([`Catalog statistics for ${entry}:`, content, ""].join("\n"))
-  })
+  stats
+    .sort((a, b) => a.entry.localeCompare(b.entry))
+    .forEach(({ entry, content }) => {
+      console.log([`Catalog statistics for ${entry}:`, content, ""].join("\n"))
+    })
 
   return commandSuccess
 }
 
-type CliOptions = {
+type CliArgs = {
   config?: string
   verbose?: boolean
   template?: boolean
   locale?: string
   overwrite?: boolean
   clean?: boolean
+  workers?: number
 }
 
 if (require.main === module) {
@@ -174,9 +185,13 @@ if (require.main === module) {
     .option("--clean", "Remove obsolete translations")
     .option("--locale <locale, [...]>", "Only extract the specified locales")
     .option("--verbose", "Verbose output")
+    .option(
+      "--workers <n>",
+      "Number of worker threads to use (default: CPU count - 1, capped at 8). Pass `--workers 1` to disable worker threads and run everything in a single process"
+    )
     .parse(process.argv)
 
-  const options = program.opts<CliOptions>()
+  const options = program.opts<CliArgs>()
 
   const config = getConfig({
     configPath: options.config,
@@ -188,6 +203,7 @@ if (require.main === module) {
     locales: options.locale?.split(","),
     overwrite: options.overwrite,
     clean: options.clean,
+    workersOptions: resolveWorkersOptions(options),
   }).then(() => {
     if (!result) process.exit(1)
   })

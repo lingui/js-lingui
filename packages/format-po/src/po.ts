@@ -125,7 +125,11 @@ function getCreateHeaders(
 const EXPLICIT_ID_FLAG = "js-lingui-explicit-id"
 const GENERATED_ID_FLAG = "js-lingui-generated-id"
 
-const serialize = (catalog: CatalogType, options: PoFormatterOptions) => {
+const serialize = (
+  catalog: CatalogType,
+  options: PoFormatterOptions,
+  ctx: { locale: string | null; sourceLocale: string }
+) => {
   return Object.keys(catalog).map((id) => {
     const message: MessageType<POCatalogExtra> = catalog[id]
 
@@ -200,7 +204,20 @@ const serialize = (catalog: CatalogType, options: PoFormatterOptions) => {
       item.msgctxt = message.context
     }
 
-    item.msgstr = [message.translation]
+    if (
+      !_isGeneratedId &&
+      (ctx.locale === ctx.sourceLocale || ctx.locale === null)
+    ) {
+      // in source lang catalog if message has explicit id, put a source message as translation
+      // Otherwise, source message would be completely lost
+      //   #. js-lingui-explicit-id
+      //   msgid "custom.id"
+      //   msgstr "with explicit id"
+      item.msgstr = [message.translation || message.message]
+    } else {
+      item.msgstr = [message.translation]
+    }
+
     item.comments = message.extra?.translatorComments || []
 
     if (options.origins !== false) {
@@ -221,9 +238,14 @@ function deserialize(
   options: PoFormatterOptions
 ): CatalogType {
   return items.reduce<CatalogType<POCatalogExtra>>((catalog, item) => {
+    const comments = item.extractedComments
+
     const message: MessageType<POCatalogExtra> = {
       translation: item.msgstr[0],
-      comments: item.extractedComments || [],
+      comments: comments.filter(
+        // drop flags from comments
+        (c) => c !== GENERATED_ID_FLAG && c !== EXPLICIT_ID_FLAG
+      ),
       context: item.msgctxt ?? null,
       obsolete: item.flags.obsolete || item.obsolete,
       origin: (item.references || []).map((ref) => splitOrigin(ref)),
@@ -238,8 +260,8 @@ function deserialize(
     // if generated id, recreate it
     if (
       options.explicitIdAsDefault
-        ? item.extractedComments.includes(GENERATED_ID_FLAG)
-        : !item.extractedComments.includes(EXPLICIT_ID_FLAG)
+        ? comments.includes(GENERATED_ID_FLAG)
+        : !comments.includes(EXPLICIT_ID_FLAG)
     ) {
       id = generateMessageId(item.msgid, item.msgctxt)
       message.message = item.msgid
@@ -281,7 +303,10 @@ export function formatter(options: PoFormatterOptions = {}): CatalogFormatter {
         ;(po as any).headerOrder = Object.keys(po.headers)
       }
 
-      po.items = serialize(catalog, options)
+      po.items = serialize(catalog, options, {
+        locale: ctx.locale,
+        sourceLocale: ctx.sourceLocale,
+      })
       return po.toString()
     },
   }

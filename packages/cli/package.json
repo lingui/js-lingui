@@ -1,6 +1,6 @@
 {
   "name": "@lingui/cli",
-  "version": "5.3.3",
+  "version": "5.7.0",
   "description": "CLI for working wit message catalogs",
   "keywords": [
     "cli",
@@ -12,6 +12,7 @@
     "translation",
     "multilingual"
   ],
+  "homepage": "https://lingui.dev",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/lingui/js-lingui.git",
@@ -61,12 +62,12 @@
     "@babel/parser": "^7.22.0",
     "@babel/runtime": "^7.21.0",
     "@babel/types": "^7.21.2",
-    "@lingui/babel-plugin-extract-messages": "5.3.3",
-    "@lingui/babel-plugin-lingui-macro": "5.3.3",
-    "@lingui/conf": "5.3.3",
-    "@lingui/core": "5.3.3",
-    "@lingui/format-po": "5.3.3",
-    "@lingui/message-utils": "5.3.3",
+    "@lingui/babel-plugin-extract-messages": "5.7.0",
+    "@lingui/babel-plugin-lingui-macro": "5.7.0",
+    "@lingui/conf": "5.7.0",
+    "@lingui/core": "5.7.0",
+    "@lingui/format-po": "5.7.0",
+    "@lingui/message-utils": "5.7.0",
     "chokidar": "3.5.1",
     "cli-table": "^0.3.11",
     "commander": "^10.0.0",
@@ -75,19 +76,23 @@
     "esbuild": "^0.25.1",
     "glob": "^11.0.0",
     "micromatch": "^4.0.7",
+    "ms": "^2.1.3",
     "normalize-path": "^3.0.0",
     "ora": "^5.1.0",
     "picocolors": "^1.1.1",
     "pofile": "^1.1.4",
     "pseudolocale": "^2.0.0",
-    "source-map": "^0.8.0-beta.0"
+    "source-map": "^0.7.6",
+    "threads": "^1.7.0"
   },
   "devDependencies": {
     "@lingui/jest-mocks": "*",
     "@types/convert-source-map": "^2.0.0",
     "@types/micromatch": "^4.0.1",
+    "@types/ms": "^2.1.0",
     "@types/normalize-path": "^3.0.0",
     "mock-fs": "^5.2.0",
-    "mockdate": "^3.0.5"
+    "mockdate": "^3.0.5",
+    "ts-node": "^10.9.2"
   }
 }

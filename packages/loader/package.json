@@ -1,6 +1,6 @@
 {
   "name": "@lingui/loader",
-  "version": "5.3.3",
+  "version": "5.7.0",
   "description": "webpack loader for lingui message catalogs",
   "types": "./dist/index.d.ts",
   "main": "./dist/index.cjs",
@@ -26,6 +26,7 @@
     "build": "rimraf ./dist && unbuild",
     "stub": "unbuild --stub"
   },
+  "homepage": "https://lingui.dev",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/lingui/js-lingui.git",
@@ -44,11 +45,11 @@
   ],
   "dependencies": {
     "@babel/runtime": "^7.20.13",
-    "@lingui/cli": "5.3.3",
-    "@lingui/conf": "5.3.3"
+    "@lingui/cli": "5.7.0",
+    "@lingui/conf": "5.7.0"
   },
   "devDependencies": {
-    "@lingui/format-json": "5.3.3",
+    "@lingui/format-json": "5.7.0",
     "unbuild": "2.0.0",
     "webpack": "^5.76.1"
   },

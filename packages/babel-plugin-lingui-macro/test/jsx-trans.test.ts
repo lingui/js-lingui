@@ -274,6 +274,14 @@ macroTester({
       `,
     },
     {
+      name: "Produce the same ID regardless of CRLF, LF, and CR line endings",
+      code:
+        'import { Trans } from "@lingui/react/macro";\n' +
+        "<Trans>\nhello\n</Trans>;\n" +
+        "<Trans>\r\nhello\r\n</Trans>;\n" +
+        "<Trans>\rhello\r</Trans>;\n",
+    },
+    {
       name: "Keep forced newlines",
       filename: "./jsx-keep-forced-newlines.js",
     },

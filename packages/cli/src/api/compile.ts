@@ -17,6 +17,7 @@ export type CreateCompileCatalogOptions = {
   namespace?: CompiledCatalogNamespace
   pseudoLocale?: string
   compilerBabelOptions?: GeneratorOptions
+  outputPrefix?: string
 }
 
 export type MessageCompilationError = {
@@ -44,29 +45,32 @@ export function createCompiledCatalog(
     namespace = "cjs",
     pseudoLocale,
     compilerBabelOptions = {},
+    outputPrefix = "/*eslint-disable*/",
   } = options
   const shouldPseudolocalize = locale === pseudoLocale
 
   const errors: MessageCompilationError[] = []
 
-  const compiledMessages = Object.keys(messages).reduce<{
-    [msgId: string]: CompiledMessage
-  }>((obj, key: string) => {
-    // Don't use `key` as a fallback translation in strict mode.
-    const translation = (messages[key] || (!strict ? key : "")) as string
+  const compiledMessages = Object.keys(messages)
+    .sort()
+    .reduce<{
+      [msgId: string]: CompiledMessage
+    }>((obj, key: string) => {
+      // Don't use `key` as a fallback translation in strict mode.
+      const translation = (messages[key] || (!strict ? key : "")) as string
 
-    try {
-      obj[key] = compile(translation, shouldPseudolocalize)
-    } catch (e) {
-      errors.push({
-        id: key,
-        source: translation,
-        error: e as Error,
-      })
-    }
+      try {
+        obj[key] = compile(translation, shouldPseudolocalize)
+      } catch (e) {
+        errors.push({
+          id: key,
+          source: translation,
+          error: e as Error,
+        })
+      }
 
-    return obj
-  }, {})
+      return obj
+    }, {})
 
   if (namespace === "json") {
     return { source: JSON.stringify({ messages: compiledMessages }), errors }
@@ -89,7 +93,7 @@ export function createCompiledCatalog(
     ...compilerBabelOptions,
   }).code
 
-  return { source: "/*eslint-disable*/" + code, errors }
+  return { source: `${outputPrefix}` + code, errors }
 }
 
 function buildExportStatement(

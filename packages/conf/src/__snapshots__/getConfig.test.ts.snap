@@ -48,6 +48,7 @@ exports[`getConfig default config and snapshots should return default config 1`]
   },
   orderBy: message,
   pseudoLocale: ,
+  resolvedConfigPath: /Users/y.i.slepukhin/Code/Pesonal/js-lingui/packages/conf/src/fixtures/default/.linguirc,
   rootDir: .,
   runtimeConfigModule: {
     Trans: [

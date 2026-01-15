@@ -1,6 +1,6 @@
 {
   "name": "@lingui/react",
-  "version": "5.3.3",
+  "version": "5.7.0",
   "sideEffects": false,
   "description": "React components for translations",
   "main": "./dist/index.cjs",
@@ -30,6 +30,7 @@
     "build": "rimraf ./dist && unbuild",
     "stub": "unbuild --stub"
   },
+  "homepage": "https://lingui.dev",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/lingui/js-lingui.git",
@@ -78,7 +79,7 @@
     "macro/index.js"
   ],
   "peerDependencies": {
-    "@lingui/babel-plugin-lingui-macro": "5.3.3",
+    "@lingui/babel-plugin-lingui-macro": "5.7.0",
     "babel-plugin-macros": "2 || 3",
     "react": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0"
   },
@@ -92,7 +93,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.20.13",
-    "@lingui/core": "5.3.3"
+    "@lingui/core": "5.7.0"
   },
   "devDependencies": {
     "@lingui/jest-mocks": "*",

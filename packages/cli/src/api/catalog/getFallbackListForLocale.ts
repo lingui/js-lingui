@@ -11,8 +11,11 @@ export function getFallbackListForLocale(
     Array.isArray(mapping) ? fL.push(...mapping) : fL.push(mapping)
   }
 
-  if (fallbackLocales?.default && locale !== fallbackLocales?.default) {
-    fL.push(fallbackLocales?.default)
+  if (
+    typeof fallbackLocales?.default === "string" &&
+    locale !== fallbackLocales?.default
+  ) {
+    fL.push(fallbackLocales.default)
   }
 
   return fL

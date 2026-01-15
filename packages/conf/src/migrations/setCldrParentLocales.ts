@@ -10,7 +10,7 @@ export function setCldrParentLocales(
     } as unknown as LinguiConfigNormalized
   }
 
-  if (!config.fallbackLocales.default) {
+  if (!config.fallbackLocales?.default) {
     config.locales.forEach((locale) => {
       const fl = getCldrParentLocale(locale.toLowerCase())
       if (fl && !(config.fallbackLocales as FallbackLocales)[locale]) {

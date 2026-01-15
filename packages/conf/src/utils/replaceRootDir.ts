@@ -2,8 +2,11 @@ import { LinguiConfig } from "../types"
 
 export function replaceRootDir<T extends Partial<LinguiConfig>>(
   config: T,
-  rootDir: string
+  rootDir: string | undefined
 ): T {
+  if (!rootDir) {
+    return config
+  }
   return (function replaceDeep(value: any, rootDir: string): any {
     const replace = (s: string) => s.replace("<rootDir>", rootDir)
 
