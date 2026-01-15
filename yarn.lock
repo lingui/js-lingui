@@ -2882,7 +2882,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lingui/macro@workspace:*, @lingui/macro@workspace:packages/macro":
+"@lingui/macro@workspace:packages/macro":
   version: 0.0.0-use.local
   resolution: "@lingui/macro@workspace:packages/macro"
   dependencies:
@@ -2947,7 +2947,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lingui/react@5.7.0, @lingui/react@workspace:*, @lingui/react@workspace:packages/react":
+"@lingui/react@5.7.0, @lingui/react@workspace:packages/react":
   version: 0.0.0-use.local
   resolution: "@lingui/react@workspace:packages/react"
   dependencies:
@@ -14649,17 +14649,6 @@ __metadata:
   checksum: 23c2eacaa3a71eca57686c0875845888348ea96268db14e69d196bc033b8a19a5741faab9dfee54c8f425d47fa0465593e9ce0610c97f97a9c2ee58ce9e4ce23
   languageName: node
   linkType: hard
-
-"typescript-nodenext-resolution@workspace:test/typescript-nodenext-resolution":
-  version: 0.0.0-use.local
-  resolution: "typescript-nodenext-resolution@workspace:test/typescript-nodenext-resolution"
-  dependencies:
-    "@lingui/core": "workspace:*"
-    "@lingui/macro": "workspace:*"
-    "@lingui/react": "workspace:*"
-    typescript: ^5.7.2
-  languageName: unknown
-  linkType: soft
 
 "typescript@npm:>=3 < 6, typescript@npm:^5.7.2":
   version: 5.7.2
