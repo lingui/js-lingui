@@ -43,12 +43,19 @@ const getTargetLocales = (config: LinguiConfigNormalized) => {
   )
 }
 
+const validCatalogFormat = (config: LinguiConfigNormalized): boolean => {
+  if (typeof config.format === "string") {
+    return config.format === "po"
+  }
+  return config.format.catalogExtension === ".po"
+}
+
 // Main sync method, call "Init" or "Sync" depending on the project context
 export default async function syncProcess(
   config: LinguiConfigNormalized,
   options: CliExtractOptions
 ) {
-  if (config.format != "po") {
+  if (!validCatalogFormat(config)) {
     console.error(
       `\n----------\nTranslation.io service is only compatible with the "po" format. Please update your Lingui configuration accordingly.\n----------`
     )

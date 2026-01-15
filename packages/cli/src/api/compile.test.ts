@@ -288,6 +288,45 @@ describe("createCompiledCatalog", () => {
     })
   })
 
+  describe("options.outputPrefix", () => {
+    const getCompiledCatalog = (outputPrefix?: string) =>
+      createCompiledCatalog(
+        "en",
+        {
+          Hello: "Hello",
+        },
+        {
+          outputPrefix,
+        }
+      ).source
+
+    it("should use default eslint-disable directive when not specified", () => {
+      const result = getCompiledCatalog()
+      expect(result).toContain("/*eslint-disable*/")
+    })
+
+    it("should use oxlint-disable directive", () => {
+      const result = getCompiledCatalog("/*oxlint-disable*/")
+      expect(result).toContain("/*oxlint-disable*/")
+    })
+
+    it("should use custom prefix when specified", () => {
+      const result = getCompiledCatalog("/*biome-ignore lint: auto-generated*/")
+      expect(result).toContain("/*biome-ignore lint: auto-generated*/")
+      expect(result).not.toContain("eslint-disable")
+    })
+
+    it("should handle empty string prefix (no header)", () => {
+      const result = getCompiledCatalog("")
+      expect(
+        result.startsWith("export") ||
+          result.startsWith("module") ||
+          result.startsWith("window") ||
+          result.startsWith("global")
+      ).toBeTruthy()
+    })
+  })
+
   it("should return list of compile errors", () => {
     const res = createCompiledCatalog(
       "ru",

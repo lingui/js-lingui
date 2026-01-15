@@ -23,6 +23,7 @@ export type CliCompileOptions = {
   watch?: boolean
   namespace?: string
   workersOptions: WorkersOptions
+  outputPrefix?: string
 }
 
 export async function command(
@@ -121,6 +122,7 @@ type CliArgs = {
   config?: string
   debounce?: number
   workers?: number
+  outputPrefix?: string
 }
 
 if (esMain(import.meta)) {
@@ -142,6 +144,10 @@ if (esMain(import.meta)) {
     .option(
       "--debounce <delay>",
       "Debounces compilation for given amount of milliseconds"
+    )
+    .option(
+      "--output-prefix <prefix>",
+      "Add a custom string to the beginning of compiled files (header/prefix). Useful for tools like linters or coverage directives. Defaults to '/*eslint-disable*/'"
     )
     .on("--help", function () {
       console.log("\n  Examples:\n")
@@ -173,6 +179,7 @@ if (esMain(import.meta)) {
         typescript:
           options.typescript || config.compileNamespace === "ts" || false,
         namespace: options.namespace, // we want this to be undefined if user does not specify so default can be used
+        outputPrefix: options.outputPrefix,
       })
     )
 

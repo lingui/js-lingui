@@ -456,4 +456,72 @@ msgstr "{plural,  }"
       })
     })
   })
+
+  describe("outputPrefix", () => {
+    it("Should use custom output prefix in compiled files", async () => {
+      const rootDir = await createFixtures({
+        "en.po": `
+msgid "Hello World"
+msgstr "Hello World"
+        `,
+        "pl.po": `
+msgid "Hello World"
+msgstr "Witaj świecie"
+        `,
+      })
+
+      const config = getTestConfig(rootDir)
+
+      await mockConsole(async () => {
+        const result = await command(config, {
+          outputPrefix: "/*biome-ignore lint: auto-generated*/",
+          workersOptions: {
+            poolSize: 0,
+          },
+        })
+
+        const actualFiles = readFsToListing(rootDir)
+
+        expect(actualFiles["en.js"]).toContain(
+          "/*biome-ignore lint: auto-generated*/"
+        )
+        expect(actualFiles["pl.js"]).toContain(
+          "/*biome-ignore lint: auto-generated*/"
+        )
+        expect(actualFiles["en.js"]).not.toContain("eslint-disable")
+        expect(actualFiles["pl.js"]).not.toContain("eslint-disable")
+        expect(result).toBeTruthy()
+      })
+    })
+
+    it("Should use oxlint-disable prefix directive", async () => {
+      const rootDir = await createFixtures({
+        "en.po": `
+msgid "Test"
+msgstr "Test"
+        `,
+        "pl.po": `
+msgid "Test"
+msgstr "Test PL"
+        `,
+      })
+
+      const config = getTestConfig(rootDir)
+
+      await mockConsole(async () => {
+        const result = await command(config, {
+          outputPrefix: "/*oxlint-disable*/",
+          workersOptions: {
+            poolSize: 0,
+          },
+        })
+
+        const actualFiles = readFsToListing(rootDir)
+
+        expect(actualFiles["en.js"]).toContain("/*oxlint-disable*/")
+        expect(actualFiles["en.js"]).not.toContain("eslint-disable")
+        expect(result).toBeTruthy()
+      })
+    })
+  })
 })

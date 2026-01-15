@@ -127,6 +127,46 @@ describe("pofile format", () => {
     expect(actual).toMatchObject(catalog)
   })
 
+  it("should print source message as translation for source locale catalog for explicit id", () => {
+    const format = createFormatter({ origins: true })
+
+    const catalog: CatalogType = {
+      "custom.id": {
+        message: "with custom id",
+        translation: "",
+        context: "my context",
+      },
+      Dgzql1: {
+        message: "with generated id",
+        translation: "",
+        context: "my context",
+      },
+    }
+    expect(
+      format.serialize(catalog, {
+        ...defaultSerializeCtx,
+        sourceLocale: "en",
+        locale: "en",
+      })
+    ).toMatchSnapshot("source locale catalog")
+
+    expect(
+      format.serialize(catalog, {
+        ...defaultSerializeCtx,
+        sourceLocale: "en",
+        locale: null,
+      })
+    ).toMatchSnapshot("template locale catalog")
+
+    expect(
+      format.serialize(catalog, {
+        ...defaultSerializeCtx,
+        sourceLocale: "en",
+        locale: "pl",
+      })
+    ).toMatchSnapshot("target locale catalog")
+  })
+
   describe("explicitIdAsDefault", () => {
     const catalog: CatalogType = {
       // with generated id
@@ -169,7 +209,7 @@ describe("pofile format", () => {
         msgstr ""
 
         msgid "custom.id"
-        msgstr ""
+        msgstr "with explicit id"
         "
       `)
 
@@ -177,9 +217,7 @@ describe("pofile format", () => {
       expect(actual).toMatchInlineSnapshot(`
         {
           "Dgzql1": {
-            "comments": [
-              "js-lingui-generated-id",
-            ],
+            "comments": [],
             "context": "my context",
             "extra": {
               "flags": [],
@@ -199,7 +237,7 @@ describe("pofile format", () => {
             },
             "obsolete": false,
             "origin": [],
-            "translation": "",
+            "translation": "with explicit id",
           },
         }
       `)
@@ -232,7 +270,7 @@ describe("pofile format", () => {
 
         #. js-lingui-explicit-id
         msgid "custom.id"
-        msgstr ""
+        msgstr "with explicit id"
         "
       `)
 
@@ -252,9 +290,7 @@ describe("pofile format", () => {
             "translation": "",
           },
           "custom.id": {
-            "comments": [
-              "js-lingui-explicit-id",
-            ],
+            "comments": [],
             "context": null,
             "extra": {
               "flags": [],
@@ -262,7 +298,7 @@ describe("pofile format", () => {
             },
             "obsolete": false,
             "origin": [],
-            "translation": "",
+            "translation": "with explicit id",
           },
         }
       `)

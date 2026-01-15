@@ -110,6 +110,7 @@ async function compileAndWrite(
     {
       strict: false,
       namespace,
+      outputPrefix: options.outputPrefix,
       pseudoLocale: config.pseudoLocale,
       compilerBabelOptions: config.compilerBabelOptions,
     }
