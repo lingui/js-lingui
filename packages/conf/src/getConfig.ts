@@ -1,7 +1,6 @@
 import fs from "fs"
 import { LinguiConfigNormalized } from "./types"
 import { lilconfigSync, LoaderSync } from "lilconfig"
-import yaml from "yaml"
 import path from "path"
 import { makeConfig } from "./makeConfig"
 import type { JITIOptions } from "jiti/dist/types"
@@ -21,15 +20,6 @@ function JitiLoader(): LoaderSync {
   }
 }
 
-function YamlLoader(): LoaderSync {
-  return (_, content) => {
-    console.warn(
-      "YAML config support is deprecated and will be removed in future versions."
-    )
-    return yaml.parse(content)
-  }
-}
-
 const moduleName = "lingui"
 
 const configExplorer = lilconfigSync(moduleName, {
@@ -41,8 +31,6 @@ const configExplorer = lilconfigSync(moduleName, {
     "package.json",
     `.${moduleName}rc`,
     `.${moduleName}rc.json`,
-    `.${moduleName}rc.yaml`,
-    `.${moduleName}rc.yml`,
     `.${moduleName}rc.ts`,
     `.${moduleName}rc.js`,
   ],
@@ -50,8 +38,6 @@ const configExplorer = lilconfigSync(moduleName, {
     ".js": JitiLoader(),
     ".ts": JitiLoader(),
     ".mjs": JitiLoader(),
-    ".yaml": YamlLoader(),
-    ".yml": YamlLoader(),
   },
 })
 

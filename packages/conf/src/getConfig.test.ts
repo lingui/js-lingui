@@ -73,36 +73,6 @@ describe("getConfig", () => {
       })
     })
 
-    it("should load YAML config file with deprecation warning", () => {
-      mockConsole((console) => {
-        const config = getConfig({
-          configPath: path.join(validPath, "lingui.config.yaml"),
-          skipValidation: true,
-        })
-        expect(console.error).not.toBeCalled()
-        expect(console.warn).toBeCalledWith(
-          "YAML config support is deprecated and will be removed in future versions."
-        )
-        expect(config.locales).toEqual(["en", "ru"])
-        expect(config.sourceLocale).toEqual("en")
-      })
-    })
-
-    it("should load YML config file with deprecation warning", () => {
-      mockConsole((console) => {
-        const config = getConfig({
-          configPath: path.join(validPath, "lingui.config.yml"),
-          skipValidation: true,
-        })
-        expect(console.error).not.toBeCalled()
-        expect(console.warn).toBeCalledWith(
-          "YAML config support is deprecated and will be removed in future versions."
-        )
-        expect(config.locales).toEqual(["en", "pt"])
-        expect(config.sourceLocale).toEqual("en")
-      })
-    })
-
     it("should load config from package.json", () => {
       mockConsole((console) => {
         const config = getConfig({
