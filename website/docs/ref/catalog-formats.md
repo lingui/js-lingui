@@ -157,7 +157,7 @@ With this format, plural messages are exported in the following ways, depending 
   To allow matching this PO item to the appropriate catalog entry when deserializing, the original ICU message is also stored in the generated comment.
 
   ```po
-  #. js-lingui:icu={anotherCount, plural, one {Singular case} other {Case number {anotherCount}}}&pluralize_on=anotherCount
+  #. js-lingui:icu=%7BanotherCount%2C+plural%2C+one+%7BSingular+case%7D+other+%7BCase+number+%7BanotherCount%7D%7D%7D&pluralize_on=anotherCount
   msgid "Singular case"
   msgid_plural "Case number {anotherCount}"
   msgstr[0] "Singular case"
@@ -173,10 +173,10 @@ With this format, plural messages are exported in the following ways, depending 
   ```po
   # with default prefix
   #. js-
-  #. lingui:icu={anotherCount, plural, one {Singular case} other {Case number {anotherCount}}}&pluralize_on=anotherCount
+  #. lingui:icu=%7BanotherCount%2C+plural%2C+one+%7BSingular+case%7D+other+%7BCase+number+%7BanotherCount%7D%7D%7D&pluralize_on=anotherCount
 
   # customICUPrefix = jsi18n:
-  #. jsi18n:icu={anotherCount, plural, one {Singular case} other {Case number {anotherCount}}}&pluralize_on=anotherCount
+  #. jsi18n:icu=%7BanotherCount%2C+plural%2C+one+%7BSingular+case%7D+other+%7BCase+number+%7BanotherCount%7D%7D%7D&pluralize_on=anotherCount
   ```
 
 #### Duplicate Plurals

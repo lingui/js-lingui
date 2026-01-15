@@ -12,8 +12,21 @@ import { getCldrPluralSamples } from "./plural-samples"
 type POItem = InstanceType<typeof PO.Item>
 
 export type PoGettextFormatterOptions = PoFormatterOptions & {
+  /**
+   * Disable warning about unsupported `Select` feature encountered in catalogs
+   *
+   * @default false
+   */
   disableSelectWarning?: boolean
+  /**
+   * Overrides the default prefix for icu and plural comments in the final PO catalog.
+   *
+   * @default "js-lingui:"
+   */
   customICUPrefix?: string
+  /**
+   * Combine plural entries that have the same content but different variables into a single PO entry
+   */
   mergePlurals?: boolean
 }
 
@@ -335,16 +348,7 @@ function serializeContextToComment(ctx: PluralizationContext) {
   }
 
   urlParams.sort()
-  // we don't need strict url encoding in formatter as in the URL
-  // we can relax it a bit to get more readable output
-  return urlParams
-    .toString()
-    .replace(/%7B/g, "{")
-    .replace(/%7D/g, "}")
-    .replace(/%2C/g, ",")
-    .replace(/%23/g, "#")
-    .replace(/%24/g, "$")
-    .replace(/\+/g, " ")
+  return urlParams.toString()
 }
 
 function getContextFromComments(
