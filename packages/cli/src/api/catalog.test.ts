@@ -656,6 +656,45 @@ describe("order", () => {
       ]
     `)
   })
+
+  it("should order by custom function", () => {
+    const catalog = {
+      "global.b": makeNextMessage({
+        translation: "B",
+      }),
+      "global.a": makeNextMessage({
+        translation: "A",
+      }),
+      "about.d": makeNextMessage({
+        translation: "D",
+      }),
+      "about.c": makeNextMessage({
+        translation: "C",
+      }),
+    }
+
+    const orderedCatalogs = order((a, b) => {
+      const aIsGlobal = a.messageId.startsWith("global.")
+      const bIsGlobal = b.messageId.startsWith("global.")
+
+      // Put `global.*` entries first
+      if (aIsGlobal && !bIsGlobal) return -1
+      if (!aIsGlobal && bIsGlobal) return 1
+
+      // Otherwise, sort alphabetically
+      return a.messageId.localeCompare(b.messageId)
+    }, catalog)
+
+    // Test that the message content is the same as before
+    expect(Object.keys(orderedCatalogs)).toMatchInlineSnapshot(`
+      [
+        global.a,
+        global.b,
+        about.c,
+        about.d,
+      ]
+    `)
+  })
 })
 
 describe("writeCompiled", () => {
