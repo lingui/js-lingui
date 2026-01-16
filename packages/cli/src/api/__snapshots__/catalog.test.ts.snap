@@ -19,23 +19,6 @@ exports[`Catalog POT Flow Should get translations from template if locale file n
 }
 `;
 
-exports[`Catalog collect should extract files with special characters in the include path 1`] = `
-{
-  Component D: {
-    comments: [],
-    context: undefined,
-    message: undefined,
-    origin: [
-      [
-        collect/[componentD]/index.js,
-        1,
-      ],
-    ],
-    placeholders: {},
-  },
-}
-`;
-
 exports[`Catalog collect should extract files with special characters when passed in options 1`] = `
 {
   Component C: {
