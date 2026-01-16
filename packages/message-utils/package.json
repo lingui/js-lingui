@@ -6,23 +6,35 @@
   "sideEffects": false,
   "exports": {
     "./generateMessageId": {
-      "require": {
-        "types": "./dist/generateMessageId.d.cts",
-        "default": "./dist/generateMessageId.cjs"
+      "node": {
+        "import": {
+          "types": "./dist/generateMessageId.node.d.mts",
+          "default": "./dist/generateMessageId.node.mjs"
+        },
+        "require": {
+          "types": "./dist/generateMessageId.node.d.cts",
+          "default": "./dist/generateMessageId.node.cjs"
+        }
       },
-      "import": {
-        "types": "./dist/generateMessageId.d.mts",
-        "default": "./dist/generateMessageId.mjs"
+      "default": {
+        "import": {
+          "types": "./dist/generateMessageId.d.mts",
+          "default": "./dist/generateMessageId.mjs"
+        },
+        "require": {
+          "types": "./dist/generateMessageId.d.cts",
+          "default": "./dist/generateMessageId.cjs"
+        }
       }
     },
     "./compileMessage": {
-      "require": {
-        "types": "./dist/compileMessage.d.cts",
-        "default": "./dist/compileMessage.cjs"
-      },
       "import": {
         "types": "./dist/compileMessage.d.mts",
         "default": "./dist/compileMessage.mjs"
+      },
+      "require": {
+        "types": "./dist/compileMessage.d.cts",
+        "default": "./dist/compileMessage.cjs"
       }
     }
   },
@@ -50,7 +62,7 @@
   ],
   "dependencies": {
     "@messageformat/parser": "^5.0.0",
-    "js-sha256": "^0.10.1"
+    "js-sha256": "^0.11.1"
   },
   "devDependencies": {
     "@lingui/jest-mocks": "workspace:^",

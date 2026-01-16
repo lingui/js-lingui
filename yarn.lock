@@ -3199,7 +3199,7 @@ __metadata:
     "@lingui/jest-mocks": "workspace:^"
     "@messageformat/date-skeleton": ^1.1.0
     "@messageformat/parser": ^5.0.0
-    js-sha256: ^0.10.1
+    js-sha256: ^0.11.1
     unbuild: 2.0.0
   languageName: unknown
   linkType: soft
@@ -11184,10 +11184,10 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"js-sha256@npm:^0.10.1":
-  version: 0.10.1
-  resolution: "js-sha256@npm:0.10.1"
-  checksum: 6eb5c9f95aa902cec1930f036deb3bc664024b75fede456c0ac74b855797776c18620f47efec36787077a56ba2f3b8d6aacc7733ff8a2b5bb9ce6b655a35c5e6
+"js-sha256@npm:^0.11.1":
+  version: 0.11.1
+  resolution: "js-sha256@npm:0.11.1"
+  checksum: c23821003bd7459d0af0a7aef8de1b93e126f378588a3fb181ee2dd7c4d2531fba19112b518f649601f34332f159efe194c0aada7b35afef030d7a5c295eb645
   languageName: node
   linkType: hard
 
