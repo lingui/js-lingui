@@ -39,7 +39,7 @@ Integrate Lingui into your existing workflow. It supports explicit message keys 
 
 ### Lightweight and Optimized
 
-Core library is less than [2 kB gzipped](https://bundlephobia.com/result?p=@lingui/core), React components are additional [1.3 kB gzipped](https://bundlephobia.com/result?p=@lingui/react).
+Core library [![@lingui/core](https://img.shields.io/bundlephobia/minzip/@lingui/core?label=%40lingui%2Fcore)](https://bundlephobia.com/package/@lingui/core), React components [![@lingui/react](https://img.shields.io/bundlephobia/minzip/@lingui/react?label=%40lingui%2Freact)](https://bundlephobia.com/package/@lingui/react).
 
 ### AI Translations Ready
 
