@@ -246,24 +246,22 @@ export class Catalog {
   }
 
   get sourcePaths() {
-    const includeGlobs = this.include
-      .map((includePath) => {
-        const isDir = isDirectory(includePath)
-        /**
-         * glob library results from absolute patterns such as /foo/* are mounted onto the root setting using path.join.
-         * On windows, this will by default result in /foo/* matching C:\foo\bar.txt.
-         */
-        return isDir
-          ? normalize(
-              path.resolve(
-                process.cwd(),
-                includePath === "/" ? "" : includePath,
-                "**/*.*"
-              )
+    const includeGlobs = this.include.map((includePath) => {
+      const isDir = isDirectory(includePath)
+      /**
+       * glob library results from absolute patterns such as /foo/* are mounted onto the root setting using path.join.
+       * On windows, this will by default result in /foo/* matching C:\foo\bar.txt.
+       */
+      return isDir
+        ? normalize(
+            path.resolve(
+              process.cwd(),
+              includePath === "/" ? "" : includePath,
+              "**/*.*"
             )
-          : includePath
-      })
-      .map(makePathRegexSafe)
+          )
+        : includePath
+    })
 
     return globSync(includeGlobs, { ignore: this.exclude, mark: true })
   }
