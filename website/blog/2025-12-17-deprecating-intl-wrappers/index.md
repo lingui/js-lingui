@@ -54,6 +54,7 @@ export function formatOrderSummary(date: Date, total: number) {
   });
 
   return `${dateFormatter.format(date)} - ${numberFormatter.format(total)}`;
+  // => "Jan 18, 2026 - €1,234.56"
 }
 ```
 
@@ -94,6 +95,7 @@ function PriceLine({ date, total }: { date: Date; total: number }) {
 
   const dateFormatter = useDateFormatter(dateOptions);
   const numberFormatter = useNumberFormatter(numberOptions);
+  // Renders: <span>Jan 18, 2026 - $1,234.56</span>
   return (
     <span>
       {dateFormatter.format(date)} - {numberFormatter.format(total)}
