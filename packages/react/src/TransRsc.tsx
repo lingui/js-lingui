@@ -1,5 +1,4 @@
 import { TransProps, TransNoContext } from "./TransNoContext"
-import React from "react"
 import { getI18n } from "./server"
 
 export function TransRsc(
