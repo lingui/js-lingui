@@ -110,4 +110,4 @@ We do not plan to add `useDateFormat` or `useNumberFormat`. Shipping hooks on to
 
 - **What about performance?** Creating `Intl.*Format` is inexpensive, and you can keep formatters at module scope or memoize them. No special internal cache from Lingui is required.
 - **What about `PluralRules`?** Lingui already uses it inside message compilation, so another public formatter is unnecessary.
-- **When will removal happen?** Deprecated APIs will remain for now; removal will land in one of the upcoming majors (not necessarily the very next). We do not plan a separate warning post - please watch major release notes.
+- **When will removal happen?** Deprecated APIs will remain for now; removal will land in one of the upcoming majors (not necessarily the very next).
