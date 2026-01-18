@@ -103,8 +103,3 @@ function PriceLine({ date, total }: { date: Date; total: number }) {
   );
 }
 ```
-
-## What about React hooks
-
-We do not plan to add `useDateFormat` or `useNumberFormat`. Shipping hooks on top of the wrappers would trigger requests for the same helpers outside React and across frameworks, putting us back into the role of wrapping all of `Intl`. Teams can keep local hooks or shared formatters without Lingui adapters.
-
