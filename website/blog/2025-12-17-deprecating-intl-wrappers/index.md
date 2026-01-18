@@ -26,7 +26,7 @@ To meet the expectations for a complete helper surface we would need wrappers an
 ## Plan
 
 - Now: mark the helpers as deprecated in code and docs without breaking existing apps.
-- Upcoming majors: keep them long enough to avoid blocking the ESM transition and give teams time to migrate; removal will happen in one of the next majors (not necessarily the very next one).
+- Upcoming majors: keep them long enough to give teams time to migrate; removal will happen in one of the next majors (not necessarily the very next one).
 - Removal: no separate warning blog is planned - please track the release notes for major versions.
 
 ## Migrating to native Intl
