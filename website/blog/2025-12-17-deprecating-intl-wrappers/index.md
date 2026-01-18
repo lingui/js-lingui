@@ -108,8 +108,3 @@ function PriceLine({ date, total }: { date: Date; total: number }) {
 
 We do not plan to add `useDateFormat` or `useNumberFormat`. Shipping hooks on top of the wrappers would trigger requests for the same helpers outside React and across frameworks, putting us back into the role of wrapping all of `Intl`. Teams can keep local hooks or shared formatters without Lingui adapters.
 
-## FAQ
-
-- **What about performance?** Creating `Intl.*Format` is inexpensive, and you can keep formatters at module scope or memoize them. No special internal cache from Lingui is required.
-- **What about `PluralRules`?** Lingui already uses it inside message compilation, so another public formatter is unnecessary.
-- **When will removal happen?** Deprecated APIs will remain for now; removal will land in one of the upcoming majors (not necessarily the very next).
