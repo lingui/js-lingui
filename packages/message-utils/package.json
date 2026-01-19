@@ -62,7 +62,7 @@
   ],
   "dependencies": {
     "@messageformat/parser": "^5.0.0",
-    "js-sha256": "^0.11.1"
+    "js-sha256": "^0.10.1"
   },
   "devDependencies": {
     "@lingui/jest-mocks": "workspace:^",
