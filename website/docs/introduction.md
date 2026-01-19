@@ -39,7 +39,7 @@ Integrate Lingui into your existing workflow. It supports explicit message keys 
 
 ### Lightweight and Optimized
 
-Core library [![@lingui/core](https://img.shields.io/bundlephobia/minzip/@lingui/core?label=%40lingui%2Fcore)](https://bundlephobia.com/package/@lingui/core), React components [![@lingui/react](https://img.shields.io/bundlephobia/minzip/@lingui/react?label=%40lingui%2Freact)](https://bundlephobia.com/package/@lingui/react).
+Core library [![@lingui/core](https://deno.bundlejs.com/?q=%40lingui%2Fcore&treeshake=%5B%7Bi18n%7D%5D&badge=)](https://bundlejs.com/?q=%40lingui%2Fcore), React components [![@lingui/react](https://deno.bundlejs.com/?q=%40lingui%2Freact&config=%7B%22esbuild%22%3A%7B%22external%22%3A%5B%22react%22%2C%22%40lingui%2Fcore%22%5D%7D%7D&badge=)](https://bundlejs.com/?q=%40lingui%2Freact&config=%7B%22esbuild%22%3A%7B%22external%22%3A%5B%22react%22%2C%22%40lingui%2Fcore%22%5D%7D%7D).
 
 ### AI Translations Ready
 
