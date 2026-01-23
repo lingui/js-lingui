@@ -635,7 +635,9 @@ describe("TranslationIO Integration", () => {
       expect(apiCalls[0].url).toMatchInlineSnapshot(
         `https://translation.io/api/v1/segments/init.json?api_key=test-api-key-123`
       )
-      expect(await apiCalls[0].json()).toMatchInlineSnapshot(`
+      expect(await apiCalls[0].json()).toMatchInlineSnapshot(
+        { version: expectVersion },
+        `
         {
           client: lingui,
           segments: {
@@ -729,9 +731,10 @@ describe("TranslationIO Integration", () => {
             fr,
             es,
           ],
-          version: 5.7.0,
+          version: StringMatching /\\\\d\\+\\\\\\.\\\\d\\+\\.\\\\d\\+/,
         }
-      `)
+      `
+      )
 
       // Verify updated files exist
       expect(listingToHumanReadable(readFsToListing(outputDir)))
