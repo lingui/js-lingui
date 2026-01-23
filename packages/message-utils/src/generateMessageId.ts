@@ -1,21 +1,8 @@
 import { sha256 } from "js-sha256"
-
-const UNIT_SEPARATOR = "\u001F"
+import { UNIT_SEPARATOR } from "./constants"
 
 export function generateMessageId(msg: string, context = "") {
-  return hexToBase64(sha256(msg + UNIT_SEPARATOR + (context || ""))).slice(0, 6)
-}
+  const hashBytes = sha256.array(msg + UNIT_SEPARATOR + (context || ""))
 
-function hexToBase64(hexStr: string) {
-  const base64: string[] = []
-
-  for (let i = 0; i < hexStr.length; i++) {
-    base64.push(
-      !((i - 1) & 1)
-        ? String.fromCharCode(parseInt(hexStr.substring(i - 1, i + 1), 16))
-        : ""
-    )
-  }
-
-  return btoa(base64.join(""))
+  return btoa(String.fromCharCode(...hashBytes)).slice(0, 6)
 }
