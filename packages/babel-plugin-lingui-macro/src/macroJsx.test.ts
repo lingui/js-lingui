@@ -299,9 +299,9 @@ describe("jsx macro", () => {
       const exp = parseExpression(
         `<Select
           value={gender}
-          male="he"
+          _male="he"
           one="heone"
-          female="she"
+          _female="she"
           other="they"
         />`
       )

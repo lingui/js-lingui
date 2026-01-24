@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.9.0](https://github.com/lingui/js-lingui/compare/v5.8.0...v5.9.0) (2026-01-23)
+
+**Note:** Version bump only for package @lingui/conf
+
+# [5.8.0](https://github.com/lingui/js-lingui/compare/v5.7.0...v5.8.0) (2026-01-16)
+
+### Features
+
+* allow passing custom orderBy function ([#2394](https://github.com/lingui/js-lingui/issues/2394)) ([7de6af5](https://github.com/lingui/js-lingui/commit/7de6af59a55ca3c8832bfdafdaafbc4c12079b78))
+
 # [5.7.0](https://github.com/lingui/js-lingui/compare/v5.6.1...v5.7.0) (2025-12-12)
 
 **Note:** Version bump only for package @lingui/conf

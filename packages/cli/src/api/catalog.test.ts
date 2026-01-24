@@ -361,21 +361,6 @@ describe("Catalog", () => {
       expect(messages).toMatchSnapshot()
     })
 
-    it("should extract files with special characters in the include path", async () => {
-      const catalog = new Catalog(
-        {
-          name: "messages",
-          path: "locales/{locale}",
-          include: [fixture("collect/[componentD]")],
-          exclude: [],
-          format,
-        },
-        mockConfig()
-      )
-      const messages = await catalog.collect()
-      expect(messages).toMatchSnapshot()
-    })
-
     it("should throw an error when duplicate identifier with different defaults found", async () => {
       const catalog = new Catalog(
         {
@@ -678,6 +663,45 @@ describe("order", () => {
         msg5,
         msg4,
         msg3,
+      ]
+    `)
+  })
+
+  it("should order by custom function", () => {
+    const catalog = {
+      "global.b": makeNextMessage({
+        translation: "B",
+      }),
+      "global.a": makeNextMessage({
+        translation: "A",
+      }),
+      "about.d": makeNextMessage({
+        translation: "D",
+      }),
+      "about.c": makeNextMessage({
+        translation: "C",
+      }),
+    }
+
+    const orderedCatalogs = order((a, b) => {
+      const aIsGlobal = a.messageId.startsWith("global.")
+      const bIsGlobal = b.messageId.startsWith("global.")
+
+      // Put `global.*` entries first
+      if (aIsGlobal && !bIsGlobal) return -1
+      if (!aIsGlobal && bIsGlobal) return 1
+
+      // Otherwise, sort alphabetically
+      return a.messageId.localeCompare(b.messageId)
+    }, catalog)
+
+    // Test that the message content is the same as before
+    expect(Object.keys(orderedCatalogs)).toMatchInlineSnapshot(`
+      [
+        global.a,
+        global.b,
+        about.c,
+        about.d,
       ]
     `)
   })

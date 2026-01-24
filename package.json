@@ -93,7 +93,7 @@
     },
     {
       "path": "./packages/react/dist/index.mjs",
-      "limit": "2 kB",
+      "limit": "1.5 kB",
       "ignore": [
         "react"
       ]

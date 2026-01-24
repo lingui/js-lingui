@@ -1,12 +1,15 @@
 {
   "name": "@lingui/message-utils",
-  "version": "5.7.0",
+  "version": "5.9.0",
   "license": "MIT",
   "keywords": [],
   "sideEffects": false,
   "type": "module",
   "exports": {
-    "./generateMessageId": "./dist/generateMessageId.mjs",
+    "./generateMessageId": {
+      "node": "./dist/generateMessageId.node.mjs",
+      "default": "./dist/generateMessageId.mjs"
+    },
     "./compileMessage": "./dist/compileMessage.mjs"
   },
   "scripts": {

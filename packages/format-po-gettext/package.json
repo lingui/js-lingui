@@ -1,6 +1,6 @@
 {
   "name": "@lingui/format-po-gettext",
-  "version": "5.7.0",
+  "version": "5.9.0",
   "description": "Gettext PO format with gettext-style plurals for Lingui Catalogs",
   "main": "./dist/po-gettext.mjs",
   "types": "./dist/po-gettext.d.mts",
@@ -43,9 +43,9 @@
     "dist/"
   ],
   "dependencies": {
-    "@lingui/conf": "5.7.0",
-    "@lingui/format-po": "5.7.0",
-    "@lingui/message-utils": "5.7.0",
+    "@lingui/conf": "5.9.0",
+    "@lingui/format-po": "5.9.0",
+    "@lingui/message-utils": "5.9.0",
     "@messageformat/parser": "^5.0.0",
     "cldr-core": "^45.0.0",
     "node-gettext": "^3.0.0",

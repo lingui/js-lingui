@@ -1,6 +1,6 @@
 {
   "name": "@lingui/format-json",
-  "version": "5.7.0",
+  "version": "5.9.0",
   "description": "JSON format for Lingui Catalogs",
   "main": "./dist/json.mjs",
   "types": "./dist/json.d.ts",
@@ -40,7 +40,7 @@
     "dist/"
   ],
   "dependencies": {
-    "@lingui/conf": "5.7.0"
+    "@lingui/conf": "5.9.0"
   },
   "devDependencies": {
     "unbuild": "^3.6.1",

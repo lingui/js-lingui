@@ -1,8 +1,5 @@
-import React, { ComponentType, ReactNode } from "react"
-
 import { formatElements } from "./format"
-import type { MessageOptions } from "@lingui/core"
-import { I18n } from "@lingui/core"
+import type { I18n, MessageOptions } from "@lingui/core"
 
 export type TransRenderProps = {
   id: string
@@ -13,14 +10,14 @@ export type TransRenderProps = {
 
 export type TransRenderCallbackOrComponent =
   | {
-      component?: undefined
+      component?: never
       render?:
         | ((props: TransRenderProps) => React.ReactElement<any, any>)
         | null
     }
   | {
       component?: React.ComponentType<TransRenderProps> | null
-      render?: undefined
+      render?: never
     }
 
 export type TransProps = {
@@ -40,7 +37,10 @@ export type TransProps = {
  */
 export function TransNoContext(
   props: TransProps & {
-    lingui: { i18n: I18n; defaultComponent?: ComponentType<TransRenderProps> }
+    lingui: {
+      i18n: I18n
+      defaultComponent?: React.ComponentType<TransRenderProps>
+    }
   }
 ): React.ReactElement<any, any> | null {
   const {
@@ -70,7 +70,7 @@ export function TransNoContext(
   }
 
   const FallbackComponent: React.ComponentType<TransRenderProps> =
-    defaultComponent || RenderFragment
+    defaultComponent || RenderChildren
 
   const i18nProps: TransRenderProps = {
     id,
@@ -94,7 +94,8 @@ export function TransNoContext(
     console.error(
       `Invalid value supplied to prop \`component\`. It must be a React component, provided ${component}`
     )
-    return React.createElement(FallbackComponent, i18nProps, translation)
+
+    return <FallbackComponent {...i18nProps}>{translation}</FallbackComponent>
   }
 
   // Rendering using a render prop
@@ -107,12 +108,11 @@ export function TransNoContext(
   const Component: React.ComponentType<TransRenderProps> =
     component || FallbackComponent
 
-  return React.createElement(Component, i18nProps, translation)
+  return <Component {...i18nProps}>{translation}</Component>
 }
 
-const RenderFragment = ({ children }: TransRenderProps) => {
-  // cannot use React.Fragment directly because we're passing in props that it doesn't support
-  return <React.Fragment>{children}</React.Fragment>
+const RenderChildren = ({ children }: TransRenderProps) => {
+  return children
 }
 
 const getInterpolationValuesAndComponents = (props: TransProps) => {
@@ -148,7 +148,7 @@ const getInterpolationValuesAndComponents = (props: TransProps) => {
     }
     const index = Object.keys(components).length
     // react components, arrays, falsy values, all should be processed as JSX children
-    components[index] = <>{valueForKey as ReactNode}</>
+    components[index] = <>{valueForKey}</>
     values[key] = `<${index}/>`
   })
   return { values, components }

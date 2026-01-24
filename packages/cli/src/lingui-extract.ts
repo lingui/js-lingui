@@ -19,6 +19,7 @@ import {
   ExtractWorkerPool,
 } from "./api/extractWorkerPool.js"
 import ms from "ms"
+import { Catalog } from "./api/catalog"
 import esMain from "es-main"
 
 export type CliExtractOptions = {
@@ -59,8 +60,13 @@ export default async function command(
 
   spinner.start()
 
+  let extractionResult: {
+    catalog: Catalog
+    messagesByLocale: AllCatalogsType
+  }[]
+
   try {
-    await Promise.all(
+    extractionResult = await Promise.all(
       catalogs.map(async (catalog) => {
         const result = await catalog.make({
           ...(options as CliExtractOptions),
@@ -73,6 +79,8 @@ export default async function command(
         ] = result || {}
 
         commandSuccess &&= Boolean(result)
+
+        return { catalog, messagesByLocale: result as AllCatalogsType }
       })
     )
   } finally {
@@ -125,7 +133,7 @@ export default async function command(
       const module = services[moduleName]()
 
       await module
-        .default(config, options)
+        .default(config, options, extractionResult)
         .then(console.log)
         .catch(console.error)
     } catch (err) {

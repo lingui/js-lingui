@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.9.0](https://github.com/lingui/js-lingui/compare/v5.8.0...v5.9.0) (2026-01-23)
+
+**Note:** Version bump only for package @lingui/format-po
+
+# [5.8.0](https://github.com/lingui/js-lingui/compare/v5.7.0...v5.8.0) (2026-01-16)
+
+### Features
+
+* **po-format:** print source message as translation for explicit id ([#2390](https://github.com/lingui/js-lingui/issues/2390)) ([94efdc0](https://github.com/lingui/js-lingui/commit/94efdc05b62a3e4a296c582e9ee757a80e6aeea7))
+
 # [5.7.0](https://github.com/lingui/js-lingui/compare/v5.6.1...v5.7.0) (2025-12-12)
 
 **Note:** Version bump only for package @lingui/format-po

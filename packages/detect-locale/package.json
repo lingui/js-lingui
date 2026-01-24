@@ -1,6 +1,6 @@
 {
   "name": "@lingui/detect-locale",
-  "version": "5.7.0",
+  "version": "5.9.0",
   "sideEffects": false,
   "description": "@Lingui package to help you find the correct browser/server locale",
   "license": "MIT",

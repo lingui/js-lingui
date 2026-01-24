@@ -58,6 +58,19 @@ export type MacroJsxOpts = {
   isLinguiIdentifier: (node: Identifier, macro: JsMacroName) => boolean
 }
 
+const choiceComponentAttributesWhitelist = [
+  "_\\w+",
+  "_\\d+",
+  "zero",
+  "one",
+  "two",
+  "few",
+  "many",
+  "other",
+  "value",
+  "offset",
+]
+
 export class MacroJSX {
   types: typeof babelTypes
   ctx: MacroJsxContext
@@ -153,19 +166,7 @@ export class MacroJSX {
     ]
 
     if (this.isChoiceComponent(path)) {
-      reserved = [
-        ...reserved,
-        "_\\w+",
-        "_\\d+",
-        "zero",
-        "one",
-        "two",
-        "few",
-        "many",
-        "other",
-        "value",
-        "offset",
-      ]
+      reserved = [...reserved, ...choiceComponentAttributesWhitelist]
     }
 
     return {
@@ -274,20 +275,7 @@ export class MacroJSX {
 
     const format = componentName.toLowerCase()
     const props = element.get("attributes").filter((attr) => {
-      return this.attrName(
-        [
-          MsgDescriptorPropKey.id,
-          MsgDescriptorPropKey.comment,
-          MsgDescriptorPropKey.message,
-          MsgDescriptorPropKey.context,
-          "key",
-          // we remove <Trans /> react props that are not useful for translation
-          "render",
-          "component",
-          "components",
-        ],
-        true
-      )(attr.node)
+      return this.attrName(choiceComponentAttributesWhitelist)(attr.node)
     })
 
     let token: Token = {

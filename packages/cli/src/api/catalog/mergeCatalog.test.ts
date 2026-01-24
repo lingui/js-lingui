@@ -151,4 +151,37 @@ describe("mergeCatalog", () => {
       }),
     })
   })
+
+  it("should keep message extra from the previous catalog", () => {
+    const prevCatalog: CatalogType = {
+      Hello: {
+        translation: "Hallo",
+        extra: { flags: ["myTag"] },
+      },
+    }
+
+    const nextCatalog: ExtractedCatalogType = {
+      Hello: {
+        message: "Hello",
+        origin: [["src/app.ts", 1]],
+      },
+    }
+
+    const result = mergeCatalog(prevCatalog, nextCatalog, false, {})
+    expect(result["Hello"]).toMatchInlineSnapshot(`
+      {
+        flags: [
+          myTag,
+        ],
+        message: Hello,
+        origin: [
+          [
+            src/app.ts,
+            1,
+          ],
+        ],
+        translation: Hallo,
+      }
+    `)
+  })
 })
