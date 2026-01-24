@@ -104,11 +104,11 @@ export type PoFormatterOptions = {
 }
 
 function isGeneratedId(id: string, message: MessageType): boolean {
-  return id === generateMessageId(message.message, message.context)
+  return id === generateMessageId(message.message!, message.context)
 }
 
 function getCreateHeaders(
-  language: string,
+  language: string | undefined,
   customHeaderAttributes: PoFormatterOptions["customHeaderAttributes"]
 ): PO["headers"] {
   return {
@@ -128,7 +128,7 @@ const GENERATED_ID_FLAG = "js-lingui-generated-id"
 const serialize = (
   catalog: CatalogType,
   options: PoFormatterOptions,
-  ctx: { locale: string | null; sourceLocale: string }
+  ctx: { locale: string | undefined; sourceLocale: string }
 ) => {
   return Object.keys(catalog).map((id) => {
     const message: MessageType<POCatalogExtra> = catalog[id]
@@ -153,7 +153,7 @@ const serialize = (
     const _isGeneratedId = isGeneratedId(id, message)
 
     if (_isGeneratedId) {
-      item.msgid = message.message
+      item.msgid = message.message!
 
       if (options.explicitIdAsDefault) {
         if (!item.extractedComments.includes(GENERATED_ID_FLAG)) {
@@ -204,18 +204,15 @@ const serialize = (
       item.msgctxt = message.context
     }
 
-    if (
-      !_isGeneratedId &&
-      (ctx.locale === ctx.sourceLocale || ctx.locale === null)
-    ) {
+    if (!_isGeneratedId && (ctx.locale === ctx.sourceLocale || !ctx.locale)) {
       // in source lang catalog if message has explicit id, put a source message as translation
       // Otherwise, source message would be completely lost
       //   #. js-lingui-explicit-id
       //   msgid "custom.id"
       //   msgstr "with explicit id"
-      item.msgstr = [message.translation || message.message]
+      item.msgstr = [message.translation || message.message!]
     } else {
-      item.msgstr = [message.translation]
+      item.msgstr = [message.translation!]
     }
 
     item.comments = message.extra?.translatorComments || []
@@ -227,7 +224,7 @@ const serialize = (
         item.references = message.origin ? message.origin.map(joinOrigin) : []
       }
     }
-    item.obsolete = message.obsolete
+    item.obsolete = message.obsolete || false
 
     return item
   })
@@ -246,7 +243,7 @@ function deserialize(
         // drop flags from comments
         (c) => c !== GENERATED_ID_FLAG && c !== EXPLICIT_ID_FLAG
       ),
-      context: item.msgctxt ?? null,
+      context: item.msgctxt ?? undefined,
       obsolete: item.flags.obsolete || item.obsolete,
       origin: (item.references || []).map((ref) => splitOrigin(ref)),
       extra: {

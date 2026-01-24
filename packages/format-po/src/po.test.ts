@@ -12,7 +12,7 @@ const defaultParseCtx: Parameters<CatalogFormatter["parse"]>[1] = {
 
 const defaultSerializeCtx: Parameters<CatalogFormatter["serialize"]>[1] = {
   locale: "en",
-  existing: null,
+  existing: undefined,
   filename: "file.po",
   sourceLocale: "en",
 }
@@ -154,7 +154,7 @@ describe("pofile format", () => {
       format.serialize(catalog, {
         ...defaultSerializeCtx,
         sourceLocale: "en",
-        locale: null,
+        locale: undefined,
       })
     ).toMatchSnapshot("template locale catalog")
 
@@ -230,7 +230,7 @@ describe("pofile format", () => {
           },
           "custom.id": {
             "comments": [],
-            "context": null,
+            "context": undefined,
             "extra": {
               "flags": [],
               "translatorComments": [],
@@ -291,7 +291,7 @@ describe("pofile format", () => {
           },
           "custom.id": {
             "comments": [],
-            "context": null,
+            "context": undefined,
             "extra": {
               "flags": [],
               "translatorComments": [],
