@@ -334,8 +334,8 @@ exports[`Catalog > collect > should support JSX and Typescript 1`] = `
 
 exports[`Catalog > make > should collect and write catalogs 1`] = `
 {
-  cs: null,
-  en: null,
+  cs: undefined,
+  en: undefined,
 }
 `;
 
@@ -784,14 +784,14 @@ exports[`Catalog > make > should merge with existing catalogs 2`] = `
 
 exports[`Catalog > make > should only update the specified locale 1`] = `
 {
-  cs: null,
-  en: null,
+  cs: undefined,
+  en: undefined,
 }
 `;
 
 exports[`Catalog > make > should only update the specified locale 2`] = `
 {
-  cs: null,
+  cs: undefined,
   en: {
     Component A: {
       comments: [],
@@ -857,9 +857,7 @@ exports[`Catalog > make > should only update the specified locale 2`] = `
 }
 `;
 
-exports[`Catalog > makeTemplate > should collect and write a template 1`] = `null`;
-
-exports[`Catalog > makeTemplate > should collect and write a template 2`] = `
+exports[`Catalog > makeTemplate > should collect and write a template 1`] = `
 {
   Component A: {
     comments: [],
@@ -1379,9 +1377,7 @@ exports[`Catalog make should only update the specified locale 2`] = `
 }
 `;
 
-exports[`Catalog makeTemplate should collect and write a template 1`] = `null`;
-
-exports[`Catalog makeTemplate should collect and write a template 2`] = `
+exports[`Catalog makeTemplate should collect and write a template 1`] = `
 {
   Component A: {
     comments: [],
@@ -1482,6 +1478,7 @@ exports[`Catalog readAll should read existing catalogs for all locales 1`] = `
 exports[`cleanObsolete > should remove obsolete messages from catalog 1`] = `
 {
   Label: {
+    comments: [],
     obsolete: false,
     origin: [
       [
@@ -1489,6 +1486,7 @@ exports[`cleanObsolete > should remove obsolete messages from catalog 1`] = `
         1,
       ],
     ],
+    placeholders: {},
     translation: Label,
   },
 }
@@ -1512,6 +1510,7 @@ exports[`cleanObsolete should remove obsolete messages from catalog 1`] = `
 exports[`order > should order messages alphabetically 1`] = `
 {
   LabelA: {
+    comments: [],
     obsolete: false,
     origin: [
       [
@@ -1519,9 +1518,11 @@ exports[`order > should order messages alphabetically 1`] = `
         1,
       ],
     ],
+    placeholders: {},
     translation: A,
   },
   LabelB: {
+    comments: [],
     obsolete: false,
     origin: [
       [
@@ -1529,9 +1530,11 @@ exports[`order > should order messages alphabetically 1`] = `
         1,
       ],
     ],
+    placeholders: {},
     translation: B,
   },
   LabelC: {
+    comments: [],
     obsolete: false,
     origin: [
       [
@@ -1539,9 +1542,11 @@ exports[`order > should order messages alphabetically 1`] = `
         1,
       ],
     ],
+    placeholders: {},
     translation: C,
   },
   LabelD: {
+    comments: [],
     obsolete: false,
     origin: [
       [
@@ -1549,6 +1554,7 @@ exports[`order > should order messages alphabetically 1`] = `
         1,
       ],
     ],
+    placeholders: {},
     translation: D,
   },
 }
@@ -1566,6 +1572,7 @@ exports[`order > should order messages alphabetically 2`] = `
 exports[`order > should order messages by origin 1`] = `
 {
   LabelA: {
+    comments: [],
     obsolete: false,
     origin: [
       [
@@ -1573,9 +1580,11 @@ exports[`order > should order messages by origin 1`] = `
         3,
       ],
     ],
+    placeholders: {},
     translation: A,
   },
   LabelB: {
+    comments: [],
     obsolete: false,
     origin: [
       [
@@ -1587,9 +1596,11 @@ exports[`order > should order messages by origin 1`] = `
         2,
       ],
     ],
+    placeholders: {},
     translation: B,
   },
   LabelC: {
+    comments: [],
     obsolete: false,
     origin: [
       [
@@ -1597,9 +1608,11 @@ exports[`order > should order messages by origin 1`] = `
         1,
       ],
     ],
+    placeholders: {},
     translation: C,
   },
   LabelD: {
+    comments: [],
     obsolete: false,
     origin: [
       [
@@ -1607,6 +1620,7 @@ exports[`order > should order messages by origin 1`] = `
         100,
       ],
     ],
+    placeholders: {},
     translation: D,
   },
 }

@@ -28,7 +28,8 @@ vi.mock("ora", () => {
   }
 })
 
-function replaceDuration(snapshot: string) {
+function replaceDuration(snapshot: string | undefined) {
+  if (!snapshot) return ""
   return snapshot.replace(/Done in .+ms/g, "Done in <n>ms")
 }
 async function prepare(caseFolderName: string) {
@@ -48,6 +49,13 @@ async function prepare(caseFolderName: string) {
   }
 
   return { rootDir, actualPath, existingPath, expectedPath }
+}
+
+const defaultOptions = {
+  workersOptions: { poolSize: 0 },
+  clean: false,
+  verbose: false,
+  overwrite: false,
 }
 
 describe("E2E Extractor Test", () => {
@@ -74,7 +82,7 @@ describe("E2E Extractor Test", () => {
             },
           ],
         }),
-        { workersOptions: { poolSize: 0 } }
+        defaultOptions
       )
 
       expect(result).toBeTruthy()
@@ -161,6 +169,7 @@ describe("E2E Extractor Test", () => {
 
     await mockConsole(async (console) => {
       const result = await extractCommand(getConfig({ cwd: rootDir }), {
+        ...defaultOptions,
         verbose: true,
         workersOptions: { poolSize: 2 },
       })
@@ -418,8 +427,8 @@ describe("E2E Extractor Test", () => {
           ],
         }),
         {
+          ...defaultOptions,
           files: [nodepath.join(rootDir, "fixtures", "file-b.tsx")],
-          workersOptions: { poolSize: 0 },
         }
       )
     })
@@ -445,7 +454,7 @@ describe("E2E Extractor Test", () => {
             },
           ],
         }),
-        { workersOptions: { poolSize: 0 } }
+        defaultOptions
       )
 
       expect(result).toBeTruthy()

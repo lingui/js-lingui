@@ -6,9 +6,17 @@ import { ExtractedCatalogType, MessageOrigin } from "../types.js"
 import { prettyOrigin } from "../utils.js"
 import { ExtractWorkerPool } from "../extractWorkerPool.js"
 
+function mergeOrigins(prev: MessageOrigin[], next: MessageOrigin | undefined) {
+  if (!next) {
+    return prev
+  }
+
+  return [...prev, next].sort((a, b) => a[0].localeCompare(b[0]))
+}
+
 function mergePlaceholders(
   prev: Record<string, string[]>,
-  next: Record<string, string>
+  next: Record<string, string> | undefined
 ) {
   const res = { ...prev }
 
@@ -72,11 +80,12 @@ export function mergeExtractedMessage(
   const prev = messages[next.id]
 
   // there might be a case when filename was not mapped from sourcemaps
-  const filename = next.origin[0]
-    ? path.relative(config.rootDir, next.origin[0]).replace(/\\/g, "/")
-    : ""
-
-  const origin: MessageOrigin = [filename, next.origin[1]]
+  const nextOrigin: MessageOrigin | undefined = next.origin
+    ? [
+        path.relative(config.rootDir, next.origin[0]).replace(/\\/g, "/"),
+        next.origin[1],
+      ]
+    : undefined
 
   if (prev.message && next.message && prev.message !== next.message) {
     throw new Error(
@@ -84,7 +93,7 @@ export function mergeExtractedMessage(
         next.id
       )}` +
         `\n${pico.yellow(prettyOrigin(prev.origin))} ${prev.message}` +
-        `\n${pico.yellow(prettyOrigin([origin]))} ${next.message}`
+        `\n${pico.yellow(prettyOrigin([nextOrigin || [""]]))} ${next.message}`
     )
   }
 
@@ -94,9 +103,7 @@ export function mergeExtractedMessage(
     comments: next.comment
       ? [...prev.comments, next.comment].sort()
       : prev.comments,
-    origin: (
-      [...prev.origin, [filename, next.origin[1]]] as MessageOrigin[]
-    ).sort((a, b) => a[0].localeCompare(b[0])),
+    origin: mergeOrigins(prev.origin, nextOrigin),
     placeholders: mergePlaceholders(prev.placeholders, next.placeholders),
   }
 }
@@ -105,12 +112,14 @@ export async function extractFromFilesWithWorkerPool(
   workerPool: ExtractWorkerPool,
   paths: string[],
   config: LinguiConfigNormalized
-): Promise<ExtractedCatalogType> {
+): Promise<ExtractedCatalogType | undefined> {
   const messages: ExtractedCatalogType = {}
 
   let catalogSuccess = true
 
-  if (!config.resolvedConfigPath) {
+  const resolvedConfigPath = config.resolvedConfigPath
+
+  if (!resolvedConfigPath) {
     throw new Error(
       "Multithreading is only supported when lingui config loaded from file system, not passed by API"
     )
@@ -119,7 +128,7 @@ export async function extractFromFilesWithWorkerPool(
   await Promise.all(
     paths.map((filename) =>
       workerPool.queue(async (worker) => {
-        const result = await worker(filename, config.resolvedConfigPath)
+        const result = await worker(filename, resolvedConfigPath)
 
         if (!result.success) {
           catalogSuccess = false

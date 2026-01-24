@@ -9,11 +9,12 @@ import { TranslationIoSegment } from "./translationio-api.js"
 describe("Segment Converters", () => {
   describe("createSegmentFromLinguiItem", () => {
     it("should create segment from regular Lingui item without explicit ID", () => {
-      const item: MessageType = {
+      const item = {
         translation: "",
         message: "Hello {name}",
         origin: [["src/App.tsx", 15]],
-      }
+      } satisfies MessageType
+
       const key = generateMessageId(item.message)
 
       const segment = createSegmentFromLinguiItem(key, item)
@@ -33,12 +34,12 @@ describe("Segment Converters", () => {
 
     it("should create segment from Lingui item with explicit ID", () => {
       const key = "app.welcome"
-      const item: MessageType = {
+      const item = {
         translation: "Welcome to our app",
         message: "Welcome to our app",
         origin: [["src/App.tsx", 10]],
         comments: ["Comment from code"],
-      }
+      } satisfies MessageType
 
       const segment = createSegmentFromLinguiItem(key, item)
 
@@ -56,12 +57,12 @@ describe("Segment Converters", () => {
     })
 
     it("should create segment from Lingui item with context but no explicit ID", () => {
-      const item: MessageType = {
+      const item = {
         translation: "",
         message: "Home",
         context: "navigation",
         origin: [["src/App.tsx", 20]],
-      }
+      } satisfies MessageType
 
       const key = generateMessageId(item.message, item.context)
 
@@ -82,13 +83,13 @@ describe("Segment Converters", () => {
 
     it("should create segment from Lingui item with explicit ID and context", () => {
       const key = "about.title"
-      const item: MessageType = {
+      const item = {
         translation: "About Us",
         message: "About Us",
         context: "this is a context",
         origin: [["src/About.tsx", 5]],
         comments: ["Comment from code"],
-      }
+      } satisfies MessageType
 
       const segment = createSegmentFromLinguiItem(key, item)
 
@@ -108,14 +109,14 @@ describe("Segment Converters", () => {
 
   describe("createLinguiItemFromSegment", () => {
     it("should create Lingui item from segment without explicit ID", () => {
-      const segment: TranslationIoSegment = {
+      const segment = {
         type: "source",
         source: "Hello {name}",
         target: "Bonjour {name}",
         context: "greeting",
         references: ["src/App.tsx:15"],
         comment: "",
-      }
+      } satisfies TranslationIoSegment
 
       const [id, item] = createLinguiItemFromSegment(segment)
 
@@ -131,20 +132,21 @@ describe("Segment Converters", () => {
               15,
             ],
           ],
+          placeholders: {},
           translation: Bonjour {name},
         }
       `)
     })
 
     it("should create Lingui item from segment with explicit ID", () => {
-      const segment: TranslationIoSegment = {
+      const segment = {
         type: "source",
         source: "Welcome to our app",
         target: "Bienvenue dans notre application",
         context: "app.welcome",
         references: ["src/App.tsx:10"],
         comment: "js-lingui-explicit-id",
-      }
+      } satisfies TranslationIoSegment
 
       const [id, item] = createLinguiItemFromSegment(segment)
 
@@ -159,20 +161,21 @@ describe("Segment Converters", () => {
               10,
             ],
           ],
+          placeholders: {},
           translation: Bienvenue dans notre application,
         }
       `)
     })
 
     it("should create Lingui item from segment with explicit ID and context", () => {
-      const segment: TranslationIoSegment = {
+      const segment = {
         type: "source",
         source: "About Us",
         target: "À propos",
         context: "about.title",
         references: ["src/About.tsx:5"],
         comment: "page.about | js-lingui-explicit-id-and-context",
-      }
+      } satisfies TranslationIoSegment
 
       const [id, item] = createLinguiItemFromSegment(segment)
 
@@ -188,6 +191,7 @@ describe("Segment Converters", () => {
               5,
             ],
           ],
+          placeholders: {},
           translation: À propos,
         }
       `)
@@ -197,13 +201,13 @@ describe("Segment Converters", () => {
   describe("Round-trip conversion", () => {
     it("should maintain data integrity through Lingui item -> segment -> Lingui item conversion", () => {
       const originalKey = "test.message"
-      const originalItem: MessageType = {
+      const originalItem = {
         translation: "Test Message",
         message: "Test Message",
         context: "context",
         comments: [],
         origin: [["src/test.ts", 10]],
-      }
+      } satisfies MessageType
 
       const segment = createSegmentFromLinguiItem(originalKey, originalItem)
       segment.target = "Message de test"
@@ -217,13 +221,13 @@ describe("Segment Converters", () => {
     })
 
     it("should maintain data integrity through Lingui item -> segment -> Lingui item conversion with generated id", () => {
-      const originalItem: MessageType = {
+      const originalItem = {
         translation: "Test Message",
         message: "Test Message",
         context: "context",
         comments: [],
         origin: [["src/test.ts", 10]],
-      }
+      } satisfies MessageType
 
       const originalKey = generateMessageId(
         originalItem.message,

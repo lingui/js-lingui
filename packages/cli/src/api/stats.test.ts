@@ -9,7 +9,7 @@ describe("PrintStats", () => {
       locales: ["en", "cs"],
     })
 
-    const prevCatalogs: AllCatalogsType = { en: null, cs: null }
+    const prevCatalogs: AllCatalogsType = { en: {}, cs: {} }
     const nextCatalog = {
       "custom.id": makeNextMessage({
         message: "Message with custom ID",

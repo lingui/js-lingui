@@ -55,7 +55,8 @@ export async function command(
       }
     }
   } else {
-    if (!config.resolvedConfigPath) {
+    const resolvedConfigPath = config.resolvedConfigPath
+    if (!resolvedConfigPath) {
       throw new Error(
         "Multithreading is only supported when lingui config loaded from file system, not passed by API"
       )
@@ -83,7 +84,7 @@ export async function command(
             locale,
             options,
             doMerge,
-            config.resolvedConfigPath
+            resolvedConfigPath
           )
 
           if (logs.errors) {

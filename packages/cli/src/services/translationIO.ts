@@ -125,7 +125,7 @@ export async function init(
     return { success: false, errors: [error.message] as string[] } as const
   }
 
-  if (data.errors) {
+  if ("errors" in data) {
     return { success: false, errors: data.errors } as const
   }
 
@@ -179,7 +179,7 @@ export async function sync(
     return { success: false, errors: [error.message] as string[] } as const
   }
 
-  if (data.errors) {
+  if ("errors" in data) {
     return { success: false, errors: data.errors } as const
   }
 

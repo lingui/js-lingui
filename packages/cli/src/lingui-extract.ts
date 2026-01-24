@@ -27,15 +27,15 @@ export type CliExtractOptions = {
   files?: string[]
   clean: boolean
   overwrite: boolean
-  locale: string[]
-  prevFormat: string | null
+  locale?: string[]
+  prevFormat?: string
   watch?: boolean
   workersOptions: WorkersOptions
 }
 
 export default async function command(
   config: LinguiConfigNormalized,
-  options: Partial<CliExtractOptions>
+  options: CliExtractOptions
 ): Promise<boolean> {
   const startTime = Date.now()
   options.verbose && console.log("Extracting messages from source files…")
@@ -44,7 +44,7 @@ export default async function command(
   const catalogStats: { [path: string]: AllCatalogsType } = {}
   let commandSuccess = true
 
-  let workerPool: ExtractWorkerPool
+  let workerPool: ExtractWorkerPool | undefined
 
   // important to initialize ora before worker pool, otherwise it cause
   // MaxListenersExceededWarning: Possible EventEmitter memory leak detected. 11 unpipe listeners added to [WriteStream]. MaxListeners is 10. Use emitter.setMaxListeners() to increase limit
@@ -69,7 +69,7 @@ export default async function command(
     extractionResult = await Promise.all(
       catalogs.map(async (catalog) => {
         const result = await catalog.make({
-          ...(options as CliExtractOptions),
+          ...options,
           orderBy: config.orderBy,
           workerPool,
         })

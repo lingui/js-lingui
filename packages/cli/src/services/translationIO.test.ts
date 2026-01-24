@@ -87,7 +87,7 @@ async function prepareTestDir() {
 
 function createMessage(msg: MessageType, explicitId?: string) {
   return {
-    [explicitId || generateMessageId(msg.message, msg.context)]: msg,
+    [explicitId || generateMessageId(msg.message!, msg.context)]: msg,
   }
 }
 
@@ -371,7 +371,6 @@ describe("TranslationIO Integration", () => {
       clean: false,
       overwrite: false,
       locale: [],
-      prevFormat: null,
       workersOptions: { poolSize: 0 },
     }
   })

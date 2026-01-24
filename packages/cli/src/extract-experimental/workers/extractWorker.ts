@@ -16,7 +16,7 @@ const extractWorker = async (
   locales: string[],
   clean: boolean,
   overwrite: boolean
-): Promise<{ success: boolean; stat?: string }> => {
+) => {
   if (!linguiConfig) {
     // initialize config once per worker, speed up workers follow execution
     linguiConfig = getConfig({

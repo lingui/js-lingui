@@ -16,7 +16,7 @@ const compileWorker = {
     doMerge: boolean,
     linguiConfigPath: string
   ): Promise<{
-    logs?: SerializedLogs
+    logs: SerializedLogs
     error?: unknown
     exitProgram?: boolean
   }> => {

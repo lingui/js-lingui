@@ -142,7 +142,7 @@ describe("Catalog", () => {
       )
 
       // Everything should be empty
-      expect(await catalog.readTemplate()).toMatchSnapshot()
+      expect(await catalog.readTemplate()).toBeUndefined()
 
       await catalog.makeTemplate(defaultMakeTemplateOptions)
       expect(await catalog.readTemplate()).toMatchSnapshot()
@@ -210,11 +210,11 @@ describe("Catalog", () => {
         mockConfig()
       )
 
-      expect(Object.values(runA)[0].placeholders[0]).toStrictEqual(
-        Object.values(runB)[0].placeholders[0]
+      expect(Object.values(runA!)[0].placeholders[0]).toStrictEqual(
+        Object.values(runB!)[0].placeholders[0]
       )
 
-      expect(Object.values(runA)[0].placeholders).toMatchInlineSnapshot(`
+      expect(Object.values(runA!)[0].placeholders).toMatchInlineSnapshot(`
         {
           0: [
             getUser(),
@@ -304,7 +304,7 @@ describe("Catalog", () => {
 
       const oldCwd = process.cwd()
       process.chdir(import.meta.dirname)
-      const messages = await catalog.collect()
+      const messages = (await catalog.collect())!
 
       process.chdir(oldCwd)
 
@@ -409,7 +409,7 @@ describe("Catalog", () => {
     })
   })
   it("Catalog.merge should initialize catalogs", async () => {
-    const prevCatalogs: AllCatalogsType = { en: null, cs: null }
+    const prevCatalogs: AllCatalogsType = { en: {}, cs: {} }
     const nextCatalog = {
       "custom.id": makeNextMessage({
         message: "Message with custom ID",
@@ -448,7 +448,7 @@ describe("Catalog", () => {
   })
 
   describe("read", () => {
-    it("should return null if file does not exist", async () => {
+    it("should return undefined if file does not exist", async () => {
       // mock empty filesystem
       mockFs()
 
@@ -464,7 +464,7 @@ describe("Catalog", () => {
       )
 
       const messages = await catalog.read("en")
-      expect(messages).toBeNull()
+      expect(messages).toBeUndefined()
     })
 
     it("should read file in given format", async () => {

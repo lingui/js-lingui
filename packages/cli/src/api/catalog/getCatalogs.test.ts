@@ -44,7 +44,7 @@ describe("getCatalogs", () => {
       cleanCatalog(
         new Catalog(
           {
-            name: null,
+            name: undefined,
             path: "src/locales/{locale}",
             include: ["src/"],
             exclude: [],
@@ -257,9 +257,8 @@ describe("getCatalogs", () => {
 
 // remove non-serializable properties, which are not subject of a test
 function cleanCatalog(catalog: Catalog) {
-  delete catalog.config
-  delete catalog.format
-  return catalog
+  const { config, format, ...rest } = catalog
+  return rest
 }
 describe("getMergedCatalogPath", () => {
   afterEach(() => {
@@ -321,7 +320,7 @@ describe("getCatalogForFile", () => {
     const catalogs = [
       new Catalog(
         {
-          name: null,
+          name: undefined,
           path: "./src/locales/{locale}",
           include: ["./src/"],
           format,
@@ -336,7 +335,7 @@ describe("getCatalogForFile", () => {
   it("should return matching catalog and locale if {locale} is present multiple times in path", () => {
     const catalog = new Catalog(
       {
-        name: null,
+        name: undefined,
         path: "./src/locales/{locale}/messages_{locale}",
         include: ["./src/"],
         format,
@@ -356,7 +355,7 @@ describe("getCatalogForFile", () => {
   it("should return matching catalog and locale", () => {
     const catalog = new Catalog(
       {
-        name: null,
+        name: undefined,
         path: "./src/locales/{locale}",
         include: ["./src/"],
         format,
@@ -374,7 +373,7 @@ describe("getCatalogForFile", () => {
   it("should work with Windows path delimiters", () => {
     const catalog = new Catalog(
       {
-        name: null,
+        name: undefined,
         path: ".\\src\\locales\\{locale}",
         include: ["./src/"],
         format,
@@ -392,7 +391,7 @@ describe("getCatalogForFile", () => {
   it("should allow parentheses in path names", async () => {
     const catalog = new Catalog(
       {
-        name: null,
+        name: undefined,
         path: "./src/locales/(asd)/{locale}",
         include: ["./src/"],
         format,
@@ -410,7 +409,7 @@ describe("getCatalogForFile", () => {
   it("should allow nested parentheses in path names", async () => {
     const catalog = new Catalog(
       {
-        name: null,
+        name: undefined,
         path: "./src/locales/(asd)/((asd))/{locale}",
         include: ["./src/"],
         format,
@@ -430,7 +429,7 @@ describe("getCatalogForFile", () => {
   it("should allow brackets in path names", async () => {
     const catalog = new Catalog(
       {
-        name: null,
+        name: undefined,
         path: "./src/locales/[...asd]/{locale}",
         include: ["./src/"],
         format,
@@ -450,7 +449,7 @@ describe("getCatalogForFile", () => {
   it("should allow nested brackets in path names", async () => {
     const catalog = new Catalog(
       {
-        name: null,
+        name: undefined,
         path: "./src/locales/[...asd]/[[...asd]]/{locale}",
         include: ["./src/"],
         format,

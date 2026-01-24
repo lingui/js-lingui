@@ -15,21 +15,23 @@ describe("mergeCatalog", () => {
   }
 
   it("should initialize language catalog", () => {
-    expect(mergeCatalog(null, nextCatalog, false, defaultMergeOptions)).toEqual(
-      {
-        "custom.id": expect.objectContaining({
-          message: "Message with custom ID",
-          translation: "",
-        }),
-        "Message with <0>auto-generated</0> ID": expect.objectContaining({
-          translation: "",
-        }),
-      }
-    )
+    expect(
+      mergeCatalog(undefined, nextCatalog, false, defaultMergeOptions)
+    ).toEqual({
+      "custom.id": expect.objectContaining({
+        message: "Message with custom ID",
+        translation: "",
+      }),
+      "Message with <0>auto-generated</0> ID": expect.objectContaining({
+        translation: "",
+      }),
+    })
   })
 
   it("should prefill translations for source language", () => {
-    expect(mergeCatalog(null, nextCatalog, true, defaultMergeOptions)).toEqual({
+    expect(
+      mergeCatalog(undefined, nextCatalog, true, defaultMergeOptions)
+    ).toEqual({
       "custom.id": expect.objectContaining({
         message: "Message with custom ID",
         translation: "Message with custom ID",
@@ -164,12 +166,15 @@ describe("mergeCatalog", () => {
       Hello: {
         message: "Hello",
         origin: [["src/app.ts", 1]],
+        placeholders: {},
+        comments: [],
       },
     }
 
     const result = mergeCatalog(prevCatalog, nextCatalog, false, {})
     expect(result["Hello"]).toMatchInlineSnapshot(`
       {
+        comments: [],
         flags: [
           myTag,
         ],
@@ -180,6 +185,7 @@ describe("mergeCatalog", () => {
             1,
           ],
         ],
+        placeholders: {},
         translation: Hallo,
       }
     `)

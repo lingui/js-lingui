@@ -2,7 +2,7 @@ import type { MergeOptions } from "../catalog.js"
 import { CatalogType, ExtractedCatalogType } from "../types.js"
 
 export function mergeCatalog(
-  prevCatalog: CatalogType,
+  prevCatalog: CatalogType | undefined,
   nextCatalog: ExtractedCatalogType,
   forSourceLocale: boolean,
   options: MergeOptions
@@ -30,17 +30,16 @@ export function mergeCatalog(
     mergeKeys.map((key) => {
       const updateFromDefaults =
         forSourceLocale &&
-        (prevCatalog[key].translation === prevCatalog[key].message ||
+        (prevCatalog![key].translation === prevCatalog![key].message ||
           options.overwrite)
 
       const translation = updateFromDefaults
         ? nextCatalog[key].message || key
-        : prevCatalog[key].translation
+        : prevCatalog![key].translation
 
-      const { obsolete, ...rest } = nextCatalog[key]
-      const { extra } = prevCatalog[key]
+      const { extra } = prevCatalog![key]
 
-      return [key, { ...extra, ...rest, translation }]
+      return [key, { ...extra, ...nextCatalog[key], translation }]
     })
   )
 
@@ -50,7 +49,7 @@ export function mergeCatalog(
     obsoleteKeys.map((key) => [
       key,
       {
-        ...prevCatalog[key],
+        ...prevCatalog![key],
         ...(options.files ? {} : { obsolete: true }),
       },
     ])

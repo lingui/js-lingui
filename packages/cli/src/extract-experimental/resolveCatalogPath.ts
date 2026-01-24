@@ -5,7 +5,7 @@ export function resolveCatalogPath(
   configOutput: string,
   entryPath: string,
   rootDir: string,
-  locale: string,
+  locale: string | undefined,
   extension: string
 ) {
   const entryName = getEntryName(entryPath)

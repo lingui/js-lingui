@@ -29,7 +29,7 @@ export async function copyFixture(fixtureDir: string) {
 export const defaultMakeOptions: MakeOptions = {
   clean: false,
   overwrite: false,
-  locale: null,
+  locale: undefined,
   orderBy: "messageId",
 }
 
@@ -75,7 +75,8 @@ export function makePrevMessage(message = {}): MessageType {
 export function makeNextMessage(message = {}): ExtractedMessageType {
   return {
     origin: [["catalog.test.ts", 1]],
-    obsolete: false,
+    placeholders: {},
+    comments: [],
     ...message,
   }
 }

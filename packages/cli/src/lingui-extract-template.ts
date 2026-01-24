@@ -17,14 +17,14 @@ import {
 import esMain from "es-main"
 
 export type CliExtractTemplateOptions = {
-  verbose: boolean
+  verbose?: boolean
   files?: string[]
   workersOptions: WorkersOptions
 }
 
 export default async function command(
   config: LinguiConfigNormalized,
-  options: Partial<CliExtractTemplateOptions>
+  options: CliExtractTemplateOptions
 ): Promise<boolean> {
   options.verbose && console.log("Extracting messages from source files…")
   const catalogs = await getCatalogs(config)
@@ -32,7 +32,7 @@ export default async function command(
 
   let commandSuccess = true
 
-  let workerPool: ExtractWorkerPool
+  let workerPool: ExtractWorkerPool | undefined
 
   if (options.workersOptions.poolSize) {
     options.verbose &&
@@ -45,7 +45,7 @@ export default async function command(
     await Promise.all(
       catalogs.map(async (catalog) => {
         const result = await catalog.makeTemplate({
-          ...(options as CliExtractTemplateOptions),
+          ...options,
           orderBy: config.orderBy,
           workerPool,
         })
