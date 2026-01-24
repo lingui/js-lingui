@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "strict": true,
-    "jsx": "preserve",
+    "jsx": "react-jsx",
     "noUncheckedIndexedAccess": true,
     "isolatedModules": true,
     "forceConsistentCasingInFileNames": true,

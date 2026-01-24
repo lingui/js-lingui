@@ -5,7 +5,7 @@ import {
   I18nProvider,
   TransRenderProps,
   TransRenderCallbackOrComponent,
-} from "@lingui/react"
+} from "../src"
 import { setupI18n } from "@lingui/core"
 import { mockConsole } from "@lingui/jest-mocks"
 import { PropsWithChildren } from "react"

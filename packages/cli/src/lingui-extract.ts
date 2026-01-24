@@ -19,7 +19,7 @@ import {
   ExtractWorkerPool,
 } from "./api/extractWorkerPool.js"
 import ms from "ms"
-import { Catalog } from "./api/catalog"
+import { Catalog } from "./api/catalog.js"
 import esMain from "es-main"
 
 export type CliExtractOptions = {
