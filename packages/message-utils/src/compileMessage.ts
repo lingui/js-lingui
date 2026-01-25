@@ -21,7 +21,7 @@ export type CompiledMessage = CompiledMessageToken[]
 
 type MapTextFn = (value: string) => string
 
-function processTokens(tokens: Token[], mapText?: MapTextFn): CompiledMessage {
+function processTokens(tokens: Token[], mapText: MapTextFn): CompiledMessage {
   if (!tokens.filter((token) => token.type !== "content").length) {
     return tokens.map((token) => mapText((token as Content).value))
   }
@@ -78,7 +78,7 @@ function processTokens(tokens: Token[], mapText?: MapTextFn): CompiledMessage {
 }
 
 function compileDateExpression(
-  format: string | undefined,
+  format: string,
   onError: (error: DateFormatError) => void
 ) {
   if (/^::/.test(format)) {

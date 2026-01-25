@@ -32,6 +32,7 @@ describe.each(implementations)("generateMessageId ($name)", ({ fn }) => {
     expect(fn("my message")).toBe(expected)
     expect(fn("my message", "")).toBe(expected)
     expect(fn("my message", undefined)).toBe(expected)
+    // @ts-expect-error null is not valid type for context
     expect(fn("my message", null)).toBe(expected)
   })
 })
