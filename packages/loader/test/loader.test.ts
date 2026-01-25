@@ -45,7 +45,7 @@ describe("lingui-loader", () => {
       path.join(__dirname, "./not-known-catalog/entrypoint.js")
     )
 
-    expect(built.stats.errors[0].message).toContain(
+    expect(built.stats.errors![0]!.message).toContain(
       "is not matched to any of your catalogs paths"
     )
     expect(built.stats.warnings).toEqual([])
@@ -59,7 +59,9 @@ describe("lingui-loader", () => {
       }
     )
 
-    expect(built.stats.errors[0].message).toContain("Missing 1 translation(s):")
+    expect(built.stats.errors![0]!.message).toContain(
+      "Missing 1 translation(s):"
+    )
     expect(built.stats.warnings).toEqual([])
   })
 
@@ -81,7 +83,7 @@ describe("lingui-loader", () => {
         failOnCompileError: true,
       }
     )
-    expect(built.stats.errors[0].message).toContain(
+    expect(built.stats.errors![0]!.message).toContain(
       "Compilation error for 2 translation(s)"
     )
     expect(built.stats.warnings).toEqual([])
@@ -94,7 +96,7 @@ describe("lingui-loader", () => {
         failOnCompileError: false,
       }
     )
-    expect(built.stats.warnings[0].message).toContain(
+    expect(built.stats.warnings![0]!.message).toContain(
       "Compilation error for 2 translation(s)"
     )
     expect(built.stats.errors).toEqual([])

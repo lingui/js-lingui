@@ -88,7 +88,7 @@ Please check that \`catalogs.path\` is filled properly.\n`
 
   const { source: code, errors } = createCompiledCatalog(locale, messages, {
     strict,
-    namespace: this._module.type === "json" ? "json" : "es",
+    namespace: this._module!.type === "json" ? "json" : "es",
     pseudoLocale: config.pseudoLocale,
   })
 
