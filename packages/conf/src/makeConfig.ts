@@ -48,7 +48,7 @@ export function makeConfig(
   }
 }
 
-export const defaultConfig: LinguiConfig = {
+export const defaultConfig = {
   catalogs: [
     {
       path: pathJoinPosix("<rootDir>", "locale", "{locale}", "messages"),
@@ -82,7 +82,8 @@ export const defaultConfig: LinguiConfig = {
   },
   sourceLocale: "",
   service: { name: "", apiKey: "" },
-}
+} satisfies LinguiConfig
+
 export const exampleConfig = {
   ...defaultConfig,
   format: multipleValidOptions({}, "po"),

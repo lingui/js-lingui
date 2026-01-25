@@ -1,3 +1,5 @@
+import { defaultConfig } from "./makeConfig"
+
 /**
  * @deprecated please pass formatter directly to `format`
  *
@@ -368,19 +370,10 @@ export type LinguiConfig = {
 type ModuleSourceNormalized = readonly [module: string, specifier: string]
 
 export type LinguiConfigNormalized = Omit<
-  LinguiConfig,
+  LinguiConfig & typeof defaultConfig,
   "runtimeConfigModule"
 > & {
   resolvedConfigPath?: string
-  fallbackLocales: FallbackLocales
-  orderBy: OrderBy
-  rootDir: string
-  catalogsMergePath: string
-  catalogs: NonNullable<LinguiConfig["catalogs"]>
-  extractorParserOptions: NonNullable<LinguiConfig["extractorParserOptions"]>
-  format: NonNullable<LinguiConfig["format"]>
-  formatOptions: NonNullable<LinguiConfig["formatOptions"]>
-  sourceLocale: string
   runtimeConfigModule: {
     i18n: ModuleSourceNormalized
     useLingui: ModuleSourceNormalized
