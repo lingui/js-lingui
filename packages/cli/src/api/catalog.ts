@@ -120,7 +120,7 @@ export class Catalog {
 
     const locales = options.locale ? options.locale : this.locales
     await Promise.all(
-      locales.map((locale) => this.write(locale, sortedCatalogs[locale]))
+      locales.map((locale) => this.write(locale, sortedCatalogs[locale]!))
     )
 
     return sortedCatalogs
@@ -241,7 +241,7 @@ export class Catalog {
     // statement above will save locales in object in undetermined order
     // resort here to have keys order the same as in locales definition
     return this.locales.reduce<AllCatalogsType>((acc, locale: string) => {
-      acc[locale] = res[locale]
+      acc[locale] = res[locale]!
       return acc
     }, {})
   }
@@ -308,8 +308,8 @@ export function order<T extends CatalogType>(by: OrderBy, catalog: T): T {
   return Object.keys(catalog)
     .sort((a, b) => {
       return orderByFn(
-        { messageId: a, entry: catalog[a] },
-        { messageId: b, entry: catalog[b] }
+        { messageId: a, entry: catalog[a]! },
+        { messageId: b, entry: catalog[b]! }
       )
     })
     .reduce((acc, key) => {
@@ -339,8 +339,8 @@ const orderByOrigin: OrderByFn = (a, b) => {
     return sortedOrigins[0]
   }
 
-  const [aFile, aLineNumber] = getFirstOrigin(a.entry)
-  const [bFile, bLineNumber] = getFirstOrigin(b.entry)
+  const [aFile, aLineNumber] = getFirstOrigin(a.entry)!
+  const [bFile, bLineNumber] = getFirstOrigin(b.entry)!
 
   if (aFile < bFile) return -1
   if (aFile > bFile) return 1

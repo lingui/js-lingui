@@ -40,7 +40,7 @@ describe("getCatalogs", () => {
         },
       ],
     })
-    expect(cleanCatalog((await getCatalogs(config))[0])).toEqual(
+    expect(cleanCatalog((await getCatalogs(config))[0]!)).toEqual(
       cleanCatalog(
         new Catalog(
           {
@@ -66,7 +66,7 @@ describe("getCatalogs", () => {
         },
       ],
     })
-    expect(cleanCatalog((await getCatalogs(config))[0])).toEqual(
+    expect(cleanCatalog((await getCatalogs(config))[0]!)).toEqual(
       cleanCatalog(
         new Catalog(
           {
@@ -105,7 +105,7 @@ describe("getCatalogs", () => {
       a.path.localeCompare(b.path)
     )
 
-    expect([cleanCatalog(catalogs[0]), cleanCatalog(catalogs[1])]).toEqual([
+    expect([cleanCatalog(catalogs[0]!), cleanCatalog(catalogs[1]!)]).toEqual([
       cleanCatalog(
         new Catalog(
           {
@@ -153,7 +153,7 @@ describe("getCatalogs", () => {
       a.path.localeCompare(b.path)
     )
 
-    expect(cleanCatalog(catalogs[0])).toEqual(
+    expect(cleanCatalog(catalogs[0]!)).toEqual(
       cleanCatalog(
         new Catalog(
           {
@@ -193,7 +193,7 @@ describe("getCatalogs", () => {
       a.path.localeCompare(b.path)
     )
 
-    expect(cleanCatalog(catalogs[0])).toEqual(
+    expect(cleanCatalog(catalogs[0]!)).toEqual(
       cleanCatalog(
         new Catalog(
           {

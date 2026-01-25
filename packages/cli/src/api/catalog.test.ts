@@ -23,7 +23,7 @@ export const fixture = (...dirs: string[]) =>
   (
     path.resolve(__dirname, path.join("fixtures", ...dirs)) +
     // preserve trailing slash
-    (dirs[dirs.length - 1].endsWith("/") ? "/" : "")
+    (dirs.at(-1)!.endsWith("/") ? "/" : "")
   ).replace(/\\/g, "/")
 
 function mockConfig(config: Partial<LinguiConfig> = {}) {
@@ -210,11 +210,11 @@ describe("Catalog", () => {
         mockConfig()
       )
 
-      expect(Object.values(runA!)[0].placeholders[0]).toStrictEqual(
-        Object.values(runB!)[0].placeholders[0]
+      expect(Object.values(runA!)[0]!.placeholders[0]).toStrictEqual(
+        Object.values(runB!)[0]!.placeholders[0]
       )
 
-      expect(Object.values(runA!)[0].placeholders).toMatchInlineSnapshot(`
+      expect(Object.values(runA!)[0]!.placeholders).toMatchInlineSnapshot(`
         {
           0: [
             getUser(),
@@ -222,8 +222,6 @@ describe("Catalog", () => {
           ],
         }
       `)
-
-      // expect(messages).toMatchSnapshot()
     })
 
     it("should support experimental typescript decorators under a flag", async () => {
@@ -308,7 +306,8 @@ describe("Catalog", () => {
 
       process.chdir(oldCwd)
 
-      expect(messages[Object.keys(messages)[0]].origin).toMatchInlineSnapshot(`
+      expect(messages[Object.keys(messages)[0]!]!.origin)
+        .toMatchInlineSnapshot(`
         [
           [
             ../input.tsx,

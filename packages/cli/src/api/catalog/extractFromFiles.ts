@@ -77,7 +77,7 @@ export function mergeExtractedMessage(
     }
   }
 
-  const prev = messages[next.id]
+  const prev = messages[next.id]!
 
   // there might be a case when filename was not mapped from sourcemaps
   const nextOrigin: MessageOrigin | undefined = next.origin

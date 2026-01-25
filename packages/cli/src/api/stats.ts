@@ -12,7 +12,7 @@ type CatalogStats = [number, number]
 export function getStats(catalog: CatalogType): CatalogStats {
   return [
     Object.keys(catalog).length,
-    Object.keys(catalog).filter((key) => !catalog[key].translation).length,
+    Object.keys(catalog).filter((key) => !catalog[key]!.translation).length,
   ]
 }
 

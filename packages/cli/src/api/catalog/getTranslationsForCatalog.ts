@@ -39,7 +39,7 @@ export async function getTranslationsForCatalog(
     (acc, key) => {
       acc[key] = getTranslation(
         catalogs,
-        input[key],
+        input[key]!,
         locale,
         key,
         (event) => {

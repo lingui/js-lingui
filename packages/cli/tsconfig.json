@@ -2,6 +2,7 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "strict": true,
+    "noUncheckedIndexedAccess": true,
     "module": "nodenext",
     "moduleResolution": "nodenext",
     "types": ["vitest/globals"]

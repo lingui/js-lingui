@@ -100,7 +100,7 @@ export default async function command(
 
     try {
       for (const outFile of Object.keys(bundleResult.outputs)) {
-        const { entryPoint } = bundleResult.outputs[outFile]
+        const { entryPoint } = bundleResult.outputs[outFile]!
 
         pool.queue(async (extractFromBundleAndWrite) => {
           const result = await extractFromBundleAndWrite(
@@ -139,7 +139,7 @@ export default async function command(
     )
 
     for (const outFile of Object.keys(bundleResult.outputs)) {
-      const { entryPoint } = bundleResult.outputs[outFile]
+      const { entryPoint } = bundleResult.outputs[outFile]!
 
       const result = await extractFromBundleAndWrite({
         entryPoint: entryPoint!,

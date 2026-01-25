@@ -141,8 +141,8 @@ function buildExportStatement(
     } else if (matches) {
       // window.i18nMessages = { messages: { message: "Translation" }}
       exportExpression = t.memberExpression(
-        t.identifier(matches[1]),
-        t.identifier(matches[2])
+        t.identifier(matches[1]!),
+        t.identifier(matches[2]!)
       )
     } else {
       throw new Error(`Invalid namespace param: "${namespace}"`)
