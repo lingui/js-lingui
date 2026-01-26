@@ -3,16 +3,17 @@ import chokidar from "chokidar"
 import { program } from "commander"
 
 import { getConfig, LinguiConfigNormalized } from "@lingui/conf"
-import { helpRun } from "./api/help"
-import { getCatalogs, getFormat } from "./api"
-import { compileLocale } from "./api/compile/compileLocale"
+import { helpRun } from "./api/help.js"
+import { getCatalogs, getFormat } from "./api/index.js"
+import { compileLocale } from "./api/compile/compileLocale.js"
 import { Pool, spawn, Worker } from "threads"
-import { CompileWorker } from "./workers/compileWorker"
+import { CompileWorker } from "./workers/compileWorker.js"
 import {
   resolveWorkersOptions,
   WorkersOptions,
-} from "./api/resolveWorkersOptions"
+} from "./api/resolveWorkersOptions.js"
 import ms from "ms"
+import esMain from "es-main"
 
 export type CliCompileOptions = {
   verbose?: boolean
@@ -64,7 +65,14 @@ export async function command(
       console.log(`Use worker pool of size ${options.workersOptions.poolSize}`)
 
     const pool = Pool(
-      () => spawn<CompileWorker>(new Worker("./workers/compileWorker")),
+      () =>
+        spawn<CompileWorker>(
+          new Worker(
+            process.env.NODE_ENV === "test"
+              ? "./workers/compileWorkerWrapper.jiti.js"
+              : "./workers/compileWorkerWrapper.prod.js"
+          )
+        ),
       { size: options.workersOptions.poolSize }
     )
 
@@ -117,7 +125,7 @@ type CliArgs = {
   outputPrefix?: string
 }
 
-if (require.main === module) {
+if (esMain(import.meta)) {
   program
     .description("Compile message catalogs to compiled bundle.")
     .option("--config <path>", "Path to the config file")

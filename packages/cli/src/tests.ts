@@ -7,9 +7,9 @@ import {
   MakeOptions,
   MakeTemplateOptions,
   MergeOptions,
-} from "./api/catalog"
+} from "./api/catalog.js"
 import { LinguiConfig, makeConfig } from "@lingui/conf"
-import { ExtractedMessageType, getFormat, MessageType } from "./api"
+import { ExtractedMessageType, getFormat, MessageType } from "./api/index.js"
 
 export async function copyFixture(fixtureDir: string) {
   const tmpDir = await fs.promises.mkdtemp(

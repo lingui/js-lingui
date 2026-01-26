@@ -5,7 +5,7 @@ import {
   I18nProvider,
   TransRenderProps,
   TransRenderCallbackOrComponent,
-} from "@lingui/react"
+} from "../src"
 import { setupI18n } from "@lingui/core"
 import { mockConsole } from "@lingui/jest-mocks"
 import { PropsWithChildren } from "react"
@@ -105,18 +105,18 @@ describe("Trans component", () => {
 
     it("when there's no i18n context available", () => {
       const originalConsole = console.error
-      console.error = jest.fn()
+      console.error = vi.fn()
 
       expect(() => render(<Trans id="unknown" />))
         .toThrowErrorMatchingInlineSnapshot(`
-        "Trans component was rendered without I18nProvider.
-        Attempted to render message: undefined id: unknown. Make sure this component is rendered inside a I18nProvider."
-      `)
+          [Error: Trans component was rendered without I18nProvider.
+          Attempted to render message: undefined id: unknown. Make sure this component is rendered inside a I18nProvider.]
+        `)
       expect(() =>
         render(<Trans id="unknown" message={"some valid message"} />)
       ).toThrowErrorMatchingInlineSnapshot(`
-        "Trans component was rendered without I18nProvider.
-        Attempted to render message: some valid message id: unknown. Make sure this component is rendered inside a I18nProvider."
+        [Error: Trans component was rendered without I18nProvider.
+        Attempted to render message: some valid message id: unknown. Make sure this component is rendered inside a I18nProvider.]
       `)
 
       console.error = originalConsole
@@ -124,7 +124,7 @@ describe("Trans component", () => {
 
     it("when deprecated string built-ins are used", () => {
       const originalConsole = console.error
-      console.error = jest.fn()
+      console.error = vi.fn()
 
       // @ts-expect-error testing the error
       renderWithI18n(<Trans render="span" id="Some text" />)
@@ -366,7 +366,7 @@ describe("Trans component", () => {
     })
 
     it("supports render callback function", () => {
-      const spy = jest.fn()
+      const spy = vi.fn()
       text(
         <Trans
           id="ID"
@@ -429,7 +429,7 @@ describe("Trans component", () => {
     })
 
     it("should render function component as simple prop", () => {
-      const propsSpy = jest.fn()
+      const propsSpy = vi.fn()
       function ComponentFC(props: TransRenderProps) {
         propsSpy(props)
         const [state] = React.useState("value")

@@ -2,6 +2,7 @@
   "name": "@lingui/cli",
   "version": "5.9.0",
   "description": "CLI for working wit message catalogs",
+  "type": "module",
   "keywords": [
     "cli",
     "i18n",
@@ -46,7 +47,8 @@
     }
   },
   "scripts": {
-    "build": "rimraf ./dist && tsc -p tsconfig.build.json"
+    "build": "tsc -p tsconfig.build.json",
+    "check-types": "tsc --noEmit"
   },
   "engines": {
     "node": ">=20.0.0"
@@ -58,7 +60,7 @@
   ],
   "dependencies": {
     "@babel/core": "^7.21.0",
-    "@babel/generator": "^7.21.1",
+    "@babel/generator": "^7.28.5",
     "@babel/parser": "^7.22.0",
     "@babel/runtime": "^7.21.0",
     "@babel/types": "^7.21.2",
@@ -73,8 +75,10 @@
     "commander": "^10.0.0",
     "convert-source-map": "^2.0.0",
     "date-fns": "^3.6.0",
+    "es-main": "^1.4.0",
     "esbuild": "^0.25.1",
     "glob": "^11.0.0",
+    "jiti": "^2.6.1",
     "micromatch": "^4.0.7",
     "ms": "^2.1.3",
     "normalize-path": "^3.0.0",
@@ -87,13 +91,13 @@
   },
   "devDependencies": {
     "@lingui/jest-mocks": "*",
+    "@types/babel__generator": "^7.27.0",
     "@types/convert-source-map": "^2.0.0",
     "@types/micromatch": "^4.0.1",
     "@types/ms": "^2.1.0",
     "@types/normalize-path": "^3.0.0",
     "mock-fs": "^5.2.0",
-    "mockdate": "^3.0.5",
     "msw": "^2.12.7",
-    "ts-node": "^10.9.2"
+    "vitest": "^3.2.4"
   }
 }

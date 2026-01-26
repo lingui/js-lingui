@@ -2,20 +2,20 @@ import fs from "fs"
 import { dirname } from "path"
 
 import { CatalogType, LinguiConfigNormalized } from "@lingui/conf"
-import { CliExtractOptions } from "../lingui-extract"
+import { CliExtractOptions } from "../lingui-extract.js"
 import {
   tioInit,
   tioSync,
   TranslationIoProject,
   TranslationIoSegment,
-} from "./translationIO/translationio-api"
-import { Catalog } from "../api/catalog"
-import { order } from "../api/catalog"
+} from "./translationIO/translationio-api.js"
+import { Catalog } from "../api/catalog.js"
+import { order } from "../api/catalog.js"
 import {
   createLinguiItemFromSegment,
   createSegmentFromLinguiItem,
-} from "./translationIO/segment-converters"
-import { AllCatalogsType } from "../api/types"
+} from "./translationIO/segment-converters.js"
+import { AllCatalogsType } from "../api/types.js"
 
 const getTargetLocales = (config: LinguiConfigNormalized) => {
   const sourceLocale = config.sourceLocale || "en"

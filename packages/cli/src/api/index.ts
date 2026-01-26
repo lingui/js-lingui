@@ -1,15 +1,15 @@
-export { getFormat } from "./formats"
-export { getCatalogForFile, getCatalogs } from "./catalog/getCatalogs"
+export { getFormat } from "./formats/index.js"
+export { getCatalogForFile, getCatalogs } from "./catalog/getCatalogs.js"
 
-export { createCompiledCatalog } from "./compile"
+export { createCompiledCatalog } from "./compile.js"
 
 export {
   default as extractor,
   extractFromFileWithBabel,
-} from "./extractors/babel"
-export { getCatalogDependentFiles } from "./catalog/getCatalogDependentFiles"
+} from "./extractors/babel.js"
+export { getCatalogDependentFiles } from "./catalog/getCatalogDependentFiles.js"
 export {
   createMissingErrorMessage,
   createCompilationErrorMessage,
-} from "./messages"
-export * from "./types"
+} from "./messages.js"
+export * from "./types.js"

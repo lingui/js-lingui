@@ -4,43 +4,17 @@
   "license": "MIT",
   "keywords": [],
   "sideEffects": false,
+  "type": "module",
   "exports": {
     "./generateMessageId": {
-      "node": {
-        "import": {
-          "types": "./dist/generateMessageId.node.d.mts",
-          "default": "./dist/generateMessageId.node.mjs"
-        },
-        "require": {
-          "types": "./dist/generateMessageId.node.d.cts",
-          "default": "./dist/generateMessageId.node.cjs"
-        }
-      },
-      "default": {
-        "import": {
-          "types": "./dist/generateMessageId.d.mts",
-          "default": "./dist/generateMessageId.mjs"
-        },
-        "require": {
-          "types": "./dist/generateMessageId.d.cts",
-          "default": "./dist/generateMessageId.cjs"
-        }
-      }
+      "node": "./dist/generateMessageId.node.mjs",
+      "default": "./dist/generateMessageId.mjs"
     },
-    "./compileMessage": {
-      "import": {
-        "types": "./dist/compileMessage.d.mts",
-        "default": "./dist/compileMessage.mjs"
-      },
-      "require": {
-        "types": "./dist/compileMessage.d.cts",
-        "default": "./dist/compileMessage.cjs"
-      }
-    }
+    "./compileMessage": "./dist/compileMessage.mjs"
   },
   "scripts": {
-    "build": "rimraf ./dist && unbuild",
-    "stub": "unbuild --stub"
+    "build": "unbuild",
+    "check-types": "tsc --noEmit"
   },
   "homepage": "https://lingui.dev",
   "repository": {
@@ -61,12 +35,16 @@
     "generateMessageId.js"
   ],
   "dependencies": {
+    "@messageformat/date-skeleton": "^1.1.0",
     "@messageformat/parser": "^5.0.0",
     "js-sha256": "^0.10.1"
   },
   "devDependencies": {
     "@lingui/jest-mocks": "workspace:^",
-    "@messageformat/date-skeleton": "^1.1.0",
-    "unbuild": "2.0.0"
+    "unbuild": "3.6.1",
+    "vitest": "3.2.4"
+  },
+  "unbuild": {
+    "declaration": "node16"
   }
 }

@@ -3,14 +3,14 @@ import {
   ExtractedMessage,
   LinguiConfigNormalized,
 } from "@lingui/conf"
-import { FormatterWrapper } from "../api/formats"
-import { mergeExtractedMessage } from "../api/catalog/extractFromFiles"
-import { writeCatalogs, writeTemplate } from "./writeCatalogs"
+import { FormatterWrapper } from "../api/formats/index.js"
+import { mergeExtractedMessage } from "../api/catalog/extractFromFiles.js"
+import { writeCatalogs, writeTemplate } from "./writeCatalogs.js"
 import fs from "fs/promises"
 import {
   extractFromFileWithBabel,
   getBabelParserOptions,
-} from "../api/extractors/babel"
+} from "../api/extractors/babel.js"
 
 async function extractFromBundle(
   filename: string,

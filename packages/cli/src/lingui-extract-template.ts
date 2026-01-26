@@ -3,17 +3,18 @@ import { program } from "commander"
 
 import { getConfig, LinguiConfigNormalized } from "@lingui/conf"
 
-import { getCatalogs } from "./api"
+import { getCatalogs } from "./api/index.js"
 import nodepath from "path"
 import normalizePath from "normalize-path"
 import {
   createExtractWorkerPool,
   ExtractWorkerPool,
-} from "./api/extractWorkerPool"
+} from "./api/extractWorkerPool.js"
 import {
   resolveWorkersOptions,
   WorkersOptions,
-} from "./api/resolveWorkersOptions"
+} from "./api/resolveWorkersOptions.js"
+import esMain from "es-main"
 
 export type CliExtractTemplateOptions = {
   verbose: boolean
@@ -80,7 +81,7 @@ type CliArgs = {
   workers?: number
 }
 
-if (require.main === module) {
+if (esMain(import.meta)) {
   program
     .option("--config <path>", "Path to the config file")
     .option("--verbose", "Verbose output")

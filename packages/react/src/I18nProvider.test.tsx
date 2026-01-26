@@ -64,7 +64,7 @@ describe("I18nProvider", () => {
         cs: {},
       },
     })
-    i18n.on = jest.fn(() => jest.fn())
+    i18n.on = vi.fn(() => vi.fn())
 
     expect(i18n.on).not.toBeCalled()
     render(
@@ -76,14 +76,14 @@ describe("I18nProvider", () => {
   })
 
   it("should unsubscribe for locale changes on unmount", () => {
-    const unsubscribe = jest.fn()
+    const unsubscribe = vi.fn()
     const i18n = setupI18n({
       locale: "cs",
       messages: {
         cs: {},
       },
     })
-    i18n.on = jest.fn(() => unsubscribe)
+    i18n.on = vi.fn(() => unsubscribe)
 
     const { unmount } = render(
       <I18nProvider i18n={i18n}>
@@ -154,14 +154,14 @@ describe("I18nProvider", () => {
        * to i18n.on("change", ...) and in it we call i18n.activate("cs") ourselves
        * so that the condition in useEffect() is met and the component re-renders
        * */
-      const mockSubscriber = jest.fn(() => {
+      const mockSubscriber = vi.fn(() => {
         i18n.load("cs", {})
         i18n.activate("cs")
         return () => {
           // unsubscriber - noop to make TS happy
         }
       })
-      jest.spyOn(i18n, "on").mockImplementation(mockSubscriber)
+      vi.spyOn(i18n, "on").mockImplementation(mockSubscriber)
 
       const { getByTestId } = render(
         <I18nProvider i18n={i18n}>

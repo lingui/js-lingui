@@ -4,8 +4,8 @@ import mockFs from "mock-fs"
 import { mockConsole } from "@lingui/jest-mocks"
 import { LinguiConfig, makeConfig } from "@lingui/conf"
 
-import { Catalog, cleanObsolete, order, writeCompiled } from "./catalog"
-import { createCompiledCatalog } from "./compile"
+import { Catalog, cleanObsolete, order, writeCompiled } from "./catalog.js"
+import { createCompiledCatalog } from "./compile.js"
 
 import {
   copyFixture,
@@ -14,10 +14,10 @@ import {
   makeNextMessage,
   defaultMergeOptions,
   makeCatalog,
-} from "../tests"
-import { AllCatalogsType } from "./types"
-import { extractFromFiles } from "./catalog/extractFromFiles"
-import { FormatterWrapper, getFormat } from "./formats"
+} from "../tests.js"
+import { AllCatalogsType } from "./types.js"
+import { extractFromFiles } from "./catalog/extractFromFiles.js"
+import { FormatterWrapper, getFormat } from "./formats/index.js"
 
 export const fixture = (...dirs: string[]) =>
   (
@@ -302,10 +302,20 @@ describe("Catalog", () => {
         mockConfig()
       )
 
+      const oldCwd = process.cwd()
+      process.chdir(import.meta.dirname)
       const messages = await catalog.collect()
-      expect(messages[Object.keys(messages)[0]].origin).toStrictEqual([
-        ["../../../../../input.tsx", 5],
-      ])
+
+      process.chdir(oldCwd)
+
+      expect(messages[Object.keys(messages)[0]].origin).toMatchInlineSnapshot(`
+        [
+          [
+            ../input.tsx,
+            5,
+          ],
+        ]
+      `)
     })
 
     it("should extract only files passed on options", async () => {
@@ -481,7 +491,7 @@ describe("Catalog", () => {
       expect(messages).toMatchSnapshot()
     })
 
-    xit("should read file in previous format", async () => {
+    it.skip("should read file in previous format", async () => {
       mockFs({
         en: {
           "messages.json": fs.readFileSync(

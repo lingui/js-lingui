@@ -1,10 +1,10 @@
 import type { ExtractedMessage, LinguiConfigNormalized } from "@lingui/conf"
 import pico from "picocolors"
 import path from "path"
-import extract from "../extractors"
-import { ExtractedCatalogType, MessageOrigin } from "../types"
-import { prettyOrigin } from "../utils"
-import { ExtractWorkerPool } from "../extractWorkerPool"
+import extract from "../extractors/index.js"
+import { ExtractedCatalogType, MessageOrigin } from "../types.js"
+import { prettyOrigin } from "../utils.js"
+import { ExtractWorkerPool } from "../extractWorkerPool.js"
 
 function mergePlaceholders(
   prev: Record<string, string[]>,

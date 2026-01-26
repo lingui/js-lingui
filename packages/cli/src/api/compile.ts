@@ -1,10 +1,10 @@
 import * as t from "@babel/types"
-import generate, { GeneratorOptions } from "@babel/generator"
+import { GeneratorOptions, generate } from "@babel/generator"
 import {
   CompiledMessage,
   compileMessageOrThrow,
 } from "@lingui/message-utils/compileMessage"
-import pseudoLocalize from "./pseudoLocalize"
+import pseudoLocalize from "./pseudoLocalize.js"
 
 export type CompiledCatalogNamespace = "cjs" | "es" | "ts" | "json" | string
 

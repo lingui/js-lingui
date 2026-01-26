@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`pofile format printPlaceholdersInComments Should not print placeholders if printPlaceholdersInComments = false 1`] = `
-msgid ""
+exports[`pofile format > printPlaceholdersInComments > Should not print placeholders if printPlaceholdersInComments = false 1`] = `
+"msgid ""
 msgstr ""
 "POT-Creation-Date: 2018-08-27 10:00+0000\\n"
 "MIME-Version: 1.0\\n"
@@ -13,11 +13,11 @@ msgstr ""
 #. js-lingui-explicit-id
 msgid "static"
 msgstr "Static message {0} {name}"
-
+"
 `;
 
-exports[`pofile format printPlaceholdersInComments Should print printPlaceholdersInComments.limit amount of values for placeholder 1`] = `
-msgid ""
+exports[`pofile format > printPlaceholdersInComments > Should print printPlaceholdersInComments.limit amount of values for placeholder 1`] = `
+"msgid ""
 msgstr ""
 "POT-Creation-Date: 2018-08-27 10:00+0000\\n"
 "MIME-Version: 1.0\\n"
@@ -31,11 +31,11 @@ msgstr ""
 #. placeholder {1}: a
 msgid "static"
 msgstr "Static message {0} {1}"
-
+"
 `;
 
-exports[`pofile format printPlaceholdersInComments should print unnamed placeholders as comments 1`] = `
-msgid ""
+exports[`pofile format > printPlaceholdersInComments > should print unnamed placeholders as comments 1`] = `
+"msgid ""
 msgstr ""
 "POT-Creation-Date: 2018-08-27 10:00+0000\\n"
 "MIME-Version: 1.0\\n"
@@ -67,47 +67,47 @@ msgstr "Static message {0}"
 #. placeholder {0}: profile.name
 msgid "static4"
 msgstr "Static message {0}"
-
+"
 `;
 
-exports[`pofile format should correct badly used comments 1`] = `
+exports[`pofile format > should correct badly used comments 1`] = `
 {
-  withDescriptionAndComments: {
-    comments: [
-      Single description only,
-      Second description?,
+  "withDescriptionAndComments": {
+    "comments": [
+      "Single description only",
+      "Second description?",
     ],
-    context: null,
-    extra: {
-      flags: [],
-      translatorComments: [
-        Translator comment,
+    "context": null,
+    "extra": {
+      "flags": [],
+      "translatorComments": [
+        "Translator comment",
       ],
     },
-    obsolete: false,
-    origin: [],
-    translation: Second description joins translator comments,
+    "obsolete": false,
+    "origin": [],
+    "translation": "Second description joins translator comments",
   },
-  withMultipleDescriptions: {
-    comments: [
-      First description,
-      Second comment,
-      Third comment,
+  "withMultipleDescriptions": {
+    "comments": [
+      "First description",
+      "Second comment",
+      "Third comment",
     ],
-    context: null,
-    extra: {
-      flags: [],
-      translatorComments: [],
+    "context": null,
+    "extra": {
+      "flags": [],
+      "translatorComments": [],
     },
-    obsolete: false,
-    origin: [],
-    translation: Extra comments are separated from the first description line,
+    "obsolete": false,
+    "origin": [],
+    "translation": "Extra comments are separated from the first description line",
   },
 }
 `;
 
-exports[`pofile format should not add lingui id more than one time 1`] = `
-msgid ""
+exports[`pofile format > should not add lingui id more than one time 1`] = `
+"msgid ""
 msgstr ""
 "POT-Creation-Date: 2018-08-27 10:00+0000\\n"
 "MIME-Version: 1.0\\n"
@@ -120,11 +120,11 @@ msgstr ""
 msgctxt "my context"
 msgid "with generated id"
 msgstr ""
-
+"
 `;
 
-exports[`pofile format should print lingui id if printLinguiId = true 1`] = `
-msgid ""
+exports[`pofile format > should print lingui id if printLinguiId = true 1`] = `
+"msgid ""
 msgstr ""
 "POT-Creation-Date: 2018-08-27 10:00+0000\\n"
 "MIME-Version: 1.0\\n"
@@ -137,11 +137,11 @@ msgstr ""
 msgctxt "my context"
 msgid "with generated id"
 msgstr ""
-
+"
 `;
 
-exports[`pofile format should print source message as translation for source locale catalog for explicit id: source locale catalog 1`] = `
-msgid ""
+exports[`pofile format > should print source message as translation for source locale catalog for explicit id > source locale catalog 1`] = `
+"msgid ""
 msgstr ""
 "POT-Creation-Date: 2018-08-27 10:00+0000\\n"
 "MIME-Version: 1.0\\n"
@@ -158,11 +158,11 @@ msgstr "with custom id"
 msgctxt "my context"
 msgid "with generated id"
 msgstr ""
-
+"
 `;
 
-exports[`pofile format should print source message as translation for source locale catalog for explicit id: target locale catalog 1`] = `
-msgid ""
+exports[`pofile format > should print source message as translation for source locale catalog for explicit id > target locale catalog 1`] = `
+"msgid ""
 msgstr ""
 "POT-Creation-Date: 2018-08-27 10:00+0000\\n"
 "MIME-Version: 1.0\\n"
@@ -179,11 +179,11 @@ msgstr ""
 msgctxt "my context"
 msgid "with generated id"
 msgstr ""
-
+"
 `;
 
-exports[`pofile format should print source message as translation for source locale catalog for explicit id: template locale catalog 1`] = `
-msgid ""
+exports[`pofile format > should print source message as translation for source locale catalog for explicit id > template locale catalog 1`] = `
+"msgid ""
 msgstr ""
 "POT-Creation-Date: 2018-08-27 10:00+0000\\n"
 "MIME-Version: 1.0\\n"
@@ -199,142 +199,142 @@ msgstr "with custom id"
 msgctxt "my context"
 msgid "with generated id"
 msgstr ""
-
+"
 `;
 
-exports[`pofile format should read catalog in pofile format 1`] = `
+exports[`pofile format > should read catalog in pofile format 1`] = `
 {
-  obsolete: {
-    comments: [],
-    context: null,
-    extra: {
-      flags: [],
-      translatorComments: [],
+  "obsolete": {
+    "comments": [],
+    "context": null,
+    "extra": {
+      "flags": [],
+      "translatorComments": [],
     },
-    obsolete: true,
-    origin: [],
-    translation: Is marked as obsolete,
+    "obsolete": true,
+    "origin": [],
+    "translation": "Is marked as obsolete",
   },
-  static: {
-    comments: [],
-    context: null,
-    extra: {
-      flags: [],
-      translatorComments: [],
+  "static": {
+    "comments": [],
+    "context": null,
+    "extra": {
+      "flags": [],
+      "translatorComments": [],
     },
-    obsolete: false,
-    origin: [],
-    translation: Static message,
+    "obsolete": false,
+    "origin": [],
+    "translation": "Static message",
   },
-  veryLongString: {
-    comments: [],
-    context: null,
-    extra: {
-      flags: [],
-      translatorComments: [],
+  "veryLongString": {
+    "comments": [],
+    "context": null,
+    "extra": {
+      "flags": [],
+      "translatorComments": [],
     },
-    obsolete: false,
-    origin: [],
-    translation: One morning, when Gregor Samsa woke from troubled dreams, he found himself transformed in his bed into a horrible vermin. He lay on his armour-like back, and if he lifted his head a little he could see his brown belly, slightly domed and divided by arches into stiff sections. The bedding was hardly able to cover it and seemed ready to slide off any moment. His many legs, pitifully thin compared with the size of the rest of him, waved about helplessly as he looked. "What's happened to me?" he thought. It wasn't a dream. His room, a proper human,
+    "obsolete": false,
+    "origin": [],
+    "translation": "One morning, when Gregor Samsa woke from troubled dreams, he found himself transformed in his bed into a horrible vermin. He lay on his armour-like back, and if he lifted his head a little he could see his brown belly, slightly domed and divided by arches into stiff sections. The bedding was hardly able to cover it and seemed ready to slide off any moment. His many legs, pitifully thin compared with the size of the rest of him, waved about helplessly as he looked. "What's happened to me?" he thought. It wasn't a dream. His room, a proper human",
   },
-  withComments: {
-    comments: [],
-    context: null,
-    extra: {
-      flags: [],
-      translatorComments: [
-        Translator comment,
-        This one might come from developer,
+  "withComments": {
+    "comments": [],
+    "context": null,
+    "extra": {
+      "flags": [],
+      "translatorComments": [
+        "Translator comment",
+        "This one might come from developer",
       ],
     },
-    obsolete: false,
-    origin: [],
-    translation: Support translator comments separately,
+    "obsolete": false,
+    "origin": [],
+    "translation": "Support translator comments separately",
   },
-  withDescription: {
-    comments: [
-      Description is comment from developers to translators,
+  "withDescription": {
+    "comments": [
+      "Description is comment from developers to translators",
     ],
-    context: null,
-    extra: {
-      flags: [],
-      translatorComments: [],
+    "context": null,
+    "extra": {
+      "flags": [],
+      "translatorComments": [],
     },
-    obsolete: false,
-    origin: [],
-    translation: Message with description,
+    "obsolete": false,
+    "origin": [],
+    "translation": "Message with description",
   },
-  withMultipleOrigins: {
-    comments: [],
-    context: null,
-    extra: {
-      flags: [],
-      translatorComments: [],
+  "withMultipleOrigins": {
+    "comments": [],
+    "context": null,
+    "extra": {
+      "flags": [],
+      "translatorComments": [],
     },
-    obsolete: false,
-    origin: [
+    "obsolete": false,
+    "origin": [
       [
-        src/App.js,
+        "src/App.js",
         4,
       ],
       [
-        src/Component.js,
+        "src/Component.js",
         2,
       ],
     ],
-    translation: Message with multiple origin,
+    "translation": "Message with multiple origin",
   },
-  withOrigin: {
-    comments: [],
-    context: null,
-    extra: {
-      flags: [],
-      translatorComments: [],
+  "withOrigin": {
+    "comments": [],
+    "context": null,
+    "extra": {
+      "flags": [],
+      "translatorComments": [],
     },
-    obsolete: false,
-    origin: [
+    "obsolete": false,
+    "origin": [
       [
-        src/App.js,
+        "src/App.js",
         4,
       ],
     ],
-    translation: Message with origin,
+    "translation": "Message with origin",
   },
-  xC8QeX: {
-    comments: [
-      js-lingui-id: pXy+hm,
+  "xC8QeX": {
+    "comments": [
+      "js-lingui-id: pXy+hm",
     ],
-    context: null,
-    extra: {
-      flags: [],
-      translatorComments: [],
+    "context": null,
+    "extra": {
+      "flags": [],
+      "translatorComments": [],
     },
-    message: Message with default hash id,
-    obsolete: false,
-    origin: [],
-    translation: Translation for: Message with default-hash id,
+    "message": "Message with default hash id",
+    "obsolete": false,
+    "origin": [],
+    "translation": "Translation for: Message with default-hash id",
   },
-  xLTujh: {
-    comments: [],
-    context: null,
-    extra: {
-      flags: [
-        fuzzy,
-        otherFlag,
-        explicit-id,
+  "xLTujh": {
+    "comments": [],
+    "context": null,
+    "extra": {
+      "flags": [
+        "fuzzy",
+        "otherFlag",
+        "explicit-id",
       ],
-      translatorComments: [],
+      "translatorComments": [],
     },
-    message: withFlags,
-    obsolete: false,
-    origin: [],
-    translation: Keeps any flags that are defined,
+    "message": "withFlags",
+    "obsolete": false,
+    "origin": [],
+    "translation": "Keeps any flags that are defined",
   },
 }
 `;
 
-exports[`pofile format should write catalog in pofile format 1`] = `
-msgid ""
+exports[`pofile format > should write catalog in pofile format 1`] = `
+"msgid ""
 msgstr ""
 "POT-Creation-Date: 2018-08-27 10:00+0000\\n"
 "MIME-Version: 1.0\\n"
@@ -396,5 +396,5 @@ msgstr "One morning, when Gregor Samsa woke from troubled dreams, he found himse
 #. js-lingui-explicit-id
 msgid "withMultiLineComments"
 msgstr "Message with multi line comments"
-
+"
 `;

@@ -2,7 +2,7 @@ import { transformAsync } from "@babel/core"
 import fs from "fs"
 import path from "path"
 import { Plugin } from "esbuild"
-import { babelRe, getBabelParserOptions } from "../api/extractors/babel"
+import { babelRe, getBabelParserOptions } from "../api/extractors/babel.js"
 import linguiMacroPlugin, {
   type LinguiPluginOpts,
 } from "@lingui/babel-plugin-lingui-macro"

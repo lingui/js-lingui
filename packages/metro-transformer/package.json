@@ -4,14 +4,14 @@
   "description": "Metro bundler transformer for LinguiJS catalogs",
   "exports": {
     "./expo": {
+      "types": "./dist/expo/index.d.ts",
       "require": "./dist/expo/index.cjs",
-      "import": "./dist/expo/index.mjs",
-      "types": "./dist/expo/index.d.ts"
+      "import": "./dist/expo/index.mjs"
     },
     "./react-native": {
+      "types": "./dist/react-native/index.d.ts",
       "require": "./dist/react-native/index.cjs",
-      "import": "./dist/react-native/index.mjs",
-      "types": "./dist/react-native/index.d.ts"
+      "import": "./dist/react-native/index.mjs"
     }
   },
   "publishConfig": {
@@ -36,8 +36,8 @@
     "multilingual"
   ],
   "scripts": {
-    "build": "rimraf ./dist && unbuild",
-    "stub": "unbuild --stub"
+    "build": "unbuild",
+    "check-types": "tsc --noEmit"
   },
   "homepage": "https://lingui.dev",
   "repository": {
@@ -64,8 +64,8 @@
   },
   "devDependencies": {
     "@lingui/format-json": "5.9.0",
-    "rimraf": "^6.0.1",
-    "unbuild": "2.0.0"
+    "unbuild": "3.6.1",
+    "vitest": "^3.2.4"
   },
   "peerDependencies": {
     "@expo/metro-config": "*",

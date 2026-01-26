@@ -3,8 +3,8 @@ import { generateMessageId } from "@lingui/message-utils/generateMessageId"
 import {
   createSegmentFromLinguiItem,
   createLinguiItemFromSegment,
-} from "./segment-converters"
-import { TranslationIoSegment } from "./translationio-api"
+} from "./segment-converters.js"
+import { TranslationIoSegment } from "./translationio-api.js"
 
 describe("Segment Converters", () => {
   describe("createSegmentFromLinguiItem", () => {

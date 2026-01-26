@@ -135,32 +135,32 @@ describe("json format", () => {
         sourceLocale: "en",
       })
       expect(actual).toMatchInlineSnapshot(`
-      {
-        "static": {
-          "translation": "Static message"
-        },
-        "withOrigin": {
-          "translation": "Message with origin",
-          "origin": [
-            [
-              "src/App.js"
+        "{
+          "static": {
+            "translation": "Static message"
+          },
+          "withOrigin": {
+            "translation": "Message with origin",
+            "origin": [
+              [
+                "src/App.js"
+              ]
             ]
-          ]
-        },
-        "withMultipleOrigins": {
-          "translation": "Message with multiple origin",
-          "origin": [
-            [
-              "src/App.js"
-            ],
-            [
-              "src/Component.js"
+          },
+          "withMultipleOrigins": {
+            "translation": "Message with multiple origin",
+            "origin": [
+              [
+                "src/App.js"
+              ],
+              [
+                "src/Component.js"
+              ]
             ]
-          ]
+          }
         }
-      }
-
-    `)
+        "
+      `)
     })
   })
 

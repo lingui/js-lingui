@@ -1,4 +1,4 @@
-import { getFallbackListForLocale } from "./getFallbackListForLocale"
+import { getFallbackListForLocale } from "./getFallbackListForLocale.js"
 
 describe("getFallbackListForLocale", () => {
   it("Should return normalized fallback locales for passed locale", () => {

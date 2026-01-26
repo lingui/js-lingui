@@ -10,26 +10,26 @@ import {
   OrderByFn,
 } from "@lingui/conf"
 
-import { FormatterWrapper } from "./formats"
-import { CompiledCatalogNamespace } from "./compile"
+import { FormatterWrapper } from "./formats/index.js"
+import { CompiledCatalogNamespace } from "./compile.js"
 import {
   getTranslationsForCatalog,
   GetTranslationsOptions,
-} from "./catalog/getTranslationsForCatalog"
-import { mergeCatalog } from "./catalog/mergeCatalog"
+} from "./catalog/getTranslationsForCatalog.js"
+import { mergeCatalog } from "./catalog/mergeCatalog.js"
 import {
   extractFromFiles,
   extractFromFilesWithWorkerPool,
-} from "./catalog/extractFromFiles"
+} from "./catalog/extractFromFiles.js"
 import {
   isDirectory,
   makePathRegexSafe,
   normalizeRelativePath,
   replacePlaceholders,
   writeFile,
-} from "./utils"
-import { AllCatalogsType, CatalogType, ExtractedCatalogType } from "./types"
-import { ExtractWorkerPool } from "./extractWorkerPool"
+} from "./utils.js"
+import { AllCatalogsType, CatalogType, ExtractedCatalogType } from "./types.js"
+import { ExtractWorkerPool } from "./extractWorkerPool.js"
 
 const LOCALE = "{locale}"
 const LOCALE_SUFFIX_RE = /\{locale\}.*$/

@@ -3,9 +3,6 @@
   "version": "5.9.0",
   "sideEffects": false,
   "description": "@Lingui package to help you find the correct browser/server locale",
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
   "license": "MIT",
   "keywords": [
     "i18n",
@@ -17,8 +14,8 @@
     "multilingual"
   ],
   "scripts": {
-    "build": "rimraf ./dist && unbuild",
-    "stub": "unbuild --stub"
+    "build": "unbuild",
+    "check-types": "tsc --noEmit"
   },
   "author": {
     "name": "Sergio Moreno",
@@ -37,16 +34,7 @@
     "node": ">=20.0.0"
   },
   "exports": {
-    ".": {
-      "require": {
-        "types": "./dist/index.d.cts",
-        "default": "./dist/index.cjs"
-      },
-      "import": {
-        "types": "./dist/index.d.mts",
-        "default": "./dist/index.mjs"
-      }
-    },
+    ".": "./dist/index.mjs",
     "./package.json": "./package.json"
   },
   "files": [
@@ -55,7 +43,11 @@
     "dist/"
   ],
   "devDependencies": {
-    "jsdom": "^16.4.0",
-    "unbuild": "2.0.0"
+    "happy-dom": "^20.0.10",
+    "unbuild": "3.6.1",
+    "vitest": "^3.2.4"
+  },
+  "unbuild": {
+    "declaration": "true"
   }
 }

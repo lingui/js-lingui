@@ -1,28 +1,30 @@
-import extractTemplateCommand from "../src/lingui-extract-template"
-import extractCommand from "../src/lingui-extract"
-import extractExperimentalCommand from "../src/lingui-extract-experimental"
-import { command as compileCommand } from "../src/lingui-compile"
+import extractTemplateCommand from "../src/lingui-extract-template.js"
+import extractCommand from "../src/lingui-extract.js"
+import extractExperimentalCommand from "../src/lingui-extract-experimental.js"
+import { command as compileCommand } from "../src/lingui-compile.js"
 import fs from "fs/promises"
 import { sync } from "glob"
 import nodepath from "path"
 import { getConfig, makeConfig } from "@lingui/conf"
-import { compareFolders } from "../src/tests"
+import { compareFolders } from "../src/tests.js"
 import { getConsoleMockCalls, mockConsole } from "@lingui/jest-mocks"
-import MockDate from "mockdate"
+import { vi } from "vitest"
 
-jest.mock("ora", () => {
-  return () => {
-    return {
-      start(...args: any) {
-        console.log(args)
-      },
-      succeed(...args: any) {
-        console.log(args)
-      },
-      fail(...args: any) {
-        console.log(args)
-      },
-    }
+vi.mock("ora", () => {
+  return {
+    default: () => {
+      return {
+        start(...args: any) {
+          console.log(args)
+        },
+        succeed(...args: any) {
+          console.log(args)
+        },
+        fail(...args: any) {
+          console.log(args)
+        },
+      }
+    },
   }
 })
 
@@ -50,11 +52,7 @@ async function prepare(caseFolderName: string) {
 
 describe("E2E Extractor Test", () => {
   beforeAll(() => {
-    MockDate.set(new Date("2023-03-15T10:00Z"))
-  })
-
-  afterAll(() => {
-    MockDate.reset()
+    vi.setSystemTime(new Date("2023-03-15T10:00Z"))
   })
 
   it("Should collect messages from files and write catalog in PO format", async () => {

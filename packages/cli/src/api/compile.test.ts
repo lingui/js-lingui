@@ -2,7 +2,7 @@ import {
   compile,
   CompiledCatalogNamespace,
   createCompiledCatalog,
-} from "./compile"
+} from "./compile.js"
 
 describe("compile", () => {
   describe("with pseudo-localization", () => {

@@ -5,21 +5,22 @@ import nodepath from "path"
 
 import { getConfig, LinguiConfigNormalized } from "@lingui/conf"
 
-import { getCatalogs, AllCatalogsType } from "./api"
-import { printStats } from "./api/stats"
-import { helpRun } from "./api/help"
+import { getCatalogs, AllCatalogsType } from "./api/index.js"
+import { printStats } from "./api/stats.js"
+import { helpRun } from "./api/help.js"
 import ora from "ora"
 import normalizePath from "normalize-path"
 import {
   resolveWorkersOptions,
   WorkersOptions,
-} from "./api/resolveWorkersOptions"
+} from "./api/resolveWorkersOptions.js"
 import {
   createExtractWorkerPool,
   ExtractWorkerPool,
-} from "./api/extractWorkerPool"
+} from "./api/extractWorkerPool.js"
 import ms from "ms"
-import { Catalog } from "./api/catalog"
+import { Catalog } from "./api/catalog.js"
+import esMain from "es-main"
 
 export type CliExtractOptions = {
   verbose: boolean
@@ -116,16 +117,20 @@ export default async function command(
   }
 
   // If service key is present in configuration, synchronize with cloud translation platform
-  if (
-    typeof config.service === "object" &&
-    config.service.name &&
-    config.service.name.length
-  ) {
+  if (config.service?.name?.length) {
     const moduleName =
       config.service.name.charAt(0).toLowerCase() + config.service.name.slice(1)
 
+    const services: Record<string, any> = {
+      translationIO: () => import(`./services/translationIO.js`),
+    }
+
+    if (!services[moduleName]) {
+      console.error(`Can't load service module ${moduleName}`)
+    }
+
     try {
-      const module = require(`./services/${moduleName}`)
+      const module = services[moduleName]()
 
       await module
         .default(config, options, extractionResult)
@@ -153,7 +158,7 @@ type CliArgs = {
   workers?: number
 }
 
-if (require.main === module) {
+if (esMain(import.meta)) {
   program
     .option("--config <path>", "Path to the config file")
     .option(

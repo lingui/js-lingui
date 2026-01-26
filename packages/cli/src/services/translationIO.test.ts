@@ -2,27 +2,26 @@ import syncProcess, {
   init,
   writeSegmentsToCatalogs,
   sync,
-} from "./translationIO"
+} from "./translationIO.js"
 import { LinguiConfig, makeConfig, MessageType } from "@lingui/conf"
 import fs from "fs"
 import path from "path"
-import { CliExtractOptions } from "../lingui-extract"
-import MockDate from "mockdate"
+import { CliExtractOptions } from "../lingui-extract.js"
 import {
   createFixtures,
   listingToHumanReadable,
   readFsToListing,
-} from "../tests"
+} from "../tests.js"
 import {
   TranslationIoResponse,
   TranslationIoSegment,
-} from "./translationIO/translationio-api"
+} from "./translationIO/translationio-api.js"
 import { setupServer } from "msw/node"
 import { DefaultBodyType, http, HttpResponse, StrictRequest } from "msw"
-import { getFormat } from "@lingui/cli/api"
-import { Catalog } from "../api/catalog"
+import { getFormat } from "../api/formats/index.js"
+import { Catalog } from "../api/catalog.js"
 import os from "os"
-import { AllCatalogsType } from "../api/types"
+import { AllCatalogsType } from "../api/types.js"
 import { generateMessageId } from "@lingui/message-utils/generateMessageId"
 
 export const mswServer = setupServer()
@@ -363,11 +362,7 @@ describe("TranslationIO Integration", () => {
   let options: CliExtractOptions
 
   beforeAll(() => {
-    MockDate.set(new Date("2023-03-15T10:00Z"))
-  })
-
-  afterAll(() => {
-    MockDate.reset()
+    vi.setSystemTime(new Date("2023-03-15T10:00Z"))
   })
 
   beforeEach(async () => {

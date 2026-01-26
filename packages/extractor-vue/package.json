@@ -2,9 +2,6 @@
   "name": "@lingui/extractor-vue",
   "version": "5.9.0",
   "description": "Custom Vue.js extractor to be used with the CLI tool",
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
   "keywords": [
     "cli",
     "i18n",
@@ -31,8 +28,8 @@
     "email": "christoffer@jahren.it"
   },
   "scripts": {
-    "build": "rimraf ./dist && unbuild",
-    "stub": "unbuild --stub"
+    "build": "unbuild",
+    "check-types": "tsc --noEmit"
   },
   "engines": {
     "node": ">=20.0.0"
@@ -42,6 +39,9 @@
     "README.md",
     "/dist"
   ],
+  "exports": {
+    ".": "./dist/index.mjs"
+  },
   "dependencies": {
     "@lingui/cli": "5.9.0",
     "@lingui/conf": "5.9.0",
@@ -49,6 +49,10 @@
   },
   "devDependencies": {
     "@lingui/babel-plugin-extract-messages": "5.9.0",
-    "unbuild": "2.0.0"
+    "unbuild": "3.6.1",
+    "vitest": "^3.2.4"
+  },
+  "unbuild": {
+    "declaration": "node16"
   }
 }

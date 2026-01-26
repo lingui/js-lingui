@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`correctly process indexed placeholders in few t calls 1`] = `
 import { useLingui } from "@lingui/react/macro";

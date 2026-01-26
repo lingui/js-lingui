@@ -2,6 +2,7 @@
   "name": "extractor-experimental-template",
   "version": "1.0.0",
   "private": true,
+  "type": "module",
   "imports": {
     "#subpath-dep": "./fixtures/components/subpath-import.ts"
   },
