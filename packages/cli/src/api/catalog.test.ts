@@ -542,6 +542,7 @@ describe("cleanObsolete", () => {
   it("should remove obsolete messages from catalog", () => {
     const catalog = {
       Label: makeNextMessage({
+        obsolete: false,
         translation: "Label",
       }),
       PreviousLabel: makeNextMessage({

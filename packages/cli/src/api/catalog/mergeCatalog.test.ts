@@ -143,15 +143,11 @@ describe("mergeCatalog", () => {
       }),
     }
     const nextCatalog: ExtractedCatalogType = {}
-    expect(
-      mergeCatalog(prevCatalog, nextCatalog, false, {
-        files: ["file"],
-      })
-    ).toEqual({
-      "msg.hello": expect.objectContaining({
-        obsolete: false,
-      }),
+    const mergedCatalog = mergeCatalog(prevCatalog, nextCatalog, false, {
+      files: ["file"],
     })
+
+    expect(mergedCatalog["msg.hello"]!.obsolete).toBeFalsy()
   })
 
   it("should keep message extra from the previous catalog", () => {

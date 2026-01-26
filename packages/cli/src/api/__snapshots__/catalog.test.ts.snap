@@ -1511,7 +1511,6 @@ exports[`order > should order messages alphabetically 1`] = `
 {
   LabelA: {
     comments: [],
-    obsolete: false,
     origin: [
       [
         catalog.test.ts,
@@ -1523,7 +1522,6 @@ exports[`order > should order messages alphabetically 1`] = `
   },
   LabelB: {
     comments: [],
-    obsolete: false,
     origin: [
       [
         catalog.test.ts,
@@ -1535,7 +1533,6 @@ exports[`order > should order messages alphabetically 1`] = `
   },
   LabelC: {
     comments: [],
-    obsolete: false,
     origin: [
       [
         catalog.test.ts,
@@ -1547,7 +1544,6 @@ exports[`order > should order messages alphabetically 1`] = `
   },
   LabelD: {
     comments: [],
-    obsolete: false,
     origin: [
       [
         catalog.test.ts,
@@ -1573,7 +1569,6 @@ exports[`order > should order messages by origin 1`] = `
 {
   LabelA: {
     comments: [],
-    obsolete: false,
     origin: [
       [
         file2.js,
@@ -1585,7 +1580,6 @@ exports[`order > should order messages by origin 1`] = `
   },
   LabelB: {
     comments: [],
-    obsolete: false,
     origin: [
       [
         file1.js,
@@ -1601,7 +1595,6 @@ exports[`order > should order messages by origin 1`] = `
   },
   LabelC: {
     comments: [],
-    obsolete: false,
     origin: [
       [
         file1.js,
@@ -1613,7 +1606,6 @@ exports[`order > should order messages by origin 1`] = `
   },
   LabelD: {
     comments: [],
-    obsolete: false,
     origin: [
       [
         file2.js,
