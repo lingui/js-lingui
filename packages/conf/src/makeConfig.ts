@@ -81,7 +81,6 @@ export const defaultConfig = {
     jsxPackage: ["@lingui/macro", "@lingui/react/macro"],
   },
   sourceLocale: "",
-  service: { name: "", apiKey: "" },
 } satisfies LinguiConfig
 
 export const exampleConfig = {
