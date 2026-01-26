@@ -1,4 +1,4 @@
-import { mockConsole } from "@lingui/jest-mocks"
+import { mockConsole } from "@lingui/test-utils"
 import { compileMessage } from "./compileMessage"
 
 describe("compileMessage", () => {

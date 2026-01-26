@@ -1,6 +1,6 @@
 import { command } from "../lingui-compile.js"
 import { getConfig, LinguiConfig, makeConfig } from "@lingui/conf"
-import { getConsoleMockCalls, mockConsole } from "@lingui/jest-mocks"
+import { getConsoleMockCalls, mockConsole } from "@lingui/test-utils"
 import { createFixtures, readFsToListing } from "../tests.js"
 
 describe("CLI Command: Compile", () => {

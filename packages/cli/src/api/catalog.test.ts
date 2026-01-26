@@ -1,7 +1,7 @@
 import fs from "fs"
 import path from "path"
 import mockFs from "mock-fs"
-import { mockConsole } from "@lingui/jest-mocks"
+import { mockConsole } from "@lingui/test-utils"
 import { LinguiConfig, makeConfig } from "@lingui/conf"
 
 import { Catalog, cleanObsolete, order, writeCompiled } from "./catalog.js"

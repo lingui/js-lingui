@@ -64,7 +64,7 @@
     "tstyche": "^4.0.0",
     "typescript": "^5.7.2",
     "typescript-eslint": "^8.18.1",
-    "vitest": "^3.2.4"
+    "vitest": "3.2.4"
   },
   "workspaces": [
     "packages/*",

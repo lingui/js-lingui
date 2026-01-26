@@ -1,5 +1,5 @@
 import { setupI18n } from "./i18n"
-import { mockConsole, mockEnv } from "@lingui/jest-mocks"
+import { mockConsole, mockEnv } from "@lingui/test-utils"
 import { compileMessage } from "@lingui/message-utils/compileMessage"
 
 describe("I18n", () => {

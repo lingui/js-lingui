@@ -52,7 +52,7 @@
     "@lingui/message-utils": "5.9.0"
   },
   "devDependencies": {
-    "@lingui/jest-mocks": "*",
+    "@lingui/test-utils": "workspace:*",
     "unbuild": "3.6.1",
     "vitest": "3.2.4"
   },

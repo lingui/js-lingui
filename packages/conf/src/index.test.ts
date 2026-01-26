@@ -1,7 +1,7 @@
 import path from "path"
 import { getConfig } from "./getConfig"
 import { makeConfig } from "./makeConfig"
-import { mockConsole, getConsoleMockCalls } from "@lingui/jest-mocks"
+import { mockConsole, getConsoleMockCalls } from "@lingui/test-utils"
 import { defineConfig } from "./defineConfig"
 import { LinguiConfig } from "./types"
 

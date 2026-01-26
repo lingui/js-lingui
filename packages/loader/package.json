@@ -51,7 +51,7 @@
     "@lingui/format-json": "5.9.0",
     "jiti": "^2.6.1",
     "unbuild": "3.6.1",
-    "vitest": "^3.2.4",
+    "vitest": "3.2.4",
     "webpack": "^5.76.1"
   },
   "peerDependencies": {

@@ -1,4 +1,4 @@
-import { mockConsole } from "@lingui/jest-mocks"
+import { mockConsole } from "@lingui/test-utils"
 import fs from "fs"
 import path from "path"
 

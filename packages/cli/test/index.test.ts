@@ -7,7 +7,7 @@ import { sync } from "glob"
 import nodepath from "path"
 import { getConfig, makeConfig } from "@lingui/conf"
 import { compareFolders } from "../src/tests.js"
-import { getConsoleMockCalls, mockConsole } from "@lingui/jest-mocks"
+import { getConsoleMockCalls, mockConsole } from "@lingui/test-utils"
 import { vi } from "vitest"
 
 vi.mock("ora", () => {

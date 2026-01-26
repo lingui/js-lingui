@@ -2,7 +2,7 @@ import path from "path"
 import fs from "fs"
 import { transform as babelTransform } from "@babel/core"
 import plugin, { ExtractedMessage, ExtractPluginOpts } from "../src/index"
-import { mockConsole } from "@lingui/jest-mocks"
+import { mockConsole } from "@lingui/test-utils"
 import linguiMacroPlugin, {
   type LinguiPluginOpts,
 } from "@lingui/babel-plugin-lingui-macro"
