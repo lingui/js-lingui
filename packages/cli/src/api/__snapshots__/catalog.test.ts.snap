@@ -344,7 +344,7 @@ exports[`Catalog > make > should collect and write catalogs 2`] = `
   cs: {
     Component A: {
       comments: [],
-      context: null,
+      context: undefined,
       extra: {
         flags: [],
         translatorComments: [],
@@ -364,7 +364,7 @@ exports[`Catalog > make > should collect and write catalogs 2`] = `
         Comment A again,
         Hello comment,
       ],
-      context: null,
+      context: undefined,
       extra: {
         flags: [],
         translatorComments: [],
@@ -388,7 +388,7 @@ exports[`Catalog > make > should collect and write catalogs 2`] = `
     },
     custom.id: {
       comments: [],
-      context: null,
+      context: undefined,
       extra: {
         flags: [],
         translatorComments: [],
@@ -406,7 +406,7 @@ exports[`Catalog > make > should collect and write catalogs 2`] = `
   en: {
     Component A: {
       comments: [],
-      context: null,
+      context: undefined,
       extra: {
         flags: [],
         translatorComments: [],
@@ -426,7 +426,7 @@ exports[`Catalog > make > should collect and write catalogs 2`] = `
         Comment A again,
         Hello comment,
       ],
-      context: null,
+      context: undefined,
       extra: {
         flags: [],
         translatorComments: [],
@@ -450,7 +450,7 @@ exports[`Catalog > make > should collect and write catalogs 2`] = `
     },
     custom.id: {
       comments: [],
-      context: null,
+      context: undefined,
       extra: {
         flags: [],
         translatorComments: [],
@@ -473,7 +473,7 @@ exports[`Catalog > make > should merge with existing catalogs 1`] = `
   cs: {
     mY42CM: {
       comments: [],
-      context: null,
+      context: undefined,
       extra: {
         flags: [],
         translatorComments: [],
@@ -487,7 +487,7 @@ exports[`Catalog > make > should merge with existing catalogs 1`] = `
   en: {
     mY42CM: {
       comments: [],
-      context: null,
+      context: undefined,
       extra: {
         flags: [],
         translatorComments: [],
@@ -506,7 +506,7 @@ exports[`Catalog > make > should merge with existing catalogs 2`] = `
   cs: {
     Component A: {
       comments: [],
-      context: null,
+      context: undefined,
       extra: {
         flags: [],
         translatorComments: [],
@@ -522,7 +522,7 @@ exports[`Catalog > make > should merge with existing catalogs 2`] = `
     },
     Component B: {
       comments: [],
-      context: null,
+      context: undefined,
       extra: {
         flags: [],
         translatorComments: [],
@@ -538,7 +538,7 @@ exports[`Catalog > make > should merge with existing catalogs 2`] = `
     },
     Component C: {
       comments: [],
-      context: null,
+      context: undefined,
       extra: {
         flags: [],
         translatorComments: [],
@@ -554,7 +554,7 @@ exports[`Catalog > make > should merge with existing catalogs 2`] = `
     },
     Component D: {
       comments: [],
-      context: null,
+      context: undefined,
       extra: {
         flags: [],
         translatorComments: [],
@@ -570,7 +570,7 @@ exports[`Catalog > make > should merge with existing catalogs 2`] = `
     },
     Component E: {
       comments: [],
-      context: null,
+      context: undefined,
       extra: {
         flags: [],
         translatorComments: [],
@@ -590,7 +590,7 @@ exports[`Catalog > make > should merge with existing catalogs 2`] = `
         Comment A again,
         Hello comment,
       ],
-      context: null,
+      context: undefined,
       extra: {
         flags: [],
         translatorComments: [],
@@ -614,7 +614,7 @@ exports[`Catalog > make > should merge with existing catalogs 2`] = `
     },
     custom.id: {
       comments: [],
-      context: null,
+      context: undefined,
       extra: {
         flags: [],
         translatorComments: [],
@@ -630,7 +630,7 @@ exports[`Catalog > make > should merge with existing catalogs 2`] = `
     },
     mY42CM: {
       comments: [],
-      context: null,
+      context: undefined,
       extra: {
         flags: [],
         translatorComments: [],
@@ -644,7 +644,7 @@ exports[`Catalog > make > should merge with existing catalogs 2`] = `
   en: {
     Component A: {
       comments: [],
-      context: null,
+      context: undefined,
       extra: {
         flags: [],
         translatorComments: [],
@@ -660,7 +660,7 @@ exports[`Catalog > make > should merge with existing catalogs 2`] = `
     },
     Component B: {
       comments: [],
-      context: null,
+      context: undefined,
       extra: {
         flags: [],
         translatorComments: [],
@@ -676,7 +676,7 @@ exports[`Catalog > make > should merge with existing catalogs 2`] = `
     },
     Component C: {
       comments: [],
-      context: null,
+      context: undefined,
       extra: {
         flags: [],
         translatorComments: [],
@@ -692,7 +692,7 @@ exports[`Catalog > make > should merge with existing catalogs 2`] = `
     },
     Component D: {
       comments: [],
-      context: null,
+      context: undefined,
       extra: {
         flags: [],
         translatorComments: [],
@@ -708,7 +708,7 @@ exports[`Catalog > make > should merge with existing catalogs 2`] = `
     },
     Component E: {
       comments: [],
-      context: null,
+      context: undefined,
       extra: {
         flags: [],
         translatorComments: [],
@@ -728,7 +728,7 @@ exports[`Catalog > make > should merge with existing catalogs 2`] = `
         Comment A again,
         Hello comment,
       ],
-      context: null,
+      context: undefined,
       extra: {
         flags: [],
         translatorComments: [],
@@ -752,7 +752,7 @@ exports[`Catalog > make > should merge with existing catalogs 2`] = `
     },
     custom.id: {
       comments: [],
-      context: null,
+      context: undefined,
       extra: {
         flags: [],
         translatorComments: [],
@@ -768,7 +768,7 @@ exports[`Catalog > make > should merge with existing catalogs 2`] = `
     },
     mY42CM: {
       comments: [],
-      context: null,
+      context: undefined,
       extra: {
         flags: [],
         translatorComments: [],
@@ -795,7 +795,7 @@ exports[`Catalog > make > should only update the specified locale 2`] = `
   en: {
     Component A: {
       comments: [],
-      context: null,
+      context: undefined,
       extra: {
         flags: [],
         translatorComments: [],
@@ -815,7 +815,7 @@ exports[`Catalog > make > should only update the specified locale 2`] = `
         Comment A again,
         Hello comment,
       ],
-      context: null,
+      context: undefined,
       extra: {
         flags: [],
         translatorComments: [],
@@ -839,7 +839,7 @@ exports[`Catalog > make > should only update the specified locale 2`] = `
     },
     custom.id: {
       comments: [],
-      context: null,
+      context: undefined,
       extra: {
         flags: [],
         translatorComments: [],
@@ -861,7 +861,7 @@ exports[`Catalog > makeTemplate > should collect and write a template 1`] = `
 {
   Component A: {
     comments: [],
-    context: null,
+    context: undefined,
     extra: {
       flags: [],
       translatorComments: [],
@@ -881,7 +881,7 @@ exports[`Catalog > makeTemplate > should collect and write a template 1`] = `
       Comment A again,
       Hello comment,
     ],
-    context: null,
+    context: undefined,
     extra: {
       flags: [],
       translatorComments: [],
@@ -905,7 +905,7 @@ exports[`Catalog > makeTemplate > should collect and write a template 1`] = `
   },
   custom.id: {
     comments: [],
-    context: null,
+    context: undefined,
     extra: {
       flags: [],
       translatorComments: [],
@@ -917,7 +917,7 @@ exports[`Catalog > makeTemplate > should collect and write a template 1`] = `
         4,
       ],
     ],
-    translation: ,
+    translation: Message with id,
   },
 }
 `;
@@ -926,7 +926,7 @@ exports[`Catalog > read > should read file in given format 1`] = `
 {
   obsolete: {
     comments: [],
-    context: null,
+    context: undefined,
     extra: {
       flags: [],
       translatorComments: [],
@@ -937,7 +937,7 @@ exports[`Catalog > read > should read file in given format 1`] = `
   },
   static: {
     comments: [],
-    context: null,
+    context: undefined,
     extra: {
       flags: [],
       translatorComments: [],
@@ -948,7 +948,7 @@ exports[`Catalog > read > should read file in given format 1`] = `
   },
   veryLongString: {
     comments: [],
-    context: null,
+    context: undefined,
     extra: {
       flags: [],
       translatorComments: [],
@@ -959,7 +959,7 @@ exports[`Catalog > read > should read file in given format 1`] = `
   },
   withComments: {
     comments: [],
-    context: null,
+    context: undefined,
     extra: {
       flags: [],
       translatorComments: [
@@ -975,7 +975,7 @@ exports[`Catalog > read > should read file in given format 1`] = `
     comments: [
       Description is comment from developers to translators,
     ],
-    context: null,
+    context: undefined,
     extra: {
       flags: [],
       translatorComments: [],
@@ -986,7 +986,7 @@ exports[`Catalog > read > should read file in given format 1`] = `
   },
   withMultipleOrigins: {
     comments: [],
-    context: null,
+    context: undefined,
     extra: {
       flags: [],
       translatorComments: [],
@@ -1006,7 +1006,7 @@ exports[`Catalog > read > should read file in given format 1`] = `
   },
   withOrigin: {
     comments: [],
-    context: null,
+    context: undefined,
     extra: {
       flags: [],
       translatorComments: [],
@@ -1024,7 +1024,7 @@ exports[`Catalog > read > should read file in given format 1`] = `
     comments: [
       js-lingui-id: pXy+hm,
     ],
-    context: null,
+    context: undefined,
     extra: {
       flags: [],
       translatorComments: [],
@@ -1036,7 +1036,7 @@ exports[`Catalog > read > should read file in given format 1`] = `
   },
   xLTujh: {
     comments: [],
-    context: null,
+    context: undefined,
     extra: {
       flags: [
         fuzzy,
@@ -1058,7 +1058,7 @@ exports[`Catalog > readAll > should read existing catalogs for all locales 1`] =
   cs: {
     mY42CM: {
       comments: [],
-      context: null,
+      context: undefined,
       extra: {
         flags: [],
         translatorComments: [],
@@ -1072,7 +1072,7 @@ exports[`Catalog > readAll > should read existing catalogs for all locales 1`] =
   en: {
     mY42CM: {
       comments: [],
-      context: null,
+      context: undefined,
       extra: {
         flags: [],
         translatorComments: [],
