@@ -16,7 +16,7 @@
     "mock"
   ],
   "dependencies": {
-    "vitest": "3.2.4"
+    "vitest": "4.0.18"
   },
   "homepage": "https://lingui.dev",
   "repository": {

@@ -98,6 +98,6 @@
     "@types/normalize-path": "^3.0.0",
     "mock-fs": "^5.2.0",
     "msw": "^2.12.7",
-    "vitest": "3.2.4"
+    "vitest": "4.0.18"
   }
 }
