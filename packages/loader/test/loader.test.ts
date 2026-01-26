@@ -18,7 +18,7 @@ describe("lingui-loader", () => {
 
   it("should compile catalog in json format", async () => {
     const built = await build(
-      path.join(__dirname, "./json-format/entrypoint.js")
+      path.join(__dirname, "./json-format/entrypoint.js"),
     )
 
     expect(built.stats.errors).toEqual([])
@@ -30,7 +30,7 @@ describe("lingui-loader", () => {
 
   it("should compile catalog with relative path with no warnings", async () => {
     const built = await build(
-      path.join(__dirname, "./relative-catalog-path/entrypoint.js")
+      path.join(__dirname, "./relative-catalog-path/entrypoint.js"),
     )
 
     expect(built.stats.errors).toEqual([])
@@ -42,11 +42,11 @@ describe("lingui-loader", () => {
 
   it("should throw an error when requested catalog don't belong to lingui config", async () => {
     const built = await build(
-      path.join(__dirname, "./not-known-catalog/entrypoint.js")
+      path.join(__dirname, "./not-known-catalog/entrypoint.js"),
     )
 
     expect(built.stats.errors![0]!.message).toContain(
-      "is not matched to any of your catalogs paths"
+      "is not matched to any of your catalogs paths",
     )
     expect(built.stats.warnings).toEqual([])
   })
@@ -56,11 +56,11 @@ describe("lingui-loader", () => {
       path.join(__dirname, "./fail-on-missing/entrypoint.js"),
       {
         failOnMissing: true,
-      }
+      },
     )
 
     expect(built.stats.errors![0]!.message).toContain(
-      "Missing 1 translation(s):"
+      "Missing 1 translation(s):",
     )
     expect(built.stats.warnings).toEqual([])
   })
@@ -70,7 +70,7 @@ describe("lingui-loader", () => {
       path.join(__dirname, "./fail-on-missing-pseudo/entrypoint.js"),
       {
         failOnMissing: true,
-      }
+      },
     )
     expect(built.stats.errors).toEqual([])
     expect(built.stats.warnings).toEqual([])
@@ -81,10 +81,10 @@ describe("lingui-loader", () => {
       path.join(__dirname, "./fail-on-compile-errors/entrypoint.js"),
       {
         failOnCompileError: true,
-      }
+      },
     )
     expect(built.stats.errors![0]!.message).toContain(
-      "Compilation error for 2 translation(s)"
+      "Compilation error for 2 translation(s)",
     )
     expect(built.stats.warnings).toEqual([])
   })
@@ -94,10 +94,10 @@ describe("lingui-loader", () => {
       path.join(__dirname, "./fail-on-compile-errors/entrypoint.js"),
       {
         failOnCompileError: false,
-      }
+      },
     )
     expect(built.stats.warnings![0]!.message).toContain(
-      "Compilation error for 2 translation(s)"
+      "Compilation error for 2 translation(s)",
     )
     expect(built.stats.errors).toEqual([])
   })
@@ -137,7 +137,7 @@ msgstr ""
 
 msgid "String from template changes!"
 msgstr ""
-`
+`,
     )
 
     const stats2 = await watching.build()
@@ -167,7 +167,7 @@ msgstr ""
 
 async function copyFixture(srcPath: string) {
   const fixtureTempPath = mkdtempSync(
-    path.join(os.tmpdir(), `lingui-test-fixture-${process.pid}`)
+    path.join(os.tmpdir(), `lingui-test-fixture-${process.pid}`),
   )
 
   await fs.cp(srcPath, fixtureTempPath, {

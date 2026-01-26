@@ -11,7 +11,7 @@ const DEFAULT_EXTRACTORS: ExtractorType[] = [babel]
 export default async function extract(
   filename: string,
   onMessageExtracted: (msg: ExtractedMessage) => void,
-  linguiConfig: LinguiConfigNormalized
+  linguiConfig: LinguiConfigNormalized,
 ): Promise<boolean> {
   const extractorsToExtract = linguiConfig.extractors ?? DEFAULT_EXTRACTORS
 

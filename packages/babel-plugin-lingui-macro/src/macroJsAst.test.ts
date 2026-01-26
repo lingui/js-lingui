@@ -21,7 +21,7 @@ const parseExpression = (expression: string) => {
       {
         visitor: {
           "CallExpression|TaggedTemplateExpression": (
-            d: NodePath<Expression>
+            d: NodePath<Expression>,
           ) => {
             path = d
             d.stop()
@@ -40,7 +40,7 @@ function createMacroCtx() {
       return identifier.name === macro
     },
     false, // stripNonEssentialProps
-    false // stripMessageProp
+    false, // stripMessageProp
   )
 }
 
@@ -150,7 +150,7 @@ describe("js macro", () => {
 
     it("message with double escaped literals it's stripped", () => {
       const exp = parseExpression(
-        "t`Passing \\`${argSet}\\` is not supported.`"
+        "t`Passing \\`${argSet}\\` is not supported.`",
       )
       const tokens = tokenizeTemplateLiteral(exp.node, createMacroCtx())
       expect(tokens).toMatchObject([
@@ -180,12 +180,12 @@ describe("js macro", () => {
   describe("tokenizeChoiceComponent", () => {
     it("plural", () => {
       const exp = parseExpression(
-        "plural(count, { one: '# book', other: '# books'})"
+        "plural(count, { one: '# book', other: '# books'})",
       )
       const tokens = tokenizeChoiceComponent(
         (exp as NodePath<CallExpression>).node,
         JsMacroName.plural,
-        createMacroCtx()
+        createMacroCtx(),
       )
       expect(tokens).toEqual({
         type: "arg",
@@ -209,12 +209,12 @@ describe("js macro", () => {
           0: 'No books',
           one: '# book',
           other: '# books'
-         })`
+         })`,
       )
       const tokens = tokenizeChoiceComponent(
         (exp as NodePath<CallExpression>).node,
         JsMacroName.plural,
-        createMacroCtx()
+        createMacroCtx(),
       )
       expect(tokens).toEqual({
         type: "arg",
@@ -235,12 +235,12 @@ describe("js macro", () => {
 
     it("plural with template literal", () => {
       const exp = parseExpression(
-        "plural(count, { one: `# glass of ${drink}`, other: `# glasses of ${drink}`})"
+        "plural(count, { one: `# glass of ${drink}`, other: `# glasses of ${drink}`})",
       )
       const tokens = tokenizeChoiceComponent(
         (exp as NodePath<CallExpression>).node,
         JsMacroName.plural,
-        createMacroCtx()
+        createMacroCtx(),
       )
       expect(tokens).toEqual({
         type: "arg",
@@ -292,12 +292,12 @@ describe("js macro", () => {
             other: "they"
           }),
           other: otherText
-        })`
+        })`,
       )
       const tokens = tokenizeChoiceComponent(
         (exp as NodePath<CallExpression>).node,
         JsMacroName.plural,
-        createMacroCtx()
+        createMacroCtx(),
       )
       expect(tokens).toEqual({
         type: "arg",
@@ -349,12 +349,12 @@ describe("js macro", () => {
           male: "he",
           female: "she",
           other: "they"
-        })`
+        })`,
       )
       const tokens = tokenizeChoiceComponent(
         (exp as NodePath<CallExpression>).node,
         JsMacroName.select,
-        createMacroCtx()
+        createMacroCtx(),
       )
       expect(tokens).toMatchObject({
         format: "select",

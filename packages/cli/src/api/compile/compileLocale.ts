@@ -18,7 +18,7 @@ export async function compileLocale(
   options: CliCompileOptions,
   config: LinguiConfigNormalized,
   doMerge: boolean,
-  logger: Logger
+  logger: Logger,
 ) {
   let mergedCatalogs: Record<string, string> = {}
 
@@ -36,8 +36,8 @@ export async function compileLocale(
     ) {
       logger.error(
         pico.red(
-          `Error: Failed to compile catalog for locale ${pico.bold(locale)}!`
-        )
+          `Error: Failed to compile catalog for locale ${pico.bold(locale)}!`,
+        ),
       )
 
       if (options.verbose) {
@@ -52,7 +52,7 @@ export async function compileLocale(
         })
       } else {
         logger.error(
-          pico.red(`Missing ${missingMessages.length} translation(s)`)
+          pico.red(`Missing ${missingMessages.length} translation(s)`),
         )
       }
       logger.error("")
@@ -69,7 +69,7 @@ export async function compileLocale(
           options,
           catalog.path,
           messages,
-          logger
+          logger,
         ))
       ) {
         throw new ProgramExit()
@@ -84,7 +84,7 @@ export async function compileLocale(
       options,
       await getMergedCatalogPath(config),
       mergedCatalogs,
-      logger
+      logger,
     )
 
     if (!result) {
@@ -99,7 +99,7 @@ async function compileAndWrite(
   options: CliCompileOptions,
   writePath: string,
   messages: Record<string, string>,
-  logger: Logger
+  logger: Logger,
 ): Promise<boolean> {
   const namespace = options.typescript
     ? "ts"
@@ -113,7 +113,7 @@ async function compileAndWrite(
       outputPrefix: options.outputPrefix,
       pseudoLocale: config.pseudoLocale,
       compilerBabelOptions: config.compilerBabelOptions,
-    }
+    },
   )
 
   if (errors.length) {
@@ -133,7 +133,7 @@ async function compileAndWrite(
     writePath,
     locale,
     compiledCatalog,
-    namespace
+    namespace,
   )
 
   compiledPath = normalizePath(nodepath.relative(config.rootDir, compiledPath))

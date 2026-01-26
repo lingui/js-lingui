@@ -16,6 +16,6 @@ export const decodeEscapeSequences = (str: string) => {
         const codePoint = parseInt(hex, 16)
         return String.fromCharCode(codePoint)
       }
-    }
+    },
   )
 }

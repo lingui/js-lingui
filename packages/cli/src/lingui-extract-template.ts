@@ -24,7 +24,7 @@ export type CliExtractTemplateOptions = {
 
 export default async function command(
   config: LinguiConfigNormalized,
-  options: CliExtractTemplateOptions
+  options: CliExtractTemplateOptions,
 ): Promise<boolean> {
   options.verbose && console.log("Extracting messages from source files…")
   const catalogs = await getCatalogs(config)
@@ -53,12 +53,12 @@ export default async function command(
         if (result) {
           catalogStats[
             normalizePath(
-              nodepath.relative(config.rootDir, catalog.templateFile)
+              nodepath.relative(config.rootDir, catalog.templateFile),
             )
           ] = Object.keys(result).length
         }
         commandSuccess &&= Boolean(result)
-      })
+      }),
     )
   } finally {
     if (workerPool) {
@@ -67,7 +67,7 @@ export default async function command(
   }
   Object.entries(catalogStats).forEach(([key, value]) => {
     console.log(
-      `Catalog statistics for ${pico.bold(key)}: ${pico.green(value)} messages`
+      `Catalog statistics for ${pico.bold(key)}: ${pico.green(value)} messages`,
     )
     console.log()
   })
@@ -87,7 +87,7 @@ if (esMain(import.meta)) {
     .option("--verbose", "Verbose output")
     .option(
       "--workers <n>",
-      "Number of worker threads to use (default: CPU count - 1, capped at 8). Pass `--workers 1` to disable worker threads and run everything in a single process"
+      "Number of worker threads to use (default: CPU count - 1, capped at 8). Pass `--workers 1` to disable worker threads and run everything in a single process",
     )
     .parse(process.argv)
 

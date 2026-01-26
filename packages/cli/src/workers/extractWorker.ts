@@ -11,7 +11,7 @@ let linguiConfig: LinguiConfigNormalized | undefined
 
 export const extractWorker = async (
   filename: string,
-  linguiConfigPath: string
+  linguiConfigPath: string,
 ): Promise<{ messages: ExtractedMessage[]; success: boolean }> => {
   if (!linguiConfig) {
     // initialize config once per worker, speed up workers follow execution
@@ -28,7 +28,7 @@ export const extractWorker = async (
     (msg: ExtractedMessage) => {
       messages.push(msg)
     },
-    linguiConfig
+    linguiConfig,
   )
 
   return { success, messages }

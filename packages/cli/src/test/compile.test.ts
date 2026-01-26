@@ -483,10 +483,10 @@ msgstr "Witaj świecie"
         const actualFiles = readFsToListing(rootDir)
 
         expect(actualFiles["en.js"]).toContain(
-          "/*biome-ignore lint: auto-generated*/"
+          "/*biome-ignore lint: auto-generated*/",
         )
         expect(actualFiles["pl.js"]).toContain(
-          "/*biome-ignore lint: auto-generated*/"
+          "/*biome-ignore lint: auto-generated*/",
         )
         expect(actualFiles["en.js"]).not.toContain("eslint-disable")
         expect(actualFiles["pl.js"]).not.toContain("eslint-disable")

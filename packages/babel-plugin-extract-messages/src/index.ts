@@ -39,7 +39,7 @@ export type Origin = [filename: string, line: number, column?: number]
 function collectMessage(
   path: NodePath<any>,
   props: RawMessage,
-  ctx: PluginPass
+  ctx: PluginPass,
 ) {
   // prevent from adding undefined msgid
   if (props.id === undefined) return
@@ -65,7 +65,7 @@ function getTextFromExpression(
   t: BabelTypes,
   exp: Expression,
   hub: Hub,
-  emitErrorOnVariable = true
+  emitErrorOnVariable = true,
 ): string {
   if (t.isStringLiteral(exp)) {
     return exp.value
@@ -77,13 +77,13 @@ function getTextFromExpression(
         t,
         exp.left as Expression,
         hub,
-        emitErrorOnVariable
+        emitErrorOnVariable,
       ) +
       getTextFromExpression(
         t,
         exp.right as Expression,
         hub,
-        emitErrorOnVariable
+        emitErrorOnVariable,
       )
     )
   }
@@ -94,8 +94,8 @@ function getTextFromExpression(
         hub.buildError(
           exp,
           "Could not extract from template literal with expressions.",
-          SyntaxError
-        ).message
+          SyntaxError,
+        ).message,
       )
       return ""
     }
@@ -108,8 +108,8 @@ function getTextFromExpression(
       hub.buildError(
         exp,
         "Only strings or template literals could be extracted.",
-        SyntaxError
-      ).message
+        SyntaxError,
+      ).message,
     )
   }
 
@@ -123,7 +123,7 @@ function getNodeSource(fileContents: string, node: Node) {
 function valuesObjectExpressionToPlaceholdersRecord(
   t: BabelTypes,
   exp: ObjectExpression,
-  hub: Hub
+  hub: Hub,
 ) {
   const props: Record<string, string> = {}
 
@@ -139,8 +139,8 @@ function valuesObjectExpressionToPlaceholdersRecord(
         hub.buildError(
           exp,
           `Could not extract values to placeholders. The key #${i} has unsupported syntax`,
-          SyntaxError
-        ).message
+          SyntaxError,
+        ).message,
       )
     }
 
@@ -155,7 +155,7 @@ function valuesObjectExpressionToPlaceholdersRecord(
 function extractFromObjectExpression(
   t: BabelTypes,
   exp: ObjectExpression,
-  hub: Hub
+  hub: Hub,
 ) {
   const props: RawMessage = {}
 
@@ -168,13 +168,13 @@ function extractFromObjectExpression(
       props.placeholders = valuesObjectExpressionToPlaceholdersRecord(
         t,
         value,
-        hub
+        hub,
       )
     } else if (textKeys.includes(name as any)) {
       props[name as (typeof textKeys)[number]] = getTextFromExpression(
         t,
         value as Expression,
-        hub
+        hub,
       )
     }
   })
@@ -217,13 +217,13 @@ export default function ({ types: t }: { types: BabelTypes }): PluginObj {
 
   const extractFromMessageDescriptor = (
     path: NodePath<ObjectExpression>,
-    ctx: PluginPass
+    ctx: PluginPass,
   ) => {
     const props = extractFromObjectExpression(t, path.node, ctx.file.hub)
 
     if (!props.id) {
       console.warn(
-        path.buildCodeFrameError("Missing message ID, skipping.").message
+        path.buildCodeFrameError("Missing message ID, skipping.").message,
       )
       return
     }
@@ -243,7 +243,7 @@ export default function ({ types: t }: { types: BabelTypes }): PluginObj {
         if (
           attrs.find(
             (attr) =>
-              t.isJSXSpreadAttribute(attr) && hasI18nComment(attr.argument)
+              t.isJSXSpreadAttribute(attr) && hasI18nComment(attr.argument),
           )
         ) {
           return
@@ -279,7 +279,7 @@ export default function ({ types: t }: { types: BabelTypes }): PluginObj {
             acc.placeholders = valuesObjectExpressionToPlaceholdersRecord(
               t,
               item.value.expression,
-              ctx.file.hub
+              ctx.file.hub,
             )
           }
 
@@ -289,11 +289,11 @@ export default function ({ types: t }: { types: BabelTypes }): PluginObj {
         if (!props.id) {
           // <Trans id={message} /> is valid, don't raise warning
           const idProp = attrs.filter(
-            (item) => t.isJSXAttribute(item) && item.name.name === "id"
+            (item) => t.isJSXAttribute(item) && item.name.name === "id",
           )[0]
           if (idProp === undefined || t.isLiteral(props.id as any)) {
             console.warn(
-              path.buildCodeFrameError("Missing message ID, skipping.").message
+              path.buildCodeFrameError("Missing message ID, skipping.").message,
             )
           }
           return
@@ -333,7 +333,7 @@ export default function ({ types: t }: { types: BabelTypes }): PluginObj {
               t,
               firstArgument.node as Expression,
               ctx.file.hub,
-              false
+              false,
             ),
           }
 
@@ -346,7 +346,7 @@ export default function ({ types: t }: { types: BabelTypes }): PluginObj {
             props.placeholders = valuesObjectExpressionToPlaceholdersRecord(
               t,
               secondArgument,
-              ctx.file.hub
+              ctx.file.hub,
             )
           }
 
@@ -374,7 +374,7 @@ export default function ({ types: t }: { types: BabelTypes }): PluginObj {
 
         if (!props.id) {
           console.warn(
-            path.buildCodeFrameError("Empty StringLiteral, skipping.").message
+            path.buildCodeFrameError("Empty StringLiteral, skipping.").message,
           )
           return
         }

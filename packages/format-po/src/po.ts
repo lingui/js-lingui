@@ -19,7 +19,7 @@ const splitMultiLineComments = (comments: string[]) => {
           .split("\n")
           .map((slice) => slice.trim())
           .filter(Boolean)
-      : comment
+      : comment,
   )
 }
 
@@ -109,7 +109,7 @@ function isGeneratedId(id: string, message: MessageType): boolean {
 
 function getCreateHeaders(
   language: string | undefined,
-  customHeaderAttributes: PoFormatterOptions["customHeaderAttributes"]
+  customHeaderAttributes: PoFormatterOptions["customHeaderAttributes"],
 ): PO["headers"] {
   return {
     "POT-Creation-Date": formatDate(new Date(), "yyyy-MM-dd HH:mmxxxx"),
@@ -128,7 +128,7 @@ const GENERATED_ID_FLAG = "js-lingui-generated-id"
 const serialize = (
   catalog: CatalogType,
   options: PoFormatterOptions,
-  ctx: { locale: string | undefined; sourceLocale: string }
+  ctx: { locale: string | undefined; sourceLocale: string },
 ) => {
   return Object.keys(catalog).map((id) => {
     const message: MessageType<POCatalogExtra> = catalog[id]
@@ -178,7 +178,7 @@ const serialize = (
 
     if (options.printPlaceholdersInComments !== false) {
       item.extractedComments = item.extractedComments.filter(
-        (comment) => !comment.startsWith("placeholder ")
+        (comment) => !comment.startsWith("placeholder "),
       )
 
       const limit =
@@ -192,7 +192,7 @@ const serialize = (
           if (/^\d+$/.test(name)) {
             value.slice(0, limit).forEach((entry) => {
               item.extractedComments.push(
-                `placeholder {${name}}: ${normalizePlaceholderValue(entry)}`
+                `placeholder {${name}}: ${normalizePlaceholderValue(entry)}`,
               )
             })
           }
@@ -232,7 +232,7 @@ const serialize = (
 
 function deserialize(
   items: POItem[],
-  options: PoFormatterOptions
+  options: PoFormatterOptions,
 ): CatalogType {
   return items.reduce<CatalogType<POCatalogExtra>>((catalog, item) => {
     const comments = item.extractedComments
@@ -241,7 +241,7 @@ function deserialize(
       translation: item.msgstr[0],
       comments: comments.filter(
         // drop flags from comments
-        (c) => c !== GENERATED_ID_FLAG && c !== EXPLICIT_ID_FLAG
+        (c) => c !== GENERATED_ID_FLAG && c !== EXPLICIT_ID_FLAG,
       ),
       context: item.msgctxt ?? undefined,
       obsolete: item.flags.obsolete || item.obsolete,
@@ -294,7 +294,7 @@ export function formatter(options: PoFormatterOptions = {}): CatalogFormatter {
         po = new PO()
         po.headers = getCreateHeaders(
           ctx.locale,
-          options.customHeaderAttributes
+          options.customHeaderAttributes,
         )
         // accessing private property
         ;(po as any).headerOrder = Object.keys(po.headers)

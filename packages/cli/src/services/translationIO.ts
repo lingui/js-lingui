@@ -21,7 +21,7 @@ const getTargetLocales = (config: LinguiConfigNormalized) => {
   const sourceLocale = config.sourceLocale || "en"
   const pseudoLocale = config.pseudoLocale || "pseudo"
   return config.locales.filter(
-    (value) => value != sourceLocale && value != pseudoLocale
+    (value) => value != sourceLocale && value != pseudoLocale,
   )
 }
 
@@ -34,7 +34,7 @@ type ExtractionResult = {
 export default async function syncProcess(
   config: LinguiConfigNormalized,
   options: CliExtractOptions,
-  extractionResult: ExtractionResult
+  extractionResult: ExtractionResult,
 ) {
   const reportSuccess = (project: TranslationIoProject) => {
     return `\n----------\nProject successfully synchronized. Please use this URL to translate: ${project.url}\n----------`
@@ -42,7 +42,7 @@ export default async function syncProcess(
 
   const reportError = (errors: string[]) => {
     throw `\n----------\nSynchronization with Translation.io failed: ${errors.join(
-      ", "
+      ", ",
     )}\n----------`
   }
 
@@ -56,7 +56,7 @@ export default async function syncProcess(
     const { success, project, errors } = await sync(
       config,
       options,
-      extractionResult
+      extractionResult,
     )
 
     if (success) {
@@ -73,7 +73,7 @@ export default async function syncProcess(
 // Cf. https://translation.io/docs/create-library#initialization
 export async function init(
   config: LinguiConfigNormalized,
-  extractionResult: ExtractionResult
+  extractionResult: ExtractionResult,
 ) {
   const sourceLocale = config.sourceLocale || "en"
   const targetLocales = getTargetLocales(config)
@@ -118,7 +118,7 @@ export async function init(
       target_languages: targetLocales,
       segments: segments,
     },
-    config.service!.apiKey
+    config.service!.apiKey,
   )
 
   if (error) {
@@ -133,7 +133,7 @@ export async function init(
     config,
     sourceLocale,
     extractionResult,
-    data.segments
+    data.segments,
   )
   return { success: true, project: data.project } as const
 }
@@ -143,7 +143,7 @@ export async function init(
 export async function sync(
   config: LinguiConfigNormalized,
   options: CliExtractOptions,
-  extractionResult: ExtractionResult
+  extractionResult: ExtractionResult,
 ) {
   const sourceLocale = config.sourceLocale || "en"
   const targetLocales = getTargetLocales(config)
@@ -172,7 +172,7 @@ export async function sync(
       // Sync and then remove unused segments (not present in the local application) from Translation.io
       purge: Boolean(options.clean),
     },
-    config.service!.apiKey
+    config.service!.apiKey,
   )
 
   if (error) {
@@ -187,7 +187,7 @@ export async function sync(
     config,
     sourceLocale,
     extractionResult,
-    data.segments
+    data.segments,
   )
   return { success: true, project: data.project } as const
 }
@@ -196,7 +196,7 @@ export async function writeSegmentsToCatalogs(
   config: LinguiConfigNormalized,
   sourceLocale: string,
   extractionResult: ExtractionResult,
-  segmentsPerLocale: { [locale: string]: TranslationIoSegment[] }
+  segmentsPerLocale: { [locale: string]: TranslationIoSegment[] },
 ) {
   // Create segments from source locale PO items
   for (const { catalog, messagesByLocale } of extractionResult) {
@@ -211,7 +211,7 @@ export async function writeSegmentsToCatalogs(
         const jsPath =
           path.replace(
             new RegExp(`${catalog.format.getCatalogExtension()}$`),
-            ""
+            "",
           ) + ".js"
 
         const dirPath = dirname(path)
@@ -231,8 +231,8 @@ export async function writeSegmentsToCatalogs(
 
       const translations = Object.fromEntries(
         segmentsPerLocale[targetLocale]!.map((segment) =>
-          createLinguiItemFromSegment(segment)
-        )
+          createLinguiItemFromSegment(segment),
+        ),
       )
 
       const messages: CatalogType = Object.fromEntries(
@@ -244,7 +244,7 @@ export async function writeSegmentsToCatalogs(
               translation: translations[key]?.translation,
             },
           ]
-        })
+        }),
       )
 
       await catalog.write(targetLocale, order(config.orderBy, messages))

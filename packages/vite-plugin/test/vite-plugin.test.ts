@@ -25,7 +25,7 @@ describe.skipIf(platform() === "win32")("vite-plugin", () => {
       await runVite(`no-macro-error`)
     } catch (e) {
       expect((e as Error).message).toContain(
-        'The macro you imported from "@lingui/core/macro" is being executed outside the context of compilation.'
+        'The macro you imported from "@lingui/core/macro" is being executed outside the context of compilation.',
       )
     }
   })
@@ -49,7 +49,7 @@ describe.skipIf(platform() === "win32")("vite-plugin", () => {
     await expect(
       runVite(`fail-on-missing-pseudo`, {
         failOnMissing: true,
-      })
+      }),
     ).resolves.toBeTruthy()
   })
 
@@ -61,7 +61,7 @@ describe.skipIf(platform() === "win32")("vite-plugin", () => {
       })
     } catch (e) {
       expect((e as Error).message).toContain(
-        "Compilation error for 2 translation(s)"
+        "Compilation error for 2 translation(s)",
       )
     }
   })
@@ -80,7 +80,7 @@ describe.skipIf(platform() === "win32")("vite-plugin", () => {
       await runVite(`dynamic-macro-error`, {}, true)
     } catch (e) {
       expect((e as Error).message).toContain(
-        'The macro you imported from "@lingui/core/macro" cannot be dynamically imported.'
+        'The macro you imported from "@lingui/core/macro" cannot be dynamically imported.',
       )
     }
   })
@@ -89,14 +89,14 @@ describe.skipIf(platform() === "win32")("vite-plugin", () => {
 async function runVite(
   fixturesPath: string,
   pluginConfig: LinguiPluginOpts = {},
-  useMacroPlugin = false
+  useMacroPlugin = false,
 ) {
   const oldCwd = process.cwd()
   const cwd = path.join(import.meta.dirname, fixturesPath)
   process.chdir(cwd)
 
   const outDir = mkdtempSync(
-    path.join(os.tmpdir(), `lingui-test-${process.pid}`)
+    path.join(os.tmpdir(), `lingui-test-${process.pid}`),
   )
 
   const logger = createLogger()
@@ -125,7 +125,7 @@ async function runVite(
           entry: path.resolve(
             import.meta.dirname,
             fixturesPath,
-            "entrypoint.js"
+            "entrypoint.js",
           ),
           fileName: "bundle",
           formats: ["es"],

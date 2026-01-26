@@ -14,7 +14,7 @@ function delay(ms: number) {
 }
 export async function build(
   entryPoint: string,
-  loaderOptions: LinguiLoaderOptions = {}
+  loaderOptions: LinguiLoaderOptions = {},
 ): Promise<BuildResult> {
   // set cwd() to working path
   const oldCwd = process.cwd()
@@ -45,7 +45,7 @@ export async function build(
 
 export function watch(
   entryPoint: string,
-  loaderOptions: LinguiLoaderOptions = {}
+  loaderOptions: LinguiLoaderOptions = {},
 ) {
   const compiler = getCompiler(entryPoint, loaderOptions)
 
@@ -80,7 +80,7 @@ export function watch(
 
 export function getCompiler(
   entryPoint: string,
-  loaderOptions: LinguiLoaderOptions
+  loaderOptions: LinguiLoaderOptions,
 ) {
   return webpack({
     mode: "development",

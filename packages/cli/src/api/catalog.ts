@@ -73,7 +73,7 @@ export class Catalog {
 
   constructor(
     { name, path, include, templatePath, format, exclude = [] }: CatalogProps,
-    public config: LinguiConfigNormalized
+    public config: LinguiConfigNormalized,
   ) {
     this.name = name
     this.path = normalizeRelativePath(path)
@@ -115,19 +115,19 @@ export class Catalog {
         catalog = order(options.orderBy, catalog)
 
         return [locale, catalog]
-      })
+      }),
     ) as AllCatalogsType
 
     const locales = options.locale ? options.locale : this.locales
     await Promise.all(
-      locales.map((locale) => this.write(locale, sortedCatalogs[locale]!))
+      locales.map((locale) => this.write(locale, sortedCatalogs[locale]!)),
     )
 
     return sortedCatalogs
   }
 
   async makeTemplate(
-    options: MakeTemplateOptions
+    options: MakeTemplateOptions,
   ): Promise<CatalogType | false> {
     const catalog = await this.collect({
       files: options.files,
@@ -144,12 +144,12 @@ export class Catalog {
    * Collect messages from source paths. Return a raw message catalog as JSON.
    */
   async collect(
-    options: { files?: string[]; workerPool?: ExtractWorkerPool } = {}
+    options: { files?: string[]; workerPool?: ExtractWorkerPool } = {},
   ): Promise<ExtractedCatalogType | undefined> {
     let paths = this.sourcePaths
     if (options.files) {
       options.files = options.files.map((p) =>
-        makePathRegexSafe(normalize(p, false))
+        makePathRegexSafe(normalize(p, false)),
       )
 
       const regex = new RegExp(options.files.join("|"), "i")
@@ -160,7 +160,7 @@ export class Catalog {
       return await extractFromFilesWithWorkerPool(
         options.workerPool,
         paths,
-        this.config
+        this.config,
       )
     }
 
@@ -190,7 +190,7 @@ export class Catalog {
   merge(
     prevCatalogs: AllCatalogsType,
     nextCatalog: ExtractedCatalogType,
-    options: MergeOptions
+    options: MergeOptions,
   ) {
     return Object.fromEntries(
       Object.entries(prevCatalogs).map(([locale, prevCatalog]) => [
@@ -199,9 +199,9 @@ export class Catalog {
           prevCatalog,
           nextCatalog,
           this.config.sourceLocale === locale,
-          options
+          options,
         ),
-      ])
+      ]),
     )
   }
 
@@ -211,7 +211,7 @@ export class Catalog {
 
   async write(
     locale: string,
-    messages: CatalogType
+    messages: CatalogType,
   ): Promise<[created: boolean, filename: string]> {
     const filename = this.getFilename(locale)
 
@@ -240,7 +240,7 @@ export class Catalog {
         if (catalog) {
           res[locale] = catalog
         }
-      })
+      }),
     )
 
     // statement above will save locales in object in undetermined order
@@ -267,8 +267,8 @@ export class Catalog {
             path.resolve(
               process.cwd(),
               includePath === "/" ? "" : includePath,
-              "**/*.*"
-            )
+              "**/*.*",
+            ),
           )
         : includePath
     })
@@ -295,7 +295,7 @@ function getTemplatePath(ext: string, path: string) {
 
 export function cleanObsolete<T extends CatalogType>(messages: T): T {
   return Object.fromEntries(
-    Object.entries(messages).filter(([, message]) => !message.obsolete)
+    Object.entries(messages).filter(([, message]) => !message.obsolete),
   ) as T
 }
 
@@ -313,7 +313,7 @@ export function order<T extends CatalogType>(by: OrderBy, catalog: T): T {
     .sort((a, b) => {
       return orderByFn(
         { messageId: a, entry: catalog[a]! },
-        { messageId: b, entry: catalog[b]! }
+        { messageId: b, entry: catalog[b]! },
       )
     })
     .reduce((acc, key) => {
@@ -359,7 +359,7 @@ export async function writeCompiled(
   path: string,
   locale: string,
   compiledCatalog: string,
-  namespace?: CompiledCatalogNamespace
+  namespace?: CompiledCatalogNamespace,
 ) {
   let ext: string
   switch (namespace) {

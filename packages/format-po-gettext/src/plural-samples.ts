@@ -100,7 +100,7 @@ export function getCldrPluralSamples(): Record<
       const rules = renameKeys(ruleset)
 
       pluralRules[loc.toLowerCase()] = createLocaleTest(rules)
-    }
+    },
   )
 
   return pluralRules

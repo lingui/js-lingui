@@ -14,7 +14,7 @@ const compileWorker = {
     locale: string,
     options: CliCompileOptions,
     doMerge: boolean,
-    linguiConfigPath: string
+    linguiConfigPath: string,
   ): Promise<{
     logs: SerializedLogs
     error?: unknown
@@ -43,7 +43,7 @@ const compileWorker = {
         options,
         linguiConfig,
         doMerge,
-        logger
+        logger,
       )
     } catch (error) {
       return {

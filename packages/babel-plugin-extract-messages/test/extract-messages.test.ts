@@ -19,12 +19,12 @@ const transform = (filename: string) => {
 const transformCode = (
   code: string,
   filename = "test-case.js",
-  rootDir = "."
+  rootDir = ".",
 ) => {
   process.env.LINGUI_CONFIG = path.join(
     __dirname,
     "fixtures",
-    "lingui.config.js"
+    "lingui.config.js",
   )
   const messages: ExtractedMessage[] = []
 
@@ -125,7 +125,7 @@ import { Trans } from "@lingui/react";
         expect(messages.length).toBe(0)
         expect(console.error).not.toBeCalled()
         expect(console.warn).toBeCalledWith(
-          expect.stringContaining(`Missing message ID`)
+          expect.stringContaining(`Missing message ID`),
         )
       })
     })
@@ -204,8 +204,8 @@ import { Trans } from "@lingui/react";
         expect(console.error).not.toBeCalled()
         expect(console.warn).toBeCalledWith(
           expect.stringContaining(
-            "Only strings or template literals could be extracted."
-          )
+            "Only strings or template literals could be extracted.",
+          ),
         )
       })
     })
@@ -278,7 +278,7 @@ import { Trans } from "@lingui/react";
         expect(messages.length).toBe(0)
         expect(console.error).not.toBeCalled()
         expect(console.warn).toBeCalledWith(
-          expect.stringContaining(`Empty StringLiteral`)
+          expect.stringContaining(`Empty StringLiteral`),
         )
       })
     })
@@ -315,8 +315,8 @@ import { Trans } from "@lingui/react";
         expect(console.error).not.toBeCalled()
         expect(console.warn).toBeCalledWith(
           expect.stringContaining(
-            `Could not extract from template literal with expressions.`
-          )
+            `Could not extract from template literal with expressions.`,
+          ),
         )
       })
     })
@@ -331,7 +331,7 @@ import { Trans } from "@lingui/react";
         expect(console.error).not.toBeCalled()
 
         expect(console.warn).toBeCalledWith(
-          expect.stringContaining(`Missing message ID`)
+          expect.stringContaining(`Missing message ID`),
         )
       })
     })
@@ -345,8 +345,8 @@ import { Trans } from "@lingui/react";
         expect(console.error).not.toBeCalled()
         expect(console.warn).toBeCalledWith(
           expect.stringContaining(
-            "Only strings or template literals could be extracted."
-          )
+            "Only strings or template literals could be extracted.",
+          ),
         )
       })
     })
@@ -360,8 +360,8 @@ import { Trans } from "@lingui/react";
         expect(console.error).not.toBeCalled()
         expect(console.warn).toBeCalledWith(
           expect.stringContaining(
-            "Only strings or template literals could be extracted."
-          )
+            "Only strings or template literals could be extracted.",
+          ),
         )
       })
     })

@@ -20,7 +20,7 @@ describe("I18nProvider", () => {
       let staticRenderCount = 0,
         dynamicRenderCount = 0
       const WithoutLinguiHook = (
-        props: React.HTMLAttributes<HTMLDivElement> & { i18n: I18n }
+        props: React.HTMLAttributes<HTMLDivElement> & { i18n: I18n },
       ) => {
         staticRenderCount++
         return <div {...props}>{props.i18n.locale}</div>
@@ -36,7 +36,7 @@ describe("I18nProvider", () => {
         <I18nProvider i18n={i18n}>
           <WithoutLinguiHook i18n={i18n} data-testid="static" />
           <WithLinguiHook data-testid="dynamic" />
-        </I18nProvider>
+        </I18nProvider>,
       )
 
       act(() => {
@@ -54,7 +54,7 @@ describe("I18nProvider", () => {
       expect(getByTestId("dynamic").textContent).toEqual("en")
       expect(staticRenderCount).toEqual(1)
       expect(dynamicRenderCount).toEqual(3) // initial, cs, en
-    }
+    },
   )
 
   it("should subscribe for locale changes upon mount", () => {
@@ -70,7 +70,7 @@ describe("I18nProvider", () => {
     render(
       <I18nProvider i18n={i18n}>
         <div />
-      </I18nProvider>
+      </I18nProvider>,
     )
     expect(i18n.on).toBeCalledWith("change", expect.any(Function))
   })
@@ -88,7 +88,7 @@ describe("I18nProvider", () => {
     const { unmount } = render(
       <I18nProvider i18n={i18n}>
         <div />
-      </I18nProvider>
+      </I18nProvider>,
     )
     expect(unsubscribe).not.toBeCalled()
     unmount()
@@ -112,7 +112,7 @@ describe("I18nProvider", () => {
       <I18nProvider i18n={i18n}>
         <CurrentLocaleStatic />
         <CurrentLocaleContextConsumer />
-      </I18nProvider>
+      </I18nProvider>,
     )
 
     // First render — locale isn't activated
@@ -166,17 +166,17 @@ describe("I18nProvider", () => {
       const { getByTestId } = render(
         <I18nProvider i18n={i18n}>
           <CurrentLocaleContextConsumer />
-        </I18nProvider>
+        </I18nProvider>,
       )
 
       expect(mockSubscriber).toHaveBeenCalledWith(
         "change",
-        expect.any(Function)
+        expect.any(Function),
       )
 
       expect(getByTestId("child").textContent).toBe("cs")
       expect(renderCount).toBe(2)
-    }
+    },
   )
 
   it("should render children", () => {
@@ -187,7 +187,7 @@ describe("I18nProvider", () => {
 
     const child = <div data-testid="child" />
     const { getByTestId } = render(
-      <I18nProvider i18n={i18n}>{child}</I18nProvider>
+      <I18nProvider i18n={i18n}>{child}</I18nProvider>,
     )
     expect(getByTestId("child")).toBeTruthy()
   })
@@ -215,7 +215,7 @@ describe("I18nProvider", () => {
     const { getByText } = render(
       <I18nProvider i18n={i18n}>
         <ComponentWithMemo />
-      </I18nProvider>
+      </I18nProvider>,
     )
 
     expect(getByText("Hello World")).toBeTruthy()

@@ -58,7 +58,7 @@ export class ICUMessageFormat {
           message: "",
           values: {},
           elements: {},
-        }
+        },
       )
   }
 

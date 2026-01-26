@@ -15,7 +15,7 @@ export async function bundleSource(
   extractorConfig: ExperimentalExtractorOptions,
   entryPoints: string[],
   outDir: string,
-  rootDir: string
+  rootDir: string,
 ): Promise<Metafile> {
   const esbuild = await import("esbuild")
 
@@ -61,7 +61,7 @@ export async function bundleSource(
         name: "externalize-deps",
         setup(build) {
           const shouldInclude = buildIncludeDepsFilter(
-            extractorConfig.includeDeps || []
+            extractorConfig.includeDeps || [],
           )
 
           // considers all import paths that "look like" package imports in the original source code to be package imports.
@@ -85,7 +85,7 @@ export async function bundleSource(
             { filter: createExtRegExp(excludeExtensions) },
             () => ({
               external: true,
-            })
+            }),
           )
         },
       },
@@ -95,9 +95,9 @@ export async function bundleSource(
   const bundleResult = await esbuild.build(
     extractorConfig.resolveEsbuildOptions
       ? (extractorConfig.resolveEsbuildOptions(
-          esbuildOptions
+          esbuildOptions,
         ) as typeof esbuildOptions)
-      : esbuildOptions
+      : esbuildOptions,
   )
 
   return bundleResult.metafile

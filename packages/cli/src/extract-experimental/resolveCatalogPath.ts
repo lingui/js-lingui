@@ -6,7 +6,7 @@ export function resolveCatalogPath(
   entryPath: string,
   rootDir: string,
   locale: string | undefined,
-  extension: string
+  extension: string,
 ) {
   const entryName = getEntryName(entryPath)
   const entryDir = nodepath.relative(rootDir, nodepath.dirname(entryPath))
@@ -16,7 +16,7 @@ export function resolveCatalogPath(
       entryName,
       entryDir,
       locale,
-    }) + extension
+    }) + extension,
   )
 }
 

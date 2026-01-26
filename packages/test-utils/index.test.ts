@@ -14,7 +14,7 @@ describe("mocks - testing utilities", () => {
       expect(process.env.NODE_ENV).not.toEqual("xyz")
 
       expect(() =>
-        mockEnv("xyz", () => expect(true).toBeFalsy())
+        mockEnv("xyz", () => expect(true).toBeFalsy()),
       ).toThrowError()
 
       expect(process.env.NODE_ENV).not.toEqual("xyz")
@@ -56,7 +56,7 @@ describe("mocks - testing utilities", () => {
       expect(() =>
         mockConsole(() => {
           throw new Error("")
-        })
+        }),
       ).toThrowError()
 
       expect(vi.mocked(console.log).mock).toBeUndefined()
@@ -71,7 +71,7 @@ describe("mocks - testing utilities", () => {
         async () =>
           await mockConsole(async () => {
             throw new Error("Dummy Error")
-          })
+          }),
       ).rejects.toThrowError("Dummy Error")
 
       expect(vi.mocked(console.log).mock).toBeUndefined()

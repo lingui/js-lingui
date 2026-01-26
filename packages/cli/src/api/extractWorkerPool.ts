@@ -11,11 +11,11 @@ export function createExtractWorkerPool(opts: { poolSize: number }) {
         new Worker(
           process.env.NODE_ENV === "test"
             ? "../workers/extractWorkerWrapper.jiti.js"
-            : "../workers/extractWorkerWrapper.prod.js"
-        )
+            : "../workers/extractWorkerWrapper.prod.js",
+        ),
       ),
     {
       size: opts.poolSize,
-    }
+    },
   )
 }

@@ -20,7 +20,7 @@ describe("PrintStats", () => {
     const catalogs = (await makeCatalog({ sourceLocale: "en" })).merge(
       prevCatalogs,
       nextCatalog,
-      defaultMergeOptions
+      defaultMergeOptions,
     )
 
     const { options, ...table } = printStats(config, catalogs)

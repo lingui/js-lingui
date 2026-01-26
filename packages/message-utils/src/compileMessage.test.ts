@@ -6,7 +6,7 @@ describe("compileMessage", () => {
     mockConsole((console) => {
       expect(compileMessage("Invalid {message")).toEqual(["Invalid {message"])
       expect(console.error).toBeCalledWith(
-        expect.stringMatching("Unexpected message end at line")
+        expect.stringMatching("Unexpected message end at line"),
       )
     })
   })
@@ -14,7 +14,7 @@ describe("compileMessage", () => {
   it("should process string chunks with provided map fn", () => {
     const tokens = compileMessage(
       "Message {value, plural, one {{value} Book} other {# Books}}",
-      (text) => `<${text}>`
+      (text) => `<${text}>`,
     )
     expect(tokens).toEqual([
       "<Message >",
@@ -58,7 +58,7 @@ describe("compileMessage", () => {
 
   it("should compile plurals", () => {
     const tokens = compileMessage(
-      "{value, plural, offset:1 =0 {No Books} one {# Book} other {# Books} =42 {FourtyTwo books} =99 {Books with problems}}"
+      "{value, plural, offset:1 =0 {No Books} one {# Book} other {# Books} =42 {FourtyTwo books} =99 {Books with problems}}",
     )
     expect(tokens).toMatchInlineSnapshot(`
       [
@@ -92,7 +92,7 @@ describe("compileMessage", () => {
 
   it("should compile selectordinal", () => {
     const tokens = compileMessage(
-      "{value, selectordinal, one {#st Book} two {#nd Book}}"
+      "{value, selectordinal, one {#st Book} two {#nd Book}}",
     )
     expect(tokens).toMatchInlineSnapshot(`
       [
@@ -121,7 +121,7 @@ describe("compileMessage", () => {
       gender, select,
       male {{numOfGuests, plural, one {He invites one guest} other {He invites # guests}}}
       female {{numOfGuests, plural, one {She invites one guest} other {She invites # guests}}}
-      other {They is {gender}}}`
+      other {They is {gender}}}`,
     )
     expect(tokens).toMatchInlineSnapshot(`
       [
@@ -247,7 +247,7 @@ describe("compileMessage", () => {
         ])
 
         expect(console.error).toBeCalledWith(
-          expect.stringMatching("Unable to compile date expression")
+          expect.stringMatching("Unable to compile date expression"),
         )
       })
     })

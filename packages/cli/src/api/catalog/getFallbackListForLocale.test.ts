@@ -7,7 +7,7 @@ describe("getFallbackListForLocale", () => {
         "pt-PT": "pt-BR",
         default: "en",
       },
-      "pt-PT"
+      "pt-PT",
     )
 
     expect(actual).toMatchInlineSnapshot(`
@@ -24,7 +24,7 @@ describe("getFallbackListForLocale", () => {
         "pt-PT": ["pt-BR", "pt"],
         default: "en",
       },
-      "pt-PT"
+      "pt-PT",
     )
 
     expect(actual).toMatchInlineSnapshot(`
@@ -41,7 +41,7 @@ describe("getFallbackListForLocale", () => {
       {
         default: "en",
       },
-      "pt-PT"
+      "pt-PT",
     )
 
     expect(actual).toMatchInlineSnapshot(`
@@ -56,7 +56,7 @@ describe("getFallbackListForLocale", () => {
       {
         default: "en",
       },
-      "en"
+      "en",
     )
 
     expect(actual).toMatchInlineSnapshot(`[]`)

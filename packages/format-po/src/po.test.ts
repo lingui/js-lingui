@@ -147,7 +147,7 @@ describe("pofile format", () => {
         ...defaultSerializeCtx,
         sourceLocale: "en",
         locale: "en",
-      })
+      }),
     ).toMatchSnapshot("source locale catalog")
 
     expect(
@@ -155,7 +155,7 @@ describe("pofile format", () => {
         ...defaultSerializeCtx,
         sourceLocale: "en",
         locale: undefined,
-      })
+      }),
     ).toMatchSnapshot("template locale catalog")
 
     expect(
@@ -163,7 +163,7 @@ describe("pofile format", () => {
         ...defaultSerializeCtx,
         sourceLocale: "en",
         locale: "pl",
-      })
+      }),
     ).toMatchSnapshot("target locale catalog")
   })
 
@@ -190,7 +190,7 @@ describe("pofile format", () => {
 
       const serialized = format.serialize(
         catalog,
-        defaultSerializeCtx
+        defaultSerializeCtx,
       ) as string
 
       expect(serialized).toMatchInlineSnapshot(`
@@ -251,7 +251,7 @@ describe("pofile format", () => {
 
       const serialized = format.serialize(
         catalog,
-        defaultSerializeCtx
+        defaultSerializeCtx,
       ) as string
 
       expect(serialized).toMatchInlineSnapshot(`

@@ -14,7 +14,7 @@ export type CompiledMessageToken =
   | [
       name: string,
       type?: string,
-      format?: null | string | unknown | CompiledIcuChoices
+      format?: null | string | unknown | CompiledIcuChoices,
     ]
 
 export type CompiledMessage = CompiledMessageToken[]
@@ -79,7 +79,7 @@ function processTokens(tokens: Token[], mapText: MapTextFn): CompiledMessage {
 
 function compileDateExpression(
   format: string,
-  onError: (error: DateFormatError) => void
+  onError: (error: DateFormatError) => void,
 ) {
   if (/^::/.test(format)) {
     const tokens = parseDateTokens(format.substring(2))
@@ -91,14 +91,14 @@ function compileDateExpression(
 
 export function compileMessageOrThrow(
   message: string,
-  mapText: MapTextFn = (v) => v
+  mapText: MapTextFn = (v) => v,
 ): CompiledMessage {
   return processTokens(parse(message), mapText)
 }
 
 export function compileMessage(
   message: string,
-  mapText: MapTextFn = (v) => v
+  mapText: MapTextFn = (v) => v,
 ): CompiledMessage {
   try {
     return compileMessageOrThrow(message, mapText)

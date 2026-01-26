@@ -14,7 +14,7 @@ import {
 
 async function extractFromBundle(
   filename: string,
-  linguiConfig: LinguiConfigNormalized
+  linguiConfig: LinguiConfigNormalized,
 ) {
   const messages: ExtractedCatalogType = {}
 
@@ -37,7 +37,7 @@ async function extractFromBundle(
       {
         plugins: getBabelParserOptions(filename, parserOptions),
       },
-      true
+      true,
     )
 
     success = true
@@ -74,7 +74,7 @@ export async function extractFromBundleAndWrite(params: {
 
   const { messages, success } = await extractFromBundle(
     params.bundleFile,
-    params.linguiConfig
+    params.linguiConfig,
   )
 
   if (!success) {

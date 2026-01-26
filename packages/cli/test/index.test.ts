@@ -64,9 +64,8 @@ describe("E2E Extractor Test", () => {
   })
 
   it("Should collect messages from files and write catalog in PO format", async () => {
-    const { rootDir, actualPath, expectedPath } = await prepare(
-      "extract-po-format"
-    )
+    const { rootDir, actualPath, expectedPath } =
+      await prepare("extract-po-format")
 
     await mockConsole(async (console) => {
       const result = await extractCommand(
@@ -82,7 +81,7 @@ describe("E2E Extractor Test", () => {
             },
           ],
         }),
-        defaultOptions
+        defaultOptions,
       )
 
       expect(result).toBeTruthy()
@@ -109,7 +108,7 @@ describe("E2E Extractor Test", () => {
 
   it("extractTemplate should extract into .pot template", async () => {
     const { rootDir, actualPath, expectedPath } = await prepare(
-      "extract-template-po-format"
+      "extract-template-po-format",
     )
 
     await fs.rm(actualPath, {
@@ -135,7 +134,7 @@ describe("E2E Extractor Test", () => {
 
   it("extractTemplate should extract into .pot template with worker pool", async () => {
     const { rootDir, actualPath, expectedPath } = await prepare(
-      "extract-template-po-format"
+      "extract-template-po-format",
     )
 
     await fs.rm(actualPath, {
@@ -163,9 +162,8 @@ describe("E2E Extractor Test", () => {
   })
 
   it("Should extract with multiThread enabled", async () => {
-    const { rootDir, actualPath, expectedPath } = await prepare(
-      "extract-po-format"
-    )
+    const { rootDir, actualPath, expectedPath } =
+      await prepare("extract-po-format")
 
     await mockConsole(async (console) => {
       const result = await extractCommand(getConfig({ cwd: rootDir }), {
@@ -201,7 +199,7 @@ describe("E2E Extractor Test", () => {
   describe("extractor-experimental", () => {
     it("should extract to template when --template passed", async () => {
       const { rootDir, actualPath, expectedPath } = await prepare(
-        "extractor-experimental-template"
+        "extractor-experimental-template",
       )
 
       const config = getConfig({ cwd: rootDir })
@@ -244,7 +242,7 @@ describe("E2E Extractor Test", () => {
 
     it("should extract to catalogs and merge with existing", async () => {
       const { rootDir, actualPath, expectedPath } = await prepare(
-        "extractor-experimental"
+        "extractor-experimental",
       )
 
       await mockConsole(async (console) => {
@@ -296,7 +294,7 @@ describe("E2E Extractor Test", () => {
 
     it("should extract to catalogs with worker pool", async () => {
       const { rootDir, actualPath, expectedPath } = await prepare(
-        "extractor-experimental"
+        "extractor-experimental",
       )
 
       await mockConsole(async (console) => {
@@ -351,7 +349,7 @@ describe("E2E Extractor Test", () => {
 
     it("should extract and clean obsolete", async () => {
       const { rootDir, actualPath, expectedPath } = await prepare(
-        "extractor-experimental-clean"
+        "extractor-experimental-clean",
       )
 
       await mockConsole(async (console) => {
@@ -374,7 +372,7 @@ describe("E2E Extractor Test", () => {
               poolSize: 0,
             },
             clean: true,
-          }
+          },
         )
 
         expect(getConsoleMockCalls(console.error)).toBeFalsy()
@@ -409,7 +407,7 @@ describe("E2E Extractor Test", () => {
 
   it("should extract consistently with files argument", async () => {
     const { rootDir, actualPath, expectedPath } = await prepare(
-      "extract-partial-consistency"
+      "extract-partial-consistency",
     )
 
     await mockConsole(async () => {
@@ -429,7 +427,7 @@ describe("E2E Extractor Test", () => {
         {
           ...defaultOptions,
           files: [nodepath.join(rootDir, "fixtures", "file-b.tsx")],
-        }
+        },
       )
     })
 
@@ -454,7 +452,7 @@ describe("E2E Extractor Test", () => {
             },
           ],
         }),
-        defaultOptions
+        defaultOptions,
       )
 
       expect(result).toBeTruthy()

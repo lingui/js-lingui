@@ -93,7 +93,7 @@ describe("po-gettext format", () => {
         ...defaultSerializeCtx,
         sourceLocale: "en",
         locale: "en",
-      })
+      }),
     ).toMatchSnapshot("source locale catalog")
 
     expect(
@@ -101,7 +101,7 @@ describe("po-gettext format", () => {
         ...defaultSerializeCtx,
         sourceLocale: "en",
         locale: null,
-      })
+      }),
     ).toMatchSnapshot("template locale catalog")
 
     expect(
@@ -109,7 +109,7 @@ describe("po-gettext format", () => {
         ...defaultSerializeCtx,
         sourceLocale: "en",
         locale: "pl",
-      })
+      }),
     ).toMatchSnapshot("target locale catalog")
   })
 
@@ -154,7 +154,7 @@ describe("po-gettext format", () => {
 
       expect(console.warn).toHaveBeenCalledWith(
         expect.stringContaining("Nested plurals"),
-        "nested_plural_message"
+        "nested_plural_message",
       )
     })
   })
@@ -209,7 +209,7 @@ msgstr[2] "# dní"
 
         expect(console.warn).toHaveBeenCalledWith(
           expect.stringContaining("select"),
-          "select_message"
+          "select_message",
         )
       })
     })
@@ -239,7 +239,7 @@ msgstr[2] "# dní"
 
         expect(console.warn).toHaveBeenCalledWith(
           expect.stringContaining("selectOrdinal"),
-          "select_ordinal_message"
+          "select_ordinal_message",
         )
       })
     })
@@ -258,7 +258,7 @@ msgstr[2] "# dní"
   it("convertPluralsToIco handle correctly locales with 4-letter", () => {
     const pofile = fs
       .readFileSync(
-        path.join(__dirname, "fixtures/messages_plural-4-letter.po")
+        path.join(__dirname, "fixtures/messages_plural-4-letter.po"),
       )
       .toString()
 
@@ -349,7 +349,7 @@ msgstr[3] "# dní"
         .toString()
       const customProfile = defaultProfile.replace(
         /js-lingui:/g,
-        "custom-prefix:"
+        "custom-prefix:",
       )
 
       const defaultPrefix = createFormat()
@@ -357,7 +357,7 @@ msgstr[3] "# dní"
 
       const defaultCatalog = defaultPrefix.parse(
         defaultProfile,
-        defaultParseCtx
+        defaultParseCtx,
       )
       const customCatalog = customPrefix.parse(customProfile, defaultParseCtx)
 
@@ -375,13 +375,13 @@ msgstr[3] "# dní"
       mockConsole((console) => {
         const catalog = usingInvalidPrefix.parse(
           defaultProfile,
-          defaultParseCtx
+          defaultParseCtx,
         )
         expect(console.warn).toHaveBeenCalledWith(
           expect.stringContaining(
-            "should be stored in a comment starting with"
+            "should be stored in a comment starting with",
           ),
-          expect.anything()
+          expect.anything(),
         )
         expect(catalog).toMatchSnapshot()
       })
@@ -453,7 +453,7 @@ msgstr[3] "# dní"
       ])
       const pofile = duplicateFormatter.serialize(
         catalog,
-        defaultSerializeCtx
+        defaultSerializeCtx,
       ) as string
 
       expect(pofile).toMatchSnapshot()
@@ -467,7 +467,7 @@ msgstr[3] "# dní"
 
       const pofile = duplicateFormatter.serialize(
         catalog,
-        defaultSerializeCtx
+        defaultSerializeCtx,
       ) as string
 
       expect(pofile).toMatchSnapshot()
@@ -483,7 +483,7 @@ msgstr[3] "# dní"
       ])
       const pofile = duplicateFormatter.serialize(
         catalog,
-        defaultSerializeCtx
+        defaultSerializeCtx,
       ) as string
 
       expect(pofile).toMatchSnapshot()
@@ -500,7 +500,7 @@ msgstr[3] "# dní"
       ])
       const pofile = duplicateFormatter.serialize(
         catalog,
-        defaultSerializeCtx
+        defaultSerializeCtx,
       ) as string
 
       expect(pofile).toMatchSnapshot()
@@ -532,7 +532,7 @@ msgstr[3] "# dní"
 
       const pofile = duplicateFormatter.serialize(
         catalog,
-        defaultSerializeCtx
+        defaultSerializeCtx,
       ) as string
 
       expect(pofile).toMatchSnapshot()
@@ -621,7 +621,7 @@ msgstr[3] "# dní"
           ...pluralsCatalog,
           ...catalog,
         },
-        defaultSerializeCtx
+        defaultSerializeCtx,
       )
 
       expect(pofile).toMatchSnapshot()
@@ -755,13 +755,13 @@ msgstr[1] "many books"
         // Serialize to PO
         const poContent = duplicateFormatter.serialize(
           originalCatalog,
-          defaultSerializeCtx
+          defaultSerializeCtx,
         ) as string
 
         // Parse back to catalog
         const parsedCatalog = duplicateFormatter.parse(
           poContent,
-          defaultParseCtx
+          defaultParseCtx,
         )
 
         expect(parsedCatalog).toMatchObject(originalCatalog)

@@ -16,7 +16,7 @@ export type GetTranslationsOptions = {
 export async function getTranslationsForCatalog(
   catalog: Catalog,
   locale: string,
-  options: GetTranslationsOptions
+  options: GetTranslationsOptions,
 ) {
   const locales = new Set([
     locale,
@@ -45,11 +45,11 @@ export async function getTranslationsForCatalog(
         (event) => {
           missing.push(event)
         },
-        options
+        options,
       )
       return acc
     },
-    {}
+    {},
   )
 
   return {
@@ -72,7 +72,7 @@ function getTranslation(
   locale: string,
   key: string,
   onMissing: (message: TranslationMissingEvent) => void,
-  options: GetTranslationsOptions
+  options: GetTranslationsOptions,
 ) {
   const { fallbackLocales, sourceLocale } = options
 

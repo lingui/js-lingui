@@ -46,7 +46,7 @@ describe("@lingui/conf", () => {
       makeConfig({})
       expect(console.warn).not.toBeCalled()
       expect(console.error).toBeCalledWith(
-        expect.stringContaining("No locales defined")
+        expect.stringContaining("No locales defined"),
       )
     })
   })
@@ -63,7 +63,7 @@ describe("@lingui/conf", () => {
       const config = getConfig({
         configPath: path.resolve(
           import.meta.dirname,
-          path.join("fixtures", "valid", "custom.config.js")
+          path.join("fixtures", "valid", "custom.config.js"),
         ),
       })
       expect(config.locales).toEqual(["cs", "sk"])
@@ -73,7 +73,7 @@ describe("@lingui/conf", () => {
       const config = getConfig({
         configPath: path.resolve(
           import.meta.dirname,
-          path.join("fixtures", "valid", "custom.config.ts")
+          path.join("fixtures", "valid", "custom.config.ts"),
         ),
       })
       expect(config.locales).toEqual(["pl"])

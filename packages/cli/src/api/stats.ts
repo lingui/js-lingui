@@ -18,7 +18,7 @@ export function getStats(catalog: CatalogType): CatalogStats {
 
 export function printStats(
   config: LinguiConfigNormalized,
-  catalogs: AllCatalogsType
+  catalogs: AllCatalogsType,
 ) {
   const table = new Table({
     head: ["Language", "Total count", "Missing"],

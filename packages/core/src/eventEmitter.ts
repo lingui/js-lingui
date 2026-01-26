@@ -1,5 +1,5 @@
 export class EventEmitter<
-  Events extends { [name: string]: (...args: any[]) => any }
+  Events extends { [name: string]: (...args: any[]) => any },
 > {
   private readonly _events: {
     [name in keyof Events]?: Array<Events[name]>
@@ -28,7 +28,7 @@ export class EventEmitter<
   }
 
   private _getListeners(
-    event: keyof Events
+    event: keyof Events,
   ): Array<Events[keyof Events]> | false {
     const maybeListeners = this._events[event]
     return Array.isArray(maybeListeners) ? maybeListeners : false

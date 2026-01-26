@@ -18,7 +18,7 @@ const OCTOTHORPE_PH = "%__lingui_octothorpe__%"
 const getDefaultFormats = (
   locale: string,
   passedLocales?: Locales,
-  formats: Formats = {}
+  formats: Formats = {},
 ) => {
   const locales = passedLocales || locale
 
@@ -54,17 +54,17 @@ const getDefaultFormats = (
 
     number: (
       value: NumberFormatValue,
-      format: string | Intl.NumberFormatOptions
+      format: string | Intl.NumberFormatOptions,
     ): string =>
       number(
         locales,
         value,
-        style(format) || ({ style: format } as Intl.NumberFormatOptions)
+        style(format) || ({ style: format } as Intl.NumberFormatOptions),
       ),
 
     date: (
       value: string | DateTimeFormatValue,
-      format: Intl.DateTimeFormatOptions | string
+      format: Intl.DateTimeFormatOptions | string,
     ): string =>
       date(locales, value, style(format) || (format as DateTimeFormatSize)),
     time: (value: string | DateTimeFormatValue, format: string): string =>
@@ -83,7 +83,7 @@ const selectFormatter = (value: string, rules: Record<string, any>) =>
 export function interpolate(
   translation: CompiledMessage,
   locale: string,
-  locales?: Locales
+  locales?: Locales,
 ) {
   /**
    * @param values  - Parameters for variable interpolation
@@ -94,7 +94,7 @@ export function interpolate(
 
     const formatMessage = (
       tokens: CompiledMessage | number | undefined,
-      replaceOctothorpe: boolean = false
+      replaceOctothorpe: boolean = false,
     ) => {
       if (!Array.isArray(tokens)) return tokens
 
@@ -120,9 +120,9 @@ export function interpolate(
             ([key, value]) => {
               interpolatedFormat[key] = formatMessage(
                 value,
-                type === "plural" || type === "selectordinal"
+                type === "plural" || type === "selectordinal",
               )
-            }
+            },
           )
         } else {
           interpolatedFormat = format

@@ -16,7 +16,7 @@ function mergeOrigins(prev: MessageOrigin[], next: MessageOrigin | undefined) {
 
 function mergePlaceholders(
   prev: Record<string, string[]>,
-  next: Record<string, string> | undefined
+  next: Record<string, string> | undefined,
 ) {
   const res = { ...prev }
 
@@ -40,7 +40,7 @@ function mergePlaceholders(
 
 export async function extractFromFiles(
   paths: string[],
-  config: LinguiConfigNormalized
+  config: LinguiConfigNormalized,
 ) {
   const messages: ExtractedCatalogType = {}
 
@@ -52,7 +52,7 @@ export async function extractFromFiles(
       (next: ExtractedMessage) => {
         mergeExtractedMessage(next, messages, config)
       },
-      config
+      config,
     )
     catalogSuccess &&= fileSuccess
   }
@@ -65,7 +65,7 @@ export async function extractFromFiles(
 export function mergeExtractedMessage(
   next: ExtractedMessage,
   messages: ExtractedCatalogType,
-  config: LinguiConfigNormalized
+  config: LinguiConfigNormalized,
 ) {
   if (!messages[next.id]) {
     messages[next.id] = {
@@ -90,10 +90,10 @@ export function mergeExtractedMessage(
   if (prev.message && next.message && prev.message !== next.message) {
     throw new Error(
       `Encountered different default translations for message ${pico.yellow(
-        next.id
+        next.id,
       )}` +
         `\n${pico.yellow(prettyOrigin(prev.origin))} ${prev.message}` +
-        `\n${pico.yellow(prettyOrigin([nextOrigin || [""]]))} ${next.message}`
+        `\n${pico.yellow(prettyOrigin([nextOrigin || [""]]))} ${next.message}`,
     )
   }
 
@@ -111,7 +111,7 @@ export function mergeExtractedMessage(
 export async function extractFromFilesWithWorkerPool(
   workerPool: ExtractWorkerPool,
   paths: string[],
-  config: LinguiConfigNormalized
+  config: LinguiConfigNormalized,
 ): Promise<ExtractedCatalogType | undefined> {
   const messages: ExtractedCatalogType = {}
 
@@ -121,7 +121,7 @@ export async function extractFromFilesWithWorkerPool(
 
   if (!resolvedConfigPath) {
     throw new Error(
-      "Multithreading is only supported when lingui config loaded from file system, not passed by API"
+      "Multithreading is only supported when lingui config loaded from file system, not passed by API",
     )
   }
 
@@ -137,8 +137,8 @@ export async function extractFromFilesWithWorkerPool(
             mergeExtractedMessage(message, messages, config)
           })
         }
-      })
-    )
+      }),
+    ),
   )
 
   if (!catalogSuccess) return undefined

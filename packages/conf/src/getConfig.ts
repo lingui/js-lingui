@@ -63,10 +63,10 @@ export function getConfig({
     console.error("Lingui was unable to find a config!\n")
     console.error(
       `Create ${pico.bold(
-        "'lingui.config.js'"
+        "'lingui.config.js'",
       )} file with LinguiJS configuration in root of your project (next to package.json). See ${pico.underline(
-        "https://lingui.dev/ref/conf"
-      )}`
+        "https://lingui.dev/ref/conf",
+      )}`,
     )
 
     // gracefully stop further executing
@@ -80,6 +80,6 @@ export function getConfig({
       rootDir: result ? path.dirname(result.filepath) : defaultRootDir,
       ...userConfig,
     },
-    { skipValidation, resolvedConfigPath: result.filepath }
+    { skipValidation, resolvedConfigPath: result.filepath },
   )
 }
