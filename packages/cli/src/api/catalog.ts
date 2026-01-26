@@ -226,16 +226,21 @@ export class Catalog {
     await this.format.write(filename, messages)
   }
 
-  async read(locale: string): Promise<CatalogType> {
-    // todo: strictNullChecks, remove non null assertion
-    return (await this.format.read(this.getFilename(locale), locale))!
+  async read(locale: string): Promise<CatalogType | undefined> {
+    return await this.format.read(this.getFilename(locale), locale)
   }
 
   async readAll(locales: string[] = this.locales): Promise<AllCatalogsType> {
     const res: AllCatalogsType = {}
 
     await Promise.all(
-      locales.map(async (locale) => (res[locale] = await this.read(locale)))
+      locales.map(async (locale) => {
+        const catalog = await this.read(locale)
+
+        if (catalog) {
+          res[locale] = catalog
+        }
+      })
     )
 
     // statement above will save locales in object in undetermined order
@@ -246,9 +251,8 @@ export class Catalog {
     }, {})
   }
 
-  async readTemplate(): Promise<CatalogType> {
-    // todo: strictNullChecks, remove non null assertion
-    return (await this.format.read(this.templateFile, undefined))!
+  async readTemplate(): Promise<CatalogType | undefined> {
+    return await this.format.read(this.templateFile, undefined)
   }
 
   get sourcePaths() {
