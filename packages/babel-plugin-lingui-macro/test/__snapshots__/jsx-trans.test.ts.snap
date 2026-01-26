@@ -818,7 +818,7 @@ import { i18n as _i18n } from "@lingui/core";
                 values: {
                   articleName: articleName,
                 },
-              }
+              },
             )}
           />
         ),
@@ -854,7 +854,7 @@ import { i18n as _i18n } from "@lingui/core";
       values: {
         count: count,
       },
-    }
+    },
   )}
 >
   About

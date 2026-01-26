@@ -35,8 +35,8 @@ function Home() {
                 values: {
                   0: user.name,
                 },
-              }
-            )
+              },
+            ),
           )
         }
       >
@@ -54,8 +54,8 @@ function Home() {
                 values: {
                   0: user.name,
                 },
-              }
-            )
+              },
+            ),
           )
         }
       >
@@ -103,7 +103,7 @@ function MyComponent() {
     {
       id: "xeiujy",
       message: "Text",
-    }
+    },
   );
 }
 
@@ -148,7 +148,7 @@ function MyComponent() {
     {
       id: "xeiujy",
       message: "Text",
-    }
+    },
   );
   {
     // here is child scope with own "t" binding, shouldn't be processed
@@ -162,7 +162,7 @@ function MyComponent() {
       {
         id: "xeiujy",
         message: "Text",
-      }
+      },
     );
   }
 }
@@ -203,7 +203,7 @@ function MyComponent() {
     {
       id: "xeiujy",
       message: "Text",
-    }
+    },
   );
 }
 
@@ -245,7 +245,7 @@ function MyComponent() {
       id: "BYqAaU",
       message: "Hello",
       context: "my custom",
-    }
+    },
   );
 }
 
@@ -279,7 +279,7 @@ function MyComponent() {
       values: {
         0: users.length,
       },
-    }
+    },
   );
 }
 
@@ -304,9 +304,9 @@ function MyComponent() {
         {
           id: "xeiujy",
           message: "Text",
-        }
+        },
       ),
-    [_t]
+    [_t],
   );
 }
 
@@ -329,7 +329,7 @@ function MyComponent() {
     {
       id: "xeiujy",
       message: "Text",
-    }
+    },
   );
 }
 
@@ -352,7 +352,7 @@ function MyComponent() {
     {
       id: "xeiujy",
       message: "Text",
-    }
+    },
   );
 }
 
@@ -378,7 +378,7 @@ function MyComponent() {
     {
       id: "xeiujy",
       message: "Text",
-    }
+    },
   );
 }
 
@@ -409,7 +409,7 @@ function MyComponent() {
     {
       id: "xeiujy",
       message: "Text",
-    }
+    },
   );
 }
 
@@ -437,7 +437,7 @@ function MyComponent() {
     {
       id: "xeiujy",
       message: "Text",
-    }
+    },
   );
 }
 function MyComponent2() {
@@ -447,7 +447,7 @@ function MyComponent2() {
     {
       id: "xeiujy",
       message: "Text",
-    }
+    },
   );
 }
 
@@ -478,7 +478,7 @@ function MyComponent() {
     {
       id: "xeiujy",
       message: "Text",
-    }
+    },
   );
 }
 

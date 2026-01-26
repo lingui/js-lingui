@@ -2,11 +2,7 @@
 
 exports[`Anything variables except simple identifiers are used as positional arguments 1`] = `
 import { t } from "@lingui/core/macro";
-t\` Property \${props.name}, function \${random()}, array \${
-  array[index]
-}, constant \${42}, object \${new Date()} anything \${props.messages[
-  index
-].value()}\`;
+t\` Property \${props.name}, function \${random()}, array \${array[index]}, constant \${42}, object \${new Date()} anything \${props.messages[index].value()}\`;
 
 ↓ ↓ ↓ ↓ ↓ ↓
 
@@ -25,7 +21,7 @@ _i18n._(
       4: new Date(),
       5: props.messages[index].value(),
     },
-  }
+  },
 );
 
 `;
@@ -44,7 +40,7 @@ _i18n._(
     id: "BYqAaU",
     message: "Hello",
     context: "my custom",
-  }
+  },
 );
 _i18n._(
   /*i18n*/
@@ -52,7 +48,7 @@ _i18n._(
     id: "BYqAaU",
     message: "Hello",
     context: \`my custom\`,
-  }
+  },
 );
 
 `;
@@ -70,8 +66,8 @@ const msg = message.error(
     {
       id: "9ZMZjU",
       message: "dasd",
-    }
-  )
+    },
+  ),
 );
 
 `;
@@ -88,7 +84,7 @@ const a = _i18n._(
   {
     id: "mjnlP0",
     message: "Expression assignment",
-  }
+  },
 );
 
 `;
@@ -106,7 +102,7 @@ const a = customI18n._(
   {
     id: "mjnlP0",
     message: "Expression assignment",
-  }
+  },
 );
 
 `;
@@ -124,7 +120,7 @@ _i18n._(
   {
     id: "+8iwDA",
     message: "Multiline\\n          string",
-  }
+  },
 );
 
 `;
@@ -151,7 +147,7 @@ const msg = _i18n._(
     values: {
       name: name,
     },
-  }
+  },
 );
 
 `;
@@ -176,7 +172,7 @@ const msg = _i18n._(
     values: {
       name: name,
     },
-  }
+  },
 );
 
 `;
@@ -192,7 +188,7 @@ const msg = _i18n._(
   /*i18n*/
   {
     id: "xDAtGP",
-  }
+  },
 );
 
 `;
@@ -216,7 +212,7 @@ const msg = _i18n._(
     values: {
       name: name,
     },
-  }
+  },
 );
 
 `;
@@ -241,7 +237,7 @@ const msg = i18n._(
     values: {
       name: name,
     },
-  }
+  },
 );
 
 `;
@@ -265,7 +261,7 @@ const msg = _i18n._(
     values: {
       val: val,
     },
-  }
+  },
 );
 
 `;
@@ -283,7 +279,7 @@ _i18n._(
   {
     id: "uzTaYi",
     message: "Hello",
-  }
+  },
 );
 _i18n._(
   /*i18n*/
@@ -291,7 +287,7 @@ _i18n._(
     id: "BYqAaU",
     message: "Hello",
     context: "my custom",
-  }
+  },
 );
 
 `;
@@ -327,7 +323,7 @@ const msg = _i18n._(
     values: {
       val: val,
     },
-  }
+  },
 );
 
 `;
@@ -343,7 +339,7 @@ const msg = _i18n._(
   /*i18n*/
   {
     id: \`msgId\`,
-  }
+  },
 );
 
 `;
@@ -363,7 +359,7 @@ const msg = _i18n._(
     values: {
       value: value,
     },
-  }
+  },
 );
 
 `;
@@ -386,10 +382,10 @@ _i18n._(
         {
           id: "kODvZJ",
           message: "First Name",
-        }
+        },
       ),
     },
-  }
+  },
 );
 
 `;
@@ -409,7 +405,7 @@ const msg = _i18n._(
     values: {
       name: name,
     },
-  }
+  },
 );
 
 `;
@@ -430,7 +426,7 @@ const msg = i18n._(
     values: {
       name: name,
     },
-  }
+  },
 );
 
 `;
@@ -449,7 +445,7 @@ const msg = global.i18n._(
     values: {
       name: name,
     },
-  }
+  },
 );
 
 `;
@@ -469,7 +465,7 @@ _i18n._(
     values: {
       name: name,
     },
-  }
+  },
 );
 
 `;
@@ -489,7 +485,7 @@ _i18n._(
     values: {
       duplicate: duplicate,
     },
-  }
+  },
 );
 
 `;
@@ -509,7 +505,7 @@ _i18n._(
     values: {
       name: name,
     },
-  }
+  },
 );
 
 `;
@@ -526,7 +522,7 @@ _i18n._(
   {
     id: "CcPIZW",
     message: 'Variable "name"',
-  }
+  },
 );
 
 `;
@@ -546,7 +542,7 @@ _i18n._(
     values: {
       name: name,
     },
-  }
+  },
 );
 
 `;
@@ -566,7 +562,7 @@ _i18n._(
     values: {
       name: random(),
     },
-  }
+  },
 );
 
 `;
@@ -586,7 +582,7 @@ _i18n._(
     values: {
       name: name,
     },
-  }
+  },
 );
 
 `;
@@ -606,7 +602,7 @@ _i18n._(
     values: {
       name: random(),
     },
-  }
+  },
 );
 
 `;
@@ -627,7 +623,7 @@ _i18n._(
     values: {
       count: count,
     },
-  }
+  },
 );
 
 `;
@@ -649,7 +645,7 @@ _i18n._(
     values: {
       count: count,
     },
-  }
+  },
 );
 _i18n._(
   /*i18n*/
@@ -659,7 +655,7 @@ _i18n._(
     values: {
       count: count,
     },
-  }
+  },
 );
 
 `;
@@ -676,7 +672,7 @@ const msg = _i18n._(
   {
     id: "xDAtGP",
     message: "Message",
-  }
+  },
 );
 
 `;
@@ -704,7 +700,7 @@ const msg = _i18n._(
   {
     id: "xDAtGP",
     message: "Message",
-  }
+  },
 );
 
 `;
@@ -720,7 +716,7 @@ const msg = _i18n._(
   /*i18n*/
   {
     id: "xDAtGP",
-  }
+  },
 );
 
 `;
@@ -737,7 +733,7 @@ const a = _i18n._(
   {
     id: "mjnlP0",
     message: "Expression assignment",
-  }
+  },
 );
 
 `;

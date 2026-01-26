@@ -1,6 +1,5 @@
 import linguiMacroPlugin, { LinguiPluginOpts } from "../src"
 import { transformFileSync, transformSync, TransformOptions } from "@babel/core"
-// @ts-expect-error need to update to v3
 import prettier from "prettier"
 import path from "path"
 import fs from "fs"
@@ -45,7 +44,9 @@ export function macroTester(opts: MacroTesterOptions) {
   process.env.LINGUI_CONFIG = path.join(__dirname, "lingui.config.js")
 
   const clean = (value: string) =>
-    prettier.format(value, { parser: "babel-ts" }).replace(/\n+/, "\n")
+    prettier
+      .format(value, { parser: "typescript" })
+      .then((c) => c.replace(/\n+/, "\n"))
 
   opts.cases.forEach((testCase, index) => {
     const {
@@ -63,7 +64,7 @@ export function macroTester(opts: MacroTesterOptions) {
     if (skip) group = test.skip
     const groupName = name != null ? name : `#${index + 1}`
 
-    group(groupName, () => {
+    group(groupName, async () => {
       const originalEnv = process.env.NODE_ENV
 
       if (production) {
@@ -74,7 +75,7 @@ export function macroTester(opts: MacroTesterOptions) {
         if ("filename" in testCase) {
           const inputPath = path.relative(
             process.cwd(),
-            path.join(__dirname, "fixtures", testCase.filename)
+            path.join(__dirname, "fixtures", testCase.filename),
           )
           const expectedPath = inputPath.replace(/\.js$/, ".expected.js")
           const expected = fs
@@ -87,7 +88,7 @@ export function macroTester(opts: MacroTesterOptions) {
               "plugin",
               macroOpts,
               useTypescriptPreset,
-              useReactCompiler
+              useReactCompiler,
             ),
             cwd: path.dirname(inputPath),
           })
@@ -99,7 +100,7 @@ export function macroTester(opts: MacroTesterOptions) {
               "plugin",
               macroOpts,
               useTypescriptPreset,
-              useReactCompiler
+              useReactCompiler,
             ),
             cwd: path.dirname(inputPath),
           })
@@ -109,7 +110,7 @@ export function macroTester(opts: MacroTesterOptions) {
           // output from plugin transformation should be the same to macro transformation
           expect(actualPlugin).toBe(actualMacro)
 
-          expect(clean(actualPlugin)).toEqual(clean(expected))
+          expect(await clean(actualPlugin)).toEqual(await clean(expected))
         } else {
           const actualPlugin = transformSync(
             testCase.code,
@@ -117,8 +118,8 @@ export function macroTester(opts: MacroTesterOptions) {
               "plugin",
               macroOpts,
               useTypescriptPreset,
-              useReactCompiler
-            )
+              useReactCompiler,
+            ),
           ).code.trim()
 
           if (!testCase.skipBabelMacroTest) {
@@ -128,8 +129,8 @@ export function macroTester(opts: MacroTesterOptions) {
                 "macro",
                 macroOpts,
                 useTypescriptPreset,
-                useReactCompiler
-              )
+                useReactCompiler,
+              ),
             ).code.trim()
 
             // output from plugin transformation should be the same to macro transformation
@@ -137,10 +138,14 @@ export function macroTester(opts: MacroTesterOptions) {
           }
 
           if (testCase.expected) {
-            expect(clean(actualPlugin)).toEqual(clean(testCase.expected))
+            expect(await clean(actualPlugin)).toEqual(
+              await clean(testCase.expected),
+            )
           } else {
             expect(
-              clean(testCase.code) + "\n↓ ↓ ↓ ↓ ↓ ↓\n\n" + clean(actualPlugin)
+              (await clean(await testCase.code)) +
+                "\n↓ ↓ ↓ ↓ ↓ ↓\n\n" +
+                (await clean(actualPlugin)),
             ).toMatchSnapshot()
           }
         }
@@ -156,7 +161,7 @@ export const getDefaultBabelOptions = (
   transformType: "plugin" | "macro" = "plugin",
   macroOpts: LinguiPluginOpts = {},
   isTs = false,
-  useReactCompiler = false
+  useReactCompiler = false,
 ): TransformOptions => {
   return {
     filename: "<filename>" + (isTs ? ".tsx" : "jsx"),
