@@ -7,7 +7,7 @@ import {
   TransRenderCallbackOrComponent,
 } from "../src"
 import { setupI18n } from "@lingui/core"
-import { mockConsole } from "@lingui/jest-mocks"
+import { mockConsole } from "@lingui/test-utils"
 import { PropsWithChildren } from "react"
 import { TransNoContext } from "./TransNoContext"
 

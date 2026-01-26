@@ -1,7 +1,7 @@
 import { render } from "@testing-library/react"
 import * as React from "react"
 import { formatElements } from "./format"
-import { mockConsole } from "@lingui/jest-mocks"
+import { mockConsole } from "@lingui/test-utils"
 
 describe("formatElements", function () {
   const html = (elements: React.ReactNode) =>
