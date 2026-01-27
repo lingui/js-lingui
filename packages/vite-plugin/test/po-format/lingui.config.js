@@ -10,5 +10,4 @@ export default defineConfig({
   fallbackLocales: {
     default: "en",
   },
-  format: "po",
 })

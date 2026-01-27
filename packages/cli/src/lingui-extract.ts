@@ -30,7 +30,6 @@ export type CliExtractOptions = {
   clean: boolean
   overwrite: boolean
   locale?: string[]
-  prevFormat?: string
   watch?: boolean
   workersOptions: WorkersOptions
 }
@@ -155,7 +154,6 @@ type CliArgs = {
   clean: boolean
   overwrite: boolean
   locale: string[]
-  prevFormat: string | null
   watch?: boolean
   workers?: number
 }
@@ -184,10 +182,6 @@ if (esMain(import.meta)) {
       "Debounces extraction for given amount of milliseconds",
     )
     .option("--verbose", "Verbose output")
-    .option(
-      "--convert-from <format>",
-      "Convert from previous format of message catalogs",
-    )
     .option("--watch", "Enables Watch Mode")
     .parse(process.argv)
 
@@ -198,20 +192,6 @@ if (esMain(import.meta)) {
   })
 
   let hasErrors = false
-
-  const prevFormat = options.convertFrom
-  if (prevFormat && config.format === prevFormat) {
-    hasErrors = true
-    console.error("Trying to migrate message catalog to the same format")
-    console.error(
-      `Set ${pico.bold("new")} format in LinguiJS configuration\n` +
-        ` and ${pico.bold("previous")} format using --convert-from option.`,
-    )
-    console.log()
-    console.log(`Example: Convert from lingui format to minimal`)
-    console.log(pico.yellow(helpRun(`extract --convert-from lingui`)))
-    process.exit(1)
-  }
 
   if (options.locale) {
     const missingLocale = options.locale.find(
@@ -235,7 +215,6 @@ if (esMain(import.meta)) {
       locale: options.locale,
       watch: options.watch || false,
       files: filePath?.length ? filePath : undefined,
-      prevFormat,
       workersOptions: resolveWorkersOptions(options),
     })
   }

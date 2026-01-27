@@ -23,11 +23,7 @@ export async function getCatalogs(
   const catalogsConfig = config.catalogs
   const catalogs: Catalog[] = []
 
-  const format = await getFormat(
-    config.format,
-    config.formatOptions,
-    config.sourceLocale,
-  )
+  const format = await getFormat(config.format, config.sourceLocale)
 
   catalogsConfig.forEach((catalog) => {
     validateCatalogPath(catalog.path, format.getCatalogExtension())
@@ -120,11 +116,7 @@ const ensureArray = <T>(value: Array<T> | T | null | undefined): Array<T> => {
  * Create catalog for merged messages.
  */
 export async function getMergedCatalogPath(config: LinguiConfigNormalized) {
-  const format = await getFormat(
-    config.format,
-    config.formatOptions,
-    config.sourceLocale,
-  )
+  const format = await getFormat(config.format, config.sourceLocale)
   validateCatalogPath(config.catalogsMergePath, format.getCatalogExtension())
 
   return normalizeRelativePath(config.catalogsMergePath)

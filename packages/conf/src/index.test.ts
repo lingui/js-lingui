@@ -51,6 +51,25 @@ describe("@lingui/conf", () => {
     })
   })
 
+  it("should validate `format` and throw error if old string format passed (remove in v7)", () => {
+    expect(() =>
+      makeConfig({
+        locales: ["en"],
+        // @ts-expect-error this we are validating
+      }),
+    ).toThrowErrorMatchingInlineSnapshot(`
+      [Error: String format eq \`{format: po}\` is no longer supported by Lingui.
+      You need to install formatter package and add to your \`lingui.config.{js,ts}\`:
+              
+      import { formatter } from "@lingui/format-po"
+
+      export default {
+        [...]
+        format: formatter({lineNumbers: false}),
+      }]
+    `)
+  })
+
   describe("config file", () => {
     it("searches for a .linguirc config file", () => {
       const config = getConfig({

@@ -41,7 +41,7 @@ async function makeTestConfig(
     rootDir: outputDir,
     locales: ["en", "fr", "es"],
     sourceLocale: "en",
-    format: "po",
+
     service: {
       name: "TranslationIO",
       apiKey: "test-api-key-123",
@@ -56,11 +56,7 @@ async function makeTestConfig(
     ...configOverrides,
   })
 
-  const format = await getFormat(
-    config.format,
-    config.formatOptions,
-    config.sourceLocale,
-  )
+  const format = await getFormat(config.format, config.sourceLocale)
 
   const catalogs = config.catalogs.map(
     (catalog) =>

@@ -24,7 +24,7 @@ describe("getCatalogs", () => {
   let format: FormatterWrapper
 
   beforeAll(async () => {
-    format = await getFormat("po", {}, "en")
+    format = await getFormat(undefined, "en")
   })
 
   afterEach(() => {
@@ -313,7 +313,7 @@ describe("getCatalogForFile", () => {
   let format: FormatterWrapper
 
   beforeAll(async () => {
-    format = await getFormat("po", {}, "en")
+    format = await getFormat(undefined, "en")
   })
 
   it("should return null if catalog cannot be found", () => {
@@ -340,7 +340,7 @@ describe("getCatalogForFile", () => {
         include: ["./src/"],
         format,
       },
-      mockConfig({ format: "po", rootDir: "." }),
+      mockConfig({ rootDir: "." }),
     )
     const catalogs = [catalog]
 
@@ -360,7 +360,7 @@ describe("getCatalogForFile", () => {
         include: ["./src/"],
         format,
       },
-      mockConfig({ format: "po", rootDir: "." }),
+      mockConfig({ rootDir: "." }),
     )
     const catalogs = [catalog]
 
@@ -378,7 +378,7 @@ describe("getCatalogForFile", () => {
         include: ["./src/"],
         format,
       },
-      mockConfig({ format: "po", rootDir: "." }),
+      mockConfig({ rootDir: "." }),
     )
     const catalogs = [catalog]
 
@@ -396,7 +396,7 @@ describe("getCatalogForFile", () => {
         include: ["./src/"],
         format,
       },
-      mockConfig({ format: "po", rootDir: "." }),
+      mockConfig({ rootDir: "." }),
     )
     const catalogs = [catalog]
 
@@ -414,7 +414,7 @@ describe("getCatalogForFile", () => {
         include: ["./src/"],
         format,
       },
-      mockConfig({ format: "po", rootDir: "." }),
+      mockConfig({ rootDir: "." }),
     )
     const catalogs = [catalog]
 
@@ -434,7 +434,7 @@ describe("getCatalogForFile", () => {
         include: ["./src/"],
         format,
       },
-      mockConfig({ format: "po", rootDir: "." }),
+      mockConfig({ rootDir: "." }),
     )
     const catalogs = [catalog]
 
@@ -454,7 +454,7 @@ describe("getCatalogForFile", () => {
         include: ["./src/"],
         format,
       },
-      mockConfig({ format: "po", rootDir: "." }),
+      mockConfig({ rootDir: "." }),
     )
     const catalogs = [catalog]
 

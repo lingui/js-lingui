@@ -26,11 +26,7 @@ const extractWorker = async (
   }
 
   if (!format) {
-    format = await getFormat(
-      linguiConfig.format,
-      linguiConfig.formatOptions,
-      linguiConfig.sourceLocale,
-    )
+    format = await getFormat(linguiConfig.format, linguiConfig.sourceLocale)
   }
 
   return await extractFromBundleAndWrite({

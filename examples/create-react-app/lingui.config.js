@@ -9,5 +9,5 @@ module.exports = {
       exclude: ["**/node_modules/**"],
     },
   ],
-  format: "po",
+  
 }
