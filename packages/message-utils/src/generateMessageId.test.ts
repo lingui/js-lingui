@@ -49,7 +49,7 @@ describe("generateMessageId compatibility", () => {
 
     testCases.forEach(([msg, ctx]) => {
       expect(generateMessageIdNode(msg, ctx)).toBe(
-        generateMessageIdBrowser(msg, ctx)
+        generateMessageIdBrowser(msg, ctx),
       )
     })
   })

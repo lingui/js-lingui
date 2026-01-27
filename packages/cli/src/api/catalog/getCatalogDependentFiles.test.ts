@@ -38,7 +38,7 @@ describe("getCatalogDependentFiles", () => {
           default: "en",
         },
       },
-      { skipValidation: true }
+      { skipValidation: true },
     )
 
     const catalog = new Catalog(
@@ -49,7 +49,7 @@ describe("getCatalogDependentFiles", () => {
         exclude: [],
         format,
       },
-      config
+      config,
     )
 
     const actual = await getCatalogDependentFiles(catalog, "pt-PT")
@@ -85,7 +85,7 @@ describe("getCatalogDependentFiles", () => {
           default: "en",
         },
       },
-      { skipValidation: true }
+      { skipValidation: true },
     )
 
     const catalog = new Catalog(
@@ -96,7 +96,7 @@ describe("getCatalogDependentFiles", () => {
         exclude: [],
         format,
       },
-      config
+      config,
     )
 
     const actual = await getCatalogDependentFiles(catalog, "en")
@@ -130,7 +130,7 @@ describe("getCatalogDependentFiles", () => {
           default: "en",
         },
       },
-      { skipValidation: true }
+      { skipValidation: true },
     )
 
     const catalog = new Catalog(
@@ -141,7 +141,7 @@ describe("getCatalogDependentFiles", () => {
         exclude: [],
         format,
       },
-      config
+      config,
     )
 
     const actual = await getCatalogDependentFiles(catalog, "pt-PT")
@@ -181,7 +181,7 @@ describe("getCatalogDependentFiles", () => {
           default: "en",
         },
       },
-      { skipValidation: true }
+      { skipValidation: true },
     )
 
     const catalog = new Catalog(
@@ -192,7 +192,7 @@ describe("getCatalogDependentFiles", () => {
         exclude: [],
         format,
       },
-      config
+      config,
     )
 
     const actual = await getCatalogDependentFiles(catalog, "pt-PT")

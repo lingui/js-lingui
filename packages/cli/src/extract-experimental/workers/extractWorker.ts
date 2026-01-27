@@ -15,7 +15,7 @@ const extractWorker = async (
   template: boolean,
   locales: string[],
   clean: boolean,
-  overwrite: boolean
+  overwrite: boolean,
 ) => {
   if (!linguiConfig) {
     // initialize config once per worker, speed up workers follow execution
@@ -29,7 +29,7 @@ const extractWorker = async (
     format = await getFormat(
       linguiConfig.format,
       linguiConfig.formatOptions,
-      linguiConfig.sourceLocale
+      linguiConfig.sourceLocale,
     )
   }
 

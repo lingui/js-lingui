@@ -14,7 +14,7 @@ export function prettyOrigin(origins: [filename: string, line?: number][]) {
 
 export function replacePlaceholders(
   input: string,
-  values: Record<string, string | undefined>
+  values: Record<string, string | undefined>,
 ): string {
   return input.replace(/\{([^}]+)}/g, (m, placeholder) => {
     return values[placeholder] ?? m
@@ -55,7 +55,7 @@ export function isDirectory(filePath: string) {
 
 export async function writeFile(
   fileName: string,
-  content: string
+  content: string,
 ): Promise<void> {
   await mkdirp(path.dirname(fileName))
   await fs.promises.writeFile(fileName, content, "utf-8")
@@ -63,7 +63,7 @@ export async function writeFile(
 
 export async function writeFileIfChanged(
   filename: string,
-  newContent: string
+  newContent: string,
 ): Promise<void> {
   const raw = await readFile(filename)
 

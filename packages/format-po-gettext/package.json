@@ -53,8 +53,8 @@
     "pofile": "^1.1.4"
   },
   "devDependencies": {
-    "@lingui/jest-mocks": "workspace:^",
+    "@lingui/test-utils": "workspace:*",
     "unbuild": "3.6.1",
-    "vitest": "3.2.4"
+    "vitest": "4.0.18"
   }
 }

@@ -54,7 +54,7 @@ describe("vue extractor", () => {
       },
       {
         linguiConfig,
-      }
+      },
     )
 
     messages = normalizePath(messages)
@@ -76,7 +76,7 @@ describe("vue extractor", () => {
       },
       {
         linguiConfig,
-      }
+      },
     )
 
     messages = normalizePath(messages)

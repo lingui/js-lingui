@@ -40,7 +40,7 @@ expect(
     comment: "Hello",
     context: "context",
     message: "Hello world",
-  })
+  }),
 ).type.toBe<string>()
 
 // only id
@@ -72,7 +72,7 @@ expect(
     comment: "Hello",
     context: "context",
     message: "Hello world",
-  })
+  }),
 ).type.toBe<string>()
 
 ///
@@ -86,13 +86,13 @@ expect(defineMessage`Hello ${name}`).type.toBe<MessageDescriptor>()
 // with labeled expression
 expect(msg`Hello ${{ name: user.name }}`).type.toBe<MessageDescriptor>()
 expect(
-  defineMessage`Hello ${{ name: user.name }}`
+  defineMessage`Hello ${{ name: user.name }}`,
 ).type.toBe<MessageDescriptor>()
 
 // with ph labeled expression
 expect(msg`Hello ${ph({ name: user.name })}`).type.toBe<MessageDescriptor>()
 expect(
-  defineMessage`Hello ${ph({ name: user.name })}`
+  defineMessage`Hello ${ph({ name: user.name })}`,
 ).type.toBe<MessageDescriptor>()
 
 // allow numbers
@@ -105,7 +105,7 @@ expect(
     comment: "Hello",
     context: "context",
     message: "Hello world",
-  })
+  }),
 ).type.toBe<MessageDescriptor>()
 expect(
   msg({
@@ -113,7 +113,7 @@ expect(
     comment: "Hello",
     context: "context",
     message: "Hello world",
-  })
+  }),
 ).type.toBe<MessageDescriptor>()
 expect(defineMessage`Message`).type.toBe<MessageDescriptor>()
 expect(msg`Message`).type.toBe<MessageDescriptor>()
@@ -140,7 +140,7 @@ expect(
   plural(5, {
     one: "...",
     other: "...",
-  })
+  }),
 ).type.toBe<string>()
 
 // with offset
@@ -149,7 +149,7 @@ expect(
     one: "...",
     other: "...",
     offset: 5,
-  })
+  }),
 ).type.toBe<string>()
 
 // exact choices
@@ -159,7 +159,7 @@ expect(
     1: "...",
     one: "...",
     other: "...",
-  })
+  }),
 ).type.toBe<string>()
 
 // with labeled value
@@ -169,8 +169,8 @@ expect(
     {
       one: "...",
       other: "...",
-    }
-  )
+    },
+  ),
 ).type.toBe<string>()
 
 // with labeled value with ph helper
@@ -178,7 +178,7 @@ expect(
   plural(ph({ count: 5 }), {
     one: "...",
     other: "...",
-  })
+  }),
 ).type.toBe<string>()
 
 // should accept only strings
@@ -206,7 +206,7 @@ expect(
   selectOrdinal(5, {
     one: "...",
     other: "...",
-  })
+  }),
 ).type.toBe<string>()
 
 // with offset
@@ -215,7 +215,7 @@ expect(
     one: "...",
     other: "...",
     offset: 5,
-  })
+  }),
 ).type.toBe<string>()
 
 // exact choices
@@ -225,7 +225,7 @@ expect(
     1: "...",
     one: "...",
     other: "...",
-  })
+  }),
 ).type.toBe<string>()
 
 // should accept only strings
@@ -238,8 +238,8 @@ expect(
     {
       one: "...",
       other: "...",
-    }
-  )
+    },
+  ),
 ).type.toBe<string>()
 
 // with labeled value with ph helper
@@ -247,7 +247,7 @@ expect(
   selectOrdinal(ph({ count: 5 }), {
     one: "...",
     other: "...",
-  })
+  }),
 ).type.toBe<string>()
 
 ///////////////////
@@ -265,7 +265,7 @@ expect(
     male: "he",
     female: "she",
     other: "they",
-  })
+  }),
 ).type.toBe<string>()
 
 // value could be strings only
@@ -282,7 +282,7 @@ expect(select).type.not.toBeCallableWith(
   {
     male: "...",
     other: "...",
-  }
+  },
 )
 
 // with labeled value with ph helper
@@ -290,7 +290,7 @@ expect(
   select(ph({ value: "one" }), {
     male: "...",
     other: "...",
-  })
+  }),
 ).type.toBe<string>()
 
 // should accept only strings

@@ -8,7 +8,7 @@ type CatalogFormatterFactoryFn = (options: any) => CatalogFormatter
 function createDeprecationError(
   packageName: string,
   format: string,
-  installCode: string
+  installCode: string,
 ) {
   const installCmd = makeInstall(packageName)
 
@@ -33,8 +33,8 @@ const formats: Record<CatalogFormat, () => Promise<CatalogFormatterFactoryFn>> =
         createDeprecationError(
           "@lingui/format-json",
           "lingui",
-          'formatter({style: "lingui"})'
-        )
+          'formatter({style: "lingui"})',
+        ),
       )
     },
     minimal: async () => {
@@ -42,14 +42,14 @@ const formats: Record<CatalogFormat, () => Promise<CatalogFormatterFactoryFn>> =
         createDeprecationError(
           "@lingui/format-json",
           "minimal",
-          'formatter({style: "minimal"})'
-        )
+          'formatter({style: "minimal"})',
+        ),
       )
     },
     po: async () => (await import("@lingui/format-po")).formatter,
     csv: async () => {
       throw new Error(
-        createDeprecationError("@lingui/format-csv", "csv", "formatter()")
+        createDeprecationError("@lingui/format-csv", "csv", "formatter()"),
       )
     },
     "po-gettext": async () => {
@@ -57,8 +57,8 @@ const formats: Record<CatalogFormat, () => Promise<CatalogFormatterFactoryFn>> =
         createDeprecationError(
           "@lingui/format-po-gettext",
           "po-gettext",
-          "formatter()"
-        )
+          "formatter()",
+        ),
       )
     },
   }
@@ -68,7 +68,7 @@ export { FormatterWrapper }
 export async function getFormat(
   _format: CatalogFormat | CatalogFormatter,
   options: CatalogFormatOptions,
-  sourceLocale: string
+  sourceLocale: string,
 ): Promise<FormatterWrapper> {
   if (typeof _format !== "string") {
     return new FormatterWrapper(_format, sourceLocale)
@@ -79,8 +79,8 @@ export async function getFormat(
   if (!format) {
     throw new Error(
       `Unknown format "${_format}". Use one of following: ${Object.keys(
-        formats
-      ).join(", ")}`
+        formats,
+      ).join(", ")}`,
     )
   }
 

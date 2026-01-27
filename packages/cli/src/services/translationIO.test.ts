@@ -35,7 +35,7 @@ const expectVersion = expect.stringMatching(/\d+\.\d+.\d+/)
 // Utility to create test config and catalogs
 async function makeTestConfig(
   outputDir: string,
-  configOverrides?: Partial<LinguiConfig>
+  configOverrides?: Partial<LinguiConfig>,
 ) {
   const config = makeConfig({
     rootDir: outputDir,
@@ -59,7 +59,7 @@ async function makeTestConfig(
   const format = await getFormat(
     config.format,
     config.formatOptions,
-    config.sourceLocale
+    config.sourceLocale,
   )
 
   const catalogs = config.catalogs.map(
@@ -71,8 +71,8 @@ async function makeTestConfig(
           format,
           include: catalog.include,
         },
-        config
-      )
+        config,
+      ),
   )
 
   return { testConfig: config, catalogs }
@@ -81,7 +81,7 @@ async function makeTestConfig(
 // Helper to prepare test directory
 async function prepareTestDir() {
   return await fs.promises.mkdtemp(
-    path.join(os.tmpdir(), `test-${process.pid}`)
+    path.join(os.tmpdir(), `test-${process.pid}`),
   )
 }
 
@@ -110,7 +110,7 @@ function createExtractionResult(catalogs: Catalog[]) {
             origin: [["src/App.tsx", 10]],
             comments: [],
           },
-          "app.welcome"
+          "app.welcome",
         ),
         ...createMessage({
           message: "Hello {name}",
@@ -131,7 +131,7 @@ function createExtractionResult(catalogs: Catalog[]) {
             origin: [["src/About.tsx", 5]],
             comments: [],
           },
-          "about.title"
+          "about.title",
         ),
       },
       fr: {
@@ -142,7 +142,7 @@ function createExtractionResult(catalogs: Catalog[]) {
             origin: [["src/App.tsx", 10]],
             comments: ["js-lingui-explicit-id"],
           },
-          "app.welcome"
+          "app.welcome",
         ),
         ...createMessage({
           message: "Hello {name}",
@@ -163,7 +163,7 @@ function createExtractionResult(catalogs: Catalog[]) {
             origin: [["src/About.tsx", 5]],
             comments: [],
           },
-          "about.title"
+          "about.title",
         ),
       },
       es: {
@@ -174,7 +174,7 @@ function createExtractionResult(catalogs: Catalog[]) {
             origin: [["src/App.tsx", 10]],
             comments: [],
           },
-          "app.welcome"
+          "app.welcome",
         ),
         ...createMessage({
           message: "Hello {name}",
@@ -195,7 +195,7 @@ function createExtractionResult(catalogs: Catalog[]) {
             origin: [["src/About.tsx", 5]],
             comments: [],
           },
-          "about.title"
+          "about.title",
         ),
       },
     },
@@ -223,7 +223,7 @@ function createMultiCatalogExtractionResult(catalogs: Catalog[]) {
             origin: [["src/App.tsx", 10]],
             comments: ["js-lingui-explicit-id"],
           },
-          "app.welcome"
+          "app.welcome",
         ),
         ...createMessage({
           message: "Hello {name}",
@@ -244,7 +244,7 @@ function createMultiCatalogExtractionResult(catalogs: Catalog[]) {
             origin: [["src/About.tsx", 5]],
             comments: ["js-lingui-explicit-id"],
           },
-          "about.title"
+          "about.title",
         ),
       },
       fr: {
@@ -255,7 +255,7 @@ function createMultiCatalogExtractionResult(catalogs: Catalog[]) {
             origin: [["src/App.tsx", 10]],
             comments: ["js-lingui-explicit-id"],
           },
-          "app.welcome"
+          "app.welcome",
         ),
         ...createMessage({
           message: "Hello {name}",
@@ -276,7 +276,7 @@ function createMultiCatalogExtractionResult(catalogs: Catalog[]) {
             origin: [["src/About.tsx", 5]],
             comments: ["js-lingui-explicit-id"],
           },
-          "about.title"
+          "about.title",
         ),
       },
       es: {
@@ -305,7 +305,7 @@ function createMultiCatalogExtractionResult(catalogs: Catalog[]) {
             origin: [["src/About.tsx", 5]],
             comments: [],
           },
-          "about.title"
+          "about.title",
         ),
       },
     },
@@ -425,7 +425,7 @@ describe("TranslationIO Integration", () => {
         testConfig,
         "en",
         extractionResult,
-        segmentsPerLocale
+        segmentsPerLocale,
       )
 
       // Verify content
@@ -505,7 +505,7 @@ describe("TranslationIO Integration", () => {
         testConfig,
         "en",
         extractionResult,
-        segmentsPerLocale
+        segmentsPerLocale,
       )
 
       expect(listingToHumanReadable(readFsToListing(outputDir)))
@@ -621,13 +621,13 @@ describe("TranslationIO Integration", () => {
               ],
             },
           })
-        })
+        }),
       )
 
       await init(testConfig, extractionResult)
 
       expect(apiCalls[0]!.url).toMatchInlineSnapshot(
-        `https://translation.io/api/v1/segments/init.json?api_key=test-api-key-123`
+        `https://translation.io/api/v1/segments/init.json?api_key=test-api-key-123`,
       )
       expect(await apiCalls[0]!.json()).toMatchInlineSnapshot(
         { version: expectVersion },
@@ -727,7 +727,7 @@ describe("TranslationIO Integration", () => {
           ],
           version: StringMatching /\\\\d\\+\\\\\\.\\\\d\\+\\.\\\\d\\+/,
         }
-      `
+      `,
       )
 
       // Verify updated files exist
@@ -816,9 +816,9 @@ describe("TranslationIO Integration", () => {
             },
             {
               status: 400,
-            }
+            },
           )
-        })
+        }),
       )
 
       const extractionResult = createExtractionResult(catalogs)
@@ -840,7 +840,7 @@ describe("TranslationIO Integration", () => {
       mswServer.use(
         http.post("https://translation.io/api/v1/*", () => {
           return HttpResponse.error()
-        })
+        }),
       )
 
       const extractionResult = createExtractionResult(catalogs)
@@ -980,7 +980,7 @@ describe("TranslationIO Integration", () => {
               ],
             },
           })
-        })
+        }),
       )
 
       const extractionResult = createMultiCatalogExtractionResult(catalogs)
@@ -1198,14 +1198,14 @@ describe("TranslationIO Integration", () => {
               ],
             },
           })
-        })
+        }),
       )
 
       await sync(testConfig, options, extractionResult)
 
       // Verify request
       expect(apiCalls[0]!.url).toMatchInlineSnapshot(
-        `https://translation.io/api/v1/segments/sync.json?api_key=test-api-key-123`
+        `https://translation.io/api/v1/segments/sync.json?api_key=test-api-key-123`,
       )
       expect(await apiCalls[0]!.json()).toMatchInlineSnapshot(
         { version: expectVersion },
@@ -1258,7 +1258,7 @@ describe("TranslationIO Integration", () => {
           ],
           version: StringMatching /\\\\d\\+\\\\\\.\\\\d\\+\\.\\\\d\\+/,
         }
-      `
+      `,
       )
 
       // Verify updated files exist
@@ -1358,7 +1358,7 @@ describe("TranslationIO Integration", () => {
               es: [],
             },
           })
-        })
+        }),
       )
 
       await sync(testConfig, cleanOptions, extractionResult)
@@ -1378,9 +1378,9 @@ describe("TranslationIO Integration", () => {
             {
               errors: ["Synchronization failed"],
             },
-            { status: 400 }
+            { status: 400 },
           )
-        })
+        }),
       )
 
       const result = await sync(testConfig, options, extractionResult)
@@ -1404,11 +1404,11 @@ describe("TranslationIO Integration", () => {
       mswServer.use(
         http.post("https://translation.io/api/v1/*", () => {
           return HttpResponse.error()
-        })
+        }),
       )
 
       await expect(
-        sync(testConfig, options, extractionResult)
+        sync(testConfig, options, extractionResult),
       ).rejects.toThrow()
     })
 
@@ -1549,7 +1549,7 @@ describe("TranslationIO Integration", () => {
               ],
             },
           })
-        })
+        }),
       )
 
       const extractionResult = createMultiCatalogExtractionResult(catalogs)
@@ -1713,9 +1713,9 @@ describe("TranslationIO Integration", () => {
               {
                 errors: ["This project has already been initialized."],
               },
-              { status: 400 }
+              { status: 400 },
             )
-          }
+          },
         ),
         http.post(
           "https://translation.io/api/v1/segments/sync.json",
@@ -1732,8 +1732,8 @@ describe("TranslationIO Integration", () => {
                 es: [],
               },
             })
-          }
-        )
+          },
+        ),
       )
 
       const result = await syncProcess(testConfig, options, extractionResult)
@@ -1769,7 +1769,7 @@ describe("TranslationIO Integration", () => {
               es: [],
             },
           })
-        })
+        }),
       )
 
       const result = await syncProcess(testConfig, options, extractionResult)
@@ -1795,9 +1795,9 @@ describe("TranslationIO Integration", () => {
             {
               errors: ["Network error", "Connection timeout"],
             },
-            { status: 400 }
+            { status: 400 },
           )
-        })
+        }),
       )
 
       await expect(syncProcess(testConfig, options, extractionResult)).rejects
@@ -1818,11 +1818,11 @@ describe("TranslationIO Integration", () => {
       mswServer.use(
         http.post("https://translation.io/api/v1/*", () => {
           return HttpResponse.error()
-        })
+        }),
       )
 
       await expect(
-        syncProcess(testConfig, options, extractionResult)
+        syncProcess(testConfig, options, extractionResult),
       ).rejects.toThrow()
     })
   })

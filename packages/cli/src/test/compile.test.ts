@@ -1,6 +1,6 @@
 import { command } from "../lingui-compile.js"
 import { getConfig, LinguiConfig, makeConfig } from "@lingui/conf"
-import { getConsoleMockCalls, mockConsole } from "@lingui/jest-mocks"
+import { getConsoleMockCalls, mockConsole } from "@lingui/test-utils"
 import { createFixtures, readFsToListing } from "../tests.js"
 
 describe("CLI Command: Compile", () => {
@@ -483,10 +483,10 @@ msgstr "Witaj świecie"
         const actualFiles = readFsToListing(rootDir)
 
         expect(actualFiles["en.js"]).toContain(
-          "/*biome-ignore lint: auto-generated*/"
+          "/*biome-ignore lint: auto-generated*/",
         )
         expect(actualFiles["pl.js"]).toContain(
-          "/*biome-ignore lint: auto-generated*/"
+          "/*biome-ignore lint: auto-generated*/",
         )
         expect(actualFiles["en.js"]).not.toContain("eslint-disable")
         expect(actualFiles["pl.js"]).not.toContain("eslint-disable")

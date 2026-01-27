@@ -30,7 +30,7 @@ export type CliExtractTemplateOptions = {
 
 export default async function command(
   linguiConfig: LinguiConfigNormalized,
-  options: CliExtractTemplateOptions
+  options: CliExtractTemplateOptions,
 ): Promise<boolean> {
   options.verbose && console.log("Extracting messages from source files…")
 
@@ -38,7 +38,7 @@ export default async function command(
 
   if (!extractorConfig) {
     throw new Error(
-      "The configuration for experimental extractor is empty. Please read the docs."
+      "The configuration for experimental extractor is empty. Please read the docs.",
     )
   }
 
@@ -49,8 +49,8 @@ export default async function command(
         "Experimental features are not covered by semver, and may cause unexpected or broken application behavior." +
           " Use at your own risk.",
         "",
-      ].join("\n")
-    )
+      ].join("\n"),
+    ),
   )
 
   // unfortunately we can't use os.tmpdir() in this case
@@ -69,7 +69,7 @@ export default async function command(
     extractorConfig,
     getEntryPoints(extractorConfig.entries),
     tempDir,
-    linguiConfig.rootDir
+    linguiConfig.rootDir,
   )
   const stats: { entry: string; content: string }[] = []
 
@@ -79,7 +79,7 @@ export default async function command(
     const resolvedConfigPath = linguiConfig.resolvedConfigPath
     if (!resolvedConfigPath) {
       throw new Error(
-        "Multithreading is only supported when lingui config loaded from file system, not passed by API"
+        "Multithreading is only supported when lingui config loaded from file system, not passed by API",
       )
     }
 
@@ -92,10 +92,10 @@ export default async function command(
           new Worker(
             process.env.NODE_ENV === "test"
               ? "./extract-experimental/workers/extractWorkerWrapper.jiti.js"
-              : "./extract-experimental/workers/extractWorkerWrapper.prod.js"
-          )
+              : "./extract-experimental/workers/extractWorkerWrapper.prod.js",
+          ),
         ),
-      { size: options.workersOptions.poolSize }
+      { size: options.workersOptions.poolSize },
     )
 
     try {
@@ -111,7 +111,7 @@ export default async function command(
             options.template || false,
             options.locales || linguiConfig.locales,
             options.clean || false,
-            options.overwrite || false
+            options.overwrite || false,
           )
 
           commandSuccess &&= result.success
@@ -119,7 +119,7 @@ export default async function command(
           if (result.success) {
             stats.push({
               entry: normalizePath(
-                nodepath.relative(linguiConfig.rootDir, entryPoint!)
+                nodepath.relative(linguiConfig.rootDir, entryPoint!),
               ),
               content: result.stat,
             })
@@ -135,7 +135,7 @@ export default async function command(
     const format = await getFormat(
       linguiConfig.format,
       linguiConfig.formatOptions,
-      linguiConfig.sourceLocale
+      linguiConfig.sourceLocale,
     )
 
     for (const outFile of Object.keys(bundleResult.outputs)) {
@@ -158,7 +158,7 @@ export default async function command(
       if (result.success) {
         stats.push({
           entry: normalizePath(
-            nodepath.relative(linguiConfig.rootDir, entryPoint!)
+            nodepath.relative(linguiConfig.rootDir, entryPoint!),
           ),
           content: result.stat,
         })
@@ -198,7 +198,7 @@ if (esMain(import.meta)) {
     .option("--verbose", "Verbose output")
     .option(
       "--workers <n>",
-      "Number of worker threads to use (default: CPU count - 1, capped at 8). Pass `--workers 1` to disable worker threads and run everything in a single process"
+      "Number of worker threads to use (default: CPU count - 1, capped at 8). Pass `--workers 1` to disable worker threads and run everything in a single process",
     )
     .parse(process.argv)
 

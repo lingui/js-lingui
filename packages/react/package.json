@@ -82,7 +82,7 @@
     "@lingui/core": "5.9.0"
   },
   "devDependencies": {
-    "@lingui/jest-mocks": "*",
+    "@lingui/test-utils": "workspace:*",
     "@testing-library/react": "^14.0.0",
     "@types/react": "^18.2.13",
     "eslint-plugin-react": "^7.32.2",
@@ -91,6 +91,6 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "unbuild": "3.6.1",
-    "vitest": "3.2.4"
+    "vitest": "4.0.18"
   }
 }

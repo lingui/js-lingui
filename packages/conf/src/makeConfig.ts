@@ -16,7 +16,7 @@ export function makeConfig(
   opts: {
     skipValidation?: boolean
     resolvedConfigPath?: string
-  } = {}
+  } = {},
 ): LinguiConfigNormalized {
   let config: LinguiConfig = {
     ...defaultConfig,
@@ -39,7 +39,7 @@ export function makeConfig(
   // `replaceRootDir` should always be the last
   const out = replaceRootDir(
     config,
-    config.rootDir
+    config.rootDir,
   ) as unknown as LinguiConfigNormalized
 
   return {
@@ -89,14 +89,14 @@ export const exampleConfig = {
   extractors: multipleValidOptions([], ["babel"], [Object]),
   runtimeConfigModule: multipleValidOptions(
     { i18n: ["@lingui/core", "i18n"], Trans: ["@lingui/react", "Trans"] },
-    ["@lingui/core", "i18n"]
+    ["@lingui/core", "i18n"],
   ),
   fallbackLocales: multipleValidOptions(
     {},
     { "en-US": "en" },
     { "en-US": ["en"] },
     { default: "en" },
-    false
+    false,
   ),
   extractorParserOptions: {
     flow: false,
@@ -124,10 +124,10 @@ function validateLocales(config: LinguiConfig) {
     console.error("No locales defined!\n")
     console.error(
       `Add ${pico.yellow(
-        "'locales'"
+        "'locales'",
       )} to your configuration. See ${pico.underline(
-        "https://lingui.dev/ref/conf#locales"
-      )}`
+        "https://lingui.dev/ref/conf#locales",
+      )}`,
     )
   }
 }

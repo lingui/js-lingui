@@ -8,7 +8,7 @@ describe("htmlTag detector", () => {
 
     page.content = '<html lang="es"><body><p>Hello world</p></body></html>'
     expect(
-      fromHtmlTag("lang", page.mainFrame.document as unknown as Document)
+      fromHtmlTag("lang", page.mainFrame.document as unknown as Document),
     ).toEqual("es")
   })
 
@@ -18,7 +18,7 @@ describe("htmlTag detector", () => {
 
     page.content = `<html xml:lang="en"><p>Hello world</p></html>`
     expect(
-      fromHtmlTag("xml:lang", page.mainFrame.document as unknown as Document)
+      fromHtmlTag("xml:lang", page.mainFrame.document as unknown as Document),
     ).toEqual("en")
   })
 })

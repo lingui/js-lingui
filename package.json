@@ -43,7 +43,7 @@
     "@swc/core": "^1.3.26",
     "@types/mock-fs": "^4.13.1",
     "@types/node": "20.14.8",
-    "@vitest/coverage-v8": "3.2.4",
+    "@vitest/coverage-v8": "4.0.18",
     "cross-env": "^7.0.2",
     "eslint": "^9.17.0",
     "eslint-plugin-import": "^2.31.0",
@@ -56,7 +56,7 @@
     "npm-cli-login": "^0.1.1",
     "ora": "^5.1.0",
     "picocolors": "^1.1.1",
-    "prettier": "2.8.3",
+    "prettier": "3.8.1",
     "semver": "^7.3.2",
     "size-limit": "^11.1.6",
     "strip-ansi": "^6.0.1",
@@ -64,7 +64,7 @@
     "tstyche": "^4.0.0",
     "typescript": "^5.7.2",
     "typescript-eslint": "^8.18.1",
-    "vitest": "^3.2.4"
+    "vitest": "4.0.18"
   },
   "workspaces": [
     "packages/*",

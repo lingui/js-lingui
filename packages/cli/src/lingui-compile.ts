@@ -28,7 +28,7 @@ export type CliCompileOptions = {
 
 export async function command(
   config: LinguiConfigNormalized,
-  options: CliCompileOptions
+  options: CliCompileOptions,
 ) {
   const startTime = Date.now()
 
@@ -58,7 +58,7 @@ export async function command(
     const resolvedConfigPath = config.resolvedConfigPath
     if (!resolvedConfigPath) {
       throw new Error(
-        "Multithreading is only supported when lingui config loaded from file system, not passed by API"
+        "Multithreading is only supported when lingui config loaded from file system, not passed by API",
       )
     }
 
@@ -71,10 +71,10 @@ export async function command(
           new Worker(
             process.env.NODE_ENV === "test"
               ? "./workers/compileWorkerWrapper.jiti.js"
-              : "./workers/compileWorkerWrapper.prod.js"
-          )
+              : "./workers/compileWorkerWrapper.prod.js",
+          ),
         ),
-      { size: options.workersOptions.poolSize }
+      { size: options.workersOptions.poolSize },
     )
 
     try {
@@ -84,7 +84,7 @@ export async function command(
             locale,
             options,
             doMerge,
-            resolvedConfigPath
+            resolvedConfigPath,
           )
 
           if (logs.errors) {
@@ -135,25 +135,25 @@ if (esMain(import.meta)) {
     .option("--typescript", "Create Typescript definition for compiled bundle")
     .option(
       "--workers <n>",
-      "Number of worker threads to use (default: CPU count - 1, capped at 8). Pass `--workers 1` to disable worker threads and run everything in a single process"
+      "Number of worker threads to use (default: CPU count - 1, capped at 8). Pass `--workers 1` to disable worker threads and run everything in a single process",
     )
     .option(
       "--namespace <namespace>",
-      "Specify namespace for compiled bundle. Ex: cjs(default) -> module.exports, es -> export, window.test -> window.test"
+      "Specify namespace for compiled bundle. Ex: cjs(default) -> module.exports, es -> export, window.test -> window.test",
     )
     .option("--watch", "Enables Watch Mode")
     .option(
       "--debounce <delay>",
-      "Debounces compilation for given amount of milliseconds"
+      "Debounces compilation for given amount of milliseconds",
     )
     .option(
       "--output-prefix <prefix>",
-      "Add a custom string to the beginning of compiled files (header/prefix). Useful for tools like linters or coverage directives. Defaults to '/*eslint-disable*/'"
+      "Add a custom string to the beginning of compiled files (header/prefix). Useful for tools like linters or coverage directives. Defaults to '/*eslint-disable*/'",
     )
     .on("--help", function () {
       console.log("\n  Examples:\n")
       console.log(
-        "    # Compile translations and use defaults or message IDs for missing translations"
+        "    # Compile translations and use defaults or message IDs for missing translations",
       )
       console.log(`    $ ${helpRun("compile")}`)
       console.log("")
@@ -181,7 +181,7 @@ if (esMain(import.meta)) {
           options.typescript || config.compileNamespace === "ts" || false,
         namespace: options.namespace, // we want this to be undefined if user does not specify so default can be used
         outputPrefix: options.outputPrefix,
-      })
+      }),
     )
 
     return previousRun
@@ -205,7 +205,7 @@ if (esMain(import.meta)) {
       const format = await getFormat(
         config.format,
         config.formatOptions,
-        config.sourceLocale
+        config.sourceLocale,
       )
       const catalogs = await getCatalogs(config)
 
@@ -216,7 +216,7 @@ if (esMain(import.meta)) {
           paths.push(
             `${catalog.path
               .replace(/{locale}/g, locale)
-              .replace(/{name}/g, "*")}${format.getCatalogExtension()}`
+              .replace(/{name}/g, "*")}${format.getCatalogExtension()}`,
           )
         })
       })

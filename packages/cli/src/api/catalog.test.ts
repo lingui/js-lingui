@@ -1,7 +1,7 @@
 import fs from "fs"
 import path from "path"
 import mockFs from "mock-fs"
-import { mockConsole } from "@lingui/jest-mocks"
+import { mockConsole } from "@lingui/test-utils"
 import { LinguiConfig, makeConfig } from "@lingui/conf"
 
 import { Catalog, cleanObsolete, order, writeCompiled } from "./catalog.js"
@@ -33,7 +33,7 @@ function mockConfig(config: Partial<LinguiConfig> = {}) {
       locales: ["en", "pl"],
       ...config,
     },
-    { skipValidation: true }
+    { skipValidation: true },
   )
 }
 
@@ -64,7 +64,7 @@ describe("Catalog", () => {
         },
         mockConfig({
           locales: ["en", "cs"],
-        })
+        }),
       )
 
       // Everything should be empty
@@ -89,7 +89,7 @@ describe("Catalog", () => {
         },
         mockConfig({
           locales: ["en", "cs"],
-        })
+        }),
       )
 
       // Everything should be empty
@@ -111,7 +111,7 @@ describe("Catalog", () => {
         },
         mockConfig({
           locales: ["en", "cs"],
-        })
+        }),
       )
 
       // Everything should be empty
@@ -138,7 +138,7 @@ describe("Catalog", () => {
         },
         mockConfig({
           locales: ["en", "cs"],
-        })
+        }),
       )
 
       // Everything should be empty
@@ -156,7 +156,7 @@ describe("Catalog", () => {
           name: "messages",
           path: path.resolve(
             __dirname,
-            path.join("fixtures", "pot-template", "{locale}")
+            path.join("fixtures", "pot-template", "{locale}"),
           ),
           include: [],
           exclude: [],
@@ -164,7 +164,7 @@ describe("Catalog", () => {
         },
         mockConfig({
           locales: ["en", "pl"],
-        })
+        }),
       )
 
       const translations = await catalog.getTranslations("en", {
@@ -187,7 +187,7 @@ describe("Catalog", () => {
           fixture("collect-typescript-jsx/tsx-syntax.tsx"),
           fixture("collect-typescript-jsx/macro.tsx"),
         ],
-        mockConfig()
+        mockConfig(),
       )
 
       expect(messages).toMatchSnapshot()
@@ -199,7 +199,7 @@ describe("Catalog", () => {
           fixture("collect-placeholders-sorting/a.ts"),
           fixture("collect-placeholders-sorting/b.ts"),
         ],
-        mockConfig()
+        mockConfig(),
       )
 
       const runB = await extractFromFiles(
@@ -207,11 +207,11 @@ describe("Catalog", () => {
           fixture("collect-placeholders-sorting/b.ts"),
           fixture("collect-placeholders-sorting/a.ts"),
         ],
-        mockConfig()
+        mockConfig(),
       )
 
       expect(Object.values(runA!)[0]!.placeholders[0]).toStrictEqual(
-        Object.values(runB!)[0]!.placeholders[0]
+        Object.values(runB!)[0]!.placeholders[0],
       )
 
       expect(Object.values(runA!)[0]!.placeholders).toMatchInlineSnapshot(`
@@ -231,7 +231,7 @@ describe("Catalog", () => {
           extractorParserOptions: {
             tsExperimentalDecorators: true,
           },
-        })
+        }),
       )
 
       expect(messages).toBeTruthy()
@@ -266,7 +266,7 @@ describe("Catalog", () => {
           extractorParserOptions: {
             flow: true,
           },
-        })
+        }),
       )
 
       const messages = await catalog.collect()
@@ -281,7 +281,7 @@ describe("Catalog", () => {
           exclude: [],
           format,
         },
-        mockConfig()
+        mockConfig(),
       )
 
       const messages = await catalog.collect()
@@ -297,7 +297,7 @@ describe("Catalog", () => {
           exclude: [],
           format,
         },
-        mockConfig()
+        mockConfig(),
       )
 
       const oldCwd = process.cwd()
@@ -329,7 +329,7 @@ describe("Catalog", () => {
           exclude: [],
           format,
         },
-        mockConfig()
+        mockConfig(),
       )
 
       const messages = await catalog.collect({
@@ -347,7 +347,7 @@ describe("Catalog", () => {
           exclude: [],
           format,
         },
-        mockConfig()
+        mockConfig(),
       )
 
       const messages = await catalog.collect({
@@ -369,7 +369,7 @@ describe("Catalog", () => {
           exclude: [],
           format,
         },
-        mockConfig()
+        mockConfig(),
       )
       expect.assertions(1)
       await mockConsole(async (console) => {
@@ -379,8 +379,8 @@ describe("Catalog", () => {
 
         expect(console.error).toBeCalledWith(
           expect.stringContaining(
-            `Encountered different default translations for message`
-          )
+            `Encountered different default translations for message`,
+          ),
         )
       })
     })
@@ -394,14 +394,14 @@ describe("Catalog", () => {
           exclude: [],
           format,
         },
-        mockConfig()
+        mockConfig(),
       )
 
       expect.assertions(2)
       await mockConsole(async (console) => {
         const messages = await catalog.collect()
         expect(console.error).toBeCalledWith(
-          expect.stringContaining(`Cannot process file`)
+          expect.stringContaining(`Cannot process file`),
         )
         expect(messages).toBeFalsy()
       })
@@ -420,8 +420,8 @@ describe("Catalog", () => {
       (await makeCatalog({ sourceLocale: "en" })).merge(
         prevCatalogs,
         nextCatalog,
-        defaultMergeOptions
-      )
+        defaultMergeOptions,
+      ),
     ).toEqual({
       // catalog for sourceLocale - translation is prefilled
       en: {
@@ -459,7 +459,7 @@ describe("Catalog", () => {
           exclude: [],
           format,
         },
-        mockConfig()
+        mockConfig(),
       )
 
       const messages = await catalog.read("en")
@@ -470,7 +470,7 @@ describe("Catalog", () => {
       mockFs({
         en: {
           "messages.po": fs.readFileSync(
-            path.resolve(__dirname, "fixtures/messages.po")
+            path.resolve(__dirname, "fixtures/messages.po"),
           ),
         },
       })
@@ -481,7 +481,7 @@ describe("Catalog", () => {
           include: [],
           format,
         },
-        mockConfig()
+        mockConfig(),
       )
 
       const messages = await catalog.read("en")
@@ -494,7 +494,7 @@ describe("Catalog", () => {
       mockFs({
         en: {
           "messages.json": fs.readFileSync(
-            path.resolve(__dirname, "fixtures/messages.json")
+            path.resolve(__dirname, "fixtures/messages.json"),
           ),
         },
       })
@@ -505,7 +505,7 @@ describe("Catalog", () => {
           include: [],
           format,
         },
-        mockConfig({ prevFormat: "minimal" })
+        mockConfig({ prevFormat: "minimal" }),
       )
 
       const messages = await catalog.read("en")
@@ -522,14 +522,14 @@ describe("Catalog", () => {
           name: "messages",
           path: path.resolve(
             __dirname,
-            path.join("fixtures", "readAll", "{locale}", "messages")
+            path.join("fixtures", "readAll", "{locale}", "messages"),
           ),
           include: [],
           format,
         },
         mockConfig({
           locales: ["en", "cs"],
-        })
+        }),
       )
 
       const messages = await catalog.readAll()
@@ -720,7 +720,7 @@ describe("writeCompiled", () => {
         exclude: [],
         format: await getFormat("po", {}, "en"),
       },
-      mockConfig()
+      mockConfig(),
     )
   })
 
@@ -738,8 +738,8 @@ describe("writeCompiled", () => {
       const { source } = createCompiledCatalog("en", {}, { namespace })
       // Test that the file extension of the compiled catalog is `.mjs`
       expect(
-        await writeCompiled(catalog.path, "en", source, namespace)
+        await writeCompiled(catalog.path, "en", source, namespace),
       ).toMatch(extension)
-    }
+    },
   )
 })

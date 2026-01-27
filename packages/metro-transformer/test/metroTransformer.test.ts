@@ -18,28 +18,28 @@ describe("Lingui Metro transformer tests", () => {
   it("should transform English PO file to a JS export", async () => {
     const filename = path.relative(
       testProjectDir,
-      path.join(catalogsDir, "en", "messages.po")
+      path.join(catalogsDir, "en", "messages.po"),
     )
     const result = await transformFile({
       filename,
     })
 
     expect(result).toMatchInlineSnapshot(
-      `"/*eslint-disable*/export const messages=JSON.parse("{\\"dEgA5A\\":[\\"Cancel\\"],\\"p1AaTM\\":[\\"Add a message to your inbox\\"]}");"`
+      `"/*eslint-disable*/export const messages=JSON.parse("{\\"dEgA5A\\":[\\"Cancel\\"],\\"p1AaTM\\":[\\"Add a message to your inbox\\"]}");"`,
     )
   })
 
   it("should transform Czech PO file with fallback to English to a JS export", async () => {
     const filename = path.relative(
       testProjectDir,
-      path.join(catalogsDir, "cs", "messages.po")
+      path.join(catalogsDir, "cs", "messages.po"),
     )
     const result = await transformFile({
       filename,
     })
 
     expect(result).toMatchInlineSnapshot(
-      `"/*eslint-disable*/export const messages=JSON.parse("{\\"dEgA5A\\":[\\"Cancel\\"],\\"p1AaTM\\":[\\"Přidat zprávu do doručené pošty\\"]}");"`
+      `"/*eslint-disable*/export const messages=JSON.parse("{\\"dEgA5A\\":[\\"Cancel\\"],\\"p1AaTM\\":[\\"Přidat zprávu do doručené pošty\\"]}");"`,
     )
   })
 
@@ -52,7 +52,7 @@ describe("Lingui Metro transformer tests", () => {
     })
 
     expect(result).toMatchInlineSnapshot(
-      `"/*eslint-disable*/export const messages=JSON.parse("{\\"dEgA5A\\":[\\"Cancel\\"],\\"p1AaTM\\":[\\"Add a message to your inbox\\"]}");"`
+      `"/*eslint-disable*/export const messages=JSON.parse("{\\"dEgA5A\\":[\\"Cancel\\"],\\"p1AaTM\\":[\\"Add a message to your inbox\\"]}");"`,
     )
   })
 
@@ -62,12 +62,12 @@ describe("Lingui Metro transformer tests", () => {
       "some",
       "bad",
       "path",
-      "messages.po"
+      "messages.po",
     )
     await expect(
       transformFile({
         filename,
-      })
+      }),
     ).rejects.toThrow(/is not matched to any of your catalogs paths/)
   })
 })

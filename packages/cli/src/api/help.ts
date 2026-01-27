@@ -27,7 +27,7 @@ export function helpRun(command: string) {
   let findRootPkgJson: Record<string, unknown> | undefined
   try {
     findRootPkgJson = JSON.parse(
-      readFileSync(resolve(join(process.cwd(), "package.json")), "utf8")
+      readFileSync(resolve(join(process.cwd(), "package.json")), "utf8"),
     )
   } catch (error) {
     // noting
@@ -35,7 +35,7 @@ export function helpRun(command: string) {
 
   if (findRootPkgJson?.scripts) {
     const res = Object.entries(findRootPkgJson.scripts).find(([_, value]) =>
-      value.includes(`lingui ${command}`)
+      value.includes(`lingui ${command}`),
     )
 
     if (res) {

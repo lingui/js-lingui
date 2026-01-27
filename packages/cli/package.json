@@ -90,7 +90,7 @@
     "threads": "^1.7.0"
   },
   "devDependencies": {
-    "@lingui/jest-mocks": "*",
+    "@lingui/test-utils": "workspace:*",
     "@types/babel__generator": "^7.27.0",
     "@types/convert-source-map": "^2.0.0",
     "@types/micromatch": "^4.0.1",
@@ -98,6 +98,6 @@
     "@types/normalize-path": "^3.0.0",
     "mock-fs": "^5.2.0",
     "msw": "^2.12.7",
-    "vitest": "^3.2.4"
+    "vitest": "4.0.18"
   }
 }

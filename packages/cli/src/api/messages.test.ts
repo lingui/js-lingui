@@ -17,7 +17,7 @@ describe("createMissingErrorMessage", () => {
           source: "World",
         },
       ],
-      "bla bla"
+      "bla bla",
     )
 
     expect(message).toMatchInlineSnapshot(`

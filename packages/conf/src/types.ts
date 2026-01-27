@@ -61,7 +61,7 @@ export type ExtractorType = {
     filename: string,
     code: string,
     onMessageExtracted: (msg: ExtractedMessage) => void,
-    ctx: ExtractorCtx
+    ctx: ExtractorCtx,
   ): Promise<void> | void
 }
 
@@ -74,7 +74,7 @@ export type CatalogFormatter = {
   templateExtension?: string
   parse(
     content: string,
-    ctx: { locale: string | undefined; sourceLocale: string; filename: string }
+    ctx: { locale: string | undefined; sourceLocale: string; filename: string },
   ): Promise<CatalogType> | CatalogType
   serialize(
     catalog: CatalogType,
@@ -83,7 +83,7 @@ export type CatalogFormatter = {
       sourceLocale: string
       filename: string
       existing: string | undefined
-    }
+    },
   ): Promise<string> | string
 }
 
@@ -112,7 +112,7 @@ export type OrderByFn = (
   b: {
     messageId: string
     entry: MessageType
-  }
+  },
 ) => number
 export type OrderBy = "messageId" | "message" | "origin" | OrderByFn
 

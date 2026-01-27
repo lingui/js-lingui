@@ -64,7 +64,7 @@ export function createSegmentFromLinguiItem(key: string, item: MessageType) {
 export function createLinguiItemFromSegment(segment: TranslationIoSegment) {
   const segmentHasExplicitId = segment.comment?.includes(EXPLICIT_ID_FLAG)
   const segmentHasExplicitIdAndContext = segment.comment?.includes(
-    EXPLICIT_ID_AND_CONTEXT_FLAG
+    EXPLICIT_ID_AND_CONTEXT_FLAG,
   )
 
   const item: MessageType = {
@@ -90,7 +90,8 @@ export function createLinguiItemFromSegment(segment: TranslationIoSegment) {
     item.comments = segment.comment.split(" | ").filter(
       // drop flags from comments
       (comment) =>
-        comment !== EXPLICIT_ID_AND_CONTEXT_FLAG && comment !== EXPLICIT_ID_FLAG
+        comment !== EXPLICIT_ID_AND_CONTEXT_FLAG &&
+        comment !== EXPLICIT_ID_FLAG,
     )
 
     // We recompose a target PO Item that is consistent with the source PO Item

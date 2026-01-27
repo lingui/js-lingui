@@ -10,7 +10,7 @@ export const vueExtractor: ExtractorType = {
     filename: string,
     code: string,
     onMessageExtracted,
-    ctx: ExtractorCtx
+    ctx: ExtractorCtx,
   ) {
     const { descriptor } = parse(code, {
       sourceMap: true,
@@ -62,9 +62,9 @@ export const vueExtractor: ExtractorType = {
             {
               sourceMaps: map,
               ...ctx,
-            }
-          )
-        )
+            },
+          ),
+        ),
     )
   },
 }

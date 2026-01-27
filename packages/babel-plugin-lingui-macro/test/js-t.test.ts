@@ -320,7 +320,7 @@ macroTester({
               i18n: ["@my/lingui", "myI18n"],
             },
           },
-          { skipValidation: true }
+          { skipValidation: true },
         ),
       },
       code: `
@@ -337,7 +337,7 @@ macroTester({
               corePackage: ["@my-lingui/macro"],
             },
           },
-          { skipValidation: true }
+          { skipValidation: true },
         ),
       },
       skipBabelMacroTest: true,

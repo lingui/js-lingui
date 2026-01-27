@@ -11,7 +11,7 @@ import { FormatterWrapper } from "../api/formats/index.js"
 export async function getExperimentalCatalogs(
   linguiConfig: LinguiConfigNormalized,
   format: FormatterWrapper,
-  extractorConfig: ExperimentalExtractorOptions
+  extractorConfig: ExperimentalExtractorOptions,
 ) {
   const config = extractorConfig
   const entryPoints = getEntryPoints(config.entries)
@@ -22,14 +22,14 @@ export async function getExperimentalCatalogs(
       entryPoint,
       linguiConfig.rootDir,
       undefined,
-      ""
+      "",
     )
 
     const templatePath = resolveTemplatePath(
       entryPoint,
       config.output,
       linguiConfig.rootDir,
-      format.getTemplateExtension()
+      format.getTemplateExtension(),
     )
 
     return new Catalog(
@@ -41,7 +41,7 @@ export async function getExperimentalCatalogs(
         exclude: [],
         format,
       },
-      linguiConfig
+      linguiConfig,
     )
   })
 }

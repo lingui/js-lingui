@@ -35,7 +35,7 @@ export type CliExtractOptions = {
 
 export default async function command(
   config: LinguiConfigNormalized,
-  options: CliExtractOptions
+  options: CliExtractOptions,
 ): Promise<boolean> {
   const startTime = Date.now()
   options.verbose && console.log("Extracting messages from source files…")
@@ -81,7 +81,7 @@ export default async function command(
         commandSuccess &&= Boolean(result)
 
         return { catalog, messagesByLocale: result as AllCatalogsType }
-      })
+      }),
     )
   } finally {
     if (workerPool) {
@@ -106,13 +106,13 @@ export default async function command(
   if (!options.watch) {
     console.log(
       `(Use "${pico.yellow(
-        helpRun("extract")
-      )}" to update catalogs with new messages.)`
+        helpRun("extract"),
+      )}" to update catalogs with new messages.)`,
     )
     console.log(
       `(Use "${pico.yellow(
-        helpRun("compile")
-      )}" to compile catalogs for production. Alternatively, use bundler plugins: https://lingui.dev/ref/cli#compiling-catalogs-in-ci)`
+        helpRun("compile"),
+      )}" to compile catalogs for production. Alternatively, use bundler plugins: https://lingui.dev/ref/cli#compiling-catalogs-in-ci)`,
     )
   }
 
@@ -169,22 +169,22 @@ if (esMain(import.meta)) {
           .split(",")
           .map((s) => s.trim())
           .filter(Boolean)
-      }
+      },
     )
     .option(
       "--workers <n>",
-      "Number of worker threads to use (default: CPU count - 1, capped at 8). Pass `--workers 1` to disable worker threads and run everything in a single process"
+      "Number of worker threads to use (default: CPU count - 1, capped at 8). Pass `--workers 1` to disable worker threads and run everything in a single process",
     )
     .option("--overwrite", "Overwrite translations for source locale")
     .option("--clean", "Remove obsolete translations")
     .option(
       "--debounce <delay>",
-      "Debounces extraction for given amount of milliseconds"
+      "Debounces extraction for given amount of milliseconds",
     )
     .option("--verbose", "Verbose output")
     .option(
       "--convert-from <format>",
-      "Convert from previous format of message catalogs"
+      "Convert from previous format of message catalogs",
     )
     .option("--watch", "Enables Watch Mode")
     .parse(process.argv)
@@ -203,7 +203,7 @@ if (esMain(import.meta)) {
     console.error("Trying to migrate message catalog to the same format")
     console.error(
       `Set ${pico.bold("new")} format in LinguiJS configuration\n` +
-        ` and ${pico.bold("previous")} format using --convert-from option.`
+        ` and ${pico.bold("previous")} format using --convert-from option.`,
     )
     console.log()
     console.log(`Example: Convert from lingui format to minimal`)
@@ -213,7 +213,7 @@ if (esMain(import.meta)) {
 
   if (options.locale) {
     const missingLocale = options.locale.find(
-      (l) => !config.locales.includes(l)
+      (l) => !config.locales.includes(l),
     )
 
     if (missingLocale) {

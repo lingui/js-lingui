@@ -4,7 +4,7 @@ import type { AllCatalogsType, CatalogType } from "../types.js"
 
 function getCatalogStub(
   catalogs: AllCatalogsType,
-  template: CatalogType = {}
+  template: CatalogType = {},
 ): Catalog {
   const catalogStub: Partial<Catalog> = {
     async readAll(): Promise<AllCatalogsType> {
@@ -21,7 +21,7 @@ function getCatalogStub(
 
 function lang(
   locale: string,
-  messages: Array<(locale: string) => CatalogType>
+  messages: Array<(locale: string) => CatalogType>,
 ) {
   return {
     [locale]: messages.reduce((acc, msgFn) => {
@@ -207,7 +207,7 @@ describe("getTranslationsForCatalog", () => {
           missing: [],
         }
       `)
-    }
+    },
   )
 
   it("Should fallback to source locale if no other fallbacks and report missing", async () => {

@@ -35,7 +35,7 @@ export const pluginLinguiMacro = (options: {
         parserOpts: {
           plugins: getBabelParserOptions(
             filename,
-            options.linguiConfig.extractorParserOptions
+            options.linguiConfig.extractorParserOptions,
           ),
         },
 

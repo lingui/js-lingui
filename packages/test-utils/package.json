@@ -1,8 +1,8 @@
 {
   "private": true,
-  "name": "@lingui/jest-mocks",
+  "name": "@lingui/test-utils",
   "version": "3.0.3",
-  "description": "Mocks for Jest",
+  "description": "Test Utils",
   "main": "./index.ts",
   "author": {
     "name": "Tomáš Ehrlich",
@@ -16,7 +16,7 @@
     "mock"
   ],
   "dependencies": {
-    "vitest": "^3.2.4"
+    "vitest": "4.0.18"
   },
   "homepage": "https://lingui.dev",
   "repository": {

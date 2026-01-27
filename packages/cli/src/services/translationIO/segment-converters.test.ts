@@ -231,7 +231,7 @@ describe("Segment Converters", () => {
 
       const originalKey = generateMessageId(
         originalItem.message,
-        originalItem.context
+        originalItem.context,
       )
 
       const segment = createSegmentFromLinguiItem(originalKey, originalItem)

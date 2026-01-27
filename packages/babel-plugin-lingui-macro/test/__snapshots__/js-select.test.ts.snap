@@ -24,7 +24,7 @@ _i18n._(
       gender: gender,
       numOfGuests: numOfGuests,
     },
-  }
+  },
 );
 
 `;
@@ -54,7 +54,7 @@ _i18n._(
       numOfGuests: numOfGuests,
       someOtherExp: someOtherExp,
     },
-  }
+  },
 );
 
 `;

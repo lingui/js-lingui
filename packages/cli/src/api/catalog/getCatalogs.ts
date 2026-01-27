@@ -18,7 +18,7 @@ const LOCALE_PH = "{locale}"
  * Parse `config.catalogs` and return a list of configured Catalog instances.
  */
 export async function getCatalogs(
-  config: LinguiConfigNormalized
+  config: LinguiConfigNormalized,
 ): Promise<Catalog[]> {
   const catalogsConfig = config.catalogs
   const catalogs: Catalog[] = []
@@ -26,7 +26,7 @@ export async function getCatalogs(
   const format = await getFormat(
     config.format,
     config.formatOptions,
-    config.sourceLocale
+    config.sourceLocale,
   )
 
   catalogsConfig.forEach((catalog) => {
@@ -44,7 +44,7 @@ export async function getCatalogs(
           `Catalog with path "${catalog.path}" doesn't have a {name} pattern` +
             ` in it, but one of source directories uses it: "${invalidSource}".` +
             ` Either add {name} pattern to "${catalog.path}" or remove it` +
-            ` from all source directories.`
+            ` from all source directories.`,
         )
       }
 
@@ -57,14 +57,14 @@ export async function getCatalogs(
             exclude,
             format,
           },
-          config
-        )
+          config,
+        ),
       )
       return
     }
 
     const patterns = include.map((path) =>
-      replacePlaceholders(path, { name: "*" })
+      replacePlaceholders(path, { name: "*" }),
     )
 
     const candidates = globSync(patterns, {
@@ -79,14 +79,14 @@ export async function getCatalogs(
           {
             name,
             path: normalizeRelativePath(
-              replacePlaceholders(catalog.path, { name })
+              replacePlaceholders(catalog.path, { name }),
             ),
             include: include.map((path) => replacePlaceholders(path, { name })),
             exclude: exclude.map((path) => replacePlaceholders(path, { name })),
             format,
           },
-          config
-        )
+          config,
+        ),
       )
     })
   })
@@ -99,8 +99,8 @@ export async function getCatalogs(
       ...(await getExperimentalCatalogs(
         config,
         format,
-        config.experimental.extractor
-      ))
+        config.experimental.extractor,
+      )),
     )
   }
 
@@ -123,7 +123,7 @@ export async function getMergedCatalogPath(config: LinguiConfigNormalized) {
   const format = await getFormat(
     config.format,
     config.formatOptions,
-    config.sourceLocale
+    config.sourceLocale,
   )
   validateCatalogPath(config.catalogsMergePath, format.getCatalogExtension())
 
@@ -135,7 +135,7 @@ export function getCatalogForFile(file: string, catalogs: Catalog[]) {
     const catalogFile = `${catalog.path}${catalog.format.getCatalogExtension()}`
     const catalogGlob = replacePlaceholders(catalogFile, { locale: "*" })
     const matchPattern = normalizeRelativePath(
-      path.relative(catalog.config.rootDir, catalogGlob)
+      path.relative(catalog.config.rootDir, catalogGlob),
     ).replace(/(\(|\)|\[|\])/g, "\\$1")
 
     const match = micromatch.capture(matchPattern, normalizeRelativePath(file))
@@ -171,7 +171,7 @@ function validateCatalogPath(path: string, extension: string) {
     // prettier-ignore
     `Remove trailing slash from "${path}". Catalog path isn't a directory,` +
     ` but translation file without extension. For example, catalog path "${correctPath}"` +
-    ` results in translation file "${examplePath}".`
+    ` results in translation file "${examplePath}".`,
   )
 }
 

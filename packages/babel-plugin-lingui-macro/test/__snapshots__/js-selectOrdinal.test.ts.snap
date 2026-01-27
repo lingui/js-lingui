@@ -20,7 +20,7 @@ _i18n._(
     values: {
       count: count,
     },
-  }
+  },
 );
 
 `;

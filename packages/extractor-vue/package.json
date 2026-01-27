@@ -50,7 +50,7 @@
   "devDependencies": {
     "@lingui/babel-plugin-extract-messages": "5.9.0",
     "unbuild": "3.6.1",
-    "vitest": "^3.2.4"
+    "vitest": "4.0.18"
   },
   "unbuild": {
     "declaration": "node16"

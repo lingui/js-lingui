@@ -12,7 +12,7 @@ describe("FormatterWrapper", () => {
         catalogExtension: ".po",
         templateExtension: ".pot",
       },
-      "en"
+      "en",
     )
 
     expect(wrapper.getCatalogExtension()).toBe(".po")
@@ -26,7 +26,7 @@ describe("FormatterWrapper", () => {
         catalogExtension: ".po",
         templateExtension: undefined,
       },
-      "en"
+      "en",
     )
 
     expect(wrapper.getCatalogExtension()).toBe(".po")
@@ -42,7 +42,7 @@ describe("FormatterWrapper", () => {
           catalogExtension: ".po",
           templateExtension: ".pot",
         },
-        "en"
+        "en",
       )
 
       mockFs({})
@@ -63,7 +63,7 @@ describe("FormatterWrapper", () => {
           catalogExtension: ".po",
           templateExtension: ".pot",
         },
-        "en"
+        "en",
       )
 
       mockFs({
@@ -95,7 +95,7 @@ describe("FormatterWrapper", () => {
           catalogExtension: ".po",
           templateExtension: ".pot",
         },
-        "en"
+        "en",
       )
 
       mockFs({
@@ -121,7 +121,7 @@ describe("FormatterWrapper", () => {
           catalogExtension: ".po",
           templateExtension: ".pot",
         },
-        "en"
+        "en",
       )
 
       mockFs({})
@@ -137,7 +137,7 @@ describe("FormatterWrapper", () => {
       const content = fs.readFileSync(filename).toString()
       mockFs.restore()
       expect(content).toMatchInlineSnapshot(
-        `{"static":{"translation":"Static message"}}`
+        `{"static":{"translation":"Static message"}}`,
       )
     })
 
@@ -153,7 +153,7 @@ describe("FormatterWrapper", () => {
           catalogExtension: ".po",
           templateExtension: ".pot",
         },
-        "en"
+        "en",
       )
 
       mockFs({
@@ -187,7 +187,7 @@ describe("FormatterWrapper", () => {
         ]
       `)
       expect(content).toMatchInlineSnapshot(
-        `{"static":{"translation":"Static message"}}`
+        `{"static":{"translation":"Static message"}}`,
       )
     })
 
@@ -199,7 +199,7 @@ describe("FormatterWrapper", () => {
           catalogExtension: ".po",
           templateExtension: ".pot",
         },
-        "en"
+        "en",
       )
 
       const catalog: CatalogType = {

@@ -5,7 +5,7 @@ export function resolveTemplatePath(
   entryPoint: string,
   output: string,
   rootDir: string,
-  catalogExtension: string
+  catalogExtension: string,
 ) {
   let templateName: string
 
@@ -20,6 +20,6 @@ export function resolveTemplatePath(
     entryPoint,
     rootDir,
     templateName,
-    catalogExtension
+    catalogExtension,
   )
 }

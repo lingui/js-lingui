@@ -47,7 +47,7 @@ type TranslationProjectResponse = {
 
 async function post<Resp>(
   url: string,
-  request: unknown
+  request: unknown,
 ): Promise<FetchResult<Resp>> {
   const response = await fetch(url, {
     method: "POST",
@@ -74,20 +74,20 @@ async function post<Resp>(
 
 export async function tioSync(
   request: TranslationIoSyncRequest,
-  apiKey: string
+  apiKey: string,
 ): Promise<FetchResult<TranslationIoResponse>> {
   return post<TranslationIoResponse>(
     `https://translation.io/api/v1/segments/sync.json?api_key=${apiKey}`,
-    request
+    request,
   )
 }
 
 export async function tioInit(
   request: TranslationIoInitRequest,
-  apiKey: string
+  apiKey: string,
 ): Promise<FetchResult<TranslationIoResponse>> {
   return post<TranslationIoResponse>(
     `https://translation.io/api/v1/segments/init.json?api_key=${apiKey}`,
-    request
+    request,
   )
 }

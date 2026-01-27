@@ -23,7 +23,7 @@ describe("detect", () => {
       search: "?some_param=value&lang=cz",
     }
     expect(detect(fromUrl("lang", locationMock), fromNavigator(mock))).toEqual(
-      "cz"
+      "cz",
     )
   })
 
@@ -36,7 +36,7 @@ describe("detect", () => {
     }
     const fallback = () => "it"
     expect(
-      detect(fromUrl("lang", locationMock), fromNavigator(mock), fallback)
+      detect(fromUrl("lang", locationMock), fromNavigator(mock), fallback),
     ).toEqual("it")
   })
 })
@@ -50,7 +50,7 @@ describe("multipleDetect", () => {
       search: "?some_param=value&lang=cz",
     }
     expect(
-      multipleDetect(fromUrl("lang", locationMock), fromNavigator(mock))
+      multipleDetect(fromUrl("lang", locationMock), fromNavigator(mock)),
     ).toEqual(["cz", "en"])
   })
 })

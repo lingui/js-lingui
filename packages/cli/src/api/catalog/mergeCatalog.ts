@@ -5,7 +5,7 @@ export function mergeCatalog(
   prevCatalog: CatalogType | undefined,
   nextCatalog: ExtractedCatalogType,
   forSourceLocale: boolean,
-  options: MergeOptions
+  options: MergeOptions,
 ): CatalogType {
   prevCatalog = prevCatalog || {}
   const nextKeys = Object.keys(nextCatalog)
@@ -23,7 +23,7 @@ export function mergeCatalog(
         translation: forSourceLocale ? nextCatalog[key]!.message || key : "",
         ...nextCatalog[key],
       },
-    ])
+    ]),
   )
 
   // Merge translations from previous catalog
@@ -41,7 +41,7 @@ export function mergeCatalog(
       const { extra } = prevCatalog[key]!
 
       return [key, { ...extra, ...nextCatalog[key], translation }]
-    })
+    }),
   )
 
   // Mark all remaining translations as obsolete
@@ -53,7 +53,7 @@ export function mergeCatalog(
         ...prevCatalog![key],
         ...(options.files ? {} : { obsolete: true }),
       },
-    ])
+    ]),
   )
 
   return { ...newMessages, ...mergedMessages, ...obsoleteMessages }

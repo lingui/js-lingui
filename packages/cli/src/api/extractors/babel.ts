@@ -24,11 +24,11 @@ export const babelRe = new RegExp(
       .map((ext) => ext.slice(1))
       .join("|") +
     ")$",
-  "i"
+  "i",
 )
 
 const inlineSourceMapsRE = new RegExp(
-  /\/[/*][#@]\s+sourceMappingURL=data:application\/json;(?:charset:utf-8;)?base64,/i
+  /\/[/*][#@]\s+sourceMappingURL=data:application\/json;(?:charset:utf-8;)?base64,/i,
 )
 
 /**
@@ -114,7 +114,7 @@ export async function extractFromFileWithBabel(
   onMessageExtracted: (msg: ExtractedMessage) => void,
   ctx: ExtractorCtx,
   parserOpts: ParserOptions,
-  skipMacroPlugin = false
+  skipMacroPlugin = false,
 ) {
   const mapper = await createSourceMapper(code, ctx?.sourceMaps)
 
@@ -161,7 +161,7 @@ export async function extractFromFileWithBabel(
 
 export function getBabelParserOptions(
   filename: string,
-  parserOptions: LinguiConfigNormalized["extractorParserOptions"]
+  parserOptions: LinguiConfigNormalized["extractorParserOptions"],
 ) {
   // https://babeljs.io/docs/en/babel-parser#latest-ecmascript-features
   const parserPlugins: ParserPlugin[] = [

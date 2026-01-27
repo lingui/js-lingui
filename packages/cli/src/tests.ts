@@ -13,7 +13,7 @@ import { ExtractedMessageType, getFormat, MessageType } from "./api/index.js"
 
 export async function copyFixture(fixtureDir: string) {
   const tmpDir = await fs.promises.mkdtemp(
-    path.join(os.tmpdir(), `lingui-test-${process.pid}`)
+    path.join(os.tmpdir(), `lingui-test-${process.pid}`),
   )
 
   try {
@@ -58,10 +58,10 @@ export const makeCatalog = async (_config: Partial<LinguiConfig> = {}) => {
       format: await getFormat(
         config.format,
         config.formatOptions,
-        config.sourceLocale
+        config.sourceLocale,
       ),
     },
-    config
+    config,
   )
 }
 
@@ -105,7 +105,7 @@ export function listingToHumanReadable(listing: Listing): string {
  */
 export async function createFixtures(listing: Listing) {
   const tmpDir = await fs.promises.mkdtemp(
-    path.join(os.tmpdir(), `test-${process.pid}`)
+    path.join(os.tmpdir(), `test-${process.pid}`),
   )
 
   for (const [filename, value] of Object.entries(listing)) {
@@ -122,7 +122,7 @@ export async function createFixtures(listing: Listing) {
  */
 export function readFsToListing(
   directory: string,
-  filter?: (filename: string) => boolean
+  filter?: (filename: string) => boolean,
 ): Record<string, string> {
   const out: Record<string, string> = {}
 
