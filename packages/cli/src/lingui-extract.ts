@@ -274,7 +274,6 @@ if (esMain(import.meta)) {
           "/(^|[/\\])../",
           (path: string) => micromatch.any(path, ignored),
         ],
-        // ["/(^|[/\\])../", ...ignored],
         persistent: true,
       })
 
