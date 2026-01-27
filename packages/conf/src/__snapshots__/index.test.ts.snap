@@ -64,10 +64,6 @@ exports[`@lingui/conf > should return default config 1`] = `
       "useLingui",
     ],
   },
-  "service": {
-    "apiKey": "",
-    "name": "",
-  },
   "sourceLocale": "",
 }
 `;

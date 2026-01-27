@@ -39,7 +39,7 @@ export async function getTranslationsForCatalog(
     (acc, key) => {
       acc[key] = getTranslation(
         catalogs,
-        input[key],
+        input[key]!,
         locale,
         key,
         (event) => {
@@ -58,9 +58,9 @@ export async function getTranslationsForCatalog(
   }
 }
 
-function sourceLocaleFallback(catalog: CatalogType, key: string) {
+function sourceLocaleFallback(catalog: CatalogType | undefined, key: string) {
   if (!catalog?.[key]) {
-    return null
+    return undefined
   }
 
   return catalog[key].translation || catalog[key].message
@@ -111,7 +111,8 @@ function getTranslation(
   if (!translation) {
     onMissing({
       id: key,
-      source: msg.message || sourceLocaleFallback(catalogs[sourceLocale], key),
+      source:
+        msg.message || sourceLocaleFallback(catalogs[sourceLocale], key) || "",
     })
   }
 

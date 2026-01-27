@@ -1,3 +1,5 @@
+import { defaultConfig } from "./makeConfig"
+
 /**
  * @deprecated please pass formatter directly to `format`
  *
@@ -25,7 +27,14 @@ export type ExtractorCtx = {
 
 type CatalogExtra = Record<string, unknown>
 export type MessageOrigin = [filename: string, line?: number]
-export type ExtractedMessageType<Extra = CatalogExtra> = {
+export type ExtractedMessageType = {
+  message?: string
+  origin: MessageOrigin[]
+  comments: string[]
+  context?: string
+  placeholders: Record<string, string[]>
+}
+export type MessageType<Extra = CatalogExtra> = {
   message?: string
   origin?: MessageOrigin[]
   comments?: string[]
@@ -37,12 +46,10 @@ export type ExtractedMessageType<Extra = CatalogExtra> = {
    */
   extra?: Extra
   placeholders?: Record<string, string[]>
+  translation?: string
 }
-export type MessageType<Extra = CatalogExtra> = ExtractedMessageType<Extra> & {
-  translation: string
-}
-export type ExtractedCatalogType<Extra = CatalogExtra> = {
-  [msgId: string]: ExtractedMessageType<Extra>
+export type ExtractedCatalogType = {
+  [msgId: string]: ExtractedMessageType
 }
 export type CatalogType<Extra = CatalogExtra> = {
   [msgId: string]: MessageType<Extra>
@@ -54,7 +61,7 @@ export type ExtractorType = {
     filename: string,
     code: string,
     onMessageExtracted: (msg: ExtractedMessage) => void,
-    ctx?: ExtractorCtx
+    ctx: ExtractorCtx
   ): Promise<void> | void
 }
 
@@ -67,15 +74,15 @@ export type CatalogFormatter = {
   templateExtension?: string
   parse(
     content: string,
-    ctx: { locale: string | null; sourceLocale: string; filename: string }
+    ctx: { locale: string | undefined; sourceLocale: string; filename: string }
   ): Promise<CatalogType> | CatalogType
   serialize(
     catalog: CatalogType,
     ctx: {
-      locale: string | null
+      locale: string | undefined
       sourceLocale: string
       filename: string
-      existing: string | null
+      existing: string | undefined
     }
   ): Promise<string> | string
 }
@@ -100,11 +107,11 @@ export type CatalogFormatOptions = {
 export type OrderByFn = (
   a: {
     messageId: string
-    entry: ExtractedMessageType
+    entry: MessageType
   },
   b: {
     messageId: string
-    entry: ExtractedMessageType
+    entry: MessageType
   }
 ) => number
 export type OrderBy = "messageId" | "message" | "origin" | OrderByFn
@@ -363,11 +370,10 @@ export type LinguiConfig = {
 type ModuleSourceNormalized = readonly [module: string, specifier: string]
 
 export type LinguiConfigNormalized = Omit<
-  LinguiConfig,
+  LinguiConfig & typeof defaultConfig,
   "runtimeConfigModule"
 > & {
   resolvedConfigPath?: string
-  fallbackLocales?: FallbackLocales
   runtimeConfigModule: {
     i18n: ModuleSourceNormalized
     useLingui: ModuleSourceNormalized

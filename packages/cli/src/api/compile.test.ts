@@ -343,13 +343,13 @@ describe("createCompiledCatalog", () => {
       source: "{plural,  }",
     })
 
-    expect(res.errors[0].error.message).toContain("invalid syntax at line")
+    expect(res.errors[0]!.error.message).toContain("invalid syntax at line")
 
     expect(res.errors[1]).toMatchObject({
       id: "Second",
       source: "{bla, }",
     })
 
-    expect(res.errors[1].error.message).toContain("invalid syntax at line")
+    expect(res.errors[1]!.error.message).toContain("invalid syntax at line")
   })
 })

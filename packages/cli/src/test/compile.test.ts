@@ -85,7 +85,7 @@ msgstr ""
           en: actualFiles["en.js"],
         }).toMatchSnapshot()
 
-        let log = getConsoleMockCalls(console.error)
+        let log = getConsoleMockCalls(console.error)!
         log = log.split("\n\n").sort().join("\n\n")
 
         expect(log).toMatchSnapshot()

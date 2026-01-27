@@ -6,7 +6,7 @@ const EXPLICIT_ID_FLAG = "js-lingui-explicit-id"
 const EXPLICIT_ID_AND_CONTEXT_FLAG = "js-lingui-explicit-id-and-context"
 
 function isGeneratedId(id: string, message: MessageType): boolean {
-  return id === generateMessageId(message.message, message.context)
+  return id === generateMessageId(message.message!, message.context)
 }
 
 const joinOrigin = (origin: [file: string, line?: number]): string =>
@@ -19,7 +19,6 @@ const splitOrigin = (origin: string) => {
 
 export function createSegmentFromLinguiItem(key: string, item: MessageType) {
   const itemHasExplicitId = !isGeneratedId(key, item)
-  const itemHasContext = !!item.context
 
   const segment: TranslationIoSegment = {
     type: "source", // No way to edit text for source language (inside code), so not using "key" here
@@ -31,12 +30,12 @@ export function createSegmentFromLinguiItem(key: string, item: MessageType) {
 
   // For segment.source & segment.context, we must remain compatible with projects created/synced before Lingui V4
   if (itemHasExplicitId) {
-    segment.source = item.message || item.translation
+    segment.source = item.message || item.translation || ""
     segment.context = key
   } else {
-    segment.source = item.message || item.translation
+    segment.source = item.message || item.translation || ""
 
-    if (itemHasContext) {
+    if (item.context) {
       segment.context = item.context
     }
   }
@@ -49,7 +48,7 @@ export function createSegmentFromLinguiItem(key: string, item: MessageType) {
   const comments: string[] = []
 
   if (itemHasExplicitId) {
-    if (itemHasContext) {
+    if (item.context) {
       // segment.context is already used for the explicit ID, so we need to pass the context (for translators) in segment.comment
       comments.push(item.context, EXPLICIT_ID_AND_CONTEXT_FLAG)
     } else {
@@ -75,9 +74,10 @@ export function createLinguiItemFromSegment(segment: TranslationIoSegment) {
       : [],
     message: segment.source,
     comments: [],
+    placeholders: {},
   }
 
-  let id: string = null
+  let id: string
 
   if (segmentHasExplicitId || segmentHasExplicitIdAndContext) {
     id = segment.context!

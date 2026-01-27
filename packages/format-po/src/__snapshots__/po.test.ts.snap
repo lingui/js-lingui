@@ -77,7 +77,7 @@ exports[`pofile format > should correct badly used comments 1`] = `
       "Single description only",
       "Second description?",
     ],
-    "context": null,
+    "context": undefined,
     "extra": {
       "flags": [],
       "translatorComments": [
@@ -94,7 +94,7 @@ exports[`pofile format > should correct badly used comments 1`] = `
       "Second comment",
       "Third comment",
     ],
-    "context": null,
+    "context": undefined,
     "extra": {
       "flags": [],
       "translatorComments": [],
@@ -206,7 +206,7 @@ exports[`pofile format > should read catalog in pofile format 1`] = `
 {
   "obsolete": {
     "comments": [],
-    "context": null,
+    "context": undefined,
     "extra": {
       "flags": [],
       "translatorComments": [],
@@ -217,7 +217,7 @@ exports[`pofile format > should read catalog in pofile format 1`] = `
   },
   "static": {
     "comments": [],
-    "context": null,
+    "context": undefined,
     "extra": {
       "flags": [],
       "translatorComments": [],
@@ -228,7 +228,7 @@ exports[`pofile format > should read catalog in pofile format 1`] = `
   },
   "veryLongString": {
     "comments": [],
-    "context": null,
+    "context": undefined,
     "extra": {
       "flags": [],
       "translatorComments": [],
@@ -239,7 +239,7 @@ exports[`pofile format > should read catalog in pofile format 1`] = `
   },
   "withComments": {
     "comments": [],
-    "context": null,
+    "context": undefined,
     "extra": {
       "flags": [],
       "translatorComments": [
@@ -255,7 +255,7 @@ exports[`pofile format > should read catalog in pofile format 1`] = `
     "comments": [
       "Description is comment from developers to translators",
     ],
-    "context": null,
+    "context": undefined,
     "extra": {
       "flags": [],
       "translatorComments": [],
@@ -266,7 +266,7 @@ exports[`pofile format > should read catalog in pofile format 1`] = `
   },
   "withMultipleOrigins": {
     "comments": [],
-    "context": null,
+    "context": undefined,
     "extra": {
       "flags": [],
       "translatorComments": [],
@@ -286,7 +286,7 @@ exports[`pofile format > should read catalog in pofile format 1`] = `
   },
   "withOrigin": {
     "comments": [],
-    "context": null,
+    "context": undefined,
     "extra": {
       "flags": [],
       "translatorComments": [],
@@ -304,7 +304,7 @@ exports[`pofile format > should read catalog in pofile format 1`] = `
     "comments": [
       "js-lingui-id: pXy+hm",
     ],
-    "context": null,
+    "context": undefined,
     "extra": {
       "flags": [],
       "translatorComments": [],
@@ -316,7 +316,7 @@ exports[`pofile format > should read catalog in pofile format 1`] = `
   },
   "xLTujh": {
     "comments": [],
-    "context": null,
+    "context": undefined,
     "extra": {
       "flags": [
         "fuzzy",

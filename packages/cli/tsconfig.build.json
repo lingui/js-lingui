@@ -2,7 +2,6 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "strict": true,
-    "strictNullChecks": false,
 
     "declaration": true,
     "paths": {},

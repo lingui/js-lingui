@@ -87,7 +87,7 @@ async function prepareTestDir() {
 
 function createMessage(msg: MessageType, explicitId?: string) {
   return {
-    [explicitId || generateMessageId(msg.message, msg.context)]: msg,
+    [explicitId || generateMessageId(msg.message!, msg.context)]: msg,
   }
 }
 
@@ -100,7 +100,7 @@ function createExtractionResult(catalogs: Catalog[]) {
 
   // Create extraction result for the first catalog with standard test messages
   extractionResult.push({
-    catalog: catalogs[0],
+    catalog: catalogs[0]!,
     messagesByLocale: {
       en: {
         ...createMessage(
@@ -213,7 +213,7 @@ function createMultiCatalogExtractionResult(catalogs: Catalog[]) {
 
   // First catalog - messages
   extractionResult.push({
-    catalog: catalogs[0],
+    catalog: catalogs[0]!,
     messagesByLocale: {
       en: {
         ...createMessage(
@@ -313,7 +313,7 @@ function createMultiCatalogExtractionResult(catalogs: Catalog[]) {
 
   // Second catalog - errors
   extractionResult.push({
-    catalog: catalogs[1],
+    catalog: catalogs[1]!,
     messagesByLocale: {
       en: {
         ...createMessage({
@@ -371,7 +371,6 @@ describe("TranslationIO Integration", () => {
       clean: false,
       overwrite: false,
       locale: [],
-      prevFormat: null,
       workersOptions: { poolSize: 0 },
     }
   })
@@ -627,10 +626,10 @@ describe("TranslationIO Integration", () => {
 
       await init(testConfig, extractionResult)
 
-      expect(apiCalls[0].url).toMatchInlineSnapshot(
+      expect(apiCalls[0]!.url).toMatchInlineSnapshot(
         `https://translation.io/api/v1/segments/init.json?api_key=test-api-key-123`
       )
-      expect(await apiCalls[0].json()).toMatchInlineSnapshot(
+      expect(await apiCalls[0]!.json()).toMatchInlineSnapshot(
         { version: expectVersion },
         `
         {
@@ -1205,10 +1204,10 @@ describe("TranslationIO Integration", () => {
       await sync(testConfig, options, extractionResult)
 
       // Verify request
-      expect(apiCalls[0].url).toMatchInlineSnapshot(
+      expect(apiCalls[0]!.url).toMatchInlineSnapshot(
         `https://translation.io/api/v1/segments/sync.json?api_key=test-api-key-123`
       )
-      expect(await apiCalls[0].json()).toMatchInlineSnapshot(
+      expect(await apiCalls[0]!.json()).toMatchInlineSnapshot(
         { version: expectVersion },
         `
         {
@@ -1557,7 +1556,7 @@ describe("TranslationIO Integration", () => {
       await sync(testConfig, options, extractionResult)
 
       // Verify that segments are sent as a flat list
-      expect(await apiCalls[0].json()).toMatchObject({
+      expect(await apiCalls[0]!.json()).toMatchObject({
         segments: expect.arrayContaining([
           expect.objectContaining({
             source: "Welcome to our app",

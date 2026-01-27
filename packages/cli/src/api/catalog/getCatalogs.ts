@@ -91,8 +91,17 @@ export async function getCatalogs(
     })
   })
 
-  if (config.experimental?.extractor?.entries.length) {
-    catalogs.push(...(await getExperimentalCatalogs(config)))
+  if (
+    config.experimental?.extractor &&
+    config.experimental.extractor.entries.length
+  ) {
+    catalogs.push(
+      ...(await getExperimentalCatalogs(
+        config,
+        format,
+        config.experimental.extractor
+      ))
+    )
   }
 
   return catalogs
@@ -170,5 +179,5 @@ function getCatalogName(filePath: string) {
   // catalog name is the last directory of catalogPath.
   // If the last part is {locale}, then catalog doesn't have an explicit name
   const _name = path.basename(normalizeRelativePath(filePath))
-  return _name !== LOCALE_PH ? _name : null
+  return _name !== LOCALE_PH ? _name : undefined
 }

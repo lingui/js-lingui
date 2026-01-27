@@ -14,7 +14,7 @@ export function prettyOrigin(origins: [filename: string, line?: number][]) {
 
 export function replacePlaceholders(
   input: string,
-  values: Record<string, string>
+  values: Record<string, string | undefined>
 ): string {
   return input.replace(/\{([^}]+)}/g, (m, placeholder) => {
     return values[placeholder] ?? m

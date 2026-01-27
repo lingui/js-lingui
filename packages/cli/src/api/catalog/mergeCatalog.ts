@@ -2,13 +2,14 @@ import type { MergeOptions } from "../catalog.js"
 import { CatalogType, ExtractedCatalogType } from "../types.js"
 
 export function mergeCatalog(
-  prevCatalog: CatalogType,
+  prevCatalog: CatalogType | undefined,
   nextCatalog: ExtractedCatalogType,
   forSourceLocale: boolean,
   options: MergeOptions
 ): CatalogType {
+  prevCatalog = prevCatalog || {}
   const nextKeys = Object.keys(nextCatalog)
-  const prevKeys = Object.keys(prevCatalog || {})
+  const prevKeys = Object.keys(prevCatalog)
 
   const newKeys = nextKeys.filter((key) => !prevKeys.includes(key))
   const mergeKeys = nextKeys.filter((key) => prevKeys.includes(key))
@@ -19,7 +20,7 @@ export function mergeCatalog(
     newKeys.map((key) => [
       key,
       {
-        translation: forSourceLocale ? nextCatalog[key].message || key : "",
+        translation: forSourceLocale ? nextCatalog[key]!.message || key : "",
         ...nextCatalog[key],
       },
     ])
@@ -30,17 +31,16 @@ export function mergeCatalog(
     mergeKeys.map((key) => {
       const updateFromDefaults =
         forSourceLocale &&
-        (prevCatalog[key].translation === prevCatalog[key].message ||
+        (prevCatalog[key]!.translation === prevCatalog[key]!.message ||
           options.overwrite)
 
       const translation = updateFromDefaults
-        ? nextCatalog[key].message || key
-        : prevCatalog[key].translation
+        ? nextCatalog[key]!.message || key
+        : prevCatalog[key]!.translation
 
-      const { obsolete, ...rest } = nextCatalog[key]
-      const { extra } = prevCatalog[key]
+      const { extra } = prevCatalog[key]!
 
-      return [key, { ...extra, ...rest, translation }]
+      return [key, { ...extra, ...nextCatalog[key], translation }]
     })
   )
 
@@ -50,7 +50,7 @@ export function mergeCatalog(
     obsoleteKeys.map((key) => [
       key,
       {
-        ...prevCatalog[key],
+        ...prevCatalog![key],
         ...(options.files ? {} : { obsolete: true }),
       },
     ])

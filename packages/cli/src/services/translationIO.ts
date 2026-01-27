@@ -86,13 +86,13 @@ export async function init(
 
   // Create segments from source locale PO items
   for (const { messagesByLocale } of extractionResult) {
-    const messages = messagesByLocale[sourceLocale]
+    const messages = messagesByLocale[sourceLocale]!
 
     Object.entries(messages).forEach(([key, entry]) => {
       if (entry.obsolete) return
 
       targetLocales.forEach((targetLocale) => {
-        segments[targetLocale].push(createSegmentFromLinguiItem(key, entry))
+        segments[targetLocale]!.push(createSegmentFromLinguiItem(key, entry))
       })
     })
   }
@@ -100,12 +100,12 @@ export async function init(
   // Add translations to segments from target locale PO items
   for (const { messagesByLocale } of extractionResult) {
     for (const targetLocale of targetLocales) {
-      const messages = messagesByLocale[targetLocale]
+      const messages = messagesByLocale[targetLocale]!
 
       Object.entries(messages)
         .filter(([, entry]) => !entry.obsolete)
         .forEach(([, entry], index) => {
-          segments[targetLocale][index].target = entry.translation
+          segments[targetLocale]![index]!.target = entry.translation
         })
     }
   }
@@ -125,7 +125,7 @@ export async function init(
     return { success: false, errors: [error.message] as string[] } as const
   }
 
-  if (data.errors) {
+  if ("errors" in data) {
     return { success: false, errors: data.errors } as const
   }
 
@@ -152,7 +152,7 @@ export async function sync(
 
   // Create segments with correct source
   for (const { messagesByLocale } of extractionResult) {
-    const messages = messagesByLocale[sourceLocale]
+    const messages = messagesByLocale[sourceLocale]!
 
     Object.entries(messages).forEach(([key, entry]) => {
       if (entry.obsolete) return
@@ -179,7 +179,7 @@ export async function sync(
     return { success: false, errors: [error.message] as string[] } as const
   }
 
-  if (data.errors) {
+  if ("errors" in data) {
     return { success: false, errors: data.errors } as const
   }
 
@@ -200,7 +200,7 @@ export async function writeSegmentsToCatalogs(
 ) {
   // Create segments from source locale PO items
   for (const { catalog, messagesByLocale } of extractionResult) {
-    const sourceMessages = messagesByLocale[sourceLocale]
+    const sourceMessages = messagesByLocale[sourceLocale]!
 
     for (const targetLocale of Object.keys(segmentsPerLocale)) {
       // Remove existing target POs and JS for this target locale
@@ -230,7 +230,7 @@ export async function writeSegmentsToCatalogs(
       }
 
       const translations = Object.fromEntries(
-        segmentsPerLocale[targetLocale].map((segment) =>
+        segmentsPerLocale[targetLocale]!.map((segment) =>
           createLinguiItemFromSegment(segment)
         )
       )

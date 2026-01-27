@@ -4,8 +4,8 @@ import { globSync } from "glob"
 import normalize from "normalize-path"
 
 import {
-  ExtractedMessageType,
   LinguiConfigNormalized,
+  MessageType,
   OrderBy,
   OrderByFn,
 } from "@lingui/conf"
@@ -38,14 +38,14 @@ export type MakeOptions = {
   files?: string[]
   clean: boolean
   overwrite: boolean
-  locale: string[]
-  orderBy?: OrderBy
+  locale?: string[]
+  orderBy: OrderBy
   workerPool?: ExtractWorkerPool
 }
 
 export type MakeTemplateOptions = {
   files?: string[]
-  orderBy?: OrderBy
+  orderBy: OrderBy
   workerPool?: ExtractWorkerPool
 }
 
@@ -69,7 +69,7 @@ export class Catalog {
   include: Array<string>
   exclude: Array<string>
   format: FormatterWrapper
-  templateFile?: string
+  templateFile: string
 
   constructor(
     { name, path, include, templatePath, format, exclude = [] }: CatalogProps,
@@ -120,7 +120,7 @@ export class Catalog {
 
     const locales = options.locale ? options.locale : this.locales
     await Promise.all(
-      locales.map((locale) => this.write(locale, sortedCatalogs[locale]))
+      locales.map((locale) => this.write(locale, sortedCatalogs[locale]!))
     )
 
     return sortedCatalogs
@@ -134,7 +134,7 @@ export class Catalog {
       workerPool: options.workerPool,
     })
     if (!catalog) return false
-    const sorted = order(options.orderBy, catalog as CatalogType)
+    const sorted = order(options.orderBy, catalog)
 
     await this.writeTemplate(sorted)
     return sorted
@@ -223,10 +223,10 @@ export class Catalog {
 
   async writeTemplate(messages: CatalogType): Promise<void> {
     const filename = this.templateFile
-    await this.format.write(filename, messages, undefined)
+    await this.format.write(filename, messages)
   }
 
-  async read(locale: string): Promise<CatalogType> {
+  async read(locale: string): Promise<CatalogType | undefined> {
     return await this.format.read(this.getFilename(locale), locale)
   }
 
@@ -234,20 +234,25 @@ export class Catalog {
     const res: AllCatalogsType = {}
 
     await Promise.all(
-      locales.map(async (locale) => (res[locale] = await this.read(locale)))
+      locales.map(async (locale) => {
+        const catalog = await this.read(locale)
+
+        if (catalog) {
+          res[locale] = catalog
+        }
+      })
     )
 
     // statement above will save locales in object in undetermined order
     // resort here to have keys order the same as in locales definition
     return this.locales.reduce<AllCatalogsType>((acc, locale: string) => {
-      acc[locale] = res[locale]
+      acc[locale] = res[locale]!
       return acc
     }, {})
   }
 
-  async readTemplate(): Promise<CatalogType> {
-    const filename = this.templateFile
-    return await this.format.read(filename, undefined)
+  async readTemplate(): Promise<CatalogType | undefined> {
+    return await this.format.read(this.templateFile, undefined)
   }
 
   get sourcePaths() {
@@ -288,16 +293,13 @@ function getTemplatePath(ext: string, path: string) {
   return path.replace(LOCALE_SUFFIX_RE, "messages" + ext)
 }
 
-export function cleanObsolete<T extends ExtractedCatalogType>(messages: T): T {
+export function cleanObsolete<T extends CatalogType>(messages: T): T {
   return Object.fromEntries(
     Object.entries(messages).filter(([, message]) => !message.obsolete)
   ) as T
 }
 
-export function order<T extends ExtractedCatalogType>(
-  by: OrderBy,
-  catalog: T
-): T {
+export function order<T extends CatalogType>(by: OrderBy, catalog: T): T {
   const orderByFn =
     typeof by === "function"
       ? by
@@ -310,8 +312,8 @@ export function order<T extends ExtractedCatalogType>(
   return Object.keys(catalog)
     .sort((a, b) => {
       return orderByFn(
-        { messageId: a, entry: catalog[a] },
-        { messageId: b, entry: catalog[b] }
+        { messageId: a, entry: catalog[a]! },
+        { messageId: b, entry: catalog[b]! }
       )
     })
     .reduce((acc, key) => {
@@ -328,8 +330,12 @@ const orderByMessageId: OrderByFn = (a, b) => {
 }
 
 const orderByOrigin: OrderByFn = (a, b) => {
-  function getFirstOrigin(entry: ExtractedMessageType) {
-    const sortedOrigins = entry.origin.sort((a, b) => {
+  if (!a.entry.origin || !b.entry.origin) {
+    return 0
+  }
+
+  function getFirstOrigin(entry: MessageType) {
+    const sortedOrigins = entry.origin!.sort((a, b) => {
       if (a[0] < b[0]) return -1
       if (a[0] > b[0]) return 1
       return 0
@@ -337,14 +343,14 @@ const orderByOrigin: OrderByFn = (a, b) => {
     return sortedOrigins[0]
   }
 
-  const [aFile, aLineNumber] = getFirstOrigin(a.entry)
-  const [bFile, bLineNumber] = getFirstOrigin(b.entry)
+  const [aFile, aLineNumber] = getFirstOrigin(a.entry)!
+  const [bFile, bLineNumber] = getFirstOrigin(b.entry)!
 
   if (aFile < bFile) return -1
   if (aFile > bFile) return 1
 
-  if (aLineNumber < bLineNumber) return -1
-  if (aLineNumber > bLineNumber) return 1
+  if (aLineNumber! < bLineNumber!) return -1
+  if (aLineNumber! > bLineNumber!) return 1
 
   return 0
 }

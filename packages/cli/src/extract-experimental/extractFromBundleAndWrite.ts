@@ -60,7 +60,7 @@ export async function extractFromBundleAndWrite(params: {
   locales: string[]
   clean: boolean
   overwrite: boolean
-}) {
+}): Promise<{ success: false } | { success: true; stat: string }> {
   const {
     linguiConfig,
     entryPoint,

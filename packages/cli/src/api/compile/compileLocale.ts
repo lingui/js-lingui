@@ -55,7 +55,7 @@ export async function compileLocale(
           pico.red(`Missing ${missingMessages.length} translation(s)`)
         )
       }
-      logger.error()
+      logger.error("")
       throw new ProgramExit()
     }
 

@@ -24,7 +24,7 @@ describe.skipIf(platform() === "win32")("vite-plugin", () => {
     try {
       await runVite(`no-macro-error`)
     } catch (e) {
-      expect(e.message).toContain(
+      expect((e as Error).message).toContain(
         'The macro you imported from "@lingui/core/macro" is being executed outside the context of compilation.'
       )
     }
@@ -41,7 +41,7 @@ describe.skipIf(platform() === "win32")("vite-plugin", () => {
         failOnMissing: true,
       })
     } catch (e) {
-      expect(e.message).toContain("Missing 1 translation(s):")
+      expect((e as Error).message).toContain("Missing 1 translation(s):")
     }
   })
 
@@ -60,7 +60,9 @@ describe.skipIf(platform() === "win32")("vite-plugin", () => {
         failOnCompileError: true,
       })
     } catch (e) {
-      expect(e.message).toContain("Compilation error for 2 translation(s)")
+      expect((e as Error).message).toContain(
+        "Compilation error for 2 translation(s)"
+      )
     }
   })
 
@@ -77,7 +79,7 @@ describe.skipIf(platform() === "win32")("vite-plugin", () => {
     try {
       await runVite(`dynamic-macro-error`, {}, true)
     } catch (e) {
-      expect(e.message).toContain(
+      expect((e as Error).message).toContain(
         'The macro you imported from "@lingui/core/macro" cannot be dynamically imported.'
       )
     }

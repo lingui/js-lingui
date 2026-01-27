@@ -181,7 +181,7 @@ msgstr[2] "# dní"
       {
         "Y8Xw2Y": {
           "comments": [],
-          "context": null,
+          "context": undefined,
           "extra": {
             "flags": [],
             "translatorComments": [],
@@ -289,7 +289,7 @@ msgstr[2] "{count} jours"
       {
         "ZETJEQ": {
           "comments": [],
-          "context": null,
+          "context": undefined,
           "extra": {
             "flags": [],
             "translatorComments": [],
@@ -328,7 +328,7 @@ msgstr[3] "# dní"
       {
         "GMnlGy": {
           "comments": [],
-          "context": null,
+          "context": undefined,
           "extra": {
             "flags": [],
             "translatorComments": [],

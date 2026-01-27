@@ -27,30 +27,23 @@ export type TranslationIoProject = {
   name: string
   url: string
 }
-export type TranslationIoResponse = {
-  errors?: string[]
-  project?: TranslationIoProject
-  segments?: { [locale: string]: TranslationIoSegment[] }
-}
 
 export type FetchResult<T> =
   | { data: T; error: undefined }
   | { error: { response: Response; message: string }; data: undefined }
 
-// todo: need to enable strictNullChecks to support this kind of type narrowing
-// export type TranslationIoResponse =
-//   | TranslationIoErrorResponse
-//   | TranslationProjectResponse
-//
-// type TranslationIoErrorResponse = {
-//   errors: string[]
-// }
+export type TranslationIoResponse =
+  | TranslationIoErrorResponse
+  | TranslationProjectResponse
 
-// type TranslationProjectResponse = {
-//   errors: null
-//   project: TranslationIoProject
-//   segments: { [locale: string]: TranslationIoSegment[] }
-// }
+type TranslationIoErrorResponse = {
+  errors: string[]
+}
+
+type TranslationProjectResponse = {
+  project: TranslationIoProject
+  segments: { [locale: string]: TranslationIoSegment[] }
+}
 
 async function post<Resp>(
   url: string,

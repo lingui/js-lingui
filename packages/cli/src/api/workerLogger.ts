@@ -7,7 +7,7 @@ export type SerializedLogs = {
 export class WorkerLogger implements Logger {
   private errors: string[] = []
 
-  error(msg?: string): void {
+  error(msg: string): void {
     this.errors.push(msg)
   }
 

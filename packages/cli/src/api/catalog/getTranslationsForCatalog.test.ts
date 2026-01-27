@@ -37,7 +37,9 @@ function message(id: string, source: string, noTranslation = false) {
   return (locale: string): CatalogType => ({
     [id]: {
       message: source,
-      translation: noTranslation ? null : `${locale}: translation: ${source}`,
+      translation: noTranslation
+        ? undefined
+        : `${locale}: translation: ${source}`,
     },
   })
 }
@@ -298,7 +300,7 @@ describe("getTranslationsForCatalog", () => {
     })
 
     const actual = await getTranslationsForCatalog(catalogStub, "pl", {
-      sourceLocale: null,
+      sourceLocale: "",
       fallbackLocales: {},
     })
 

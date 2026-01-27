@@ -6,7 +6,7 @@ import type { ExtractedMessage } from "@lingui/babel-plugin-extract-messages"
 
 function normalizePath(entries: ExtractedMessage[]): ExtractedMessage[] {
   return entries.map((entry) => {
-    const [filename, lineNumber, column] = entry.origin
+    const [filename, lineNumber, column] = entry.origin!
     const projectRoot = process.cwd()
 
     return {

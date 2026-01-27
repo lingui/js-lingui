@@ -34,9 +34,9 @@ export default async function command(
 ): Promise<boolean> {
   options.verbose && console.log("Extracting messages from source files…")
 
-  const config = linguiConfig.experimental?.extractor
+  const extractorConfig = linguiConfig.experimental?.extractor
 
-  if (!config) {
+  if (!extractorConfig) {
     throw new Error(
       "The configuration for experimental extractor is empty. Please read the docs."
     )
@@ -66,7 +66,8 @@ export default async function command(
 
   const bundleResult = await bundleSource(
     linguiConfig,
-    getEntryPoints(config.entries),
+    extractorConfig,
+    getEntryPoints(extractorConfig.entries),
     tempDir,
     linguiConfig.rootDir
   )
@@ -75,7 +76,8 @@ export default async function command(
   let commandSuccess = true
 
   if (options.workersOptions.poolSize) {
-    if (!linguiConfig.resolvedConfigPath) {
+    const resolvedConfigPath = linguiConfig.resolvedConfigPath
+    if (!resolvedConfigPath) {
       throw new Error(
         "Multithreading is only supported when lingui config loaded from file system, not passed by API"
       )
@@ -97,29 +99,31 @@ export default async function command(
     )
 
     try {
-      for (const outFile of Object.keys(bundleResult.metafile.outputs)) {
-        const { entryPoint } = bundleResult.metafile.outputs[outFile]
+      for (const outFile of Object.keys(bundleResult.outputs)) {
+        const { entryPoint } = bundleResult.outputs[outFile]!
 
         pool.queue(async (extractFromBundleAndWrite) => {
-          const { success, stat } = await extractFromBundleAndWrite(
-            linguiConfig.resolvedConfigPath,
-            entryPoint,
+          const result = await extractFromBundleAndWrite(
+            resolvedConfigPath,
+            entryPoint!,
             outFile,
-            config.output,
-            options.template,
+            extractorConfig.output,
+            options.template || false,
             options.locales || linguiConfig.locales,
-            options.clean,
-            options.overwrite
+            options.clean || false,
+            options.overwrite || false
           )
 
-          commandSuccess &&= success
+          commandSuccess &&= result.success
 
-          stats.push({
-            entry: normalizePath(
-              nodepath.relative(linguiConfig.rootDir, entryPoint)
-            ),
-            content: stat,
-          })
+          if (result.success) {
+            stats.push({
+              entry: normalizePath(
+                nodepath.relative(linguiConfig.rootDir, entryPoint!)
+              ),
+              content: result.stat,
+            })
+          }
         })
       }
 
@@ -134,29 +138,31 @@ export default async function command(
       linguiConfig.sourceLocale
     )
 
-    for (const outFile of Object.keys(bundleResult.metafile.outputs)) {
-      const { entryPoint } = bundleResult.metafile.outputs[outFile]
+    for (const outFile of Object.keys(bundleResult.outputs)) {
+      const { entryPoint } = bundleResult.outputs[outFile]!
 
-      const { success, stat } = await extractFromBundleAndWrite({
-        entryPoint,
+      const result = await extractFromBundleAndWrite({
+        entryPoint: entryPoint!,
         bundleFile: outFile,
-        outputPattern: config.output,
+        outputPattern: extractorConfig.output,
         format,
         linguiConfig,
         locales: options.locales || linguiConfig.locales,
-        overwrite: options.overwrite,
-        clean: options.clean,
-        template: options.template,
+        overwrite: options.overwrite || false,
+        clean: options.clean || false,
+        template: options.template || false,
       })
 
-      commandSuccess &&= success
+      commandSuccess &&= result.success
 
-      stats.push({
-        entry: normalizePath(
-          nodepath.relative(linguiConfig.rootDir, entryPoint)
-        ),
-        content: stat,
-      })
+      if (result.success) {
+        stats.push({
+          entry: normalizePath(
+            nodepath.relative(linguiConfig.rootDir, entryPoint!)
+          ),
+          content: result.stat,
+        })
+      }
     }
   }
 

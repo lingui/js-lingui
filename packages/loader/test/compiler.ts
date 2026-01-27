@@ -31,11 +31,11 @@ export async function build(
         return reject(err)
       }
 
-      const jsonStats = stats.toJson()
+      const jsonStats = stats!.toJson()
       compiler.close(() => {
         resolve({
           loadBundle: () =>
-            import(path.join(jsonStats.outputPath, "bundle.js")),
+            import(path.join(jsonStats.outputPath!, "bundle.js")),
           stats: jsonStats,
         })
       })
@@ -52,7 +52,7 @@ export function watch(
   let deferred = createDeferred<webpack.StatsCompilation>()
 
   const watching = compiler.watch({}, async (err, stats) => {
-    err ? deferred.reject(err) : deferred.resolve(stats.toJson())
+    err ? deferred.reject(err) : deferred.resolve(stats!.toJson())
     deferred = createDeferred<any>()
   })
 
@@ -68,7 +68,7 @@ export function watch(
 
           // add query param to invalidate import cache
           return import(
-            path.join(stats.outputPath, "bundle.js?read=" + readCount++)
+            path.join(stats.outputPath!, "bundle.js?read=" + readCount++)
           )
         },
         stats,
@@ -115,12 +115,11 @@ function createDeferred<T>() {
   let deferred: {
     resolve: (r: T) => void
     reject: (err: any) => void
-    promise: Promise<T>
   }
 
   const promise = new Promise<T>((resolve, reject) => {
-    deferred = { resolve, reject, promise: undefined }
+    deferred = { resolve, reject }
   })
 
-  return { ...deferred, promise }
+  return { ...deferred!, promise }
 }

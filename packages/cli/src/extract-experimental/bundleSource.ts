@@ -1,5 +1,8 @@
-import { LinguiConfigNormalized } from "@lingui/conf"
-import { BuildOptions } from "esbuild"
+import {
+  ExperimentalExtractorOptions,
+  LinguiConfigNormalized,
+} from "@lingui/conf"
+import { BuildOptions, Metafile } from "esbuild"
 import { pluginLinguiMacro } from "./linguiEsbuildPlugin.js"
 import { buildIncludeDepsFilter } from "./buildIncludeDepsFilter.js"
 
@@ -9,14 +12,14 @@ function createExtRegExp(extensions: string[]) {
 
 export async function bundleSource(
   linguiConfig: LinguiConfigNormalized,
+  extractorConfig: ExperimentalExtractorOptions,
   entryPoints: string[],
   outDir: string,
   rootDir: string
-) {
+): Promise<Metafile> {
   const esbuild = await import("esbuild")
 
-  const config = linguiConfig.experimental.extractor
-  const excludeExtensions = config.excludeExtensions || [
+  const excludeExtensions = extractorConfig.excludeExtensions || [
     "ico",
     "pot",
     "xliff",
@@ -36,7 +39,7 @@ export async function bundleSource(
     "jpg",
   ]
 
-  const esbuildOptions: BuildOptions = {
+  const esbuildOptions = {
     entryPoints: entryPoints,
     outExtension: { ".js": ".jsx" },
     jsx: "preserve",
@@ -57,7 +60,9 @@ export async function bundleSource(
       {
         name: "externalize-deps",
         setup(build) {
-          const shouldInclude = buildIncludeDepsFilter(config.includeDeps || [])
+          const shouldInclude = buildIncludeDepsFilter(
+            extractorConfig.includeDeps || []
+          )
 
           // considers all import paths that "look like" package imports in the original source code to be package imports.
           // Specifically import paths that don't start with a path segment of / or . or .. are considered to be package imports.
@@ -85,11 +90,15 @@ export async function bundleSource(
         },
       },
     ],
-  }
+  } satisfies BuildOptions
 
-  return await esbuild.build(
-    config.resolveEsbuildOptions
-      ? config.resolveEsbuildOptions(esbuildOptions)
+  const bundleResult = await esbuild.build(
+    extractorConfig.resolveEsbuildOptions
+      ? (extractorConfig.resolveEsbuildOptions(
+          esbuildOptions
+        ) as typeof esbuildOptions)
       : esbuildOptions
   )
+
+  return bundleResult.metafile
 }

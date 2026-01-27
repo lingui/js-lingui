@@ -43,7 +43,7 @@ describe("getCatalogDependentFiles", () => {
 
     const catalog = new Catalog(
       {
-        name: null,
+        name: undefined,
         path: "/src/locales/{locale}",
         include: ["src/"],
         exclude: [],
@@ -90,7 +90,7 @@ describe("getCatalogDependentFiles", () => {
 
     const catalog = new Catalog(
       {
-        name: null,
+        name: undefined,
         path: "/src/locales/{locale}",
         include: ["src/"],
         exclude: [],
@@ -135,7 +135,7 @@ describe("getCatalogDependentFiles", () => {
 
     const catalog = new Catalog(
       {
-        name: null,
+        name: undefined,
         path: "/src/locales/{locale}",
         include: ["src/"],
         exclude: [],
@@ -186,7 +186,7 @@ describe("getCatalogDependentFiles", () => {
 
     const catalog = new Catalog(
       {
-        name: null,
+        name: undefined,
         path: "./src/locales/{locale}",
         include: ["src/"],
         exclude: [],

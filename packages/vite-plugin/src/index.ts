@@ -80,7 +80,7 @@ export function lingui({
       },
       async transform(src, id) {
         if (fileRegex.test(id)) {
-          id = id.split("?")[0]
+          id = id.split("?")[0]!
 
           const catalogRelativePath = path.relative(config.rootDir, id)
 
