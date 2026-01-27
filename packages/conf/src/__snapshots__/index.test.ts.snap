@@ -5,9 +5,9 @@ exports[`@lingui/conf > should return default config 1`] = `
   "catalogs": [
     {
       "include": [
-        "/Users/y.i.slepukhin/Code/Pesonal/js-lingui/packages/conf/src/fixtures/valid/src",
+        StringContaining "fixtures/valid/src",
       ],
-      "path": "/Users/y.i.slepukhin/Code/Pesonal/js-lingui/packages/conf/src/fixtures/valid/locale/{locale}/messages",
+      "path": StringContaining "fixtures/valid/locale/{locale}/messages",
     },
   ],
   "catalogsMergePath": "",
@@ -45,7 +45,7 @@ exports[`@lingui/conf > should return default config 1`] = `
   "orderBy": "message",
   "pseudoLocale": "",
   "resolvedConfigPath": StringContaining "lingui.config.js",
-  "rootDir": "/Users/y.i.slepukhin/Code/Pesonal/js-lingui/packages/conf/src/fixtures/valid",
+  "rootDir": StringContaining "fixtures/valid",
   "runtimeConfigModule": {
     "Trans": [
       "@lingui/react",

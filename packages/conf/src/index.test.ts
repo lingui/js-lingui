@@ -23,6 +23,15 @@ describe("@lingui/conf", () => {
       expect(console.warn).not.toBeCalled()
       expect(config).toMatchSnapshot({
         resolvedConfigPath: expect.stringContaining("lingui.config.js"),
+        rootDir: expect.stringContaining("fixtures/valid"),
+        catalogs: [
+          {
+            include: [expect.stringContaining("fixtures/valid/src")],
+            path: expect.stringContaining(
+              "fixtures/valid/locale/{locale}/messages",
+            ),
+          },
+        ],
       })
     })
   })
