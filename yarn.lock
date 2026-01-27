@@ -1450,6 +1450,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@colors/colors@npm:1.5.0":
+  version: 1.5.0
+  resolution: "@colors/colors@npm:1.5.0"
+  checksum: d64d5260bed1d5012ae3fc617d38d1afc0329fec05342f4e6b838f46998855ba56e0a73833f4a80fa8378c84810da254f76a8a19c39d038260dc06dc4e007425
+  languageName: node
+  linkType: hard
+
 "@emnapi/core@npm:^1.1.0":
   version: 1.3.1
   resolution: "@emnapi/core@npm:1.3.1"
@@ -3249,7 +3256,7 @@ __metadata:
     "@types/ms": ^2.1.0
     "@types/normalize-path": ^3.0.0
     chokidar: 3.5.1
-    cli-table: ^0.3.11
+    cli-table3: ^0.6.5
     commander: ^10.0.0
     convert-source-map: ^2.0.0
     date-fns: ^3.6.0
@@ -3265,7 +3272,7 @@ __metadata:
     ora: ^5.1.0
     picocolors: ^1.1.1
     pofile: ^1.1.4
-    pseudolocale: ^2.0.0
+    pseudolocale: ^2.2.0
     source-map: ^0.7.6
     threads: ^1.7.0
     vitest: 4.0.18
@@ -7001,12 +7008,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cli-table@npm:^0.3.11":
-  version: 0.3.11
-  resolution: "cli-table@npm:0.3.11"
+"cli-table3@npm:^0.6.5":
+  version: 0.6.5
+  resolution: "cli-table3@npm:0.6.5"
   dependencies:
-    colors: 1.0.3
-  checksum: 59fb61f992ac9bc8610ed98c72bf7f5d396c5afb42926b6747b46b0f8bb98a0dfa097998e77542ac334c1eb7c18dbf4f104d5783493273c5ec4c34084aa7c663
+    "@colors/colors": 1.5.0
+    string-width: ^4.2.0
+  dependenciesMeta:
+    "@colors/colors":
+      optional: true
+  checksum: ab7afbf4f8597f1c631f3ee6bb3481d0bfeac8a3b81cffb5a578f145df5c88003b6cfff46046a7acae86596fdd03db382bfa67f20973b6b57425505abc47e42c
   languageName: node
   linkType: hard
 
@@ -7149,13 +7160,6 @@ __metadata:
   version: 2.0.19
   resolution: "colorette@npm:2.0.19"
   checksum: 888cf5493f781e5fcf54ce4d49e9d7d698f96ea2b2ef67906834bb319a392c667f9ec69f4a10e268d2946d13a9503d2d19b3abaaaf174e3451bfe91fb9d82427
-  languageName: node
-  linkType: hard
-
-"colors@npm:1.0.3":
-  version: 1.0.3
-  resolution: "colors@npm:1.0.3"
-  checksum: 234e8d3ab7e4003851cdd6a1f02eaa16dabc502ee5f4dc576ad7959c64b7477b15bd21177bab4055a4c0a66aa3d919753958030445f87c39a253d73b7a3637f5
   languageName: node
   linkType: hard
 
@@ -14602,14 +14606,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pseudolocale@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "pseudolocale@npm:2.0.0"
+"pseudolocale@npm:^2.2.0":
+  version: 2.2.0
+  resolution: "pseudolocale@npm:2.2.0"
   dependencies:
     commander: ^10.0.0
   bin:
     pseudolocale: dist/cli.mjs
-  checksum: 971f79536becac26b4224ecfee6485a48143073820bb22f6a0a590867cf9d794955fd9d4bf13cf7f28b577dc82d41c976e7512cde2d57eb587522f152332165b
+  checksum: 38e00b84312a23613df948689c92f3fe0764127daf235ad014046d24228851ad01d22869f14904582944b9189ab7e8e230a37beb39c418ebbad02684b9d517c3
   languageName: node
   linkType: hard
 

@@ -71,7 +71,7 @@
     "@lingui/format-po": "5.9.0",
     "@lingui/message-utils": "5.9.0",
     "chokidar": "3.5.1",
-    "cli-table": "^0.3.11",
+    "cli-table3": "^0.6.5",
     "commander": "^10.0.0",
     "convert-source-map": "^2.0.0",
     "date-fns": "^3.6.0",
@@ -85,7 +85,7 @@
     "ora": "^5.1.0",
     "picocolors": "^1.1.1",
     "pofile": "^1.1.4",
-    "pseudolocale": "^2.0.0",
+    "pseudolocale": "^2.2.0",
     "source-map": "^0.7.6",
     "threads": "^1.7.0"
   },

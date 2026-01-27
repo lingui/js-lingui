@@ -1,6 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import Table from "cli-table"
+import Table from "cli-table3"
 import pico from "picocolors"
 
 import { LinguiConfigNormalized } from "@lingui/conf"
@@ -22,7 +20,7 @@ export function printStats(
 ) {
   const table = new Table({
     head: ["Language", "Total count", "Missing"],
-    colAligns: ["left", "middle", "middle"],
+    colAligns: ["left", "center", "center"],
     style: {
       head: ["green"],
       border: [],
