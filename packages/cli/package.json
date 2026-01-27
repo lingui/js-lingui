@@ -76,7 +76,7 @@
     "convert-source-map": "^2.0.0",
     "es-main": "^1.4.0",
     "esbuild": "^0.25.1",
-    "glob": "^11.0.0",
+    "glob": "^13.0.0",
     "jiti": "^2.6.1",
     "micromatch": "^4.0.7",
     "ms": "^2.1.3",
