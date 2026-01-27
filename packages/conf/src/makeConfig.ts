@@ -28,9 +28,9 @@ export function makeConfig(
   }
 
   if (!opts.skipValidation) {
+    validateFormat(config)
     validate(config, configValidation)
     validateLocales(config)
-    validateFormat(config)
   }
 
   // List config migrations from oldest to newest

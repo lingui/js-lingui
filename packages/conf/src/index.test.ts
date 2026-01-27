@@ -56,10 +56,12 @@ describe("@lingui/conf", () => {
       makeConfig({
         locales: ["en"],
         // @ts-expect-error this we are validating
+        format: "po",
       }),
     ).toThrowErrorMatchingInlineSnapshot(`
-      [Error: String format eq \`{format: po}\` is no longer supported by Lingui.
-      You need to install formatter package and add to your \`lingui.config.{js,ts}\`:
+      [Error: String formats like \`{format: po}\` are no longer supported.
+            
+      Formatters must now be installed as separate packages and provided via format in lingui config:
               
       import { formatter } from "@lingui/format-po"
 
