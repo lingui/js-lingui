@@ -70,7 +70,7 @@
     "@lingui/core": "5.9.0",
     "@lingui/format-po": "5.9.0",
     "@lingui/message-utils": "5.9.0",
-    "chokidar": "3.5.1",
+    "chokidar": "5.0.0",
     "cli-table3": "^0.6.5",
     "commander": "^10.0.0",
     "convert-source-map": "^2.0.0",

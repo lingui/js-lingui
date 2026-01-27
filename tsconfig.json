@@ -10,7 +10,7 @@
     "noUnusedLocals": true,
     "resolveJsonModule": true,
     "skipLibCheck": true,
-    "target": "es2017"
+    "target": "es2021"
   },
   "exclude": ["examples/**", "dist", "website", "**/fixtures/**"]
 }

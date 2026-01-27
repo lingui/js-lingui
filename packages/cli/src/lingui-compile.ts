@@ -4,7 +4,7 @@ import { program } from "commander"
 
 import { getConfig, LinguiConfigNormalized } from "@lingui/conf"
 import { helpRun } from "./api/help.js"
-import { getCatalogs, getFormat } from "./api/index.js"
+import { getCatalogs } from "./api/index.js"
 import { compileLocale } from "./api/compile/compileLocale.js"
 import { Pool, spawn, Worker } from "threads"
 import { CompileWorker } from "./workers/compileWorker.js"
@@ -14,6 +14,7 @@ import {
 } from "./api/resolveWorkersOptions.js"
 import ms from "ms"
 import esMain from "es-main"
+import { getPathForCompileWatcher } from "./api/getPathForCompileWatcher.js"
 
 export type CliCompileOptions = {
   verbose?: boolean
@@ -202,24 +203,7 @@ if (esMain(import.meta)) {
   if (options.watch) {
     console.info(pico.bold("Initializing Watch Mode..."))
     ;(async function initWatch() {
-      const format = await getFormat(
-        config.format,
-        config.formatOptions,
-        config.sourceLocale,
-      )
-      const catalogs = await getCatalogs(config)
-
-      const paths: string[] = []
-
-      config.locales.forEach((locale) => {
-        catalogs.forEach((catalog) => {
-          paths.push(
-            `${catalog.path
-              .replace(/{locale}/g, locale)
-              .replace(/{name}/g, "*")}${format.getCatalogExtension()}`,
-          )
-        })
-      })
+      const { paths } = await getPathForCompileWatcher(config)
 
       const watcher = chokidar.watch(paths, {
         persistent: true,
