@@ -1,5 +1,5 @@
 import { makeConfig } from "@lingui/conf"
-import { getPathForCompileWatcher } from "./getPathForCompileWatcher.js"
+import { getPathsForCompileWatcher } from "./getPathsForCompileWatcher.js"
 import { createFixtures } from "../tests.js"
 import path from "path"
 
@@ -26,7 +26,7 @@ describe("getPathsForCompileWatcher", () => {
       { skipValidation: true },
     )
 
-    const res = await getPathForCompileWatcher(config)
+    const res = await getPathsForCompileWatcher(config)
 
     expect(res).toMatchInlineSnapshot(`
       {
@@ -62,7 +62,7 @@ describe("getPathsForCompileWatcher", () => {
       { skipValidation: true },
     )
 
-    const res = await getPathForCompileWatcher(config)
+    const res = await getPathsForCompileWatcher(config)
 
     expect(res.paths.sort()).toStrictEqual(
       [

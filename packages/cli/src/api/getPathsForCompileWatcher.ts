@@ -4,7 +4,9 @@ import { LinguiConfigNormalized } from "@lingui/conf"
 /**
  * Return paths of catalogs to watch
  */
-export async function getPathForCompileWatcher(config: LinguiConfigNormalized) {
+export async function getPathsForCompileWatcher(
+  config: LinguiConfigNormalized,
+) {
   const catalogs = await getCatalogs(config)
 
   const paths = new Set<string>()

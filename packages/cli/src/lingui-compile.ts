@@ -14,7 +14,7 @@ import {
 } from "./api/resolveWorkersOptions.js"
 import ms from "ms"
 import esMain from "es-main"
-import { getPathForCompileWatcher } from "./api/getPathForCompileWatcher.js"
+import { getPathsForCompileWatcher } from "./api/getPathsForCompileWatcher.js"
 
 export type CliCompileOptions = {
   verbose?: boolean
@@ -203,7 +203,7 @@ if (esMain(import.meta)) {
   if (options.watch) {
     console.info(pico.bold("Initializing Watch Mode..."))
     ;(async function initWatch() {
-      const { paths } = await getPathForCompileWatcher(config)
+      const { paths } = await getPathsForCompileWatcher(config)
 
       const watcher = chokidar.watch(paths, {
         persistent: true,
