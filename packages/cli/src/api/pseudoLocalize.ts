@@ -52,7 +52,6 @@ export default function (message: string) {
   message = addDelimitersHTMLTags(message)
   message = addDelimitersMacro(message)
   message = addDelimitersVariables(message)
-  // @ts-expect-error pseudolocale has incorrect typings
   message = pseudolocale(message, {
     delimiter,
     prepend: "",
