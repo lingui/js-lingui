@@ -1,12 +1,16 @@
-import { resolveTemplatePath } from "./resolveTemplatePath"
-import { AllCatalogsType, CatalogType, ExtractedCatalogType } from "../api"
+import { resolveTemplatePath } from "./resolveTemplatePath.js"
+import {
+  AllCatalogsType,
+  CatalogType,
+  ExtractedCatalogType,
+} from "../api/index.js"
 import pico from "picocolors"
-import { resolveCatalogPath } from "./resolveCatalogPath"
-import { mergeCatalog } from "../api/catalog/mergeCatalog"
-import { printStats } from "../api/stats"
+import { resolveCatalogPath } from "./resolveCatalogPath.js"
+import { mergeCatalog } from "../api/catalog/mergeCatalog.js"
+import { printStats } from "../api/stats.js"
 import { LinguiConfigNormalized, OrderBy } from "@lingui/conf"
-import { cleanObsolete, order } from "../api/catalog"
-import { FormatterWrapper } from "../api/formats"
+import { cleanObsolete, order } from "../api/catalog.js"
+import { FormatterWrapper } from "../api/formats/index.js"
 
 type ExtractTemplateParams = {
   format: FormatterWrapper
@@ -30,11 +34,11 @@ function cleanAndSort(catalog: CatalogType, clean: boolean, orderBy: OrderBy) {
     catalog = cleanObsolete(catalog)
   }
 
-  return order(orderBy, catalog) as CatalogType
+  return order(orderBy, catalog)
 }
 
 export async function writeCatalogs(
-  params: ExtractParams
+  params: ExtractParams,
 ): Promise<ExtractStats> {
   const {
     entryPoint,
@@ -55,20 +59,20 @@ export async function writeCatalogs(
       entryPoint,
       linguiConfig.rootDir,
       locale,
-      format.getCatalogExtension()
+      format.getCatalogExtension(),
     )
 
     const catalog = mergeCatalog(
       await format.read(catalogOutput, locale),
       messages,
       locale === linguiConfig.sourceLocale,
-      { overwrite }
+      { overwrite },
     )
 
     await format.write(
       catalogOutput,
       cleanAndSort(catalog, clean, linguiConfig.orderBy),
-      locale
+      locale,
     )
 
     stat[locale] = catalog
@@ -80,7 +84,7 @@ export async function writeCatalogs(
 }
 
 export async function writeTemplate(
-  params: ExtractTemplateParams
+  params: ExtractTemplateParams,
 ): Promise<ExtractStats> {
   const { entryPoint, outputPattern, linguiConfig, format, clean, messages } =
     params
@@ -89,18 +93,18 @@ export async function writeTemplate(
     entryPoint,
     outputPattern,
     linguiConfig.rootDir,
-    format.getTemplateExtension()
+    format.getTemplateExtension(),
   )
 
   await format.write(
     catalogOutput,
     cleanAndSort(messages as CatalogType, clean, linguiConfig.orderBy),
-    undefined
+    undefined,
   )
 
   return {
     statMessage: `${pico.bold(
-      Object.keys(messages).length
+      Object.keys(messages).length,
     )} message(s) extracted`,
   }
 }

@@ -1,4 +1,4 @@
-import { resolveTemplatePath } from "./resolveTemplatePath"
+import { resolveTemplatePath } from "./resolveTemplatePath.js"
 import normalizePath from "normalize-path"
 
 describe("resolveTemplateName", () => {
@@ -10,7 +10,7 @@ describe("resolveTemplateName", () => {
 
     const actual = resolveTemplatePath(entrypoint, output, rootDir, ".pot")
     expect(normalizePath(actual)).toMatchInlineSnapshot(
-      `/Users/lingui-app/locales/pages/about/index.messages.pot`
+      `/Users/lingui-app/locales/pages/about/index.messages.pot`,
     )
   })
 
@@ -20,7 +20,7 @@ describe("resolveTemplateName", () => {
 
     const actual = resolveTemplatePath(entrypoint, output, rootDir, ".json")
     expect(normalizePath(actual)).toMatchInlineSnapshot(
-      `/Users/lingui-app/locales/pages/about/index.json`
+      `/Users/lingui-app/locales/pages/about/index.json`,
     )
   })
 
@@ -30,7 +30,7 @@ describe("resolveTemplateName", () => {
 
     const actual = resolveTemplatePath(entrypoint, output, rootDir, ".pot")
     expect(normalizePath(actual)).toMatchInlineSnapshot(
-      `/Users/lingui-app/pages/trip/day/locales/[day].page.pot`
+      `/Users/lingui-app/pages/trip/day/locales/[day].page.pot`,
     )
   })
 })

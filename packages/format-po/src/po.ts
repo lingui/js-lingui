@@ -19,7 +19,7 @@ const splitMultiLineComments = (comments: string[]) => {
           .split("\n")
           .map((slice) => slice.trim())
           .filter(Boolean)
-      : comment
+      : comment,
   )
 }
 
@@ -104,12 +104,12 @@ export type PoFormatterOptions = {
 }
 
 function isGeneratedId(id: string, message: MessageType): boolean {
-  return id === generateMessageId(message.message, message.context)
+  return id === generateMessageId(message.message!, message.context)
 }
 
 function getCreateHeaders(
-  language: string,
-  customHeaderAttributes: PoFormatterOptions["customHeaderAttributes"]
+  language: string | undefined,
+  customHeaderAttributes: PoFormatterOptions["customHeaderAttributes"],
 ): PO["headers"] {
   return {
     "POT-Creation-Date": formatDate(new Date(), "yyyy-MM-dd HH:mmxxxx"),
@@ -128,7 +128,7 @@ const GENERATED_ID_FLAG = "js-lingui-generated-id"
 const serialize = (
   catalog: CatalogType,
   options: PoFormatterOptions,
-  ctx: { locale: string | null; sourceLocale: string }
+  ctx: { locale: string | undefined; sourceLocale: string },
 ) => {
   return Object.keys(catalog).map((id) => {
     const message: MessageType<POCatalogExtra> = catalog[id]
@@ -153,7 +153,7 @@ const serialize = (
     const _isGeneratedId = isGeneratedId(id, message)
 
     if (_isGeneratedId) {
-      item.msgid = message.message
+      item.msgid = message.message!
 
       if (options.explicitIdAsDefault) {
         if (!item.extractedComments.includes(GENERATED_ID_FLAG)) {
@@ -178,7 +178,7 @@ const serialize = (
 
     if (options.printPlaceholdersInComments !== false) {
       item.extractedComments = item.extractedComments.filter(
-        (comment) => !comment.startsWith("placeholder ")
+        (comment) => !comment.startsWith("placeholder "),
       )
 
       const limit =
@@ -192,7 +192,7 @@ const serialize = (
           if (/^\d+$/.test(name)) {
             value.slice(0, limit).forEach((entry) => {
               item.extractedComments.push(
-                `placeholder {${name}}: ${normalizePlaceholderValue(entry)}`
+                `placeholder {${name}}: ${normalizePlaceholderValue(entry)}`,
               )
             })
           }
@@ -204,18 +204,15 @@ const serialize = (
       item.msgctxt = message.context
     }
 
-    if (
-      !_isGeneratedId &&
-      (ctx.locale === ctx.sourceLocale || ctx.locale === null)
-    ) {
+    if (!_isGeneratedId && (ctx.locale === ctx.sourceLocale || !ctx.locale)) {
       // in source lang catalog if message has explicit id, put a source message as translation
       // Otherwise, source message would be completely lost
       //   #. js-lingui-explicit-id
       //   msgid "custom.id"
       //   msgstr "with explicit id"
-      item.msgstr = [message.translation || message.message]
+      item.msgstr = [message.translation || message.message!]
     } else {
-      item.msgstr = [message.translation]
+      item.msgstr = [message.translation!]
     }
 
     item.comments = message.extra?.translatorComments || []
@@ -227,7 +224,7 @@ const serialize = (
         item.references = message.origin ? message.origin.map(joinOrigin) : []
       }
     }
-    item.obsolete = message.obsolete
+    item.obsolete = message.obsolete || false
 
     return item
   })
@@ -235,7 +232,7 @@ const serialize = (
 
 function deserialize(
   items: POItem[],
-  options: PoFormatterOptions
+  options: PoFormatterOptions,
 ): CatalogType {
   return items.reduce<CatalogType<POCatalogExtra>>((catalog, item) => {
     const comments = item.extractedComments
@@ -244,9 +241,9 @@ function deserialize(
       translation: item.msgstr[0],
       comments: comments.filter(
         // drop flags from comments
-        (c) => c !== GENERATED_ID_FLAG && c !== EXPLICIT_ID_FLAG
+        (c) => c !== GENERATED_ID_FLAG && c !== EXPLICIT_ID_FLAG,
       ),
-      context: item.msgctxt ?? null,
+      context: item.msgctxt ?? undefined,
       obsolete: item.flags.obsolete || item.obsolete,
       origin: (item.references || []).map((ref) => splitOrigin(ref)),
       extra: {
@@ -297,7 +294,7 @@ export function formatter(options: PoFormatterOptions = {}): CatalogFormatter {
         po = new PO()
         po.headers = getCreateHeaders(
           ctx.locale,
-          options.customHeaderAttributes
+          options.customHeaderAttributes,
         )
         // accessing private property
         ;(po as any).headerOrder = Object.keys(po.headers)

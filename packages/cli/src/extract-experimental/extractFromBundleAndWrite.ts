@@ -3,18 +3,18 @@ import {
   ExtractedMessage,
   LinguiConfigNormalized,
 } from "@lingui/conf"
-import { FormatterWrapper } from "../api/formats"
-import { mergeExtractedMessage } from "../api/catalog/extractFromFiles"
-import { writeCatalogs, writeTemplate } from "./writeCatalogs"
+import { FormatterWrapper } from "../api/formats/index.js"
+import { mergeExtractedMessage } from "../api/catalog/extractFromFiles.js"
+import { writeCatalogs, writeTemplate } from "./writeCatalogs.js"
 import fs from "fs/promises"
 import {
   extractFromFileWithBabel,
   getBabelParserOptions,
-} from "../api/extractors/babel"
+} from "../api/extractors/babel.js"
 
 async function extractFromBundle(
   filename: string,
-  linguiConfig: LinguiConfigNormalized
+  linguiConfig: LinguiConfigNormalized,
 ) {
   const messages: ExtractedCatalogType = {}
 
@@ -37,7 +37,7 @@ async function extractFromBundle(
       {
         plugins: getBabelParserOptions(filename, parserOptions),
       },
-      true
+      true,
     )
 
     success = true
@@ -60,7 +60,7 @@ export async function extractFromBundleAndWrite(params: {
   locales: string[]
   clean: boolean
   overwrite: boolean
-}) {
+}): Promise<{ success: false } | { success: true; stat: string }> {
   const {
     linguiConfig,
     entryPoint,
@@ -74,7 +74,7 @@ export async function extractFromBundleAndWrite(params: {
 
   const { messages, success } = await extractFromBundle(
     params.bundleFile,
-    params.linguiConfig
+    params.linguiConfig,
   )
 
   if (!success) {

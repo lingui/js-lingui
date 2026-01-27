@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`Elements are replaced with placeholders 1`] = `
 import { Trans } from "@lingui/react/macro";
@@ -818,7 +818,7 @@ import { i18n as _i18n } from "@lingui/core";
                 values: {
                   articleName: articleName,
                 },
-              }
+              },
             )}
           />
         ),
@@ -854,7 +854,7 @@ import { i18n as _i18n } from "@lingui/core";
       values: {
         count: count,
       },
-    }
+    },
   )}
 >
   About

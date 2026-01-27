@@ -1,5 +1,5 @@
-import { Catalog } from "../catalog"
-import { getFallbackListForLocale } from "./getFallbackListForLocale"
+import { Catalog } from "../catalog.js"
+import { getFallbackListForLocale } from "./getFallbackListForLocale.js"
 import fs from "node:fs/promises"
 
 import path from "node:path"
@@ -13,13 +13,13 @@ const fileExists = async (path: string) =>
  */
 export async function getCatalogDependentFiles(
   catalog: Catalog,
-  locale: string
+  locale: string,
 ): Promise<string[]> {
   const files = new Set([catalog.templateFile])
   getFallbackListForLocale(catalog.config.fallbackLocales, locale).forEach(
     (locale) => {
       files.add(catalog.getFilename(locale))
-    }
+    },
   )
 
   if (catalog.config.sourceLocale && locale !== catalog.config.sourceLocale) {

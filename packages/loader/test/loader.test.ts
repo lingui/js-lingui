@@ -3,6 +3,7 @@ import fs from "node:fs/promises"
 import { build, watch } from "./compiler"
 import { mkdtempSync } from "fs"
 import os from "os"
+import { vi } from "vitest"
 
 describe("lingui-loader", () => {
   it("should compile catalog in po format", async () => {
@@ -17,7 +18,7 @@ describe("lingui-loader", () => {
 
   it("should compile catalog in json format", async () => {
     const built = await build(
-      path.join(__dirname, "./json-format/entrypoint.js")
+      path.join(__dirname, "./json-format/entrypoint.js"),
     )
 
     expect(built.stats.errors).toEqual([])
@@ -29,7 +30,7 @@ describe("lingui-loader", () => {
 
   it("should compile catalog with relative path with no warnings", async () => {
     const built = await build(
-      path.join(__dirname, "./relative-catalog-path/entrypoint.js")
+      path.join(__dirname, "./relative-catalog-path/entrypoint.js"),
     )
 
     expect(built.stats.errors).toEqual([])
@@ -41,11 +42,11 @@ describe("lingui-loader", () => {
 
   it("should throw an error when requested catalog don't belong to lingui config", async () => {
     const built = await build(
-      path.join(__dirname, "./not-known-catalog/entrypoint.js")
+      path.join(__dirname, "./not-known-catalog/entrypoint.js"),
     )
 
-    expect(built.stats.errors[0].message).toContain(
-      "is not matched to any of your catalogs paths"
+    expect(built.stats.errors![0]!.message).toContain(
+      "is not matched to any of your catalogs paths",
     )
     expect(built.stats.warnings).toEqual([])
   })
@@ -55,10 +56,12 @@ describe("lingui-loader", () => {
       path.join(__dirname, "./fail-on-missing/entrypoint.js"),
       {
         failOnMissing: true,
-      }
+      },
     )
 
-    expect(built.stats.errors[0].message).toContain("Missing 1 translation(s):")
+    expect(built.stats.errors![0]!.message).toContain(
+      "Missing 1 translation(s):",
+    )
     expect(built.stats.warnings).toEqual([])
   })
 
@@ -67,7 +70,7 @@ describe("lingui-loader", () => {
       path.join(__dirname, "./fail-on-missing-pseudo/entrypoint.js"),
       {
         failOnMissing: true,
-      }
+      },
     )
     expect(built.stats.errors).toEqual([])
     expect(built.stats.warnings).toEqual([])
@@ -78,10 +81,10 @@ describe("lingui-loader", () => {
       path.join(__dirname, "./fail-on-compile-errors/entrypoint.js"),
       {
         failOnCompileError: true,
-      }
+      },
     )
-    expect(built.stats.errors[0].message).toContain(
-      "Compilation error for 2 translation(s)"
+    expect(built.stats.errors![0]!.message).toContain(
+      "Compilation error for 2 translation(s)",
     )
     expect(built.stats.warnings).toEqual([])
   })
@@ -91,10 +94,10 @@ describe("lingui-loader", () => {
       path.join(__dirname, "./fail-on-compile-errors/entrypoint.js"),
       {
         failOnCompileError: false,
-      }
+      },
     )
-    expect(built.stats.warnings[0].message).toContain(
-      "Compilation error for 2 translation(s)"
+    expect(built.stats.warnings![0]!.message).toContain(
+      "Compilation error for 2 translation(s)",
     )
     expect(built.stats.errors).toEqual([])
   })
@@ -107,21 +110,21 @@ describe("lingui-loader", () => {
 
     expect((await res.loadBundle().then((m) => m.load())).messages)
       .toMatchInlineSnapshot(`
-      {
-        ED2Xk0: [
-          String from template,
-        ],
-        mVmaLu: [
-          My name is ,
-          [
-            name,
+        {
+          "ED2Xk0": [
+            "String from template",
           ],
-        ],
-        mY42CM: [
-          Hello World,
-        ],
-      }
-    `)
+          "mVmaLu": [
+            "My name is ",
+            [
+              "name",
+            ],
+          ],
+          "mY42CM": [
+            "Hello World",
+          ],
+        }
+      `)
 
     // change the dependency
     await fs.writeFile(
@@ -134,29 +137,29 @@ msgstr ""
 
 msgid "String from template changes!"
 msgstr ""
-`
+`,
     )
 
     const stats2 = await watching.build()
-    jest.resetModules()
+    vi.resetModules()
 
     expect((await stats2.loadBundle().then((m) => m.load())).messages)
       .toMatchInlineSnapshot(`
-      {
-        mVmaLu: [
-          My name is ,
-          [
-            name,
+        {
+          "mVmaLu": [
+            "My name is ",
+            [
+              "name",
+            ],
           ],
-        ],
-        mY42CM: [
-          Hello World,
-        ],
-        wg2uwk: [
-          String from template changes!,
-        ],
-      }
-    `)
+          "mY42CM": [
+            "Hello World",
+          ],
+          "wg2uwk": [
+            "String from template changes!",
+          ],
+        }
+      `)
 
     await watching.stop()
   })
@@ -164,7 +167,7 @@ msgstr ""
 
 async function copyFixture(srcPath: string) {
   const fixtureTempPath = mkdtempSync(
-    path.join(os.tmpdir(), `lingui-test-fixture-${process.pid}`)
+    path.join(os.tmpdir(), `lingui-test-fixture-${process.pid}`),
   )
 
   await fs.cp(srcPath, fixtureTempPath, {

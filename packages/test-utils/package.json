@@ -1,0 +1,33 @@
+{
+  "private": true,
+  "name": "@lingui/test-utils",
+  "version": "3.0.3",
+  "description": "Test Utils",
+  "main": "./index.ts",
+  "author": {
+    "name": "Tomáš Ehrlich",
+    "email": "tomas.ehrlich@gmail.com"
+  },
+  "type": "module",
+  "license": "MIT",
+  "keywords": [
+    "jest",
+    "testing",
+    "mock"
+  ],
+  "dependencies": {
+    "vitest": "4.0.18"
+  },
+  "homepage": "https://lingui.dev",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lingui/js-lingui.git",
+    "directory": "packages/jest-mocks"
+  },
+  "bugs": {
+    "url": "https://github.com/lingui/js-lingui/issues"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

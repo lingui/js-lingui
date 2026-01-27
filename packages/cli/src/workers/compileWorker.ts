@@ -1,11 +1,10 @@
-import { expose } from "threads/worker"
-import { compileLocale } from "../api/compile/compileLocale"
-import { CliCompileOptions } from "../lingui-compile"
+import { compileLocale } from "../api/compile/compileLocale.js"
+import { CliCompileOptions } from "../lingui-compile.js"
 import { getConfig, LinguiConfigNormalized } from "@lingui/conf"
-import { SerializedLogs, WorkerLogger } from "../api/workerLogger"
-import { ProgramExit } from "../api/ProgramExit"
-import { Catalog } from "../api/catalog"
-import { getCatalogs } from "../api/catalog/getCatalogs"
+import { SerializedLogs, WorkerLogger } from "../api/workerLogger.js"
+import { ProgramExit } from "../api/ProgramExit.js"
+import { Catalog } from "../api/catalog.js"
+import { getCatalogs } from "../api/catalog/getCatalogs.js"
 
 let linguiConfig: LinguiConfigNormalized | undefined
 let catalogs: Catalog[] | undefined
@@ -15,9 +14,9 @@ const compileWorker = {
     locale: string,
     options: CliCompileOptions,
     doMerge: boolean,
-    linguiConfigPath: string
+    linguiConfigPath: string,
   ): Promise<{
-    logs?: SerializedLogs
+    logs: SerializedLogs
     error?: unknown
     exitProgram?: boolean
   }> => {
@@ -44,7 +43,7 @@ const compileWorker = {
         options,
         linguiConfig,
         doMerge,
-        logger
+        logger,
       )
     } catch (error) {
       return {
@@ -59,5 +58,4 @@ const compileWorker = {
 }
 
 export type CompileWorker = typeof compileWorker
-
-expose(compileWorker)
+export { compileWorker }

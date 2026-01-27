@@ -133,6 +133,24 @@ macroTester({
       `,
     },
     {
+      name: "Should pick only related attributes and pass thru other",
+      code: `
+        import { Plural } from '@lingui/react/macro';
+        <Plural
+          comment="Comment for translator"
+          context="translation context"
+          id="custom.id"
+          render={() => {}}
+          value={count}
+          offset="1"
+          _0="Zero items"
+          few={"few value"}
+          other={"other value"}
+          data-sentry-source-file="file.tsx"
+        />;
+      `,
+    },
+    {
       name: "With labeled expression as value with ph",
       code: `
         import { Plural } from '@lingui/react/macro';

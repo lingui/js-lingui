@@ -50,7 +50,7 @@ function reportUnsupportedSyntax(path: NodePath, e: Error) {
     `Unsupported macro usage. Please check the examples at https://lingui.dev/ref/macro#examples-of-js-macros.
  If you think this is a bug, fill in an issue at https://github.com/lingui/js-lingui/issues
 
- Error: ${e.message}`
+ Error: ${e.message}`,
   )
 
   // show stack trace where error originally happened
@@ -81,7 +81,7 @@ const getIdentifierPath = ((path: NodePath, node: Identifier) => {
         }
       },
     },
-    path.state
+    path.state,
   )
 
   return foundPath
@@ -107,7 +107,7 @@ export default function ({
   function addImport(
     macroImports: MacroImports,
     state: PluginPass,
-    name: LinguiSymbol
+    name: LinguiSymbol,
   ) {
     const [path] = macroImports[LinguiSymbolToImportMap[name]]
 
@@ -121,10 +121,10 @@ export default function ({
         [
           t.importSpecifier(
             getSymbolIdentifier(state, name),
-            t.identifier(importName)
+            t.identifier(importName),
           ),
         ],
-        t.stringLiteral(moduleSource)
+        t.stringLiteral(moduleSource),
       )
 
       importDecl.loc = path.node.loc
@@ -135,7 +135,7 @@ export default function ({
     }
 
     return path.parentPath.scope.getBinding(
-      getSymbolIdentifier(state, name).name
+      getSymbolIdentifier(state, name).name,
     )
   }
 
@@ -147,9 +147,9 @@ export default function ({
           (statement) =>
             statement.isImportDeclaration() &&
             config.macro.corePackage.includes(
-              statement.get("source").node.value
-            )
-        ) as NodePath<babelTypes.ImportDeclaration>[]
+              statement.get("source").node.value,
+            ),
+        ) as NodePath<babelTypes.ImportDeclaration>[],
     )
 
     const jsxPackage = new Set(
@@ -158,8 +158,10 @@ export default function ({
         .filter(
           (statement) =>
             statement.isImportDeclaration() &&
-            config.macro.jsxPackage.includes(statement.get("source").node.value)
-        ) as NodePath<babelTypes.ImportDeclaration>[]
+            config.macro.jsxPackage.includes(
+              statement.get("source").node.value,
+            ),
+        ) as NodePath<babelTypes.ImportDeclaration>[],
     )
 
     return {
@@ -171,7 +173,7 @@ export default function ({
 
   function getSymbolIdentifier(
     state: PluginPass,
-    name: LinguiSymbol
+    name: LinguiSymbol,
   ): Identifier {
     return state.get("linguiIdentifiers")[name]
   }
@@ -179,14 +181,14 @@ export default function ({
   function isLinguiIdentifier(
     path: NodePath,
     node: Identifier,
-    macro: JsMacroName
+    macro: JsMacroName,
   ) {
     let identPath = getIdentifierPath(path, node)
 
     if (macro === JsMacroName.useLingui) {
       if (
         config.macro.jsxPackage.some((moduleSource) =>
-          identPath.referencesImport(moduleSource, JsMacroName.useLingui)
+          identPath.referencesImport(moduleSource, JsMacroName.useLingui),
         )
       ) {
         return true
@@ -197,7 +199,7 @@ export default function ({
 
       if (
         config.macro.corePackage.some((moduleSource) =>
-          identPath.referencesImport(moduleSource, macro)
+          identPath.referencesImport(moduleSource, macro),
         )
       ) {
         return true
@@ -212,7 +214,7 @@ export default function ({
         enter(path, state) {
           state.set(
             "linguiConfig",
-            getConfig((state.opts as LinguiPluginOpts).linguiConfig)
+            getConfig((state.opts as LinguiPluginOpts).linguiConfig),
           )
 
           const macroImports = getMacroImports(path)
@@ -238,11 +240,11 @@ export default function ({
                       process.env.NODE_ENV == "production" &&
                       !(state.opts as LinguiPluginOpts).extract,
                     stripMessageProp: shouldStripMessageProp(
-                      state.opts as LinguiPluginOpts
+                      state.opts as LinguiPluginOpts,
                     ),
                     isLinguiIdentifier: (node: Identifier, macro) =>
                       isLinguiIdentifier(path, node, macro),
-                  }
+                  },
                 )
 
                 let newNode: false | babelTypes.Node
@@ -264,14 +266,14 @@ export default function ({
                   | babelTypes.CallExpression
                   | babelTypes.TaggedTemplateExpression
                 >,
-                state: PluginPass
+                state: PluginPass,
               ) {
                 const macro = new MacroJs({
                   stripNonEssentialProps:
                     process.env.NODE_ENV == "production" &&
                     !(state.opts as LinguiPluginOpts).extract,
                   stripMessageProp: shouldStripMessageProp(
-                    state.opts as LinguiPluginOpts
+                    state.opts as LinguiPluginOpts,
                   ),
                   i18nImportName: getSymbolIdentifier(state, "i18n").name,
                   useLinguiImportName: getSymbolIdentifier(state, "useLingui")
@@ -293,7 +295,7 @@ export default function ({
 
                   if (macro.needsUseLinguiImport) {
                     addImport(macroImports, state, "useLingui").reference(
-                      newPath
+                      newPath,
                     )
 
                     // rebuild scope bindings if useLingui hook was used
@@ -308,7 +310,7 @@ export default function ({
                 }
               },
             } as Visitor<PluginPass>,
-            state
+            state,
           )
         },
         exit(path, state) {

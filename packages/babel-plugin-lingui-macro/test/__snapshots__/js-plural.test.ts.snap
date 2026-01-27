@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`Macro is used in expression assignment 1`] = `
 import { plural } from "@lingui/core/macro";
@@ -18,7 +18,7 @@ const a = _i18n._(
     values: {
       count: count,
     },
-  }
+  },
 );
 
 `;
@@ -45,7 +45,7 @@ _i18n._(
       0: users.length,
       someOtherExp: someOtherExp,
     },
-  }
+  },
 );
 
 `;
@@ -57,7 +57,7 @@ const a = plural(
   {
     one: \`# book\`,
     other: "# books",
-  }
+  },
 );
 
 ↓ ↓ ↓ ↓ ↓ ↓
@@ -71,7 +71,7 @@ const a = _i18n._(
     values: {
       count: getCount(),
     },
-  }
+  },
 );
 
 `;
@@ -94,7 +94,7 @@ const a = _i18n._(
     values: {
       count: getCount(),
     },
-  }
+  },
 );
 
 `;
@@ -117,7 +117,7 @@ const a = _i18n._(
     values: {
       count: getCount(),
     },
-  }
+  },
 );
 
 `;
@@ -142,7 +142,7 @@ _i18n._(
     values: {
       0: users.length,
     },
-  }
+  },
 );
 
 `;
@@ -165,7 +165,7 @@ const a = _i18n._(
     values: {
       count: count,
     },
-  }
+  },
 );
 
 `;

@@ -3,28 +3,33 @@ import path from "path"
 import { globSync } from "glob"
 import normalize from "normalize-path"
 
-import { LinguiConfigNormalized, OrderBy } from "@lingui/conf"
+import {
+  LinguiConfigNormalized,
+  MessageType,
+  OrderBy,
+  OrderByFn,
+} from "@lingui/conf"
 
-import { FormatterWrapper } from "./formats"
-import { CompiledCatalogNamespace } from "./compile"
+import { FormatterWrapper } from "./formats/index.js"
+import { CompiledCatalogNamespace } from "./compile.js"
 import {
   getTranslationsForCatalog,
   GetTranslationsOptions,
-} from "./catalog/getTranslationsForCatalog"
-import { mergeCatalog } from "./catalog/mergeCatalog"
+} from "./catalog/getTranslationsForCatalog.js"
+import { mergeCatalog } from "./catalog/mergeCatalog.js"
 import {
   extractFromFiles,
   extractFromFilesWithWorkerPool,
-} from "./catalog/extractFromFiles"
+} from "./catalog/extractFromFiles.js"
 import {
   isDirectory,
   makePathRegexSafe,
   normalizeRelativePath,
   replacePlaceholders,
   writeFile,
-} from "./utils"
-import { AllCatalogsType, CatalogType, ExtractedCatalogType } from "./types"
-import { ExtractWorkerPool } from "./extractWorkerPool"
+} from "./utils.js"
+import { AllCatalogsType, CatalogType, ExtractedCatalogType } from "./types.js"
+import { ExtractWorkerPool } from "./extractWorkerPool.js"
 
 const LOCALE = "{locale}"
 const LOCALE_SUFFIX_RE = /\{locale\}.*$/
@@ -33,14 +38,14 @@ export type MakeOptions = {
   files?: string[]
   clean: boolean
   overwrite: boolean
-  locale: string[]
-  orderBy?: OrderBy
+  locale?: string[]
+  orderBy: OrderBy
   workerPool?: ExtractWorkerPool
 }
 
 export type MakeTemplateOptions = {
   files?: string[]
-  orderBy?: OrderBy
+  orderBy: OrderBy
   workerPool?: ExtractWorkerPool
 }
 
@@ -64,11 +69,11 @@ export class Catalog {
   include: Array<string>
   exclude: Array<string>
   format: FormatterWrapper
-  templateFile?: string
+  templateFile: string
 
   constructor(
     { name, path, include, templatePath, format, exclude = [] }: CatalogProps,
-    public config: LinguiConfigNormalized
+    public config: LinguiConfigNormalized,
   ) {
     this.name = name
     this.path = normalizeRelativePath(path)
@@ -110,26 +115,26 @@ export class Catalog {
         catalog = order(options.orderBy, catalog)
 
         return [locale, catalog]
-      })
+      }),
     ) as AllCatalogsType
 
     const locales = options.locale ? options.locale : this.locales
     await Promise.all(
-      locales.map((locale) => this.write(locale, sortedCatalogs[locale]))
+      locales.map((locale) => this.write(locale, sortedCatalogs[locale]!)),
     )
 
     return sortedCatalogs
   }
 
   async makeTemplate(
-    options: MakeTemplateOptions
+    options: MakeTemplateOptions,
   ): Promise<CatalogType | false> {
     const catalog = await this.collect({
       files: options.files,
       workerPool: options.workerPool,
     })
     if (!catalog) return false
-    const sorted = order(options.orderBy, catalog as CatalogType)
+    const sorted = order(options.orderBy, catalog)
 
     await this.writeTemplate(sorted)
     return sorted
@@ -139,12 +144,12 @@ export class Catalog {
    * Collect messages from source paths. Return a raw message catalog as JSON.
    */
   async collect(
-    options: { files?: string[]; workerPool?: ExtractWorkerPool } = {}
+    options: { files?: string[]; workerPool?: ExtractWorkerPool } = {},
   ): Promise<ExtractedCatalogType | undefined> {
     let paths = this.sourcePaths
     if (options.files) {
       options.files = options.files.map((p) =>
-        makePathRegexSafe(normalize(p, false))
+        makePathRegexSafe(normalize(p, false)),
       )
 
       const regex = new RegExp(options.files.join("|"), "i")
@@ -155,7 +160,7 @@ export class Catalog {
       return await extractFromFilesWithWorkerPool(
         options.workerPool,
         paths,
-        this.config
+        this.config,
       )
     }
 
@@ -185,7 +190,7 @@ export class Catalog {
   merge(
     prevCatalogs: AllCatalogsType,
     nextCatalog: ExtractedCatalogType,
-    options: MergeOptions
+    options: MergeOptions,
   ) {
     return Object.fromEntries(
       Object.entries(prevCatalogs).map(([locale, prevCatalog]) => [
@@ -194,9 +199,9 @@ export class Catalog {
           prevCatalog,
           nextCatalog,
           this.config.sourceLocale === locale,
-          options
+          options,
         ),
-      ])
+      ]),
     )
   }
 
@@ -206,7 +211,7 @@ export class Catalog {
 
   async write(
     locale: string,
-    messages: CatalogType
+    messages: CatalogType,
   ): Promise<[created: boolean, filename: string]> {
     const filename = this.getFilename(locale)
 
@@ -218,10 +223,10 @@ export class Catalog {
 
   async writeTemplate(messages: CatalogType): Promise<void> {
     const filename = this.templateFile
-    await this.format.write(filename, messages, undefined)
+    await this.format.write(filename, messages)
   }
 
-  async read(locale: string): Promise<CatalogType> {
+  async read(locale: string): Promise<CatalogType | undefined> {
     return await this.format.read(this.getFilename(locale), locale)
   }
 
@@ -229,41 +234,44 @@ export class Catalog {
     const res: AllCatalogsType = {}
 
     await Promise.all(
-      locales.map(async (locale) => (res[locale] = await this.read(locale)))
+      locales.map(async (locale) => {
+        const catalog = await this.read(locale)
+
+        if (catalog) {
+          res[locale] = catalog
+        }
+      }),
     )
 
     // statement above will save locales in object in undetermined order
     // resort here to have keys order the same as in locales definition
     return this.locales.reduce<AllCatalogsType>((acc, locale: string) => {
-      acc[locale] = res[locale]
+      acc[locale] = res[locale]!
       return acc
     }, {})
   }
 
-  async readTemplate(): Promise<CatalogType> {
-    const filename = this.templateFile
-    return await this.format.read(filename, undefined)
+  async readTemplate(): Promise<CatalogType | undefined> {
+    return await this.format.read(this.templateFile, undefined)
   }
 
   get sourcePaths() {
-    const includeGlobs = this.include
-      .map((includePath) => {
-        const isDir = isDirectory(includePath)
-        /**
-         * glob library results from absolute patterns such as /foo/* are mounted onto the root setting using path.join.
-         * On windows, this will by default result in /foo/* matching C:\foo\bar.txt.
-         */
-        return isDir
-          ? normalize(
-              path.resolve(
-                process.cwd(),
-                includePath === "/" ? "" : includePath,
-                "**/*.*"
-              )
-            )
-          : includePath
-      })
-      .map(makePathRegexSafe)
+    const includeGlobs = this.include.map((includePath) => {
+      const isDir = isDirectory(includePath)
+      /**
+       * glob library results from absolute patterns such as /foo/* are mounted onto the root setting using path.join.
+       * On windows, this will by default result in /foo/* matching C:\foo\bar.txt.
+       */
+      return isDir
+        ? normalize(
+            path.resolve(
+              process.cwd(),
+              includePath === "/" ? "" : includePath,
+              "**/*.*",
+            ),
+          )
+        : includePath
+    })
 
     return globSync(includeGlobs, { ignore: this.exclude, mark: true })
   }
@@ -285,38 +293,49 @@ function getTemplatePath(ext: string, path: string) {
   return path.replace(LOCALE_SUFFIX_RE, "messages" + ext)
 }
 
-export function cleanObsolete<T extends ExtractedCatalogType>(messages: T): T {
+export function cleanObsolete<T extends CatalogType>(messages: T): T {
   return Object.fromEntries(
-    Object.entries(messages).filter(([, message]) => !message.obsolete)
+    Object.entries(messages).filter(([, message]) => !message.obsolete),
   ) as T
 }
 
-export function order<T extends ExtractedCatalogType>(
-  by: OrderBy,
-  catalog: T
-): T {
-  return {
-    messageId: orderByMessageId,
-    message: orderByMessage,
-    origin: orderByOrigin,
-  }[by](catalog)
+export function order<T extends CatalogType>(by: OrderBy, catalog: T): T {
+  const orderByFn =
+    typeof by === "function"
+      ? by
+      : {
+          messageId: orderByMessageId,
+          message: orderByMessage,
+          origin: orderByOrigin,
+        }[by]
+
+  return Object.keys(catalog)
+    .sort((a, b) => {
+      return orderByFn(
+        { messageId: a, entry: catalog[a]! },
+        { messageId: b, entry: catalog[b]! },
+      )
+    })
+    .reduce((acc, key) => {
+      ;(acc as any)[key] = catalog[key]
+      return acc
+    }, {} as T)
 }
 /**
  * Object keys are in the same order as they were created
  * https://stackoverflow.com/a/31102605/1535540
  */
-function orderByMessageId<T extends ExtractedCatalogType>(messages: T): T {
-  return Object.keys(messages)
-    .sort()
-    .reduce((acc, key) => {
-      ;(acc as any)[key] = messages[key]
-      return acc
-    }, {} as T)
+const orderByMessageId: OrderByFn = (a, b) => {
+  return a.messageId.localeCompare(b.messageId)
 }
 
-function orderByOrigin<T extends ExtractedCatalogType>(messages: T): T {
-  function getFirstOrigin(messageKey: string) {
-    const sortedOrigins = messages[messageKey].origin.sort((a, b) => {
+const orderByOrigin: OrderByFn = (a, b) => {
+  if (!a.entry.origin || !b.entry.origin) {
+    return 0
+  }
+
+  function getFirstOrigin(entry: MessageType) {
+    const sortedOrigins = entry.origin!.sort((a, b) => {
       if (a[0] < b[0]) return -1
       if (a[0] > b[0]) return 1
       return 0
@@ -324,30 +343,23 @@ function orderByOrigin<T extends ExtractedCatalogType>(messages: T): T {
     return sortedOrigins[0]
   }
 
-  return Object.keys(messages)
-    .sort((a, b) => {
-      const [aFile, aLineNumber] = getFirstOrigin(a)
-      const [bFile, bLineNumber] = getFirstOrigin(b)
+  const [aFile, aLineNumber] = getFirstOrigin(a.entry)!
+  const [bFile, bLineNumber] = getFirstOrigin(b.entry)!
 
-      if (aFile < bFile) return -1
-      if (aFile > bFile) return 1
+  if (aFile < bFile) return -1
+  if (aFile > bFile) return 1
 
-      if (aLineNumber < bLineNumber) return -1
-      if (aLineNumber > bLineNumber) return 1
+  if (aLineNumber! < bLineNumber!) return -1
+  if (aLineNumber! > bLineNumber!) return 1
 
-      return 0
-    })
-    .reduce((acc, key) => {
-      ;(acc as any)[key] = messages[key]
-      return acc
-    }, {} as T)
+  return 0
 }
 
 export async function writeCompiled(
   path: string,
   locale: string,
   compiledCatalog: string,
-  namespace?: CompiledCatalogNamespace
+  namespace?: CompiledCatalogNamespace,
 ) {
   let ext: string
   switch (namespace) {
@@ -367,21 +379,14 @@ export async function writeCompiled(
   return filename
 }
 
-export function orderByMessage<T extends ExtractedCatalogType>(messages: T): T {
+export const orderByMessage: OrderByFn = (a, b) => {
   // hardcoded en-US locale to have consistent sorting
   // @see https://github.com/lingui/js-lingui/pull/1808
   const collator = new Intl.Collator("en-US")
 
-  return Object.keys(messages)
-    .sort((a, b) => {
-      const aMsg = messages[a].message || ""
-      const bMsg = messages[b].message || ""
-      const aCtxt = messages[a].context || ""
-      const bCtxt = messages[b].context || ""
-      return collator.compare(aMsg, bMsg) || collator.compare(aCtxt, bCtxt)
-    })
-    .reduce((acc, key) => {
-      ;(acc as any)[key] = messages[key]
-      return acc
-    }, {} as T)
+  const aMsg = a.entry.message || ""
+  const bMsg = b.entry.message || ""
+  const aCtxt = a.entry.context || ""
+  const bCtxt = b.entry.context || ""
+  return collator.compare(aMsg, bMsg) || collator.compare(aCtxt, bCtxt)
 }

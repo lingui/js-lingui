@@ -1,10 +1,8 @@
 {
   "name": "@lingui/babel-plugin-lingui-macro",
-  "version": "5.7.0",
+  "version": "5.9.0",
   "description": "Babel plugin for transforming Lingui Macros",
   "main": "./dist/index.cjs",
-  "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
   "contributors": [
     {
       "name": "Timofei Iatsenko",
@@ -30,40 +28,13 @@
     "multilingual"
   ],
   "scripts": {
-    "build": "rimraf ./dist && unbuild",
-    "stub": "unbuild --stub"
+    "build": "unbuild",
+    "check-types": "tsc --noEmit"
   },
   "exports": {
-    ".": {
-      "require": {
-        "types": "./dist/index.d.cts",
-        "default": "./dist/index.cjs"
-      },
-      "import": {
-        "types": "./dist/index.d.mts",
-        "default": "./dist/index.mjs"
-      }
-    },
-    "./macro": {
-      "require": {
-        "types": "./dist/macro.d.cts",
-        "default": "./dist/macro.cjs"
-      },
-      "import": {
-        "types": "./dist/macro.d.mts",
-        "default": "./dist/macro.mjs"
-      }
-    },
-    "./ast": {
-      "require": {
-        "types": "./dist/ast.d.cts",
-        "default": "./dist/ast.cjs"
-      },
-      "import": {
-        "types": "./dist/ast.d.mts",
-        "default": "./dist/ast.mjs"
-      }
-    }
+    ".": "./dist/index.cjs",
+    "./macro": "./dist/macro.cjs",
+    "./ast": "./dist/ast.cjs"
   },
   "files": [
     "LICENSE",
@@ -86,9 +57,9 @@
     "@babel/core": "^7.20.12",
     "@babel/runtime": "^7.20.13",
     "@babel/types": "^7.20.7",
-    "@lingui/conf": "5.7.0",
-    "@lingui/core": "5.7.0",
-    "@lingui/message-utils": "5.7.0"
+    "@lingui/conf": "5.9.0",
+    "@lingui/core": "5.9.0",
+    "@lingui/message-utils": "5.9.0"
   },
   "peerDependencies": {
     "babel-plugin-macros": "2 || 3"
@@ -103,7 +74,11 @@
     "@babel/traverse": "^7.20.12",
     "@types/babel-plugin-macros": "^2.8.5",
     "babel-plugin-react-compiler": "^1.0.0",
-    "prettier": "2.8.3",
-    "unbuild": "2.0.0"
+    "prettier": "3.8.1",
+    "unbuild": "3.6.1",
+    "vitest": "4.0.18"
+  },
+  "unbuild": {
+    "declaration": true
   }
 }

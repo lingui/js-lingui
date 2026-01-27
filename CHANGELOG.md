@@ -3,6 +3,32 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.9.0](https://github.com/lingui/js-lingui/compare/v5.8.0...v5.9.0) (2026-01-23)
+
+### Bug Fixes
+
+* **jsx-macro:** skip unsupported attributes on Plural / Select ([#2407](https://github.com/lingui/js-lingui/issues/2407)) ([e63992d](https://github.com/lingui/js-lingui/commit/e63992dee2a0a9bc53e91944e7e5d0e6a7a177fc))
+* keep catalog extra from previous catalog ([#2399](https://github.com/lingui/js-lingui/issues/2399)) ([25cfdde](https://github.com/lingui/js-lingui/commit/25cfdde3b0c3d95697752a0e698bff9ede6d9a4e))
+
+### Features
+
+* **message-utils:** separate browser/node exports for generateMessageId ([#2401](https://github.com/lingui/js-lingui/issues/2401)) ([2afe02f](https://github.com/lingui/js-lingui/commit/2afe02f42cd7bb4bcaf586b28ed33cfcddb81772))
+
+# [5.8.0](https://github.com/lingui/js-lingui/compare/v5.7.0...v5.8.0) (2026-01-16)
+
+### Bug Fixes
+
+* **po-gettext:** revert readable ICU comment ([#2395](https://github.com/lingui/js-lingui/issues/2395)) ([0897ea9](https://github.com/lingui/js-lingui/commit/0897ea996b733622d2ff8b7531728f0628e6ff1e))
+
+### Features
+
+* allow passing custom orderBy function ([#2394](https://github.com/lingui/js-lingui/issues/2394)) ([7de6af5](https://github.com/lingui/js-lingui/commit/7de6af59a55ca3c8832bfdafdaafbc4c12079b78))
+* **po-format:** print source message as translation for explicit id ([#2390](https://github.com/lingui/js-lingui/issues/2390)) ([94efdc0](https://github.com/lingui/js-lingui/commit/94efdc05b62a3e4a296c582e9ee757a80e6aeea7))
+
+### Reverts
+
+* "fix: use makePathRegexSafe with globSync ([#2242](https://github.com/lingui/js-lingui/issues/2242))" ([#2396](https://github.com/lingui/js-lingui/issues/2396)) ([3c979fc](https://github.com/lingui/js-lingui/commit/3c979fc33c7395f2c4c4b45e573ab9a8998847b6))
+
 # [5.7.0](https://github.com/lingui/js-lingui/compare/v5.6.1...v5.7.0) (2025-12-12)
 
 ### Bug Fixes

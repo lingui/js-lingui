@@ -1,12 +1,12 @@
 import nodepath from "path"
-import { replacePlaceholders } from "../api/utils"
+import { replacePlaceholders } from "../api/utils.js"
 
 export function resolveCatalogPath(
   configOutput: string,
   entryPath: string,
   rootDir: string,
-  locale: string,
-  extension: string
+  locale: string | undefined,
+  extension: string,
 ) {
   const entryName = getEntryName(entryPath)
   const entryDir = nodepath.relative(rootDir, nodepath.dirname(entryPath))
@@ -16,7 +16,7 @@ export function resolveCatalogPath(
       entryName,
       entryDir,
       locale,
-    }) + extension
+    }) + extension,
   )
 }
 

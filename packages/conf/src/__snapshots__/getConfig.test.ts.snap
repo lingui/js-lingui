@@ -1,73 +1,69 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`getConfig default config and snapshots should return default config 1`] = `
+exports[`getConfig > default config and snapshots > should return default config 1`] = `
 {
-  catalogs: [
+  "catalogs": [
     {
-      exclude: [
-        */node_modules/*,
+      "exclude": [
+        "*/node_modules/*",
       ],
-      include: [
-        .,
+      "include": [
+        ".",
       ],
-      path: ./locale/{locale}/messages,
+      "path": "./locale/{locale}/messages",
     },
   ],
-  catalogsMergePath: ,
-  compileNamespace: cjs,
-  compilerBabelOptions: {
-    jsescOption: {
-      minimal: true,
+  "catalogsMergePath": "",
+  "compileNamespace": "cjs",
+  "compilerBabelOptions": {
+    "jsescOption": {
+      "minimal": true,
     },
-    minified: true,
+    "minified": true,
   },
-  extractorParserOptions: {
-    flow: false,
-    tsExperimentalDecorators: false,
+  "extractorParserOptions": {
+    "flow": false,
+    "tsExperimentalDecorators": false,
   },
-  fallbackLocales: {
-    en-gb: en,
+  "fallbackLocales": {
+    "en-gb": "en",
   },
-  format: po,
-  formatOptions: {
-    lineNumbers: true,
-    origins: true,
+  "format": "po",
+  "formatOptions": {
+    "lineNumbers": true,
+    "origins": true,
   },
-  locales: [
-    en-gb,
+  "locales": [
+    "en-gb",
   ],
-  macro: {
-    corePackage: [
-      @lingui/macro,
-      @lingui/core/macro,
+  "macro": {
+    "corePackage": [
+      "@lingui/macro",
+      "@lingui/core/macro",
     ],
-    jsxPackage: [
-      @lingui/macro,
-      @lingui/react/macro,
-    ],
-  },
-  orderBy: message,
-  pseudoLocale: ,
-  resolvedConfigPath: StringContaining .linguirc,
-  rootDir: .,
-  runtimeConfigModule: {
-    Trans: [
-      @lingui/react,
-      Trans,
-    ],
-    i18n: [
-      @lingui/core,
-      i18n,
-    ],
-    useLingui: [
-      @lingui/react,
-      useLingui,
+    "jsxPackage": [
+      "@lingui/macro",
+      "@lingui/react/macro",
     ],
   },
-  service: {
-    apiKey: ,
-    name: ,
+  "orderBy": "message",
+  "pseudoLocale": "",
+  "resolvedConfigPath": StringContaining ".linguirc",
+  "rootDir": ".",
+  "runtimeConfigModule": {
+    "Trans": [
+      "@lingui/react",
+      "Trans",
+    ],
+    "i18n": [
+      "@lingui/core",
+      "i18n",
+    ],
+    "useLingui": [
+      "@lingui/react",
+      "useLingui",
+    ],
   },
-  sourceLocale: en-gb,
+  "sourceLocale": "en-gb",
 }
 `;

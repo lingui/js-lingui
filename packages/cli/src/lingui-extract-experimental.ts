@@ -2,20 +2,21 @@ import { program } from "commander"
 
 import { getConfig, LinguiConfigNormalized } from "@lingui/conf"
 import nodepath from "path"
-import { getFormat } from "./api/formats"
+import { getFormat } from "./api/formats/index.js"
 import fs from "fs/promises"
 import normalizePath from "normalize-path"
 
-import { bundleSource } from "./extract-experimental/bundleSource"
-import { getEntryPoints } from "./extract-experimental/getEntryPoints"
+import { bundleSource } from "./extract-experimental/bundleSource.js"
+import { getEntryPoints } from "./extract-experimental/getEntryPoints.js"
 import pico from "picocolors"
 import { Pool, spawn, Worker } from "threads"
 import {
   resolveWorkersOptions,
   WorkersOptions,
-} from "./api/resolveWorkersOptions"
-import { ExtractWorkerFunction } from "./extract-experimental/workers/extractWorker"
-import { extractFromBundleAndWrite } from "./extract-experimental/extractFromBundleAndWrite"
+} from "./api/resolveWorkersOptions.js"
+import { ExtractWorkerFunction } from "./extract-experimental/workers/extractWorker.js"
+import { extractFromBundleAndWrite } from "./extract-experimental/extractFromBundleAndWrite.js"
+import esMain from "es-main"
 
 export type CliExtractTemplateOptions = {
   verbose?: boolean
@@ -29,15 +30,15 @@ export type CliExtractTemplateOptions = {
 
 export default async function command(
   linguiConfig: LinguiConfigNormalized,
-  options: CliExtractTemplateOptions
+  options: CliExtractTemplateOptions,
 ): Promise<boolean> {
   options.verbose && console.log("Extracting messages from source files…")
 
-  const config = linguiConfig.experimental?.extractor
+  const extractorConfig = linguiConfig.experimental?.extractor
 
-  if (!config) {
+  if (!extractorConfig) {
     throw new Error(
-      "The configuration for experimental extractor is empty. Please read the docs."
+      "The configuration for experimental extractor is empty. Please read the docs.",
     )
   }
 
@@ -48,8 +49,8 @@ export default async function command(
         "Experimental features are not covered by semver, and may cause unexpected or broken application behavior." +
           " Use at your own risk.",
         "",
-      ].join("\n")
-    )
+      ].join("\n"),
+    ),
   )
 
   // unfortunately we can't use os.tmpdir() in this case
@@ -65,18 +66,20 @@ export default async function command(
 
   const bundleResult = await bundleSource(
     linguiConfig,
-    getEntryPoints(config.entries),
+    extractorConfig,
+    getEntryPoints(extractorConfig.entries),
     tempDir,
-    linguiConfig.rootDir
+    linguiConfig.rootDir,
   )
   const stats: { entry: string; content: string }[] = []
 
   let commandSuccess = true
 
   if (options.workersOptions.poolSize) {
-    if (!linguiConfig.resolvedConfigPath) {
+    const resolvedConfigPath = linguiConfig.resolvedConfigPath
+    if (!resolvedConfigPath) {
       throw new Error(
-        "Multithreading is only supported when lingui config loaded from file system, not passed by API"
+        "Multithreading is only supported when lingui config loaded from file system, not passed by API",
       )
     }
 
@@ -86,35 +89,41 @@ export default async function command(
     const pool = Pool(
       () =>
         spawn<ExtractWorkerFunction>(
-          new Worker("./extract-experimental/workers/extractWorker")
+          new Worker(
+            process.env.NODE_ENV === "test"
+              ? "./extract-experimental/workers/extractWorkerWrapper.jiti.js"
+              : "./extract-experimental/workers/extractWorkerWrapper.prod.js",
+          ),
         ),
-      { size: options.workersOptions.poolSize }
+      { size: options.workersOptions.poolSize },
     )
 
     try {
-      for (const outFile of Object.keys(bundleResult.metafile.outputs)) {
-        const { entryPoint } = bundleResult.metafile.outputs[outFile]
+      for (const outFile of Object.keys(bundleResult.outputs)) {
+        const { entryPoint } = bundleResult.outputs[outFile]!
 
         pool.queue(async (extractFromBundleAndWrite) => {
-          const { success, stat } = await extractFromBundleAndWrite(
-            linguiConfig.resolvedConfigPath,
-            entryPoint,
+          const result = await extractFromBundleAndWrite(
+            resolvedConfigPath,
+            entryPoint!,
             outFile,
-            config.output,
-            options.template,
+            extractorConfig.output,
+            options.template || false,
             options.locales || linguiConfig.locales,
-            options.clean,
-            options.overwrite
+            options.clean || false,
+            options.overwrite || false,
           )
 
-          commandSuccess &&= success
+          commandSuccess &&= result.success
 
-          stats.push({
-            entry: normalizePath(
-              nodepath.relative(linguiConfig.rootDir, entryPoint)
-            ),
-            content: stat,
-          })
+          if (result.success) {
+            stats.push({
+              entry: normalizePath(
+                nodepath.relative(linguiConfig.rootDir, entryPoint!),
+              ),
+              content: result.stat,
+            })
+          }
         })
       }
 
@@ -126,32 +135,34 @@ export default async function command(
     const format = await getFormat(
       linguiConfig.format,
       linguiConfig.formatOptions,
-      linguiConfig.sourceLocale
+      linguiConfig.sourceLocale,
     )
 
-    for (const outFile of Object.keys(bundleResult.metafile.outputs)) {
-      const { entryPoint } = bundleResult.metafile.outputs[outFile]
+    for (const outFile of Object.keys(bundleResult.outputs)) {
+      const { entryPoint } = bundleResult.outputs[outFile]!
 
-      const { success, stat } = await extractFromBundleAndWrite({
-        entryPoint,
+      const result = await extractFromBundleAndWrite({
+        entryPoint: entryPoint!,
         bundleFile: outFile,
-        outputPattern: config.output,
+        outputPattern: extractorConfig.output,
         format,
         linguiConfig,
         locales: options.locales || linguiConfig.locales,
-        overwrite: options.overwrite,
-        clean: options.clean,
-        template: options.template,
+        overwrite: options.overwrite || false,
+        clean: options.clean || false,
+        template: options.template || false,
       })
 
-      commandSuccess &&= success
+      commandSuccess &&= result.success
 
-      stats.push({
-        entry: normalizePath(
-          nodepath.relative(linguiConfig.rootDir, entryPoint)
-        ),
-        content: stat,
-      })
+      if (result.success) {
+        stats.push({
+          entry: normalizePath(
+            nodepath.relative(linguiConfig.rootDir, entryPoint!),
+          ),
+          content: result.stat,
+        })
+      }
     }
   }
 
@@ -177,7 +188,7 @@ type CliArgs = {
   workers?: number
 }
 
-if (require.main === module) {
+if (esMain(import.meta)) {
   program
     .option("--config <path>", "Path to the config file")
     .option("--template", "Extract to template")
@@ -187,7 +198,7 @@ if (require.main === module) {
     .option("--verbose", "Verbose output")
     .option(
       "--workers <n>",
-      "Number of worker threads to use (default: CPU count - 1, capped at 8). Pass `--workers 1` to disable worker threads and run everything in a single process"
+      "Number of worker threads to use (default: CPU count - 1, capped at 8). Pass `--workers 1` to disable worker threads and run everything in a single process",
     )
     .parse(process.argv)
 

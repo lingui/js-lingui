@@ -8,7 +8,7 @@ import linguiExtractMessages from "@lingui/babel-plugin-extract-messages"
 
 import {
   ExtractorType,
-  LinguiConfig,
+  LinguiConfigNormalized,
   ExtractedMessage,
   ExtractorCtx,
 } from "@lingui/conf"
@@ -24,11 +24,11 @@ export const babelRe = new RegExp(
       .map((ext) => ext.slice(1))
       .join("|") +
     ")$",
-  "i"
+  "i",
 )
 
 const inlineSourceMapsRE = new RegExp(
-  /\/[/*][#@]\s+sourceMappingURL=data:application\/json;(?:charset:utf-8;)?base64,/i
+  /\/[/*][#@]\s+sourceMappingURL=data:application\/json;(?:charset:utf-8;)?base64,/i,
 )
 
 /**
@@ -50,7 +50,7 @@ async function createSourceMapper(code: string, sourceMaps?: any) {
     const { SourceMapConsumer } = await import("source-map")
     const { fromSource } = await import("convert-source-map")
 
-    const t = fromSource(code).toObject()
+    const t = fromSource(code)!.toObject()
 
     sourceMapsConsumer = await new SourceMapConsumer(t)
   }
@@ -71,10 +71,14 @@ async function createSourceMapper(code: string, sourceMaps?: any) {
 
       const mappedPosition = sourceMapsConsumer.originalPositionFor({
         line,
-        column,
+        column: column!,
       })
 
-      return [mappedPosition.source, mappedPosition.line, mappedPosition.column]
+      return [
+        mappedPosition.source!,
+        mappedPosition.line!,
+        mappedPosition.column!,
+      ]
     },
   }
 }
@@ -110,7 +114,7 @@ export async function extractFromFileWithBabel(
   onMessageExtracted: (msg: ExtractedMessage) => void,
   ctx: ExtractorCtx,
   parserOpts: ParserOptions,
-  skipMacroPlugin = false
+  skipMacroPlugin = false,
 ) {
   const mapper = await createSourceMapper(code, ctx?.sourceMaps)
 
@@ -144,7 +148,7 @@ export async function extractFromFileWithBabel(
           onMessageExtracted: (msg) => {
             return onMessageExtracted({
               ...msg,
-              origin: mapper.originalPositionFor(msg.origin),
+              origin: mapper.originalPositionFor(msg.origin!),
             })
           },
         } satisfies ExtractPluginOpts,
@@ -157,7 +161,7 @@ export async function extractFromFileWithBabel(
 
 export function getBabelParserOptions(
   filename: string,
-  parserOptions: LinguiConfig["extractorParserOptions"]
+  parserOptions: LinguiConfigNormalized["extractorParserOptions"],
 ) {
   // https://babeljs.io/docs/en/babel-parser#latest-ecmascript-features
   const parserPlugins: ParserPlugin[] = [

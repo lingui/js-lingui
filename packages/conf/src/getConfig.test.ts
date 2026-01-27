@@ -1,6 +1,6 @@
 import path from "path"
 import { getConfig } from "./getConfig"
-import { mockConsole } from "@lingui/jest-mocks"
+import { mockConsole } from "@lingui/test-utils"
 
 describe("getConfig", () => {
   const fixturesPath = path.resolve(__dirname, "fixtures")
@@ -123,7 +123,7 @@ describe("getConfig", () => {
 
         expect(exec).toThrow("No Lingui config found")
         expect(console.error).toBeCalledWith(
-          "Lingui was unable to find a config!\n"
+          "Lingui was unable to find a config!\n",
         )
         expect(console.error).toBeCalledWith(expect.stringContaining("Create"))
         expect(console.warn).not.toBeCalled()
@@ -139,7 +139,7 @@ describe("getConfig", () => {
 
         expect(exec).toThrow("No Lingui config found")
         expect(console.error).toBeCalledWith(
-          "Lingui was unable to find a config!\n"
+          "Lingui was unable to find a config!\n",
         )
         expect(console.warn).not.toBeCalled()
       })

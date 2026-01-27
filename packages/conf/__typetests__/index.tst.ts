@@ -54,7 +54,7 @@ expect({
         filename: string,
         code: string,
         onMessageExtracted: (msg: ExtractedMessage) => void,
-        ctx?: ExtractorCtx
+        ctx?: ExtractorCtx,
       ) => {},
     },
   ],

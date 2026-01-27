@@ -1,7 +1,7 @@
-import { getCatalogDependentFiles, getFormat } from "@lingui/cli/api"
+import { getCatalogDependentFiles, getFormat } from "../../api/index.js"
 import { makeConfig } from "@lingui/conf"
-import { Catalog } from "../catalog"
-import { FormatterWrapper } from "../formats"
+import { Catalog } from "../catalog.js"
+import { FormatterWrapper } from "../formats/index.js"
 import mockFs from "mock-fs"
 import * as process from "process"
 import os from "os"
@@ -38,18 +38,18 @@ describe("getCatalogDependentFiles", () => {
           default: "en",
         },
       },
-      { skipValidation: true }
+      { skipValidation: true },
     )
 
     const catalog = new Catalog(
       {
-        name: null,
+        name: undefined,
         path: "/src/locales/{locale}",
         include: ["src/"],
         exclude: [],
         format,
       },
-      config
+      config,
     )
 
     const actual = await getCatalogDependentFiles(catalog, "pt-PT")
@@ -85,18 +85,18 @@ describe("getCatalogDependentFiles", () => {
           default: "en",
         },
       },
-      { skipValidation: true }
+      { skipValidation: true },
     )
 
     const catalog = new Catalog(
       {
-        name: null,
+        name: undefined,
         path: "/src/locales/{locale}",
         include: ["src/"],
         exclude: [],
         format,
       },
-      config
+      config,
     )
 
     const actual = await getCatalogDependentFiles(catalog, "en")
@@ -130,18 +130,18 @@ describe("getCatalogDependentFiles", () => {
           default: "en",
         },
       },
-      { skipValidation: true }
+      { skipValidation: true },
     )
 
     const catalog = new Catalog(
       {
-        name: null,
+        name: undefined,
         path: "/src/locales/{locale}",
         include: ["src/"],
         exclude: [],
         format,
       },
-      config
+      config,
     )
 
     const actual = await getCatalogDependentFiles(catalog, "pt-PT")
@@ -181,18 +181,18 @@ describe("getCatalogDependentFiles", () => {
           default: "en",
         },
       },
-      { skipValidation: true }
+      { skipValidation: true },
     )
 
     const catalog = new Catalog(
       {
-        name: null,
+        name: undefined,
         path: "./src/locales/{locale}",
         include: ["src/"],
         exclude: [],
         format,
       },
-      config
+      config,
     )
 
     const actual = await getCatalogDependentFiles(catalog, "pt-PT")

@@ -1,5 +1,7 @@
+import path from "path"
+import { getConfig } from "./getConfig"
 import { makeConfig } from "./makeConfig"
-import { mockConsole } from "@lingui/jest-mocks"
+import { mockConsole, getConsoleMockCalls } from "@lingui/test-utils"
 import { defineConfig } from "./defineConfig"
 import { LinguiConfig } from "./types"
 
@@ -12,13 +14,69 @@ describe("@lingui/conf", () => {
     })
   })
 
+  it("should return default config", () => {
+    mockConsole((console) => {
+      const config = getConfig({
+        cwd: path.resolve(import.meta.dirname, path.join("fixtures", "valid")),
+      })
+      expect(console.error).not.toBeCalled()
+      expect(console.warn).not.toBeCalled()
+      expect(config).toMatchSnapshot({
+        resolvedConfigPath: expect.stringContaining("lingui.config.js"),
+      })
+    })
+  })
+
+  it("should throw error if config is not discovered", () => {
+    mockConsole((console) => {
+      const exec = () =>
+        getConfig({
+          cwd: path.resolve(import.meta.dirname, path.join("fixtures")),
+        })
+
+      expect(exec).toThrow()
+      expect(getConsoleMockCalls(console.error)).toMatchSnapshot()
+
+      expect(console.warn).not.toBeCalled()
+    })
+  })
+
   it("should validate `locale`", () => {
     mockConsole((console) => {
       makeConfig({})
       expect(console.warn).not.toBeCalled()
       expect(console.error).toBeCalledWith(
-        expect.stringContaining("No locales defined")
+        expect.stringContaining("No locales defined"),
       )
+    })
+  })
+
+  describe("config file", () => {
+    it("searches for a lingui.config.js config file", () => {
+      const config = getConfig({
+        cwd: path.resolve(import.meta.dirname, path.join("fixtures", "valid")),
+      })
+      expect(config.locales).toEqual(["en", "fr"])
+    })
+
+    it("allows specific config file to be loaded with configPath parameter", () => {
+      const config = getConfig({
+        configPath: path.resolve(
+          import.meta.dirname,
+          path.join("fixtures", "valid", "custom.config.js"),
+        ),
+      })
+      expect(config.locales).toEqual(["cs", "sk"])
+    })
+
+    it("loads TypeScript config", () => {
+      const config = getConfig({
+        configPath: path.resolve(
+          import.meta.dirname,
+          path.join("fixtures", "valid", "custom.config.ts"),
+        ),
+      })
+      expect(config.locales).toEqual(["pl"])
     })
   })
 

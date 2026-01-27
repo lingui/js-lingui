@@ -1,14 +1,22 @@
 import type { ExtractedMessage, LinguiConfigNormalized } from "@lingui/conf"
 import pico from "picocolors"
 import path from "path"
-import extract from "../extractors"
-import { ExtractedCatalogType, MessageOrigin } from "../types"
-import { prettyOrigin } from "../utils"
-import { ExtractWorkerPool } from "../extractWorkerPool"
+import extract from "../extractors/index.js"
+import { ExtractedCatalogType, MessageOrigin } from "../types.js"
+import { prettyOrigin } from "../utils.js"
+import { ExtractWorkerPool } from "../extractWorkerPool.js"
+
+function mergeOrigins(prev: MessageOrigin[], next: MessageOrigin | undefined) {
+  if (!next) {
+    return prev
+  }
+
+  return [...prev, next].sort((a, b) => a[0].localeCompare(b[0]))
+}
 
 function mergePlaceholders(
   prev: Record<string, string[]>,
-  next: Record<string, string>
+  next: Record<string, string> | undefined,
 ) {
   const res = { ...prev }
 
@@ -32,7 +40,7 @@ function mergePlaceholders(
 
 export async function extractFromFiles(
   paths: string[],
-  config: LinguiConfigNormalized
+  config: LinguiConfigNormalized,
 ) {
   const messages: ExtractedCatalogType = {}
 
@@ -44,7 +52,7 @@ export async function extractFromFiles(
       (next: ExtractedMessage) => {
         mergeExtractedMessage(next, messages, config)
       },
-      config
+      config,
     )
     catalogSuccess &&= fileSuccess
   }
@@ -57,7 +65,7 @@ export async function extractFromFiles(
 export function mergeExtractedMessage(
   next: ExtractedMessage,
   messages: ExtractedCatalogType,
-  config: LinguiConfigNormalized
+  config: LinguiConfigNormalized,
 ) {
   if (!messages[next.id]) {
     messages[next.id] = {
@@ -69,22 +77,23 @@ export function mergeExtractedMessage(
     }
   }
 
-  const prev = messages[next.id]
+  const prev = messages[next.id]!
 
   // there might be a case when filename was not mapped from sourcemaps
-  const filename = next.origin[0]
-    ? path.relative(config.rootDir, next.origin[0]).replace(/\\/g, "/")
-    : ""
-
-  const origin: MessageOrigin = [filename, next.origin[1]]
+  const nextOrigin: MessageOrigin | undefined = next.origin
+    ? [
+        path.relative(config.rootDir, next.origin[0]).replace(/\\/g, "/"),
+        next.origin[1],
+      ]
+    : undefined
 
   if (prev.message && next.message && prev.message !== next.message) {
     throw new Error(
       `Encountered different default translations for message ${pico.yellow(
-        next.id
+        next.id,
       )}` +
         `\n${pico.yellow(prettyOrigin(prev.origin))} ${prev.message}` +
-        `\n${pico.yellow(prettyOrigin([origin]))} ${next.message}`
+        `\n${pico.yellow(prettyOrigin([nextOrigin || [""]]))} ${next.message}`,
     )
   }
 
@@ -94,9 +103,7 @@ export function mergeExtractedMessage(
     comments: next.comment
       ? [...prev.comments, next.comment].sort()
       : prev.comments,
-    origin: (
-      [...prev.origin, [filename, next.origin[1]]] as MessageOrigin[]
-    ).sort((a, b) => a[0].localeCompare(b[0])),
+    origin: mergeOrigins(prev.origin, nextOrigin),
     placeholders: mergePlaceholders(prev.placeholders, next.placeholders),
   }
 }
@@ -104,22 +111,24 @@ export function mergeExtractedMessage(
 export async function extractFromFilesWithWorkerPool(
   workerPool: ExtractWorkerPool,
   paths: string[],
-  config: LinguiConfigNormalized
-): Promise<ExtractedCatalogType> {
+  config: LinguiConfigNormalized,
+): Promise<ExtractedCatalogType | undefined> {
   const messages: ExtractedCatalogType = {}
 
   let catalogSuccess = true
 
-  if (!config.resolvedConfigPath) {
+  const resolvedConfigPath = config.resolvedConfigPath
+
+  if (!resolvedConfigPath) {
     throw new Error(
-      "Multithreading is only supported when lingui config loaded from file system, not passed by API"
+      "Multithreading is only supported when lingui config loaded from file system, not passed by API",
     )
   }
 
   await Promise.all(
     paths.map((filename) =>
       workerPool.queue(async (worker) => {
-        const result = await worker(filename, config.resolvedConfigPath)
+        const result = await worker(filename, resolvedConfigPath)
 
         if (!result.success) {
           catalogSuccess = false
@@ -128,8 +137,8 @@ export async function extractFromFilesWithWorkerPool(
             mergeExtractedMessage(message, messages, config)
           })
         }
-      })
-    )
+      }),
+    ),
   )
 
   if (!catalogSuccess) return undefined

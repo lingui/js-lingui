@@ -1,11 +1,10 @@
 {
   "name": "@lingui/core",
-  "version": "5.7.0",
+  "version": "5.9.0",
   "sideEffects": false,
   "description": "I18n tools for javascript",
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
+  "main": "./dist/index.mjs",
+  "type": "module",
   "author": {
     "name": "Tomáš Ehrlich",
     "email": "tomas.ehrlich@gmail.com"
@@ -22,7 +21,7 @@
   ],
   "scripts": {
     "build": "unbuild",
-    "stub": "unbuild --stub"
+    "check-types": "tsc --noEmit"
   },
   "homepage": "https://lingui.dev",
   "repository": {
@@ -37,20 +36,8 @@
     "node": ">=20.0.0"
   },
   "exports": {
-    ".": {
-      "require": {
-        "types": "./dist/index.d.cts",
-        "default": "./dist/index.cjs"
-      },
-      "import": {
-        "types": "./dist/index.d.mts",
-        "default": "./dist/index.mjs"
-      }
-    },
-    "./macro": {
-      "types": "./macro/index.d.ts",
-      "default": "./macro/index.js"
-    },
+    ".": "./dist/index.mjs",
+    "./macro": "./macro/index.cjs",
     "./package.json": "./package.json"
   },
   "files": [
@@ -62,14 +49,15 @@
   ],
   "dependencies": {
     "@babel/runtime": "^7.20.13",
-    "@lingui/message-utils": "5.7.0"
+    "@lingui/message-utils": "5.9.0"
   },
   "devDependencies": {
-    "@lingui/jest-mocks": "*",
-    "unbuild": "2.0.0"
+    "@lingui/test-utils": "workspace:*",
+    "unbuild": "3.6.1",
+    "vitest": "4.0.18"
   },
   "peerDependencies": {
-    "@lingui/babel-plugin-lingui-macro": "5.7.0",
+    "@lingui/babel-plugin-lingui-macro": "5.9.0",
     "babel-plugin-macros": "2 || 3"
   },
   "peerDependenciesMeta": {

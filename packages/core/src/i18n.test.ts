@@ -1,5 +1,5 @@
 import { setupI18n } from "./i18n"
-import { mockConsole, mockEnv } from "@lingui/jest-mocks"
+import { mockConsole, mockEnv } from "@lingui/test-utils"
 import { compileMessage } from "@lingui/message-utils/compileMessage"
 
 describe("I18n", () => {
@@ -7,7 +7,7 @@ describe("I18n", () => {
     it("should emit event", () => {
       const i18n = setupI18n()
 
-      const cbChange = jest.fn()
+      const cbChange = vi.fn()
       i18n.on("change", cbChange)
       i18n.load("en", { msg: "Message" })
       expect(cbChange).toBeCalled()
@@ -66,7 +66,7 @@ describe("I18n", () => {
         },
       })
 
-      const cbChange = jest.fn()
+      const cbChange = vi.fn()
       i18n.on("change", cbChange)
       i18n.activate("en")
       expect(cbChange).toBeCalled()
@@ -117,12 +117,12 @@ describe("I18n", () => {
       mockConsole((console) => {
         i18n.activate("xyz")
         expect(console.warn).toBeCalledWith(
-          'Messages for locale "xyz" not loaded.'
+          'Messages for locale "xyz" not loaded.',
         )
       })
 
       mockEnv("production", () => {
-        jest.resetModules()
+        vi.resetModules()
         mockConsole((console) => {
           const { setupI18n } = require("@lingui/core")
           const i18n = setupI18n()
@@ -137,7 +137,7 @@ describe("I18n", () => {
     it("should set locale and messages", () => {
       const i18n = setupI18n()
 
-      const cbChange = jest.fn()
+      const cbChange = vi.fn()
       i18n.on("change", cbChange)
 
       i18n.loadAndActivate({
@@ -203,7 +203,7 @@ describe("I18n", () => {
         id: "My name is {name}",
         message: "Je m'appelle {name}",
         values: { name: "Fred" },
-      })
+      }),
     ).toEqual("Je m'appelle Fred")
 
     // alias
@@ -214,13 +214,13 @@ describe("I18n", () => {
       i18n._({
         id: "My name is {name}",
         message: "Je m'appelle {name}",
-      })
+      }),
     ).toEqual("Je m'appelle ")
 
     // Untranslated message
     expect(i18n._("Missing message")).toEqual("Missing message")
     expect(i18n._({ id: "missing", message: "Missing message" })).toEqual(
-      "Missing message"
+      "Missing message",
     )
     expect(i18n._("Missing {name}", { name: "Fred" })).toEqual("Missing Fred")
     expect(
@@ -229,8 +229,8 @@ describe("I18n", () => {
         { name: "Fred" },
         {
           message: "Missing {name}",
-        }
-      )
+        },
+      ),
     ).toEqual("Missing Fred")
   })
 
@@ -259,7 +259,7 @@ describe("I18n", () => {
       i18n._({
         id: "My ''name'' is '{name}'",
         message: "Mi ''nombre'' es '{name}'",
-      })
+      }),
     ).toEqual("Mi 'nombre' es {name}")
   })
 
@@ -276,7 +276,7 @@ describe("I18n", () => {
         id: "msg",
         /* note the space at the end */
         message: " Hello ",
-      })
+      }),
     ).toEqual(" Hello ")
   })
 
@@ -294,7 +294,7 @@ describe("I18n", () => {
       })
 
       expect(i18n._("My name is {name}", { name: "Fred" })).toEqual(
-        "Je m'appelle {name}"
+        "Je m'appelle {name}",
       )
     })
   })
@@ -313,7 +313,7 @@ describe("I18n", () => {
       })
 
       expect(i18n._("My name is {name}", { name: "Fred" })).toEqual(
-        "Je m'appelle Fred"
+        "Je m'appelle Fred",
       )
     })
   })
@@ -331,7 +331,7 @@ describe("I18n", () => {
     })
 
     expect(i18n._("My name is {name}", { name: "Fred" })).toEqual(
-      "Je m'appelle {name}"
+      "Je m'appelle {name}",
     )
   })
 
@@ -350,7 +350,7 @@ describe("I18n", () => {
 
       i18n.setMessagesCompiler(compileMessage)
       expect(i18n._("My name is {name}", { name: "Fred" })).toEqual(
-        "Je m'appelle Fred"
+        "Je m'appelle Fred",
       )
     })
   })
@@ -381,7 +381,7 @@ describe("I18n", () => {
       messages: { en: { exists: "exists" } },
     })
 
-    const handler = jest.fn()
+    const handler = vi.fn()
     i18n.on("missing", handler)
     i18n._("exists")
     expect(handler).toHaveBeenCalledTimes(0)
@@ -401,7 +401,7 @@ describe("I18n", () => {
       messages: { en: {} },
     })
 
-    const handler = jest.fn()
+    const handler = vi.fn()
     i18n.on("missing", handler)
     // @ts-expect-error 'id' should be of 'MessageDescriptor' or 'string' type.
     i18n._()
@@ -424,7 +424,7 @@ describe("I18n", () => {
     })
 
     it("._ should call a function with message ID of missing translation", () => {
-      const missing = jest.fn((locale, id) => id.split("").reverse().join(""))
+      const missing = vi.fn((locale, id) => id.split("").reverse().join(""))
       const i18n = setupI18n({
         locale: "en",
         messages: {
@@ -459,7 +459,7 @@ describe("I18n", () => {
     expect(i18n._("Hello\\x20World")).toEqual("Hello World")
     expect(i18n._("Tab\\x09separated")).toEqual("Tab\tseparated")
     expect(i18n._("Mixed\\u0020\\x41nd\\u0020escaped")).toEqual(
-      "Mixed And escaped"
+      "Mixed And escaped",
     )
   })
 
@@ -467,12 +467,12 @@ describe("I18n", () => {
     const i18n = setupI18n({})
     expect(() =>
       i18n._(
-        "Text {0, plural, offset:1 =0 {No books} =1 {1 book} other {# books}}"
-      )
+        "Text {0, plural, offset:1 =0 {No books} =1 {1 book} other {# books}}",
+      ),
     ).toThrowErrorMatchingInlineSnapshot(`
-      "Lingui: Attempted to call a translation function without setting a locale.
+      [Error: Lingui: Attempted to call a translation function without setting a locale.
       Make sure to call \`i18n.activate(locale)\` before using Lingui functions.
-      This issue may also occur due to a race condition in your initialization logic."
+      This issue may also occur due to a race condition in your initialization logic.]
     `)
   })
 
@@ -488,7 +488,7 @@ describe("I18n", () => {
       expect(
         i18n._("It starts on {someDate, date, short}", {
           someDate: date,
-        })
+        }),
       ).toMatchInlineSnapshot(`"It starts on 06/12/2014"`)
     })
 
@@ -496,7 +496,7 @@ describe("I18n", () => {
       expect(
         i18n._("It starts on {someDate, date, full}", {
           someDate: date,
-        })
+        }),
       ).toMatchInlineSnapshot(`"It starts on samedi 6 décembre 2014"`)
     })
 
@@ -504,7 +504,7 @@ describe("I18n", () => {
       expect(
         i18n._("It starts on {someDate, date, long}", {
           someDate: date,
-        })
+        }),
       ).toMatchInlineSnapshot(`"It starts on 6 décembre 2014"`)
     })
 
@@ -512,7 +512,7 @@ describe("I18n", () => {
       expect(
         i18n._("It starts on {someDate, date, default}", {
           someDate: date,
-        })
+        }),
       ).toMatchInlineSnapshot(`"It starts on 6 déc. 2014"`)
     })
 
@@ -520,7 +520,7 @@ describe("I18n", () => {
       expect(
         i18n._("It starts on {someDate, date}", {
           someDate: date,
-        })
+        }),
       ).toMatchInlineSnapshot(`"It starts on 6 déc. 2014"`)
     })
 
@@ -537,8 +537,8 @@ describe("I18n", () => {
                 day: "numeric",
               },
             },
-          }
-        )
+          },
+        ),
       ).toMatchInlineSnapshot(`"It starts on 6"`)
     })
 
@@ -546,7 +546,7 @@ describe("I18n", () => {
       expect(
         i18n._("It starts on {someDate, date, ::GrMMMdd}", {
           someDate: date,
-        })
+        }),
       ).toMatchInlineSnapshot(`"It starts on 06 déc. 2014 ap. J.-C."`)
     })
 
@@ -561,7 +561,7 @@ describe("I18n", () => {
       expect(
         i18n._(msg, {
           someDate: date,
-        })
+        }),
       ).toMatchInlineSnapshot(`"It starts on 6 décembre 2014"`)
 
       i18n.activate("pl")
@@ -569,7 +569,7 @@ describe("I18n", () => {
       expect(
         i18n._(msg, {
           someDate: date,
-        })
+        }),
       ).toMatchInlineSnapshot(`"It starts on 6 grudnia 2014"`)
     })
   })
@@ -585,7 +585,7 @@ describe("I18n", () => {
       expect(
         i18n._("It starts on {someDate, time, short}", {
           someDate: date,
-        })
+        }),
       ).toMatchInlineSnapshot(`"It starts on 17:40"`)
     })
 
@@ -593,7 +593,7 @@ describe("I18n", () => {
       expect(
         i18n._("It starts on {someDate, time, full}", {
           someDate: date,
-        })
+        }),
       ).toMatchInlineSnapshot(`"It starts on 17:40:00 UTC"`)
     })
 
@@ -601,7 +601,7 @@ describe("I18n", () => {
       expect(
         i18n._("It starts on {someDate, time, long}", {
           someDate: date,
-        })
+        }),
       ).toMatchInlineSnapshot(`"It starts on 17:40:00 UTC"`)
     })
 
@@ -609,7 +609,7 @@ describe("I18n", () => {
       expect(
         i18n._("It starts on {someDate, time, default}", {
           someDate: date,
-        })
+        }),
       ).toMatchInlineSnapshot(`"It starts on 17:40:00"`)
     })
 
@@ -617,7 +617,7 @@ describe("I18n", () => {
       expect(
         i18n._("It starts on {someDate, time}", {
           someDate: date,
-        })
+        }),
       ).toMatchInlineSnapshot(`"It starts on 17:40:00"`)
     })
 
@@ -634,8 +634,8 @@ describe("I18n", () => {
                 hour: "numeric",
               },
             },
-          }
-        )
+          },
+        ),
       ).toMatchInlineSnapshot(`"It starts on 17 h"`)
     })
 
@@ -650,7 +650,7 @@ describe("I18n", () => {
       expect(
         i18n._(msg, {
           someDate: date,
-        })
+        }),
       ).toMatchInlineSnapshot(`"It starts on 17:40:00 UTC"`)
 
       i18n.activate("en-US")
@@ -658,7 +658,7 @@ describe("I18n", () => {
       expect(
         i18n._(msg, {
           someDate: date,
-        })
+        }),
       ).toMatchInlineSnapshot(`"It starts on 5:40:00 PM UTC"`)
     })
   })

@@ -335,7 +335,7 @@ macroTester({
               Trans: ["@my/lingui", "myTrans"],
             },
           },
-          { skipValidation: true }
+          { skipValidation: true },
         ),
       },
       code: `
@@ -352,7 +352,7 @@ macroTester({
               jsxPackage: ["@my-lingui/macro"],
             },
           },
-          { skipValidation: true }
+          { skipValidation: true },
         ),
       },
       skipBabelMacroTest: true,

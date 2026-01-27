@@ -1,0 +1,71 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`@lingui/conf > should return default config 1`] = `
+{
+  "catalogs": [
+    {
+      "include": [
+        "/Users/y.i.slepukhin/Code/Pesonal/js-lingui/packages/conf/src/fixtures/valid/src",
+      ],
+      "path": "/Users/y.i.slepukhin/Code/Pesonal/js-lingui/packages/conf/src/fixtures/valid/locale/{locale}/messages",
+    },
+  ],
+  "catalogsMergePath": "",
+  "compileNamespace": "cjs",
+  "compilerBabelOptions": {
+    "jsescOption": {
+      "minimal": true,
+    },
+    "minified": true,
+  },
+  "extractorParserOptions": {
+    "flow": false,
+    "tsExperimentalDecorators": false,
+  },
+  "fallbackLocales": {},
+  "format": "po",
+  "formatOptions": {
+    "lineNumbers": true,
+    "origins": true,
+  },
+  "locales": [
+    "en",
+    "fr",
+  ],
+  "macro": {
+    "corePackage": [
+      "@lingui/macro",
+      "@lingui/core/macro",
+    ],
+    "jsxPackage": [
+      "@lingui/macro",
+      "@lingui/react/macro",
+    ],
+  },
+  "orderBy": "message",
+  "pseudoLocale": "",
+  "resolvedConfigPath": StringContaining "lingui.config.js",
+  "rootDir": "/Users/y.i.slepukhin/Code/Pesonal/js-lingui/packages/conf/src/fixtures/valid",
+  "runtimeConfigModule": {
+    "Trans": [
+      "@lingui/react",
+      "Trans",
+    ],
+    "i18n": [
+      "@lingui/core",
+      "i18n",
+    ],
+    "useLingui": [
+      "@lingui/react",
+      "useLingui",
+    ],
+  },
+  "sourceLocale": "en",
+}
+`;
+
+exports[`@lingui/conf > should throw error if config is not discovered 1`] = `
+"Lingui was unable to find a config!
+
+Create [1m'lingui.config.js'[22m file with LinguiJS configuration in root of your project (next to package.json). See [4mhttps://lingui.dev/ref/conf[24m"
+`;

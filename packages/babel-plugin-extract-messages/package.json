@@ -1,10 +1,8 @@
 {
   "name": "@lingui/babel-plugin-extract-messages",
-  "version": "5.7.0",
+  "version": "5.9.0",
   "description": "Babel plugin for collecting messages from source code for internationalization",
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
+  "type": "module",
   "author": {
     "name": "Tomáš Ehrlich",
     "email": "tomas.ehrlich@gmail.com"
@@ -21,14 +19,17 @@
     "multilingual"
   ],
   "scripts": {
-    "build": "rimraf ./dist && unbuild",
-    "stub": "unbuild --stub"
+    "build": "unbuild",
+    "check-types": "tsc --noEmit"
   },
   "files": [
     "LICENSE",
     "README.md",
     "dist/"
   ],
+  "exports": {
+    ".": "./dist/index.mjs"
+  },
   "homepage": "https://lingui.dev",
   "repository": {
     "type": "git",
@@ -46,7 +47,11 @@
     "@babel/traverse": "^7.20.12",
     "@babel/types": "^7.20.7",
     "@lingui/babel-plugin-lingui-macro": "workspace:*",
-    "@lingui/jest-mocks": "workspace:*",
-    "unbuild": "2.0.0"
+    "@lingui/test-utils": "workspace:*",
+    "unbuild": "3.6.1",
+    "vitest": "4.0.18"
+  },
+  "unbuild": {
+    "declaration": true
   }
 }

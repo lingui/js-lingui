@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`#1 1`] = `
 import { Plural } from "@lingui/react/macro";
@@ -188,6 +188,44 @@ import { Trans as _Trans } from "@lingui/react";
     ...{
       id: "EMgKyP",
       message: "{count, plural, one {...} other {...}}",
+      values: {
+        count: count,
+      },
+    }
+  }
+/>;
+
+`;
+
+exports[`Should pick only related attributes and pass thru other 1`] = `
+import { Plural } from "@lingui/react/macro";
+<Plural
+  comment="Comment for translator"
+  context="translation context"
+  id="custom.id"
+  render={() => {}}
+  value={count}
+  offset="1"
+  _0="Zero items"
+  few={"few value"}
+  other={"other value"}
+  data-sentry-source-file="file.tsx"
+/>;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { Trans as _Trans } from "@lingui/react";
+<_Trans
+  render={() => {}}
+  data-sentry-source-file="file.tsx"
+  {
+    /*i18n*/
+    ...{
+      id: "custom.id",
+      message:
+        "{count, plural, offset:1 =0 {Zero items} few {few value} other {other value}}",
+      comment: "Comment for translator",
+      context: "translation context",
       values: {
         count: count,
       },

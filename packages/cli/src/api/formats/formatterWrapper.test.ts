@@ -1,6 +1,7 @@
-import { FormatterWrapper } from "./formatterWrapper"
+import { FormatterWrapper } from "./formatterWrapper.js"
 import mockFs from "mock-fs"
 import fs from "fs"
+import { CatalogType } from "@lingui/conf"
 
 describe("FormatterWrapper", () => {
   it("should return template and catalog extension", () => {
@@ -11,7 +12,7 @@ describe("FormatterWrapper", () => {
         catalogExtension: ".po",
         templateExtension: ".pot",
       },
-      "en"
+      "en",
     )
 
     expect(wrapper.getCatalogExtension()).toBe(".po")
@@ -23,9 +24,9 @@ describe("FormatterWrapper", () => {
         serialize: () => "",
         parse: () => ({}),
         catalogExtension: ".po",
-        templateExtension: null,
+        templateExtension: undefined,
       },
-      "en"
+      "en",
     )
 
     expect(wrapper.getCatalogExtension()).toBe(".po")
@@ -41,18 +42,18 @@ describe("FormatterWrapper", () => {
           catalogExtension: ".po",
           templateExtension: ".pot",
         },
-        "en"
+        "en",
       )
 
       mockFs({})
 
       const actual = await format.read("locale/en/messages.json", "en")
       mockFs.restore()
-      expect(actual).toBeNull()
+      expect(actual).toBeUndefined()
     })
 
     it("should read file from FS and parse using provided formatter", async () => {
-      const parseMock = jest
+      const parseMock = vi
         .fn()
         .mockImplementation((content: string) => content.split(",") as any)
       const format = new FormatterWrapper(
@@ -62,7 +63,7 @@ describe("FormatterWrapper", () => {
           catalogExtension: ".po",
           templateExtension: ".pot",
         },
-        "en"
+        "en",
       )
 
       mockFs({
@@ -94,7 +95,7 @@ describe("FormatterWrapper", () => {
           catalogExtension: ".po",
           templateExtension: ".pot",
         },
-        "en"
+        "en",
       )
 
       mockFs({
@@ -120,12 +121,12 @@ describe("FormatterWrapper", () => {
           catalogExtension: ".po",
           templateExtension: ".pot",
         },
-        "en"
+        "en",
       )
 
       mockFs({})
 
-      const catalog = {
+      const catalog: CatalogType = {
         static: {
           translation: "Static message",
         },
@@ -136,12 +137,12 @@ describe("FormatterWrapper", () => {
       const content = fs.readFileSync(filename).toString()
       mockFs.restore()
       expect(content).toMatchInlineSnapshot(
-        `{"static":{"translation":"Static message"}}`
+        `{"static":{"translation":"Static message"}}`,
       )
     })
 
     it("should pass context to the formatter", async () => {
-      const serializeMock = jest
+      const serializeMock = vi
         .fn()
         .mockImplementation((catalog) => JSON.stringify(catalog))
 
@@ -152,14 +153,14 @@ describe("FormatterWrapper", () => {
           catalogExtension: ".po",
           templateExtension: ".pot",
         },
-        "en"
+        "en",
       )
 
       mockFs({
         "messages.json": `{"existing":{"translation":"Existing message"}}`,
       })
 
-      const catalog = {
+      const catalog: CatalogType = {
         static: {
           translation: "Static message",
         },
@@ -186,7 +187,7 @@ describe("FormatterWrapper", () => {
         ]
       `)
       expect(content).toMatchInlineSnapshot(
-        `{"static":{"translation":"Static message"}}`
+        `{"static":{"translation":"Static message"}}`,
       )
     })
 
@@ -198,10 +199,10 @@ describe("FormatterWrapper", () => {
           catalogExtension: ".po",
           templateExtension: ".pot",
         },
-        "en"
+        "en",
       )
 
-      const catalog = {
+      const catalog: CatalogType = {
         static: {
           translation: "Static message",
         },

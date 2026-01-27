@@ -1,7 +1,7 @@
 import { FallbackLocales, LinguiConfig, LinguiConfigNormalized } from "../types"
 
 export function setCldrParentLocales(
-  config: LinguiConfig
+  config: LinguiConfig,
 ): LinguiConfigNormalized {
   if (config.fallbackLocales === false) {
     return {

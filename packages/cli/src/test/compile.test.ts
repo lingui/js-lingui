@@ -1,7 +1,7 @@
-import { command } from "../lingui-compile"
+import { command } from "../lingui-compile.js"
 import { getConfig, LinguiConfig, makeConfig } from "@lingui/conf"
-import { getConsoleMockCalls, mockConsole } from "@lingui/jest-mocks"
-import { createFixtures, readFsToListing } from "../tests"
+import { getConsoleMockCalls, mockConsole } from "@lingui/test-utils"
+import { createFixtures, readFsToListing } from "../tests.js"
 
 describe("CLI Command: Compile", () => {
   function getTestConfig(rootDir: string, pseudoLocale?: string) {
@@ -85,7 +85,7 @@ msgstr ""
           en: actualFiles["en.js"],
         }).toMatchSnapshot()
 
-        let log = getConsoleMockCalls(console.error)
+        let log = getConsoleMockCalls(console.error)!
         log = log.split("\n\n").sort().join("\n\n")
 
         expect(log).toMatchSnapshot()
@@ -483,10 +483,10 @@ msgstr "Witaj świecie"
         const actualFiles = readFsToListing(rootDir)
 
         expect(actualFiles["en.js"]).toContain(
-          "/*biome-ignore lint: auto-generated*/"
+          "/*biome-ignore lint: auto-generated*/",
         )
         expect(actualFiles["pl.js"]).toContain(
-          "/*biome-ignore lint: auto-generated*/"
+          "/*biome-ignore lint: auto-generated*/",
         )
         expect(actualFiles["en.js"]).not.toContain("eslint-disable")
         expect(actualFiles["pl.js"]).not.toContain("eslint-disable")

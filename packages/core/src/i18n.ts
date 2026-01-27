@@ -34,7 +34,7 @@ export type Values = Record<string, unknown>
 export type LocaleData = {
   plurals?: (
     n: number,
-    ordinal?: boolean
+    ordinal?: boolean,
   ) => ReturnType<Intl.PluralRules["select"]>
 }
 
@@ -173,7 +173,7 @@ export class I18n extends EventEmitter<Events> {
    */
   loadLocaleData(
     localeOrAllData: AllLocaleData | Locale,
-    localeData?: LocaleData
+    localeData?: LocaleData,
   ) {
     if (typeof localeOrAllData === "string") {
       // loadLocaleData('en', enLocaleData)
@@ -183,7 +183,7 @@ export class I18n extends EventEmitter<Events> {
       // loadLocaleData(allLocaleData)
       // Loading all locale data at once.
       Object.keys(localeOrAllData).forEach((locale) =>
-        this._loadLocaleData(locale, localeOrAllData[locale]!)
+        this._loadLocaleData(locale, localeOrAllData[locale]!),
       )
     }
 
@@ -210,7 +210,7 @@ export class I18n extends EventEmitter<Events> {
       // load(catalogs)
       // Loading several locales at once.
       Object.entries(localeOrMessages).forEach(([locale, messages]) =>
-        this._load(locale, messages)
+        this._load(locale, messages),
       )
     }
 
@@ -247,13 +247,13 @@ export class I18n extends EventEmitter<Events> {
   _(
     id: MessageDescriptor | string,
     values?: Values,
-    options?: MessageOptions
+    options?: MessageOptions,
   ): string {
     if (!this.locale) {
       throw new Error(
         "Lingui: Attempted to call a translation function without setting a locale.\n" +
           "Make sure to call `i18n.activate(locale)` before using Lingui functions.\n" +
-          "This issue may also occur due to a race condition in your initialization logic."
+          "This issue may also occur due to a race condition in your initialization logic.",
       )
     }
 
@@ -309,7 +309,7 @@ Please compile your catalog first.
     return interpolate(
       translation,
       this._locale,
-      this._locales
+      this._locales,
     )(values, options?.formats)
   }
 
@@ -320,7 +320,7 @@ Please compile your catalog first.
 
   date(
     value?: string | DateTimeFormatValue,
-    format?: Intl.DateTimeFormatOptions
+    format?: Intl.DateTimeFormatOptions,
   ): string {
     return date(this._locales || this._locale, value, format)
   }

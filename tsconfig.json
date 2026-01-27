@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "module": "commonjs",
-    "jsx": "react",
+    "jsx": "react-jsx",
     "noEmit": true,
     "baseUrl": "./",
     "pretty": true,
@@ -10,31 +10,7 @@
     "noUnusedLocals": true,
     "resolveJsonModule": true,
     "skipLibCheck": true,
-    "target": "es2017",
-    "paths": {
-      "@lingui/babel-plugin-extract-messages": [
-        "./packages/babel-plugin-extract-messages/src"
-      ],
-      "@lingui/core": ["./packages/core/src"],
-      "@lingui/core/macro": ["./packages/core/macro"],
-      "@lingui/message-utils/*": ["./packages/message-utils/src/*"],
-      "@lingui/cli/api": ["./packages/cli/src/api"],
-      "@lingui/react": ["./packages/react/src"],
-      "@lingui/react/macro": ["./packages/react/macro"],
-      "@lingui/conf": ["./packages/conf/src"],
-      "@lingui/babel-plugin-lingui-macro": ["./packages/babel-plugin-lingui-macro/src/index.ts"],
-      "@lingui/babel-plugin-lingui-macro/macro": ["./packages/babel-plugin-lingui-macro/src/macro.ts"],
-      "@lingui/macro": ["./packages/macro"],
-      "@lingui/format-po": ["./packages/format-po/src/po.ts"],
-      "@lingui/format-json": ["./packages/format-json/src/json.ts"],
-      "@lingui/extractor-vue": ["./packages/extractor-vue/src"]
-    }
+    "target": "es2023"
   },
-  "exclude": [
-    "examples/**",
-    "dist",
-    "website",
-    "**/fixtures/**",
-    "**/__typetests__/**"
-  ]
+  "exclude": ["examples/**", "dist", "website", "**/fixtures/**"]
 }

@@ -3,12 +3,11 @@ import {
   getCatalogForFile,
   getMergedCatalogPath,
   getCatalogs,
-} from "./getCatalogs"
-import { Catalog } from "../catalog"
+} from "./getCatalogs.js"
+import { Catalog } from "../catalog.js"
 import { LinguiConfig, makeConfig } from "@lingui/conf"
 import path from "path"
-import { getFormat } from "@lingui/cli/api"
-import { FormatterWrapper } from "../formats"
+import { FormatterWrapper, getFormat } from "../formats/index.js"
 
 function mockConfig(config: Partial<LinguiConfig> = {}) {
   return makeConfig(
@@ -17,7 +16,7 @@ function mockConfig(config: Partial<LinguiConfig> = {}) {
       locales: ["en", "pl"],
       ...config,
     },
-    { skipValidation: true }
+    { skipValidation: true },
   )
 }
 
@@ -41,19 +40,19 @@ describe("getCatalogs", () => {
         },
       ],
     })
-    expect(cleanCatalog((await getCatalogs(config))[0])).toEqual(
+    expect(cleanCatalog((await getCatalogs(config))[0]!)).toEqual(
       cleanCatalog(
         new Catalog(
           {
-            name: null,
+            name: undefined,
             path: "src/locales/{locale}",
             include: ["src/"],
             exclude: [],
             format,
           },
-          config
-        )
-      )
+          config,
+        ),
+      ),
     )
   })
 
@@ -67,7 +66,7 @@ describe("getCatalogs", () => {
         },
       ],
     })
-    expect(cleanCatalog((await getCatalogs(config))[0])).toEqual(
+    expect(cleanCatalog((await getCatalogs(config))[0]!)).toEqual(
       cleanCatalog(
         new Catalog(
           {
@@ -77,9 +76,9 @@ describe("getCatalogs", () => {
             exclude: ["node_modules/"],
             format,
           },
-          config
-        )
-      )
+          config,
+        ),
+      ),
     )
   })
 
@@ -103,10 +102,10 @@ describe("getCatalogs", () => {
     })
 
     const catalogs = (await getCatalogs(config)).sort((a, b) =>
-      a.path.localeCompare(b.path)
+      a.path.localeCompare(b.path),
     )
 
-    expect([cleanCatalog(catalogs[0]), cleanCatalog(catalogs[1])]).toEqual([
+    expect([cleanCatalog(catalogs[0]!), cleanCatalog(catalogs[1]!)]).toEqual([
       cleanCatalog(
         new Catalog(
           {
@@ -116,8 +115,8 @@ describe("getCatalogs", () => {
             exclude: [],
             format,
           },
-          config
-        )
+          config,
+        ),
       ),
       cleanCatalog(
         new Catalog(
@@ -128,8 +127,8 @@ describe("getCatalogs", () => {
             exclude: [],
             format,
           },
-          config
-        )
+          config,
+        ),
       ),
     ])
   })
@@ -151,10 +150,10 @@ describe("getCatalogs", () => {
     })
 
     const catalogs = (await getCatalogs(config)).sort((a, b) =>
-      a.path.localeCompare(b.path)
+      a.path.localeCompare(b.path),
     )
 
-    expect(cleanCatalog(catalogs[0])).toEqual(
+    expect(cleanCatalog(catalogs[0]!)).toEqual(
       cleanCatalog(
         new Catalog(
           {
@@ -164,9 +163,9 @@ describe("getCatalogs", () => {
             exclude: [],
             format,
           },
-          config
-        )
-      )
+          config,
+        ),
+      ),
     )
   })
 
@@ -191,10 +190,10 @@ describe("getCatalogs", () => {
     })
 
     const catalogs = (await getCatalogs(config)).sort((a, b) =>
-      a.path.localeCompare(b.path)
+      a.path.localeCompare(b.path),
     )
 
-    expect(cleanCatalog(catalogs[0])).toEqual(
+    expect(cleanCatalog(catalogs[0]!)).toEqual(
       cleanCatalog(
         new Catalog(
           {
@@ -204,9 +203,9 @@ describe("getCatalogs", () => {
             exclude: ["componentB/"],
             format,
           },
-          config
-        )
-      )
+          config,
+        ),
+      ),
     )
   })
 
@@ -220,8 +219,8 @@ describe("getCatalogs", () => {
               include: ["."],
             },
           ],
-        })
-      )
+        }),
+      ),
     ).rejects.toMatchSnapshot()
 
     // Use values from config in error message
@@ -235,8 +234,8 @@ describe("getCatalogs", () => {
               include: ["."],
             },
           ],
-        })
-      )
+        }),
+      ),
     ).rejects.toMatchSnapshot()
   })
 
@@ -250,17 +249,16 @@ describe("getCatalogs", () => {
               include: ["./{name}/"],
             },
           ],
-        })
-      )
+        }),
+      ),
     ).rejects.toMatchSnapshot()
   })
 })
 
 // remove non-serializable properties, which are not subject of a test
 function cleanCatalog(catalog: Catalog) {
-  delete catalog.config
-  delete catalog.format
-  return catalog
+  const { config, format, ...rest } = catalog
+  return rest
 }
 describe("getMergedCatalogPath", () => {
   afterEach(() => {
@@ -279,7 +277,7 @@ describe("getMergedCatalogPath", () => {
       catalogsMergePath: "locales/{locale}/my/dir",
     })
     expect(await getMergedCatalogPath(config)).toStrictEqual(
-      "locales/{locale}/my/dir"
+      "locales/{locale}/my/dir",
     )
   })
 
@@ -292,7 +290,7 @@ describe("getMergedCatalogPath", () => {
       await getMergedCatalogPath(config)
     } catch (e) {
       expect((e as Error).message).toBe(
-        'Remove trailing slash from "locales/{locale}/bad/path/". Catalog path isn\'t a directory, but translation file without extension. For example, catalog path "locales/{locale}/bad/path" results in translation file "locales/en/bad/path.po".'
+        'Remove trailing slash from "locales/{locale}/bad/path/". Catalog path isn\'t a directory, but translation file without extension. For example, catalog path "locales/{locale}/bad/path" results in translation file "locales/en/bad/path.po".',
       )
     }
   })
@@ -306,7 +304,7 @@ describe("getMergedCatalogPath", () => {
       await getMergedCatalogPath(config)
     } catch (e) {
       expect((e as Error).message).toBe(
-        "Invalid catalog path: {locale} variable is missing"
+        "Invalid catalog path: {locale} variable is missing",
       )
     }
   })
@@ -322,12 +320,12 @@ describe("getCatalogForFile", () => {
     const catalogs = [
       new Catalog(
         {
-          name: null,
+          name: undefined,
           path: "./src/locales/{locale}",
           include: ["./src/"],
           format,
         },
-        mockConfig()
+        mockConfig(),
       ),
     ]
 
@@ -337,17 +335,17 @@ describe("getCatalogForFile", () => {
   it("should return matching catalog and locale if {locale} is present multiple times in path", () => {
     const catalog = new Catalog(
       {
-        name: null,
+        name: undefined,
         path: "./src/locales/{locale}/messages_{locale}",
         include: ["./src/"],
         format,
       },
-      mockConfig({ format: "po", rootDir: "." })
+      mockConfig({ format: "po", rootDir: "." }),
     )
     const catalogs = [catalog]
 
     expect(
-      getCatalogForFile("./src/locales/en/messages_en.po", catalogs)
+      getCatalogForFile("./src/locales/en/messages_en.po", catalogs),
     ).toEqual({
       locale: "en",
       catalog,
@@ -357,12 +355,12 @@ describe("getCatalogForFile", () => {
   it("should return matching catalog and locale", () => {
     const catalog = new Catalog(
       {
-        name: null,
+        name: undefined,
         path: "./src/locales/{locale}",
         include: ["./src/"],
         format,
       },
-      mockConfig({ format: "po", rootDir: "." })
+      mockConfig({ format: "po", rootDir: "." }),
     )
     const catalogs = [catalog]
 
@@ -375,12 +373,12 @@ describe("getCatalogForFile", () => {
   it("should work with Windows path delimiters", () => {
     const catalog = new Catalog(
       {
-        name: null,
+        name: undefined,
         path: ".\\src\\locales\\{locale}",
         include: ["./src/"],
         format,
       },
-      mockConfig({ format: "po", rootDir: "." })
+      mockConfig({ format: "po", rootDir: "." }),
     )
     const catalogs = [catalog]
 
@@ -393,12 +391,12 @@ describe("getCatalogForFile", () => {
   it("should allow parentheses in path names", async () => {
     const catalog = new Catalog(
       {
-        name: null,
+        name: undefined,
         path: "./src/locales/(asd)/{locale}",
         include: ["./src/"],
         format,
       },
-      mockConfig({ format: "po", rootDir: "." })
+      mockConfig({ format: "po", rootDir: "." }),
     )
     const catalogs = [catalog]
 
@@ -411,17 +409,17 @@ describe("getCatalogForFile", () => {
   it("should allow nested parentheses in path names", async () => {
     const catalog = new Catalog(
       {
-        name: null,
+        name: undefined,
         path: "./src/locales/(asd)/((asd))/{locale}",
         include: ["./src/"],
         format,
       },
-      mockConfig({ format: "po", rootDir: "." })
+      mockConfig({ format: "po", rootDir: "." }),
     )
     const catalogs = [catalog]
 
     expect(
-      getCatalogForFile("./src/locales/(asd)/((asd))/en.po", catalogs)
+      getCatalogForFile("./src/locales/(asd)/((asd))/en.po", catalogs),
     ).toEqual({
       locale: "en",
       catalog,
@@ -431,12 +429,12 @@ describe("getCatalogForFile", () => {
   it("should allow brackets in path names", async () => {
     const catalog = new Catalog(
       {
-        name: null,
+        name: undefined,
         path: "./src/locales/[...asd]/{locale}",
         include: ["./src/"],
         format,
       },
-      mockConfig({ format: "po", rootDir: "." })
+      mockConfig({ format: "po", rootDir: "." }),
     )
     const catalogs = [catalog]
 
@@ -444,24 +442,24 @@ describe("getCatalogForFile", () => {
       {
         locale: "en",
         catalog,
-      }
+      },
     )
   })
 
   it("should allow nested brackets in path names", async () => {
     const catalog = new Catalog(
       {
-        name: null,
+        name: undefined,
         path: "./src/locales/[...asd]/[[...asd]]/{locale}",
         include: ["./src/"],
         format,
       },
-      mockConfig({ format: "po", rootDir: "." })
+      mockConfig({ format: "po", rootDir: "." }),
     )
     const catalogs = [catalog]
 
     expect(
-      getCatalogForFile("./src/locales/[...asd]/[[...asd]]/en.po", catalogs)
+      getCatalogForFile("./src/locales/[...asd]/[[...asd]]/en.po", catalogs),
     ).toEqual({
       locale: "en",
       catalog,

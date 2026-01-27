@@ -44,6 +44,7 @@ export default config(
             "**/*.tst.{ts,tsx}",
             "**/vite.config.ts",
             "**/jest.config.js",
+            "scripts/**",
           ],
         },
       ],

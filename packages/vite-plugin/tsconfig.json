@@ -1,19 +1,19 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
     "target": "ES2019",
     "sourceMap": true,
-    "noEmit": false,
+    "noEmit": true,
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
     "declaration": true,
     "outDir": "./build",
+    "skipLibCheck": true,
     "esModuleInterop": true,
     "resolveJsonModule": true,
-    "types": []
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "types": ["vitest/globals"]
   },
-  "include": [
-    "src"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["src", "./test/vite-plugin.test.ts"],
+  "exclude": ["node_modules"]
 }
