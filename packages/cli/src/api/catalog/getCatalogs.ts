@@ -178,6 +178,6 @@ function validateCatalogPath(path: string, extension: string) {
 function getCatalogName(filePath: string) {
   // catalog name is the last directory of catalogPath.
   // If the last part is {locale}, then catalog doesn't have an explicit name
-  const _name = path.basename(normalizeRelativePath(filePath))
-  return _name !== LOCALE_PH ? _name : undefined
+  const name = path.basename(normalizeRelativePath(filePath))
+  return name !== LOCALE_PH ? name : undefined
 }

@@ -102,6 +102,10 @@ export const exampleConfig = {
     flow: false,
     tsExperimentalDecorators: false,
   },
+  service: {
+    apiKey: "",
+    name: "",
+  },
   experimental: {
     extractor: {
       entries: [],

@@ -2,7 +2,6 @@ import pico from "picocolors"
 import chokidar from "chokidar"
 import { program } from "commander"
 import nodepath from "path"
-
 import { getConfig, LinguiConfigNormalized } from "@lingui/conf"
 
 import { getCatalogs, AllCatalogsType } from "./api/index.js"
@@ -21,6 +20,9 @@ import {
 import ms from "ms"
 import { Catalog } from "./api/catalog.js"
 import esMain from "es-main"
+import { getPathsForExtractWatcher } from "./api/getPathsForExtractWatcher.js"
+import { glob } from "glob"
+import micromatch from "micromatch"
 
 export type CliExtractOptions = {
   verbose: boolean
@@ -265,17 +267,13 @@ if (esMain(import.meta)) {
   if (options.watch) {
     console.info(pico.bold("Initializing Watch Mode..."))
     ;(async function initWatch() {
-      const catalogs = await getCatalogs(config)
-      const paths: string[] = []
-      const ignored: string[] = []
+      const { paths, ignored } = await getPathsForExtractWatcher(config)
 
-      catalogs.forEach((catalog) => {
-        paths.push(...catalog.include)
-        ignored.push(...catalog.exclude)
-      })
-
-      const watcher = chokidar.watch(paths, {
-        ignored: ["/(^|[/\\])../", ...ignored],
+      const watcher = chokidar.watch(await glob(paths), {
+        ignored: [
+          "/(^|[/\\])../",
+          (path: string) => micromatch.any(path, ignored),
+        ],
         persistent: true,
       })
 
