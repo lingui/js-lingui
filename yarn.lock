@@ -3394,7 +3394,6 @@ __metadata:
     "@lingui/conf": 5.9.0
     "@lingui/message-utils": 5.9.0
     "@lingui/test-utils": "workspace:*"
-    date-fns: ^3.6.0
     pofile: ^1.1.4
     unbuild: 2.0.0
     vitest: 4.0.18
@@ -7670,13 +7669,6 @@ __metadata:
     es-errors: ^1.3.0
     is-data-view: ^1.0.1
   checksum: 8dd492cd51d19970876626b5b5169fbb67ca31ec1d1d3238ee6a71820ca8b80cafb141c485999db1ee1ef02f2cc3b99424c5eda8d59e852d9ebb79ab290eb5ee
-  languageName: node
-  linkType: hard
-
-"date-fns@npm:^3.6.0":
-  version: 3.6.0
-  resolution: "date-fns@npm:3.6.0"
-  checksum: 0daa1e9a436cf99f9f2ae9232b55e11f3dd46132bee10987164f3eebd29f245b2e066d7d7db40782627411ecf18551d8f4c9fcdf2226e48bb66545407d448ab7
   languageName: node
   linkType: hard
 
