@@ -43,6 +43,7 @@ export default config(
             "**/*.test.{ts,tsx}",
             "**/*.tst.{ts,tsx}",
             "**/vite.config.ts",
+            "scripts/**",
           ],
         },
       ],
