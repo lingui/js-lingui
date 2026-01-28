@@ -28,11 +28,6 @@ exports[`@lingui/conf > should return default config 1`] = `
   "fallbackLocales": {
     "en-gb": "en",
   },
-  "format": "po",
-  "formatOptions": {
-    "lineNumbers": true,
-    "origins": true,
-  },
   "locales": [
     "en-gb",
   ],
