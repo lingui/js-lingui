@@ -1,9 +1,8 @@
-import { format as formatDate } from "date-fns"
 import PO from "pofile"
 
 import { CatalogFormatter, CatalogType, MessageType } from "@lingui/conf"
 import { generateMessageId } from "@lingui/message-utils/generateMessageId"
-import { normalizePlaceholderValue } from "./utils"
+import { formatPotCreationDate, normalizePlaceholderValue } from "./utils"
 
 type POItem = InstanceType<typeof PO.Item>
 
@@ -112,7 +111,7 @@ function getCreateHeaders(
   customHeaderAttributes: PoFormatterOptions["customHeaderAttributes"],
 ): PO["headers"] {
   return {
-    "POT-Creation-Date": formatDate(new Date(), "yyyy-MM-dd HH:mmxxxx"),
+    "POT-Creation-Date": formatPotCreationDate(new Date()),
     "MIME-Version": "1.0",
     "Content-Type": "text/plain; charset=utf-8",
     "Content-Transfer-Encoding": "8bit",

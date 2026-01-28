@@ -49,7 +49,6 @@
   "dependencies": {
     "@lingui/conf": "5.9.0",
     "@lingui/message-utils": "5.9.0",
-    "date-fns": "^3.6.0",
     "pofile": "^1.1.4"
   },
   "devDependencies": {
