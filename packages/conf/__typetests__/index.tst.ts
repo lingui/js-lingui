@@ -34,7 +34,6 @@ expect({
     tsExperimentalDecorators: false,
   },
   fallbackLocales: {} as FallbackLocales,
-  formatOptions: { origins: true, lineNumbers: true },
   locales: [],
   orderBy: "messageId" as const,
   pseudoLocale: "",
