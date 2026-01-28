@@ -38,11 +38,9 @@ exports[`getConfig > default config and snapshots > should return default config
   ],
   "macro": {
     "corePackage": [
-      "@lingui/macro",
       "@lingui/core/macro",
     ],
     "jsxPackage": [
-      "@lingui/macro",
       "@lingui/react/macro",
     ],
   },

@@ -529,7 +529,7 @@ import { Trans as _Trans } from "@lingui/react";
 `;
 
 exports[`Production - message prop is kept if stripMessageField: false 1`] = `
-import { Trans } from "@lingui/macro";
+import { Trans } from "@lingui/react/macro";
 <Trans id="msg.hello" comment="Hello World">
   Hello World
 </Trans>;
@@ -969,7 +969,7 @@ import { myTrans as _Trans } from "@my/lingui";
 `;
 
 exports[`stripMessageField option - message prop is removed if stripMessageField: true 1`] = `
-import { Trans } from "@lingui/macro";
+import { Trans } from "@lingui/react/macro";
 <Trans id="msg.hello">Hello World</Trans>;
 
 ↓ ↓ ↓ ↓ ↓ ↓

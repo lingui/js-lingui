@@ -196,7 +196,7 @@ macroTester({
         stripMessageField: true,
       },
       code: `
-          import { t } from '@lingui/macro'
+          import { t } from '@lingui/core/macro'
           const msg = t\`Message\`
         `,
     },
@@ -255,7 +255,7 @@ macroTester({
         stripMessageField: false,
       },
       code: `
-          import { t } from '@lingui/macro';
+          import { t } from '@lingui/core/macro';
           const msg = t({
               message: \`Hello \${name}\`,
               id: 'msgId',
@@ -324,7 +324,7 @@ macroTester({
         ),
       },
       code: `
-         import { t } from '@lingui/macro'
+         import { t } from '@lingui/core/macro'
          const msg = t\`Message\`
       `,
     },
