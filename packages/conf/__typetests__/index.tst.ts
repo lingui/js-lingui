@@ -1,4 +1,5 @@
 import {
+  CatalogType,
   ExtractedMessage,
   ExtractorCtx,
   FallbackLocales,
@@ -33,7 +34,6 @@ expect({
     tsExperimentalDecorators: false,
   },
   fallbackLocales: {} as FallbackLocales,
-  format: "po" as const,
   formatOptions: { origins: true, lineNumbers: true },
   locales: [],
   orderBy: "messageId" as const,
@@ -58,6 +58,21 @@ expect({
       ) => {},
     },
   ],
+}).type.toBeAssignableTo<LinguiConfig>()
+
+// custom formatter
+expect({
+  locales: ["en", "pl"],
+  format: {
+    catalogExtension: "po",
+    templateExtension: "pot",
+    parse(content: string): Promise<CatalogType> {
+      return Promise.resolve({} as CatalogType)
+    },
+    serialize(catalog: CatalogType): Promise<string> {
+      return Promise.resolve("")
+    },
+  },
 }).type.toBeAssignableTo<LinguiConfig>()
 
 // runtimeConfigModule
