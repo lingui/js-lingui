@@ -84,7 +84,7 @@ export const defaultConfig = {
 
 export const exampleConfig = {
   ...defaultConfig,
-  format: Object,
+  format: multipleValidOptions({}, {}),
   extractors: multipleValidOptions([], ["babel"], [Object]),
   runtimeConfigModule: multipleValidOptions(
     { i18n: ["@lingui/core", "i18n"], Trans: ["@lingui/react", "Trans"] },
