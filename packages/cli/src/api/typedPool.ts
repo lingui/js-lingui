@@ -1,7 +1,7 @@
 import Tinypool, { type Options } from "tinypool"
 
-export interface TypedPool<TArgs extends unknown[], TResult> {
-  run(args: TArgs): Promise<TResult>
+export type TypedPool<TArgs extends unknown[], TResult> = {
+  run(...args: TArgs): Promise<TResult>
   destroy(): Promise<void>
 }
 
@@ -11,7 +11,7 @@ const createTypedPool = <TArgs extends unknown[], TResult>(
   const pool = new Tinypool(options)
 
   return {
-    run: (args: TArgs) => pool.run(args) as Promise<TResult>,
+    run: (...args: TArgs) => pool.run(args) as Promise<TResult>,
     destroy: () => pool.destroy(),
   }
 }

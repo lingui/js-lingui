@@ -72,12 +72,12 @@ export async function command(
     try {
       await Promise.all(
         config.locales.map(async (locale) => {
-          const { logs, error, exitProgram } = await pool.run([
+          const { logs, error, exitProgram } = await pool.run(
             locale,
             options,
             doMerge,
             resolvedConfigPath,
-          ])
+          )
 
           if (logs.errors) {
             console.error(logs.errors)

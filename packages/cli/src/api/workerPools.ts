@@ -5,7 +5,7 @@ import type { CompileWorkerFunction } from "../workers/compileWorker.js"
 
 export type ExtractWorkerPool = WorkerPool<ExtractWorkerFunction>
 
-interface PoolOptions {
+type PoolOptions = {
   poolSize: number
 }
 

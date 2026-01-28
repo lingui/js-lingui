@@ -127,7 +127,7 @@ export async function extractFromFilesWithWorkerPool(
 
   await Promise.all(
     paths.map(async (filename) => {
-      const result = await workerPool.run([filename, resolvedConfigPath])
+      const result = await workerPool.run(filename, resolvedConfigPath)
 
       if (!result.success) {
         catalogSuccess = false

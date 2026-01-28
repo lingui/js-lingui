@@ -94,7 +94,7 @@ export default async function command(
         Object.keys(bundleResult.outputs).map(async (outFile) => {
           const { entryPoint } = bundleResult.outputs[outFile]!
 
-          const result = await pool.run([
+          const result = await pool.run(
             resolvedConfigPath,
             entryPoint!,
             outFile,
@@ -103,7 +103,7 @@ export default async function command(
             options.locales || linguiConfig.locales,
             options.clean || false,
             options.overwrite || false,
-          ])
+          )
 
           commandSuccess &&= result.success
 
