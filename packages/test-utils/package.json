@@ -11,7 +11,6 @@
   "type": "module",
   "license": "MIT",
   "keywords": [
-    "jest",
     "testing",
     "mock"
   ],
@@ -22,7 +21,7 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/lingui/js-lingui.git",
-    "directory": "packages/jest-mocks"
+    "directory": "packages/test-utils"
   },
   "bugs": {
     "url": "https://github.com/lingui/js-lingui/issues"

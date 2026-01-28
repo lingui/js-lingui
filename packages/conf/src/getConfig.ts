@@ -1,6 +1,6 @@
 import fs from "fs"
 import { LinguiConfigNormalized } from "./types"
-import { cosmiconfigSync, LoaderSync } from "cosmiconfig"
+import { lilconfigSync, LoaderSync } from "lilconfig"
 import path from "path"
 import { makeConfig } from "./makeConfig"
 import { createJiti } from "jiti"
@@ -21,7 +21,7 @@ function JitiLoader(): LoaderSync {
 
 const moduleName = "lingui"
 
-const configExplorer = cosmiconfigSync(moduleName, {
+const configExplorer = lilconfigSync(moduleName, {
   searchPlaces: [
     `${moduleName}.config.js`,
     `${moduleName}.config.cjs`,
@@ -30,8 +30,6 @@ const configExplorer = cosmiconfigSync(moduleName, {
     "package.json",
     `.${moduleName}rc`,
     `.${moduleName}rc.json`,
-    `.${moduleName}rc.yaml`,
-    `.${moduleName}rc.yml`,
     `.${moduleName}rc.ts`,
     `.${moduleName}rc.js`,
   ],
@@ -55,9 +53,16 @@ export function getConfig({
 
   configPath = configPath || process.env.LINGUI_CONFIG
 
-  const result = configExists(configPath)
-    ? configExplorer.load(configPath)
-    : configExplorer.search(defaultRootDir)
+  let result
+
+  try {
+    result = configExists(configPath)
+      ? configExplorer.load(configPath)
+      : configExplorer.search(defaultRootDir)
+  } catch (error) {
+    // If lilconfig throws an error (e.g., directory doesn't exist), treat it as no config found
+    result = null
+  }
 
   if (!result) {
     console.error("Lingui was unable to find a config!\n")

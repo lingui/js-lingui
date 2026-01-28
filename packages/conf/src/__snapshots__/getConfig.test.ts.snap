@@ -1,13 +1,16 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`@lingui/conf > should return default config 1`] = `
+exports[`getConfig > default config and snapshots > should return default config 1`] = `
 {
   "catalogs": [
     {
-      "include": [
-        StringContaining "fixtures/valid/src",
+      "exclude": [
+        "*/node_modules/*",
       ],
-      "path": StringContaining "fixtures/valid/locale/{locale}/messages",
+      "include": [
+        ".",
+      ],
+      "path": "./locale/{locale}/messages",
     },
   ],
   "catalogsMergePath": "",
@@ -22,10 +25,11 @@ exports[`@lingui/conf > should return default config 1`] = `
     "flow": false,
     "tsExperimentalDecorators": false,
   },
-  "fallbackLocales": {},
+  "fallbackLocales": {
+    "en-gb": "en",
+  },
   "locales": [
-    "en",
-    "fr",
+    "en-gb",
   ],
   "macro": {
     "corePackage": [
@@ -39,8 +43,8 @@ exports[`@lingui/conf > should return default config 1`] = `
   },
   "orderBy": "message",
   "pseudoLocale": "",
-  "resolvedConfigPath": StringContaining "lingui.config.js",
-  "rootDir": StringContaining "fixtures/valid",
+  "resolvedConfigPath": StringContaining ".linguirc",
+  "rootDir": ".",
   "runtimeConfigModule": {
     "Trans": [
       "@lingui/react",
@@ -55,12 +59,6 @@ exports[`@lingui/conf > should return default config 1`] = `
       "useLingui",
     ],
   },
-  "sourceLocale": "en",
+  "sourceLocale": "en-gb",
 }
-`;
-
-exports[`@lingui/conf > should throw error if config is not discovered 1`] = `
-"Lingui was unable to find a config!
-
-Create [1m'lingui.config.js'[22m file with LinguiJS configuration in root of your project (next to package.json). See [4mhttps://lingui.dev/ref/conf[24m"
 `;

@@ -22,7 +22,16 @@ describe("@lingui/conf", () => {
       expect(console.error).not.toBeCalled()
       expect(console.warn).not.toBeCalled()
       expect(config).toMatchSnapshot({
-        resolvedConfigPath: expect.stringContaining(".linguirc"),
+        resolvedConfigPath: expect.stringContaining("lingui.config.js"),
+        rootDir: expect.stringContaining("fixtures/valid"),
+        catalogs: [
+          {
+            include: [expect.stringContaining("fixtures/valid/src")],
+            path: expect.stringContaining(
+              "fixtures/valid/locale/{locale}/messages",
+            ),
+          },
+        ],
       })
     })
   })
@@ -73,11 +82,11 @@ describe("@lingui/conf", () => {
   })
 
   describe("config file", () => {
-    it("searches for a .linguirc config file", () => {
+    it("searches for a lingui.config.js config file", () => {
       const config = getConfig({
         cwd: path.resolve(import.meta.dirname, path.join("fixtures", "valid")),
       })
-      expect(config.locales).toEqual(["en-gb"])
+      expect(config.locales).toEqual(["en", "fr"])
     })
 
     it("allows specific config file to be loaded with configPath parameter", () => {
@@ -99,42 +108,42 @@ describe("@lingui/conf", () => {
       })
       expect(config.locales).toEqual(["pl"])
     })
+  })
 
-    describe("Build parent cldr fallbackLocales", () => {
-      it("if fallbackLocales.default is defined, we dont build the cldr", () => {
-        const config = makeConfig({
-          locales: ["en-US", "es-MX"],
-          fallbackLocales: {
-            "en-US": ["en"],
-            default: "en",
-          },
-        })
-
-        expect(config.fallbackLocales).toEqual({
+  describe("Build parent cldr fallbackLocales", () => {
+    it("if fallbackLocales.default is defined, we dont build the cldr", () => {
+      const config = makeConfig({
+        locales: ["en-US", "es-MX"],
+        fallbackLocales: {
           "en-US": ["en"],
           default: "en",
-        })
+        },
       })
 
-      it("if fallbackLocales.default is not defined, we build the cldr", () => {
-        const config = makeConfig({
-          locales: ["en-US", "es-MX"],
-        })
+      expect(config.fallbackLocales).toEqual({
+        "en-US": ["en"],
+        default: "en",
+      })
+    })
 
-        expect(config.fallbackLocales).toEqual({
-          "en-US": "en",
-          "es-MX": "es",
-        })
+    it("if fallbackLocales.default is not defined, we build the cldr", () => {
+      const config = makeConfig({
+        locales: ["en-US", "es-MX"],
       })
 
-      it("if fallbackLocales = false, we dont build the cldr", () => {
-        const config = makeConfig({
-          locales: ["en-US", "es-MX"],
-          fallbackLocales: false,
-        })
-
-        expect(config.fallbackLocales).toEqual({})
+      expect(config.fallbackLocales).toEqual({
+        "en-US": "en",
+        "es-MX": "es",
       })
+    })
+
+    it("if fallbackLocales = false, we dont build the cldr", () => {
+      const config = makeConfig({
+        locales: ["en-US", "es-MX"],
+        fallbackLocales: false,
+      })
+
+      expect(config.fallbackLocales).toEqual({})
     })
   })
 })

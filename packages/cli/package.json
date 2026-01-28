@@ -40,10 +40,6 @@
     "./api/extractors/babel": {
       "types": "./dist/api/extractors/babel.d.ts",
       "default": "./dist/api/extractors/babel.js"
-    },
-    "./api/extractors/typescript": {
-      "types": "./dist/api/extractors/typescript.d.ts",
-      "default": "./dist/api/extractors/typescript.js"
     }
   },
   "scripts": {
