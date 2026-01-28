@@ -82,7 +82,7 @@
     "pofile": "^1.1.4",
     "pseudolocale": "^2.2.0",
     "source-map": "^0.7.6",
-    "threads": "^1.7.0"
+    "tinypool": "^2.1.0"
   },
   "devDependencies": {
     "@lingui/test-utils": "workspace:*",

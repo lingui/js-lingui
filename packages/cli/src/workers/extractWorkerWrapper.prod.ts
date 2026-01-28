@@ -1,4 +1,4 @@
-import { expose } from "threads/worker"
 import { extractWorker } from "./extractWorker.js"
 
-expose(extractWorker)
+export default (args: Parameters<typeof extractWorker>) =>
+  extractWorker(...args)

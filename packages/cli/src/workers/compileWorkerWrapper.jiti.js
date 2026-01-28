@@ -1,4 +1,3 @@
-import { expose } from "threads/worker"
 import { createJiti } from "jiti"
 const jiti = createJiti(import.meta.url)
 
@@ -7,4 +6,5 @@ const jiti = createJiti(import.meta.url)
  */
 const mod = await jiti.import("./compileWorker")
 
-expose(mod.compileWorker)
+/** @param {Parameters<typeof mod.compileWorker>} args */
+export default (args) => mod.compileWorker(...args)

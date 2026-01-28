@@ -99,8 +99,5 @@
       ]
     }
   ],
-  "packageManager": "yarn@3.4.1",
-  "resolutions": {
-    "threads@^1.7.0": "patch:threads@npm%3A1.7.0#./.yarn/patches/threads-npm-1.7.0-c432dbb3e9.patch"
-  }
+  "packageManager": "yarn@3.4.1"
 }

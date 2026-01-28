@@ -1,4 +1,4 @@
-import { expose } from "threads/worker"
 import { compileWorker } from "./compileWorker.js"
 
-expose(compileWorker)
+export default (args: Parameters<typeof compileWorker>) =>
+  compileWorker(...args)
