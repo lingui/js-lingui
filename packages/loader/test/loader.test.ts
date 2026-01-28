@@ -1,8 +1,7 @@
 import path from "path"
 import fs from "node:fs/promises"
 import { build, watch } from "./compiler"
-import { mkdtempSync } from "fs"
-import os from "os"
+import { mkdirSync, mkdtempSync } from "fs"
 import { vi } from "vitest"
 
 describe("lingui-loader", () => {
@@ -166,8 +165,12 @@ msgstr ""
 })
 
 async function copyFixture(srcPath: string) {
+  // copy fixtures to in-project folder to allow node_modules resolution works correctly
+  const tempFolder = path.join(import.meta.dirname, ".temp")
+  mkdirSync(tempFolder, { recursive: true })
+
   const fixtureTempPath = mkdtempSync(
-    path.join(os.tmpdir(), `lingui-test-fixture-${process.pid}`),
+    path.join(tempFolder, `lingui-test-fixture-${process.pid}`),
   )
 
   await fs.cp(srcPath, fixtureTempPath, {

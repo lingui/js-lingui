@@ -28,11 +28,6 @@ exports[`getConfig > default config and snapshots > should return default config
   "fallbackLocales": {
     "en-gb": "en",
   },
-  "format": "po",
-  "formatOptions": {
-    "lineNumbers": true,
-    "origins": true,
-  },
   "locales": [
     "en-gb",
   ],

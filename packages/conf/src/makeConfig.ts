@@ -28,6 +28,7 @@ export function makeConfig(
   }
 
   if (!opts.skipValidation) {
+    validateFormat(config)
     validate(config, configValidation)
     validateLocales(config)
   }
@@ -69,8 +70,6 @@ export const defaultConfig = {
     tsExperimentalDecorators: false,
   },
   fallbackLocales: {} as FallbackLocales,
-  format: "po",
-  formatOptions: { origins: true, lineNumbers: true },
   locales: [],
   orderBy: "message",
   pseudoLocale: "",
@@ -85,7 +84,7 @@ export const defaultConfig = {
 
 export const exampleConfig = {
   ...defaultConfig,
-  format: multipleValidOptions({}, "po"),
+  format: multipleValidOptions({}, {}),
   extractors: multipleValidOptions([], ["babel"], [Object]),
   runtimeConfigModule: multipleValidOptions(
     { i18n: ["@lingui/core", "i18n"], Trans: ["@lingui/react", "Trans"] },
@@ -121,6 +120,24 @@ export const exampleConfig = {
 const configValidation = {
   exampleConfig,
   comment: "Documentation: https://lingui.dev/ref/conf",
+}
+
+function validateFormat(config: LinguiConfig) {
+  if (typeof config.format === "string") {
+    throw new Error(
+      `String formats like \`{format: ${config.format}}\` are no longer supported.
+      
+Formatters must now be installed as separate packages and provided via format in lingui config:
+        
+import { formatter } from "@lingui/format-po"
+
+export default {
+  [...]
+  format: formatter({lineNumbers: false}),
+}
+`.trim(),
+    )
+  }
 }
 
 function validateLocales(config: LinguiConfig) {

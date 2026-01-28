@@ -73,7 +73,7 @@ describe("E2E Extractor Test", () => {
           rootDir: rootDir,
           locales: ["en", "pl"],
           sourceLocale: "en",
-          format: "po",
+
           catalogs: [
             {
               path: "<rootDir>/actual/{locale}",
@@ -358,7 +358,7 @@ describe("E2E Extractor Test", () => {
             rootDir: rootDir,
             locales: ["en", "pl"],
             sourceLocale: "en",
-            format: "po",
+
             catalogs: [],
             experimental: {
               extractor: {
@@ -416,7 +416,7 @@ describe("E2E Extractor Test", () => {
           rootDir: rootDir,
           locales: ["en"],
           sourceLocale: "en",
-          format: "po",
+
           catalogs: [
             {
               path: "<rootDir>/actual/{locale}",
@@ -444,7 +444,7 @@ describe("E2E Extractor Test", () => {
           locales: ["en", "pl", "pseudo-LOCALE"],
           pseudoLocale: "pseudo-LOCALE",
           sourceLocale: "en",
-          format: "po",
+
           catalogs: [
             {
               path: "<rootDir>/actual/{locale}",

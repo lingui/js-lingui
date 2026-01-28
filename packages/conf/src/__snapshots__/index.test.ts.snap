@@ -23,11 +23,6 @@ exports[`@lingui/conf > should return default config 1`] = `
     "tsExperimentalDecorators": false,
   },
   "fallbackLocales": {},
-  "format": "po",
-  "formatOptions": {
-    "lineNumbers": true,
-    "origins": true,
-  },
   "locales": [
     "en",
     "fr",

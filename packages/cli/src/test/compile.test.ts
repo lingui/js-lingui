@@ -303,7 +303,7 @@ msgstr "[PL] Bar Hello World"
       const config: LinguiConfig = {
         locales: ["en", "pl"],
         sourceLocale: "en",
-        format: "po",
+
         catalogs: [
           {
             path: "<rootDir>/{locale}",

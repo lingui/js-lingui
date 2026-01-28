@@ -7,7 +7,6 @@ const config: Partial<LinguiConfig> = {
         path: "src/locales/{locale}/messages",
         include: ["src"]
     }],
-    format: "po"
 };
 
 export default config;

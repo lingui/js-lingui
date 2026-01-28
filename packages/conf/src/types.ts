@@ -1,21 +1,5 @@
 import { defaultConfig } from "./makeConfig"
 
-/**
- * @deprecated please pass formatter directly to `format`
- *
- * @example
- * ```js
- * // lingui.config.{js,ts}
- * import {formatter} from "@lingui/format-po"
- *
- * export default {
- *   [...]
- *   format: formatter({lineNumbers: false}),
- * }
- * ```
- */
-export type CatalogFormat = "lingui" | "minimal" | "po" | "csv" | "po-gettext"
-
 export type ExtractorCtx = {
   /**
    * Raw Sourcemaps object to mapping from.
@@ -96,12 +80,6 @@ export type ExtractedMessage = {
 
   comment?: string
   placeholders?: Record<string, string>
-}
-
-export type CatalogFormatOptions = {
-  origins?: boolean
-  lineNumbers?: boolean
-  disableSelectWarning?: boolean
 }
 
 export type OrderByFn = (
@@ -232,14 +210,26 @@ export type LinguiConfig = {
    * https://lingui.dev/guides/custom-extractor
    */
   extractors?: ExtractorType[]
-  prevFormat?: CatalogFormat
   /**
-   * Message catalog format. The po formatter is used by default. Other formatters are available as separate packages.
+   * Message catalog format. If not set, po formatter would be used.
    *
-   * @default "po"
+   * Other formatters are available as separate packages.
+   *
+   * If you want to set additional options for po formatter you need to
+   * install it as a separate package and provide in config:
+   *
+   * @example
+   * ```js
+   * import {formatter} from "@lingui/format-po"
+   *
+   * export default {
+   *   [...]
+   *   format: formatter({lineNumbers: false}),
+   * }
+   * ```
+   *
    */
-  format?: CatalogFormat | CatalogFormatter
-  formatOptions?: CatalogFormatOptions
+  format?: CatalogFormatter
   /**
    * The locale tags used in the project. The `extract` and `compile` commands write a catalog for each locale specified.
    *

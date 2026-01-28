@@ -134,7 +134,6 @@ export default async function command(
   } else {
     const format = await getFormat(
       linguiConfig.format,
-      linguiConfig.formatOptions,
       linguiConfig.sourceLocale,
     )
 

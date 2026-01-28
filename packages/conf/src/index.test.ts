@@ -60,6 +60,27 @@ describe("@lingui/conf", () => {
     })
   })
 
+  it("should validate `format` and throw error if old string format passed (remove in v7)", () => {
+    expect(() =>
+      makeConfig({
+        locales: ["en"],
+        // @ts-expect-error this we are validating
+        format: "po",
+      }),
+    ).toThrowErrorMatchingInlineSnapshot(`
+      [Error: String formats like \`{format: po}\` are no longer supported.
+            
+      Formatters must now be installed as separate packages and provided via format in lingui config:
+              
+      import { formatter } from "@lingui/format-po"
+
+      export default {
+        [...]
+        format: formatter({lineNumbers: false}),
+      }]
+    `)
+  })
+
   describe("config file", () => {
     it("searches for a lingui.config.js config file", () => {
       const config = getConfig({

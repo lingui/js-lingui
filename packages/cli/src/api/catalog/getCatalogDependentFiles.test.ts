@@ -11,7 +11,7 @@ describe("getCatalogDependentFiles", () => {
   let format: FormatterWrapper
 
   beforeAll(async () => {
-    format = await getFormat("po", {}, "en")
+    format = await getFormat(undefined, "en")
   })
   afterEach(() => {
     mockFs.restore()

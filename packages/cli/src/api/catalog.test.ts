@@ -41,7 +41,7 @@ describe("Catalog", () => {
   let format: FormatterWrapper
 
   beforeAll(async () => {
-    format = await getFormat("po", {}, "en")
+    format = await getFormat(undefined, "en")
   })
 
   afterEach(() => {
@@ -489,30 +489,6 @@ describe("Catalog", () => {
       mockFs.restore()
       expect(messages).toMatchSnapshot()
     })
-
-    it.skip("should read file in previous format", async () => {
-      mockFs({
-        en: {
-          "messages.json": fs.readFileSync(
-            path.resolve(__dirname, "fixtures/messages.json"),
-          ),
-        },
-      })
-      const catalog = new Catalog(
-        {
-          name: "messages",
-          path: "{locale}/messages",
-          include: [],
-          format,
-        },
-        mockConfig({ prevFormat: "minimal" }),
-      )
-
-      const messages = await catalog.read("en")
-
-      mockFs.restore()
-      expect(messages).toMatchSnapshot()
-    })
   })
 
   describe("readAll", () => {
@@ -718,7 +694,7 @@ describe("writeCompiled", () => {
         path: path.join(localeDir, "{locale}", "messages"),
         include: [],
         exclude: [],
-        format: await getFormat("po", {}, "en"),
+        format: await getFormat(undefined, "en"),
       },
       mockConfig(),
     )
