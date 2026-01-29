@@ -3218,7 +3218,6 @@ __metadata:
     "@babel/traverse": ^7.20.12
     "@babel/types": ^7.20.7
     "@lingui/conf": "workspace:*"
-    "@lingui/core": "workspace:*"
     "@lingui/message-utils": "workspace:*"
     "@types/babel-plugin-macros": ^2.8.5
     babel-plugin-react-compiler: ^1.0.0
