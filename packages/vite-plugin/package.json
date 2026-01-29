@@ -41,7 +41,7 @@
     "dist/"
   ],
   "dependencies": {
-    "@lingui/cli": "5.9.0",
+    "@lingui/cli": "workspace:*",
     "@lingui/conf": "5.9.0"
   },
   "peerDependencies": {

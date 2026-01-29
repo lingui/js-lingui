@@ -41,7 +41,7 @@
     "dist/"
   ],
   "dependencies": {
-    "@lingui/conf": "5.9.0",
+    "@lingui/conf": "workspace:*",
     "papaparse": "^5.4.0"
   },
   "devDependencies": {
