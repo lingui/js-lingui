@@ -8,7 +8,7 @@ If you're looking for 5.x documentation, you can find it [here](https://lingui.d
 
 ## Node.js Version
 
-The minimum supported version of Node.js in Lingui v6 is v22.
+The minimum supported version of Node.js in Lingui v6 is v22.19+.
 
 ## ESM-Only Distribution
 
@@ -25,13 +25,7 @@ Note that these excluded packages still use ESM dependencies internally, which m
 
 ### Migration
 
-For most users, **no changes are required**. Modern bundlers (Vite, webpack 5, esbuild, Rollup) and Node.js 20+ handle ESM imports transparently.
-
-If you encounter issues with ESM imports in a non-standard setup:
-
-1. Ensure your bundler is configured to handle ESM modules
-2. If using Node.js directly, ensure you're on Node.js 20+ or update your `package.json` to include `"type": "module"`
-3. Update any `require()` calls to use `import` syntax where applicable
+For most users, **no changes are required**. Modern bundlers (Vite, webpack 5, esbuild, Rollup) and Node.js versions that support `require()` for ESM modules (20.16+, 22.19+, or 24+) handle ESM imports transparently.
 
 ## Deprecated `format` String and `formatOptions` Removed
 
@@ -64,7 +58,9 @@ export default defineConfig({
 });
 ```
 
-If you were using a different format, import the corresponding formatter:
+If you only have `format: "po"` with no `formatOptions` in your configuration, you can simply remove this line entirely. Lingui defaults to the `po` formatter when no format is specified.
+
+If you use a different formatter or have `formatOptions`, you need to import the formatter from its package and pass any options to the function:
 
 - **PO format**: `import { formatter } from "@lingui/format-po"`
 - **PO Gettext format**: `import { formatter } from "@lingui/format-po-gettext"`
