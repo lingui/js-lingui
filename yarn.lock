@@ -3195,7 +3195,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@lingui/babel-plugin-extract-messages@5.9.0, @lingui/babel-plugin-extract-messages@workspace:packages/babel-plugin-extract-messages":
+"@lingui/babel-plugin-extract-messages@5.9.0, @lingui/babel-plugin-extract-messages@workspace:*, @lingui/babel-plugin-extract-messages@workspace:packages/babel-plugin-extract-messages":
   version: 0.0.0-use.local
   resolution: "@lingui/babel-plugin-extract-messages@workspace:packages/babel-plugin-extract-messages"
   dependencies:
@@ -3209,7 +3209,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lingui/babel-plugin-lingui-macro@5.9.0, @lingui/babel-plugin-lingui-macro@workspace:*, @lingui/babel-plugin-lingui-macro@workspace:packages/babel-plugin-lingui-macro":
+"@lingui/babel-plugin-lingui-macro@workspace:*, @lingui/babel-plugin-lingui-macro@workspace:packages/babel-plugin-lingui-macro":
   version: 0.0.0-use.local
   resolution: "@lingui/babel-plugin-lingui-macro@workspace:packages/babel-plugin-lingui-macro"
   dependencies:
@@ -3243,12 +3243,12 @@ __metadata:
     "@babel/parser": ^7.22.0
     "@babel/runtime": ^7.21.0
     "@babel/types": ^7.21.2
-    "@lingui/babel-plugin-extract-messages": 5.9.0
-    "@lingui/babel-plugin-lingui-macro": 5.9.0
-    "@lingui/conf": 5.9.0
-    "@lingui/core": 5.9.0
-    "@lingui/format-po": 5.9.0
-    "@lingui/message-utils": 5.9.0
+    "@lingui/babel-plugin-extract-messages": "workspace:*"
+    "@lingui/babel-plugin-lingui-macro": "workspace:*"
+    "@lingui/conf": "workspace:*"
+    "@lingui/core": "workspace:*"
+    "@lingui/format-po": "workspace:*"
+    "@lingui/message-utils": "workspace:*"
     "@lingui/test-utils": "workspace:*"
     "@types/babel__generator": ^7.27.0
     "@types/convert-source-map": ^2.0.0
@@ -3280,7 +3280,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lingui/conf@5.9.0, @lingui/conf@workspace:packages/conf":
+"@lingui/conf@5.9.0, @lingui/conf@workspace:*, @lingui/conf@workspace:packages/conf":
   version: 0.0.0-use.local
   resolution: "@lingui/conf@workspace:packages/conf"
   dependencies:
@@ -3387,7 +3387,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lingui/format-po@5.9.0, @lingui/format-po@workspace:packages/format-po":
+"@lingui/format-po@5.9.0, @lingui/format-po@workspace:*, @lingui/format-po@workspace:packages/format-po":
   version: 0.0.0-use.local
   resolution: "@lingui/format-po@workspace:packages/format-po"
   dependencies:
@@ -3417,7 +3417,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lingui/message-utils@5.9.0, @lingui/message-utils@workspace:packages/message-utils":
+"@lingui/message-utils@5.9.0, @lingui/message-utils@workspace:*, @lingui/message-utils@workspace:packages/message-utils":
   version: 0.0.0-use.local
   resolution: "@lingui/message-utils@workspace:packages/message-utils"
   dependencies:
