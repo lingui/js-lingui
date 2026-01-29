@@ -328,7 +328,7 @@ export type LinguiConfig = {
      * msg`Hello` // <-- would be correctly picked up by macro
      * ```
      *
-     * @default ["@lingui/macro", "@lingui/core/macro"]
+     * @default [ "@lingui/core/macro"]
      */
     corePackage?: string[]
     /**
@@ -348,7 +348,7 @@ export type LinguiConfig = {
      * <Trans>Hello</Trans> // <-- would be correctly picked up by macro
      * ```
      *
-     * @default ["@lingui/macro", "@lingui/react/macro"]
+     * @default ["@lingui/react/macro"]
      */
     jsxPackage?: string[]
   }

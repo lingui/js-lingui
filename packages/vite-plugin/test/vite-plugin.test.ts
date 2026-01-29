@@ -74,7 +74,7 @@ describe.skipIf(platform() === "win32")("vite-plugin", () => {
     expect(res.warn).toContain("Compilation error for 2 translation(s)")
   })
 
-  it("should report error when @lingui/macro is dynamically imported", async () => {
+  it("should report error when @lingui/core/macro is dynamically imported", async () => {
     expect.assertions(1)
     try {
       await runVite(`dynamic-macro-error`, {}, true)

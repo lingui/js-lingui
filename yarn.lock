@@ -3417,23 +3417,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lingui/macro@workspace:packages/macro":
-  version: 0.0.0-use.local
-  resolution: "@lingui/macro@workspace:packages/macro"
-  dependencies:
-    "@lingui/core": 5.9.0
-    "@lingui/react": 5.9.0
-  peerDependencies:
-    "@lingui/babel-plugin-lingui-macro": 5.9.0
-    babel-plugin-macros: 2 || 3
-  peerDependenciesMeta:
-    "@lingui/babel-plugin-lingui-macro":
-      optional: true
-    babel-plugin-macros:
-      optional: true
-  languageName: unknown
-  linkType: soft
-
 "@lingui/message-utils@5.9.0, @lingui/message-utils@workspace:packages/message-utils":
   version: 0.0.0-use.local
   resolution: "@lingui/message-utils@workspace:packages/message-utils"
@@ -3482,7 +3465,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lingui/react@5.9.0, @lingui/react@workspace:packages/react":
+"@lingui/react@workspace:packages/react":
   version: 0.0.0-use.local
   resolution: "@lingui/react@workspace:packages/react"
   dependencies:

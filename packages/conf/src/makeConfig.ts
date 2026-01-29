@@ -76,8 +76,8 @@ export const defaultConfig = {
   rootDir: ".",
   runtimeConfigModule: ["@lingui/core", "i18n"],
   macro: {
-    corePackage: ["@lingui/macro", "@lingui/core/macro"],
-    jsxPackage: ["@lingui/macro", "@lingui/react/macro"],
+    corePackage: ["@lingui/core/macro"],
+    jsxPackage: ["@lingui/react/macro"],
   },
   sourceLocale: "",
 } satisfies LinguiConfig

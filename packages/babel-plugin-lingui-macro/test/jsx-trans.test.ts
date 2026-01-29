@@ -194,7 +194,7 @@ macroTester({
         stripMessageField: true,
       },
       code: `
-      import { Trans } from '@lingui/macro';
+      import { Trans } from '@lingui/react/macro';
       <Trans id="msg.hello">Hello World</Trans>
     `,
     },
@@ -213,7 +213,7 @@ macroTester({
         stripMessageField: false,
       },
       code: `
-      import { Trans } from '@lingui/macro';
+      import { Trans } from '@lingui/react/macro';
       <Trans id="msg.hello" comment="Hello World">Hello World</Trans>
     `,
     },
