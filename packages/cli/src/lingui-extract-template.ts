@@ -9,14 +9,14 @@ import normalizePath from "normalize-path"
 import {
   createExtractWorkerPool,
   ExtractWorkerPool,
-} from "./api/extractWorkerPool.js"
+} from "./api/workerPools.js"
 import {
   resolveWorkersOptions,
   WorkersOptions,
 } from "./api/resolveWorkersOptions.js"
 import esMain from "es-main"
 
-export type CliExtractTemplateOptions = {
+type CliExtractTemplateOptions = {
   verbose?: boolean
   files?: string[]
   workersOptions: WorkersOptions
@@ -62,7 +62,7 @@ export default async function command(
     )
   } finally {
     if (workerPool) {
-      await workerPool.terminate(true)
+      await workerPool.destroy()
     }
   }
   Object.entries(catalogStats).forEach(([key, value]) => {

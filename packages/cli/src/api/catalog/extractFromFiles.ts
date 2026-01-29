@@ -4,7 +4,7 @@ import path from "path"
 import extract from "../extractors/index.js"
 import { ExtractedCatalogType, MessageOrigin } from "../types.js"
 import { prettyOrigin } from "../utils.js"
-import { ExtractWorkerPool } from "../extractWorkerPool.js"
+import { ExtractWorkerPool } from "../workerPools.js"
 
 function mergeOrigins(prev: MessageOrigin[], next: MessageOrigin | undefined) {
   if (!next) {
@@ -126,19 +126,17 @@ export async function extractFromFilesWithWorkerPool(
   }
 
   await Promise.all(
-    paths.map((filename) =>
-      workerPool.queue(async (worker) => {
-        const result = await worker(filename, resolvedConfigPath)
+    paths.map(async (filename) => {
+      const result = await workerPool.run(filename, resolvedConfigPath)
 
-        if (!result.success) {
-          catalogSuccess = false
-        } else {
-          result.messages.forEach((message) => {
-            mergeExtractedMessage(message, messages, config)
-          })
-        }
-      }),
-    ),
+      if (!result.success) {
+        catalogSuccess = false
+      } else {
+        result.messages.forEach((message) => {
+          mergeExtractedMessage(message, messages, config)
+        })
+      }
+    }),
   )
 
   if (!catalogSuccess) return undefined

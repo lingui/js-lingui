@@ -16,7 +16,7 @@ import {
 import {
   createExtractWorkerPool,
   ExtractWorkerPool,
-} from "./api/extractWorkerPool.js"
+} from "./api/workerPools.js"
 import ms from "ms"
 import { Catalog } from "./api/catalog.js"
 import esMain from "es-main"
@@ -86,7 +86,7 @@ export default async function command(
     )
   } finally {
     if (workerPool) {
-      await workerPool.terminate(true)
+      await workerPool.destroy()
     }
   }
 

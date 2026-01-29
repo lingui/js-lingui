@@ -6,8 +6,7 @@ import { getConfig, LinguiConfigNormalized } from "@lingui/conf"
 import { helpRun } from "./api/help.js"
 import { getCatalogs } from "./api/index.js"
 import { compileLocale } from "./api/compile/compileLocale.js"
-import { Pool, spawn, Worker } from "threads"
-import { CompileWorker } from "./workers/compileWorker.js"
+import { createCompileWorkerPool } from "./api/workerPools.js"
 import {
   resolveWorkersOptions,
   WorkersOptions,
@@ -66,22 +65,14 @@ export async function command(
     options.verbose &&
       console.log(`Use worker pool of size ${options.workersOptions.poolSize}`)
 
-    const pool = Pool(
-      () =>
-        spawn<CompileWorker>(
-          new Worker(
-            process.env.NODE_ENV === "test"
-              ? "./workers/compileWorkerWrapper.jiti.js"
-              : "./workers/compileWorkerWrapper.prod.js",
-          ),
-        ),
-      { size: options.workersOptions.poolSize },
-    )
+    const pool = createCompileWorkerPool({
+      poolSize: options.workersOptions.poolSize,
+    })
 
     try {
-      for (const locale of config.locales) {
-        pool.queue(async (worker) => {
-          const { logs, error, exitProgram } = await worker.compileLocale(
+      await Promise.all(
+        config.locales.map(async (locale) => {
+          const { logs, error, exitProgram } = await pool.run(
             locale,
             options,
             doMerge,
@@ -100,12 +91,10 @@ export async function command(
           if (error) {
             throw error
           }
-        })
-      }
-
-      await pool.completed(true)
+        }),
+      )
     } finally {
-      await pool.terminate(true)
+      await pool.destroy()
     }
   }
 

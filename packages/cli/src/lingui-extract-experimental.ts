@@ -9,16 +9,15 @@ import normalizePath from "normalize-path"
 import { bundleSource } from "./extract-experimental/bundleSource.js"
 import { getEntryPoints } from "./extract-experimental/getEntryPoints.js"
 import pico from "picocolors"
-import { Pool, spawn, Worker } from "threads"
 import {
   resolveWorkersOptions,
   WorkersOptions,
 } from "./api/resolveWorkersOptions.js"
-import { ExtractWorkerFunction } from "./extract-experimental/workers/extractWorker.js"
 import { extractFromBundleAndWrite } from "./extract-experimental/extractFromBundleAndWrite.js"
+import { createExtractExperimentalWorkerPool } from "./api/workerPools.js"
 import esMain from "es-main"
 
-export type CliExtractTemplateOptions = {
+type CliExtractTemplateOptions = {
   verbose?: boolean
   files?: string[]
   template?: boolean
@@ -86,24 +85,16 @@ export default async function command(
     options.verbose &&
       console.log(`Use worker pool of size ${options.workersOptions.poolSize}`)
 
-    const pool = Pool(
-      () =>
-        spawn<ExtractWorkerFunction>(
-          new Worker(
-            process.env.NODE_ENV === "test"
-              ? "./extract-experimental/workers/extractWorkerWrapper.jiti.js"
-              : "./extract-experimental/workers/extractWorkerWrapper.prod.js",
-          ),
-        ),
-      { size: options.workersOptions.poolSize },
-    )
+    const pool = createExtractExperimentalWorkerPool({
+      poolSize: options.workersOptions.poolSize,
+    })
 
     try {
-      for (const outFile of Object.keys(bundleResult.outputs)) {
-        const { entryPoint } = bundleResult.outputs[outFile]!
+      await Promise.all(
+        Object.keys(bundleResult.outputs).map(async (outFile) => {
+          const { entryPoint } = bundleResult.outputs[outFile]!
 
-        pool.queue(async (extractFromBundleAndWrite) => {
-          const result = await extractFromBundleAndWrite(
+          const result = await pool.run(
             resolvedConfigPath,
             entryPoint!,
             outFile,
@@ -124,12 +115,10 @@ export default async function command(
               content: result.stat,
             })
           }
-        })
-      }
-
-      await pool.completed()
+        }),
+      )
     } finally {
-      await pool.terminate(true)
+      await pool.destroy()
     }
   } else {
     const format = await getFormat(

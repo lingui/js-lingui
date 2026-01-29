@@ -29,7 +29,7 @@ import {
   writeFile,
 } from "./utils.js"
 import { AllCatalogsType, CatalogType, ExtractedCatalogType } from "./types.js"
-import { ExtractWorkerPool } from "./extractWorkerPool.js"
+import { ExtractWorkerPool } from "./workerPools.js"
 
 const LOCALE = "{locale}"
 const LOCALE_SUFFIX_RE = /\{locale\}.*$/
