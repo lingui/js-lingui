@@ -55,7 +55,6 @@
   },
   "dependencies": {
     "@babel/core": "^7.20.12",
-    "@babel/runtime": "^7.20.13",
     "@babel/types": "^7.20.7",
     "@lingui/conf": "workspace:*",
     "@lingui/core": "workspace:*",

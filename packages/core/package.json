@@ -48,9 +48,8 @@
     "macro/index.js"
   ],
   "dependencies": {
-    "@babel/runtime": "^7.20.13",
-    "@lingui/message-utils": "workspace:*",
-    "@lingui/babel-plugin-lingui-macro": "workspace:*"
+    "@lingui/babel-plugin-lingui-macro": "workspace:*",
+    "@lingui/message-utils": "workspace:*"
   },
   "devDependencies": {
     "@lingui/test-utils": "workspace:*",

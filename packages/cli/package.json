@@ -58,7 +58,6 @@
     "@babel/core": "^7.21.0",
     "@babel/generator": "^7.28.5",
     "@babel/parser": "^7.22.0",
-    "@babel/runtime": "^7.21.0",
     "@babel/types": "^7.21.2",
     "@lingui/babel-plugin-extract-messages": "workspace:*",
     "@lingui/babel-plugin-lingui-macro": "workspace:*",

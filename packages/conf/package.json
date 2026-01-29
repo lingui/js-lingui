@@ -33,7 +33,6 @@
     ".": "./dist/index.mjs"
   },
   "dependencies": {
-    "@babel/runtime": "^7.20.13",
     "jest-validate": "^29.4.3",
     "jiti": "^2.5.1",
     "lilconfig": "^3.1.3",

@@ -57,7 +57,6 @@
     "dist/"
   ],
   "dependencies": {
-    "@babel/runtime": "^7.20.13",
     "@lingui/cli": "workspace:*",
     "@lingui/conf": "workspace:*",
     "memoize-one": "^6.0.0"

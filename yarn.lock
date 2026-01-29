@@ -1370,7 +1370,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.20.13, @babel/runtime@npm:^7.21.0, @babel/runtime@npm:^7.8.4":
+"@babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.20.13, @babel/runtime@npm:^7.8.4":
   version: 7.21.0
   resolution: "@babel/runtime@npm:7.21.0"
   dependencies:
@@ -3215,7 +3215,6 @@ __metadata:
   dependencies:
     "@babel/core": ^7.20.12
     "@babel/parser": ^7.20.15
-    "@babel/runtime": ^7.20.13
     "@babel/traverse": ^7.20.12
     "@babel/types": ^7.20.7
     "@lingui/conf": "workspace:*"
@@ -3241,7 +3240,6 @@ __metadata:
     "@babel/core": ^7.21.0
     "@babel/generator": ^7.28.5
     "@babel/parser": ^7.22.0
-    "@babel/runtime": ^7.21.0
     "@babel/types": ^7.21.2
     "@lingui/babel-plugin-extract-messages": "workspace:*"
     "@lingui/babel-plugin-lingui-macro": "workspace:*"
@@ -3284,7 +3282,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@lingui/conf@workspace:packages/conf"
   dependencies:
-    "@babel/runtime": ^7.20.13
     "@lingui/test-utils": "workspace:*"
     jest-validate: ^29.4.3
     jiti: ^2.5.1
@@ -3299,17 +3296,14 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@lingui/core@workspace:packages/core"
   dependencies:
-    "@babel/runtime": ^7.20.13
+    "@lingui/babel-plugin-lingui-macro": "workspace:*"
     "@lingui/message-utils": "workspace:*"
     "@lingui/test-utils": "workspace:*"
     unbuild: 3.6.1
     vitest: 4.0.18
   peerDependencies:
-    "@lingui/babel-plugin-lingui-macro": "workspace:*"
     babel-plugin-macros: 2 || 3
   peerDependenciesMeta:
-    "@lingui/babel-plugin-lingui-macro":
-      optional: true
     babel-plugin-macros:
       optional: true
   languageName: unknown
@@ -3404,7 +3398,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@lingui/loader@workspace:packages/loader"
   dependencies:
-    "@babel/runtime": ^7.20.13
     "@lingui/cli": "workspace:*"
     "@lingui/conf": "workspace:*"
     "@lingui/format-json": "workspace:*"
@@ -3443,7 +3436,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@lingui/metro-transformer@workspace:packages/metro-transformer"
   dependencies:
-    "@babel/runtime": ^7.20.13
     "@lingui/cli": "workspace:*"
     "@lingui/conf": "workspace:*"
     "@lingui/format-json": "workspace:*"
@@ -3469,7 +3461,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@lingui/react@workspace:packages/react"
   dependencies:
-    "@babel/runtime": ^7.20.13
+    "@lingui/babel-plugin-lingui-macro": "workspace:*"
     "@lingui/core": 5.9.0
     "@lingui/test-utils": "workspace:*"
     "@testing-library/react": ^14.0.0
@@ -3482,12 +3474,9 @@ __metadata:
     unbuild: 3.6.1
     vitest: 4.0.18
   peerDependencies:
-    "@lingui/babel-plugin-lingui-macro": "workspace:*"
     babel-plugin-macros: 2 || 3
     react: ^16.14.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
   peerDependenciesMeta:
-    "@lingui/babel-plugin-lingui-macro":
-      optional: true
     babel-plugin-macros:
       optional: true
   languageName: unknown
