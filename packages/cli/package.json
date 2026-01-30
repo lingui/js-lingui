@@ -67,7 +67,7 @@
     "@lingui/message-utils": "workspace:*",
     "chokidar": "5.0.0",
     "cli-table3": "^0.6.5",
-    "commander": "^10.0.0",
+    "commander": "^14.0.2",
     "convert-source-map": "^2.0.0",
     "es-main": "^1.4.0",
     "esbuild": "^0.25.1",
