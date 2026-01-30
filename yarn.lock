@@ -3371,8 +3371,9 @@ __metadata:
     "@lingui/message-utils": "workspace:*"
     "@lingui/test-utils": "workspace:*"
     "@messageformat/parser": ^5.0.0
+    "@types/plurals-cldr": ^1.0.5
     cldr-core: ^45.0.0
-    node-gettext: ^3.0.0
+    make-plural-compiler: ^6.1.0
     plurals-cldr: ^2.0.1
     pofile: ^1.1.4
     unbuild: 3.6.1
@@ -5262,6 +5263,13 @@ __metadata:
   version: 4.0.0
   resolution: "@types/parse-json@npm:4.0.0"
   checksum: fd6bce2b674b6efc3db4c7c3d336bd70c90838e8439de639b909ce22f3720d21344f52427f1d9e57b265fcb7f6c018699b99e5e0c208a1a4823014269a6bf35b
+  languageName: node
+  linkType: hard
+
+"@types/plurals-cldr@npm:^1.0.5":
+  version: 1.0.5
+  resolution: "@types/plurals-cldr@npm:1.0.5"
+  checksum: e1ee01ec171dc4fd811edc95d501375b957c5a535dd819b6f5bcd607bc90673068c371b4f49095fb0498e631a20c83ffd6aa4a300ecf72b2ae3668f578830873
   languageName: node
   linkType: hard
 
@@ -11887,13 +11895,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lodash.get@npm:^4.4.2":
-  version: 4.4.2
-  resolution: "lodash.get@npm:4.4.2"
-  checksum: e403047ddb03181c9d0e92df9556570e2b67e0f0a930fcbbbd779370972368f5568e914f913e93f3b08f6d492abc71e14d4e9b7a18916c31fa04bd2306efe545
-  languageName: node
-  linkType: hard
-
 "lodash.ismatch@npm:^4.4.0":
   version: 4.4.0
   resolution: "lodash.ismatch@npm:4.4.0"
@@ -12154,6 +12155,13 @@ __metadata:
     promise-retry: ^2.0.1
     ssri: ^12.0.0
   checksum: 6fb2fee6da3d98f1953b03d315826b5c5a4ea1f908481afc113782d8027e19f080c85ae998454de4e5f27a681d3ec58d57278f0868d4e0b736f51d396b661691
+  languageName: node
+  linkType: hard
+
+"make-plural-compiler@npm:^6.1.0":
+  version: 6.1.0
+  resolution: "make-plural-compiler@npm:6.1.0"
+  checksum: dd79c613a50e5a4ff8b48a6edf52624bf39c3cbb5f410c8a6019c5a7abaa61d3f56eb544253658d8d2fd86d238b98aaf04966dec6be6fef42bca0de67e54a232
   languageName: node
   linkType: hard
 
@@ -12776,15 +12784,6 @@ __metadata:
     "@lingui/core": "workspace:*"
   languageName: unknown
   linkType: soft
-
-"node-gettext@npm:^3.0.0":
-  version: 3.0.0
-  resolution: "node-gettext@npm:3.0.0"
-  dependencies:
-    lodash.get: ^4.4.2
-  checksum: c4864c5c3372d095d95f4925e7468c0fabd61542b3ac100d45452261bd30ea538cd95d40b6f149a04e098f6783062243c133e17d66161b1cfc14f0f23600368d
-  languageName: node
-  linkType: hard
 
 "node-gyp@npm:^11.0.0":
   version: 11.4.2
