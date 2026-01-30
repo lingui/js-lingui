@@ -175,6 +175,17 @@ export type ExperimentalExtractorOptions = {
   output: string
 
   resolveEsbuildOptions?: (options: any) => any
+
+  /**
+   * Enable Vue Reactivity Transform in the vue extractor.
+   * When enabled, destructured props from defineProps() will be transformed to `__props.propName`
+   * to match the runtime behavior of Vue's reactivity transform.
+   *
+   * Note: This is experimental and requires your Vue setup to use reactivityTransform.
+   *
+   * @default false
+   */
+  vueReactivityTransform?: boolean
 }
 
 export type LinguiConfig = {

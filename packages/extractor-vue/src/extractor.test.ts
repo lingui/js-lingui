@@ -83,4 +83,38 @@ describe("vue extractor", () => {
 
     expect(messages).toMatchSnapshot()
   })
+
+  it("should extract message with compiled props transformations", async () => {
+    const filePath = path.resolve(__dirname, "fixtures/props-destructuring.vue")
+    const code = fs.readFileSync(filePath, "utf-8")
+
+    let messages: ExtractedMessage[] = []
+
+    // Enable reactivityTransform for this test
+    const configWithReactivityTransform = makeConfig({
+      ...linguiConfig,
+      experimental: {
+        extractor: {
+          entries: [],
+          output: "",
+          vueReactivityTransform: true,
+        },
+      },
+    })
+
+    await vueExtractor.extract(
+      "props-destructuring.vue",
+      code,
+      (res) => {
+        messages.push(res)
+      },
+      {
+        linguiConfig: configWithReactivityTransform,
+      }
+    )
+
+    messages = normalizePath(messages)
+
+    expect(messages).toMatchSnapshot()
+  })
 })
