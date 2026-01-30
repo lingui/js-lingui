@@ -12,7 +12,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -32,7 +32,7 @@ jobs:
           export-plural-rules --output=gettext-plurals.json json
 
       - name: Setup node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
 
       - run: npx prettier --write packages/format-po-gettext/gettext-plurals.json
 
@@ -46,9 +46,10 @@ jobs:
             echo "changed=true" >> $GITHUB_OUTPUT
             echo "Target file changed"
           fi
+
       - name: Create Pull Request
         if: steps.diff.outputs.changed == 'true'
-        uses: peter-evans/create-pull-request@v6
+        uses: peter-evans/create-pull-request@v8
         with:
           commit-message: "chore: update CLDR plural rules"
           title: "chore: update CLDR plural rules"
