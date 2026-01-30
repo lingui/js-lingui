@@ -1,71 +1,7 @@
-import {
-  parse,
-  compileTemplate,
-  compileScript,
-  SFCBlock,
-  SFCDescriptor,
-} from "@vue/compiler-sfc"
+import { compileTemplate, parse, SFCBlock } from "@vue/compiler-sfc"
 import { extractor } from "@lingui/cli/api"
 import type { ExtractorCtx, ExtractorType } from "@lingui/conf"
-
-type ScriptTarget = {
-  content?: string
-  map?: unknown
-  isTs: boolean
-}
-
-function compileScriptSetup(
-  descriptor: SFCDescriptor,
-  filename: string,
-  reactivityTransform: boolean
-): { script?: ScriptTarget; scriptSetup: ScriptTarget } {
-  const isTsScript = descriptor.script?.lang === "ts"
-  const isTsScriptSetup = descriptor.scriptSetup?.lang === "ts"
-
-  if (!reactivityTransform || !descriptor.scriptSetup) {
-    return {
-      script: {
-        content: descriptor.script?.content,
-        map: descriptor.script?.map,
-        isTs: isTsScript,
-      },
-      scriptSetup: {
-        content: descriptor.scriptSetup?.content,
-        map: descriptor.scriptSetup?.map,
-        isTs: isTsScriptSetup,
-      },
-    }
-  }
-
-  try {
-    const compiled = compileScript(descriptor, {
-      id: filename,
-      sourceMap: true,
-      reactivityTransform,
-    })
-
-    return {
-      scriptSetup: {
-        content: compiled.content,
-        map: compiled.map,
-        isTs: isTsScriptSetup,
-      },
-    }
-  } catch (e) {
-    return {
-      script: {
-        content: descriptor.script?.content,
-        map: descriptor.script?.map,
-        isTs: isTsScript,
-      },
-      scriptSetup: {
-        content: descriptor.scriptSetup.content,
-        map: descriptor.scriptSetup.map,
-        isTs: isTsScriptSetup,
-      },
-    }
-  }
-}
+import { compileScriptSetup, ScriptTarget } from "./compile-script-setup"
 
 export const vueExtractor: ExtractorType = {
   match(filename: string) {
@@ -75,7 +11,7 @@ export const vueExtractor: ExtractorType = {
     filename: string,
     code: string,
     onMessageExtracted,
-    ctx: ExtractorCtx
+    ctx: ExtractorCtx,
   ) {
     const { descriptor } = parse(code, {
       sourceMap: true,
@@ -88,10 +24,10 @@ export const vueExtractor: ExtractorType = {
     const reactivityTransform =
       ctx.linguiConfig.experimental?.extractor?.vueReactivityTransform ?? false
 
-    const { script, scriptSetup } = compileScriptSetup(
+    const compiledScripts = compileScriptSetup(
       descriptor,
       filename,
-      reactivityTransform
+      reactivityTransform,
     )
 
     const compiledTemplate =
@@ -107,11 +43,10 @@ export const vueExtractor: ExtractorType = {
         },
       })
 
-    const targets = [
-      script,
-      scriptSetup,
+    const targets: ScriptTarget[] = [
+      ...compiledScripts,
       {
-        content: compiledTemplate?.code,
+        source: compiledTemplate?.code ?? "",
         map: compiledTemplate?.map,
         isTs: isTsBlock(descriptor.script) || isTsBlock(descriptor.scriptSetup),
       },
@@ -121,21 +56,19 @@ export const vueExtractor: ExtractorType = {
       targets
         .filter(
           (target): target is ScriptTarget =>
-            target != null &&
-            typeof target.content === "string" &&
-            target.content !== ""
+            target != null && target.source !== "",
         )
-        .map(({ content, map, isTs }) =>
+        .map(({ source, map, isTs }) =>
           extractor.extract(
             filename + (isTs ? ".ts" : ""),
-            content ?? "",
+            source,
             onMessageExtracted,
             {
               sourceMaps: map,
               ...ctx,
-            }
-          )
-        )
+            },
+          ),
+        ),
     )
   },
 }
