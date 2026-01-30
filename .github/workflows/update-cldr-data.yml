@@ -5,7 +5,6 @@ on:
     # At 00:00 on the 1st day of every month
     - cron: "0 0 1 * *"
   workflow_dispatch: {}
-  pull_request:
 
 jobs:
   update-plurals:
@@ -36,10 +35,6 @@ jobs:
         uses: actions/setup-node@v4
 
       - run: npx prettier --write packages/format-po-gettext/gettext-plurals.json
-
-      - name: Show diff for target file
-        run: |
-          git diff -- packages/format-po-gettext/gettext-plurals.json || true
 
       - name: Check if target file changed
         id: diff
