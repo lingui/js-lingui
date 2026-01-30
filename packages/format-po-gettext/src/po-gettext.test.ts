@@ -165,7 +165,6 @@ describe("po-gettext format", () => {
 msgid ""
 msgstr ""
 "Language: cs\n"
-"Plural-Forms: nplurals = 3; plural = (n === 1 ? 0 : (n >= 2 && n <= 4) ? 1 : 2)\n"
 
 #. js-lingui:icu=%7B#%2C+plural%2C+one+%7Bday%7D+other+%7Bdays%7D%7D&pluralize_on=#
 msgid "# day"
@@ -641,7 +640,6 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\\n"
 "Content-Transfer-Encoding: 8bit\\n"
 "X-Generator: @lingui/cli\\n"
-"Plural-Forms: nplurals=2; plural=n == 1 ? 0 : 1;\\n"
 "Language: en\\n"
 
 #: src/App.tsx:60
@@ -682,7 +680,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\\n"
 "X-Generator: @lingui/cli\\n"
 "Language: en\\n"
-"Plural-Forms: nplurals=2; plural=n == 1 ? 0 : 1;\\n"
 
 #: src/App.tsx:60
 #. js-lingui:icu=%7Bcount%2C+plural%2C+one+%7Bone+book%7D+other+%7Bmany+books%7D%7D&pluralize_on=count

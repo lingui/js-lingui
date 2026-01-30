@@ -3371,10 +3371,6 @@ __metadata:
     "@lingui/message-utils": "workspace:*"
     "@lingui/test-utils": "workspace:*"
     "@messageformat/parser": ^5.0.0
-    "@types/plurals-cldr": ^1.0.5
-    cldr-core: ^45.0.0
-    make-plural-compiler: ^6.1.0
-    plurals-cldr: ^2.0.1
     pofile: ^1.1.4
     unbuild: 3.6.1
     vitest: 4.0.18
@@ -5266,13 +5262,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/plurals-cldr@npm:^1.0.5":
-  version: 1.0.5
-  resolution: "@types/plurals-cldr@npm:1.0.5"
-  checksum: e1ee01ec171dc4fd811edc95d501375b957c5a535dd819b6f5bcd607bc90673068c371b4f49095fb0498e631a20c83ffd6aa4a300ecf72b2ae3668f578830873
-  languageName: node
-  linkType: hard
-
 "@types/prop-types@npm:*":
   version: 15.7.5
   resolution: "@types/prop-types@npm:15.7.5"
@@ -6925,13 +6914,6 @@ __metadata:
   dependencies:
     consola: ^3.2.3
   checksum: 3fbcaaea92d328deddb5aba7d629d9076d4f1aa0338f59db7ea647a8f51eedc14b7f6218c87ad03c9e3c126213ba87d13d7774f9c30d64209f4b074aa83bd6ab
-  languageName: node
-  linkType: hard
-
-"cldr-core@npm:^45.0.0":
-  version: 45.0.0
-  resolution: "cldr-core@npm:45.0.0"
-  checksum: 06e39807a90483dfb7f2ba69c04e6cf15dd8ca7558cd772a3cd23db582ae95845a169917e070844b3b25d194c412f7e8b3d953ff88006b424803912c93603290
   languageName: node
   linkType: hard
 
@@ -12158,13 +12140,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"make-plural-compiler@npm:^6.1.0":
-  version: 6.1.0
-  resolution: "make-plural-compiler@npm:6.1.0"
-  checksum: dd79c613a50e5a4ff8b48a6edf52624bf39c3cbb5f410c8a6019c5a7abaa61d3f56eb544253658d8d2fd86d238b98aaf04966dec6be6fef42bca0de67e54a232
-  languageName: node
-  linkType: hard
-
 "map-obj@npm:^1.0.0":
   version: 1.0.1
   resolution: "map-obj@npm:1.0.1"
@@ -14018,13 +13993,6 @@ __metadata:
     exsolve: ^1.0.7
     pathe: ^2.0.3
   checksum: 33c30b442662a0f2b62fd16f39ae2beeb4cdf3511699e574765b7451e179937847de6e696bbab50bfbd41d2c2e4a99b61ebc7078abf91ea8573a7f16cc11d26a
-  languageName: node
-  linkType: hard
-
-"plurals-cldr@npm:^2.0.1":
-  version: 2.0.1
-  resolution: "plurals-cldr@npm:2.0.1"
-  checksum: 26b2392016111e21c29ccb88f36a0a1252bc99874befbc40af1885cc9e222e2b1e2badfe6527965e082556985be0d8dae509bf14c78837cbec098b3bcae337f1
   languageName: node
   linkType: hard
 
