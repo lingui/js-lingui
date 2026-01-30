@@ -30,6 +30,23 @@ export default defineConfig({
 });
 ```
 
+## Options
+
+### Vue Reactivity Transform
+
+If your project uses Vue's [Reactive Props Destructure](https://github.com/vuejs/rfcs/discussions/502), enable `vueReactivityTransform` to ensure message IDs match between extraction and runtime:
+
+```js title="lingui.config.{js,ts}"
+export default defineConfig({
+  // ... other config
+  experimental: {
+    extractor: {
+      vueReactivityTransform: true, // default: false
+    },
+  },
+});
+```
+
 ## See Also
 
 - [Message Extraction](/guides/message-extraction)
