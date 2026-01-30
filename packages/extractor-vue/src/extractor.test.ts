@@ -110,7 +110,7 @@ describe("vue extractor", () => {
       },
       {
         linguiConfig: configWithReactivityTransform,
-      }
+      },
     )
 
     messages = normalizePath(messages)
