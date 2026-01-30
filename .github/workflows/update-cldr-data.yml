@@ -32,15 +32,20 @@ jobs:
         run: |
           export-plural-rules --output=gettext-plurals.json json
 
-      - name: Check for changes
+      - name: Show diff for target file
+        run: |
+          git diff -- packages/format-po-gettext/gettext-plurals.json || true
+
+      - name: Check if target file changed
         id: diff
         run: |
-          if git diff --quiet; then
+          if git diff --quiet -- packages/format-po-gettext/gettext-plurals.json; then
             echo "changed=false" >> $GITHUB_OUTPUT
+            echo "No changes detected in target file"
           else
             echo "changed=true" >> $GITHUB_OUTPUT
+            echo "Target file changed"
           fi
-
       - name: Create Pull Request
         if: steps.diff.outputs.changed == 'true'
         uses: peter-evans/create-pull-request@v6
