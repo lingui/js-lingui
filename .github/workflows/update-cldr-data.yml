@@ -32,6 +32,11 @@ jobs:
         run: |
           export-plural-rules --output=gettext-plurals.json json
 
+      - name: Setup node
+        uses: actions/setup-node@v4
+
+      - run: npx prettier --write packages/format-po-gettext/gettext-plurals.json
+
       - name: Show diff for target file
         run: |
           git diff -- packages/format-po-gettext/gettext-plurals.json || true
