@@ -1370,7 +1370,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.20.13, @babel/runtime@npm:^7.21.0, @babel/runtime@npm:^7.8.4":
+"@babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.20.13, @babel/runtime@npm:^7.8.4":
   version: 7.21.0
   resolution: "@babel/runtime@npm:7.21.0"
   dependencies:
@@ -3195,7 +3195,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@lingui/babel-plugin-extract-messages@5.9.0, @lingui/babel-plugin-extract-messages@workspace:packages/babel-plugin-extract-messages":
+"@lingui/babel-plugin-extract-messages@workspace:*, @lingui/babel-plugin-extract-messages@workspace:packages/babel-plugin-extract-messages":
   version: 0.0.0-use.local
   resolution: "@lingui/babel-plugin-extract-messages@workspace:packages/babel-plugin-extract-messages"
   dependencies:
@@ -3209,18 +3209,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lingui/babel-plugin-lingui-macro@5.9.0, @lingui/babel-plugin-lingui-macro@workspace:*, @lingui/babel-plugin-lingui-macro@workspace:packages/babel-plugin-lingui-macro":
+"@lingui/babel-plugin-lingui-macro@workspace:*, @lingui/babel-plugin-lingui-macro@workspace:packages/babel-plugin-lingui-macro":
   version: 0.0.0-use.local
   resolution: "@lingui/babel-plugin-lingui-macro@workspace:packages/babel-plugin-lingui-macro"
   dependencies:
     "@babel/core": ^7.20.12
     "@babel/parser": ^7.20.15
-    "@babel/runtime": ^7.20.13
     "@babel/traverse": ^7.20.12
     "@babel/types": ^7.20.7
-    "@lingui/conf": 5.9.0
-    "@lingui/core": 5.9.0
-    "@lingui/message-utils": 5.9.0
+    "@lingui/conf": "workspace:*"
+    "@lingui/message-utils": "workspace:*"
     "@types/babel-plugin-macros": ^2.8.5
     babel-plugin-react-compiler: ^1.0.0
     prettier: 3.8.1
@@ -3234,21 +3232,20 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lingui/cli@5.9.0, @lingui/cli@workspace:*, @lingui/cli@workspace:packages/cli":
+"@lingui/cli@workspace:*, @lingui/cli@workspace:packages/cli":
   version: 0.0.0-use.local
   resolution: "@lingui/cli@workspace:packages/cli"
   dependencies:
     "@babel/core": ^7.21.0
     "@babel/generator": ^7.28.5
     "@babel/parser": ^7.22.0
-    "@babel/runtime": ^7.21.0
     "@babel/types": ^7.21.2
-    "@lingui/babel-plugin-extract-messages": 5.9.0
-    "@lingui/babel-plugin-lingui-macro": 5.9.0
-    "@lingui/conf": 5.9.0
-    "@lingui/core": 5.9.0
-    "@lingui/format-po": 5.9.0
-    "@lingui/message-utils": 5.9.0
+    "@lingui/babel-plugin-extract-messages": "workspace:*"
+    "@lingui/babel-plugin-lingui-macro": "workspace:*"
+    "@lingui/conf": "workspace:*"
+    "@lingui/core": "workspace:*"
+    "@lingui/format-po": "workspace:*"
+    "@lingui/message-utils": "workspace:*"
     "@lingui/test-utils": "workspace:*"
     "@types/babel__generator": ^7.27.0
     "@types/convert-source-map": ^2.0.0
@@ -3280,11 +3277,10 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lingui/conf@5.9.0, @lingui/conf@workspace:packages/conf":
+"@lingui/conf@5.9.0, @lingui/conf@workspace:*, @lingui/conf@workspace:packages/conf":
   version: 0.0.0-use.local
   resolution: "@lingui/conf@workspace:packages/conf"
   dependencies:
-    "@babel/runtime": ^7.20.13
     "@lingui/test-utils": "workspace:*"
     jest-validate: ^29.4.3
     jiti: ^2.5.1
@@ -3299,17 +3295,14 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@lingui/core@workspace:packages/core"
   dependencies:
-    "@babel/runtime": ^7.20.13
-    "@lingui/message-utils": 5.9.0
+    "@lingui/babel-plugin-lingui-macro": "workspace:*"
+    "@lingui/message-utils": "workspace:*"
     "@lingui/test-utils": "workspace:*"
     unbuild: 3.6.1
     vitest: 4.0.18
   peerDependencies:
-    "@lingui/babel-plugin-lingui-macro": 5.9.0
     babel-plugin-macros: 2 || 3
   peerDependenciesMeta:
-    "@lingui/babel-plugin-lingui-macro":
-      optional: true
     babel-plugin-macros:
       optional: true
   languageName: unknown
@@ -3339,9 +3332,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@lingui/extractor-vue@workspace:packages/extractor-vue"
   dependencies:
-    "@lingui/babel-plugin-extract-messages": 5.9.0
-    "@lingui/cli": 5.9.0
-    "@lingui/conf": 5.9.0
+    "@lingui/babel-plugin-extract-messages": "workspace:*"
+    "@lingui/cli": "workspace:*"
+    "@lingui/conf": "workspace:*"
     "@vue/compiler-sfc": ^3.2.47
     unbuild: 3.6.1
     vitest: 4.0.18
@@ -3352,14 +3345,14 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@lingui/format-csv@workspace:packages/format-csv"
   dependencies:
-    "@lingui/conf": 5.9.0
+    "@lingui/conf": "workspace:*"
     papaparse: ^5.4.0
     unbuild: 3.6.1
     vitest: 4.0.18
   languageName: unknown
   linkType: soft
 
-"@lingui/format-json@5.9.0, @lingui/format-json@workspace:^, @lingui/format-json@workspace:packages/format-json":
+"@lingui/format-json@workspace:*, @lingui/format-json@workspace:^, @lingui/format-json@workspace:packages/format-json":
   version: 0.0.0-use.local
   resolution: "@lingui/format-json@workspace:packages/format-json"
   dependencies:
@@ -3373,9 +3366,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@lingui/format-po-gettext@workspace:packages/format-po-gettext"
   dependencies:
-    "@lingui/conf": 5.9.0
-    "@lingui/format-po": 5.9.0
-    "@lingui/message-utils": 5.9.0
+    "@lingui/conf": "workspace:*"
+    "@lingui/format-po": "workspace:*"
+    "@lingui/message-utils": "workspace:*"
     "@lingui/test-utils": "workspace:*"
     "@messageformat/parser": ^5.0.0
     cldr-core: ^45.0.0
@@ -3387,12 +3380,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lingui/format-po@5.9.0, @lingui/format-po@workspace:packages/format-po":
+"@lingui/format-po@workspace:*, @lingui/format-po@workspace:packages/format-po":
   version: 0.0.0-use.local
   resolution: "@lingui/format-po@workspace:packages/format-po"
   dependencies:
-    "@lingui/conf": 5.9.0
-    "@lingui/message-utils": 5.9.0
+    "@lingui/conf": "workspace:*"
+    "@lingui/message-utils": "workspace:*"
     "@lingui/test-utils": "workspace:*"
     pofile: ^1.1.4
     unbuild: 2.0.0
@@ -3404,29 +3397,15 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@lingui/loader@workspace:packages/loader"
   dependencies:
-    "@babel/runtime": ^7.20.13
-    "@lingui/cli": 5.9.0
-    "@lingui/conf": 5.9.0
-    "@lingui/format-json": 5.9.0
+    "@lingui/cli": "workspace:*"
+    "@lingui/conf": "workspace:*"
+    "@lingui/format-json": "workspace:*"
     jiti: ^2.6.1
     unbuild: 3.6.1
     vitest: 4.0.18
     webpack: ^5.76.1
   peerDependencies:
     webpack: ^5.0.0
-  languageName: unknown
-  linkType: soft
-
-"@lingui/message-utils@5.9.0, @lingui/message-utils@workspace:packages/message-utils":
-  version: 0.0.0-use.local
-  resolution: "@lingui/message-utils@workspace:packages/message-utils"
-  dependencies:
-    "@lingui/test-utils": "workspace:*"
-    "@messageformat/date-skeleton": ^1.1.0
-    "@messageformat/parser": ^5.0.0
-    js-sha256: ^0.10.1
-    unbuild: 3.6.1
-    vitest: 4.0.18
   languageName: unknown
   linkType: soft
 
@@ -3439,14 +3418,26 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@lingui/message-utils@workspace:*, @lingui/message-utils@workspace:packages/message-utils":
+  version: 0.0.0-use.local
+  resolution: "@lingui/message-utils@workspace:packages/message-utils"
+  dependencies:
+    "@lingui/test-utils": "workspace:*"
+    "@messageformat/date-skeleton": ^1.1.0
+    "@messageformat/parser": ^5.0.0
+    js-sha256: ^0.10.1
+    unbuild: 3.6.1
+    vitest: 4.0.18
+  languageName: unknown
+  linkType: soft
+
 "@lingui/metro-transformer@workspace:packages/metro-transformer":
   version: 0.0.0-use.local
   resolution: "@lingui/metro-transformer@workspace:packages/metro-transformer"
   dependencies:
-    "@babel/runtime": ^7.20.13
-    "@lingui/cli": 5.9.0
-    "@lingui/conf": 5.9.0
-    "@lingui/format-json": 5.9.0
+    "@lingui/cli": "workspace:*"
+    "@lingui/conf": "workspace:*"
+    "@lingui/format-json": "workspace:*"
     memoize-one: ^6.0.0
     unbuild: 3.6.1
     vitest: 4.0.18
@@ -3469,7 +3460,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@lingui/react@workspace:packages/react"
   dependencies:
-    "@babel/runtime": ^7.20.13
+    "@lingui/babel-plugin-lingui-macro": "workspace:*"
     "@lingui/core": 5.9.0
     "@lingui/test-utils": "workspace:*"
     "@testing-library/react": ^14.0.0
@@ -3482,12 +3473,9 @@ __metadata:
     unbuild: 3.6.1
     vitest: 4.0.18
   peerDependencies:
-    "@lingui/babel-plugin-lingui-macro": 5.9.0
     babel-plugin-macros: 2 || 3
     react: ^16.14.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
   peerDependenciesMeta:
-    "@lingui/babel-plugin-lingui-macro":
-      optional: true
     babel-plugin-macros:
       optional: true
   languageName: unknown
@@ -3515,7 +3503,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@lingui/vite-plugin@workspace:packages/vite-plugin"
   dependencies:
-    "@lingui/cli": 5.9.0
+    "@lingui/cli": "workspace:*"
     "@lingui/conf": 5.9.0
     "@lingui/core": "workspace:^"
     "@lingui/format-json": "workspace:^"

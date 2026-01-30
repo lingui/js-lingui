@@ -65,20 +65,16 @@
     "macro/index.js"
   ],
   "peerDependencies": {
-    "@lingui/babel-plugin-lingui-macro": "5.9.0",
     "babel-plugin-macros": "2 || 3",
     "react": "^16.14.0 || ^17.0.0 || ^18.0.0 || ^19.0.0"
   },
   "peerDependenciesMeta": {
-    "@lingui/babel-plugin-lingui-macro": {
-      "optional": true
-    },
     "babel-plugin-macros": {
       "optional": true
     }
   },
   "dependencies": {
-    "@babel/runtime": "^7.20.13",
+    "@lingui/babel-plugin-lingui-macro": "workspace:*",
     "@lingui/core": "5.9.0"
   },
   "devDependencies": {

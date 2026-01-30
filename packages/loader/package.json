@@ -43,12 +43,11 @@
     "dist/"
   ],
   "dependencies": {
-    "@babel/runtime": "^7.20.13",
-    "@lingui/cli": "5.9.0",
-    "@lingui/conf": "5.9.0"
+    "@lingui/cli": "workspace:*",
+    "@lingui/conf": "workspace:*"
   },
   "devDependencies": {
-    "@lingui/format-json": "5.9.0",
+    "@lingui/format-json": "workspace:*",
     "jiti": "^2.6.1",
     "unbuild": "3.6.1",
     "vitest": "4.0.18",

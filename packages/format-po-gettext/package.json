@@ -43,9 +43,9 @@
     "dist/"
   ],
   "dependencies": {
-    "@lingui/conf": "5.9.0",
-    "@lingui/format-po": "5.9.0",
-    "@lingui/message-utils": "5.9.0",
+    "@lingui/conf": "workspace:*",
+    "@lingui/format-po": "workspace:*",
+    "@lingui/message-utils": "workspace:*",
     "@messageformat/parser": "^5.0.0",
     "cldr-core": "^45.0.0",
     "node-gettext": "^3.0.0",

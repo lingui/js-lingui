@@ -48,8 +48,8 @@
     "macro/index.js"
   ],
   "dependencies": {
-    "@babel/runtime": "^7.20.13",
-    "@lingui/message-utils": "5.9.0"
+    "@lingui/babel-plugin-lingui-macro": "workspace:*",
+    "@lingui/message-utils": "workspace:*"
   },
   "devDependencies": {
     "@lingui/test-utils": "workspace:*",
@@ -57,13 +57,9 @@
     "vitest": "4.0.18"
   },
   "peerDependencies": {
-    "@lingui/babel-plugin-lingui-macro": "5.9.0",
     "babel-plugin-macros": "2 || 3"
   },
   "peerDependenciesMeta": {
-    "@lingui/babel-plugin-lingui-macro": {
-      "optional": true
-    },
     "babel-plugin-macros": {
       "optional": true
     }
