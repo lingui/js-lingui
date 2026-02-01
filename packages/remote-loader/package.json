@@ -1,6 +1,7 @@
 {
   "name": "@lingui/remote-loader",
   "version": "3.11.0",
+  "type": "module",
   "sideEffects": false,
   "private": true,
   "description": "Load remotely your translations",

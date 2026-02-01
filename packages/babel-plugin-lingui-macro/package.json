@@ -1,6 +1,7 @@
 {
   "name": "@lingui/babel-plugin-lingui-macro",
   "version": "5.9.0",
+  "type": "module",
   "description": "Babel plugin for transforming Lingui Macros",
   "main": "./dist/index.cjs",
   "contributors": [

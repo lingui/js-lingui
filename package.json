@@ -2,6 +2,7 @@
   "name": "js-lingui-workspaces",
   "private": true,
   "version": "5.0.0",
+  "type": "module",
   "author": {
     "name": "Tomáš Ehrlich",
     "email": "tomas.ehrlich@gmail.com"
@@ -59,7 +60,6 @@
     "prettier": "3.8.1",
     "semver": "^7.3.2",
     "size-limit": "^11.1.6",
-    "strip-ansi": "^6.0.1",
     "swc-node": "^1.0.0",
     "tstyche": "^4.0.0",
     "typescript": "^5.7.2",

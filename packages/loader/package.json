@@ -1,6 +1,7 @@
 {
   "name": "@lingui/loader",
   "version": "5.9.0",
+  "type": "module",
   "description": "webpack loader for lingui message catalogs",
   "types": "./dist/index.d.ts",
   "main": "./dist/index.cjs",

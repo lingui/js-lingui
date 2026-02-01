@@ -1,5 +1,5 @@
 // override a default serializer and omit `"` symbol around code parts
-module.exports = {
+export default {
   test: (val) => typeof val === "string",
   print: (val) => val,
 }

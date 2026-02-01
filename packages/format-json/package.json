@@ -1,6 +1,7 @@
 {
   "name": "@lingui/format-json",
   "version": "5.9.0",
+  "type": "module",
   "description": "JSON format for Lingui Catalogs",
   "main": "./dist/json.mjs",
   "types": "./dist/json.d.ts",
