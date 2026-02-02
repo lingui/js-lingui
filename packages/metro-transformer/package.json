@@ -1,7 +1,7 @@
 {
   "name": "@lingui/metro-transformer",
   "version": "5.9.0",
-  "type": "module",
+  "type": "commonjs",
   "description": "Metro bundler transformer for LinguiJS catalogs",
   "exports": {
     "./expo": {
