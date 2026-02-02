@@ -1,7 +1,7 @@
-import { compileTemplate, parse, SFCBlock } from "@vue/compiler-sfc"
+import { compileTemplate, parse, type SFCBlock } from "@vue/compiler-sfc"
 import { extractor } from "@lingui/cli/api"
-import type { ExtractorCtx, ExtractorType } from "@lingui/conf"
-import { compileScriptSetup, ScriptTarget } from "./compile-script-setup"
+import { type ExtractorCtx, type ExtractorType } from "@lingui/conf"
+import { compileScriptSetup, type ScriptTarget } from "./compile-script-setup"
 
 export const vueExtractor: ExtractorType = {
   match(filename: string) {

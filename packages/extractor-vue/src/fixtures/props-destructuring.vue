@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { plural } from "@lingui/macro"
+import { plural } from "@lingui/core/macro"
 
 // Direct props destructuring from defineProps()
 // This is the problematic pattern that was causing message-ID mismatches

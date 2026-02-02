@@ -3335,6 +3335,7 @@ __metadata:
     "@lingui/babel-plugin-extract-messages": "workspace:*"
     "@lingui/cli": "workspace:*"
     "@lingui/conf": "workspace:*"
+    "@lingui/core": "workspace:*"
     "@vue/compiler-sfc": ^3.2.47
     unbuild: 3.6.1
     vitest: 4.0.18
