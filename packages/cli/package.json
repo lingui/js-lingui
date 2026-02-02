@@ -29,9 +29,18 @@
     "lingui": "./dist/lingui.js"
   },
   "exports": {
-    ".": "./dist/index.js",
-    "./api": "./dist/api/index.js",
-    "./api/extractors/babel": "./dist/api/extractors/babel.js"
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./api": {
+      "types": "./dist/api/index.d.ts",
+      "default": "./dist/api/index.js"
+    },
+    "./api/extractors/babel": {
+      "types": "./dist/api/extractors/babel.d.ts",
+      "default": "./dist/api/extractors/babel.js"
+    }
   },
   "scripts": {
     "build": "tsc -p tsconfig.build.json",

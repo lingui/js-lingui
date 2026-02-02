@@ -28,7 +28,10 @@
     "check-types": "tsc --noEmit"
   },
   "exports": {
-    ".": "./dist/index.mjs"
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.mjs"
+    }
   },
   "dependencies": {
     "jest-validate": "^29.4.3",

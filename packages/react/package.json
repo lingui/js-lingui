@@ -42,11 +42,18 @@
   },
   "exports": {
     ".": {
+      "types": "./dist/index.d.mts",
       "react-server": "./dist/index-rsc.mjs",
       "default": "./dist/index.mjs"
     },
-    "./server": "./dist/server.mjs",
-    "./macro": "./macro/index.cjs",
+    "./server": {
+      "types": "./dist/server.d.mts",
+      "default": "./dist/server.mjs"
+    },
+    "./macro": {
+      "types": "./macro/index.d.cts",
+      "default": "./macro/index.cjs"
+    },
     "./package.json": "./package.json"
   },
   "files": [

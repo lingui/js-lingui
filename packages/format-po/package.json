@@ -20,7 +20,10 @@
     "multilingual"
   ],
   "exports": {
-    ".": "./dist/po.mjs"
+    ".": {
+      "types": "./dist/po.d.mts",
+      "default": "./dist/po.mjs"
+    }
   },
   "scripts": {
     "test": "vitest run",

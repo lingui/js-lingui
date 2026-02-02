@@ -4,7 +4,10 @@
   "type": "module",
   "description": "JSON format for Lingui Catalogs",
   "exports": {
-    ".": "./dist/json.mjs"
+    ".": {
+      "types": "./dist/json.d.ts",
+      "default": "./dist/json.mjs"
+    }
   },
   "sideEffects": false,
   "license": "MIT",

@@ -4,7 +4,10 @@
   "description": "Vite plugin for Lingui message catalogs",
   "type": "module",
   "exports": {
-    ".": "./dist/index.mjs"
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.mjs"
+    }
   },
   "sideEffects": false,
   "license": "MIT",

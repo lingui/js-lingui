@@ -4,7 +4,10 @@
   "type": "module",
   "description": "webpack loader for lingui message catalogs",
   "exports": {
-    ".": "./dist/index.cjs"
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.cjs"
+    }
   },
   "sideEffects": false,
   "author": {
