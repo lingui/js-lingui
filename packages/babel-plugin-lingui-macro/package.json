@@ -3,7 +3,6 @@
   "version": "5.9.0",
   "type": "commonjs",
   "description": "Babel plugin for transforming Lingui Macros",
-  "main": "./dist/index.cjs",
   "contributors": [
     {
       "name": "Timofei Iatsenko",

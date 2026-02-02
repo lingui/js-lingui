@@ -3,8 +3,12 @@
   "version": "5.9.0",
   "type": "module",
   "description": "JSON format for Lingui Catalogs",
-  "main": "./dist/json.mjs",
-  "types": "./dist/json.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/json.d.ts",
+      "default": "./dist/json.mjs"
+    }
+  },
   "sideEffects": false,
   "license": "MIT",
   "keywords": [

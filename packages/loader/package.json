@@ -3,8 +3,12 @@
   "version": "5.9.0",
   "type": "module",
   "description": "webpack loader for lingui message catalogs",
-  "types": "./dist/index.d.ts",
-  "main": "./dist/index.cjs",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.cjs"
+    }
+  },
   "sideEffects": false,
   "author": {
     "name": "Tomáš Ehrlich",

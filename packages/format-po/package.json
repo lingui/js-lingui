@@ -2,8 +2,6 @@
   "name": "@lingui/format-po",
   "version": "5.9.0",
   "description": "Gettext PO format for Lingui Catalogs",
-  "main": "./dist/po.mjs",
-  "types": "./dist/po.d.mts",
   "type": "module",
   "sideEffects": false,
   "license": "MIT",
@@ -22,7 +20,10 @@
     "multilingual"
   ],
   "exports": {
-    ".": "./dist/po.mjs"
+    ".": {
+      "types": "./dist/po.d.mts",
+      "default": "./dist/po.mjs"
+    }
   },
   "scripts": {
     "test": "vitest run",

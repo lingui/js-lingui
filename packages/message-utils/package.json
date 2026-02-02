@@ -30,9 +30,7 @@
   },
   "files": [
     "README.md",
-    "dist/",
-    "compileMessage.js",
-    "generateMessageId.js"
+    "dist/"
   ],
   "dependencies": {
     "@messageformat/date-skeleton": "^1.1.0",

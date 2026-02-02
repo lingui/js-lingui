@@ -2,9 +2,13 @@
   "name": "@lingui/vite-plugin",
   "version": "5.9.0",
   "description": "Vite plugin for Lingui message catalogs",
-  "main": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
   "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.mjs"
+    }
+  },
   "sideEffects": false,
   "license": "MIT",
   "keywords": [

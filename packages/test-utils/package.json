@@ -3,7 +3,6 @@
   "name": "@lingui/test-utils",
   "version": "3.0.3",
   "description": "Test Utils",
-  "main": "./index.ts",
   "author": {
     "name": "Tomáš Ehrlich",
     "email": "tomas.ehrlich@gmail.com"

@@ -2,11 +2,15 @@
   "name": "@lingui/format-po-gettext",
   "version": "5.9.0",
   "description": "Gettext PO format with gettext-style plurals for Lingui Catalogs",
-  "main": "./dist/po-gettext.mjs",
-  "types": "./dist/po-gettext.d.mts",
   "type": "module",
   "sideEffects": false,
   "license": "MIT",
+  "exports": {
+    ".": {
+      "types": "./dist/po-gettext.d.mts",
+      "default": "./dist/po-gettext.mjs"
+    }
+  },
   "keywords": [
     "i18n",
     "lingui-formatter",

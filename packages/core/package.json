@@ -3,7 +3,6 @@
   "version": "5.9.0",
   "sideEffects": false,
   "description": "I18n tools for javascript",
-  "main": "./dist/index.mjs",
   "type": "module",
   "author": {
     "name": "Tomáš Ehrlich",

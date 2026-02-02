@@ -5,9 +5,6 @@
   "sideEffects": false,
   "private": true,
   "description": "Load remotely your translations",
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
   "author": {
     "name": "Sergio Moreno",
     "email": "sergiomorenoalbert@gmail.com"
@@ -40,6 +37,7 @@
   },
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "require": "./dist/index.cjs",
       "import": "./dist/index.mjs"
     },
