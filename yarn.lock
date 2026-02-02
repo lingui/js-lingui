@@ -3254,7 +3254,7 @@ __metadata:
     "@types/normalize-path": ^3.0.0
     chokidar: 5.0.0
     cli-table3: ^0.6.5
-    commander: ^10.0.0
+    commander: ^14.0.2
     convert-source-map: ^2.0.0
     es-main: ^1.4.0
     esbuild: ^0.25.1
@@ -7148,6 +7148,13 @@ __metadata:
   version: 11.1.0
   resolution: "commander@npm:11.1.0"
   checksum: fd1a8557c6b5b622c89ecdfde703242ab7db3b628ea5d1755784c79b8e7cb0d74d65b4a262289b533359cd58e1bfc0bf50245dfbcd2954682a6f367c828b79ef
+  languageName: node
+  linkType: hard
+
+"commander@npm:^14.0.2":
+  version: 14.0.2
+  resolution: "commander@npm:14.0.2"
+  checksum: 0a9e549565d368dde2965821833324069b92b099b415c2106996e47db1f0b8c10c77367e9876873c00a52ca627af4c7472eba9b51dc0d6a3ef152ea063d3e9e9
   languageName: node
   linkType: hard
 
