@@ -1,0 +1,2140 @@
+{
+  "af": {
+    "name": "Afrikaans",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "ak": {
+    "name": "Akan",
+    "formula": "n > 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "0, 1",
+      "other": "2~17, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "am": {
+    "name": "Amharic",
+    "formula": "n > 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "0, 1",
+      "other": "2~17, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "an": {
+    "name": "Aragonese",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "ar": {
+    "name": "Arabic",
+    "formula": "(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5))))",
+    "plurals": 6,
+    "cases": ["zero", "one", "two", "few", "many", "other"],
+    "examples": {
+      "zero": "0",
+      "one": "1",
+      "two": "2",
+      "few": "3~10, 103~110, 1003, …",
+      "many": "11~26, 111, 1011, …",
+      "other": "100~102, 200~202, 300~302, 400~402, 500~502, 600, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "ars": {
+    "name": "Najdi Arabic",
+    "formula": "(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5))))",
+    "plurals": 6,
+    "cases": ["zero", "one", "two", "few", "many", "other"],
+    "examples": {
+      "zero": "0",
+      "one": "1",
+      "two": "2",
+      "few": "3~10, 103~110, 1003, …",
+      "many": "11~26, 111, 1011, …",
+      "other": "100~102, 200~202, 300~302, 400~402, 500~502, 600, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "as": {
+    "name": "Assamese",
+    "formula": "n > 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "0, 1",
+      "other": "2~17, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "asa": {
+    "name": "Asu",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "ast": {
+    "name": "Asturian",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "az": {
+    "name": "Azerbaijani",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "bal": {
+    "name": "Baluchi",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "be": {
+    "name": "Belarusian",
+    "formula": "(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2)",
+    "plurals": 3,
+    "cases": ["one", "few", "other"],
+    "examples": {
+      "one": "1, 21, 31, 41, 51, 61, 71, 81, 101, 1001, …",
+      "few": "2~4, 22~24, 32~34, 42~44, 52~54, 62, 102, 1002, …",
+      "other": "0, 5~19, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "bem": {
+    "name": "Bemba",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "bez": {
+    "name": "Bena",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "bg": {
+    "name": "Bulgarian",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "bho": {
+    "name": "Bhojpuri",
+    "formula": "n > 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "0, 1",
+      "other": "2~17, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "blo": {
+    "name": "Anii",
+    "formula": "(n == 0) ? 0 : ((n == 1) ? 1 : 2)",
+    "plurals": 3,
+    "cases": ["zero", "one", "other"],
+    "examples": {
+      "zero": "0",
+      "one": "1",
+      "other": "2~17, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "bm": {
+    "name": "Bambara",
+    "formula": "0",
+    "plurals": 1,
+    "cases": ["other"],
+    "examples": { "other": "0~15, 100, 1000, 10000, 100000, 1000000, …" }
+  },
+  "bn": {
+    "name": "Bangla",
+    "formula": "n > 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "0, 1",
+      "other": "2~17, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "bo": {
+    "name": "Tibetan",
+    "formula": "0",
+    "plurals": 1,
+    "cases": ["other"],
+    "examples": { "other": "0~15, 100, 1000, 10000, 100000, 1000000, …" }
+  },
+  "br": {
+    "name": "Breton",
+    "formula": "(n % 10 == 1 && n % 100 != 11 && n % 100 != 71 && n % 100 != 91) ? 0 : ((n % 10 == 2 && n % 100 != 12 && n % 100 != 72 && n % 100 != 92) ? 1 : ((((n % 10 == 3 || n % 10 == 4) || n % 10 == 9) && (n % 100 < 10 || n % 100 > 19) && (n % 100 < 70 || n % 100 > 79) && (n % 100 < 90 || n % 100 > 99)) ? 2 : ((n != 0 && n % 1000000 == 0) ? 3 : 4)))",
+    "plurals": 5,
+    "cases": ["one", "two", "few", "many", "other"],
+    "examples": {
+      "one": "1, 21, 31, 41, 51, 61, 81, 101, 1001, …",
+      "two": "2, 22, 32, 42, 52, 62, 82, 102, 1002, …",
+      "few": "3, 4, 9, 23, 24, 29, 33, 34, 39, 43, 44, 49, 103, 1003, …",
+      "many": "1000000, …",
+      "other": "0, 5~8, 10~20, 100, 1000, 10000, 100000, …"
+    }
+  },
+  "brx": {
+    "name": "Bodo",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "bs": {
+    "name": "Bosnian",
+    "formula": "(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2)",
+    "plurals": 3,
+    "cases": ["one", "few", "other"],
+    "examples": {
+      "one": "1, 21, 31, 41, 51, 61, 71, 81, 101, 1001, …",
+      "few": "2~4, 22~24, 32~34, 42~44, 52~54, 62, 102, 1002, …",
+      "other": "0, 5~19, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "ca": {
+    "name": "Catalan",
+    "formula": "(n == 1) ? 0 : ((n != 0 && n % 1000000 == 0) ? 1 : 2)",
+    "plurals": 3,
+    "cases": ["one", "many", "other"],
+    "examples": {
+      "one": "1",
+      "many": "1000000, 1c6, 2c6, 3c6, 4c6, 5c6, 6c6, …",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1c3, 2c3, 3c3, 4c3, 5c3, 6c3, …"
+    }
+  },
+  "ce": {
+    "name": "Chechen",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "ceb": {
+    "name": "Cebuano",
+    "formula": "n != 1 && n != 2 && n != 3 && (n % 10 == 4 || n % 10 == 6 || n % 10 == 9)",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "0~3, 5, 7, 8, 10~13, 15, 17, 18, 20, 21, 100, 1000, 10000, 100000, 1000000, …",
+      "other": "4, 6, 9, 14, 16, 19, 24, 26, 104, 1004, …"
+    }
+  },
+  "cgg": {
+    "name": "Chiga",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "chr": {
+    "name": "Cherokee",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "ckb": {
+    "name": "Central Kurdish",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "cs": {
+    "name": "Czech",
+    "formula": "(n == 1) ? 0 : ((n >= 2 && n <= 4) ? 1 : 2)",
+    "plurals": 3,
+    "cases": ["one", "few", "other"],
+    "examples": {
+      "one": "1",
+      "few": "2~4",
+      "other": "0, 5~19, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "csw": {
+    "name": "Swampy Cree",
+    "formula": "n > 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "0, 1",
+      "other": "2~17, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "cy": {
+    "name": "Welsh",
+    "formula": "(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n == 3) ? 3 : ((n == 6) ? 4 : 5))))",
+    "plurals": 6,
+    "cases": ["zero", "one", "two", "few", "many", "other"],
+    "examples": {
+      "zero": "0",
+      "one": "1",
+      "two": "2",
+      "few": "3",
+      "many": "6",
+      "other": "4, 5, 7~20, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "da": {
+    "name": "Danish",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "de": {
+    "name": "German",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "doi": {
+    "name": "Dogri",
+    "formula": "n > 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "0, 1",
+      "other": "2~17, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "dsb": {
+    "name": "Lower Sorbian",
+    "formula": "(n % 100 == 1) ? 0 : ((n % 100 == 2) ? 1 : ((n % 100 == 3 || n % 100 == 4) ? 2 : 3))",
+    "plurals": 4,
+    "cases": ["one", "two", "few", "other"],
+    "examples": {
+      "one": "1, 101, 201, 301, 401, 501, 601, 701, 1001, …",
+      "two": "2, 102, 202, 302, 402, 502, 602, 702, 1002, …",
+      "few": "3, 4, 103, 104, 203, 204, 303, 304, 403, 404, 503, 504, 603, 604, 703, 704, 1003, …",
+      "other": "0, 5~19, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "dv": {
+    "name": "Divehi",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "dz": {
+    "name": "Dzongkha",
+    "formula": "0",
+    "plurals": 1,
+    "cases": ["other"],
+    "examples": { "other": "0~15, 100, 1000, 10000, 100000, 1000000, …" }
+  },
+  "ee": {
+    "name": "Ewe",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "el": {
+    "name": "Greek",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "en": {
+    "name": "English",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "eo": {
+    "name": "Esperanto",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "es": {
+    "name": "Spanish",
+    "formula": "(n == 1) ? 0 : ((n != 0 && n % 1000000 == 0) ? 1 : 2)",
+    "plurals": 3,
+    "cases": ["one", "many", "other"],
+    "examples": {
+      "one": "1",
+      "many": "1000000, 1c6, 2c6, 3c6, 4c6, 5c6, 6c6, …",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1c3, 2c3, 3c3, 4c3, 5c3, 6c3, …"
+    }
+  },
+  "et": {
+    "name": "Estonian",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "eu": {
+    "name": "Basque",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "fa": {
+    "name": "Persian",
+    "formula": "n > 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "0, 1",
+      "other": "2~17, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "ff": {
+    "name": "Fula",
+    "formula": "n > 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "0, 1",
+      "other": "2~17, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "fi": {
+    "name": "Finnish",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "fil": {
+    "name": "Filipino",
+    "formula": "n != 1 && n != 2 && n != 3 && (n % 10 == 4 || n % 10 == 6 || n % 10 == 9)",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "0~3, 5, 7, 8, 10~13, 15, 17, 18, 20, 21, 100, 1000, 10000, 100000, 1000000, …",
+      "other": "4, 6, 9, 14, 16, 19, 24, 26, 104, 1004, …"
+    }
+  },
+  "fo": {
+    "name": "Faroese",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "fr": {
+    "name": "French",
+    "formula": "(n == 0 || n == 1) ? 0 : ((n != 0 && n % 1000000 == 0) ? 1 : 2)",
+    "plurals": 3,
+    "cases": ["one", "many", "other"],
+    "examples": {
+      "one": "0, 1",
+      "many": "1000000, 1c6, 2c6, 3c6, 4c6, 5c6, 6c6, …",
+      "other": "2~17, 100, 1000, 10000, 100000, 1c3, 2c3, 3c3, 4c3, 5c3, 6c3, …"
+    }
+  },
+  "fur": {
+    "name": "Friulian",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "fy": {
+    "name": "Western Frisian",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "ga": {
+    "name": "Irish",
+    "formula": "(n == 1) ? 0 : ((n == 2) ? 1 : ((n >= 3 && n <= 6) ? 2 : ((n >= 7 && n <= 10) ? 3 : 4)))",
+    "plurals": 5,
+    "cases": ["one", "two", "few", "many", "other"],
+    "examples": {
+      "one": "1",
+      "two": "2",
+      "few": "3~6",
+      "many": "7~10",
+      "other": "0, 11~25, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "gd": {
+    "name": "Scottish Gaelic",
+    "formula": "(n == 1 || n == 11) ? 0 : ((n == 2 || n == 12) ? 1 : ((n >= 3 && n <= 10 || n >= 13 && n <= 19) ? 2 : 3))",
+    "plurals": 4,
+    "cases": ["one", "two", "few", "other"],
+    "examples": {
+      "one": "1, 11",
+      "two": "2, 12",
+      "few": "3~10, 13~19",
+      "other": "0, 20~34, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "gl": {
+    "name": "Galician",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "gsw": {
+    "name": "Swiss German",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "gu": {
+    "name": "Gujarati",
+    "formula": "n > 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "0, 1",
+      "other": "2~17, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "guw": {
+    "name": "Gun",
+    "formula": "n > 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "0, 1",
+      "other": "2~17, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "gv": {
+    "name": "Manx",
+    "formula": "(n % 10 == 1) ? 0 : ((n % 10 == 2) ? 1 : ((n % 100 == 0 || n % 100 == 20 || n % 100 == 40 || n % 100 == 60 || n % 100 == 80) ? 2 : 3))",
+    "plurals": 4,
+    "cases": ["one", "two", "few", "other"],
+    "examples": {
+      "one": "1, 11, 21, 31, 41, 51, 61, 71, 101, 1001, …",
+      "two": "2, 12, 22, 32, 42, 52, 62, 72, 102, 1002, …",
+      "few": "0, 20, 40, 60, 80, 100, 120, 140, 1000, 10000, 100000, 1000000, …",
+      "other": "3~10, 13~19, 23, 103, 1003, …"
+    }
+  },
+  "ha": {
+    "name": "Hausa",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "haw": {
+    "name": "Hawaiian",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "he": {
+    "name": "Hebrew",
+    "formula": "(n == 1) ? 0 : ((n == 2) ? 1 : 2)",
+    "plurals": 3,
+    "cases": ["one", "two", "other"],
+    "examples": {
+      "one": "1",
+      "two": "2",
+      "other": "0, 3~17, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "hi": {
+    "name": "Hindi",
+    "formula": "n > 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "0, 1",
+      "other": "2~17, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "hnj": {
+    "name": "Hmong Njua",
+    "formula": "0",
+    "plurals": 1,
+    "cases": ["other"],
+    "examples": { "other": "0~15, 100, 1000, 10000, 100000, 1000000, …" }
+  },
+  "hr": {
+    "name": "Croatian",
+    "formula": "(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2)",
+    "plurals": 3,
+    "cases": ["one", "few", "other"],
+    "examples": {
+      "one": "1, 21, 31, 41, 51, 61, 71, 81, 101, 1001, …",
+      "few": "2~4, 22~24, 32~34, 42~44, 52~54, 62, 102, 1002, …",
+      "other": "0, 5~19, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "hsb": {
+    "name": "Upper Sorbian",
+    "formula": "(n % 100 == 1) ? 0 : ((n % 100 == 2) ? 1 : ((n % 100 == 3 || n % 100 == 4) ? 2 : 3))",
+    "plurals": 4,
+    "cases": ["one", "two", "few", "other"],
+    "examples": {
+      "one": "1, 101, 201, 301, 401, 501, 601, 701, 1001, …",
+      "two": "2, 102, 202, 302, 402, 502, 602, 702, 1002, …",
+      "few": "3, 4, 103, 104, 203, 204, 303, 304, 403, 404, 503, 504, 603, 604, 703, 704, 1003, …",
+      "other": "0, 5~19, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "hu": {
+    "name": "Hungarian",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "hy": {
+    "name": "Armenian",
+    "formula": "n > 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "0, 1",
+      "other": "2~17, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "ia": {
+    "name": "Interlingua",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "id": {
+    "name": "Indonesian",
+    "formula": "0",
+    "plurals": 1,
+    "cases": ["other"],
+    "examples": { "other": "0~15, 100, 1000, 10000, 100000, 1000000, …" }
+  },
+  "ig": {
+    "name": "Igbo",
+    "formula": "0",
+    "plurals": 1,
+    "cases": ["other"],
+    "examples": { "other": "0~15, 100, 1000, 10000, 100000, 1000000, …" }
+  },
+  "ii": {
+    "name": "Sichuan Yi",
+    "formula": "0",
+    "plurals": 1,
+    "cases": ["other"],
+    "examples": { "other": "0~15, 100, 1000, 10000, 100000, 1000000, …" }
+  },
+  "io": {
+    "name": "Ido",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "is": {
+    "name": "Icelandic",
+    "formula": "n % 10 != 1 || n % 100 == 11",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1, 21, 31, 41, 51, 61, 71, 81, 101, 1001, …",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "it": {
+    "name": "Italian",
+    "formula": "(n == 1) ? 0 : ((n != 0 && n % 1000000 == 0) ? 1 : 2)",
+    "plurals": 3,
+    "cases": ["one", "many", "other"],
+    "examples": {
+      "one": "1",
+      "many": "1000000, 1c6, 2c6, 3c6, 4c6, 5c6, 6c6, …",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1c3, 2c3, 3c3, 4c3, 5c3, 6c3, …"
+    }
+  },
+  "iu": {
+    "name": "Inuktitut",
+    "formula": "(n == 1) ? 0 : ((n == 2) ? 1 : 2)",
+    "plurals": 3,
+    "cases": ["one", "two", "other"],
+    "examples": {
+      "one": "1",
+      "two": "2",
+      "other": "0, 3~17, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "ja": {
+    "name": "Japanese",
+    "formula": "0",
+    "plurals": 1,
+    "cases": ["other"],
+    "examples": { "other": "0~15, 100, 1000, 10000, 100000, 1000000, …" }
+  },
+  "jbo": {
+    "name": "Lojban",
+    "formula": "0",
+    "plurals": 1,
+    "cases": ["other"],
+    "examples": { "other": "0~15, 100, 1000, 10000, 100000, 1000000, …" }
+  },
+  "jgo": {
+    "name": "Ngomba",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "jmc": {
+    "name": "Machame",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "jv": {
+    "name": "Javanese",
+    "formula": "0",
+    "plurals": 1,
+    "cases": ["other"],
+    "examples": { "other": "0~15, 100, 1000, 10000, 100000, 1000000, …" }
+  },
+  "ka": {
+    "name": "Georgian",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "kab": {
+    "name": "Kabyle",
+    "formula": "n > 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "0, 1",
+      "other": "2~17, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "kaj": {
+    "name": "Jju",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "kcg": {
+    "name": "Tyap",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "kde": {
+    "name": "Makonde",
+    "formula": "0",
+    "plurals": 1,
+    "cases": ["other"],
+    "examples": { "other": "0~15, 100, 1000, 10000, 100000, 1000000, …" }
+  },
+  "kea": {
+    "name": "Kabuverdianu",
+    "formula": "0",
+    "plurals": 1,
+    "cases": ["other"],
+    "examples": { "other": "0~15, 100, 1000, 10000, 100000, 1000000, …" }
+  },
+  "kk": {
+    "name": "Kazakh",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "kkj": {
+    "name": "Kako",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "kl": {
+    "name": "Kalaallisut",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "km": {
+    "name": "Khmer",
+    "formula": "0",
+    "plurals": 1,
+    "cases": ["other"],
+    "examples": { "other": "0~15, 100, 1000, 10000, 100000, 1000000, …" }
+  },
+  "kn": {
+    "name": "Kannada",
+    "formula": "n > 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "0, 1",
+      "other": "2~17, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "ko": {
+    "name": "Korean",
+    "formula": "0",
+    "plurals": 1,
+    "cases": ["other"],
+    "examples": { "other": "0~15, 100, 1000, 10000, 100000, 1000000, …" }
+  },
+  "ks": {
+    "name": "Kashmiri",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "ksb": {
+    "name": "Shambala",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "ksh": {
+    "name": "Colognian",
+    "formula": "(n == 0) ? 0 : ((n == 1) ? 1 : 2)",
+    "plurals": 3,
+    "cases": ["zero", "one", "other"],
+    "examples": {
+      "zero": "0",
+      "one": "1",
+      "other": "2~17, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "ku": {
+    "name": "Kurdish",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "kw": {
+    "name": "Cornish",
+    "formula": "(n == 0) ? 0 : ((n == 1) ? 1 : (((n % 100 == 2 || n % 100 == 22 || n % 100 == 42 || n % 100 == 62 || n % 100 == 82) || n % 1000 == 0 && (n % 100000 >= 1000 && n % 100000 <= 20000 || n % 100000 == 40000 || n % 100000 == 60000 || n % 100000 == 80000) || n != 0 && n % 1000000 == 100000) ? 2 : ((n % 100 == 3 || n % 100 == 23 || n % 100 == 43 || n % 100 == 63 || n % 100 == 83) ? 3 : ((n != 1 && (n % 100 == 1 || n % 100 == 21 || n % 100 == 41 || n % 100 == 61 || n % 100 == 81)) ? 4 : 5))))",
+    "plurals": 6,
+    "cases": ["zero", "one", "two", "few", "many", "other"],
+    "examples": {
+      "zero": "0",
+      "one": "1",
+      "two": "2, 22, 42, 62, 82, 102, 122, 142, 1000, 10000, 100000, …",
+      "few": "3, 23, 43, 63, 83, 103, 123, 143, 1003, …",
+      "many": "21, 41, 61, 81, 101, 121, 141, 161, 1001, …",
+      "other": "4~19, 100, 1004, 1000000, …"
+    }
+  },
+  "ky": {
+    "name": "Kyrgyz",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "lag": {
+    "name": "Langi",
+    "formula": "(n == 0) ? 0 : ((n == 1) ? 1 : 2)",
+    "plurals": 3,
+    "cases": ["zero", "one", "other"],
+    "examples": {
+      "zero": "0",
+      "one": "1",
+      "other": "2~17, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "lb": {
+    "name": "Luxembourgish",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "lg": {
+    "name": "Ganda",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "lij": {
+    "name": "Ligurian",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "lkt": {
+    "name": "Lakota",
+    "formula": "0",
+    "plurals": 1,
+    "cases": ["other"],
+    "examples": { "other": "0~15, 100, 1000, 10000, 100000, 1000000, …" }
+  },
+  "lld": {
+    "name": "Dolomitic Ladin",
+    "formula": "(n == 1) ? 0 : ((n != 0 && n % 1000000 == 0) ? 1 : 2)",
+    "plurals": 3,
+    "cases": ["one", "many", "other"],
+    "examples": {
+      "one": "1",
+      "many": "1000000, 1c6, 2c6, 3c6, 4c6, 5c6, 6c6, …",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1c3, 2c3, 3c3, 4c3, 5c3, 6c3, …"
+    }
+  },
+  "ln": {
+    "name": "Lingala",
+    "formula": "n > 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "0, 1",
+      "other": "2~17, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "lo": {
+    "name": "Lao",
+    "formula": "0",
+    "plurals": 1,
+    "cases": ["other"],
+    "examples": { "other": "0~15, 100, 1000, 10000, 100000, 1000000, …" }
+  },
+  "lt": {
+    "name": "Lithuanian",
+    "formula": "(n % 10 == 1 && (n % 100 < 11 || n % 100 > 19)) ? 0 : ((n % 10 >= 2 && n % 10 <= 9 && (n % 100 < 11 || n % 100 > 19)) ? 1 : 2)",
+    "plurals": 3,
+    "cases": ["one", "few", "other"],
+    "examples": {
+      "one": "1, 21, 31, 41, 51, 61, 71, 81, 101, 1001, …",
+      "few": "2~9, 22~29, 102, 1002, …",
+      "other": "0, 10~20, 30, 40, 50, 60, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "lv": {
+    "name": "Latvian",
+    "formula": "(n % 10 == 0 || n % 100 >= 11 && n % 100 <= 19) ? 0 : ((n % 10 == 1 && n % 100 != 11) ? 1 : 2)",
+    "plurals": 3,
+    "cases": ["zero", "one", "other"],
+    "examples": {
+      "zero": "0, 10~20, 30, 40, 50, 60, 100, 1000, 10000, 100000, 1000000, …",
+      "one": "1, 21, 31, 41, 51, 61, 71, 81, 101, 1001, …",
+      "other": "2~9, 22~29, 102, 1002, …"
+    }
+  },
+  "mas": {
+    "name": "Masai",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "mg": {
+    "name": "Malagasy",
+    "formula": "n > 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "0, 1",
+      "other": "2~17, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "mgo": {
+    "name": "Metaʼ",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "mk": {
+    "name": "Macedonian",
+    "formula": "n % 10 != 1 || n % 100 == 11",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1, 21, 31, 41, 51, 61, 71, 81, 101, 1001, …",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "ml": {
+    "name": "Malayalam",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "mn": {
+    "name": "Mongolian",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "mr": {
+    "name": "Marathi",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "ms": {
+    "name": "Malay",
+    "formula": "0",
+    "plurals": 1,
+    "cases": ["other"],
+    "examples": { "other": "0~15, 100, 1000, 10000, 100000, 1000000, …" }
+  },
+  "mt": {
+    "name": "Maltese",
+    "formula": "(n == 1) ? 0 : ((n == 2) ? 1 : ((n == 0 || n % 100 >= 3 && n % 100 <= 10) ? 2 : ((n % 100 >= 11 && n % 100 <= 19) ? 3 : 4)))",
+    "plurals": 5,
+    "cases": ["one", "two", "few", "many", "other"],
+    "examples": {
+      "one": "1",
+      "two": "2",
+      "few": "0, 3~10, 103~109, 1003, …",
+      "many": "11~19, 111~117, 1011, …",
+      "other": "20~35, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "my": {
+    "name": "Burmese",
+    "formula": "0",
+    "plurals": 1,
+    "cases": ["other"],
+    "examples": { "other": "0~15, 100, 1000, 10000, 100000, 1000000, …" }
+  },
+  "nah": {
+    "name": "Nahuatl",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "naq": {
+    "name": "Nama",
+    "formula": "(n == 1) ? 0 : ((n == 2) ? 1 : 2)",
+    "plurals": 3,
+    "cases": ["one", "two", "other"],
+    "examples": {
+      "one": "1",
+      "two": "2",
+      "other": "0, 3~17, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "nb": {
+    "name": "Norwegian Bokmål",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "nd": {
+    "name": "North Ndebele",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "ne": {
+    "name": "Nepali",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "nl": {
+    "name": "Dutch",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "nn": {
+    "name": "Norwegian Nynorsk",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "nnh": {
+    "name": "Ngiemboon",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "no": {
+    "name": "Norwegian",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "nqo": {
+    "name": "N’Ko",
+    "formula": "0",
+    "plurals": 1,
+    "cases": ["other"],
+    "examples": { "other": "0~15, 100, 1000, 10000, 100000, 1000000, …" }
+  },
+  "nr": {
+    "name": "South Ndebele",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "nso": {
+    "name": "Northern Sotho",
+    "formula": "n > 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "0, 1",
+      "other": "2~17, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "ny": {
+    "name": "Nyanja",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "nyn": {
+    "name": "Nyankole",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "om": {
+    "name": "Oromo",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "or": {
+    "name": "Odia",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "os": {
+    "name": "Ossetic",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "osa": {
+    "name": "Osage",
+    "formula": "0",
+    "plurals": 1,
+    "cases": ["other"],
+    "examples": { "other": "0~15, 100, 1000, 10000, 100000, 1000000, …" }
+  },
+  "pa": {
+    "name": "Punjabi",
+    "formula": "n > 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "0, 1",
+      "other": "2~17, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "pap": {
+    "name": "Papiamento",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "pcm": {
+    "name": "Nigerian Pidgin",
+    "formula": "n > 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "0, 1",
+      "other": "2~17, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "pl": {
+    "name": "Polish",
+    "formula": "(n == 1) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2)",
+    "plurals": 3,
+    "cases": ["one", "few", "other"],
+    "examples": {
+      "one": "1",
+      "few": "2~4, 22~24, 32~34, 42~44, 52~54, 62, 102, 1002, …",
+      "other": "0, 5~19, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "prg": {
+    "name": "Prussian",
+    "formula": "(n % 10 == 0 || n % 100 >= 11 && n % 100 <= 19) ? 0 : ((n % 10 == 1 && n % 100 != 11) ? 1 : 2)",
+    "plurals": 3,
+    "cases": ["zero", "one", "other"],
+    "examples": {
+      "zero": "0, 10~20, 30, 40, 50, 60, 100, 1000, 10000, 100000, 1000000, …",
+      "one": "1, 21, 31, 41, 51, 61, 71, 81, 101, 1001, …",
+      "other": "2~9, 22~29, 102, 1002, …"
+    }
+  },
+  "ps": {
+    "name": "Pashto",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "pt": {
+    "name": "Portuguese",
+    "formula": "(n == 0 || n == 1) ? 0 : ((n != 0 && n % 1000000 == 0) ? 1 : 2)",
+    "plurals": 3,
+    "cases": ["one", "many", "other"],
+    "examples": {
+      "one": "0, 1",
+      "many": "1000000, 1c6, 2c6, 3c6, 4c6, 5c6, 6c6, …",
+      "other": "2~17, 100, 1000, 10000, 100000, 1c3, 2c3, 3c3, 4c3, 5c3, 6c3, …"
+    }
+  },
+  "pt_PT": {
+    "name": "European Portuguese",
+    "territory": "Portugal",
+    "baseLanguage": "Portuguese",
+    "formula": "(n == 1) ? 0 : ((n != 0 && n % 1000000 == 0) ? 1 : 2)",
+    "plurals": 3,
+    "cases": ["one", "many", "other"],
+    "examples": {
+      "one": "1",
+      "many": "1000000, 1c6, 2c6, 3c6, 4c6, 5c6, 6c6, …",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1c3, 2c3, 3c3, 4c3, 5c3, 6c3, …"
+    }
+  },
+  "rm": {
+    "name": "Romansh",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "ro": {
+    "name": "Romanian",
+    "formula": "(n == 1) ? 0 : ((n == 0 || n != 1 && n % 100 >= 1 && n % 100 <= 19) ? 1 : 2)",
+    "plurals": 3,
+    "cases": ["one", "few", "other"],
+    "examples": {
+      "one": "1",
+      "few": "0, 2~16, 101, 1001, …",
+      "other": "20~35, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "rof": {
+    "name": "Rombo",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "ru": {
+    "name": "Russian",
+    "formula": "(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2)",
+    "plurals": 3,
+    "cases": ["one", "few", "other"],
+    "examples": {
+      "one": "1, 21, 31, 41, 51, 61, 71, 81, 101, 1001, …",
+      "few": "2~4, 22~24, 32~34, 42~44, 52~54, 62, 102, 1002, …",
+      "other": "0, 5~19, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "rwk": {
+    "name": "Rwa",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "sah": {
+    "name": "Yakut",
+    "formula": "0",
+    "plurals": 1,
+    "cases": ["other"],
+    "examples": { "other": "0~15, 100, 1000, 10000, 100000, 1000000, …" }
+  },
+  "saq": {
+    "name": "Samburu",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "sat": {
+    "name": "Santali",
+    "formula": "(n == 1) ? 0 : ((n == 2) ? 1 : 2)",
+    "plurals": 3,
+    "cases": ["one", "two", "other"],
+    "examples": {
+      "one": "1",
+      "two": "2",
+      "other": "0, 3~17, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "sc": {
+    "name": "Sardinian",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "scn": {
+    "name": "Sicilian",
+    "formula": "(n == 1) ? 0 : ((n != 0 && n % 1000000 == 0) ? 1 : 2)",
+    "plurals": 3,
+    "cases": ["one", "many", "other"],
+    "examples": {
+      "one": "1",
+      "many": "1000000, 1c6, 2c6, 3c6, 4c6, 5c6, 6c6, …",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1c3, 2c3, 3c3, 4c3, 5c3, 6c3, …"
+    }
+  },
+  "sd": {
+    "name": "Sindhi",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "sdh": {
+    "name": "Southern Kurdish",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "se": {
+    "name": "Northern Sami",
+    "formula": "(n == 1) ? 0 : ((n == 2) ? 1 : 2)",
+    "plurals": 3,
+    "cases": ["one", "two", "other"],
+    "examples": {
+      "one": "1",
+      "two": "2",
+      "other": "0, 3~17, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "seh": {
+    "name": "Sena",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "ses": {
+    "name": "Koyraboro Senni",
+    "formula": "0",
+    "plurals": 1,
+    "cases": ["other"],
+    "examples": { "other": "0~15, 100, 1000, 10000, 100000, 1000000, …" }
+  },
+  "sg": {
+    "name": "Sango",
+    "formula": "0",
+    "plurals": 1,
+    "cases": ["other"],
+    "examples": { "other": "0~15, 100, 1000, 10000, 100000, 1000000, …" }
+  },
+  "sh": {
+    "name": "Serbo-Croatian",
+    "formula": "(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2)",
+    "plurals": 3,
+    "cases": ["one", "few", "other"],
+    "examples": {
+      "one": "1, 21, 31, 41, 51, 61, 71, 81, 101, 1001, …",
+      "few": "2~4, 22~24, 32~34, 42~44, 52~54, 62, 102, 1002, …",
+      "other": "0, 5~19, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "shi": {
+    "name": "Tachelhit",
+    "formula": "(n == 0 || n == 1) ? 0 : ((n >= 2 && n <= 10) ? 1 : 2)",
+    "plurals": 3,
+    "cases": ["one", "few", "other"],
+    "examples": {
+      "one": "0, 1",
+      "few": "2~10",
+      "other": "11~26, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "si": {
+    "name": "Sinhala",
+    "formula": "n > 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "0, 1",
+      "other": "2~17, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "sk": {
+    "name": "Slovak",
+    "formula": "(n == 1) ? 0 : ((n >= 2 && n <= 4) ? 1 : 2)",
+    "plurals": 3,
+    "cases": ["one", "few", "other"],
+    "examples": {
+      "one": "1",
+      "few": "2~4",
+      "other": "0, 5~19, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "sl": {
+    "name": "Slovenian",
+    "formula": "(n % 100 == 1) ? 0 : ((n % 100 == 2) ? 1 : ((n % 100 == 3 || n % 100 == 4) ? 2 : 3))",
+    "plurals": 4,
+    "cases": ["one", "two", "few", "other"],
+    "examples": {
+      "one": "1, 101, 201, 301, 401, 501, 601, 701, 1001, …",
+      "two": "2, 102, 202, 302, 402, 502, 602, 702, 1002, …",
+      "few": "3, 4, 103, 104, 203, 204, 303, 304, 403, 404, 503, 504, 603, 604, 703, 704, 1003, …",
+      "other": "0, 5~19, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "sma": {
+    "name": "Southern Sami",
+    "formula": "(n == 1) ? 0 : ((n == 2) ? 1 : 2)",
+    "plurals": 3,
+    "cases": ["one", "two", "other"],
+    "examples": {
+      "one": "1",
+      "two": "2",
+      "other": "0, 3~17, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "smi": {
+    "name": "Sami",
+    "formula": "(n == 1) ? 0 : ((n == 2) ? 1 : 2)",
+    "plurals": 3,
+    "cases": ["one", "two", "other"],
+    "examples": {
+      "one": "1",
+      "two": "2",
+      "other": "0, 3~17, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "smj": {
+    "name": "Lule Sami",
+    "formula": "(n == 1) ? 0 : ((n == 2) ? 1 : 2)",
+    "plurals": 3,
+    "cases": ["one", "two", "other"],
+    "examples": {
+      "one": "1",
+      "two": "2",
+      "other": "0, 3~17, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "smn": {
+    "name": "Inari Sami",
+    "formula": "(n == 1) ? 0 : ((n == 2) ? 1 : 2)",
+    "plurals": 3,
+    "cases": ["one", "two", "other"],
+    "examples": {
+      "one": "1",
+      "two": "2",
+      "other": "0, 3~17, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "sms": {
+    "name": "Skolt Sami",
+    "formula": "(n == 1) ? 0 : ((n == 2) ? 1 : 2)",
+    "plurals": 3,
+    "cases": ["one", "two", "other"],
+    "examples": {
+      "one": "1",
+      "two": "2",
+      "other": "0, 3~17, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "sn": {
+    "name": "Shona",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "so": {
+    "name": "Somali",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "sq": {
+    "name": "Albanian",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "sr": {
+    "name": "Serbian",
+    "formula": "(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2)",
+    "plurals": 3,
+    "cases": ["one", "few", "other"],
+    "examples": {
+      "one": "1, 21, 31, 41, 51, 61, 71, 81, 101, 1001, …",
+      "few": "2~4, 22~24, 32~34, 42~44, 52~54, 62, 102, 1002, …",
+      "other": "0, 5~19, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "ss": {
+    "name": "Swati",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "ssy": {
+    "name": "Saho",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "st": {
+    "name": "Southern Sotho",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "su": {
+    "name": "Sundanese",
+    "formula": "0",
+    "plurals": 1,
+    "cases": ["other"],
+    "examples": { "other": "0~15, 100, 1000, 10000, 100000, 1000000, …" }
+  },
+  "sv": {
+    "name": "Swedish",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "sw": {
+    "name": "Swahili",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "syr": {
+    "name": "Syriac",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "ta": {
+    "name": "Tamil",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "te": {
+    "name": "Telugu",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "teo": {
+    "name": "Teso",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "th": {
+    "name": "Thai",
+    "formula": "0",
+    "plurals": 1,
+    "cases": ["other"],
+    "examples": { "other": "0~15, 100, 1000, 10000, 100000, 1000000, …" }
+  },
+  "ti": {
+    "name": "Tigrinya",
+    "formula": "n > 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "0, 1",
+      "other": "2~17, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "tig": {
+    "name": "Tigre",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "tk": {
+    "name": "Turkmen",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "tl": {
+    "name": "Tagalog",
+    "formula": "n != 1 && n != 2 && n != 3 && (n % 10 == 4 || n % 10 == 6 || n % 10 == 9)",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "0~3, 5, 7, 8, 10~13, 15, 17, 18, 20, 21, 100, 1000, 10000, 100000, 1000000, …",
+      "other": "4, 6, 9, 14, 16, 19, 24, 26, 104, 1004, …"
+    }
+  },
+  "tn": {
+    "name": "Tswana",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "to": {
+    "name": "Tongan",
+    "formula": "0",
+    "plurals": 1,
+    "cases": ["other"],
+    "examples": { "other": "0~15, 100, 1000, 10000, 100000, 1000000, …" }
+  },
+  "tpi": {
+    "name": "Tok Pisin",
+    "formula": "0",
+    "plurals": 1,
+    "cases": ["other"],
+    "examples": { "other": "0~15, 100, 1000, 10000, 100000, 1000000, …" }
+  },
+  "tr": {
+    "name": "Turkish",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "ts": {
+    "name": "Tsonga",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "tzm": {
+    "name": "Central Atlas Tamazight",
+    "formula": "n >= 2 && (n < 11 || n > 99)",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "0, 1, 11~24",
+      "other": "2~10, 100~106, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "ug": {
+    "name": "Uyghur",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "uk": {
+    "name": "Ukrainian",
+    "formula": "(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2)",
+    "plurals": 3,
+    "cases": ["one", "few", "other"],
+    "examples": {
+      "one": "1, 21, 31, 41, 51, 61, 71, 81, 101, 1001, …",
+      "few": "2~4, 22~24, 32~34, 42~44, 52~54, 62, 102, 1002, …",
+      "other": "0, 5~19, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "ur": {
+    "name": "Urdu",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "uz": {
+    "name": "Uzbek",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "ve": {
+    "name": "Venda",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "vec": {
+    "name": "Venetian",
+    "formula": "(n == 1) ? 0 : ((n != 0 && n % 1000000 == 0) ? 1 : 2)",
+    "plurals": 3,
+    "cases": ["one", "many", "other"],
+    "examples": {
+      "one": "1",
+      "many": "1000000, 1c6, 2c6, 3c6, 4c6, 5c6, 6c6, …",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1c3, 2c3, 3c3, 4c3, 5c3, 6c3, …"
+    }
+  },
+  "vi": {
+    "name": "Vietnamese",
+    "formula": "0",
+    "plurals": 1,
+    "cases": ["other"],
+    "examples": { "other": "0~15, 100, 1000, 10000, 100000, 1000000, …" }
+  },
+  "vo": {
+    "name": "Volapük",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "vun": {
+    "name": "Vunjo",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "wa": {
+    "name": "Walloon",
+    "formula": "n > 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "0, 1",
+      "other": "2~17, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "wae": {
+    "name": "Walser",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "wo": {
+    "name": "Wolof",
+    "formula": "0",
+    "plurals": 1,
+    "cases": ["other"],
+    "examples": { "other": "0~15, 100, 1000, 10000, 100000, 1000000, …" }
+  },
+  "xh": {
+    "name": "Xhosa",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "xog": {
+    "name": "Soga",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "yi": {
+    "name": "Yiddish",
+    "formula": "n != 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "1",
+      "other": "0, 2~16, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  },
+  "yo": {
+    "name": "Yoruba",
+    "formula": "0",
+    "plurals": 1,
+    "cases": ["other"],
+    "examples": { "other": "0~15, 100, 1000, 10000, 100000, 1000000, …" }
+  },
+  "yue": {
+    "name": "Cantonese",
+    "formula": "0",
+    "plurals": 1,
+    "cases": ["other"],
+    "examples": { "other": "0~15, 100, 1000, 10000, 100000, 1000000, …" }
+  },
+  "zh": {
+    "name": "Chinese",
+    "formula": "0",
+    "plurals": 1,
+    "cases": ["other"],
+    "examples": { "other": "0~15, 100, 1000, 10000, 100000, 1000000, …" }
+  },
+  "zu": {
+    "name": "Zulu",
+    "formula": "n > 1",
+    "plurals": 2,
+    "cases": ["one", "other"],
+    "examples": {
+      "one": "0, 1",
+      "other": "2~17, 100, 1000, 10000, 100000, 1000000, …"
+    }
+  }
+}
