@@ -6,10 +6,7 @@
   "sideEffects": false,
   "license": "MIT",
   "exports": {
-    ".": {
-      "types": "./dist/po-gettext.d.mts",
-      "default": "./dist/po-gettext.mjs"
-    }
+    ".": "./dist/po-gettext.mjs"
   },
   "keywords": [
     "i18n",

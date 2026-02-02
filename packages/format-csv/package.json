@@ -4,10 +4,7 @@
   "description": "CSV format for Lingui Catalogs",
   "type": "module",
   "exports": {
-    ".": {
-      "types": "./dist/csv.d.ts",
-      "default": "./dist/csv.mjs"
-    }
+    ".": "./dist/csv.mjs"
   },
   "sideEffects": false,
   "license": "MIT",
