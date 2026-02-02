@@ -1,7 +1,0 @@
-{
-  "compilerOptions": {
-    "skipLibCheck": true,
-    "moduleResolution": "nodenext"
-  },
-  "paths": {}
-}
