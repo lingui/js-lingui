@@ -1,6 +1,7 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
+    "strict": true,
     "module": "esnext",
     "moduleResolution": "bundler",
     "types": ["vitest/globals"]

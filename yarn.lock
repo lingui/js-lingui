@@ -3254,7 +3254,7 @@ __metadata:
     "@types/normalize-path": ^3.0.0
     chokidar: 5.0.0
     cli-table3: ^0.6.5
-    commander: ^10.0.0
+    commander: ^14.0.2
     convert-source-map: ^2.0.0
     es-main: ^1.4.0
     esbuild: ^0.25.1
@@ -3371,9 +3371,6 @@ __metadata:
     "@lingui/message-utils": "workspace:*"
     "@lingui/test-utils": "workspace:*"
     "@messageformat/parser": ^5.0.0
-    cldr-core: ^45.0.0
-    node-gettext: ^3.0.0
-    plurals-cldr: ^2.0.1
     pofile: ^1.1.4
     unbuild: 3.6.1
     vitest: 4.0.18
@@ -6920,13 +6917,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cldr-core@npm:^45.0.0":
-  version: 45.0.0
-  resolution: "cldr-core@npm:45.0.0"
-  checksum: 06e39807a90483dfb7f2ba69c04e6cf15dd8ca7558cd772a3cd23db582ae95845a169917e070844b3b25d194c412f7e8b3d953ff88006b424803912c93603290
-  languageName: node
-  linkType: hard
-
 "clean-stack@npm:^2.0.0":
   version: 2.2.0
   resolution: "clean-stack@npm:2.2.0"
@@ -7158,6 +7148,13 @@ __metadata:
   version: 11.1.0
   resolution: "commander@npm:11.1.0"
   checksum: fd1a8557c6b5b622c89ecdfde703242ab7db3b628ea5d1755784c79b8e7cb0d74d65b4a262289b533359cd58e1bfc0bf50245dfbcd2954682a6f367c828b79ef
+  languageName: node
+  linkType: hard
+
+"commander@npm:^14.0.2":
+  version: 14.0.2
+  resolution: "commander@npm:14.0.2"
+  checksum: 0a9e549565d368dde2965821833324069b92b099b415c2106996e47db1f0b8c10c77367e9876873c00a52ca627af4c7472eba9b51dc0d6a3ef152ea063d3e9e9
   languageName: node
   linkType: hard
 
@@ -11886,13 +11883,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lodash.get@npm:^4.4.2":
-  version: 4.4.2
-  resolution: "lodash.get@npm:4.4.2"
-  checksum: e403047ddb03181c9d0e92df9556570e2b67e0f0a930fcbbbd779370972368f5568e914f913e93f3b08f6d492abc71e14d4e9b7a18916c31fa04bd2306efe545
-  languageName: node
-  linkType: hard
-
 "lodash.ismatch@npm:^4.4.0":
   version: 4.4.0
   resolution: "lodash.ismatch@npm:4.4.0"
@@ -12775,15 +12765,6 @@ __metadata:
     "@lingui/core": "workspace:*"
   languageName: unknown
   linkType: soft
-
-"node-gettext@npm:^3.0.0":
-  version: 3.0.0
-  resolution: "node-gettext@npm:3.0.0"
-  dependencies:
-    lodash.get: ^4.4.2
-  checksum: c4864c5c3372d095d95f4925e7468c0fabd61542b3ac100d45452261bd30ea538cd95d40b6f149a04e098f6783062243c133e17d66161b1cfc14f0f23600368d
-  languageName: node
-  linkType: hard
 
 "node-gyp@npm:^11.0.0":
   version: 11.4.2
@@ -14018,13 +13999,6 @@ __metadata:
     exsolve: ^1.0.7
     pathe: ^2.0.3
   checksum: 33c30b442662a0f2b62fd16f39ae2beeb4cdf3511699e574765b7451e179937847de6e696bbab50bfbd41d2c2e4a99b61ebc7078abf91ea8573a7f16cc11d26a
-  languageName: node
-  linkType: hard
-
-"plurals-cldr@npm:^2.0.1":
-  version: 2.0.1
-  resolution: "plurals-cldr@npm:2.0.1"
-  checksum: 26b2392016111e21c29ccb88f36a0a1252bc99874befbc40af1885cc9e222e2b1e2badfe6527965e082556985be0d8dae509bf14c78837cbec098b3bcae337f1
   languageName: node
   linkType: hard
 
