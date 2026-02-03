@@ -5,12 +5,10 @@
   "description": "Metro bundler transformer for LinguiJS catalogs",
   "exports": {
     "./expo": {
-      "types": "./dist/expo/index.d.ts",
       "require": "./dist/expo/index.cjs",
       "import": "./dist/expo/index.mjs"
     },
     "./react-native": {
-      "types": "./dist/react-native/index.d.ts",
       "require": "./dist/react-native/index.cjs",
       "import": "./dist/react-native/index.mjs"
     }
@@ -83,5 +81,8 @@
     "expo": {
       "optional": true
     }
+  },
+  "unbuild": {
+    "declaration": "node16"
   }
 }

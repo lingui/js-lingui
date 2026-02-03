@@ -4,10 +4,7 @@
   "type": "module",
   "description": "webpack loader for lingui message catalogs",
   "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "default": "./dist/index.cjs"
-    }
+    ".": "./dist/index.cjs"
   },
   "sideEffects": false,
   "author": {
@@ -60,5 +57,8 @@
   },
   "peerDependencies": {
     "webpack": "^5.0.0"
+  },
+  "unbuild": {
+    "declaration": "node16"
   }
 }

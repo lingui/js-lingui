@@ -37,7 +37,6 @@
   },
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
       "require": "./dist/index.cjs",
       "import": "./dist/index.mjs"
     },
@@ -54,5 +53,8 @@
   },
   "devDependencies": {
     "unbuild": "2.0.0"
+  },
+  "unbuild": {
+    "declaration": "node16"
   }
 }

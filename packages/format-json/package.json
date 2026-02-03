@@ -4,10 +4,7 @@
   "type": "module",
   "description": "JSON format for Lingui Catalogs",
   "exports": {
-    ".": {
-      "types": "./dist/json.d.ts",
-      "default": "./dist/json.mjs"
-    }
+    ".": "./dist/json.mjs"
   },
   "sideEffects": false,
   "license": "MIT",
@@ -50,5 +47,8 @@
   "devDependencies": {
     "unbuild": "^3.6.1",
     "vitest": "4.0.18"
+  },
+  "unbuild": {
+    "declaration": "node16"
   }
 }

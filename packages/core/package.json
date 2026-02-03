@@ -62,5 +62,8 @@
     "babel-plugin-macros": {
       "optional": true
     }
+  },
+  "unbuild": {
+    "declaration": "node16"
   }
 }

@@ -28,10 +28,7 @@
     "check-types": "tsc --noEmit"
   },
   "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "default": "./dist/index.mjs"
-    }
+    ".": "./dist/index.mjs"
   },
   "dependencies": {
     "jest-validate": "^29.4.3",
@@ -48,5 +45,8 @@
     "@lingui/test-utils": "workspace:*",
     "unbuild": "^2.0.0",
     "vitest": "4.0.18"
+  },
+  "unbuild": {
+    "declaration": "node16"
   }
 }

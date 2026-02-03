@@ -6,10 +6,7 @@
   "sideEffects": false,
   "license": "MIT",
   "exports": {
-    ".": {
-      "types": "./dist/po-gettext.d.mts",
-      "default": "./dist/po-gettext.mjs"
-    }
+    ".": "./dist/po-gettext.mjs"
   },
   "keywords": [
     "i18n",
@@ -57,5 +54,8 @@
     "@lingui/test-utils": "workspace:*",
     "unbuild": "3.6.1",
     "vitest": "4.0.18"
+  },
+  "unbuild": {
+    "declaration": "node16"
   }
 }

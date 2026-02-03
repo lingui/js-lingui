@@ -77,6 +77,6 @@
     "vitest": "4.0.18"
   },
   "unbuild": {
-    "declaration": true
+    "declaration": "node16"
   }
 }
