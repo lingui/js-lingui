@@ -1,8 +1,8 @@
-import { exec as _exec, ExecOptions } from "child_process"
+import { exec as _exec, type ExecOptions } from "child_process"
 import ora from "ora"
 import pico from "picocolors"
 
-async function releaseInVerdaccio() {
+async function main() {
   const spinner = ora()
 
   // Throw away build stats
@@ -58,10 +58,4 @@ function exec(
   })
 }
 
-function main() {
-  return releaseInVerdaccio()
-}
-
-if (require.main === module) {
-  main().catch((error) => console.error(error))
-}
+void main()
