@@ -61,8 +61,8 @@
     "LICENSE",
     "README.md",
     "dist/",
-    "macro/index.d.ts",
-    "macro/index.js"
+    "macro/index.d.cts",
+    "macro/index.cjs"
   ],
   "peerDependencies": {
     "babel-plugin-macros": "2 || 3",

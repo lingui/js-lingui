@@ -44,8 +44,8 @@
     "LICENSE",
     "README.md",
     "dist/",
-    "macro/index.d.ts",
-    "macro/index.js"
+    "macro/index.d.cts",
+    "macro/index.cjs"
   ],
   "dependencies": {
     "@lingui/babel-plugin-lingui-macro": "workspace:*",
