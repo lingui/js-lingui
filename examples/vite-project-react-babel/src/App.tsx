@@ -7,13 +7,15 @@ import { Plural, Trans } from "@lingui/react/macro"
 import { I18nProvider } from "@lingui/react"
 import { i18n } from "@lingui/core"
 import { loadCatalog } from "./i18n"
+import { PluralExample } from "./PluralExample"
+import { MsgExample } from "./MsgExample"
 
-function App() {
-  const [count, setCount] = useState(0)
+export function App() {
 
   useEffect(() => {
-    loadCatalog("en")
+    void loadCatalog("en")
   }, [])
+
 
   return (
     <I18nProvider i18n={i18n}>
@@ -31,10 +33,9 @@ function App() {
         </div>
         <h1>Vite + React + Lingui</h1>
         <div className="card">
-          <button onClick={() => setCount((count) => count + 1)}>
-            <Plural value={count} one="# month" other="# months" />
-          </button>
-          <p>
+          <PluralExample />
+          <MsgExample/>
+          <p data-testid="edit-text">
             <Trans>
               Edit <code>src/App.tsx</code> and save to test HMR
             </Trans>
@@ -56,5 +57,3 @@ function App() {
     </I18nProvider>
   )
 }
-
-export default App
