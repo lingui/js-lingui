@@ -42,7 +42,8 @@ export default config(
             "**/test/**",
             "**/*.test.{ts,tsx}",
             "**/*.tst.{ts,tsx}",
-            "**/vite.config.ts",
+            "**/*.config.ts",
+            "**/*.config.js",
             "scripts/**",
           ],
         },
@@ -59,5 +60,5 @@ export default config(
   {
     files: ["./packages/react/*.{ts,tsx,js,jsx}"],
     ...pluginReact.configs.flat.recommended,
-  }
+  },
 )

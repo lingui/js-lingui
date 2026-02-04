@@ -1,6 +1,7 @@
 {
   "name": "node-api",
   "version": "1.0.0",
+  "type": "commonjs",
   "private": true,
   "scripts": {
     "test:e2e": "node index.js"

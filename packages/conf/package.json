@@ -19,8 +19,6 @@
     "name": "Tomáš Ehrlich",
     "email": "tomas.ehrlich@gmail.com"
   },
-  "main": "dist/index.mjs",
-  "types": "dist/index.d.ts",
   "type": "module",
   "engines": {
     "node": ">=20.0.0"
@@ -47,5 +45,8 @@
     "@lingui/test-utils": "workspace:*",
     "unbuild": "^2.0.0",
     "vitest": "4.0.18"
+  },
+  "unbuild": {
+    "declaration": "node16"
   }
 }

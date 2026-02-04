@@ -2,8 +2,6 @@
   "name": "@lingui/format-po",
   "version": "5.9.0",
   "description": "Gettext PO format for Lingui Catalogs",
-  "main": "./dist/po.mjs",
-  "types": "./dist/po.d.mts",
   "type": "module",
   "sideEffects": false,
   "license": "MIT",
@@ -55,5 +53,8 @@
     "@lingui/test-utils": "workspace:*",
     "unbuild": "2.0.0",
     "vitest": "4.0.18"
+  },
+  "unbuild": {
+    "declaration": "node16"
   }
 }

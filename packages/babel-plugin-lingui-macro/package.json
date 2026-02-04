@@ -1,8 +1,8 @@
 {
   "name": "@lingui/babel-plugin-lingui-macro",
   "version": "5.9.0",
+  "type": "commonjs",
   "description": "Babel plugin for transforming Lingui Macros",
-  "main": "./dist/index.cjs",
   "contributors": [
     {
       "name": "Timofei Iatsenko",
@@ -77,6 +77,6 @@
     "vitest": "4.0.18"
   },
   "unbuild": {
-    "declaration": true
+    "declaration": "node16"
   }
 }

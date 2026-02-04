@@ -1,9 +1,11 @@
 {
   "name": "@lingui/format-json",
   "version": "5.9.0",
+  "type": "module",
   "description": "JSON format for Lingui Catalogs",
-  "main": "./dist/json.mjs",
-  "types": "./dist/json.d.ts",
+  "exports": {
+    ".": "./dist/json.mjs"
+  },
   "sideEffects": false,
   "license": "MIT",
   "keywords": [
@@ -45,5 +47,8 @@
   "devDependencies": {
     "unbuild": "^3.6.1",
     "vitest": "4.0.18"
+  },
+  "unbuild": {
+    "declaration": "node16"
   }
 }
