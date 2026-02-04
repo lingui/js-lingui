@@ -3219,16 +3219,10 @@ __metadata:
     "@babel/types": ^7.20.7
     "@lingui/conf": "workspace:*"
     "@lingui/message-utils": "workspace:*"
-    "@types/babel-plugin-macros": ^2.8.5
     babel-plugin-react-compiler: ^1.0.0
     prettier: 3.8.1
     unbuild: 3.6.1
     vitest: 4.0.18
-  peerDependencies:
-    babel-plugin-macros: 2 || 3
-  peerDependenciesMeta:
-    babel-plugin-macros:
-      optional: true
   languageName: unknown
   linkType: soft
 
@@ -4844,16 +4838,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/babel-plugin-macros@npm:^2.8.5":
-  version: 2.8.5
-  resolution: "@types/babel-plugin-macros@npm:2.8.5"
-  dependencies:
-    "@types/babel__core": "*"
-  checksum: 2a4ade60716c320dd20f0b1db5d2dc591304b8d20a8b0d86175b43024c91df817e0f5d960ac6838b9fe6f6b3465c3f91dd3c79278cc675542b3993061df932df
-  languageName: node
-  linkType: hard
-
-"@types/babel__core@npm:*, @types/babel__core@npm:^7.1.18":
+"@types/babel__core@npm:^7.1.18":
   version: 7.20.1
   resolution: "@types/babel__core@npm:7.20.1"
   dependencies:

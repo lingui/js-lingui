@@ -1,11 +1,16 @@
-import { createMacro, MacroParams } from "babel-plugin-macros"
-
 import type { VisitNodeObject } from "@babel/traverse"
 import { Program } from "@babel/types"
 
 import linguiPlugin from "./index"
+import * as Babel from "@babel/core"
 
-function macro({ state, babel, config }: MacroParams) {
+interface MacroParams {
+  state: Babel.PluginPass
+  babel: typeof Babel
+  config?: { [key: string]: any } | undefined
+}
+
+export function macro({ state, babel, config }: MacroParams) {
   if (!state.get("linguiProcessed")) {
     state.opts = config
     const plugin = linguiPlugin(babel)
@@ -24,7 +29,3 @@ function macro({ state, babel, config }: MacroParams) {
 
   return { keepImports: true }
 }
-
-export default createMacro(macro, {
-  configName: "lingui",
-}) as { isBabelMacro: true }
