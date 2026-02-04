@@ -49,9 +49,9 @@
     "vite": "^3 || ^4 || ^5.0.9 || ^6 || ^7"
   },
   "devDependencies": {
-    "@lingui/react": "workspace:^",
     "@lingui/core": "workspace:^",
     "@lingui/format-json": "workspace:^",
+    "@lingui/react": "workspace:^",
     "unbuild": "3.6.1",
     "vite": "6.0.2",
     "vite-plugin-babel-macros": "^1.0.6",
