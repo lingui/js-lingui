@@ -33,13 +33,6 @@ describe("macro", function () {
       }
     }
 
-  it("Should throw error if used without babel-macro-plugin", async () => {
-    await expect(async () => {
-      const mod = await import("../src/macro")
-      return (mod as any).Trans
-    }).rejects.toThrow('The macro you imported from "@lingui/core/macro"')
-  })
-
   describe.skip("validation", function () {
     describe("plural/select/selectordinal", function () {
       it("value is missing", function () {

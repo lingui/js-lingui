@@ -22,7 +22,11 @@ describe.skipIf(platform() === "win32")("vite-plugin", () => {
   it("should report error when macro used without a plugin", async () => {
     expect.assertions(1)
     try {
-      await runVite(`no-macro-error`)
+      await runVite(
+        `no-macro-error`,
+        {},
+        { useVitePlugin: false, useMacroPlugin: false },
+      )
     } catch (e) {
       expect((e as Error).message).toContain(
         'The macro you imported from "@lingui/core/macro" is being executed outside the context of compilation.',
@@ -30,7 +34,7 @@ describe.skipIf(platform() === "win32")("vite-plugin", () => {
     }
   })
   it("should not report error when macro correctly used", async () => {
-    const { mod } = await runVite(`macro-usage`, {}, true)
+    const { mod } = await runVite(`macro-usage`, {}, { useMacroPlugin: true })
     expect(await mod.load()).toMatchSnapshot()
   })
 
@@ -77,7 +81,7 @@ describe.skipIf(platform() === "win32")("vite-plugin", () => {
   it("should report error when @lingui/core/macro is dynamically imported", async () => {
     expect.assertions(1)
     try {
-      await runVite(`dynamic-macro-error`, {}, true)
+      await runVite(`dynamic-macro-error`, {}, { useMacroPlugin: true })
     } catch (e) {
       expect((e as Error).message).toContain(
         'The macro you imported from "@lingui/core/macro" cannot be dynamically imported.',
@@ -89,7 +93,10 @@ describe.skipIf(platform() === "win32")("vite-plugin", () => {
 async function runVite(
   fixturesPath: string,
   pluginConfig: LinguiPluginOpts = {},
-  useMacroPlugin = false,
+  {
+    useMacroPlugin = false,
+    useVitePlugin = true,
+  }: { useMacroPlugin?: boolean; useVitePlugin?: boolean } = {},
 ) {
   const oldCwd = process.cwd()
   const cwd = path.join(import.meta.dirname, fixturesPath)
@@ -133,12 +140,14 @@ async function runVite(
         outDir,
       },
       plugins: [
-        lingui({
-          cwd,
-          ...pluginConfig,
-        }),
+        useVitePlugin
+          ? lingui({
+              cwd,
+              ...pluginConfig,
+            })
+          : null,
 
-        useMacroPlugin ? macrosPlugin() : [],
+        useMacroPlugin ? macrosPlugin() : null,
       ],
     })
   } finally {

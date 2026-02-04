@@ -36,13 +36,18 @@
   },
   "exports": {
     ".": "./dist/index.mjs",
-    "./macro": "./macro/index.cjs",
+    "./macro": {
+      "browser": "./macro/browser.cjs",
+      "types": "./macro/index.d.cts",
+      "default": "./macro/index.cjs"
+    },
     "./package.json": "./package.json"
   },
   "files": [
     "LICENSE",
     "README.md",
     "dist/",
+    "macro/browser.cjs",
     "macro/index.d.cts",
     "macro/index.cjs"
   ],
