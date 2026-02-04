@@ -35,10 +35,9 @@ jobs:
           yarn verdaccio:release
 
       - name: Run tests in vite-project-react-babel
-        working-directory: ./examples/vite-project-react-babel
-        env:
-          YARN_NPM_REGISTRY_SERVER: http://0.0.0.0:4873/
         run: |
+          cp ./.github/verdaccio/.yarnrc.yml ./examples/vite-project-react-babel/.yarnrc.yml
+          cd ./examples/create-react-app
           yarn up "@lingui/*"
           yarn messages:extract
           yarn test
