@@ -134,6 +134,27 @@ export default defineConfig({
 
 Using TypeScript configuration with `defineConfig` is recommended as it provides type safety and better IDE support.
 
+## Create React App (CRA) Example Removed
+
+The Create React App example has been **removed** from the repository.
+
+CRA is [officially deprecated](https://react.dev/blog/2025/02/14/sunsetting-create-react-app) and no longer fits the modern JavaScript ecosystem. It lacks support for modern ESM patterns and would slow down Lingui's evolution toward current best practices.
+
+For new projects or migrations, we recommend using Vite with Babel or SWC, which are closer to today's standards. See our [examples](/examples) for working setups.
+
+## Babel Macro Plugin Deprecated
+
+The `babel-plugin-macros` integration is **deprecated** and will be removed in a future release.
+
+The `babel-plugin-macros` package is no longer actively maintained, and its primary adoption driver was CRA. With CRA deprecated, there's little reason to continue supporting this integration path.
+
+Switch to the dedicated Babel or SWC plugins:
+
+- **Babel**: Use `@lingui/babel-plugin-lingui-macro` directly in your Babel config
+- **SWC**: Use `@lingui/swc-plugin`
+
+See [Installation](/installation) for configuration details.
+
 ## TypeScript Type Changes
 
 Several Lingui packages now use TypeScript's `strictNullChecks`, which improves type safety but may require updates if you use Lingui's internal types in custom integrations.

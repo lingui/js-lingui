@@ -10,7 +10,6 @@ To help you get started with Lingui, we've provided some example projects that d
 
 Check out the example projects below:
 
-- [Create React App](https://github.com/lingui/js-lingui/tree/main/examples/create-react-app)
 - [Vanilla JS](https://github.com/lingui/js-lingui/tree/main/examples/js)
 - [Next.js with Babel](https://github.com/lingui/js-lingui/tree/main/examples/nextjs-babel)
 - [Next.js with SWC and app router](https://github.com/lingui/js-lingui/tree/main/examples/nextjs-swc)
