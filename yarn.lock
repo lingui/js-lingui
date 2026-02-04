@@ -3219,6 +3219,7 @@ __metadata:
     "@babel/types": ^7.20.7
     "@lingui/conf": "workspace:*"
     "@lingui/message-utils": "workspace:*"
+    babel-plugin-macros: ^3.1.0
     babel-plugin-react-compiler: ^1.0.0
     prettier: 3.8.1
     unbuild: 3.6.1
