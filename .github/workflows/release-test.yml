@@ -37,7 +37,7 @@ jobs:
       - name: Run tests in vite-project-react-babel
         run: |
           cp ./.github/verdaccio/.yarnrc.yml ./examples/vite-project-react-babel/.yarnrc.yml
-          cd ./examples/create-react-app
+          cd ./examples/vite-project-react-babel
           yarn up "@lingui/*"
           yarn messages:extract
           yarn test
