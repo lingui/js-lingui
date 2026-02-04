@@ -1,6 +1,6 @@
 const { createMacro } = require("babel-plugin-macros")
 const { macro } = require("@lingui/babel-plugin-lingui-macro/macro")
 
-export default createMacro(macro, {
+module.exports = createMacro(macro, {
   configName: "lingui",
 })
