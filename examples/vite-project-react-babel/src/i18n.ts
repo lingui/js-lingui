@@ -1,11 +1,11 @@
-import { i18n } from "@lingui/core"
+import { I18n } from "@lingui/core"
 
 /**
  * Load messages for requested locale and activate it.
  * This function isn't part of the LinguiJS library because there are
  * many ways how to load messages — from REST API, from file, from cache, etc.
  */
-export async function loadCatalog(locale: string) {
+export async function loadCatalog(locale: string, i18n: I18n) {
   const catalog = await import(`./locales/${locale}.po`)
   i18n.loadAndActivate({ locale, messages: catalog.messages })
 }

@@ -1,31 +1,54 @@
-import {describe, it, expect, afterEach } from 'vitest'
+import { describe, it, expect, afterEach, beforeEach } from "vitest"
 import { render, screen, waitFor, cleanup } from "@testing-library/react"
-import {App} from "./App"
-import '@testing-library/jest-dom/vitest'
+import { App } from "./App"
+import "@testing-library/jest-dom/vitest"
 import { userEvent } from "@testing-library/user-event"
+import { I18n, setupI18n } from "@lingui/core"
+import { loadCatalog } from "./i18n"
+import { I18nProvider } from "@lingui/react"
 
 describe("App", () => {
-  afterEach(() => {
-    cleanup();
+  let i18n: I18n
+
+  function setup() {
+    render(<App />, {
+      wrapper: ({ children }) => (
+        <I18nProvider i18n={i18n}>{children}</I18nProvider>
+      ),
+    })
+  }
+
+  beforeEach(async () => {
+    i18n = setupI18n()
+    await loadCatalog("en", i18n)
   })
 
-  it('Should render default messages in english and handle language switching', async () => {
-    render(<App/>)
+  afterEach(() => {
+    cleanup()
+  })
+
+  it("Should render default messages in english and handle language switching", async () => {
+    setup()
+
     const user = userEvent.setup()
 
-    const textEl = await screen.findByTestId('edit-text')
+    const textEl = await screen.findByTestId("edit-text")
 
     expect(textEl.textContent).toBe("Edit src/App.tsx and save to test HMR")
 
-    await user.click(await screen.findByRole('button', { name: "Polish"}))
-    await waitFor(() => expect(textEl.textContent).toBe("Edytuj src/App.tsx i zapisz, aby przetestować HMR"))
+    await user.click(await screen.findByRole("button", { name: "Polish" }))
+    await waitFor(() =>
+      expect(textEl.textContent).toBe(
+        "Edytuj src/App.tsx i zapisz, aby przetestować HMR",
+      ),
+    )
   })
 
-  it('Should render plural message in EN', async () => {
-    render(<App/>)
+  it("Should render plural message in EN", async () => {
+    setup()
     const user = userEvent.setup()
 
-    const pluralBtn = await screen.findByTestId('plural-button')
+    const pluralBtn = await screen.findByTestId("plural-button")
 
     expect(pluralBtn.textContent).toMatchInlineSnapshot(`"0 months"`)
 
@@ -36,13 +59,13 @@ describe("App", () => {
     expect(pluralBtn.textContent).toMatchInlineSnapshot(`"2 months"`)
   })
 
-  it('Should render plural message in PL', async () => {
-    render(<App/>)
+  it("Should render plural message in PL", async () => {
+    setup()
     const user = userEvent.setup()
 
-    await user.click(await screen.findByRole('button', { name: "Polish"}))
+    await user.click(await screen.findByRole("button", { name: "Polish" }))
 
-    const pluralBtn = await screen.findByTestId('plural-button')
+    const pluralBtn = await screen.findByTestId("plural-button")
 
     expect(pluralBtn.textContent).toMatchInlineSnapshot(`"0 miesięcy"`)
 
@@ -58,28 +81,38 @@ describe("App", () => {
     expect(pluralBtn.textContent).toMatchInlineSnapshot(`"5 miesięcy"`)
   })
 
-  it('Should render using `t` from `useLingui` macro', async () => {
-    render(<App/>)
+  it("Should render using `t` from `useLingui` macro", async () => {
+    setup()
     const user = userEvent.setup()
 
-    const pluralBtn = await screen.findByTestId('plural-button')
+    const pluralBtn = await screen.findByTestId("plural-button")
 
-    expect(pluralBtn).toHaveAttribute('title', `Click on this button to test plurals`)
-    await user.click(await screen.findByRole('button', { name: "Polish"}))
+    expect(pluralBtn).toHaveAttribute(
+      "title",
+      `Click on this button to test plurals`,
+    )
+    await user.click(await screen.findByRole("button", { name: "Polish" }))
 
-    await waitFor(() => expect(pluralBtn).toHaveAttribute('title', `Kliknij ten przycisk, aby przetestować formy liczby mnogiej`))
+    await waitFor(() =>
+      expect(pluralBtn).toHaveAttribute(
+        "title",
+        `Kliknij ten przycisk, aby przetestować formy liczby mnogiej`,
+      ),
+    )
   })
 
-  it('Should render lazy messages and `t`', async () => {
-    render(<App/>)
+  it("Should render lazy messages and `t`", async () => {
+    setup()
     const user = userEvent.setup()
 
-    const msgExampleEl = await screen.findByTestId('msg-example')
+    const msgExampleEl = await screen.findByTestId("msg-example")
 
-    expect(msgExampleEl.textContent).toMatchInlineSnapshot(`"Red Blue Orange "`);
+    expect(msgExampleEl.textContent).toMatchInlineSnapshot(`"Red Blue Orange "`)
 
-    await user.click(await screen.findByRole('button', { name: "Polish"}))
+    await user.click(await screen.findByRole("button", { name: "Polish" }))
 
-    await waitFor(() =>     expect(msgExampleEl.textContent).toBe(`Czerwony Niebieski Pomarańczowy `))
+    await waitFor(() =>
+      expect(msgExampleEl.textContent).toBe(`Czerwony Niebieski Pomarańczowy `),
+    )
   })
 })

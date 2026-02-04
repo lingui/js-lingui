@@ -21,7 +21,15 @@ export function MsgExample() {
   const { t } = useLingui()
 
   return (
-    <div data-testid="msg-example" style={{ display: "flex", justifyContent: 'center', marginTop: '20px', gap: 12 }}>
+    <div
+      data-testid="msg-example"
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        marginTop: "20px",
+        gap: 12,
+      }}
+    >
       {Object.entries(labels).map(([key, { label, color }]) => (
         <div
           key={key}
