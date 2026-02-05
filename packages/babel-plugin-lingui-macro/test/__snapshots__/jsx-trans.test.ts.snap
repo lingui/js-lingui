@@ -311,6 +311,60 @@ import { Trans as _Trans } from "@lingui/react";
 
 `;
 
+exports[`JSX comment should not affect expression index 1`] = `
+import { Trans } from "@lingui/react/macro";
+// Without comment - expression gets index 0
+<Trans>
+  Click here
+  <Link>{getText()}</Link>
+</Trans>;
+// With comment before expression - expression should STILL get index 0
+<Trans>
+  Click here
+  <Link>
+    {/* @ts-expect-error */}
+    {getText()}
+  </Link>
+</Trans>;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+// Without comment - expression gets index 0
+import { Trans as _Trans } from "@lingui/react";
+<_Trans
+  {
+    /*i18n*/
+    ...{
+      id: "HW7Brx",
+      message: "Click here<0>{0}</0>",
+      values: {
+        0: getText(),
+      },
+      components: {
+        0: <Link />,
+      },
+    }
+  }
+/>;
+// With comment before expression - expression should STILL get index 0
+<_Trans
+  {
+    /*i18n*/
+    ...{
+      id: "HW7Brx",
+      message: "Click here<0>{0}</0>",
+      values: {
+        0: getText(),
+      },
+      components: {
+        0: <Link />,
+      },
+    }
+  }
+/>;
+
+`;
+
 exports[`Labeled expressions are supported 1`] = `
 import { Trans } from "@lingui/react/macro";
 <Trans>
