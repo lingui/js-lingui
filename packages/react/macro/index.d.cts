@@ -107,8 +107,10 @@ export const SelectOrdinal: (props: PluralChoiceProps) => ReactNode
  */
 export const Select: (props: SelectChoiceProps) => ReactNode
 
-function _t(descriptor: MacroMessageDescriptor): string
-function _t(literals: TemplateStringsArray, ...placeholders: any[]): string
+type TFunction = {
+  (descriptor: MacroMessageDescriptor): string
+  (literals: TemplateStringsArray, ...placeholders: any[]): string
+}
 
 /**
  *
@@ -134,5 +136,5 @@ function _t(literals: TemplateStringsArray, ...placeholders: any[]): string
  * ```
  */
 export function useLingui(): Omit<I18nContext, "_"> & {
-  t: typeof _t
+  t: TFunction
 }
