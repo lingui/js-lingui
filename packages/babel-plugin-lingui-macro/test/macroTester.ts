@@ -3,7 +3,8 @@ import { transformFileSync, transformSync, TransformOptions } from "@babel/core"
 import prettier from "prettier"
 import path from "path"
 import fs from "fs"
-import linguiMacro from "../src/macro"
+import { macro } from "../src/macro"
+import Module from "node:module"
 
 export type TestCase = TestCaseInline | TestCaseFixture
 
@@ -97,7 +98,7 @@ export function macroTester(opts: MacroTesterOptions) {
 
           const actualMacro = transformFileSync(inputPath, {
             ...getDefaultBabelOptions(
-              "plugin",
+              "macro",
               macroOpts,
               useTypescriptPreset,
               useReactCompiler,
@@ -163,6 +164,8 @@ export const getDefaultBabelOptions = (
   isTs = false,
   useReactCompiler = false,
 ): TransformOptions => {
+  const require = Module.createRequire(import.meta.url)
+
   return {
     filename: "<filename>" + (isTs ? ".tsx" : "jsx"),
     configFile: false,
@@ -180,7 +183,13 @@ export const getDefaultBabelOptions = (
               // this will not follow jest pathMapping and will resolve path from ./build
               // instead of ./src which makes testing & developing hard.
               // here we override resolve and provide correct path for testing
-              require: () => linguiMacro,
+              require: () => {
+                const { createMacro } = require("babel-plugin-macros")
+
+                return createMacro(macro, {
+                  configName: "lingui",
+                })
+              },
             },
           ],
 

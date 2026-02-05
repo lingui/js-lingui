@@ -107,12 +107,6 @@ export const SelectOrdinal: (props: PluralChoiceProps) => ReactNode
  */
 export const Select: (props: SelectChoiceProps) => ReactNode
 
-declare function _t(descriptor: MacroMessageDescriptor): string
-declare function _t(
-  literals: TemplateStringsArray,
-  ...placeholders: any[]
-): string
-
 /**
  *
  * Macro version of useLingui replaces _ function with `t` macro function which is bound to i18n passed from React.Context
@@ -137,5 +131,8 @@ declare function _t(
  * ```
  */
 export function useLingui(): Omit<I18nContext, "_"> & {
-  t: typeof _t
+  t: {
+    (descriptor: MacroMessageDescriptor): string
+    (literals: TemplateStringsArray, ...placeholders: any[]): string
+  }
 }

@@ -1370,7 +1370,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.20.13, @babel/runtime@npm:^7.8.4":
+"@babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.8.4":
   version: 7.21.0
   resolution: "@babel/runtime@npm:7.21.0"
   dependencies:
@@ -3219,16 +3219,11 @@ __metadata:
     "@babel/types": ^7.20.7
     "@lingui/conf": "workspace:*"
     "@lingui/message-utils": "workspace:*"
-    "@types/babel-plugin-macros": ^2.8.5
+    babel-plugin-macros: ^3.1.0
     babel-plugin-react-compiler: ^1.0.0
     prettier: 3.8.1
     unbuild: 3.6.1
     vitest: 4.0.18
-  peerDependencies:
-    babel-plugin-macros: 2 || 3
-  peerDependenciesMeta:
-    babel-plugin-macros:
-      optional: true
   languageName: unknown
   linkType: soft
 
@@ -3277,7 +3272,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lingui/conf@5.9.0, @lingui/conf@workspace:*, @lingui/conf@workspace:packages/conf":
+"@lingui/conf@workspace:*, @lingui/conf@workspace:packages/conf":
   version: 0.0.0-use.local
   resolution: "@lingui/conf@workspace:packages/conf"
   dependencies:
@@ -3291,7 +3286,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lingui/core@5.9.0, @lingui/core@workspace:*, @lingui/core@workspace:^, @lingui/core@workspace:packages/core":
+"@lingui/core@workspace:*, @lingui/core@workspace:^, @lingui/core@workspace:packages/core":
   version: 0.0.0-use.local
   resolution: "@lingui/core@workspace:packages/core"
   dependencies:
@@ -3307,16 +3302,6 @@ __metadata:
       optional: true
   languageName: unknown
   linkType: soft
-
-"@lingui/core@npm:4.0.0":
-  version: 4.0.0
-  resolution: "@lingui/core@npm:4.0.0"
-  dependencies:
-    "@babel/runtime": ^7.20.13
-    "@lingui/message-utils": 4.0.0
-  checksum: 1ca41fcde3703ed170bb26c3ff86423045cf02aaf84afd3eaa146c80098ef0380203d1450e5911f1d257481da2eec6bae1529a348c8e7491c93be3b73d8a2ebd
-  languageName: node
-  linkType: hard
 
 "@lingui/detect-locale@workspace:packages/detect-locale":
   version: 0.0.0-use.local
@@ -3356,7 +3341,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@lingui/format-json@workspace:packages/format-json"
   dependencies:
-    "@lingui/conf": 5.9.0
+    "@lingui/conf": "workspace:*"
     unbuild: ^3.6.1
     vitest: 4.0.18
   languageName: unknown
@@ -3406,15 +3391,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lingui/message-utils@npm:4.0.0":
-  version: 4.0.0
-  resolution: "@lingui/message-utils@npm:4.0.0"
-  dependencies:
-    "@messageformat/parser": ^5.0.0
-  checksum: caefbe8be76c9bd10cdc526358260599f99e0c33cb498d01a56f330dde9a88921d4871d5389a6fd0e9e3810f15dea38d25dad5d7fa2b819b2321e10dc71105cf
-  languageName: node
-  linkType: hard
-
 "@lingui/message-utils@workspace:*, @lingui/message-utils@workspace:packages/message-utils":
   version: 0.0.0-use.local
   resolution: "@lingui/message-utils@workspace:packages/message-utils"
@@ -3453,12 +3429,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lingui/react@workspace:packages/react":
+"@lingui/react@workspace:^, @lingui/react@workspace:packages/react":
   version: 0.0.0-use.local
   resolution: "@lingui/react@workspace:packages/react"
   dependencies:
     "@lingui/babel-plugin-lingui-macro": "workspace:*"
-    "@lingui/core": 5.9.0
+    "@lingui/core": "workspace:*"
     "@lingui/test-utils": "workspace:*"
     "@testing-library/react": ^14.0.0
     "@types/react": ^18.2.13
@@ -3482,8 +3458,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@lingui/remote-loader@workspace:packages/remote-loader"
   dependencies:
-    "@lingui/core": 4.0.0
-    "@lingui/message-utils": 4.0.0
+    "@lingui/core": "workspace:*"
+    "@lingui/message-utils": "workspace:*"
     unbuild: 2.0.0
   languageName: unknown
   linkType: soft
@@ -3501,9 +3477,10 @@ __metadata:
   resolution: "@lingui/vite-plugin@workspace:packages/vite-plugin"
   dependencies:
     "@lingui/cli": "workspace:*"
-    "@lingui/conf": 5.9.0
+    "@lingui/conf": "workspace:*"
     "@lingui/core": "workspace:^"
     "@lingui/format-json": "workspace:^"
+    "@lingui/react": "workspace:^"
     unbuild: 3.6.1
     vite: 6.0.2
     vite-plugin-babel-macros: ^1.0.6
@@ -4862,16 +4839,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/babel-plugin-macros@npm:^2.8.5":
-  version: 2.8.5
-  resolution: "@types/babel-plugin-macros@npm:2.8.5"
-  dependencies:
-    "@types/babel__core": "*"
-  checksum: 2a4ade60716c320dd20f0b1db5d2dc591304b8d20a8b0d86175b43024c91df817e0f5d960ac6838b9fe6f6b3465c3f91dd3c79278cc675542b3993061df932df
-  languageName: node
-  linkType: hard
-
-"@types/babel__core@npm:*, @types/babel__core@npm:^7.1.18":
+"@types/babel__core@npm:^7.1.18":
   version: 7.20.1
   resolution: "@types/babel__core@npm:7.20.1"
   dependencies:

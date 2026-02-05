@@ -48,8 +48,8 @@
     "dist/"
   ],
   "dependencies": {
-    "@lingui/core": "4.0.0",
-    "@lingui/message-utils": "4.0.0"
+    "@lingui/core": "workspace:*",
+    "@lingui/message-utils": "workspace:*"
   },
   "devDependencies": {
     "unbuild": "2.0.0"
