@@ -5046,12 +5046,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:20.14.8":
+"@types/node@npm:*":
   version: 20.14.8
   resolution: "@types/node@npm:20.14.8"
   dependencies:
     undici-types: ~5.26.4
   checksum: a9128840005d4a0aba68826e22ac0fdd86bb9073f1d274217d3509b52f969d1aab83415c85a8461259f33cf34f9eee02fb13dca059865bed2ba2e728bc936a76
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:22":
+  version: 22.19.9
+  resolution: "@types/node@npm:22.19.9"
+  dependencies:
+    undici-types: ~6.21.0
+  checksum: 8a0ef0ddcbdd3290eb9eae8b7c5f6d703d2fc98be726e386c4c0f9c221370326e7a0634f97c4e6d24b7bf2d1d76c89336de8d71f5eebfcbca392d277e23b4339
   languageName: node
   linkType: hard
 
@@ -11176,7 +11185,7 @@ __metadata:
     "@eslint/js": ^9.17.0
     "@size-limit/preset-small-lib": ^11.1.6
     "@types/mock-fs": ^4.13.1
-    "@types/node": 20.14.8
+    "@types/node": 22
     "@vitest/coverage-v8": 4.0.18
     cross-env: ^7.0.2
     eslint: ^9.17.0
@@ -16809,6 +16818,13 @@ __metadata:
   version: 5.26.5
   resolution: "undici-types@npm:5.26.5"
   checksum: 3192ef6f3fd5df652f2dc1cd782b49d6ff14dc98e5dced492aa8a8c65425227da5da6aafe22523c67f035a272c599bb89cfe803c1db6311e44bed3042fc25487
+  languageName: node
+  linkType: hard
+
+"undici-types@npm:~6.21.0":
+  version: 6.21.0
+  resolution: "undici-types@npm:6.21.0"
+  checksum: 46331c7d6016bf85b3e8f20c159d62f5ae471aba1eb3dc52fff35a0259d58dcc7d592d4cc4f00c5f9243fa738a11cfa48bd20203040d4a9e6bc25e807fab7ab3
   languageName: node
   linkType: hard
 

@@ -21,7 +21,7 @@
   },
   "type": "module",
   "engines": {
-    "node": ">=20.0.0"
+    "node": ">=22.19.0"
   },
   "scripts": {
     "build": "unbuild",

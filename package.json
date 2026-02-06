@@ -33,7 +33,7 @@
     "prepare": "husky install"
   },
   "engines": {
-    "node": ">=20.0.0"
+    "node": ">=22.19.0"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.20.2",
@@ -42,7 +42,7 @@
     "@eslint/js": "^9.17.0",
     "@size-limit/preset-small-lib": "^11.1.6",
     "@types/mock-fs": "^4.13.1",
-    "@types/node": "20.14.8",
+    "@types/node": "22",
     "@vitest/coverage-v8": "4.0.18",
     "cross-env": "^7.0.2",
     "eslint": "^9.17.0",
