@@ -1,5 +1,5 @@
 export class EventEmitter<
-  Events extends { [name: string]: (...args: any[]) => void }
+  Events extends { [name: string]: (...args: any[]) => void },
 > {
   private readonly _events: {
     [name in keyof Events]?: Set<Events[name]>
