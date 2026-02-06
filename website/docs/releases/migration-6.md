@@ -4,6 +4,7 @@ This guide will help you migrate from Lingui 5.x to 6.x. It covers the most impo
 
 Need to upgrade an older project to v5 first? See our [older migration guide](/releases/migration-5).
 
+<!-- TODO: create dedicated deployment for 5.x documentation -->
 If you're looking for 5.x documentation, you can find it [here](https://lingui.dev).
 
 ## Node.js Version
@@ -12,20 +13,29 @@ The minimum supported version of Node.js in Lingui v6 is v22.19+.
 
 ## ESM-Only Distribution
 
-Lingui 6.0 is now distributed as **ESM-only** (ECMAScript Modules). The JavaScript ecosystem continues to move toward ESM, and with recent Node.js improvements (such as `require(esm)` being backported to Node.js 20), this transition is now seamless for most users.
+Lingui 6.0 is now distributed as **ESM-only** (ECMAScript Modules). ESM is the official, standardized module system for JavaScript, and the entire ecosystem is converging toward this standard.
+
+### Why This Change
+
+Previously, Lingui shipped dual builds (both ESM and CommonJS), which created significant drawbacks:
+
+- Nearly doubled package sizes
+- Maintenance complexity with conditionals and workarounds
+- Subtle bugs from module duplication and dependency resolution issues
+
+By moving to ESM-only, Lingui becomes **smaller, simpler, and more future-proof**. Thanks to Node.js improvements like [`require(esm)`](https://joyeecheung.github.io/blog/2024/03/18/require-esm-in-node-js/), this transition is now seamless for most users.
 
 ### What Changed
 
-Most Lingui packages have been converted to ESM-only distribution. The following packages remain as CommonJS for compatibility reasons (they are consumed by Babel and Webpack via `require()`):
+Most Lingui packages have been converted to ESM-only distribution. The following packages remain as CommonJS for compatibility reasons:
 
-- `@lingui/babel-plugin-lingui-macro`
-- `@lingui/loader`
+- `@lingui/metro-transformer`
 
 Note that these excluded packages still use ESM dependencies internally, which may affect their consumers in certain edge cases.
 
 ### Migration
 
-For most users, **no changes are required**. Modern bundlers (Vite, webpack 5, esbuild, Rollup) and Node.js versions that support `require()` for ESM modules (20.16+, 22.19+, or 24+) handle ESM imports transparently.
+For most users, **no changes are required**. Modern bundlers (Vite, Webpack, esbuild, Rollup) and Node.js versions that support `require()` for ESM modules (20.16+, 22.19+, or 24+) handle ESM imports transparently.
 
 ## Deprecated `format` String and `formatOptions` Removed
 
