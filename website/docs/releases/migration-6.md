@@ -5,6 +5,7 @@ This guide will help you migrate from Lingui 5.x to 6.x. It covers the most impo
 Need to upgrade an older project to v5 first? See our [older migration guide](/releases/migration-5).
 
 <!-- TODO: create dedicated deployment for 5.x documentation -->
+
 If you're looking for 5.x documentation, you can find it [here](https://lingui.dev).
 
 ## Node.js Version
@@ -27,11 +28,7 @@ By moving to ESM-only, Lingui becomes **smaller, simpler, and more future-proof*
 
 ### What Changed
 
-Most Lingui packages have been converted to ESM-only distribution. The following packages remain as CommonJS for compatibility reasons:
-
-- `@lingui/metro-transformer`
-
-Note that these excluded packages still use ESM dependencies internally, which may affect their consumers in certain edge cases.
+All Lingui packages have been converted to ESM-only distribution, except `@lingui/metro-transformer`, which remains CommonJS for compatibility reasons. Note that this package still uses ESM dependencies internally, which may affect its consumers in certain edge cases.
 
 ### Migration
 
@@ -79,6 +76,18 @@ If you use a different formatter or have `formatOptions`, you need to import the
 
 See [Catalog Formats](/ref/catalog-formats) for more details on available formatters and their options.
 
+## Message ID Generation Changed to URL-Safe Format
+
+<!-- TODO: review this section after implementation of #2207 -->
+
+Generated message IDs now use URL-safe Base64 (characters `-` and `_` instead of `+` and `/`), improving compatibility with XLIFF 2.0 and URLs.
+
+:::note
+Migration details are still being finalized. If you have existing translations with auto-generated IDs, consider waiting for migration tooling.
+:::
+
+See [#2207](https://github.com/lingui/js-lingui/issues/2207) for details.
+
 ## Deprecated `@lingui/macro` Package No Longer Maintained
 
 The `@lingui/macro` package is **no longer maintained** and will not receive any updates. This package was deprecated in Lingui 5.0 when macros were split into separate entry points from existing packages.
@@ -90,7 +99,7 @@ In Lingui 5.0, the macros were split to allow using Lingui in non-React projects
 - **React (JSX) macros** moved to `@lingui/react/macro`
 - **Core (JS) macros** moved to `@lingui/core/macro`
 
-The `@lingui/macro` package continued to work in v5 but emitted deprecation warnings. In v6, it is no longer maintained and will not be compatible with future releases.
+The `@lingui/macro` package continued to work in v5 but emitted deprecation warnings. Starting in v6, it is no longer maintained and will not be compatible with future releases.
 
 ### Migration
 
@@ -148,7 +157,7 @@ Using TypeScript configuration with `defineConfig` is recommended as it provides
 
 The Create React App example has been **removed** from the repository.
 
-CRA is [officially deprecated](https://react.dev/blog/2025/02/14/sunsetting-create-react-app) and no longer fits the modern JavaScript ecosystem. It lacks support for modern ESM patterns and would slow down Lingui's evolution toward current best practices.
+CRA is [officially deprecated](https://react.dev/blog/2025/02/14/sunsetting-create-react-app) and no longer aligns with the modern JavaScript ecosystem. It lacks support for modern ESM patterns and could slow down Lingui's evolution toward current best practices.
 
 For new projects or migrations, we recommend using Vite with Babel or SWC, which are closer to today's standards. See our [examples](/examples) for working setups.
 
