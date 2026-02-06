@@ -1,10 +1,8 @@
 {
   "name": "@lingui/babel-plugin-lingui-macro",
-  "version": "5.3.2",
+  "version": "5.9.0",
+  "type": "module",
   "description": "Babel plugin for transforming Lingui Macros",
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
   "contributors": [
     {
       "name": "Timofei Iatsenko",
@@ -30,46 +28,20 @@
     "multilingual"
   ],
   "scripts": {
-    "build": "rimraf ./dist && unbuild",
-    "stub": "unbuild --stub"
+    "build": "unbuild",
+    "check-types": "tsc --noEmit"
   },
   "exports": {
-    ".": {
-      "require": {
-        "types": "./dist/index.d.cts",
-        "default": "./dist/index.cjs"
-      },
-      "import": {
-        "types": "./dist/index.d.mts",
-        "default": "./dist/index.mjs"
-      }
-    },
-    "./macro": {
-      "require": {
-        "types": "./dist/macro.d.cts",
-        "default": "./dist/macro.cjs"
-      },
-      "import": {
-        "types": "./dist/macro.d.mts",
-        "default": "./dist/macro.mjs"
-      }
-    },
-    "./ast": {
-      "require": {
-        "types": "./dist/ast.d.cts",
-        "default": "./dist/ast.cjs"
-      },
-      "import": {
-        "types": "./dist/ast.d.mts",
-        "default": "./dist/ast.mjs"
-      }
-    }
+    ".": "./dist/index.mjs",
+    "./macro": "./dist/macro.mjs",
+    "./ast": "./dist/ast.mjs"
   },
   "files": [
     "LICENSE",
     "README.md",
     "dist/"
   ],
+  "homepage": "https://lingui.dev",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/lingui/js-lingui.git",
@@ -83,25 +55,20 @@
   },
   "dependencies": {
     "@babel/core": "^7.20.12",
-    "@babel/runtime": "^7.20.13",
     "@babel/types": "^7.20.7",
-    "@lingui/conf": "5.3.2",
-    "@lingui/core": "5.3.2",
-    "@lingui/message-utils": "5.3.2"
-  },
-  "peerDependencies": {
-    "babel-plugin-macros": "2 || 3"
-  },
-  "peerDependenciesMeta": {
-    "babel-plugin-macros": {
-      "optional": true
-    }
+    "@lingui/conf": "workspace:*",
+    "@lingui/message-utils": "workspace:*"
   },
   "devDependencies": {
     "@babel/parser": "^7.20.15",
     "@babel/traverse": "^7.20.12",
-    "@types/babel-plugin-macros": "^2.8.5",
-    "prettier": "2.8.3",
-    "unbuild": "2.0.0"
+    "babel-plugin-macros": "^3.1.0",
+    "babel-plugin-react-compiler": "^1.0.0",
+    "prettier": "3.8.1",
+    "unbuild": "3.6.1",
+    "vitest": "4.0.18"
+  },
+  "unbuild": {
+    "declaration": "node16"
   }
 }

@@ -41,6 +41,7 @@ Here are some of them:
 - [mapflow.ai](https://mapflow.ai)
 - [lefun.fun](https://lefun.fun)
 - [Rove.me](https://rove.me)
+- [Gamma](https://gamma.app)
 
 :::tip
 Do you use Lingui in production or for hobby project? Please [let us know](https://github.com/lingui/js-lingui/discussions/1404) or [send a PR](https://github.com/lingui/js-lingui/pulls) to list your project here.

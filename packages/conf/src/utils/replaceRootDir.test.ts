@@ -12,7 +12,7 @@ it("should replace <rootDir>", () => {
         },
       ],
     },
-    "/Root"
+    "/Root",
   )
 
   expect(config).toMatchObject({

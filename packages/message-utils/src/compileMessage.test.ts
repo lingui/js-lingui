@@ -1,4 +1,4 @@
-import { mockConsole } from "@lingui/jest-mocks"
+import { mockConsole } from "@lingui/test-utils"
 import { compileMessage } from "./compileMessage"
 
 describe("compileMessage", () => {
@@ -6,7 +6,7 @@ describe("compileMessage", () => {
     mockConsole((console) => {
       expect(compileMessage("Invalid {message")).toEqual(["Invalid {message"])
       expect(console.error).toBeCalledWith(
-        expect.stringMatching("Unexpected message end at line")
+        expect.stringMatching("Unexpected message end at line"),
       )
     })
   })
@@ -14,7 +14,7 @@ describe("compileMessage", () => {
   it("should process string chunks with provided map fn", () => {
     const tokens = compileMessage(
       "Message {value, plural, one {{value} Book} other {# Books}}",
-      (text) => `<${text}>`
+      (text) => `<${text}>`,
     )
     expect(tokens).toEqual([
       "<Message >",
@@ -38,11 +38,11 @@ describe("compileMessage", () => {
     const tokens = compileMessage("Hey {name}!")
     expect(tokens).toMatchInlineSnapshot(`
       [
-        Hey ,
+        "Hey ",
         [
-          name,
+          "name",
         ],
-        !,
+        "!",
       ]
     `)
   })
@@ -51,38 +51,38 @@ describe("compileMessage", () => {
     const tokens = compileMessage("Hey '{name}'!")
     expect(tokens).toMatchInlineSnapshot(`
       [
-        Hey {name}!,
+        "Hey {name}!",
       ]
     `)
   })
 
   it("should compile plurals", () => {
     const tokens = compileMessage(
-      "{value, plural, offset:1 =0 {No Books} one {# Book} other {# Books} =42 {FourtyTwo books} =99 {Books with problems}}"
+      "{value, plural, offset:1 =0 {No Books} one {# Book} other {# Books} =42 {FourtyTwo books} =99 {Books with problems}}",
     )
     expect(tokens).toMatchInlineSnapshot(`
       [
         [
-          value,
-          plural,
+          "value",
+          "plural",
           {
-            0: [
-              No Books,
+            "0": [
+              "No Books",
             ],
-            42: [
-              FourtyTwo books,
+            "42": [
+              "FourtyTwo books",
             ],
-            99: [
-              Books with problems,
+            "99": [
+              "Books with problems",
             ],
-            offset: 1,
-            one: [
-              #,
-               Book,
+            "offset": 1,
+            "one": [
+              "#",
+              " Book",
             ],
-            other: [
-              #,
-               Books,
+            "other": [
+              "#",
+              " Books",
             ],
           },
         ],
@@ -92,22 +92,22 @@ describe("compileMessage", () => {
 
   it("should compile selectordinal", () => {
     const tokens = compileMessage(
-      "{value, selectordinal, one {#st Book} two {#nd Book}}"
+      "{value, selectordinal, one {#st Book} two {#nd Book}}",
     )
     expect(tokens).toMatchInlineSnapshot(`
       [
         [
-          value,
-          selectordinal,
+          "value",
+          "selectordinal",
           {
-            offset: undefined,
-            one: [
-              #,
-              st Book,
+            "offset": undefined,
+            "one": [
+              "#",
+              "st Book",
             ],
-            two: [
-              #,
-              nd Book,
+            "two": [
+              "#",
+              "nd Book",
             ],
           },
         ],
@@ -121,53 +121,53 @@ describe("compileMessage", () => {
       gender, select,
       male {{numOfGuests, plural, one {He invites one guest} other {He invites # guests}}}
       female {{numOfGuests, plural, one {She invites one guest} other {She invites # guests}}}
-      other {They is {gender}}}`
+      other {They is {gender}}}`,
     )
     expect(tokens).toMatchInlineSnapshot(`
       [
         [
-          gender,
-          select,
+          "gender",
+          "select",
           {
-            female: [
+            "female": [
               [
-                numOfGuests,
-                plural,
+                "numOfGuests",
+                "plural",
                 {
-                  offset: undefined,
-                  one: [
-                    She invites one guest,
+                  "offset": undefined,
+                  "one": [
+                    "She invites one guest",
                   ],
-                  other: [
-                    She invites ,
-                    #,
-                     guests,
+                  "other": [
+                    "She invites ",
+                    "#",
+                    " guests",
                   ],
                 },
               ],
             ],
-            male: [
+            "male": [
               [
-                numOfGuests,
-                plural,
+                "numOfGuests",
+                "plural",
                 {
-                  offset: undefined,
-                  one: [
-                    He invites one guest,
+                  "offset": undefined,
+                  "one": [
+                    "He invites one guest",
                   ],
-                  other: [
-                    He invites ,
-                    #,
-                     guests,
+                  "other": [
+                    "He invites ",
+                    "#",
+                    " guests",
                   ],
                 },
               ],
             ],
-            offset: undefined,
-            other: [
-              They is ,
+            "offset": undefined,
+            "other": [
+              "They is ",
               [
-                gender,
+                "gender",
               ],
             ],
           },
@@ -181,15 +181,15 @@ describe("compileMessage", () => {
     expect(tokens).toMatchInlineSnapshot(`
       [
         [
-          value,
-          select,
+          "value",
+          "select",
           {
-            female: [
-              She,
+            "female": [
+              "She",
             ],
-            offset: undefined,
-            other: [
-              They,
+            "offset": undefined,
+            "other": [
+              "They",
             ],
           },
         ],
@@ -200,22 +200,22 @@ describe("compileMessage", () => {
   describe("compiling dates", () => {
     it("with size", () => {
       expect(compileMessage("{value, date, short}")).toMatchInlineSnapshot(`
-              [
-                [
-                  value,
-                  date,
-                  short,
-                ],
-              ]
-          `)
+        [
+          [
+            "value",
+            "date",
+            "short",
+          ],
+        ]
+      `)
     })
 
     it("with no size", () => {
       expect(compileMessage("{value, date}")).toMatchInlineSnapshot(`
         [
           [
-            value,
-            date,
+            "value",
+            "date",
           ],
         ]
       `)
@@ -225,15 +225,15 @@ describe("compileMessage", () => {
       expect(compileMessage("{value, date, ::GrMMMdd}")).toMatchInlineSnapshot(`
         [
           [
-            value,
-            date,
+            "value",
+            "date",
             {
-              calendar: gregory,
-              day: 2-digit,
-              era: short,
-              month: short,
-              timeZone: undefined,
-              year: numeric,
+              "calendar": "gregory",
+              "day": "2-digit",
+              "era": "short",
+              "month": "short",
+              "timeZone": undefined,
+              "year": "numeric",
             },
           ],
         ]
@@ -247,7 +247,7 @@ describe("compileMessage", () => {
         ])
 
         expect(console.error).toBeCalledWith(
-          expect.stringMatching("Unable to compile date expression")
+          expect.stringMatching("Unable to compile date expression"),
         )
       })
     })
@@ -257,17 +257,17 @@ describe("compileMessage", () => {
     expect(compileMessage("{value, number, percent}")).toMatchInlineSnapshot(`
       [
         [
-          value,
-          number,
-          percent,
+          "value",
+          "number",
+          "percent",
         ],
       ]
     `)
     expect(compileMessage("{value, number}")).toMatchInlineSnapshot(`
       [
         [
-          value,
-          number,
+          "value",
+          "number",
         ],
       ]
     `)

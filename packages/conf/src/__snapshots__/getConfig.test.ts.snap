@@ -1,0 +1,62 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`getConfig > default config and snapshots > should return default config 1`] = `
+{
+  "catalogs": [
+    {
+      "exclude": [
+        "*/node_modules/*",
+      ],
+      "include": [
+        ".",
+      ],
+      "path": "./locale/{locale}/messages",
+    },
+  ],
+  "catalogsMergePath": "",
+  "compileNamespace": "cjs",
+  "compilerBabelOptions": {
+    "jsescOption": {
+      "minimal": true,
+    },
+    "minified": true,
+  },
+  "extractorParserOptions": {
+    "flow": false,
+    "tsExperimentalDecorators": false,
+  },
+  "fallbackLocales": {
+    "en-gb": "en",
+  },
+  "locales": [
+    "en-gb",
+  ],
+  "macro": {
+    "corePackage": [
+      "@lingui/core/macro",
+    ],
+    "jsxPackage": [
+      "@lingui/react/macro",
+    ],
+  },
+  "orderBy": "message",
+  "pseudoLocale": "",
+  "resolvedConfigPath": StringContaining ".linguirc",
+  "rootDir": ".",
+  "runtimeConfigModule": {
+    "Trans": [
+      "@lingui/react",
+      "Trans",
+    ],
+    "i18n": [
+      "@lingui/core",
+      "i18n",
+    ],
+    "useLingui": [
+      "@lingui/react",
+      "useLingui",
+    ],
+  },
+  "sourceLocale": "en-gb",
+}
+`;

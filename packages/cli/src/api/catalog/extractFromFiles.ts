@@ -1,19 +1,27 @@
-import type {
-  ExtractedMessage,
-  ExtractorType,
-  LinguiConfigNormalized,
-} from "@lingui/conf"
+import type { ExtractedMessage, LinguiConfigNormalized } from "@lingui/conf"
 import pico from "picocolors"
 import path from "path"
-import extract from "../extractors"
-import { ExtractedCatalogType, MessageOrigin } from "../types"
-import { prettyOrigin } from "../utils"
+import extract from "../extractors/index.js"
+import { ExtractedCatalogType, MessageOrigin } from "../types.js"
+import { prettyOrigin } from "../utils.js"
+import { ExtractWorkerPool } from "../workerPools.js"
+
+function mergeOrigins(prev: MessageOrigin[], next: MessageOrigin | undefined) {
+  if (!next) {
+    return prev
+  }
+
+  return [...prev, next].sort((a, b) => a[0].localeCompare(b[0]))
+}
 
 function mergePlaceholders(
   prev: Record<string, string[]>,
-  next: Record<string, string>
+  next: Record<string, string> | undefined,
 ) {
   const res = { ...prev }
+
+  // Handle case where next is null or undefined
+  if (!next) return res
 
   Object.entries(next).forEach(([key, value]) => {
     if (!res[key]) {
@@ -23,6 +31,8 @@ function mergePlaceholders(
     if (!res[key].includes(value)) {
       res[key].push(value)
     }
+
+    res[key].sort()
   })
 
   return res
@@ -30,61 +40,104 @@ function mergePlaceholders(
 
 export async function extractFromFiles(
   paths: string[],
-  config: LinguiConfigNormalized
+  config: LinguiConfigNormalized,
 ) {
   const messages: ExtractedCatalogType = {}
 
   let catalogSuccess = true
+
   for (const filename of paths) {
     const fileSuccess = await extract(
       filename,
       (next: ExtractedMessage) => {
-        if (!messages[next.id]) {
-          messages[next.id] = {
-            message: next.message,
-            context: next.context,
-            placeholders: {},
-            comments: [],
-            origin: [],
-          }
-        }
-
-        const prev = messages[next.id]
-
-        // there might be a case when filename was not mapped from sourcemaps
-        const filename = next.origin[0]
-          ? path.relative(config.rootDir, next.origin[0]).replace(/\\/g, "/")
-          : ""
-
-        const origin: MessageOrigin = [filename, next.origin[1]]
-
-        if (prev.message && next.message && prev.message !== next.message) {
-          throw new Error(
-            `Encountered different default translations for message ${pico.yellow(
-              next.id
-            )}` +
-              `\n${pico.yellow(prettyOrigin(prev.origin))} ${prev.message}` +
-              `\n${pico.yellow(prettyOrigin([origin]))} ${next.message}`
-          )
-        }
-
-        messages[next.id] = {
-          ...prev,
-          message: prev.message ?? next.message,
-          comments: next.comment
-            ? [...prev.comments, next.comment]
-            : prev.comments,
-          origin: [...prev.origin, [filename, next.origin[1]]],
-          placeholders: mergePlaceholders(prev.placeholders, next.placeholders),
-        }
+        mergeExtractedMessage(next, messages, config)
       },
       config,
-      {
-        extractors: config.extractors as ExtractorType[],
-      }
     )
     catalogSuccess &&= fileSuccess
   }
+
+  if (!catalogSuccess) return undefined
+
+  return messages
+}
+
+export function mergeExtractedMessage(
+  next: ExtractedMessage,
+  messages: ExtractedCatalogType,
+  config: LinguiConfigNormalized,
+) {
+  if (!messages[next.id]) {
+    messages[next.id] = {
+      message: next.message,
+      context: next.context,
+      placeholders: {},
+      comments: [],
+      origin: [],
+    }
+  }
+
+  const prev = messages[next.id]!
+
+  // there might be a case when filename was not mapped from sourcemaps
+  const nextOrigin: MessageOrigin | undefined = next.origin
+    ? [
+        path.relative(config.rootDir, next.origin[0]).replace(/\\/g, "/"),
+        next.origin[1],
+      ]
+    : undefined
+
+  if (prev.message && next.message && prev.message !== next.message) {
+    throw new Error(
+      `Encountered different default translations for message ${pico.yellow(
+        next.id,
+      )}` +
+        `\n${pico.yellow(prettyOrigin(prev.origin))} ${prev.message}` +
+        `\n${pico.yellow(prettyOrigin([nextOrigin || [""]]))} ${next.message}`,
+    )
+  }
+
+  messages[next.id] = {
+    ...prev,
+    message: prev.message ?? next.message,
+    comments: next.comment
+      ? [...prev.comments, next.comment].sort()
+      : prev.comments,
+    origin: mergeOrigins(prev.origin, nextOrigin),
+    placeholders: mergePlaceholders(prev.placeholders, next.placeholders),
+  }
+}
+
+export async function extractFromFilesWithWorkerPool(
+  workerPool: ExtractWorkerPool,
+  paths: string[],
+  config: LinguiConfigNormalized,
+): Promise<ExtractedCatalogType | undefined> {
+  const messages: ExtractedCatalogType = {}
+
+  let catalogSuccess = true
+
+  const resolvedConfigPath = config.resolvedConfigPath
+
+  if (!resolvedConfigPath) {
+    throw new Error(
+      "Multithreading is only supported when lingui config loaded from file system, not passed by API",
+    )
+  }
+
+  await Promise.all(
+    paths.map(async (filename) => {
+      const result = await workerPool.run(filename, resolvedConfigPath)
+
+      if (!result.success) {
+        catalogSuccess = false
+      } else {
+        result.messages.forEach((message) => {
+          mergeExtractedMessage(message, messages, config)
+        })
+      }
+    }),
+  )
 
   if (!catalogSuccess) return undefined
 

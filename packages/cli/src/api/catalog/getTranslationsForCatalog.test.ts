@@ -1,10 +1,10 @@
-import { getTranslationsForCatalog } from "./getTranslationsForCatalog"
-import { Catalog } from "../catalog"
-import type { AllCatalogsType, CatalogType } from "../types"
+import { getTranslationsForCatalog } from "./getTranslationsForCatalog.js"
+import { Catalog } from "../catalog.js"
+import type { AllCatalogsType, CatalogType } from "../types.js"
 
 function getCatalogStub(
   catalogs: AllCatalogsType,
-  template: CatalogType = {}
+  template: CatalogType = {},
 ): Catalog {
   const catalogStub: Partial<Catalog> = {
     async readAll(): Promise<AllCatalogsType> {
@@ -21,7 +21,7 @@ function getCatalogStub(
 
 function lang(
   locale: string,
-  messages: Array<(locale: string) => CatalogType>
+  messages: Array<(locale: string) => CatalogType>,
 ) {
   return {
     [locale]: messages.reduce((acc, msgFn) => {
@@ -37,7 +37,9 @@ function message(id: string, source: string, noTranslation = false) {
   return (locale: string): CatalogType => ({
     [id]: {
       message: source,
-      translation: noTranslation ? null : `${locale}: translation: ${source}`,
+      translation: noTranslation
+        ? undefined
+        : `${locale}: translation: ${source}`,
     },
   })
 }
@@ -51,17 +53,19 @@ describe("getTranslationsForCatalog", () => {
       ])
     })
 
-    const missingSpy = jest.fn()
     const actual = await getTranslationsForCatalog(catalogStub, "pl", {
       sourceLocale: "en",
       fallbackLocales: {},
-      onMissing: missingSpy,
     })
 
-    expect(missingSpy).not.toBeCalled()
-    expect(actual).toStrictEqual({
-      hashid1: "pl: translation: Lorem",
-    })
+    expect(actual).toMatchInlineSnapshot(`
+      {
+        messages: {
+          hashid1: pl: translation: Lorem,
+        },
+        missing: [],
+      }
+    `)
   })
 
   it("Should fallback to fallbackLocales.default", async () => {
@@ -77,21 +81,22 @@ describe("getTranslationsForCatalog", () => {
       ])
     })
 
-    const missingSpy = jest.fn()
     const actual = await getTranslationsForCatalog(catalogStub, "ru", {
       sourceLocale: "en",
       fallbackLocales: {
         default: "pl",
       },
-      onMissing: missingSpy,
     })
 
-    expect(missingSpy).not.toBeCalled()
-
-    expect(actual).toStrictEqual({
-      hashid1: "ru: translation: Lorem",
-      hashid2: "pl: translation: Ipsum",
-    })
+    expect(actual).toMatchInlineSnapshot(`
+      {
+        messages: {
+          hashid1: ru: translation: Lorem,
+          hashid2: pl: translation: Ipsum,
+        },
+        missing: [],
+      }
+    `)
   })
 
   it("Should fallback to single fallbackLocales", async () => {
@@ -107,21 +112,22 @@ describe("getTranslationsForCatalog", () => {
       ])
     })
 
-    const missingSpy = jest.fn()
     const actual = await getTranslationsForCatalog(catalogStub, "ru", {
       sourceLocale: "en",
       fallbackLocales: {
         ru: "pl",
       },
-      onMissing: missingSpy,
     })
 
-    expect(missingSpy).not.toBeCalled()
-
-    expect(actual).toStrictEqual({
-      hashid1: "ru: translation: Lorem",
-      hashid2: "pl: translation: Ipsum",
-    })
+    expect(actual).toMatchInlineSnapshot(`
+      {
+        messages: {
+          hashid1: ru: translation: Lorem,
+          hashid2: pl: translation: Ipsum,
+        },
+        missing: [],
+      }
+    `)
   })
 
   it("Should fallback to multiple fallbacks and then to default", async () => {
@@ -153,26 +159,25 @@ describe("getTranslationsForCatalog", () => {
       ])
     })
 
-    const missingSpy = jest.fn()
     const actual = await getTranslationsForCatalog(catalogStub, "ru", {
       sourceLocale: "en",
       fallbackLocales: {
         ru: ["de", "es"],
         default: "pl",
       },
-      onMissing: missingSpy,
     })
 
-    expect(missingSpy).not.toBeCalled()
     expect(actual).toStrictEqual({
-      hashid1: "ru: translation: Lorem",
-      // this fallback to de -> es
-      hashid2: "es: translation: Ipsum",
-      // this fallback to de -> es -> default
-
-      hashid3: "pl: translation: Dolor",
-      // this fallback to de -> es
-      hashid4: "es: translation: Sit",
+      messages: {
+        hashid1: "ru: translation: Lorem",
+        // this fallback to de -> es
+        hashid2: "es: translation: Ipsum",
+        // this fallback to de -> es -> default
+        hashid3: "pl: translation: Dolor",
+        // this fallback to de -> es
+        hashid4: "es: translation: Sit",
+      },
+      missing: [],
     })
   })
 
@@ -188,19 +193,21 @@ describe("getTranslationsForCatalog", () => {
       ])
     })
 
-      const missingSpy = jest.fn()
       const actual = await getTranslationsForCatalog(catalogStub, "en", {
         sourceLocale: "en",
         fallbackLocales: {},
-        onMissing: missingSpy,
       })
 
-      expect(missingSpy).not.toBeCalled()
-      expect(actual).toStrictEqual({
-        hashid1: "Lorem",
-        hashid2: "en: translation: Ipsum",
-      })
-    }
+      expect(actual).toMatchInlineSnapshot(`
+        {
+          messages: {
+            hashid1: Lorem,
+            hashid2: en: translation: Ipsum,
+          },
+          missing: [],
+        }
+      `)
+    },
   )
 
   it("Should fallback to source locale if no other fallbacks and report missing", async () => {
@@ -215,20 +222,24 @@ describe("getTranslationsForCatalog", () => {
       ])
     })
 
-    const missingSpy = jest.fn()
     const actual = await getTranslationsForCatalog(catalogStub, "pl", {
       sourceLocale: "en",
       fallbackLocales: {},
-      onMissing: missingSpy,
     })
 
-    expect(missingSpy).toBeCalledWith({
-      id: "hashid1",
-      source: "Lorem",
-    })
-    expect(actual).toStrictEqual({
-      hashid1: "Lorem",
-    })
+    expect(actual).toMatchInlineSnapshot(`
+      {
+        messages: {
+          hashid1: Lorem,
+        },
+        missing: [
+          {
+            id: hashid1,
+            source: Lorem,
+          },
+        ],
+      }
+    `)
   })
 
   it("Should add keys from source locale", async () => {
@@ -246,20 +257,31 @@ describe("getTranslationsForCatalog", () => {
       ])
     })
 
-    const missingSpy = jest.fn()
     const actual = await getTranslationsForCatalog(catalogStub, "pl", {
       sourceLocale: "en",
       fallbackLocales: {},
-      onMissing: missingSpy,
     })
 
-    expect(actual).toStrictEqual({
-      hashid1: "pl: translation: Lorem",
-      hashid2: "pl: translation: Ipsum",
-      hashid3: "Dolor",
-      hashid4: "Sit",
-    })
-    expect(missingSpy).toBeCalledTimes(2)
+    expect(actual).toMatchInlineSnapshot(`
+      {
+        messages: {
+          hashid1: pl: translation: Lorem,
+          hashid2: pl: translation: Ipsum,
+          hashid3: Dolor,
+          hashid4: Sit,
+        },
+        missing: [
+          {
+            id: hashid3,
+            source: Dolor,
+          },
+          {
+            id: hashid4,
+            source: Sit,
+          },
+        ],
+      }
+    `)
   })
 
   it("Should not fail if sourceLocale is not set", async () => {
@@ -277,18 +299,20 @@ describe("getTranslationsForCatalog", () => {
       ])
     })
 
-    const missingSpy = jest.fn()
     const actual = await getTranslationsForCatalog(catalogStub, "pl", {
-      sourceLocale: null,
+      sourceLocale: "",
       fallbackLocales: {},
-      onMissing: missingSpy,
     })
 
-    expect(actual).toStrictEqual({
-      hashid1: "pl: translation: Lorem",
-      hashid2: "pl: translation: Ipsum",
-    })
-    expect(missingSpy).toBeCalledTimes(0)
+    expect(actual).toMatchInlineSnapshot(`
+      {
+        messages: {
+          hashid1: pl: translation: Lorem,
+          hashid2: pl: translation: Ipsum,
+        },
+        missing: [],
+      }
+    `)
   })
 
   it("Should add keys from template", async () => {
@@ -305,20 +329,31 @@ describe("getTranslationsForCatalog", () => {
       message("hashid4", "Sit", true)
     ]).tpl)
 
-    const missingSpy = jest.fn()
     const actual = await getTranslationsForCatalog(catalogStub, "pl", {
       sourceLocale: "en",
       fallbackLocales: {},
-      onMissing: missingSpy,
     })
 
-    expect(actual).toStrictEqual({
-      hashid1: "pl: translation: Lorem",
-      hashid2: "pl: translation: Ipsum",
-      hashid3: "Dolor",
-      hashid4: "Sit",
-    })
-    expect(missingSpy).toBeCalledTimes(2)
+    expect(actual).toMatchInlineSnapshot(`
+      {
+        messages: {
+          hashid1: pl: translation: Lorem,
+          hashid2: pl: translation: Ipsum,
+          hashid3: Dolor,
+          hashid4: Sit,
+        },
+        missing: [
+          {
+            id: hashid3,
+            source: Dolor,
+          },
+          {
+            id: hashid4,
+            source: Sit,
+          },
+        ],
+      }
+    `)
   })
 
   it("Should not fail if catalog for requested locale does not exists", async () => {
@@ -327,16 +362,23 @@ describe("getTranslationsForCatalog", () => {
       message("hashid1", "Lorem", true),
     ]).tpl)
 
-    const missingSpy = jest.fn()
     const actual = await getTranslationsForCatalog(catalogStub, "pl", {
       sourceLocale: "en",
       fallbackLocales: {},
-      onMissing: missingSpy,
     })
 
-    expect(actual).toStrictEqual({
-      hashid1: "Lorem",
-    })
-    expect(missingSpy).toBeCalledTimes(1)
+    expect(actual).toMatchInlineSnapshot(`
+      {
+        messages: {
+          hashid1: Lorem,
+        },
+        missing: [
+          {
+            id: hashid1,
+            source: Lorem,
+          },
+        ],
+      }
+    `)
   })
 })

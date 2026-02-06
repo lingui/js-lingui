@@ -21,13 +21,6 @@ const config: Config = {
       disableSwitch: false,
       respectPrefersColorScheme: true,
     },
-    announcementBar: {
-      id: "v5_release-available",
-      content:
-        'Lingui <b>v5.0</b> is officially released! <a href="/blog/2024/11/28/announcing-lingui-5.0" target="_blank" rel="noopener noreferrer">Check it out!</a>',
-      backgroundColor: "#89cecf",
-      textColor: "#1a1a1a",
-    },
     metadata: [
       {
         name: "title",
@@ -144,6 +137,19 @@ const config: Config = {
             },
           ],
         },
+        {
+          title: "Docs for LLMs",
+          items: [
+            {
+              label: "llms.txt",
+              href: "https://lingui.dev/llms.txt",
+            },
+            {
+              label: "llms-full.txt",
+              href: "https://lingui.dev/llms-full.txt",
+            },
+          ],
+        },
       ],
     },
     algolia: {
@@ -190,7 +196,19 @@ const config: Config = {
       } satisfies Preset.Options,
     ],
   ],
-  plugins: ["docusaurus-plugin-sass"],
+  plugins: [
+    "docusaurus-plugin-sass",
+    [
+      "@signalwire/docusaurus-plugin-llms-txt",
+      {
+        content: {
+          enableLlmsFullTxt: true,
+          excludeRoutes: ["/", "/search", "/community", "/misc/*", "/releases/*"],
+        },
+        includeOrder: ["/installation", "/tutorials/**", "/guides/**", "/ref/**", "/examples/**"],
+      },
+    ],
+  ],
 };
 
 export default config;

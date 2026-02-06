@@ -58,6 +58,19 @@ export type MacroJsxOpts = {
   isLinguiIdentifier: (node: Identifier, macro: JsMacroName) => boolean
 }
 
+const choiceComponentAttributesWhitelist = [
+  "_\\w+",
+  "_\\d+",
+  "zero",
+  "one",
+  "two",
+  "few",
+  "many",
+  "other",
+  "value",
+  "offset",
+]
+
 export class MacroJSX {
   types: typeof babelTypes
   ctx: MacroJsxContext
@@ -69,7 +82,7 @@ export class MacroJSX {
       ...createMacroJsContext(
         opts.isLinguiIdentifier,
         opts.stripNonEssentialProps,
-        opts.stripMessageProp
+        opts.stripMessageProp,
       ),
       transImportName: opts.transImportName,
       elementIndex: makeCounter(),
@@ -88,7 +101,7 @@ export class MacroJSX {
     }
 
     const { attributes, id, comment, context } = this.stripMacroAttributes(
-      path as NodePath<JSXElement>
+      path as NodePath<JSXElement>,
     )
 
     if (!tokens.length) {
@@ -104,7 +117,7 @@ export class MacroJSX {
         id,
         context,
         comment,
-      }
+      },
     )
 
     attributes.push(this.types.jsxSpreadAttribute(messageDescriptor))
@@ -113,11 +126,11 @@ export class MacroJSX {
       this.types.jsxOpeningElement(
         this.types.jsxIdentifier(this.ctx.transImportName),
         attributes,
-        true
+        true,
       ),
       null,
       [],
-      true
+      true,
     )
     newNode.loc = path.node.loc
 
@@ -136,13 +149,13 @@ export class MacroJSX {
     const { attributes } = path.node.openingElement
     const id = attributes.find(this.attrName([MsgDescriptorPropKey.id]))
     const message = attributes.find(
-      this.attrName([MsgDescriptorPropKey.message])
+      this.attrName([MsgDescriptorPropKey.message]),
     )
     const comment = attributes.find(
-      this.attrName([MsgDescriptorPropKey.comment])
+      this.attrName([MsgDescriptorPropKey.comment]),
     )
     const context = attributes.find(
-      this.attrName([MsgDescriptorPropKey.context])
+      this.attrName([MsgDescriptorPropKey.context]),
     )
 
     let reserved: string[] = [
@@ -153,19 +166,7 @@ export class MacroJSX {
     ]
 
     if (this.isChoiceComponent(path)) {
-      reserved = [
-        ...reserved,
-        "_\\w+",
-        "_\\d+",
-        "zero",
-        "one",
-        "two",
-        "few",
-        "many",
-        "other",
-        "value",
-        "offset",
-      ]
+      reserved = [...reserved, ...choiceComponentAttributesWhitelist]
     }
 
     return {
@@ -180,7 +181,7 @@ export class MacroJSX {
   tokenizeNode = (
     path: NodePath,
     ignoreExpression = false,
-    ignoreElement = false
+    ignoreElement = false,
   ): Token[] => {
     if (this.isTransComponent(path)) {
       // t
@@ -194,7 +195,7 @@ export class MacroJSX {
       return [
         this.tokenizeChoiceComponent(
           path as NodePath<JSXElement>,
-          componentName
+          componentName,
         ),
       ]
     }
@@ -237,7 +238,7 @@ export class MacroJSX {
       return this.tokenizeNode(path)
     } else if (path.isJSXSpreadChild()) {
       throw new Error(
-        "Incorrect usage of Trans: Spread could not be used as Trans children"
+        "Incorrect usage of Trans: Spread could not be used as Trans children",
       )
     } else if (path.isJSXText()) {
       return [this.tokenizeText(cleanJSXElementLiteralChild(path.node.value))]
@@ -268,26 +269,13 @@ export class MacroJSX {
 
   tokenizeChoiceComponent = (
     path: NodePath<JSXElement>,
-    componentName: JsxMacroName
+    componentName: JsxMacroName,
   ): Token => {
     const element = path.get("openingElement")
 
     const format = componentName.toLowerCase()
     const props = element.get("attributes").filter((attr) => {
-      return this.attrName(
-        [
-          MsgDescriptorPropKey.id,
-          MsgDescriptorPropKey.comment,
-          MsgDescriptorPropKey.message,
-          MsgDescriptorPropKey.context,
-          "key",
-          // we remove <Trans /> react props that are not useful for translation
-          "render",
-          "component",
-          "components",
-        ],
-        true
-      )(attr.node)
+      return this.attrName(choiceComponentAttributesWhitelist)(attr.node)
     })
 
     let token: Token = {
@@ -320,7 +308,7 @@ export class MacroJSX {
         token = {
           ...token,
           ...this.tokenizeExpression(
-            value.isLiteral() ? value : value.get("expression")
+            value.isLiteral() ? value : value.get("expression"),
           ),
         }
       } else if (format !== "select" && name === "offset") {
@@ -330,7 +318,7 @@ export class MacroJSX {
             ? (value.node.value as string)
             : (
                 (value as NodePath<JSXExpressionContainer>).get(
-                  "expression"
+                  "expression",
                 ) as NodePath<StringLiteral>
               ).node.value
       } else {
@@ -339,7 +327,7 @@ export class MacroJSX {
         if (value.isStringLiteral()) {
           option = (value.node.extra.raw as string).replace(
             /(["'])(.*)\1/,
-            "$2"
+            "$2",
           )
         } else {
           option = this.tokenizeChildren(value as JSXChildPath)
@@ -381,7 +369,7 @@ export class MacroJSX {
   }
 
   tokenizeConditionalExpression = (
-    exp: NodePath<ConditionalExpression>
+    exp: NodePath<ConditionalExpression>,
   ): ArgToken => {
     exp.traverse(
       {
@@ -392,7 +380,7 @@ export class MacroJSX {
           }
         },
       },
-      exp.state
+      exp.state,
     )
 
     return this.tokenizeExpression(exp)
@@ -407,19 +395,19 @@ export class MacroJSX {
 
   isLinguiComponent = (
     path: NodePath,
-    name: JsxMacroName
+    name: JsxMacroName,
   ): path is NodePath<JSXElement> => {
     if (!path.isJSXElement()) {
       return false
     }
 
     const config = (path.context.state as PluginPass).get(
-      "linguiConfig"
+      "linguiConfig",
     ) as LinguiConfigNormalized
     const identifier = path.get("openingElement").get("name")
 
     return config.macro.jsxPackage.some((moduleSource) =>
-      identifier.referencesImport(moduleSource, name)
+      identifier.referencesImport(moduleSource, name),
     )
   }
 

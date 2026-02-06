@@ -17,6 +17,19 @@ function MyComponent() {
     `,
     },
     {
+      name: "works with react compiler",
+      useReactCompiler: true,
+      code: `
+import { useLingui } from '@lingui/react/macro';
+
+function MyComponent() {
+  const { t } = useLingui();
+
+  return <p>{t\`hello\`}</p>;
+}
+    `,
+    },
+    {
       name: "support renamed destructuring",
       code: `
 import { useLingui } from '@lingui/react/macro';
@@ -237,7 +250,7 @@ function Home() {
               useLingui: ["@my/lingui-react", "myUselingui"],
             },
           },
-          { skipValidation: true }
+          { skipValidation: true },
         ),
       },
       code: `

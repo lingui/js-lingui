@@ -2,7 +2,7 @@ import { FallbackLocales } from "@lingui/conf"
 
 export function getFallbackListForLocale(
   fallbackLocales: FallbackLocales,
-  locale: string
+  locale: string,
 ): string[] {
   const fL: string[] = []
 
@@ -11,8 +11,11 @@ export function getFallbackListForLocale(
     Array.isArray(mapping) ? fL.push(...mapping) : fL.push(mapping)
   }
 
-  if (fallbackLocales?.default && locale !== fallbackLocales?.default) {
-    fL.push(fallbackLocales?.default)
+  if (
+    typeof fallbackLocales?.default === "string" &&
+    locale !== fallbackLocales?.default
+  ) {
+    fL.push(fallbackLocales.default)
   }
 
   return fL

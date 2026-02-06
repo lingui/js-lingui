@@ -3,9 +3,9 @@ name: release
 on:
   workflow_dispatch:
     inputs:
-      npmTag:
+      versionType:
         type: choice
-        description: 'NPM tag to release'
+        description: 'Version type to publish'
         options:
         - latest
         - next
@@ -13,8 +13,11 @@ on:
         default: "latest"
 
 jobs:
-  release:
+  publish:
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
 
     steps:
       - uses: actions/checkout@v4
@@ -35,32 +38,12 @@ jobs:
       - name: Build packages
         run: yarn release:build
 
-      - name: Unit Testing
-        run: yarn test:ci
-
-      - name: Linting & Types
-        run: yarn lint:all
-
-      - name: Creates local .npmrc
-        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
-
-      - name: Prepare Lingui-Bot git account
-        uses: oleksiyrudenko/gha-git-credentials@v2-latest
-        with:
-          name: 'Lingui Bot'
-          email: 'linguibot@gmail.com'
-          actor: 'lingui-bot'
-          token: '${{ secrets.GH_TOKEN }}'
-
-      - name: Versioning packages
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
-        run: yarn version:${{github.event.inputs.npmTag}}
-
-      - name: Packaging packages with newer version
-        run: yarn release:build
+      - name: Install latest npm CLI
+        run: |
+          npm install -g npm@latest
+          npm --version
 
       - name: Publishing packages
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
-        run: yarn release:${{github.event.inputs.npmTag}}
+        run: yarn release:${{github.event.inputs.versionType}}

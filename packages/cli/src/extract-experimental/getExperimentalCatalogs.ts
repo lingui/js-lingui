@@ -1,21 +1,20 @@
-import { LinguiConfigNormalized } from "@lingui/conf"
-import { getEntryPoints } from "./getEntryPoints"
-import { resolveCatalogPath } from "./resolveCatalogPath"
-import { Catalog } from "../api/catalog"
-import { resolveTemplatePath } from "./resolveTemplatePath"
-import { getFormat } from "../api/formats"
+import {
+  ExperimentalExtractorOptions,
+  LinguiConfigNormalized,
+} from "@lingui/conf"
+import { getEntryPoints } from "./getEntryPoints.js"
+import { resolveCatalogPath } from "./resolveCatalogPath.js"
+import { Catalog } from "../api/catalog.js"
+import { resolveTemplatePath } from "./resolveTemplatePath.js"
+import { FormatterWrapper } from "../api/formats/index.js"
 
 export async function getExperimentalCatalogs(
-  linguiConfig: LinguiConfigNormalized
+  linguiConfig: LinguiConfigNormalized,
+  format: FormatterWrapper,
+  extractorConfig: ExperimentalExtractorOptions,
 ) {
-  const config = linguiConfig.experimental.extractor
+  const config = extractorConfig
   const entryPoints = getEntryPoints(config.entries)
-
-  const format = await getFormat(
-    linguiConfig.format,
-    linguiConfig.formatOptions,
-    linguiConfig.sourceLocale
-  )
 
   return entryPoints.map((entryPoint) => {
     const catalogPath = resolveCatalogPath(
@@ -23,14 +22,14 @@ export async function getExperimentalCatalogs(
       entryPoint,
       linguiConfig.rootDir,
       undefined,
-      ""
+      "",
     )
 
     const templatePath = resolveTemplatePath(
       entryPoint,
       config.output,
       linguiConfig.rootDir,
-      format.getTemplateExtension()
+      format.getTemplateExtension(),
     )
 
     return new Catalog(
@@ -42,7 +41,7 @@ export async function getExperimentalCatalogs(
         exclude: [],
         format,
       },
-      linguiConfig
+      linguiConfig,
     )
   })
 }

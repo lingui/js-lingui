@@ -1,25 +1,31 @@
-import { Catalog } from "../catalog"
+import { Catalog } from "../catalog.js"
 import { FallbackLocales } from "@lingui/conf"
-import type { AllCatalogsType, CatalogType, MessageType } from "../types"
-import { getFallbackListForLocale } from "./getFallbackListForLocale"
+import type { AllCatalogsType, CatalogType, MessageType } from "../types.js"
+import { getFallbackListForLocale } from "./getFallbackListForLocale.js"
 
 export type TranslationMissingEvent = {
   source: string
   id: string
 }
+
 export type GetTranslationsOptions = {
   sourceLocale: string
   fallbackLocales: FallbackLocales
-  onMissing?: (message: TranslationMissingEvent) => void
 }
 
 export async function getTranslationsForCatalog(
   catalog: Catalog,
   locale: string,
-  options: GetTranslationsOptions
+  options: GetTranslationsOptions,
 ) {
+  const locales = new Set([
+    locale,
+    options.sourceLocale,
+    ...getFallbackListForLocale(options.fallbackLocales, locale),
+  ])
+
   const [catalogs, template] = await Promise.all([
-    catalog.readAll(),
+    catalog.readAll(Array.from(locales)),
     catalog.readTemplate(),
   ])
 
@@ -27,15 +33,34 @@ export async function getTranslationsForCatalog(
 
   const input = { ...template, ...sourceLocaleCatalog, ...catalogs[locale] }
 
-  return Object.keys(input).reduce<{ [id: string]: string }>((acc, key) => {
-    acc[key] = getTranslation(catalogs, input[key], locale, key, options)
-    return acc
-  }, {})
+  const missing: TranslationMissingEvent[] = []
+
+  const messages = Object.keys(input).reduce<{ [id: string]: string }>(
+    (acc, key) => {
+      acc[key] = getTranslation(
+        catalogs,
+        input[key]!,
+        locale,
+        key,
+        (event) => {
+          missing.push(event)
+        },
+        options,
+      )
+      return acc
+    },
+    {},
+  )
+
+  return {
+    missing,
+    messages,
+  }
 }
 
-function sourceLocaleFallback(catalog: CatalogType, key: string) {
+function sourceLocaleFallback(catalog: CatalogType | undefined, key: string) {
   if (!catalog?.[key]) {
-    return null
+    return undefined
   }
 
   return catalog[key].translation || catalog[key].message
@@ -46,9 +71,10 @@ function getTranslation(
   msg: MessageType,
   locale: string,
   key: string,
-  options: GetTranslationsOptions
+  onMissing: (message: TranslationMissingEvent) => void,
+  options: GetTranslationsOptions,
 ) {
-  const { fallbackLocales, sourceLocale, onMissing } = options
+  const { fallbackLocales, sourceLocale } = options
 
   const getTranslation = (_locale: string) => {
     const localeCatalog = catalogs[_locale]
@@ -83,9 +109,10 @@ function getTranslation(
       sourceLocaleFallback(catalogs[sourceLocale], key))
 
   if (!translation) {
-    onMissing?.({
+    onMissing({
       id: key,
-      source: msg.message || sourceLocaleFallback(catalogs[sourceLocale], key),
+      source:
+        msg.message || sourceLocaleFallback(catalogs[sourceLocale], key) || "",
     })
   }
 

@@ -1,10 +1,11 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "lib": [
-      "ES2019.Array"
-    ],
+    "lib": ["ES2019.Array"],
     "strict": true,
-    "strictNullChecks": false
+    "noUncheckedIndexedAccess": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "types": ["vitest/globals"]
   }
 }

@@ -1,95 +1,95 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`vue extractor should extract message from functional component 1`] = `
+exports[`vue extractor > should extract message from functional component 1`] = `
 [
   {
-    comment: undefined,
-    context: undefined,
-    id: Render function message,
-    message: undefined,
-    origin: [
-      functional.vue,
+    "comment": undefined,
+    "context": undefined,
+    "id": "Render function message",
+    "message": undefined,
+    "origin": [
+      "functional.vue",
       10,
       33,
     ],
-    placeholders: {},
+    "placeholders": {},
   },
 ]
 `;
 
-exports[`vue extractor should extract message from vue file 1`] = `
+exports[`vue extractor > should extract message from vue file 1`] = `
 [
   {
-    comment: undefined,
-    context: undefined,
-    id: Setup message,
-    message: undefined,
-    origin: [
-      test.vue.ts,
+    "comment": undefined,
+    "context": undefined,
+    "id": "Setup message",
+    "message": undefined,
+    "origin": [
+      "test.vue.ts",
       4,
       0,
     ],
-    placeholders: {},
+    "placeholders": {},
   },
   {
-    comment: undefined,
-    context: undefined,
-    id: Script message,
-    message: undefined,
-    origin: [
-      test.vue,
+    "comment": undefined,
+    "context": undefined,
+    "id": "Script message",
+    "message": undefined,
+    "origin": [
+      "test.vue",
       19,
       20,
     ],
-    placeholders: {},
+    "placeholders": {},
   },
   {
-    comment: undefined,
-    context: undefined,
-    id: custom.id,
-    message: My message,
-    origin: [
-      test.vue,
+    "comment": undefined,
+    "context": undefined,
+    "id": "custom.id",
+    "message": "My message",
+    "origin": [
+      "test.vue",
       27,
       11,
     ],
-    placeholders: {},
+    "placeholders": {},
   },
   {
-    comment: Message comment,
-    context: undefined,
-    id: my.message,
-    message: My descriptor message,
-    origin: [
-      test.vue,
+    "comment": "Message comment",
+    "context": undefined,
+    "id": "my.message",
+    "message": "My descriptor message",
+    "origin": [
+      "test.vue",
       29,
       10,
     ],
-    placeholders: {},
+    "placeholders": {},
   },
   {
-    comment: undefined,
-    context: undefined,
-    id: id used as message,
-    message: undefined,
-    origin: [
-      test.vue,
+    "comment": undefined,
+    "context": undefined,
+    "id": "id used as message",
+    "message": undefined,
+    "origin": [
+      "test.vue",
       35,
       5,
     ],
-    placeholders: {},
+    "placeholders": {},
   },
   {
-    comment: undefined,
-    context: undefined,
-    id: My message without ID and context,
-    message: undefined,
-    origin: [
-      test.vue,
+    "comment": undefined,
+    "context": undefined,
+    "id": "My message without ID and context",
+    "message": undefined,
+    "origin": [
+      "test.vue",
       36,
       11,
     ],
-    placeholders: {},
+    "placeholders": {},
   },
 ]
 `;

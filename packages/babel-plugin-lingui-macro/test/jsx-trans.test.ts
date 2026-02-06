@@ -194,7 +194,7 @@ macroTester({
         stripMessageField: true,
       },
       code: `
-      import { Trans } from '@lingui/macro';
+      import { Trans } from '@lingui/react/macro';
       <Trans id="msg.hello">Hello World</Trans>
     `,
     },
@@ -213,7 +213,7 @@ macroTester({
         stripMessageField: false,
       },
       code: `
-      import { Trans } from '@lingui/macro';
+      import { Trans } from '@lingui/react/macro';
       <Trans id="msg.hello" comment="Hello World">Hello World</Trans>
     `,
     },
@@ -274,6 +274,14 @@ macroTester({
       `,
     },
     {
+      name: "Produce the same ID regardless of CRLF, LF, and CR line endings",
+      code:
+        'import { Trans } from "@lingui/react/macro";\n' +
+        "<Trans>\nhello\n</Trans>;\n" +
+        "<Trans>\r\nhello\r\n</Trans>;\n" +
+        "<Trans>\rhello\r</Trans>;\n",
+    },
+    {
       name: "Keep forced newlines",
       filename: "./jsx-keep-forced-newlines.js",
     },
@@ -327,7 +335,7 @@ macroTester({
               Trans: ["@my/lingui", "myTrans"],
             },
           },
-          { skipValidation: true }
+          { skipValidation: true },
         ),
       },
       code: `
@@ -344,7 +352,7 @@ macroTester({
               jsxPackage: ["@my-lingui/macro"],
             },
           },
-          { skipValidation: true }
+          { skipValidation: true },
         ),
       },
       skipBabelMacroTest: true,

@@ -1,14 +1,14 @@
-import { exec as _exec, ExecOptions } from "child_process"
+import { exec as _exec, type ExecOptions } from "child_process"
 import ora from "ora"
 import pico from "picocolors"
 
-async function releaseInVerdaccio() {
+async function main() {
   const spinner = ora()
 
   // Throw away build stats
   spinner.start("Logging in Verdaccio")
   await exec(
-    `npx npm-cli-login -u test -p test -e test@test.com -r http://0.0.0.0:4873`
+    `npx npm-cli-login -u test -p test -e test@test.com -r http://0.0.0.0:4873`,
   )
   spinner.succeed()
 
@@ -20,21 +20,21 @@ async function releaseInVerdaccio() {
   const { stdout: actualBranch } = await exec("git rev-parse --abbrev-ref HEAD")
 
   await exec(
-    `npx lerna publish patch --force-publish --no-git-tag-version --no-private --no-push --yes --allow-branch ${actualBranch} --registry="http://0.0.0.0:4873"`
+    `npx lerna publish patch --force-publish --no-git-tag-version --no-private --no-push --yes --allow-branch ${actualBranch} --registry="http://0.0.0.0:4873"`,
   )
   spinner.succeed()
 
   console.log()
   console.log(
     `Done! Run ${pico.yellow(
-      "npm install --registry http://0.0.0.0:4873 @lingui/[package]"
-    )} in target project to install development version of package.`
+      "npm install --registry http://0.0.0.0:4873 @lingui/[package]",
+    )} in target project to install development version of package.`,
   )
 }
 
 function exec(
   cmd,
-  options: ExecOptions = {}
+  options: ExecOptions = {},
 ): Promise<{ stdout: string; stderr: string }> {
   const _options = {
     env: {
@@ -58,10 +58,4 @@ function exec(
   })
 }
 
-function main() {
-  return releaseInVerdaccio()
-}
-
-if (require.main === module) {
-  main().catch((error) => console.error(error))
-}
+void main()

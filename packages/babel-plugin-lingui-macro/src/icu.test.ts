@@ -14,7 +14,7 @@ describe("ICU MessageFormat", function () {
       expect.objectContaining({
         message: "Hello World",
         values: {},
-      })
+      }),
     )
   })
 
@@ -43,7 +43,7 @@ describe("ICU MessageFormat", function () {
             name: "Joe",
           },
         },
-      })
+      }),
     )
   })
 })

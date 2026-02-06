@@ -1,10 +1,11 @@
 {
   "name": "@lingui/format-json",
-  "version": "5.3.2",
+  "version": "5.9.0",
+  "type": "module",
   "description": "JSON format for Lingui Catalogs",
-  "main": "./dist/json.cjs",
-  "module": "./dist/json.mjs",
-  "types": "./dist/json.d.ts",
+  "exports": {
+    ".": "./dist/json.mjs"
+  },
   "sideEffects": false,
   "license": "MIT",
   "keywords": [
@@ -20,9 +21,10 @@
     "multilingual"
   ],
   "scripts": {
-    "build": "rimraf ./dist && unbuild",
-    "stub": "unbuild --stub"
+    "build": "unbuild",
+    "check-types": "tsc --noEmit"
   },
+  "homepage": "https://lingui.dev",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/lingui/js-lingui.git",
@@ -40,9 +42,13 @@
     "dist/"
   ],
   "dependencies": {
-    "@lingui/conf": "5.3.2"
+    "@lingui/conf": "workspace:*"
   },
   "devDependencies": {
-    "unbuild": "^2.0.0"
+    "unbuild": "^3.6.1",
+    "vitest": "4.0.18"
+  },
+  "unbuild": {
+    "declaration": "node16"
   }
 }

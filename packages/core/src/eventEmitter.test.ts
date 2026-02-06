@@ -2,8 +2,8 @@ import { EventEmitter } from "./eventEmitter"
 
 describe("@lingui/core/eventEmitter", () => {
   it("should call registered event listeners on emit", async () => {
-    const firstListener = jest.fn()
-    const secondListener = jest.fn(() => "return value is ignored")
+    const firstListener = vi.fn()
+    const secondListener = vi.fn(() => "return value is ignored")
 
     const emitter = new EventEmitter()
     emitter.on("test", firstListener)
@@ -16,7 +16,7 @@ describe("@lingui/core/eventEmitter", () => {
   })
 
   it("should allow unsubscribing from events", () => {
-    const listener = jest.fn()
+    const listener = vi.fn()
     const emitter = new EventEmitter()
 
     const unsubscribe = emitter.on("test", listener)
@@ -30,14 +30,15 @@ describe("@lingui/core/eventEmitter", () => {
   })
 
   it("should do nothing when even doesn't exist", () => {
-    const unknown = jest.fn()
+    const unknown = vi.fn()
 
     const emitter = new EventEmitter()
     // this should not throw
     emitter.emit("test", 42)
     // this should not throw
     emitter.removeListener("test", unknown)
-    emitter.on("test", jest.fn())
+
+    emitter.on("test", vi.fn())
     // this should not throw
     emitter.removeListener("test", unknown)
   })
@@ -46,11 +47,11 @@ describe("@lingui/core/eventEmitter", () => {
     const emitter = new EventEmitter<{ test: () => void }>()
 
     const mock = {
-      listenerToRemove: jest.fn(),
+      listenerToRemove: vi.fn(),
       unsubscribe: () => {},
     }
 
-    const unsubscribingListener = jest.fn(() => {
+    const unsubscribingListener = vi.fn(() => {
       mock.unsubscribe()
     })
 
@@ -69,7 +70,7 @@ describe("@lingui/core/eventEmitter", () => {
 
   it("should not add the same listener function multiple times", () => {
     const emitter = new EventEmitter<{ test: () => void }>()
-    const listener = jest.fn()
+    const listener = vi.fn()
 
     emitter.on("test", listener)
     emitter.on("test", listener)

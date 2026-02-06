@@ -1,11 +1,11 @@
-import { TranslationMissingEvent } from "./catalog/getTranslationsForCatalog"
+import { TranslationMissingEvent } from "./catalog/getTranslationsForCatalog.js"
 import pico from "picocolors"
-import { MessageCompilationError } from "./compile"
+import { MessageCompilationError } from "./compile.js"
 
 export function createMissingErrorMessage(
   locale: string,
   missingMessages: TranslationMissingEvent[],
-  configurationMsg: string
+  configurationMsg: string,
 ) {
   let message = `Failed to compile catalog for locale ${pico.bold(locale)}!
 
@@ -26,7 +26,7 @@ Missing ${missingMessages.length} translation(s):
 
 export function createCompilationErrorMessage(
   locale: string,
-  errors: MessageCompilationError[]
+  errors: MessageCompilationError[],
 ) {
   let message = `Failed to compile catalog for locale ${pico.bold(locale)}!
 

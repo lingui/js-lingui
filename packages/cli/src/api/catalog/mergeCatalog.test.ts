@@ -2,9 +2,9 @@ import {
   defaultMergeOptions,
   makeNextMessage,
   makePrevMessage,
-} from "../../tests"
-import { mergeCatalog } from "./mergeCatalog"
-import { CatalogType, ExtractedCatalogType } from "../types"
+} from "../../tests.js"
+import { mergeCatalog } from "./mergeCatalog.js"
+import { CatalogType, ExtractedCatalogType } from "../types.js"
 
 describe("mergeCatalog", () => {
   const nextCatalog: ExtractedCatalogType = {
@@ -15,21 +15,23 @@ describe("mergeCatalog", () => {
   }
 
   it("should initialize language catalog", () => {
-    expect(mergeCatalog(null, nextCatalog, false, defaultMergeOptions)).toEqual(
-      {
-        "custom.id": expect.objectContaining({
-          message: "Message with custom ID",
-          translation: "",
-        }),
-        "Message with <0>auto-generated</0> ID": expect.objectContaining({
-          translation: "",
-        }),
-      }
-    )
+    expect(
+      mergeCatalog(undefined, nextCatalog, false, defaultMergeOptions),
+    ).toEqual({
+      "custom.id": expect.objectContaining({
+        message: "Message with custom ID",
+        translation: "",
+      }),
+      "Message with <0>auto-generated</0> ID": expect.objectContaining({
+        translation: "",
+      }),
+    })
   })
 
   it("should prefill translations for source language", () => {
-    expect(mergeCatalog(null, nextCatalog, true, defaultMergeOptions)).toEqual({
+    expect(
+      mergeCatalog(undefined, nextCatalog, true, defaultMergeOptions),
+    ).toEqual({
       "custom.id": expect.objectContaining({
         message: "Message with custom ID",
         translation: "Message with custom ID",
@@ -63,7 +65,7 @@ describe("mergeCatalog", () => {
     }
 
     expect(
-      mergeCatalog(prevCatalog, nextCatalog, false, defaultMergeOptions)
+      mergeCatalog(prevCatalog, nextCatalog, false, defaultMergeOptions),
     ).toEqual({
       "custom.id": expect.objectContaining({
         message: "Message with custom ID, possibly changed",
@@ -105,7 +107,7 @@ describe("mergeCatalog", () => {
     expect(
       mergeCatalog(prevCatalog, nextCatalog, true, {
         overwrite: true,
-      })
+      }),
     ).toEqual({
       message1: expect.objectContaining({
         message: "Message with custom ID, possibly changed",
@@ -125,7 +127,7 @@ describe("mergeCatalog", () => {
     }
     const nextCatalog: ExtractedCatalogType = {}
     expect(
-      mergeCatalog(prevCatalog, nextCatalog, false, defaultMergeOptions)
+      mergeCatalog(prevCatalog, nextCatalog, false, defaultMergeOptions),
     ).toEqual({
       "msg.hello": expect.objectContaining({
         translation: "Hello World",
@@ -141,14 +143,47 @@ describe("mergeCatalog", () => {
       }),
     }
     const nextCatalog: ExtractedCatalogType = {}
-    expect(
-      mergeCatalog(prevCatalog, nextCatalog, false, {
-        files: ["file"],
-      })
-    ).toEqual({
-      "msg.hello": expect.objectContaining({
-        obsolete: false,
-      }),
+    const mergedCatalog = mergeCatalog(prevCatalog, nextCatalog, false, {
+      files: ["file"],
     })
+
+    expect(mergedCatalog["msg.hello"]!.obsolete).toBeFalsy()
+  })
+
+  it("should keep message extra from the previous catalog", () => {
+    const prevCatalog: CatalogType = {
+      Hello: {
+        translation: "Hallo",
+        extra: { flags: ["myTag"] },
+      },
+    }
+
+    const nextCatalog: ExtractedCatalogType = {
+      Hello: {
+        message: "Hello",
+        origin: [["src/app.ts", 1]],
+        placeholders: {},
+        comments: [],
+      },
+    }
+
+    const result = mergeCatalog(prevCatalog, nextCatalog, false, {})
+    expect(result["Hello"]).toMatchInlineSnapshot(`
+      {
+        comments: [],
+        flags: [
+          myTag,
+        ],
+        message: Hello,
+        origin: [
+          [
+            src/app.ts,
+            1,
+          ],
+        ],
+        placeholders: {},
+        translation: Hallo,
+      }
+    `)
   })
 })

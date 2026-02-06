@@ -10,7 +10,7 @@ export const vueExtractor: ExtractorType = {
     filename: string,
     code: string,
     onMessageExtracted,
-    ctx: ExtractorCtx
+    ctx: ExtractorCtx,
   ) {
     const { descriptor } = parse(code, {
       sourceMap: true,
@@ -18,7 +18,7 @@ export const vueExtractor: ExtractorType = {
       ignoreEmpty: true,
     })
 
-    const isTsBlock = (block: SFCBlock) => block?.lang === "ts"
+    const isTsBlock = (block: SFCBlock | null) => block?.lang === "ts"
 
     const compiledTemplate =
       descriptor.template &&
@@ -53,18 +53,18 @@ export const vueExtractor: ExtractorType = {
 
     await Promise.all(
       targets
-        .filter(([source]) => Boolean(source))
+        .filter(([source]) => !!source)
         .map(([source, map, isTs]) =>
           extractor.extract(
             filename + (isTs ? ".ts" : ""),
-            source,
+            source!,
             onMessageExtracted,
             {
               sourceMaps: map,
               ...ctx,
-            }
-          )
-        )
+            },
+          ),
+        ),
     )
   },
 }

@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`Elements are replaced with placeholders 1`] = `
 import { Trans } from "@lingui/react/macro";
@@ -446,6 +446,45 @@ import { Trans as _Trans } from "@lingui/react";
 
 `;
 
+exports[`Produce the same ID regardless of CRLF, LF, and CR line endings 1`] = `
+import { Trans } from "@lingui/react/macro";
+<Trans>hello</Trans>;
+<Trans>hello</Trans>;
+<Trans>hello</Trans>;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { Trans as _Trans } from "@lingui/react";
+<_Trans
+  {
+    /*i18n*/
+    ...{
+      id: "WfCysZ",
+      message: "hello",
+    }
+  }
+/>;
+<_Trans
+  {
+    /*i18n*/
+    ...{
+      id: "WfCysZ",
+      message: "hello",
+    }
+  }
+/>;
+<_Trans
+  {
+    /*i18n*/
+    ...{
+      id: "WfCysZ",
+      message: "hello",
+    }
+  }
+/>;
+
+`;
+
 exports[`Production - all props kept if extract: true 1`] = `
 import { Trans } from "@lingui/react/macro";
 <Trans id="msg.hello" comment="Hello World">
@@ -490,7 +529,7 @@ import { Trans as _Trans } from "@lingui/react";
 `;
 
 exports[`Production - message prop is kept if stripMessageField: false 1`] = `
-import { Trans } from "@lingui/macro";
+import { Trans } from "@lingui/react/macro";
 <Trans id="msg.hello" comment="Hello World">
   Hello World
 </Trans>;
@@ -779,7 +818,7 @@ import { i18n as _i18n } from "@lingui/core";
                 values: {
                   articleName: articleName,
                 },
-              }
+              },
             )}
           />
         ),
@@ -815,7 +854,7 @@ import { i18n as _i18n } from "@lingui/core";
       values: {
         count: count,
       },
-    }
+    },
   )}
 >
   About
@@ -930,7 +969,7 @@ import { myTrans as _Trans } from "@my/lingui";
 `;
 
 exports[`stripMessageField option - message prop is removed if stripMessageField: true 1`] = `
-import { Trans } from "@lingui/macro";
+import { Trans } from "@lingui/react/macro";
 <Trans id="msg.hello">Hello World</Trans>;
 
 ↓ ↓ ↓ ↓ ↓ ↓

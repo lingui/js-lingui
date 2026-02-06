@@ -134,6 +134,7 @@ The PO Gettext formatter accepts the following options:
 | `lineNumbers`          | boolean | `true`         | Include line numbers in the origin comments. This makes it easier to locate messages in the source code                                                                  |
 | `disableSelectWarning` | boolean | `false`        | Disable warnings about unsupported `Select` features encountered in catalogs. This can be useful if you're aware of the limitation and want to suppress related warnings |
 | `customICUPrefix`      | string  | `"js-lingui:"` | Override the default prefix for ICU and plural comments in the final PO catalog                                                                                          |
+| `mergePlurals`         | boolean | `false`        | Combine plural entries that have the same content but different variables into a single PO entry                                                                         |
 
 ### Examples {#po-gettext-examples}
 
@@ -177,6 +178,47 @@ With this format, plural messages are exported in the following ways, depending 
   # customICUPrefix = jsi18n:
   #. jsi18n:icu=%7BanotherCount%2C+plural%2C+one+%7BSingular+case%7D+other+%7BCase+number+%7BanotherCount%7D%7D%7D&pluralize_on=anotherCount
   ```
+
+#### Duplicate Plurals
+
+When two calls to `plural` or `<Plural />` are made with identical strings, but pluralize on different variables, they will create separate PO entries. However, `msgid` will be the same. Some TMS might not allow duplicate `msgid`, even with different comments, and should use `mergePlurals` option to merge these entries into a single PO entry during extraction. During compilation, it will be re-expanded to multiple units.
+
+```ts
+plural(count, {
+  one: "one book",
+  other: "many books",
+});
+plural(anotherCount, {
+  one: "one book",
+  other: "many books",
+});
+```
+
+Without `mergePlurals`:
+
+```po
+#. js-lingui:icu={count, plural, one {one book} other {many books}}&pluralize_on=count
+msgid "one book"
+msgid_plural "many books"
+msgstr[0] "one book"
+msgstr[1] "many books"
+
+#. js-lingui:icu={anotherCount, plural, one {one book} other {many books}}&pluralize_on=anotherCount
+msgid "one book"
+msgid_plural "many books"
+msgstr[0] "one book"
+msgstr[1] "many books"
+```
+
+With `mergePlurals`:
+
+```po
+#. js-lingui:icu={$var, plural, one {one book} other {many books}}&pluralize_on=count,anotherCount
+msgid "one book"
+msgid_plural "many books"
+msgstr[0] "one book"
+msgstr[1] "many books"
+```
 
 ### Limitations {#po-gettext-limitations}
 

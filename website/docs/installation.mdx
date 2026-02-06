@@ -56,6 +56,10 @@ Follow these steps to set up Lingui with Babel:
 When using a preset, first check if it includes the `macros` plugin. If so, then you don't need to install and set up `@lingui/babel-plugin-lingui-macro`. For example, `react-scripts` already includes the `macros` plugin.
 :::
 
+:::caution
+If you're using [React Compiler](https://react.dev/learn/react-compiler), make sure that `@lingui/babel-plugin-lingui-macro` comes **before** the React Compiler plugin in the Babel plugins list. This ensures macros are expanded correctly before the compiler processes the code.
+:::
+
 </TabItem>
 <TabItem value="swc" label="SWC">
 
@@ -75,6 +79,12 @@ Follow these steps to set up Lingui with SWC:
 
 :::caution
 SWC Plugin support is still experimental. Semver backwards compatibility between different `@swc/core` versions is not guaranteed. See the [SWC compatibility](/ref/swc-plugin#swc-compatibility) for more information.
+:::
+
+:::caution
+If you're using [React Compiler](https://react.dev/learn/react-compiler) with SWC, the `@lingui/swc-plugin` must run **before** the React Compiler plugin. This is necessary because Lingui macros need to be expanded before the React Compiler processes your code.
+
+However, in Next.js, the React Compiler is enabled via a simple boolean flag (`reactCompiler: true`) in `next.config.js`, and there's currently no way to control plugin ordering. As a result, Lingui may not work correctly with the React Compiler in SWC-based setups like Next.js.
 :::
 
 </TabItem>

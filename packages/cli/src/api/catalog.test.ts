@@ -1,11 +1,11 @@
 import fs from "fs"
 import path from "path"
 import mockFs from "mock-fs"
-import { mockConsole } from "@lingui/jest-mocks"
+import { mockConsole } from "@lingui/test-utils"
 import { LinguiConfig, makeConfig } from "@lingui/conf"
 
-import { Catalog, cleanObsolete, order } from "./catalog"
-import { createCompiledCatalog } from "./compile"
+import { Catalog, cleanObsolete, order, writeCompiled } from "./catalog.js"
+import { createCompiledCatalog } from "./compile.js"
 
 import {
   copyFixture,
@@ -14,16 +14,16 @@ import {
   makeNextMessage,
   defaultMergeOptions,
   makeCatalog,
-} from "../tests"
-import { AllCatalogsType } from "./types"
-import { extractFromFiles } from "./catalog/extractFromFiles"
-import { FormatterWrapper, getFormat } from "./formats"
+} from "../tests.js"
+import { AllCatalogsType } from "./types.js"
+import { extractFromFiles } from "./catalog/extractFromFiles.js"
+import { FormatterWrapper, getFormat } from "./formats/index.js"
 
 export const fixture = (...dirs: string[]) =>
   (
     path.resolve(__dirname, path.join("fixtures", ...dirs)) +
     // preserve trailing slash
-    (dirs[dirs.length - 1].endsWith("/") ? "/" : "")
+    (dirs.at(-1)!.endsWith("/") ? "/" : "")
   ).replace(/\\/g, "/")
 
 function mockConfig(config: Partial<LinguiConfig> = {}) {
@@ -33,7 +33,7 @@ function mockConfig(config: Partial<LinguiConfig> = {}) {
       locales: ["en", "pl"],
       ...config,
     },
-    { skipValidation: true }
+    { skipValidation: true },
   )
 }
 
@@ -41,7 +41,7 @@ describe("Catalog", () => {
   let format: FormatterWrapper
 
   beforeAll(async () => {
-    format = await getFormat("po", {}, "en")
+    format = await getFormat(undefined, "en")
   })
 
   afterEach(() => {
@@ -64,7 +64,7 @@ describe("Catalog", () => {
         },
         mockConfig({
           locales: ["en", "cs"],
-        })
+        }),
       )
 
       // Everything should be empty
@@ -89,7 +89,7 @@ describe("Catalog", () => {
         },
         mockConfig({
           locales: ["en", "cs"],
-        })
+        }),
       )
 
       // Everything should be empty
@@ -111,7 +111,7 @@ describe("Catalog", () => {
         },
         mockConfig({
           locales: ["en", "cs"],
-        })
+        }),
       )
 
       // Everything should be empty
@@ -138,11 +138,11 @@ describe("Catalog", () => {
         },
         mockConfig({
           locales: ["en", "cs"],
-        })
+        }),
       )
 
       // Everything should be empty
-      expect(await catalog.readTemplate()).toMatchSnapshot()
+      expect(await catalog.readTemplate()).toBeUndefined()
 
       await catalog.makeTemplate(defaultMakeTemplateOptions)
       expect(await catalog.readTemplate()).toMatchSnapshot()
@@ -156,7 +156,7 @@ describe("Catalog", () => {
           name: "messages",
           path: path.resolve(
             __dirname,
-            path.join("fixtures", "pot-template", "{locale}")
+            path.join("fixtures", "pot-template", "{locale}"),
           ),
           include: [],
           exclude: [],
@@ -164,7 +164,7 @@ describe("Catalog", () => {
         },
         mockConfig({
           locales: ["en", "pl"],
-        })
+        }),
       )
 
       const translations = await catalog.getTranslations("en", {
@@ -187,10 +187,41 @@ describe("Catalog", () => {
           fixture("collect-typescript-jsx/tsx-syntax.tsx"),
           fixture("collect-typescript-jsx/macro.tsx"),
         ],
-        mockConfig()
+        mockConfig(),
       )
 
       expect(messages).toMatchSnapshot()
+    })
+
+    it("should sort placeholders to keep them stable between runs", async () => {
+      const runA = await extractFromFiles(
+        [
+          fixture("collect-placeholders-sorting/a.ts"),
+          fixture("collect-placeholders-sorting/b.ts"),
+        ],
+        mockConfig(),
+      )
+
+      const runB = await extractFromFiles(
+        [
+          fixture("collect-placeholders-sorting/b.ts"),
+          fixture("collect-placeholders-sorting/a.ts"),
+        ],
+        mockConfig(),
+      )
+
+      expect(Object.values(runA!)[0]!.placeholders[0]).toStrictEqual(
+        Object.values(runB!)[0]!.placeholders[0],
+      )
+
+      expect(Object.values(runA!)[0]!.placeholders).toMatchInlineSnapshot(`
+        {
+          0: [
+            getUser(),
+            getWorld(),
+          ],
+        }
+      `)
     })
 
     it("should support experimental typescript decorators under a flag", async () => {
@@ -200,7 +231,7 @@ describe("Catalog", () => {
           extractorParserOptions: {
             tsExperimentalDecorators: true,
           },
-        })
+        }),
       )
 
       expect(messages).toBeTruthy()
@@ -235,7 +266,7 @@ describe("Catalog", () => {
           extractorParserOptions: {
             flow: true,
           },
-        })
+        }),
       )
 
       const messages = await catalog.collect()
@@ -250,7 +281,7 @@ describe("Catalog", () => {
           exclude: [],
           format,
         },
-        mockConfig()
+        mockConfig(),
       )
 
       const messages = await catalog.collect()
@@ -266,13 +297,24 @@ describe("Catalog", () => {
           exclude: [],
           format,
         },
-        mockConfig()
+        mockConfig(),
       )
 
-      const messages = await catalog.collect()
-      expect(messages[Object.keys(messages)[0]].origin).toStrictEqual([
-        ["../../../../../input.tsx", 5],
-      ])
+      const oldCwd = process.cwd()
+      process.chdir(import.meta.dirname)
+      const messages = (await catalog.collect())!
+
+      process.chdir(oldCwd)
+
+      expect(messages[Object.keys(messages)[0]!]!.origin)
+        .toMatchInlineSnapshot(`
+        [
+          [
+            ../input.tsx,
+            5,
+          ],
+        ]
+      `)
     })
 
     it("should extract only files passed on options", async () => {
@@ -287,7 +329,7 @@ describe("Catalog", () => {
           exclude: [],
           format,
         },
-        mockConfig()
+        mockConfig(),
       )
 
       const messages = await catalog.collect({
@@ -305,7 +347,7 @@ describe("Catalog", () => {
           exclude: [],
           format,
         },
-        mockConfig()
+        mockConfig(),
       )
 
       const messages = await catalog.collect({
@@ -318,21 +360,6 @@ describe("Catalog", () => {
       expect(messages).toMatchSnapshot()
     })
 
-    it("should extract files with special characters in the include path", async () => {
-      const catalog = new Catalog(
-        {
-          name: "messages",
-          path: "locales/{locale}",
-          include: [fixture("collect/[componentD]")],
-          exclude: [],
-          format,
-        },
-        mockConfig()
-      )
-      const messages = await catalog.collect()
-      expect(messages).toMatchSnapshot()
-    })
-
     it("should throw an error when duplicate identifier with different defaults found", async () => {
       const catalog = new Catalog(
         {
@@ -342,7 +369,7 @@ describe("Catalog", () => {
           exclude: [],
           format,
         },
-        mockConfig()
+        mockConfig(),
       )
       expect.assertions(1)
       await mockConsole(async (console) => {
@@ -352,8 +379,8 @@ describe("Catalog", () => {
 
         expect(console.error).toBeCalledWith(
           expect.stringContaining(
-            `Encountered different default translations for message`
-          )
+            `Encountered different default translations for message`,
+          ),
         )
       })
     })
@@ -367,21 +394,21 @@ describe("Catalog", () => {
           exclude: [],
           format,
         },
-        mockConfig()
+        mockConfig(),
       )
 
       expect.assertions(2)
       await mockConsole(async (console) => {
         const messages = await catalog.collect()
         expect(console.error).toBeCalledWith(
-          expect.stringContaining(`Cannot process file`)
+          expect.stringContaining(`Cannot process file`),
         )
         expect(messages).toBeFalsy()
       })
     })
   })
   it("Catalog.merge should initialize catalogs", async () => {
-    const prevCatalogs: AllCatalogsType = { en: null, cs: null }
+    const prevCatalogs: AllCatalogsType = { en: {}, cs: {} }
     const nextCatalog = {
       "custom.id": makeNextMessage({
         message: "Message with custom ID",
@@ -393,8 +420,8 @@ describe("Catalog", () => {
       (await makeCatalog({ sourceLocale: "en" })).merge(
         prevCatalogs,
         nextCatalog,
-        defaultMergeOptions
-      )
+        defaultMergeOptions,
+      ),
     ).toEqual({
       // catalog for sourceLocale - translation is prefilled
       en: {
@@ -420,7 +447,7 @@ describe("Catalog", () => {
   })
 
   describe("read", () => {
-    it("should return null if file does not exist", async () => {
+    it("should return undefined if file does not exist", async () => {
       // mock empty filesystem
       mockFs()
 
@@ -432,18 +459,18 @@ describe("Catalog", () => {
           exclude: [],
           format,
         },
-        mockConfig()
+        mockConfig(),
       )
 
       const messages = await catalog.read("en")
-      expect(messages).toBeNull()
+      expect(messages).toBeUndefined()
     })
 
     it("should read file in given format", async () => {
       mockFs({
         en: {
           "messages.po": fs.readFileSync(
-            path.resolve(__dirname, "fixtures/messages.po")
+            path.resolve(__dirname, "fixtures/messages.po"),
           ),
         },
       })
@@ -454,31 +481,7 @@ describe("Catalog", () => {
           include: [],
           format,
         },
-        mockConfig()
-      )
-
-      const messages = await catalog.read("en")
-
-      mockFs.restore()
-      expect(messages).toMatchSnapshot()
-    })
-
-    xit("should read file in previous format", async () => {
-      mockFs({
-        en: {
-          "messages.json": fs.readFileSync(
-            path.resolve(__dirname, "fixtures/messages.json")
-          ),
-        },
-      })
-      const catalog = new Catalog(
-        {
-          name: "messages",
-          path: "{locale}/messages",
-          include: [],
-          format,
-        },
-        mockConfig({ prevFormat: "minimal" })
+        mockConfig(),
       )
 
       const messages = await catalog.read("en")
@@ -495,14 +498,14 @@ describe("Catalog", () => {
           name: "messages",
           path: path.resolve(
             __dirname,
-            path.join("fixtures", "readAll", "{locale}", "messages")
+            path.join("fixtures", "readAll", "{locale}", "messages"),
           ),
           include: [],
           format,
         },
         mockConfig({
           locales: ["en", "cs"],
-        })
+        }),
       )
 
       const messages = await catalog.readAll()
@@ -515,6 +518,7 @@ describe("cleanObsolete", () => {
   it("should remove obsolete messages from catalog", () => {
     const catalog = {
       Label: makeNextMessage({
+        obsolete: false,
         translation: "Label",
       }),
       PreviousLabel: makeNextMessage({
@@ -584,7 +588,7 @@ describe("order", () => {
     expect(Object.keys(orderedCatalogs)).toMatchSnapshot()
   })
 
-  it("should order messages by message", () => {
+  it("should order messages by message and then by context", () => {
     const catalog = {
       msg1: makeNextMessage({
         message: "B",
@@ -597,6 +601,7 @@ describe("order", () => {
       msg2: makeNextMessage({
         // message is optional.
         translation: "A",
+        context: "context1",
         origin: [["file2.js", 3]],
       }),
       msg3: makeNextMessage({
@@ -609,6 +614,18 @@ describe("order", () => {
         translation: "C",
         origin: [["file1.js", 1]],
       }),
+      msg5: makeNextMessage({
+        message: "B",
+        translation: "B",
+        context: "context3",
+        origin: [["file2.js", 4]],
+      }),
+      msg6: makeNextMessage({
+        message: "B",
+        translation: "B",
+        context: "context2",
+        origin: [["file2.js", 5]],
+      }),
     }
 
     const orderedCatalogs = order("message", catalog)
@@ -618,8 +635,49 @@ describe("order", () => {
       [
         msg2,
         msg1,
+        msg6,
+        msg5,
         msg4,
         msg3,
+      ]
+    `)
+  })
+
+  it("should order by custom function", () => {
+    const catalog = {
+      "global.b": makeNextMessage({
+        translation: "B",
+      }),
+      "global.a": makeNextMessage({
+        translation: "A",
+      }),
+      "about.d": makeNextMessage({
+        translation: "D",
+      }),
+      "about.c": makeNextMessage({
+        translation: "C",
+      }),
+    }
+
+    const orderedCatalogs = order((a, b) => {
+      const aIsGlobal = a.messageId.startsWith("global.")
+      const bIsGlobal = b.messageId.startsWith("global.")
+
+      // Put `global.*` entries first
+      if (aIsGlobal && !bIsGlobal) return -1
+      if (!aIsGlobal && bIsGlobal) return 1
+
+      // Otherwise, sort alphabetically
+      return a.messageId.localeCompare(b.messageId)
+    }, catalog)
+
+    // Test that the message content is the same as before
+    expect(Object.keys(orderedCatalogs)).toMatchInlineSnapshot(`
+      [
+        global.a,
+        global.b,
+        about.c,
+        about.d,
       ]
     `)
   })
@@ -636,9 +694,9 @@ describe("writeCompiled", () => {
         path: path.join(localeDir, "{locale}", "messages"),
         include: [],
         exclude: [],
-        format: await getFormat("po", {}, "en"),
+        format: await getFormat(undefined, "en"),
       },
-      mockConfig()
+      mockConfig(),
     )
   })
 
@@ -655,9 +713,9 @@ describe("writeCompiled", () => {
     async ({ namespace, extension }) => {
       const { source } = createCompiledCatalog("en", {}, { namespace })
       // Test that the file extension of the compiled catalog is `.mjs`
-      expect(await catalog.writeCompiled("en", source, namespace)).toMatch(
-        extension
-      )
-    }
+      expect(
+        await writeCompiled(catalog.path, "en", source, namespace),
+      ).toMatch(extension)
+    },
   )
 })

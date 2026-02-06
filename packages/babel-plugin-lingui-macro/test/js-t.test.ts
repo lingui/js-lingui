@@ -196,7 +196,7 @@ macroTester({
         stripMessageField: true,
       },
       code: `
-          import { t } from '@lingui/macro'
+          import { t } from '@lingui/core/macro'
           const msg = t\`Message\`
         `,
     },
@@ -255,7 +255,7 @@ macroTester({
         stripMessageField: false,
       },
       code: `
-          import { t } from '@lingui/macro';
+          import { t } from '@lingui/core/macro';
           const msg = t({
               message: \`Hello \${name}\`,
               id: 'msgId',
@@ -320,11 +320,11 @@ macroTester({
               i18n: ["@my/lingui", "myI18n"],
             },
           },
-          { skipValidation: true }
+          { skipValidation: true },
         ),
       },
       code: `
-         import { t } from '@lingui/macro'
+         import { t } from '@lingui/core/macro'
          const msg = t\`Message\`
       `,
     },
@@ -337,7 +337,7 @@ macroTester({
               corePackage: ["@my-lingui/macro"],
             },
           },
-          { skipValidation: true }
+          { skipValidation: true },
         ),
       },
       skipBabelMacroTest: true,

@@ -1,0 +1,55 @@
+name: version-bump
+
+on:
+  workflow_dispatch:
+    inputs:
+      versionType:
+        type: choice
+        description: 'Version type to bump'
+        options:
+        - latest
+        - next
+        required: true
+        default: "latest"
+
+jobs:
+  version-bump:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup node
+        uses: actions/setup-node@v4
+        with:
+          always-auth: true
+          node-version: 20
+          cache: 'yarn'
+          scope: '@lingui'
+
+      - name: Install dependencies if needed
+        run: yarn install
+
+      - name: Build packages
+        run: yarn release:build
+
+      - name: Unit Testing
+        run: yarn test:ci
+
+      - name: Linting & Types
+        run: yarn lint:all
+
+      - name: Prepare Lingui-Bot git account
+        uses: oleksiyrudenko/gha-git-credentials@v2-latest
+        with:
+          name: 'Lingui Bot'
+          email: 'linguibot@gmail.com'
+          actor: 'lingui-bot'
+          token: '${{ secrets.GH_TOKEN }}'
+
+      - name: Versioning packages
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: yarn version:${{github.event.inputs.versionType}}

@@ -9,7 +9,7 @@ import path from "path"
 import memoizeOne from "memoize-one"
 
 export const createLinguiMetroTransformer = (
-  upstreamTransformer: BabelTransformer
+  upstreamTransformer: BabelTransformer,
 ): BabelTransformer["transform"] => {
   return async function linguiMetroTransformer(params) {
     if (!params.filename.endsWith(".po")) {
@@ -36,18 +36,18 @@ const getCatalogList = async () => {
 const memoizedGetCatalogList = memoizeOne(getCatalogList)
 
 export async function transformFile(
-  params: Pick<BabelTransformerArgs, "filename">
+  params: Pick<BabelTransformerArgs, "filename">,
 ) {
   const { config, allCatalogs } = await memoizedGetCatalogList()
   const catalogPathRelativeToProjectRoot = params.filename
   const catalogPathRelativeToLinguiConfig = path.relative(
     config.rootDir,
-    catalogPathRelativeToProjectRoot
+    catalogPathRelativeToProjectRoot,
   )
 
   const catalogFile = getCatalogForFile(
     catalogPathRelativeToLinguiConfig,
-    allCatalogs
+    allCatalogs,
   )
 
   if (!catalogFile) {
@@ -62,7 +62,7 @@ ${config.catalogs.map((c) => c.path).join("\n")}
 Working dir is: 
 ${process.cwd()}
 
-Please check that \`catalogs.path\` is filled properly and restart the Metro server.\n`
+Please check that \`catalogs.path\` is filled properly and restart the Metro server.\n`,
     )
   }
 

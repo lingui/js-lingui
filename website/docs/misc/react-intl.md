@@ -229,5 +229,5 @@ The compiled catalogs are also bundled with locale data like plurals, so there's
 **On the other hand, react-intl:**
 
 - Is the most popular and used i18n lib in React.
-- Ss used in many production websites (stability).
+- Is used in many production websites (stability).
 - Has lots of resources available online.

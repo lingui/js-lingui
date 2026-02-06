@@ -1,18 +1,4 @@
-/**
- * @deprecated please pass formatter directly to `format`
- *
- * @example
- * ```js
- * // lingui.config.{js,ts}
- * import {formatter} from "@lingui/format-po"
- *
- * export default {
- *   [...]
- *   format: formatter({lineNumbers: false}),
- * }
- * ```
- */
-export type CatalogFormat = "lingui" | "minimal" | "po" | "csv" | "po-gettext"
+import { defaultConfig } from "./makeConfig"
 
 export type ExtractorCtx = {
   /**
@@ -25,7 +11,14 @@ export type ExtractorCtx = {
 
 type CatalogExtra = Record<string, unknown>
 export type MessageOrigin = [filename: string, line?: number]
-export type ExtractedMessageType<Extra = CatalogExtra> = {
+export type ExtractedMessageType = {
+  message?: string
+  origin: MessageOrigin[]
+  comments: string[]
+  context?: string
+  placeholders: Record<string, string[]>
+}
+export type MessageType<Extra = CatalogExtra> = {
   message?: string
   origin?: MessageOrigin[]
   comments?: string[]
@@ -37,12 +30,10 @@ export type ExtractedMessageType<Extra = CatalogExtra> = {
    */
   extra?: Extra
   placeholders?: Record<string, string[]>
+  translation?: string
 }
-export type MessageType<Extra = CatalogExtra> = ExtractedMessageType<Extra> & {
-  translation: string
-}
-export type ExtractedCatalogType<Extra = CatalogExtra> = {
-  [msgId: string]: ExtractedMessageType<Extra>
+export type ExtractedCatalogType = {
+  [msgId: string]: ExtractedMessageType
 }
 export type CatalogType<Extra = CatalogExtra> = {
   [msgId: string]: MessageType<Extra>
@@ -54,7 +45,7 @@ export type ExtractorType = {
     filename: string,
     code: string,
     onMessageExtracted: (msg: ExtractedMessage) => void,
-    ctx?: ExtractorCtx
+    ctx: ExtractorCtx,
   ): Promise<void> | void
 }
 
@@ -67,16 +58,16 @@ export type CatalogFormatter = {
   templateExtension?: string
   parse(
     content: string,
-    ctx: { locale: string | null; sourceLocale: string; filename: string }
+    ctx: { locale: string | undefined; sourceLocale: string; filename: string },
   ): Promise<CatalogType> | CatalogType
   serialize(
     catalog: CatalogType,
     ctx: {
-      locale: string | null
+      locale: string | undefined
       sourceLocale: string
       filename: string
-      existing: string | null
-    }
+      existing: string | undefined
+    },
   ): Promise<string> | string
 }
 
@@ -91,13 +82,17 @@ export type ExtractedMessage = {
   placeholders?: Record<string, string>
 }
 
-export type CatalogFormatOptions = {
-  origins?: boolean
-  lineNumbers?: boolean
-  disableSelectWarning?: boolean
-}
-
-export type OrderBy = "messageId" | "message" | "origin"
+export type OrderByFn = (
+  a: {
+    messageId: string
+    entry: MessageType
+  },
+  b: {
+    messageId: string
+    entry: MessageType
+  },
+) => number
+export type OrderBy = "messageId" | "message" | "origin" | OrderByFn
 
 export type CatalogConfig = {
   name?: string
@@ -106,10 +101,11 @@ export type CatalogConfig = {
   exclude?: string[]
 }
 
-type LocaleObject = {
-  [locale: string]: string[] | string
-  default?: string
-}
+type LocaleObject =
+  | Record<string, string[] | string>
+  | (Record<string, string[] | string> & {
+      default: string
+    })
 
 export type FallbackLocales = LocaleObject
 
@@ -137,25 +133,25 @@ export type ExperimentalExtractorOptions = {
   entries: string[]
 
   /**
-   * Explicitly include some dependency for extraction.
-   * For example, you can include all monorepo's packages as
-   * ["@mycompany/"]
+   * List of package name patterns to include for extraction.
+   *
+   * For example, to include all packages from your monorepo:
+   *
+   * ["@mycompany"]
+   *
+   * By default, all imports that look like package imports are ignored.
+   * This means imports that do not start with `/`, `./`, `../`, or `#`
+   * (used for subpath imports). TypeScript path aliases are also ignored
+   * because they look like package imports.
+   *
+   * Add here the packages you want to include.
    */
   includeDeps?: string[]
 
   /**
-   * By default all dependencies from package.json would be ecxluded from analyzing.
-   * If something was not properly discovered you can add it here.
-   *
-   * Note: it automatically matches also sub imports
-   *
-   * "next" would match "next" and "next/head"
-   */
-  excludeDeps?: string[]
-
-  /**
-   * svg, jpg and other files which might be imported in application should be exluded from analysis.
-   * By default extractor provides a comprehensive list of extensions. If you feel like somthing is missing in this list please fill an issue on GitHub
+   * svg, jpg and other files which might be imported in application should be excluded from analysis.
+   * By default, extractor provides a comprehensive list of extensions. If you feel like something
+   * is missing in this list please fill an issue on GitHub
    *
    * NOTE: changing this param will override default list of extensions.
    */
@@ -214,14 +210,26 @@ export type LinguiConfig = {
    * https://lingui.dev/guides/custom-extractor
    */
   extractors?: ExtractorType[]
-  prevFormat?: CatalogFormat
   /**
-   * Message catalog format. The po formatter is used by default. Other formatters are available as separate packages.
+   * Message catalog format. If not set, po formatter would be used.
    *
-   * @default "po"
+   * Other formatters are available as separate packages.
+   *
+   * If you want to set additional options for po formatter you need to
+   * install it as a separate package and provide in config:
+   *
+   * @example
+   * ```js
+   * import {formatter} from "@lingui/format-po"
+   *
+   * export default {
+   *   [...]
+   *   format: formatter({lineNumbers: false}),
+   * }
+   * ```
+   *
    */
-  format?: CatalogFormat | CatalogFormatter
-  formatOptions?: CatalogFormatOptions
+  format?: CatalogFormatter
   /**
    * The locale tags used in the project. The `extract` and `compile` commands write a catalog for each locale specified.
    *
@@ -241,6 +249,16 @@ export type LinguiConfig = {
   catalogsMergePath?: string
   /**
    * Order of messages in catalog
+   * You can choose one of: `"messageId" | "message" | "origin"`.
+   *
+   * - `messageId` — Sorts by the message key. Not recommended if you use the source
+   *   message as the key, as `messageId` is autogenerated and may lead to
+   *   unexpected results.
+   * - `message` — Sorts by the message text and its context. **Recommended**.
+   *   Messages are ordered alphabetically.
+   * - `origin` — Sorts by the location where the message was first defined.
+   *
+   * You can also provide a custom sorting function. See {@link OrderByFn} for the function signature.
    *
    * @default "message"
    */
@@ -257,7 +275,7 @@ export type LinguiConfig = {
    *
    * Note that using <rootDir> as a string token in any other path-based config settings will refer back to this value.
    *
-   * @defaul: The root of the directory containing your Lingui configuration file or the package.json.
+   * @default: The root of the directory containing your Lingui configuration file or the package.json.
    */
   rootDir?: string
   /**
@@ -310,7 +328,7 @@ export type LinguiConfig = {
      * msg`Hello` // <-- would be correctly picked up by macro
      * ```
      *
-     * @default ["@lingui/macro", "@lingui/core/macro"]
+     * @default [ "@lingui/core/macro"]
      */
     corePackage?: string[]
     /**
@@ -330,7 +348,7 @@ export type LinguiConfig = {
      * <Trans>Hello</Trans> // <-- would be correctly picked up by macro
      * ```
      *
-     * @default ["@lingui/macro", "@lingui/react/macro"]
+     * @default ["@lingui/react/macro"]
      */
     jsxPackage?: string[]
   }
@@ -342,10 +360,10 @@ export type LinguiConfig = {
 type ModuleSourceNormalized = readonly [module: string, specifier: string]
 
 export type LinguiConfigNormalized = Omit<
-  LinguiConfig,
+  LinguiConfig & typeof defaultConfig,
   "runtimeConfigModule"
 > & {
-  fallbackLocales?: FallbackLocales
+  resolvedConfigPath?: string
   runtimeConfigModule: {
     i18n: ModuleSourceNormalized
     useLingui: ModuleSourceNormalized

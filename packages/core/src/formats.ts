@@ -13,10 +13,15 @@ function normalizeLocales(locales: Locales): string[] {
 
 export type DateTimeFormatSize = "short" | "default" | "long" | "full"
 
+// These types vary depending on the TypeScript target (e.g., modern ES versions
+// support passing a bigint or string to `Intl.NumberFormat.prototype.format`)
+export type DateTimeFormatValue = Parameters<Intl.DateTimeFormat["format"]>[0]
+export type NumberFormatValue = Parameters<Intl.NumberFormat["format"]>[0]
+
 export function date(
   locales: Locales,
-  value: string | Date,
-  format?: Intl.DateTimeFormatOptions | DateTimeFormatSize
+  value: string | DateTimeFormatValue,
+  format?: Intl.DateTimeFormatOptions | DateTimeFormatSize,
 ): string {
   const _locales = normalizeLocales(locales)
 
@@ -52,7 +57,7 @@ export function date(
 
   const formatter = getMemoized(
     () => cacheKey("date", _locales, format),
-    () => new Intl.DateTimeFormat(_locales, o)
+    () => new Intl.DateTimeFormat(_locales, o),
   )
 
   return formatter.format(isString(value) ? new Date(value) : value)
@@ -60,8 +65,8 @@ export function date(
 
 export function time(
   locales: Locales,
-  value: string | Date,
-  format?: Intl.DateTimeFormatOptions | DateTimeFormatSize
+  value: string | DateTimeFormatValue,
+  format?: Intl.DateTimeFormatOptions | DateTimeFormatSize,
 ): string {
   let o: Intl.DateTimeFormatOptions
 
@@ -95,14 +100,14 @@ export function time(
 
 export function number(
   locales: Locales,
-  value: number,
-  format?: Intl.NumberFormatOptions
+  value: NumberFormatValue,
+  format?: Intl.NumberFormatOptions,
 ): string {
   const _locales = normalizeLocales(locales)
 
   const formatter = getMemoized(
     () => cacheKey("number", _locales, format),
-    () => new Intl.NumberFormat(_locales, format)
+    () => new Intl.NumberFormat(_locales, format),
   )
 
   return formatter.format(value)
@@ -115,18 +120,18 @@ export function plural(
   locales: Locales,
   ordinal: boolean,
   value: number,
-  { offset = 0, ...rules }: PluralOptions
+  { offset = 0, ...rules }: PluralOptions,
 ): string {
   const _locales = normalizeLocales(locales)
 
   const plurals = ordinal
     ? getMemoized(
         () => cacheKey("plural-ordinal", _locales),
-        () => new Intl.PluralRules(_locales, { type: "ordinal" })
+        () => new Intl.PluralRules(_locales, { type: "ordinal" }),
       )
     : getMemoized(
         () => cacheKey("plural-cardinal", _locales),
-        () => new Intl.PluralRules(_locales, { type: "cardinal" })
+        () => new Intl.PluralRules(_locales, { type: "cardinal" }),
       )
 
   return rules[value] ?? rules[plurals.select(value - offset)] ?? rules.other

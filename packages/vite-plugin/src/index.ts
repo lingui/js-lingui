@@ -44,39 +44,28 @@ export function lingui({
     {
       name: "vite-plugin-lingui-report-macro-error",
       enforce: "pre",
-      resolveId(id) {
-        if (macroIds.has(id)) {
+      resolveDynamicImport(id, importer) {
+        if (macroIds.has(id as string)) {
           throw new Error(
-            `The macro you imported from "${id}" is being executed outside the context of compilation. \n` +
-              `This indicates that you don't configured correctly one of the "babel-plugin-macros" / "@lingui/swc-plugin" / "babel-plugin-lingui-macro"` +
+            `The macro you imported from "${id}" cannot be dynamically imported. \n` +
+              `Please check the import statement in file "${importer}". \n` +
               `Please see the documentation for how to configure Vite with Lingui correctly: ` +
-              "https://lingui.dev/tutorials/setup-vite"
+              "https://lingui.dev/tutorials/setup-vite",
           )
         }
       },
     },
     {
       name: "vite-plugin-lingui",
-      config: (config) => {
-        // https://github.com/lingui/js-lingui/issues/1464
-        if (!config.optimizeDeps) {
-          config.optimizeDeps = {}
-        }
-        config.optimizeDeps.exclude = config.optimizeDeps.exclude || []
-
-        for (const macroId of macroIds) {
-          config.optimizeDeps.exclude.push(macroId)
-        }
-      },
       async transform(src, id) {
         if (fileRegex.test(id)) {
-          id = id.split("?")[0]
+          id = id.split("?")[0]!
 
           const catalogRelativePath = path.relative(config.rootDir, id)
 
           const fileCatalog = getCatalogForFile(
             catalogRelativePath,
-            await getCatalogs(config)
+            await getCatalogs(config),
           )
 
           if (!fileCatalog) {
@@ -87,7 +76,7 @@ Resource: ${id}
 
 Your catalogs:
 ${config.catalogs.map((c) => c.path).join("\n")}
-Please check that catalogs.path is filled properly.\n`
+Please check that catalogs.path is filled properly.\n`,
             )
           }
 
@@ -110,10 +99,10 @@ Please check that catalogs.path is filled properly.\n`
             const message = createMissingErrorMessage(
               locale,
               missingMessages,
-              "loader"
+              "loader",
             )
             throw new Error(
-              `${message}\nYou see this error because \`failOnMissing=true\` in Vite Plugin configuration.`
+              `${message}\nYou see this error because \`failOnMissing=true\` in Vite Plugin configuration.`,
             )
           }
 
@@ -123,7 +112,7 @@ Please check that catalogs.path is filled properly.\n`
             {
               namespace: "es",
               pseudoLocale: config.pseudoLocale,
-            }
+            },
           )
 
           if (errors.length) {
@@ -132,12 +121,12 @@ Please check that catalogs.path is filled properly.\n`
             if (failOnCompileError) {
               throw new Error(
                 message +
-                  `These errors fail build because \`failOnCompileError=true\` in Lingui Vite plugin configuration.`
+                  `These errors fail build because \`failOnCompileError=true\` in Lingui Vite plugin configuration.`,
               )
             } else {
-              console.warn(
+              this.warn(
                 message +
-                  `You can fail the build on these errors by setting \`failOnCompileError=true\` in Lingui Vite Plugin configuration.`
+                  `You can fail the build on these errors by setting \`failOnCompileError=true\` in Lingui Vite Plugin configuration.`,
               )
             }
           }
