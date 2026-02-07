@@ -49,7 +49,7 @@ export function formatOrderSummary(i18n: I18n, date: Date, total: number) {
   const numberFormatter = new Intl.NumberFormat(locales, currencyOptions);
 
   // "Jan 18, 2026 - €1,234.56"
-  return `${dateFormatter.format(date)} - ${numberFormatter.format(total)}`; 
+  return `${dateFormatter.format(date)} - ${numberFormatter.format(total)}`;
 }
 ```
 
