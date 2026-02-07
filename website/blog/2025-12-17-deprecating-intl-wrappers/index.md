@@ -36,6 +36,12 @@ In principle, the migration is simple: `i18n.date(dateInstance, formatOptions)` 
 ```ts
 import { i18n } from "@lingui/core";
 
+const dateOptions = { dateStyle: "medium" } as const;
+const currencyOptions = {
+  style: "currency",
+  currency: "EUR",
+} as const;
+
 function getDateFormatter(options?: Intl.DateTimeFormatOptions) {
   const locales = i18n.locales ?? i18n.locale;
   return new Intl.DateTimeFormat(locales, options);
@@ -47,11 +53,8 @@ function getNumberFormatter(options?: Intl.NumberFormatOptions) {
 }
 
 export function formatOrderSummary(date: Date, total: number) {
-  const dateFormatter = getDateFormatter({ dateStyle: "medium" });
-  const numberFormatter = getNumberFormatter({
-    style: "currency",
-    currency: "EUR",
-  });
+  const dateFormatter = getDateFormatter(dateOptions);
+  const numberFormatter = getNumberFormatter(currencyOptions);
 
   return `${dateFormatter.format(date)} - ${numberFormatter.format(total)}`;
   // => "Jan 18, 2026 - €1,234.56"
@@ -63,6 +66,13 @@ In React you can create small reusable hooks that memoize formatters, accept for
 ```tsx
 import { useLingui } from "@lingui/react";
 import { useMemo } from "react";
+
+const dateOptions = { dateStyle: "medium" } as const;
+const priceOptions = {
+  style: "currency",
+  currency: "USD",
+  minimumFractionDigits: 2,
+} as const;
 
 function useDateFormatter(options?: Intl.DateTimeFormatOptions) {
   const { i18n } = useLingui();
@@ -83,18 +93,8 @@ function useNumberFormatter(options?: Intl.NumberFormatOptions) {
 }
 
 function PriceLine({ date, total }: { date: Date; total: number }) {
-  const dateOptions = useMemo(() => ({ dateStyle: "medium" }), []);
-  const numberOptions = useMemo(
-    () => ({
-      style: "currency",
-      currency: "USD",
-      minimumFractionDigits: 2,
-    }),
-    []
-  );
-
   const dateFormatter = useDateFormatter(dateOptions);
-  const numberFormatter = useNumberFormatter(numberOptions);
+  const numberFormatter = useNumberFormatter(priceOptions);
   // Renders: <span>Jan 18, 2026 - $1,234.56</span>
   return (
     <span>
