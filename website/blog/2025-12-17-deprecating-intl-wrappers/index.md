@@ -34,12 +34,12 @@ In one of the major releases, we will remove the methods, but before that, we'll
 
 ## Migrating to native Intl
 
-Принцип миграции простой, мы должны заменить использование методов `i18n.date`, `i18n.number` на прямое использование `Intl.DateTimeFormat` и `Intl.NumberFormat` соответственно.
+The migration principle is simple: we need to replace the use of `i18n.date` and `i18n.number` methods with direct use of `Intl.DateTimeFormat` and `Intl.NumberFormat` respectively.
 
 - `i18n.date(date, options)` => `new Intl.DateTimeFormat(i18n.locale, options).format(date);`
 - `i18n.number(n, options)` => `new Intl.NumberFormat(i18n.locale, options).format(n);`
 
-Пример без React:
+Example without React:
 
 ```ts
 import type { I18n } from "@lingui/core";
