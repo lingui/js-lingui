@@ -103,3 +103,5 @@ function PriceLine({ date, total }: { date: Date; total: number }) {
   );
 }
 ```
+
+We are asking the community to contribute a codemod to help automate the migration. If you have experience writing codemods or want to try your hand at it, pull requests are welcome at https://github.com/lingui/js-lingui/pulls.
