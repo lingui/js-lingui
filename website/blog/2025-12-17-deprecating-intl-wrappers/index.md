@@ -31,10 +31,10 @@ To meet the expectations for a complete helper surface we would need wrappers an
 
 ## Migrating to native Intl
 
-In principle, the migration is simple: `i18n.date(dateInstance, formatOptions)` becomes `dateFormattingFn(i18n, dateInstance)`. Pick the same locale precedence (`i18n.locales ?? i18n.locale`) and build your own formatters. Define helpers that read the current locale every time, so locale switches stay in sync:
+In principle, the migration is simple: `i18n.date(dateInstance, formatOptions)` becomes using `Intl.DateTimeFormat` directly. Pick the same locale precedence (`i18n.locales ?? i18n.locale`):
 
 ```ts
-import { i18n } from "@lingui/core";
+import type { I18n } from "@lingui/core";
 
 const dateOptions = { dateStyle: "medium" } as const;
 const currencyOptions = {
@@ -42,26 +42,18 @@ const currencyOptions = {
   currency: "EUR",
 } as const;
 
-function getDateFormatter(options?: Intl.DateTimeFormatOptions) {
+export function formatOrderSummary(i18n: I18n, date: Date, total: number) {
   const locales = i18n.locales ?? i18n.locale;
-  return new Intl.DateTimeFormat(locales, options);
-}
 
-function getNumberFormatter(options?: Intl.NumberFormatOptions) {
-  const locales = i18n.locales ?? i18n.locale;
-  return new Intl.NumberFormat(locales, options);
-}
+  const dateFormatter = new Intl.DateTimeFormat(locales, dateOptions);
+  const numberFormatter = new Intl.NumberFormat(locales, currencyOptions);
 
-export function formatOrderSummary(date: Date, total: number) {
-  const dateFormatter = getDateFormatter(dateOptions);
-  const numberFormatter = getNumberFormatter(currencyOptions);
-
-  return `${dateFormatter.format(date)} - ${numberFormatter.format(total)}`;
-  // => "Jan 18, 2026 - €1,234.56"
+  // "Jan 18, 2026 - €1,234.56"
+  return `${dateFormatter.format(date)} - ${numberFormatter.format(total)}`; 
 }
 ```
 
-In React you can create small reusable hooks that memoize formatters, accept formatting options, and still react to locale changes:
+In React you can use `useMemo` to memoize formatters and react to locale changes:
 
 ```tsx
 import { useLingui } from "@lingui/react";
@@ -74,31 +66,27 @@ const priceOptions = {
   minimumFractionDigits: 2,
 } as const;
 
-function useDateFormatter(options?: Intl.DateTimeFormatOptions) {
-  const { i18n } = useLingui();
-
-  return useMemo(() => {
-    const locales = i18n.locales ?? i18n.locale;
-    return new Intl.DateTimeFormat(locales, options);
-  }, [i18n.locales, i18n.locale, options]);
-}
-
-function useNumberFormatter(options?: Intl.NumberFormatOptions) {
-  const { i18n } = useLingui();
-
-  return useMemo(() => {
-    const locales = i18n.locales ?? i18n.locale;
-    return new Intl.NumberFormat(locales, options);
-  }, [i18n.locales, i18n.locale, options]);
-}
-
 function PriceLine({ date, total }: { date: Date; total: number }) {
-  const dateFormatter = useDateFormatter(dateOptions);
-  const numberFormatter = useNumberFormatter(priceOptions);
-  // Renders: <span>Jan 18, 2026 - $1,234.56</span>
+  const { i18n } = useLingui();
+
+  const locales = useMemo(
+    () => i18n.locales ?? i18n.locale,
+    [i18n.locales, i18n.locale]
+  );
+
+  const dateFormatter = useMemo(
+    () => new Intl.DateTimeFormat(locales, dateOptions),
+    [locales]
+  );
+  const numberFormatter = useMemo(
+    () => new Intl.NumberFormat(locales, priceOptions),
+    [locales]
+  );
+
   return (
     <span>
-      {dateFormatter.format(date)} - {numberFormatter.format(total)}
+      {/* "Jan 18, 2026 - $1,234.56" */}
+      {dateFormatter.format(date)} - {numberFormatter.format(total)} 
     </span>
   );
 }
