@@ -130,11 +130,11 @@ Let's take a look at the original example from react-intl docs:
 />
 ```
 
-Using Lingui macros, we could combine [`Trans`](/ref/macro#trans), [`Plural`](/ref/macro#plural-1) components and [`i18n.number`](/ref/core#i18n.number) macro:
+Using Lingui macros, we could combine [`Trans`](/ref/macro#trans) and [`Plural`](/ref/macro#plural-1) components:
 
 ```jsx
 <Trans id="welcome">
-  Hello <b>{name}</b>, you have {i18n.number(unreadCount)} <Plural one="message" other="messages" />
+  Hello <b>{name}</b>, you have {unreadCount} <Plural value={unreadCount} one="message" other="messages" />
 </Trans>
 ```
 
@@ -159,15 +159,15 @@ It's worth mentioning here that this is not the best example of using plurals. M
 ```jsx
 <Plural
   id="welcome"
-  value={number}
+  value={unreadMessages}
   one={
     <>
-      Hello <b>{name}</b>, you have {i18n.number(unreadMessages)} message.
+      Hello <b>{name}</b>, you have {unreadMessages} message.
     </>
   }
   other={
     <>
-      Hello <b>{name}</b>, you have {i18n.number(unreadMessages)} messages.
+      Hello <b>{name}</b>, you have {unreadMessages} messages.
     </>
   }
 />

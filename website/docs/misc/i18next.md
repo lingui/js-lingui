@@ -128,17 +128,17 @@ Lingui sample:
 import { i18n } from "@lingui/core";
 
 i18n.activate("en");
-i18n.number(12345.678);
+new Intl.NumberFormat(i18n.locale).format(12345.678);
 // Returns "12,345.678"
 
-i18n.number(12345.678, { style: "currency", currency: "USD" });
+new Intl.NumberFormat(i18n.locale, { style: "currency", currency: "USD" }).format(12345.678);
 // Returns "$12,345.68"
 
 i18n.activate("cs");
-i18n.number(12345.678);
+new Intl.NumberFormat(i18n.locale).format(12345.678);
 // Returns "12 345,678"
 
-i18n.number(12345.678, { style: "currency", currency: "CZK" });
+new Intl.NumberFormat(i18n.locale, { style: "currency", currency: "CZK" }).format(12345.678);
 // Returns "12 345,68 Kč"
 ```
 
@@ -169,13 +169,13 @@ import { i18n } from "@lingui/core";
 const d = new Date("2021-07-23T16:23:00");
 
 i18n.activate("en");
-i18n.date(d);
+new Intl.DateTimeFormat(i18n.locale).format(d);
 // Returns "7/23/2021"
 
-i18n.date(d, { timeStyle: "medium" });
+new Intl.DateTimeFormat(i18n.locale, { timeStyle: "medium" }).format(d);
 // Returns "4:23:00 PM"
 
-i18n.date(d, { dateStyle: "medium", timeStyle: "medium" });
+new Intl.DateTimeFormat(i18n.locale, { dateStyle: "medium", timeStyle: "medium" }).format(d);
 // Returns "Jul 23, 2021, 4:23:00 PM"
 ```
 

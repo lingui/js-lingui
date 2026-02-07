@@ -393,27 +393,32 @@ Take a look at the message in the footer of our component. It is a bit special b
 <footer>Last login on {lastLogin.toLocaleDateString()}.</footer>
 ```
 
-Dates (as well as numbers) are formatted differently in different languages, but we don't have to do this manually. The heavy lifting is done by the [`Intl` object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl), we'll just use the [`i18n.date()`](/ref/core#i18n.date) function.
+Dates (as well as numbers) are formatted differently in different languages, but we don't have to do this manually. The heavy lifting is done by the [`Intl` object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl).
 
 The `i18n` object can be accessed with the [`useLingui`](/ref/react#uselingui) hook:
 
-```jsx title="src/Inbox.js" {4,9}
+```jsx title="src/Inbox.js" {4,5,9}
 import { useLingui, Trans } from "@lingui/react/macro";
+import { useMemo } from "react";
 
 export default function Inbox() {
   const { i18n } = useLingui();
+  const dateFormatter = useMemo(
+    () => new Intl.DateTimeFormat(i18n.locale),
+    [i18n.locale]
+  );
 
   return (
     <div>
       <footer>
-        <Trans>Last login on {i18n.date(lastLogin)}.</Trans>
+        <Trans>Last login on {dateFormatter.format(lastLogin)}.</Trans>
       </footer>
     </div>
   );
 }
 ```
 
-This will format the date using the conventional format for the active language. To format numbers, use the [`i18n.number()`](/ref/core#i18n.number) function.
+This will format the date using the conventional format for the active language. To format numbers, use `Intl.NumberFormat` in a similar way.
 
 ### Message ID
 
@@ -654,7 +659,7 @@ All Core Macros cannot be used at the module level. They must be used within a c
 After all modifications, the final i18n-ready component looks like this:
 
 ```jsx title="src/Inbox.js"
-import React from "react";
+import React, { useMemo } from "react";
 import { Trans, Plural, useLingui } from "@lingui/react/macro";
 
 export default function Inbox() {
@@ -665,6 +670,11 @@ export default function Inbox() {
   const markAsRead = () => {
     alert(t`Marked as read.`);
   };
+
+  const dateFormatter = useMemo(
+    () => new Intl.DateTimeFormat(i18n.locale),
+    [i18n.locale]
+  );
 
   return (
     <div>
@@ -689,7 +699,7 @@ export default function Inbox() {
       </p>
 
       <footer>
-        <Trans>Last login on {i18n.date(lastLogin)}.</Trans>
+        <Trans>Last login on {dateFormatter.format(lastLogin)}.</Trans>
       </footer>
     </div>
   );
