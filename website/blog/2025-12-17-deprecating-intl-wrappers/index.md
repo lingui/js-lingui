@@ -31,7 +31,7 @@ To meet the expectations for a complete helper surface we would need wrappers an
 
 ## Migrating to native Intl
 
-Pick the same locale precedence (`i18n.locales ?? i18n.locale`) and build your own formatters. Define helpers that read the current locale every time, so locale switches stay in sync:
+In principle, the migration is simple: `i18n.date(dateInstance, formatOptions)` becomes `dateFormattingFn(i18n, dateInstance)`. Pick the same locale precedence (`i18n.locales ?? i18n.locale`) and build your own formatters. Define helpers that read the current locale every time, so locale switches stay in sync:
 
 ```ts
 import { i18n } from "@lingui/core";
