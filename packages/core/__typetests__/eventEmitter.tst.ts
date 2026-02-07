@@ -1,17 +1,29 @@
 import { EventEmitter } from "../src/eventEmitter"
 import { expect } from "tstyche"
 
-type TestEvents = {
-  userLogin: (userId: string) => void
-  userLogout: (timestamp: number) => void
+type MissingMessageEvent = {
+  locale: string
+  id: string
 }
 
-const emitter = new EventEmitter<TestEvents>()
+type Events = {
+  change: () => void
+  missing: (event: MissingMessageEvent) => void
+}
+
+const emitter = new EventEmitter<Events>()
 
 // Correct usage
-expect(emitter.on).type.toBeCallableWith("userLogin", (_userId: string) => {})
-expect(emitter.emit).type.toBeCallableWith("userLogin", "user123")
+expect(emitter.on).type.toBeCallableWith("change", () => {})
+expect(emitter.emit).type.toBeCallableWith("change")
+expect(emitter.emit).type.toBeCallableWith("missing", {
+  locale: "en",
+  id: "msg.id",
+})
 
 // Should reject mismatched types
-expect(emitter.on).type.not.toBeCallableWith("userLogin", (_n: number) => {})
-expect(emitter.emit).type.not.toBeCallableWith("userLogin", 12345)
+expect(emitter.on).type.not.toBeCallableWith(
+  "change",
+  (_event: MissingMessageEvent) => {},
+)
+expect(emitter.emit).type.not.toBeCallableWith("missing", "wrong")
