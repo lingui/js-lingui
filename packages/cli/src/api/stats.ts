@@ -1,5 +1,5 @@
 import Table from "cli-table3"
-import pico from "picocolors"
+import { styleText } from "node:util"
 
 import { LinguiConfigNormalized } from "@lingui/conf"
 
@@ -43,7 +43,7 @@ export function printStats(
       const [all, translated] = catalog ? getStats(catalog) : ["-", "-"]
 
       if (config.sourceLocale === locale) {
-        table.push({ [`${pico.bold(locale)} (source)`]: [all, "-"] })
+        table.push({ [`${styleText("bold", locale)} (source)`]: [all, "-"] })
       } else {
         table.push({ [locale]: [all, translated] })
       }

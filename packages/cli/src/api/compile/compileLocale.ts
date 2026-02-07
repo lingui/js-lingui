@@ -1,6 +1,6 @@
 import { Catalog, writeCompiled } from "../catalog.js"
 import { LinguiConfigNormalized } from "@lingui/conf"
-import pico from "picocolors"
+import { styleText } from "node:util"
 import { getMergedCatalogPath } from "../catalog/getCatalogs.js"
 import { CliCompileOptions } from "../../lingui-compile.js"
 import { ProgramExit } from "../ProgramExit.js"
@@ -35,13 +35,14 @@ export async function compileLocale(
       missingMessages.length > 0
     ) {
       logger.error(
-        pico.red(
-          `Error: Failed to compile catalog for locale ${pico.bold(locale)}!`,
+        styleText(
+          "red",
+          `Error: Failed to compile catalog for locale ${styleText("bold", locale)}!`,
         ),
       )
 
       if (options.verbose) {
-        logger.error(pico.red("Missing translations:"))
+        logger.error(styleText("red", "Missing translations:"))
         missingMessages.forEach((missing) => {
           const source =
             missing.source || missing.source === missing.id
@@ -52,7 +53,7 @@ export async function compileLocale(
         })
       } else {
         logger.error(
-          pico.red(`Missing ${missingMessages.length} translation(s)`),
+          styleText("red", `Missing ${missingMessages.length} translation(s)`),
         )
       }
       logger.error("")
@@ -121,11 +122,11 @@ async function compileAndWrite(
 
     if (options.failOnCompileError) {
       message += `These errors fail command execution because \`--strict\` option passed`
-      logger.error(pico.red(message))
+      logger.error(styleText("red", message))
       return false
     } else {
       message += `You can fail command execution on these errors by passing \`--strict\` option`
-      logger.error(pico.red(message))
+      logger.error(styleText("red", message))
     }
   }
 
@@ -138,6 +139,7 @@ async function compileAndWrite(
 
   compiledPath = normalizePath(nodepath.relative(config.rootDir, compiledPath))
 
-  options.verbose && logger.error(pico.green(`${locale} ⇒ ${compiledPath}`))
+  options.verbose &&
+    logger.error(styleText("green", `${locale} ⇒ ${compiledPath}`))
   return true
 }
