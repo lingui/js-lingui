@@ -59,7 +59,6 @@
     "chokidar": "5.0.0",
     "cli-table3": "^0.6.5",
     "commander": "^14.0.2",
-    "convert-source-map": "^2.0.0",
     "es-main": "^1.4.0",
     "esbuild": "^0.25.1",
     "glob": "^13.0.0",
@@ -77,7 +76,6 @@
   "devDependencies": {
     "@lingui/test-utils": "workspace:*",
     "@types/babel__generator": "^7.27.0",
-    "@types/convert-source-map": "^2.0.0",
     "@types/micromatch": "^4.0.1",
     "@types/ms": "^2.1.0",
     "@types/normalize-path": "^3.0.0",

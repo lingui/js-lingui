@@ -317,6 +317,64 @@ describe("Catalog", () => {
       `)
     })
 
+    it("should respect inline sourcemaps with charset=utf-8", async () => {
+      const catalog = new Catalog(
+        {
+          name: "messages",
+          path: "locales/{locale}",
+          include: [fixture("collect-inline-sourcemaps-charset/")],
+          exclude: [],
+          format,
+        },
+        mockConfig(),
+      )
+
+      const oldCwd = process.cwd()
+      process.chdir(import.meta.dirname)
+      const messages = (await catalog.collect())!
+
+      process.chdir(oldCwd)
+
+      expect(messages[Object.keys(messages)[0]!]!.origin)
+        .toMatchInlineSnapshot(`
+        [
+          [
+            ../input.tsx,
+            5,
+          ],
+        ]
+      `)
+    })
+
+    it("should respect the last inline sourcemap when multiple are present", async () => {
+      const catalog = new Catalog(
+        {
+          name: "messages",
+          path: "locales/{locale}",
+          include: [fixture("collect-inline-sourcemaps-multiple/")],
+          exclude: [],
+          format,
+        },
+        mockConfig(),
+      )
+
+      const oldCwd = process.cwd()
+      process.chdir(import.meta.dirname)
+      const messages = (await catalog.collect())!
+
+      process.chdir(oldCwd)
+
+      expect(messages[Object.keys(messages)[0]!]!.origin)
+        .toMatchInlineSnapshot(`
+        [
+          [
+            ../last.tsx,
+            5,
+          ],
+        ]
+      `)
+    })
+
     it("should extract only files passed on options", async () => {
       const catalog = new Catalog(
         {

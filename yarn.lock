@@ -3243,14 +3243,12 @@ __metadata:
     "@lingui/message-utils": "workspace:*"
     "@lingui/test-utils": "workspace:*"
     "@types/babel__generator": ^7.27.0
-    "@types/convert-source-map": ^2.0.0
     "@types/micromatch": ^4.0.1
     "@types/ms": ^2.1.0
     "@types/normalize-path": ^3.0.0
     chokidar: 5.0.0
     cli-table3: ^0.6.5
     commander: ^14.0.2
-    convert-source-map: ^2.0.0
     es-main: ^1.4.0
     esbuild: ^0.25.1
     glob: ^13.0.0
@@ -4903,13 +4901,6 @@ __metadata:
     "@types/deep-eql": "*"
     assertion-error: ^2.0.1
   checksum: eb4c2da9ec38b474a983f39bfb5ec4fbcceb5e5d76d184094d2cbc4c41357973eb5769c8972cedac665a233251b0ed754f1e338fcf408d381968af85cdecc596
-  languageName: node
-  linkType: hard
-
-"@types/convert-source-map@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "@types/convert-source-map@npm:2.0.0"
-  checksum: 012497f7495d67204950eeebe10e94b7ab3508bf8659214ad430b527514e0611260d3ac41c47b88212b9de55aa7a9ee18b2fad2d03eb16234b66101150f74017
   languageName: node
   linkType: hard
 
