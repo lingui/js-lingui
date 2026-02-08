@@ -19,7 +19,6 @@ import {
 } from "./api/workerPools.js"
 import ms from "ms"
 import { Catalog } from "./api/catalog.js"
-import esMain from "es-main"
 import { getPathsForExtractWatcher } from "./api/getPathsForExtractWatcher.js"
 import { glob } from "node:fs/promises"
 import micromatch from "micromatch"
@@ -158,7 +157,7 @@ type CliArgs = {
   workers?: number
 }
 
-if (esMain(import.meta)) {
+if (import.meta.main) {
   program
     .option("--config <path>", "Path to the config file")
     .option(

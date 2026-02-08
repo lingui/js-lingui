@@ -15,7 +15,6 @@ import {
 } from "./api/resolveWorkersOptions.js"
 import { extractFromBundleAndWrite } from "./extract-experimental/extractFromBundleAndWrite.js"
 import { createExtractExperimentalWorkerPool } from "./api/workerPools.js"
-import esMain from "es-main"
 
 type CliExtractTemplateOptions = {
   verbose?: boolean
@@ -176,7 +175,7 @@ type CliArgs = {
   workers?: number
 }
 
-if (esMain(import.meta)) {
+if (import.meta.main) {
   program
     .option("--config <path>", "Path to the config file")
     .option("--template", "Extract to template")
