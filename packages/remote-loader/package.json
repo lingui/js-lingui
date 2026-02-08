@@ -48,7 +48,6 @@
     "dist/"
   ],
   "dependencies": {
-    "@lingui/core": "workspace:*",
     "@lingui/message-utils": "workspace:*"
   },
   "devDependencies": {

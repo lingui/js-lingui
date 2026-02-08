@@ -50,7 +50,6 @@
     "pofile": "^1.1.4"
   },
   "devDependencies": {
-    "@lingui/test-utils": "workspace:*",
     "unbuild": "2.0.0",
     "vitest": "4.0.18"
   },
