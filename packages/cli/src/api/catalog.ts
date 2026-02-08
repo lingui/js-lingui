@@ -1,6 +1,6 @@
 import fs from "fs"
 import path from "path"
-import { globSync } from "glob"
+import { globSync } from "node:fs"
 import normalize from "normalize-path"
 
 import {
@@ -273,7 +273,7 @@ export class Catalog {
         : includePath
     })
 
-    return globSync(includeGlobs, { ignore: this.exclude, mark: true })
+    return globSync(includeGlobs, { exclude: this.exclude })
   }
 
   get localeDir() {

@@ -7,7 +7,7 @@ import fs from "fs/promises"
 import normalizePath from "normalize-path"
 
 import { bundleSource } from "./extract-experimental/bundleSource.js"
-import { getEntryPoints } from "./extract-experimental/getEntryPoints.js"
+import { globSync } from "node:fs"
 import pico from "picocolors"
 import {
   resolveWorkersOptions,
@@ -66,7 +66,7 @@ export default async function command(
   const bundleResult = await bundleSource(
     linguiConfig,
     extractorConfig,
-    getEntryPoints(extractorConfig.entries),
+    globSync(extractorConfig.entries),
     tempDir,
     linguiConfig.rootDir,
   )
