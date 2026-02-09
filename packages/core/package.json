@@ -3,7 +3,6 @@
   "version": "5.9.0",
   "sideEffects": false,
   "description": "I18n tools for javascript",
-  "main": "./dist/index.mjs",
   "type": "module",
   "author": {
     "name": "Tomáš Ehrlich",
@@ -37,15 +36,20 @@
   },
   "exports": {
     ".": "./dist/index.mjs",
-    "./macro": "./macro/index.cjs",
+    "./macro": {
+      "browser": "./macro/browser.cjs",
+      "types": "./macro/index.d.cts",
+      "default": "./macro/index.cjs"
+    },
     "./package.json": "./package.json"
   },
   "files": [
     "LICENSE",
     "README.md",
     "dist/",
-    "macro/index.d.ts",
-    "macro/index.js"
+    "macro/browser.cjs",
+    "macro/index.d.cts",
+    "macro/index.cjs"
   ],
   "dependencies": {
     "@lingui/babel-plugin-lingui-macro": "workspace:*",
@@ -63,5 +67,8 @@
     "babel-plugin-macros": {
       "optional": true
     }
+  },
+  "unbuild": {
+    "declaration": "node16"
   }
 }

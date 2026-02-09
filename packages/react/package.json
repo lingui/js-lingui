@@ -3,7 +3,6 @@
   "version": "5.9.0",
   "sideEffects": false,
   "description": "React components for translations",
-  "main": "./dist/index.mjs",
   "type": "module",
   "author": {
     "name": "Tomáš Ehrlich",
@@ -43,15 +42,12 @@
   },
   "exports": {
     ".": {
-      "types": "./dist/index.d.mts",
       "react-server": "./dist/index-rsc.mjs",
       "default": "./dist/index.mjs"
     },
-    "./server": {
-      "types": "./dist/server.d.mts",
-      "default": "./dist/server.mjs"
-    },
+    "./server": "./dist/server.mjs",
     "./macro": {
+      "browser": "./macro/browser.cjs",
       "types": "./macro/index.d.cts",
       "default": "./macro/index.cjs"
     },
@@ -61,8 +57,9 @@
     "LICENSE",
     "README.md",
     "dist/",
-    "macro/index.d.ts",
-    "macro/index.js"
+    "macro/browser.cjs",
+    "macro/index.d.cts",
+    "macro/index.cjs"
   ],
   "peerDependencies": {
     "babel-plugin-macros": "2 || 3",
@@ -75,7 +72,7 @@
   },
   "dependencies": {
     "@lingui/babel-plugin-lingui-macro": "workspace:*",
-    "@lingui/core": "5.9.0"
+    "@lingui/core": "workspace:*"
   },
   "devDependencies": {
     "@lingui/test-utils": "workspace:*",

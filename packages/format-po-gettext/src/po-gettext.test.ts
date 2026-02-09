@@ -14,7 +14,7 @@ const defaultParseCtx: Parameters<CatalogFormatter["parse"]>[1] = {
 
 const defaultSerializeCtx: Parameters<CatalogFormatter["serialize"]>[1] = {
   locale: "en",
-  existing: null,
+  existing: undefined,
   filename: "file.po",
   sourceLocale: "en",
 }
@@ -100,7 +100,7 @@ describe("po-gettext format", () => {
       format.serialize(catalog, {
         ...defaultSerializeCtx,
         sourceLocale: "en",
-        locale: null,
+        locale: undefined,
       }),
     ).toMatchSnapshot("template locale catalog")
 

@@ -29,18 +29,9 @@
     "lingui": "./dist/lingui.js"
   },
   "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "default": "./dist/index.js"
-    },
-    "./api": {
-      "types": "./dist/api/index.d.ts",
-      "default": "./dist/api/index.js"
-    },
-    "./api/extractors/babel": {
-      "types": "./dist/api/extractors/babel.d.ts",
-      "default": "./dist/api/extractors/babel.js"
-    }
+    ".": "./dist/index.js",
+    "./api": "./dist/api/index.js",
+    "./api/extractors/babel": "./dist/api/extractors/babel.js"
   },
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
@@ -67,7 +58,7 @@
     "@lingui/message-utils": "workspace:*",
     "chokidar": "5.0.0",
     "cli-table3": "^0.6.5",
-    "commander": "^10.0.0",
+    "commander": "^14.0.2",
     "convert-source-map": "^2.0.0",
     "es-main": "^1.4.0",
     "esbuild": "^0.25.1",

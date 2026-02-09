@@ -2,9 +2,10 @@
   "name": "@lingui/vite-plugin",
   "version": "5.9.0",
   "description": "Vite plugin for Lingui message catalogs",
-  "main": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
   "type": "module",
+  "exports": {
+    ".": "./dist/index.mjs"
+  },
   "sideEffects": false,
   "license": "MIT",
   "keywords": [
@@ -42,7 +43,7 @@
   ],
   "dependencies": {
     "@lingui/cli": "workspace:*",
-    "@lingui/conf": "5.9.0"
+    "@lingui/conf": "workspace:*"
   },
   "peerDependencies": {
     "vite": "^3 || ^4 || ^5.0.9 || ^6 || ^7"
@@ -50,9 +51,13 @@
   "devDependencies": {
     "@lingui/core": "workspace:^",
     "@lingui/format-json": "workspace:^",
+    "@lingui/react": "workspace:^",
     "unbuild": "3.6.1",
     "vite": "6.0.2",
     "vite-plugin-babel-macros": "^1.0.6",
     "vitest": "4.0.18"
+  },
+  "unbuild": {
+    "declaration": "node16"
   }
 }

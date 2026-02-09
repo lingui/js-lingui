@@ -1,8 +1,8 @@
 {
   "name": "@lingui/babel-plugin-lingui-macro",
   "version": "5.9.0",
+  "type": "module",
   "description": "Babel plugin for transforming Lingui Macros",
-  "main": "./dist/index.cjs",
   "contributors": [
     {
       "name": "Timofei Iatsenko",
@@ -32,9 +32,9 @@
     "check-types": "tsc --noEmit"
   },
   "exports": {
-    ".": "./dist/index.cjs",
-    "./macro": "./dist/macro.cjs",
-    "./ast": "./dist/ast.cjs"
+    ".": "./dist/index.mjs",
+    "./macro": "./dist/macro.mjs",
+    "./ast": "./dist/ast.mjs"
   },
   "files": [
     "LICENSE",
@@ -59,24 +59,16 @@
     "@lingui/conf": "workspace:*",
     "@lingui/message-utils": "workspace:*"
   },
-  "peerDependencies": {
-    "babel-plugin-macros": "2 || 3"
-  },
-  "peerDependenciesMeta": {
-    "babel-plugin-macros": {
-      "optional": true
-    }
-  },
   "devDependencies": {
     "@babel/parser": "^7.20.15",
     "@babel/traverse": "^7.20.12",
-    "@types/babel-plugin-macros": "^2.8.5",
+    "babel-plugin-macros": "^3.1.0",
     "babel-plugin-react-compiler": "^1.0.0",
     "prettier": "3.8.1",
     "unbuild": "3.6.1",
     "vitest": "4.0.18"
   },
   "unbuild": {
-    "declaration": true
+    "declaration": "node16"
   }
 }

@@ -1370,7 +1370,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.20.13, @babel/runtime@npm:^7.8.4":
+"@babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.8.4":
   version: 7.21.0
   resolution: "@babel/runtime@npm:7.21.0"
   dependencies:
@@ -3219,16 +3219,11 @@ __metadata:
     "@babel/types": ^7.20.7
     "@lingui/conf": "workspace:*"
     "@lingui/message-utils": "workspace:*"
-    "@types/babel-plugin-macros": ^2.8.5
+    babel-plugin-macros: ^3.1.0
     babel-plugin-react-compiler: ^1.0.0
     prettier: 3.8.1
     unbuild: 3.6.1
     vitest: 4.0.18
-  peerDependencies:
-    babel-plugin-macros: 2 || 3
-  peerDependenciesMeta:
-    babel-plugin-macros:
-      optional: true
   languageName: unknown
   linkType: soft
 
@@ -3254,7 +3249,7 @@ __metadata:
     "@types/normalize-path": ^3.0.0
     chokidar: 5.0.0
     cli-table3: ^0.6.5
-    commander: ^10.0.0
+    commander: ^14.0.2
     convert-source-map: ^2.0.0
     es-main: ^1.4.0
     esbuild: ^0.25.1
@@ -3277,7 +3272,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lingui/conf@5.9.0, @lingui/conf@workspace:*, @lingui/conf@workspace:packages/conf":
+"@lingui/conf@workspace:*, @lingui/conf@workspace:packages/conf":
   version: 0.0.0-use.local
   resolution: "@lingui/conf@workspace:packages/conf"
   dependencies:
@@ -3291,7 +3286,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lingui/core@5.9.0, @lingui/core@workspace:*, @lingui/core@workspace:^, @lingui/core@workspace:packages/core":
+"@lingui/core@workspace:*, @lingui/core@workspace:^, @lingui/core@workspace:packages/core":
   version: 0.0.0-use.local
   resolution: "@lingui/core@workspace:packages/core"
   dependencies:
@@ -3307,16 +3302,6 @@ __metadata:
       optional: true
   languageName: unknown
   linkType: soft
-
-"@lingui/core@npm:4.0.0":
-  version: 4.0.0
-  resolution: "@lingui/core@npm:4.0.0"
-  dependencies:
-    "@babel/runtime": ^7.20.13
-    "@lingui/message-utils": 4.0.0
-  checksum: 1ca41fcde3703ed170bb26c3ff86423045cf02aaf84afd3eaa146c80098ef0380203d1450e5911f1d257481da2eec6bae1529a348c8e7491c93be3b73d8a2ebd
-  languageName: node
-  linkType: hard
 
 "@lingui/detect-locale@workspace:packages/detect-locale":
   version: 0.0.0-use.local
@@ -3357,7 +3342,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@lingui/format-json@workspace:packages/format-json"
   dependencies:
-    "@lingui/conf": 5.9.0
+    "@lingui/conf": "workspace:*"
     unbuild: ^3.6.1
     vitest: 4.0.18
   languageName: unknown
@@ -3372,9 +3357,6 @@ __metadata:
     "@lingui/message-utils": "workspace:*"
     "@lingui/test-utils": "workspace:*"
     "@messageformat/parser": ^5.0.0
-    cldr-core: ^45.0.0
-    node-gettext: ^3.0.0
-    plurals-cldr: ^2.0.1
     pofile: ^1.1.4
     unbuild: 3.6.1
     vitest: 4.0.18
@@ -3409,15 +3391,6 @@ __metadata:
     webpack: ^5.0.0
   languageName: unknown
   linkType: soft
-
-"@lingui/message-utils@npm:4.0.0":
-  version: 4.0.0
-  resolution: "@lingui/message-utils@npm:4.0.0"
-  dependencies:
-    "@messageformat/parser": ^5.0.0
-  checksum: caefbe8be76c9bd10cdc526358260599f99e0c33cb498d01a56f330dde9a88921d4871d5389a6fd0e9e3810f15dea38d25dad5d7fa2b819b2321e10dc71105cf
-  languageName: node
-  linkType: hard
 
 "@lingui/message-utils@workspace:*, @lingui/message-utils@workspace:packages/message-utils":
   version: 0.0.0-use.local
@@ -3457,12 +3430,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lingui/react@workspace:packages/react":
+"@lingui/react@workspace:^, @lingui/react@workspace:packages/react":
   version: 0.0.0-use.local
   resolution: "@lingui/react@workspace:packages/react"
   dependencies:
     "@lingui/babel-plugin-lingui-macro": "workspace:*"
-    "@lingui/core": 5.9.0
+    "@lingui/core": "workspace:*"
     "@lingui/test-utils": "workspace:*"
     "@testing-library/react": ^14.0.0
     "@types/react": ^18.2.13
@@ -3486,8 +3459,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@lingui/remote-loader@workspace:packages/remote-loader"
   dependencies:
-    "@lingui/core": 4.0.0
-    "@lingui/message-utils": 4.0.0
+    "@lingui/core": "workspace:*"
+    "@lingui/message-utils": "workspace:*"
     unbuild: 2.0.0
   languageName: unknown
   linkType: soft
@@ -3505,9 +3478,10 @@ __metadata:
   resolution: "@lingui/vite-plugin@workspace:packages/vite-plugin"
   dependencies:
     "@lingui/cli": "workspace:*"
-    "@lingui/conf": 5.9.0
+    "@lingui/conf": "workspace:*"
     "@lingui/core": "workspace:^"
     "@lingui/format-json": "workspace:^"
+    "@lingui/react": "workspace:^"
     unbuild: 3.6.1
     vite: 6.0.2
     vite-plugin-babel-macros: ^1.0.6
@@ -4786,151 +4760,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@swc-node/core@npm:^1.9.2":
-  version: 1.9.2
-  resolution: "@swc-node/core@npm:1.9.2"
-  peerDependencies:
-    "@swc/core": ">= 1.3"
-  checksum: 2a91a294b9947b33d0244d5e176a89adc6986c04b9b9e0ec0471815bc3d6d7f250be4546e9bc19f30bce5c5f0dbea01ed13bca351c5dfd45e54e9becae3fa0f4
-  languageName: node
-  linkType: hard
-
-"@swc-node/register@npm:^1.4.0":
-  version: 1.5.5
-  resolution: "@swc-node/register@npm:1.5.5"
-  dependencies:
-    "@swc-node/core": ^1.9.2
-    "@swc-node/sourcemap-support": ^0.2.3
-    colorette: ^2.0.19
-    debug: ^4.3.4
-    pirates: ^4.0.5
-    tslib: ^2.4.1
-  peerDependencies:
-    "@swc/core": ">= 1.3"
-    typescript: ">= 4.3"
-  checksum: b05b5526077486355466bbc7bf86ad2c3aef8f90a789aa0f84f39503dd90b0285d01d7c12995a51d90c0f9a27fa24f0aea290b2cd69d041098751016602546cf
-  languageName: node
-  linkType: hard
-
-"@swc-node/sourcemap-support@npm:^0.2.3":
-  version: 0.2.3
-  resolution: "@swc-node/sourcemap-support@npm:0.2.3"
-  dependencies:
-    source-map-support: ^0.5.21
-    tslib: ^2.4.1
-  checksum: 837ee82dcda8b937c4a7d9e39a4dbe8c0d01080a73b77613a6e2e30cdc3eb944ce2c4bc470673e7d0a5ce902929a4a75dc2fcfeb5b8069fb0ae862176a2fcf92
-  languageName: node
-  linkType: hard
-
-"@swc/core-darwin-arm64@npm:1.3.28":
-  version: 1.3.28
-  resolution: "@swc/core-darwin-arm64@npm:1.3.28"
-  conditions: os=darwin & cpu=arm64
-  languageName: node
-  linkType: hard
-
-"@swc/core-darwin-x64@npm:1.3.28":
-  version: 1.3.28
-  resolution: "@swc/core-darwin-x64@npm:1.3.28"
-  conditions: os=darwin & cpu=x64
-  languageName: node
-  linkType: hard
-
-"@swc/core-linux-arm-gnueabihf@npm:1.3.28":
-  version: 1.3.28
-  resolution: "@swc/core-linux-arm-gnueabihf@npm:1.3.28"
-  conditions: os=linux & cpu=arm
-  languageName: node
-  linkType: hard
-
-"@swc/core-linux-arm64-gnu@npm:1.3.28":
-  version: 1.3.28
-  resolution: "@swc/core-linux-arm64-gnu@npm:1.3.28"
-  conditions: os=linux & cpu=arm64 & libc=glibc
-  languageName: node
-  linkType: hard
-
-"@swc/core-linux-arm64-musl@npm:1.3.28":
-  version: 1.3.28
-  resolution: "@swc/core-linux-arm64-musl@npm:1.3.28"
-  conditions: os=linux & cpu=arm64 & libc=musl
-  languageName: node
-  linkType: hard
-
-"@swc/core-linux-x64-gnu@npm:1.3.28":
-  version: 1.3.28
-  resolution: "@swc/core-linux-x64-gnu@npm:1.3.28"
-  conditions: os=linux & cpu=x64 & libc=glibc
-  languageName: node
-  linkType: hard
-
-"@swc/core-linux-x64-musl@npm:1.3.28":
-  version: 1.3.28
-  resolution: "@swc/core-linux-x64-musl@npm:1.3.28"
-  conditions: os=linux & cpu=x64 & libc=musl
-  languageName: node
-  linkType: hard
-
-"@swc/core-win32-arm64-msvc@npm:1.3.28":
-  version: 1.3.28
-  resolution: "@swc/core-win32-arm64-msvc@npm:1.3.28"
-  conditions: os=win32 & cpu=arm64
-  languageName: node
-  linkType: hard
-
-"@swc/core-win32-ia32-msvc@npm:1.3.28":
-  version: 1.3.28
-  resolution: "@swc/core-win32-ia32-msvc@npm:1.3.28"
-  conditions: os=win32 & cpu=ia32
-  languageName: node
-  linkType: hard
-
-"@swc/core-win32-x64-msvc@npm:1.3.28":
-  version: 1.3.28
-  resolution: "@swc/core-win32-x64-msvc@npm:1.3.28"
-  conditions: os=win32 & cpu=x64
-  languageName: node
-  linkType: hard
-
-"@swc/core@npm:^1.3.26":
-  version: 1.3.28
-  resolution: "@swc/core@npm:1.3.28"
-  dependencies:
-    "@swc/core-darwin-arm64": 1.3.28
-    "@swc/core-darwin-x64": 1.3.28
-    "@swc/core-linux-arm-gnueabihf": 1.3.28
-    "@swc/core-linux-arm64-gnu": 1.3.28
-    "@swc/core-linux-arm64-musl": 1.3.28
-    "@swc/core-linux-x64-gnu": 1.3.28
-    "@swc/core-linux-x64-musl": 1.3.28
-    "@swc/core-win32-arm64-msvc": 1.3.28
-    "@swc/core-win32-ia32-msvc": 1.3.28
-    "@swc/core-win32-x64-msvc": 1.3.28
-  dependenciesMeta:
-    "@swc/core-darwin-arm64":
-      optional: true
-    "@swc/core-darwin-x64":
-      optional: true
-    "@swc/core-linux-arm-gnueabihf":
-      optional: true
-    "@swc/core-linux-arm64-gnu":
-      optional: true
-    "@swc/core-linux-arm64-musl":
-      optional: true
-    "@swc/core-linux-x64-gnu":
-      optional: true
-    "@swc/core-linux-x64-musl":
-      optional: true
-    "@swc/core-win32-arm64-msvc":
-      optional: true
-    "@swc/core-win32-ia32-msvc":
-      optional: true
-    "@swc/core-win32-x64-msvc":
-      optional: true
-  checksum: bc96bb6cf476bf815d2f9308b280c119f8c8ecc4e9ba459322415d884c21dcad040ae8c69646811e598e0039ab497c8f15031c331fd6d13ea5bdf848b9c9f44f
-  languageName: node
-  linkType: hard
-
 "@testing-library/dom@npm:^9.0.0":
   version: 9.3.1
   resolution: "@testing-library/dom@npm:9.3.1"
@@ -5011,16 +4840,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/babel-plugin-macros@npm:^2.8.5":
-  version: 2.8.5
-  resolution: "@types/babel-plugin-macros@npm:2.8.5"
-  dependencies:
-    "@types/babel__core": "*"
-  checksum: 2a4ade60716c320dd20f0b1db5d2dc591304b8d20a8b0d86175b43024c91df817e0f5d960ac6838b9fe6f6b3465c3f91dd3c79278cc675542b3993061df932df
-  languageName: node
-  linkType: hard
-
-"@types/babel__core@npm:*, @types/babel__core@npm:^7.1.18":
+"@types/babel__core@npm:^7.1.18":
   version: 7.20.1
   resolution: "@types/babel__core@npm:7.20.1"
   dependencies:
@@ -6921,13 +6741,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cldr-core@npm:^45.0.0":
-  version: 45.0.0
-  resolution: "cldr-core@npm:45.0.0"
-  checksum: 06e39807a90483dfb7f2ba69c04e6cf15dd8ca7558cd772a3cd23db582ae95845a169917e070844b3b25d194c412f7e8b3d953ff88006b424803912c93603290
-  languageName: node
-  linkType: hard
-
 "clean-stack@npm:^2.0.0":
   version: 2.2.0
   resolution: "clean-stack@npm:2.2.0"
@@ -7159,6 +6972,13 @@ __metadata:
   version: 11.1.0
   resolution: "commander@npm:11.1.0"
   checksum: fd1a8557c6b5b622c89ecdfde703242ab7db3b628ea5d1755784c79b8e7cb0d74d65b4a262289b533359cd58e1bfc0bf50245dfbcd2954682a6f367c828b79ef
+  languageName: node
+  linkType: hard
+
+"commander@npm:^14.0.2":
+  version: 14.0.2
+  resolution: "commander@npm:14.0.2"
+  checksum: 0a9e549565d368dde2965821833324069b92b099b415c2106996e47db1f0b8c10c77367e9876873c00a52ca627af4c7472eba9b51dc0d6a3ef152ea063d3e9e9
   languageName: node
   linkType: hard
 
@@ -8760,7 +8580,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"esbuild@npm:^0.27.0":
+"esbuild@npm:^0.27.0, esbuild@npm:~0.27.0":
   version: 0.27.2
   resolution: "esbuild@npm:0.27.2"
   dependencies:
@@ -9775,6 +9595,15 @@ __metadata:
     es-errors: ^1.3.0
     get-intrinsic: ^1.2.6
   checksum: 655ed04db48ee65ef2ddbe096540d4405e79ba0a7f54225775fef43a7e2afcb93a77d141c5f05fdef0afce2eb93bcbfb3597142189d562ac167ff183582683cd
+  languageName: node
+  linkType: hard
+
+"get-tsconfig@npm:^4.7.5":
+  version: 4.13.1
+  resolution: "get-tsconfig@npm:4.13.1"
+  dependencies:
+    resolve-pkg-maps: ^1.0.0
+  checksum: af2dc7c5d31cd9498e15f107b3949d0feaffac5747bf542cb288fdf1a4bc411a9fefc9350e78bf0da3af7cc467b7442aa538319c6f597bc1a534a455f5e93b14
   languageName: node
   linkType: hard
 
@@ -11347,7 +11176,6 @@ __metadata:
     "@babel/preset-typescript": ^7.18.6
     "@eslint/js": ^9.17.0
     "@size-limit/preset-small-lib": ^11.1.6
-    "@swc/core": ^1.3.26
     "@types/mock-fs": ^4.13.1
     "@types/node": 20.14.8
     "@vitest/coverage-v8": 4.0.18
@@ -11366,9 +11194,8 @@ __metadata:
     prettier: 3.8.1
     semver: ^7.3.2
     size-limit: ^11.1.6
-    strip-ansi: ^6.0.1
-    swc-node: ^1.0.0
     tstyche: ^4.0.0
+    tsx: ^4.21.0
     typescript: ^5.7.2
     typescript-eslint: ^8.18.1
     vitest: 4.0.18
@@ -11885,13 +11712,6 @@ __metadata:
   version: 4.0.8
   resolution: "lodash.debounce@npm:4.0.8"
   checksum: a3f527d22c548f43ae31c861ada88b2637eb48ac6aa3eb56e82d44917971b8aa96fbb37aa60efea674dc4ee8c42074f90f7b1f772e9db375435f6c83a19b3bc6
-  languageName: node
-  linkType: hard
-
-"lodash.get@npm:^4.4.2":
-  version: 4.4.2
-  resolution: "lodash.get@npm:4.4.2"
-  checksum: e403047ddb03181c9d0e92df9556570e2b67e0f0a930fcbbbd779370972368f5568e914f913e93f3b08f6d492abc71e14d4e9b7a18916c31fa04bd2306efe545
   languageName: node
   linkType: hard
 
@@ -12777,15 +12597,6 @@ __metadata:
     "@lingui/core": "workspace:*"
   languageName: unknown
   linkType: soft
-
-"node-gettext@npm:^3.0.0":
-  version: 3.0.0
-  resolution: "node-gettext@npm:3.0.0"
-  dependencies:
-    lodash.get: ^4.4.2
-  checksum: c4864c5c3372d095d95f4925e7468c0fabd61542b3ac100d45452261bd30ea538cd95d40b6f149a04e098f6783062243c133e17d66161b1cfc14f0f23600368d
-  languageName: node
-  linkType: hard
 
 "node-gyp@npm:^11.0.0":
   version: 11.4.2
@@ -13974,13 +13785,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pirates@npm:^4.0.5":
-  version: 4.0.5
-  resolution: "pirates@npm:4.0.5"
-  checksum: c9994e61b85260bec6c4fc0307016340d9b0c4f4b6550a957afaaff0c9b1ad58fbbea5cfcf083860a25cb27a375442e2b0edf52e2e1e40e69934e08dcc52d227
-  languageName: node
-  linkType: hard
-
 "pkg-dir@npm:^4.2.0":
   version: 4.2.0
   resolution: "pkg-dir@npm:4.2.0"
@@ -14020,13 +13824,6 @@ __metadata:
     exsolve: ^1.0.7
     pathe: ^2.0.3
   checksum: 33c30b442662a0f2b62fd16f39ae2beeb4cdf3511699e574765b7451e179937847de6e696bbab50bfbd41d2c2e4a99b61ebc7078abf91ea8573a7f16cc11d26a
-  languageName: node
-  linkType: hard
-
-"plurals-cldr@npm:^2.0.1":
-  version: 2.0.1
-  resolution: "plurals-cldr@npm:2.0.1"
-  checksum: 26b2392016111e21c29ccb88f36a0a1252bc99874befbc40af1885cc9e222e2b1e2badfe6527965e082556985be0d8dae509bf14c78837cbec098b3bcae337f1
   languageName: node
   linkType: hard
 
@@ -14952,6 +14749,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"resolve-pkg-maps@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "resolve-pkg-maps@npm:1.0.0"
+  checksum: 1012afc566b3fdb190a6309cc37ef3b2dcc35dff5fa6683a9d00cd25c3247edfbc4691b91078c97adc82a29b77a2660c30d791d65dab4fc78bfc473f60289977
+  languageName: node
+  linkType: hard
+
 "resolve.exports@npm:2.0.3":
   version: 2.0.3
   resolution: "resolve.exports@npm:2.0.3"
@@ -15821,7 +15625,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"source-map-support@npm:^0.5.21, source-map-support@npm:~0.5.20":
+"source-map-support@npm:~0.5.20":
   version: 0.5.21
   resolution: "source-map-support@npm:0.5.21"
   dependencies:
@@ -16328,17 +16132,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"swc-node@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "swc-node@npm:1.0.0"
-  dependencies:
-    "@swc-node/register": ^1.4.0
-  bin:
-    swc-node: bin/swc-node
-  checksum: 08602996e917b0f23bc0f2f7d5095bf65d3e057664a2849aeb88e40dcf465fcec9a3a7566f1bd1d1a81e2c57d90a5ea09fa0fbff14a9d3a286139eed64519257
-  languageName: node
-  linkType: hard
-
 "tagged-tag@npm:^1.0.0":
   version: 1.0.0
   resolution: "tagged-tag@npm:1.0.0"
@@ -16635,7 +16428,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tslib@npm:^2.1.0, tslib@npm:^2.3.0, tslib@npm:^2.4.0, tslib@npm:^2.4.1":
+"tslib@npm:^2.1.0, tslib@npm:^2.3.0, tslib@npm:^2.4.0":
   version: 2.5.0
   resolution: "tslib@npm:2.5.0"
   checksum: ae3ed5f9ce29932d049908ebfdf21b3a003a85653a9a140d614da6b767a93ef94f460e52c3d787f0e4f383546981713f165037dc2274df212ea9f8a4541004e1
@@ -16653,6 +16446,22 @@ __metadata:
   bin:
     tstyche: ./build/bin.js
   checksum: 91407159680f7533a849a988a3daa51fc30d9d79c4603ede0f66cb35a29972ba3e9dbd9a801f3d448b6606276a9fbac1d53cf9361f67d3829043c62600f74efd
+  languageName: node
+  linkType: hard
+
+"tsx@npm:^4.21.0":
+  version: 4.21.0
+  resolution: "tsx@npm:4.21.0"
+  dependencies:
+    esbuild: ~0.27.0
+    fsevents: ~2.3.3
+    get-tsconfig: ^4.7.5
+  dependenciesMeta:
+    fsevents:
+      optional: true
+  bin:
+    tsx: dist/cli.mjs
+  checksum: 50c98e4b6e66d1c30f72925c8e5e7be1a02377574de7cd367d7e7a6d4af43ca8ff659f91c654e7628b25a5498015e32f090529b92c679b0342811e1cf682e8cf
   languageName: node
   linkType: hard
 

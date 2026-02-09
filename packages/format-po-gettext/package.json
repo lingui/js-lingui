@@ -2,11 +2,12 @@
   "name": "@lingui/format-po-gettext",
   "version": "5.9.0",
   "description": "Gettext PO format with gettext-style plurals for Lingui Catalogs",
-  "main": "./dist/po-gettext.mjs",
-  "types": "./dist/po-gettext.d.mts",
   "type": "module",
   "sideEffects": false,
   "license": "MIT",
+  "exports": {
+    ".": "./dist/po-gettext.mjs"
+  },
   "keywords": [
     "i18n",
     "lingui-formatter",
@@ -47,14 +48,14 @@
     "@lingui/format-po": "workspace:*",
     "@lingui/message-utils": "workspace:*",
     "@messageformat/parser": "^5.0.0",
-    "cldr-core": "^45.0.0",
-    "node-gettext": "^3.0.0",
-    "plurals-cldr": "^2.0.1",
     "pofile": "^1.1.4"
   },
   "devDependencies": {
     "@lingui/test-utils": "workspace:*",
     "unbuild": "3.6.1",
     "vitest": "4.0.18"
+  },
+  "unbuild": {
+    "declaration": "node16"
   }
 }
