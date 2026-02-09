@@ -1,4 +1,4 @@
-import pico from "picocolors"
+import { styleText } from "node:util"
 import chokidar from "chokidar"
 import { program } from "commander"
 import nodepath from "path"
@@ -19,9 +19,8 @@ import {
 } from "./api/workerPools.js"
 import ms from "ms"
 import { Catalog } from "./api/catalog.js"
-import esMain from "es-main"
 import { getPathsForExtractWatcher } from "./api/getPathsForExtractWatcher.js"
-import { glob } from "glob"
+import { glob } from "node:fs/promises"
 import micromatch from "micromatch"
 
 export type CliExtractOptions = {
@@ -106,12 +105,14 @@ export default async function command(
 
   if (!options.watch) {
     console.log(
-      `(Use "${pico.yellow(
+      `(Use "${styleText(
+        "yellow",
         helpRun("extract"),
       )}" to update catalogs with new messages.)`,
     )
     console.log(
-      `(Use "${pico.yellow(
+      `(Use "${styleText(
+        "yellow",
         helpRun("compile"),
       )}" to compile catalogs for production. Alternatively, use bundler plugins: https://lingui.dev/ref/cli#compiling-catalogs-in-ci)`,
     )
@@ -158,7 +159,7 @@ type CliArgs = {
   workers?: number
 }
 
-if (esMain(import.meta)) {
+if (import.meta.main) {
   program
     .option("--config <path>", "Path to the config file")
     .option(
@@ -200,7 +201,9 @@ if (esMain(import.meta)) {
 
     if (missingLocale) {
       hasErrors = true
-      console.error(`Locale ${pico.bold(missingLocale)} does not exist.`)
+      console.error(
+        `Locale ${styleText("bold", missingLocale)} does not exist.`,
+      )
       console.error()
     }
   }
@@ -244,11 +247,16 @@ if (esMain(import.meta)) {
 
   // Check if Watch Mode is enabled
   if (options.watch) {
-    console.info(pico.bold("Initializing Watch Mode..."))
+    console.info(styleText("bold", "Initializing Watch Mode..."))
     ;(async function initWatch() {
       const { paths, ignored } = await getPathsForExtractWatcher(config)
 
-      const watcher = chokidar.watch(await glob(paths), {
+      const matchedPaths: string[] = []
+      for await (const path of glob(paths)) {
+        matchedPaths.push(path)
+      }
+
+      const watcher = chokidar.watch(matchedPaths, {
         ignored: [
           "/(^|[/\\])../",
           (path: string) => micromatch.any(path, ignored),
@@ -257,7 +265,7 @@ if (esMain(import.meta)) {
       })
 
       const onReady = () => {
-        console.info(pico.green(pico.bold("Watcher is ready!")))
+        console.info(styleText(["green", "bold"], "Watcher is ready!"))
         watcher
           .on("add", (path) => dispatchExtract([path]))
           .on("change", (path) => dispatchExtract([path]))

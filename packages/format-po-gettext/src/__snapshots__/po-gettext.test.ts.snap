@@ -14,7 +14,7 @@ exports[`po-gettext format > convertPluralsToIco handle correctly locales with 4
     "origin": [],
     "translation": "{anotherCount, plural, one {Singular case} other {Case number {anotherCount}}}",
   },
-  "jO/SBZ": {
+  "jO_SBZ": {
     "comments": [],
     "context": undefined,
     "extra": {
@@ -91,7 +91,7 @@ exports[`po-gettext format > merging plurals > parsing merged plural entries > s
     "origin": [],
     "translation": "{thirdCount, plural, one {one rock} other {# rocks}}",
   },
-  "Sv+eOa": {
+  "Sv-eOa": {
     "comments": [],
     "context": undefined,
     "extra": {
@@ -120,7 +120,7 @@ exports[`po-gettext format > merging plurals > parsing merged plural entries > s
     "origin": [],
     "translation": "{anotherCount, plural, one {Singular case} other {Case number {anotherCount}}}",
   },
-  "jO/SBZ": {
+  "jO_SBZ": {
     "comments": [],
     "context": undefined,
     "extra": {
@@ -208,7 +208,7 @@ exports[`po-gettext format > merging plurals > parsing merged plural entries > s
     "origin": [],
     "translation": "{thirdCount, plural, one {one rock} other {# rocks}}",
   },
-  "Sv+eOa": {
+  "Sv-eOa": {
     "comments": [],
     "context": undefined,
     "extra": {
@@ -569,7 +569,7 @@ exports[`po-gettext format > should convert gettext plurals to ICU plural messag
     "origin": [],
     "translation": "{anotherCount, plural, one {Singular case} other {Case number {anotherCount}}}",
   },
-  "jO/SBZ": {
+  "jO_SBZ": {
     "comments": [],
     "context": undefined,
     "extra": {
@@ -746,7 +746,7 @@ msgstr[1] "Case number {anotherCount}"
 
 exports[`po-gettext format > using custom prefix > warns and falls back to using count if prefix is not found 1`] = `
 {
-  "lO3l+X": {
+  "lO3l-X": {
     "comments": [
       "js-lingui:icu=%7BanotherCount%2C+plural%2C+one+%7BSingular+case%7D+other+%7BCase+number+%7BanotherCount%7D%7D%7D&pluralize_on=anotherCount",
     ],

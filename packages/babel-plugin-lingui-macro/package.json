@@ -51,7 +51,7 @@
     "url": "https://github.com/lingui/js-lingui/issues"
   },
   "engines": {
-    "node": ">=20.0.0"
+    "node": ">=22.19.0"
   },
   "dependencies": {
     "@babel/core": "^7.20.12",
@@ -61,6 +61,7 @@
   },
   "devDependencies": {
     "@babel/parser": "^7.20.15",
+    "@babel/preset-typescript": "^7.18.6",
     "@babel/traverse": "^7.20.12",
     "babel-plugin-macros": "^3.1.0",
     "babel-plugin-react-compiler": "^1.0.0",

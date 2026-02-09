@@ -1,5 +1,5 @@
 import { LinguiConfigNormalized } from "@lingui/conf"
-import { globSync } from "glob"
+import { globSync } from "node:fs"
 import path from "path"
 import { Catalog } from "../catalog.js"
 import {
@@ -64,8 +64,7 @@ export async function getCatalogs(
     )
 
     const candidates = globSync(patterns, {
-      ignore: exclude,
-      mark: true,
+      exclude,
     })
 
     candidates.forEach((catalogDir) => {

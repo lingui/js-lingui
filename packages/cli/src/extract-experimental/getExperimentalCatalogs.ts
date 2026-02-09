@@ -2,7 +2,7 @@ import {
   ExperimentalExtractorOptions,
   LinguiConfigNormalized,
 } from "@lingui/conf"
-import { getEntryPoints } from "./getEntryPoints.js"
+import { globSync } from "node:fs"
 import { resolveCatalogPath } from "./resolveCatalogPath.js"
 import { Catalog } from "../api/catalog.js"
 import { resolveTemplatePath } from "./resolveTemplatePath.js"
@@ -14,7 +14,7 @@ export async function getExperimentalCatalogs(
   extractorConfig: ExperimentalExtractorOptions,
 ) {
   const config = extractorConfig
-  const entryPoints = getEntryPoints(config.entries)
+  const entryPoints = globSync(config.entries)
 
   return entryPoints.map((entryPoint) => {
     const catalogPath = resolveCatalogPath(

@@ -37,7 +37,7 @@
     "url": "https://github.com/lingui/js-lingui/issues"
   },
   "engines": {
-    "node": ">=20.0.0"
+    "node": ">=22.19.0"
   },
   "files": [
     "LICENSE",
@@ -50,7 +50,6 @@
     "pofile": "^1.1.4"
   },
   "devDependencies": {
-    "@lingui/test-utils": "workspace:*",
     "unbuild": "2.0.0",
     "vitest": "4.0.18"
   },

@@ -33,7 +33,7 @@
     "url": "https://github.com/lingui/js-lingui/issues"
   },
   "engines": {
-    "node": ">=20.0.0"
+    "node": ">=22.19.0"
   },
   "exports": {
     ".": {
@@ -48,7 +48,6 @@
     "dist/"
   ],
   "dependencies": {
-    "@lingui/core": "workspace:*",
     "@lingui/message-utils": "workspace:*"
   },
   "devDependencies": {

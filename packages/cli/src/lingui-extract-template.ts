@@ -1,4 +1,4 @@
-import pico from "picocolors"
+import { styleText } from "node:util"
 import { program } from "commander"
 
 import { getConfig, LinguiConfigNormalized } from "@lingui/conf"
@@ -14,7 +14,6 @@ import {
   resolveWorkersOptions,
   WorkersOptions,
 } from "./api/resolveWorkersOptions.js"
-import esMain from "es-main"
 
 type CliExtractTemplateOptions = {
   verbose?: boolean
@@ -67,7 +66,7 @@ export default async function command(
   }
   Object.entries(catalogStats).forEach(([key, value]) => {
     console.log(
-      `Catalog statistics for ${pico.bold(key)}: ${pico.green(value)} messages`,
+      `Catalog statistics for ${styleText("bold", key)}: ${styleText("green", String(value))} messages`,
     )
     console.log()
   })
@@ -81,7 +80,7 @@ type CliArgs = {
   workers?: number
 }
 
-if (esMain(import.meta)) {
+if (import.meta.main) {
   program
     .option("--config <path>", "Path to the config file")
     .option("--verbose", "Verbose output")
