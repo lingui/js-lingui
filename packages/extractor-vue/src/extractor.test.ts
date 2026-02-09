@@ -33,7 +33,7 @@ describe("vue extractor", () => {
       flow: false,
     },
   })
-  const vueExtractor = createVueExtractor();
+  const vueExtractor = createVueExtractor()
 
   it("should ignore non vue files in extractor", async () => {
     const match = vueExtractor.match("test.js")
@@ -90,7 +90,7 @@ describe("vue extractor", () => {
     const code = fs.readFileSync(filePath, "utf-8")
 
     let messages: ExtractedMessage[] = []
-    const vueExtractor = createVueExtractor({reactivityTransform: true})
+    const vueExtractor = createVueExtractor({ reactivityTransform: true })
     await vueExtractor.extract(
       "props-destructuring.vue",
       code,
