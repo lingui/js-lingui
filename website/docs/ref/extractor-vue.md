@@ -14,7 +14,7 @@ It is required that you use JavaScript or TypeScript for your Lingui configurati
 
 ```js title="lingui.config.{js,ts}"
 import { defineConfig } from "@lingui/cli";
-import { vueExtractor } from "@lingui/extractor-vue";
+import { createVueExtractor } from "@lingui/extractor-vue";
 import babel from "@lingui/cli/api/extractors/babel";
 
 export default defineConfig({
@@ -26,7 +26,7 @@ export default defineConfig({
       include: ["<rootDir>/src"],
     },
   ],
-  extractors: [babel, vueExtractor],
+  extractors: [babel, createVueExtractor()],
 });
 ```
 
@@ -37,13 +37,11 @@ export default defineConfig({
 If your project uses Vue's [Reactive Props Destructure](https://github.com/vuejs/rfcs/discussions/502), enable `vueReactivityTransform` to ensure message IDs match between extraction and runtime:
 
 ```js title="lingui.config.{js,ts}"
+import { createVueExtractor } from "@lingui/extractor-vue";
+
 export default defineConfig({
   // ... other config
-  experimental: {
-    extractor: {
-      vueReactivityTransform: true, // default: false
-    },
-  },
+  extractors: [babel, createVueExtractor({ reactivityTransform: true })],
 });
 ```
 

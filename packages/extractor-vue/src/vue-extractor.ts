@@ -3,7 +3,13 @@ import { extractor } from "@lingui/cli/api"
 import { type ExtractorCtx, type ExtractorType } from "@lingui/conf"
 import { compileScriptSetup, type ScriptTarget } from "./compile-script-setup"
 
-export const vueExtractor: ExtractorType = {
+export interface VueExtractorConfig {
+  reactivityTransform?: boolean
+}
+
+export const createVueExtractor = (
+  config: VueExtractorConfig = {},
+): ExtractorType => ({
   match(filename: string) {
     return filename.endsWith(".vue")
   },
@@ -21,8 +27,7 @@ export const vueExtractor: ExtractorType = {
 
     const isTsBlock = (block: SFCBlock | null) => block?.lang === "ts"
 
-    const reactivityTransform =
-      ctx.linguiConfig.experimental?.extractor?.vueReactivityTransform ?? false
+    const { reactivityTransform = false } = config
 
     const compiledScripts = compileScriptSetup(
       descriptor,
@@ -71,4 +76,9 @@ export const vueExtractor: ExtractorType = {
         ),
     )
   },
-}
+})
+
+/**
+ * @deprecated use createVueExtractor instead
+ */
+export const vueExtractor = createVueExtractor()

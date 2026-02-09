@@ -1,7 +1,7 @@
 import { makeConfig } from "@lingui/conf"
 import fs from "fs"
 import path from "path"
-import { vueExtractor } from "."
+import { createVueExtractor } from "."
 import type { ExtractedMessage } from "@lingui/babel-plugin-extract-messages"
 
 function normalizePath(entries: ExtractedMessage[]): ExtractedMessage[] {
@@ -33,6 +33,7 @@ describe("vue extractor", () => {
       flow: false,
     },
   })
+  const vueExtractor = createVueExtractor();
 
   it("should ignore non vue files in extractor", async () => {
     const match = vueExtractor.match("test.js")
@@ -89,19 +90,7 @@ describe("vue extractor", () => {
     const code = fs.readFileSync(filePath, "utf-8")
 
     let messages: ExtractedMessage[] = []
-
-    // Enable reactivityTransform for this test
-    const configWithReactivityTransform = makeConfig({
-      ...linguiConfig,
-      experimental: {
-        extractor: {
-          entries: [],
-          output: "",
-          vueReactivityTransform: true,
-        },
-      },
-    })
-
+    const vueExtractor = createVueExtractor({reactivityTransform: true})
     await vueExtractor.extract(
       "props-destructuring.vue",
       code,
@@ -109,7 +98,7 @@ describe("vue extractor", () => {
         messages.push(res)
       },
       {
-        linguiConfig: configWithReactivityTransform,
+        linguiConfig,
       },
     )
 

@@ -113,7 +113,6 @@ export const exampleConfig = {
       excludeExtensions: [],
       output: "",
       resolveEsbuildOptions: Function,
-      vueReactivityTransform: false,
     },
   } as { extractor: ExperimentalExtractorOptions },
 }
