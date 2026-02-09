@@ -79,6 +79,6 @@ export const createVueExtractor = (
 })
 
 /**
- * @deprecated use createVueExtractor instead
+ * @deprecated use {@link createVueExtractor} instead
  */
 export const vueExtractor = createVueExtractor()
