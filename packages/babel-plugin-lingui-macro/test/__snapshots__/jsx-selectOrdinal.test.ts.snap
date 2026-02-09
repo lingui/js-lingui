@@ -90,7 +90,7 @@ import { Trans as _Trans } from "@lingui/react";
   {
     /*i18n*/
     ...{
-      id: "CDpzE+",
+      id: "CDpzE-",
       message:
         "This is my {0, selectordinal, one {#st} two {#nd} other {<0>#rd</0>}} cat.",
       values: {

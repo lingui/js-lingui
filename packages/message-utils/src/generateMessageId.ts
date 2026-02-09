@@ -4,5 +4,9 @@ import { UNIT_SEPARATOR } from "./constants"
 export function generateMessageId(msg: string, context = "") {
   const hashBytes = sha256.array(msg + UNIT_SEPARATOR + (context || ""))
 
-  return btoa(String.fromCharCode(...hashBytes)).slice(0, 6)
+  return btoa(String.fromCharCode(...hashBytes))
+    .replace(/\+/g, "-")
+    .replace(/\//g, "_")
+    .replace(/=+$/, "")
+    .slice(0, 6)
 }

@@ -42,4 +42,42 @@ describe("@lingui/core/eventEmitter", () => {
     // this should not throw
     emitter.removeListener("test", unknown)
   })
+
+  it("should call a listener even if a preceding listener removes it during the same emit cycle", () => {
+    const emitter = new EventEmitter<{ test: () => void }>()
+
+    const mock = {
+      listenerToRemove: vi.fn(),
+      unsubscribe: () => {},
+    }
+
+    const unsubscribingListener = vi.fn(() => {
+      mock.unsubscribe()
+    })
+
+    emitter.on("test", unsubscribingListener)
+    mock.unsubscribe = emitter.on("test", mock.listenerToRemove)
+    emitter.emit("test")
+
+    expect(unsubscribingListener).toHaveBeenCalledTimes(1)
+    expect(mock.listenerToRemove).toHaveBeenCalledTimes(1)
+
+    emitter.emit("test")
+
+    expect(unsubscribingListener).toHaveBeenCalledTimes(2)
+    expect(mock.listenerToRemove).toHaveBeenCalledTimes(1)
+  })
+
+  it("should not add the same listener function multiple times", () => {
+    const emitter = new EventEmitter<{ test: () => void }>()
+    const listener = vi.fn()
+
+    emitter.on("test", listener)
+    emitter.on("test", listener)
+    emitter.on("test", listener)
+
+    emitter.emit("test")
+
+    expect(listener).toHaveBeenCalledTimes(1)
+  })
 })

@@ -154,7 +154,7 @@ import { Trans as _Trans } from "@lingui/react";
   {
     /*i18n*/
     ...{
-      id: "SO/WB8",
+      id: "SO_WB8",
       message: "Hello World",
       context: "my context",
     }
@@ -176,7 +176,7 @@ import { Trans as _Trans } from "@lingui/react";
   {
     /*i18n*/
     ...{
-      id: "K/1Xpr",
+      id: "K_1Xpr",
       message: "<0>This should work \\xA0</0>",
       components: {
         0: <Text />,
@@ -237,7 +237,7 @@ import { Trans as _Trans } from "@lingui/react";
             {
               /*i18n*/
               ...{
-                id: "39nd+2",
+                id: "39nd-2",
                 message: "guys",
               }
             }
@@ -288,7 +288,7 @@ import { Trans as _Trans } from "@lingui/react";
             {
               /*i18n*/
               ...{
-                id: "lV+268",
+                id: "lV-268",
                 message: "nested",
               }
             }
@@ -298,7 +298,7 @@ import { Trans as _Trans } from "@lingui/react";
             {
               /*i18n*/
               ...{
-                id: "39nd+2",
+                id: "39nd-2",
                 message: "guys",
               }
             }
@@ -324,7 +324,7 @@ import { Trans as _Trans } from "@lingui/react";
   {
     /*i18n*/
     ...{
-      id: "eqk/cH",
+      id: "eqk_cH",
       message: "Hi {name}, my name is {myName}",
       values: {
         name: getUserName(),
@@ -351,7 +351,7 @@ import { Trans as _Trans } from "@lingui/react";
   {
     /*i18n*/
     ...{
-      id: "eqk/cH",
+      id: "eqk_cH",
       message: "Hi {name}, my name is {myName}",
       values: {
         name: getUserName(),
@@ -377,7 +377,7 @@ import { Trans as _Trans } from "@lingui/react";
   {
     /*i18n*/
     ...{
-      id: "eqk/cH",
+      id: "eqk_cH",
       message: "Hi {name}, my name is {myName}",
       values: {
         name: getUserName(),
@@ -660,7 +660,7 @@ import { Trans as _Trans } from "@lingui/react";
   {
     /*i18n*/
     ...{
-      id: "U8dd/d",
+      id: "U8dd_d",
       message: "hello {count, plural, one {world} other {worlds}}",
     }
   }
@@ -919,7 +919,7 @@ import { Trans as _Trans } from "@lingui/react";
   {
     /*i18n*/
     ...{
-      id: "+nhkwg",
+      id: "-nhkwg",
       message: "{duplicate} variable {duplicate}",
       values: {
         duplicate: duplicate,

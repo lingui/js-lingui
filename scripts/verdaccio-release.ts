@@ -1,6 +1,6 @@
 import { exec as _exec, type ExecOptions } from "child_process"
 import ora from "ora"
-import pico from "picocolors"
+import { styleText } from "node:util"
 
 async function main() {
   const spinner = ora()
@@ -26,7 +26,8 @@ async function main() {
 
   console.log()
   console.log(
-    `Done! Run ${pico.yellow(
+    `Done! Run ${styleText(
+      "yellow",
       "npm install --registry http://0.0.0.0:4873 @lingui/[package]",
     )} in target project to install development version of package.`,
   )
