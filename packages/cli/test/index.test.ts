@@ -3,7 +3,7 @@ import extractCommand from "../src/lingui-extract.js"
 import extractExperimentalCommand from "../src/lingui-extract-experimental.js"
 import { command as compileCommand } from "../src/lingui-compile.js"
 import fs from "fs/promises"
-import { sync } from "glob"
+import { globSync } from "node:fs"
 import nodepath from "path"
 import { getConfig, makeConfig } from "@lingui/conf"
 import { compareFolders } from "../src/tests.js"
@@ -44,7 +44,7 @@ async function prepare(caseFolderName: string) {
     force: true,
   })
 
-  if (sync(existingPath).length === 1) {
+  if (globSync(existingPath).length === 1) {
     await fs.cp(existingPath, actualPath, { recursive: true })
   }
 

@@ -7,7 +7,7 @@ import fs from "fs/promises"
 import normalizePath from "normalize-path"
 
 import { bundleSource } from "./extract-experimental/bundleSource.js"
-import { getEntryPoints } from "./extract-experimental/getEntryPoints.js"
+import { globSync } from "node:fs"
 import { styleText } from "node:util"
 import {
   resolveWorkersOptions,
@@ -15,7 +15,6 @@ import {
 } from "./api/resolveWorkersOptions.js"
 import { extractFromBundleAndWrite } from "./extract-experimental/extractFromBundleAndWrite.js"
 import { createExtractExperimentalWorkerPool } from "./api/workerPools.js"
-import esMain from "es-main"
 
 type CliExtractTemplateOptions = {
   verbose?: boolean
@@ -67,7 +66,7 @@ export default async function command(
   const bundleResult = await bundleSource(
     linguiConfig,
     extractorConfig,
-    getEntryPoints(extractorConfig.entries),
+    globSync(extractorConfig.entries),
     tempDir,
     linguiConfig.rootDir,
   )
@@ -177,7 +176,7 @@ type CliArgs = {
   workers?: number
 }
 
-if (esMain(import.meta)) {
+if (import.meta.main) {
   program
     .option("--config <path>", "Path to the config file")
     .option("--template", "Extract to template")

@@ -12,7 +12,6 @@ import {
   WorkersOptions,
 } from "./api/resolveWorkersOptions.js"
 import ms from "ms"
-import esMain from "es-main"
 import { getPathsForCompileWatcher } from "./api/getPathsForCompileWatcher.js"
 
 export type CliCompileOptions = {
@@ -116,7 +115,7 @@ type CliArgs = {
   outputPrefix?: string
 }
 
-if (esMain(import.meta)) {
+if (import.meta.main) {
   program
     .description("Compile message catalogs to compiled bundle.")
     .option("--config <path>", "Path to the config file")

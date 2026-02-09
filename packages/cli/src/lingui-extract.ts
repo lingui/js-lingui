@@ -19,9 +19,8 @@ import {
 } from "./api/workerPools.js"
 import ms from "ms"
 import { Catalog } from "./api/catalog.js"
-import esMain from "es-main"
 import { getPathsForExtractWatcher } from "./api/getPathsForExtractWatcher.js"
-import { glob } from "glob"
+import { glob } from "node:fs/promises"
 import micromatch from "micromatch"
 
 export type CliExtractOptions = {
@@ -160,7 +159,7 @@ type CliArgs = {
   workers?: number
 }
 
-if (esMain(import.meta)) {
+if (import.meta.main) {
   program
     .option("--config <path>", "Path to the config file")
     .option(
@@ -252,7 +251,12 @@ if (esMain(import.meta)) {
     ;(async function initWatch() {
       const { paths, ignored } = await getPathsForExtractWatcher(config)
 
-      const watcher = chokidar.watch(await glob(paths), {
+      const matchedPaths: string[] = []
+      for await (const path of glob(paths)) {
+        matchedPaths.push(path)
+      }
+
+      const watcher = chokidar.watch(matchedPaths, {
         ignored: [
           "/(^|[/\\])../",
           (path: string) => micromatch.any(path, ignored),
