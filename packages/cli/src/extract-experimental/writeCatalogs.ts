@@ -4,7 +4,7 @@ import {
   CatalogType,
   ExtractedCatalogType,
 } from "../api/index.js"
-import pico from "picocolors"
+import { styleText } from "node:util"
 import { resolveCatalogPath } from "./resolveCatalogPath.js"
 import { mergeCatalog } from "../api/catalog/mergeCatalog.js"
 import { printStats } from "../api/stats.js"
@@ -103,8 +103,9 @@ export async function writeTemplate(
   )
 
   return {
-    statMessage: `${pico.bold(
-      Object.keys(messages).length,
+    statMessage: `${styleText(
+      "bold",
+      String(Object.keys(messages).length),
     )} message(s) extracted`,
   }
 }

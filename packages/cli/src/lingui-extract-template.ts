@@ -1,4 +1,4 @@
-import pico from "picocolors"
+import { styleText } from "node:util"
 import { program } from "commander"
 
 import { getConfig, LinguiConfigNormalized } from "@lingui/conf"
@@ -66,7 +66,7 @@ export default async function command(
   }
   Object.entries(catalogStats).forEach(([key, value]) => {
     console.log(
-      `Catalog statistics for ${pico.bold(key)}: ${pico.green(value)} messages`,
+      `Catalog statistics for ${styleText("bold", key)}: ${styleText("green", String(value))} messages`,
     )
     console.log()
   })

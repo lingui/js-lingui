@@ -8,7 +8,7 @@ import normalizePath from "normalize-path"
 
 import { bundleSource } from "./extract-experimental/bundleSource.js"
 import { globSync } from "node:fs"
-import pico from "picocolors"
+import { styleText } from "node:util"
 import {
   resolveWorkersOptions,
   WorkersOptions,
@@ -41,7 +41,8 @@ export default async function command(
   }
 
   console.log(
-    pico.yellow(
+    styleText(
+      "yellow",
       [
         "You have using an experimental feature",
         "Experimental features are not covered by semver, and may cause unexpected or broken application behavior." +

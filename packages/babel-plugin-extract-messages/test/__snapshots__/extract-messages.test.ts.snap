@@ -191,7 +191,7 @@ exports[`@lingui/babel-plugin-extract-messages > should extract Plural messages 
   {
     "comment": undefined,
     "context": "Some context",
-    "id": "8qNz+K",
+    "id": "8qNz-K",
     "message": "{count, plural, one {# book} other {# books}}",
     "origin": [
       "jsx-without-trans.js",

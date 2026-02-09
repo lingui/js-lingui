@@ -27,6 +27,11 @@ describe.each(implementations)("generateMessageId ($name)", ({ fn }) => {
     expect(withContext != withPrefix).toBeTruthy()
   })
 
+  it("Should produce urlsafe alphabet id", () => {
+    const actual = fn("Hello World", "my context")
+    expect(actual).toBe("SO_WB8")
+  })
+
   it("All kind of falsy context should give the same result", () => {
     const expected = "vQhkQx"
     expect(fn("my message")).toBe(expected)

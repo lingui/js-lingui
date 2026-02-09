@@ -1,4 +1,4 @@
-import pico from "picocolors"
+import { styleText } from "node:util"
 import chokidar from "chokidar"
 import { program } from "commander"
 
@@ -189,7 +189,7 @@ if (import.meta.main) {
 
   // Check if Watch Mode is enabled
   if (options.watch) {
-    console.info(pico.bold("Initializing Watch Mode..."))
+    console.info(styleText("bold", "Initializing Watch Mode..."))
     ;(async function initWatch() {
       const { paths } = await getPathsForCompileWatcher(config)
 
@@ -198,7 +198,7 @@ if (import.meta.main) {
       })
 
       const onReady = () => {
-        console.info(pico.green(pico.bold("Watcher is ready!")))
+        console.info(styleText(["green", "bold"], "Watcher is ready!"))
         watcher
           .on("add", () => dispatchCompile())
           .on("change", () => dispatchCompile())

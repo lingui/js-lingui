@@ -28,7 +28,7 @@ jobs:
         uses: actions/setup-node@v6
         with:
           always-auth: true
-          node-version: 22
+          node-version-file: .nvmrc
           cache: 'yarn'
           scope: '@lingui'
 
