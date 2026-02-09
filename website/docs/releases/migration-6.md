@@ -78,15 +78,30 @@ See [Catalog Formats](/ref/catalog-formats) for more details on available format
 
 ## Message ID Generation Changed to URL-Safe Format
 
-<!-- TODO: review this section after implementation of #2207 -->
+Generated message IDs now use **URL-safe Base64 encoding** (characters `-` and `_` instead of `+` and `/`). See [#2207](https://github.com/lingui/js-lingui/issues/2207) and [#1789](https://github.com/lingui/js-lingui/issues/1789) for details.
 
-Generated message IDs now use URL-safe Base64 (characters `-` and `_` instead of `+` and `/`), improving compatibility with XLIFF 2.0 and URLs.
+### What Changed
 
-:::note
-Migration details are still being finalized. If you have existing translations with auto-generated IDs, consider waiting for migration tooling.
-:::
+Message IDs now use URL-safe Base64 with these character substitutions:
 
-See [#2207](https://github.com/lingui/js-lingui/issues/2207) for details.
+- `+` → `-`, `/` → `_`, and `=` padding removed
+- Example: `a+b/c=` → `a-b_c`
+
+### Migration
+
+**PO format with bundler loaders**: No migration needed.
+
+**Using `lingui compile`**: Recompile your catalogs after upgrading:
+
+```bash
+lingui compile
+```
+
+**JSON, CSV, or PO-Gettext formats**: Manually update IDs in your catalog files using search-and-replace:
+
+1. Replace `+` with `-`
+2. Replace `/` with `_`
+3. Remove trailing `=`
 
 ## Deprecated `@lingui/macro` Package No Longer Maintained
 
@@ -104,6 +119,10 @@ The `@lingui/macro` package continued to work in v5 but emitted deprecation warn
 ### Migration
 
 If you were still using `@lingui/macro`, see the [v5 migration guide](/releases/migration-5#react-and-js-macros-were-split-to-separate-packages) for detailed migration instructions and available codemods.
+
+## Deprecated Intl Wrappers
+
+<!-- TODO -->
 
 ## YAML Configuration Support Removed
 
@@ -173,6 +192,26 @@ Switch to the dedicated Babel or SWC plugins:
 - **SWC**: Use `@lingui/swc-plugin`
 
 See [Installation](/installation) for configuration details.
+
+## Vue Extractor: `vueExtractor` Replaced by `createVueExtractor()`
+
+The `vueExtractor` export from `@lingui/extractor-vue` is **deprecated**. Use the new `createVueExtractor()` factory function instead:
+
+```js title="lingui.config.{js,ts}"
+// Before
+import { vueExtractor } from "@lingui/extractor-vue";
+extractors: [babel, vueExtractor],
+
+// After
+import { createVueExtractor } from "@lingui/extractor-vue";
+extractors: [babel, createVueExtractor()],
+```
+
+`createVueExtractor()` also accepts an options object. If your project uses Vue's [Reactive Props Destructure](https://github.com/vuejs/rfcs/discussions/502), enable `reactivityTransform` to ensure message IDs match between extraction and runtime:
+
+```js title="lingui.config.{js,ts}"
+extractors: [babel, createVueExtractor({ reactivityTransform: true })],
+```
 
 ## TypeScript Type Changes
 
