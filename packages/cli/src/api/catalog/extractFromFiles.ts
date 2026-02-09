@@ -1,5 +1,5 @@
 import type { ExtractedMessage, LinguiConfigNormalized } from "@lingui/conf"
-import pico from "picocolors"
+import { styleText } from "node:util"
 import path from "path"
 import extract from "../extractors/index.js"
 import { ExtractedCatalogType, MessageOrigin } from "../types.js"
@@ -89,11 +89,12 @@ export function mergeExtractedMessage(
 
   if (prev.message && next.message && prev.message !== next.message) {
     throw new Error(
-      `Encountered different default translations for message ${pico.yellow(
+      `Encountered different default translations for message ${styleText(
+        "yellow",
         next.id,
       )}` +
-        `\n${pico.yellow(prettyOrigin(prev.origin))} ${prev.message}` +
-        `\n${pico.yellow(prettyOrigin([nextOrigin || [""]]))} ${next.message}`,
+        `\n${styleText("yellow", prettyOrigin(prev.origin))} ${prev.message}` +
+        `\n${styleText("yellow", prettyOrigin([nextOrigin || [""]]))} ${next.message}`,
     )
   }
 

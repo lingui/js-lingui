@@ -4,7 +4,7 @@ import { lilconfigSync, LoaderSync } from "lilconfig"
 import path from "path"
 import { makeConfig } from "./makeConfig"
 import { createJiti } from "jiti"
-import pico from "picocolors"
+import { styleText } from "node:util"
 
 function configExists(path?: string): path is string {
   return !!path && fs.existsSync(path)
@@ -67,9 +67,11 @@ export function getConfig({
   if (!result) {
     console.error("Lingui was unable to find a config!\n")
     console.error(
-      `Create ${pico.bold(
+      `Create ${styleText(
+        "bold",
         "'lingui.config.js'",
-      )} file with LinguiJS configuration in root of your project (next to package.json). See ${pico.underline(
+      )} file with LinguiJS configuration in root of your project (next to package.json). See ${styleText(
+        "underline",
         "https://lingui.dev/ref/conf",
       )}`,
     )
