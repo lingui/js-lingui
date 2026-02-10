@@ -14,7 +14,7 @@ The minimum supported version of Node.js in Lingui v6 is v22.19+.
 
 ## ESM-Only Distribution
 
-Lingui 6.0 is now distributed as **ESM-only** (ECMAScript Modules). ESM is the official, standardized module system for JavaScript, and the entire ecosystem is converging toward this standard.
+Lingui 6.0 is now distributed as ESM-only (ECMAScript Modules). ESM is the official, standardized module system for JavaScript, and the entire ecosystem is converging toward this standard.
 
 ### Why This Change
 
@@ -24,7 +24,7 @@ Previously, Lingui shipped dual builds (both ESM and CommonJS), which created si
 - Maintenance complexity with conditionals and workarounds
 - Subtle bugs from module duplication and dependency resolution issues
 
-By moving to ESM-only, Lingui becomes **smaller, simpler, and more future-proof**. Thanks to Node.js improvements like [`require(esm)`](https://joyeecheung.github.io/blog/2024/03/18/require-esm-in-node-js/), this transition is now seamless for most users.
+By moving to ESM-only, Lingui becomes smaller, simpler, and more future-proof. Thanks to Node.js improvements like [`require(esm)`](https://joyeecheung.github.io/blog/2024/03/18/require-esm-in-node-js/), this transition is now seamless for most users.
 
 ### What Changed
 
@@ -32,11 +32,11 @@ All Lingui packages have been converted to ESM-only distribution, except `@lingu
 
 ### Migration
 
-For most users, **no changes are required**. Modern bundlers (Vite, Webpack, esbuild, Rollup) and Node.js versions that support `require()` for ESM modules (20.16+, 22.19+, or 24+) handle ESM imports transparently.
+For most users, no changes are required. Modern bundlers (Vite, Webpack, esbuild, Rollup) and Node.js versions that support `require()` for ESM modules (20.16+, 22.19+, or 24+) handle ESM imports transparently.
 
 ## Deprecated `format` String and `formatOptions` Removed
 
-The deprecated `format` (as a string) and `formatOptions` configuration options have been **removed**.
+The deprecated `format` (as a string) and `formatOptions` configuration options have been removed.
 
 ### What Changed
 
@@ -78,7 +78,7 @@ See [Catalog Formats](/ref/catalog-formats) for more details on available format
 
 ## Message ID Generation Changed to URL-Safe Format
 
-Generated message IDs now use **URL-safe Base64 encoding** (characters `-` and `_` instead of `+` and `/`). See [#2207](https://github.com/lingui/js-lingui/issues/2207) and [#1789](https://github.com/lingui/js-lingui/issues/1789) for details.
+Generated message IDs now use URL-safe Base64 encoding (characters `-` and `_` instead of `+` and `/`). See [#2207](https://github.com/lingui/js-lingui/issues/2207) and [#1789](https://github.com/lingui/js-lingui/issues/1789) for details.
 
 ### What Changed
 
@@ -105,7 +105,7 @@ lingui compile
 
 ## Deprecated `@lingui/macro` Package No Longer Maintained
 
-The `@lingui/macro` package is **no longer maintained** and will not receive any updates. This package was deprecated in Lingui 5.0 when macros were split into separate entry points from existing packages.
+The `@lingui/macro` package is no longer maintained and will not receive any updates. This package was deprecated in Lingui 5.0 when macros were split into separate entry points from existing packages.
 
 ### What Changed
 
@@ -126,7 +126,7 @@ If you were still using `@lingui/macro`, see the [v5 migration guide](/releases/
 
 ## YAML Configuration Support Removed
 
-Support for YAML configuration files has been **removed**. The underlying configuration library has been changed from `cosmiconfig` to `lilconfig`, a zero-dependency alternative with the same API.
+Support for YAML configuration files has been removed. The underlying configuration library has been changed from `cosmiconfig` to `lilconfig`, a zero-dependency alternative with the same API.
 
 ### What Changed
 
@@ -174,7 +174,7 @@ Using TypeScript configuration with `defineConfig` is recommended as it provides
 
 ## Create React App (CRA) Example Removed
 
-The Create React App example has been **removed** from the repository.
+The Create React App example has been removed from the repository.
 
 CRA is [officially deprecated](https://react.dev/blog/2025/02/14/sunsetting-create-react-app) and no longer aligns with the modern JavaScript ecosystem. It lacks support for modern ESM patterns and could slow down Lingui's evolution toward current best practices.
 
@@ -182,7 +182,7 @@ For new projects or migrations, we recommend using Vite with Babel or SWC, which
 
 ## Babel Macro Plugin Deprecated
 
-The `babel-plugin-macros` integration is **deprecated** and will be removed in a future release.
+The `babel-plugin-macros` integration is deprecated and will be removed in a future release.
 
 The `babel-plugin-macros` package is no longer actively maintained, and its primary adoption driver was CRA. With CRA deprecated, there's little reason to continue supporting this integration path.
 
@@ -195,7 +195,7 @@ See [Installation](/installation) for configuration details.
 
 ## Vue Extractor: `vueExtractor` Replaced by `createVueExtractor()`
 
-The `vueExtractor` export from `@lingui/extractor-vue` is **deprecated**. Use the new `createVueExtractor()` factory function instead:
+The `vueExtractor` export from `@lingui/extractor-vue` is deprecated. Use the new `createVueExtractor()` factory function instead:
 
 ```js title="lingui.config.{js,ts}"
 // Before
@@ -207,11 +207,13 @@ import { createVueExtractor } from "@lingui/extractor-vue";
 extractors: [babel, createVueExtractor()],
 ```
 
-`createVueExtractor()` also accepts an options object. If your project uses Vue's [Reactive Props Destructure](https://github.com/vuejs/rfcs/discussions/502), enable `reactivityTransform` to ensure message IDs match between extraction and runtime:
+`createVueExtractor()` accepts an options object. If your project uses Vue's [Reactivity Transform](https://github.com/vuejs/rfcs/discussions/502), enable `reactivityTransform` so message IDs match between extraction and runtime:
 
 ```js title="lingui.config.{js,ts}"
 extractors: [babel, createVueExtractor({ reactivityTransform: true })],
 ```
+
+The option is opt-in (`reactivityTransform: false` by default) to avoid breaking existing setups.
 
 ## TypeScript Type Changes
 
@@ -229,8 +231,8 @@ If your code explicitly checks for `null` from Lingui APIs, update it to check f
 
 The distinction between extracted messages and loaded catalog messages has been strengthened:
 
-- **`ExtractedMessageType`** / **`ExtractedCatalogType`**: Used for messages produced by the extractor. These always include `placeholders` and `comments` fields (even if empty).
-- **`MessageType`** / **`CatalogType`**: Used for messages loaded from catalogs on disk. These may include additional fields like `translation`, `obsolete`, and `extra`, but may omit `placeholders` and `comments`.
+- `ExtractedMessageType` / `ExtractedCatalogType`: Used for messages produced by the extractor. These always include `placeholders` and `comments` fields (even if empty).
+- `MessageType` / `CatalogType`: Used for messages loaded from catalogs on disk. These may include additional fields like `translation`, `obsolete`, and `extra`, but may omit `placeholders` and `comments`.
 
 ### Migration
 
