@@ -81,10 +81,11 @@ export function getConfig({
     throw new Error("No Lingui config found")
   }
 
-
   return makeConfig(
     {
-      rootDir: result ? normalizePath(path.dirname(result.filepath)) : defaultRootDir,
+      rootDir: result
+        ? normalizePath(path.dirname(result.filepath))
+        : defaultRootDir,
       ...result.config,
     },
     { skipValidation, resolvedConfigPath: result.filepath },

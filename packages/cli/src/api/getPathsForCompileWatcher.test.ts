@@ -73,7 +73,7 @@ describe("getPathsForCompileWatcher", () => {
         path.join(outputDir, "componentB/locales/pl.po"),
       ]
         .sort()
-        .map(p => normalizePath(p)),
+        .map((p) => normalizePath(p)),
     )
   })
 })
