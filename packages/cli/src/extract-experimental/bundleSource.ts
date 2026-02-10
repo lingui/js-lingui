@@ -68,7 +68,7 @@ export async function bundleSource(
           // Specifically import paths that don't start with a path segment of / or . or .. are considered to be package imports.
           // The only two exceptions to this rule are subpath imports (which start with a # character) and deps specified in the `includeDeps`
           build.onResolve({ filter: /^[^.#/].*/ }, async (args) => {
-            if (shouldInclude(args.path)) {
+            if (shouldInclude(args.path) || args.kind === 'entry-point') {
               return { external: false }
             }
 

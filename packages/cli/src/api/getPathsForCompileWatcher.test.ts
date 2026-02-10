@@ -2,6 +2,7 @@ import { makeConfig } from "@lingui/conf"
 import { getPathsForCompileWatcher } from "./getPathsForCompileWatcher.js"
 import { createFixtures } from "../tests.js"
 import path from "path"
+import normalizePath from "normalize-path"
 
 describe("getPathsForCompileWatcher", () => {
   it("should generate correct paths for simple catalogs", async () => {
@@ -70,7 +71,9 @@ describe("getPathsForCompileWatcher", () => {
         path.join(outputDir, "componentB/locales/en.po"),
         path.join(outputDir, "componentA/locales/pl.po"),
         path.join(outputDir, "componentB/locales/pl.po"),
-      ].sort(),
+      ]
+        .sort()
+        .map(p => normalizePath(p)),
     )
   })
 })

@@ -1,6 +1,7 @@
 import { makeConfig } from "@lingui/conf"
 import { getPathsForExtractWatcher } from "./getPathsForExtractWatcher.js"
 import path from "path"
+import normalizePath from "normalize-path"
 
 describe("getPathsForExtractWatcher", () => {
   it("should generate correct paths for simple catalogs", async () => {
@@ -23,7 +24,7 @@ describe("getPathsForExtractWatcher", () => {
 
     expect(res.ignored).toStrictEqual(["src/locales/", "node_modules/"])
     expect(res.paths).toStrictEqual([
-      path.join(import.meta.dirname, "src"),
+      normalizePath(path.join(import.meta.dirname, "src")),
       "/components/**",
     ])
   })
