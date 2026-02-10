@@ -78,7 +78,7 @@ See [Catalog Formats](/ref/catalog-formats) for more details on available format
 
 ## Message ID Generation Changed to URL-Safe Format
 
-Generated message IDs now use URL-safe Base64 encoding (characters `-` and `_` instead of `+` and `/`). See [#2207](https://github.com/lingui/js-lingui/issues/2207) and [#1789](https://github.com/lingui/js-lingui/issues/1789) for details.
+Generated message IDs now use URL-safe Base64 encoding (characters `-` and `_` instead of `+` and `/`), conforming to [RFC 4648, Section 5](https://datatracker.ietf.org/doc/html/rfc4648#section-5).
 
 ### What Changed
 
