@@ -1,8 +1,15 @@
-import { parse, compileTemplate, SFCBlock } from "@vue/compiler-sfc"
+import { compileTemplate, parse, type SFCBlock } from "@vue/compiler-sfc"
 import { extractor } from "@lingui/cli/api"
-import type { ExtractorCtx, ExtractorType } from "@lingui/conf"
+import { type ExtractorCtx, type ExtractorType } from "@lingui/conf"
+import { compileScriptSetup, type ScriptTarget } from "./compile-script-setup"
 
-export const vueExtractor: ExtractorType = {
+export interface VueExtractorConfig {
+  reactivityTransform?: boolean
+}
+
+export const createVueExtractor = (
+  config: VueExtractorConfig = {},
+): ExtractorType => ({
   match(filename: string) {
     return filename.endsWith(".vue")
   },
@@ -20,6 +27,14 @@ export const vueExtractor: ExtractorType = {
 
     const isTsBlock = (block: SFCBlock | null) => block?.lang === "ts"
 
+    const { reactivityTransform = false } = config
+
+    const compiledScripts = compileScriptSetup(
+      descriptor,
+      filename,
+      reactivityTransform,
+    )
+
     const compiledTemplate =
       descriptor.template &&
       compileTemplate({
@@ -33,31 +48,25 @@ export const vueExtractor: ExtractorType = {
         },
       })
 
-    const targets = [
-      [
-        descriptor.script?.content,
-        descriptor.script?.map,
-        isTsBlock(descriptor.script),
-      ],
-      [
-        descriptor.scriptSetup?.content,
-        descriptor.scriptSetup?.map,
-        isTsBlock(descriptor.scriptSetup),
-      ],
-      [
-        compiledTemplate?.code,
-        compiledTemplate?.map,
-        isTsBlock(descriptor.script) || isTsBlock(descriptor.scriptSetup),
-      ],
-    ] as const
+    const targets: ScriptTarget[] = [
+      ...compiledScripts,
+      {
+        source: compiledTemplate?.code ?? "",
+        map: compiledTemplate?.map,
+        isTs: isTsBlock(descriptor.script) || isTsBlock(descriptor.scriptSetup),
+      },
+    ]
 
     await Promise.all(
       targets
-        .filter(([source]) => !!source)
-        .map(([source, map, isTs]) =>
+        .filter(
+          (target): target is ScriptTarget =>
+            target != null && target.source !== "",
+        )
+        .map(({ source, map, isTs }) =>
           extractor.extract(
             filename + (isTs ? ".ts" : ""),
-            source!,
+            source,
             onMessageExtracted,
             {
               sourceMaps: map,
@@ -67,4 +76,9 @@ export const vueExtractor: ExtractorType = {
         ),
     )
   },
-}
+})
+
+/**
+ * @deprecated use {@link createVueExtractor} instead
+ */
+export const vueExtractor = createVueExtractor()
