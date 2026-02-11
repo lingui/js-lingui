@@ -403,10 +403,7 @@ import { useMemo } from "react";
 
 export default function Inbox() {
   const { i18n } = useLingui();
-  const dateFormatter = useMemo(
-    () => new Intl.DateTimeFormat(i18n.locale),
-    [i18n.locale]
-  );
+  const dateFormatter = useMemo(() => new Intl.DateTimeFormat(i18n.locale), [i18n.locale]);
 
   return (
     <div>
@@ -671,10 +668,7 @@ export default function Inbox() {
     alert(t`Marked as read.`);
   };
 
-  const dateFormatter = useMemo(
-    () => new Intl.DateTimeFormat(i18n.locale),
-    [i18n.locale]
-  );
+  const dateFormatter = useMemo(() => new Intl.DateTimeFormat(i18n.locale), [i18n.locale]);
 
   return (
     <div>

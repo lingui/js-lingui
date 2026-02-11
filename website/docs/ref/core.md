@@ -234,6 +234,7 @@ Format a date using the conventional format for the active language.
 ```ts
 new Intl.DateTimeFormat(i18n.locale, format).format(d);
 ```
+
 :::
 
 ```ts
@@ -269,6 +270,7 @@ Format a number using the conventional format for the active language.
 ```ts
 new Intl.NumberFormat(i18n.locale, format).format(value);
 ```
+
 :::
 
 ```ts
