@@ -70,6 +70,17 @@ macroTester({
     },
 
     {
+      name: "Macro with utility arg macro usage in options",
+      code: `
+        import { plural, arg } from '@lingui/core/macro';
+        plural(count, {
+          "one": \`# book on {\${arg(today)}, date}\`,
+          other: \`# books on {\${arg(today)}, date}\`
+        });
+      `,
+    },
+
+    {
       useTypescriptPreset: true,
       name: "Macro with labeled expression with `as` expression",
       code: `

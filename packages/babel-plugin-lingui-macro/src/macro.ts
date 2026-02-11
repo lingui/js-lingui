@@ -29,6 +29,8 @@ function macro({ state, babel, config }: MacroParams) {
 ;[
   JsMacroName.defineMessage,
   JsMacroName.msg,
+  JsMacroName.arg,
+  JsMacroName.ph,
   JsMacroName.t,
   JsMacroName.useLingui,
   JsMacroName.plural,
