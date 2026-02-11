@@ -9,11 +9,11 @@ import type {
   PluginObj,
   PluginPass,
   NodePath,
-  types as BabelTypes,
+  types as BabelTypesNamespace,
 } from "@babel/core"
 import type { Hub } from "@babel/traverse"
 
-type BabelTypes = typeof BabelTypes
+type BabelTypes = typeof BabelTypesNamespace
 
 export type ExtractedMessage = {
   id: string
