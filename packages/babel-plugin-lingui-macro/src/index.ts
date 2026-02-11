@@ -1,5 +1,6 @@
 import type { PluginObj, Visitor, PluginPass } from "@babel/core"
-import type * as babelTypes from "@babel/types"
+
+import { types as BabelTypes } from "@babel/core"
 import { Program, Identifier } from "@babel/types"
 import { MacroJSX } from "./macroJsx"
 import type { NodePath } from "@babel/traverse"
@@ -88,9 +89,9 @@ const getIdentifierPath = ((path: NodePath, node: Identifier) => {
 }) as any
 
 type MacroImports = {
-  corePackage: Set<NodePath<babelTypes.ImportDeclaration>>
-  jsxPackage: Set<NodePath<babelTypes.ImportDeclaration>>
-  all: Set<NodePath<babelTypes.ImportDeclaration>>
+  corePackage: Set<NodePath<BabelTypes.ImportDeclaration>>
+  jsxPackage: Set<NodePath<BabelTypes.ImportDeclaration>>
+  all: Set<NodePath<BabelTypes.ImportDeclaration>>
 }
 
 const LinguiSymbolToImportMap = {
@@ -102,7 +103,7 @@ const LinguiSymbolToImportMap = {
 export default function ({
   types: t,
 }: {
-  types: typeof babelTypes
+  types: typeof BabelTypes
 }): PluginObj {
   function addImport(
     macroImports: MacroImports,
@@ -149,7 +150,7 @@ export default function ({
             config.macro.corePackage.includes(
               statement.get("source").node.value,
             ),
-        ) as NodePath<babelTypes.ImportDeclaration>[],
+        ) as NodePath<BabelTypes.ImportDeclaration>[],
     )
 
     const jsxPackage = new Set(
@@ -161,7 +162,7 @@ export default function ({
             config.macro.jsxPackage.includes(
               statement.get("source").node.value,
             ),
-        ) as NodePath<babelTypes.ImportDeclaration>[],
+        ) as NodePath<BabelTypes.ImportDeclaration>[],
     )
 
     return {
@@ -227,7 +228,7 @@ export default function ({
             i18n: path.scope.generateUidIdentifier("i18n"),
             Trans: path.scope.generateUidIdentifier("Trans"),
             useLingui: path.scope.generateUidIdentifier("useLingui"),
-          } satisfies Record<LinguiSymbol, babelTypes.Identifier>)
+          } satisfies Record<LinguiSymbol, BabelTypes.Identifier>)
 
           path.traverse(
             {
@@ -247,7 +248,7 @@ export default function ({
                   },
                 )
 
-                let newNode: false | babelTypes.Node
+                let newNode: false | BabelTypes.Node
 
                 try {
                   newNode = macro.replacePath(path)
@@ -263,8 +264,8 @@ export default function ({
 
               "CallExpression|TaggedTemplateExpression"(
                 path: NodePath<
-                  | babelTypes.CallExpression
-                  | babelTypes.TaggedTemplateExpression
+                  | BabelTypes.CallExpression
+                  | BabelTypes.TaggedTemplateExpression
                 >,
                 state: PluginPass,
               ) {
@@ -282,7 +283,7 @@ export default function ({
                   isLinguiIdentifier: (node: Identifier, macro) =>
                     isLinguiIdentifier(path, node, macro),
                 })
-                let newNode: false | babelTypes.Node
+                let newNode: false | BabelTypes.Node
 
                 try {
                   newNode = macro.replacePath(path)

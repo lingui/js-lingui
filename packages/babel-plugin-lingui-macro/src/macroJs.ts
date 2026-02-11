@@ -1,12 +1,18 @@
-import * as babelTypes from "@babel/types"
-import * as t from "@babel/types"
 import {
+  callExpression,
   CallExpression,
   Expression,
+  identifier,
   Identifier,
+  isIdentifier,
+  isObjectExpression,
+  isObjectPattern,
+  isObjectProperty,
+  memberExpression,
   ObjectExpression,
   ObjectProperty,
 } from "@babel/types"
+import type { types as BabelTypes } from "@babel/core"
 import type { NodePath } from "@babel/traverse"
 
 import { Tokens } from "./icu"
@@ -55,7 +61,7 @@ export class MacroJs {
   private replacePathWithMessage = (
     path: NodePath,
     tokens: Tokens,
-    linguiInstance?: babelTypes.Expression,
+    linguiInstance?: BabelTypes.Expression,
   ) => {
     return this.createI18nCall(
       createMessageDescriptorFromTokens(
@@ -68,7 +74,7 @@ export class MacroJs {
     )
   }
 
-  replacePath = (path: NodePath): false | babelTypes.Expression => {
+  replacePath = (path: NodePath): false | BabelTypes.Expression => {
     const ctx = this._ctx
 
     // defineMessage({ message: "Message", context: "My" }) -> {id: <hash + context>, message: "Message"}
@@ -167,11 +173,11 @@ export class MacroJs {
   private replaceTAsFunction = (
     node: CallExpression,
     ctx: MacroJsContext,
-    linguiInstance?: babelTypes.Expression,
-  ): babelTypes.CallExpression => {
+    linguiInstance?: BabelTypes.Expression,
+  ): BabelTypes.CallExpression => {
     let arg: Expression = node.arguments[0] as Expression
 
-    if (t.isObjectExpression(arg)) {
+    if (isObjectExpression(arg)) {
       arg = processDescriptor(arg, ctx)
     }
 
@@ -215,7 +221,7 @@ export class MacroJs {
     // in the declarator `const { t } = useLingui()`
     const varDec = path.parentPath.node
 
-    if (!t.isObjectPattern(varDec.id)) {
+    if (!isObjectPattern(varDec.id)) {
       // Enforce destructuring `t` from `useLingui` macro to prevent misuse
       throw new Error(
         `You have to destructure \`t\` when using the \`useLingui\` macro, i.e:
@@ -226,7 +232,7 @@ export class MacroJs {
       )
     }
 
-    const _property = t.isObjectPattern(varDec.id)
+    const _property = isObjectPattern(varDec.id)
       ? varDec.id.properties.find(
           (
             property,
@@ -234,14 +240,14 @@ export class MacroJs {
             value: Identifier
             key: Identifier
           } =>
-            t.isObjectProperty(property) &&
-            t.isIdentifier(property.key) &&
-            t.isIdentifier(property.value) &&
+            isObjectProperty(property) &&
+            isIdentifier(property.key) &&
+            isIdentifier(property.value) &&
             property.key.name == "t",
         )
       : null
 
-    const newNode = t.callExpression(t.identifier(this.useLinguiImportName), [])
+    const newNode = callExpression(identifier(this.useLinguiImportName), [])
 
     if (!_property) {
       return newNode
@@ -274,10 +280,9 @@ export class MacroJs {
             _ctx.stripMessageProp,
           )
 
-          const callExpr = t.callExpression(
-            t.identifier(uniqTIdentifier.name),
-            [descriptor],
-          )
+          const callExpr = callExpression(identifier(uniqTIdentifier.name), [
+            descriptor,
+          ])
 
           return currentPath.replaceWith(callExpr)
         }
@@ -293,16 +298,15 @@ export class MacroJs {
               .node,
             _ctx,
           )
-          const callExpr = t.callExpression(
-            t.identifier(uniqTIdentifier.name),
-            [descriptor],
-          )
+          const callExpr = callExpression(identifier(uniqTIdentifier.name), [
+            descriptor,
+          ])
 
           return currentPath.replaceWith(callExpr)
         }
 
         // for rest of cases just rename identifier for run-time counterpart
-        refPath.replaceWith(t.identifier(uniqTIdentifier.name))
+        refPath.replaceWith(identifier(uniqTIdentifier.name))
       })
 
     // assign uniq identifier for runtime `_`
@@ -310,17 +314,17 @@ export class MacroJs {
     _property.key.name = "_"
     _property.value.name = uniqTIdentifier.name
 
-    return t.callExpression(t.identifier(this.useLinguiImportName), [])
+    return callExpression(identifier(this.useLinguiImportName), [])
   }
 
   private createI18nCall(
     messageDescriptor: Expression | undefined,
     linguiInstance?: Expression,
   ) {
-    return t.callExpression(
-      t.memberExpression(
-        linguiInstance ?? t.identifier(this.i18nImportName),
-        t.identifier("_"),
+    return callExpression(
+      memberExpression(
+        linguiInstance ?? identifier(this.i18nImportName),
+        identifier("_"),
       ),
       messageDescriptor ? [messageDescriptor] : [],
     )

@@ -9,8 +9,7 @@ import {
   TranslationIoProject,
   TranslationIoSegment,
 } from "./translationIO/translationio-api.js"
-import { Catalog } from "../api/catalog.js"
-import { order } from "../api/catalog.js"
+import { Catalog, order } from "../api/catalog.js"
 import {
   createLinguiItemFromSegment,
   createSegmentFromLinguiItem,

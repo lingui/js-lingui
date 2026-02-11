@@ -1,29 +1,35 @@
+import { defineConfig } from "eslint/config"
 import pluginJs from "@eslint/js"
 import tseslint from "typescript-eslint"
 import pluginReact from "eslint-plugin-react"
-import { config } from "typescript-eslint"
+import reactHooks from "eslint-plugin-react-hooks"
 import importPlugin from "eslint-plugin-import"
 
-export default config(
-  { files: ["./packages/**/*.{ts,tsx,js,jsx}"] },
-  pluginJs.configs.recommended,
-  ...tseslint.configs.recommended,
-  {
-    plugins: {
-      import: importPlugin,
-    },
-  },
-  importPlugin.flatConfigs.typescript,
+export default defineConfig(
   {
     ignores: [
-      "**/dist/*",
-      "**/fixtures/*",
-      "**/locale/*",
-      "**/test/**/expected/*",
-      "**/test/**/actual/*",
+      "**/dist/**",
+      "**/fixtures/**",
+      "**/locale/**",
+      "**/test/**/expected/**",
+      "**/test/**/actual/**",
+      "**/loader/test/**",
     ],
   },
   {
+    files: ["packages/**/*.{ts,tsx,js,jsx}"],
+    extends: [
+      pluginJs.configs.recommended,
+      ...tseslint.configs.recommended,
+      importPlugin.flatConfigs.recommended,
+      importPlugin.flatConfigs.typescript,
+    ],
+    settings: {
+      "import/resolver": {
+        typescript: true,
+        node: true,
+      },
+    },
     rules: {
       "@typescript-eslint/no-unused-expressions": [
         "error",
@@ -48,17 +54,43 @@ export default config(
           ],
         },
       ],
+    },
+  },
+  {
+    files: ["packages/**/*.{js,jsx}"],
+    rules: {
       "no-undef": "off",
     },
   },
   {
-    files: ["**/*.test.{ts,tsx}", "**/*.tst.{ts,tsx}", "eslint.config.mjs"],
+    files: [
+      "packages/**/*.test.{ts,tsx}",
+      "packages/**/*.tst.{ts,tsx}",
+      "packages/**/test/**/*.{ts,tsx}",
+    ],
     rules: {
       "import/no-extraneous-dependencies": "off",
     },
   },
   {
-    files: ["./packages/react/*.{ts,tsx,js,jsx}"],
-    ...pluginReact.configs.flat.recommended,
+    // TODO: something is wrong with this file,
+    // it should be commonjs, but it has esm syntax, need to investigate
+    files: ["packages/**/macro/browser.cjs"],
+    languageOptions: {
+      sourceType: "module",
+    },
+  },
+  {
+    files: ["packages/react/**/*.{ts,tsx,js,jsx}"],
+    extends: [
+      pluginReact.configs.flat.recommended,
+      pluginReact.configs.flat["jsx-runtime"],
+      reactHooks.configs.flat["recommended-latest"],
+    ],
+    settings: {
+      react: {
+        version: "18.2",
+      },
+    },
   },
 )
