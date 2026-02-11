@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.9.1](https://github.com/lingui/js-lingui/compare/v5.9.0...v5.9.1) (2026-02-11)
+
+### Bug Fixes
+
+* **macro:** Ignore JSX comments when generating message ids ([#2434](https://github.com/lingui/js-lingui/issues/2434)) ([c09deaa](https://github.com/lingui/js-lingui/commit/c09deaac19f2297a8c136cd98f1f3f76178891b0))
+
 # [5.9.0](https://github.com/lingui/js-lingui/compare/v5.8.0...v5.9.0) (2026-01-23)
 
 ### Bug Fixes
