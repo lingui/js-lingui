@@ -2,7 +2,7 @@ import {
   makePathRegexSafe,
   normalizeRelativePath,
   replacePlaceholders,
-} from "./utils"
+} from "./utils.js"
 import mockFs from "mock-fs"
 
 describe("replacePlaceholders", () => {
@@ -13,7 +13,7 @@ describe("replacePlaceholders", () => {
         a: "a-value",
         boo: "b-value",
         ["place-holder"]: "place-holder-value",
-      }
+      },
     )
 
     expect(actual).toBe("/foo/bar/a-value/b-value/a-value/place-holder-value")
@@ -50,7 +50,7 @@ describe("normalizeRelativePath", () => {
     const absolute = "C:\\my\\directory"
     // path remains the same, but separators are converted to posix
     expect(normalizeRelativePath(absolute)).toEqual(
-      absolute.split("\\").join("/")
+      absolute.split("\\").join("/"),
     )
   })
 
@@ -107,7 +107,7 @@ describe("makePathRegexSafe", () => {
   it("should handle multiple special characters", () => {
     const path = "src/components/test(1)[2]{3}^$+.tsx"
     expect(makePathRegexSafe(path)).toBe(
-      "src/components/test\\(1\\)\\[2\\]\\{3\\}\\^\\$\\+.tsx"
+      "src/components/test\\(1\\)\\[2\\]\\{3\\}\\^\\$\\+.tsx",
     )
   })
 

@@ -15,14 +15,17 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        node: ["20", "22"]
-        os: [ubuntu-latest, windows-latest]
+        node: ["22", "24"]
+        os:
+          - ubuntu-latest
+          - windows-latest
+
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Setup node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           always-auth: true
           node-version: ${{ matrix.node }}
@@ -42,17 +45,17 @@ jobs:
     timeout-minutes: 10
     runs-on: ubuntu-latest
     needs: test
-    name: validate (node 20, ubuntu-latest)
+    name: validate (node 22, ubuntu-latest)
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
       - name: Setup node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           always-auth: true
-          node-version: 20
+          node-version-file: .nvmrc
           cache: 'yarn'
           scope: '@lingui'
 
@@ -62,11 +65,11 @@ jobs:
       - name: Check Prettier Formatting
         run: yarn prettier:check
 
-      - name: Linting & Types
-        run: yarn lint:all
-
       - name: Build packages
         run: yarn release:build
+
+      - name: Linting & Types
+        run: yarn lint:all
 
       - name: Unit Testing
         run: yarn test:ci:coverage

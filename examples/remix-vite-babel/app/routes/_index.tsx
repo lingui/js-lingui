@@ -1,4 +1,5 @@
-import { t, Trans } from "@lingui/macro";
+import { t } from "@lingui/core/macro";
+import { Trans } from "@lingui/react/macro";
 import { json, type MetaFunction } from "@remix-run/node";
 import { LocaleSelector } from "~/modules/lingui/lingui";
 

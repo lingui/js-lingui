@@ -28,7 +28,6 @@ macroTester({
       `,
     },
     {
-      only: true,
       name: "Select should support JSX elements in cases",
       code: `
         import { Select, Trans } from '@lingui/react/macro';

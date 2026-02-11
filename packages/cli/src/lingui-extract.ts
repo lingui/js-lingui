@@ -1,39 +1,41 @@
-import pico from "picocolors"
+import { styleText } from "node:util"
 import chokidar from "chokidar"
 import { program } from "commander"
 import nodepath from "path"
-
 import { getConfig, LinguiConfigNormalized } from "@lingui/conf"
 
-import { getCatalogs, AllCatalogsType } from "./api"
-import { printStats } from "./api/stats"
-import { helpRun } from "./api/help"
+import { getCatalogs, AllCatalogsType } from "./api/index.js"
+import { printStats } from "./api/stats.js"
+import { helpRun } from "./api/help.js"
 import ora from "ora"
 import normalizePath from "normalize-path"
 import {
   resolveWorkersOptions,
   WorkersOptions,
-} from "./api/resolveWorkersOptions"
+} from "./api/resolveWorkersOptions.js"
 import {
   createExtractWorkerPool,
   ExtractWorkerPool,
-} from "./api/extractWorkerPool"
+} from "./api/workerPools.js"
 import ms from "ms"
+import { Catalog } from "./api/catalog.js"
+import { getPathsForExtractWatcher } from "./api/getPathsForExtractWatcher.js"
+import { glob } from "node:fs/promises"
+import micromatch from "micromatch"
 
 export type CliExtractOptions = {
   verbose: boolean
   files?: string[]
   clean: boolean
   overwrite: boolean
-  locale: string[]
-  prevFormat: string | null
+  locale?: string[]
   watch?: boolean
   workersOptions: WorkersOptions
 }
 
 export default async function command(
   config: LinguiConfigNormalized,
-  options: Partial<CliExtractOptions>
+  options: CliExtractOptions,
 ): Promise<boolean> {
   const startTime = Date.now()
   options.verbose && console.log("Extracting messages from source files…")
@@ -42,7 +44,7 @@ export default async function command(
   const catalogStats: { [path: string]: AllCatalogsType } = {}
   let commandSuccess = true
 
-  let workerPool: ExtractWorkerPool
+  let workerPool: ExtractWorkerPool | undefined
 
   // important to initialize ora before worker pool, otherwise it cause
   // MaxListenersExceededWarning: Possible EventEmitter memory leak detected. 11 unpipe listeners added to [WriteStream]. MaxListeners is 10. Use emitter.setMaxListeners() to increase limit
@@ -58,11 +60,16 @@ export default async function command(
 
   spinner.start()
 
+  let extractionResult: {
+    catalog: Catalog
+    messagesByLocale: AllCatalogsType
+  }[]
+
   try {
-    await Promise.all(
+    extractionResult = await Promise.all(
       catalogs.map(async (catalog) => {
         const result = await catalog.make({
-          ...(options as CliExtractOptions),
+          ...options,
           orderBy: config.orderBy,
           workerPool,
         })
@@ -72,11 +79,13 @@ export default async function command(
         ] = result || {}
 
         commandSuccess &&= Boolean(result)
-      })
+
+        return { catalog, messagesByLocale: result as AllCatalogsType }
+      }),
     )
   } finally {
     if (workerPool) {
-      await workerPool.terminate(true)
+      await workerPool.destroy()
     }
   }
 
@@ -96,31 +105,37 @@ export default async function command(
 
   if (!options.watch) {
     console.log(
-      `(Use "${pico.yellow(
-        helpRun("extract")
-      )}" to update catalogs with new messages.)`
+      `(Use "${styleText(
+        "yellow",
+        helpRun("extract"),
+      )}" to update catalogs with new messages.)`,
     )
     console.log(
-      `(Use "${pico.yellow(
-        helpRun("compile")
-      )}" to compile catalogs for production. Alternatively, use bundler plugins: https://lingui.dev/ref/cli#compiling-catalogs-in-ci)`
+      `(Use "${styleText(
+        "yellow",
+        helpRun("compile"),
+      )}" to compile catalogs for production. Alternatively, use bundler plugins: https://lingui.dev/ref/cli#compiling-catalogs-in-ci)`,
     )
   }
 
   // If service key is present in configuration, synchronize with cloud translation platform
-  if (
-    typeof config.service === "object" &&
-    config.service.name &&
-    config.service.name.length
-  ) {
+  if (config.service?.name?.length) {
     const moduleName =
       config.service.name.charAt(0).toLowerCase() + config.service.name.slice(1)
 
+    const services: Record<string, any> = {
+      translationIO: () => import(`./services/translationIO.js`),
+    }
+
+    if (!services[moduleName]) {
+      console.error(`Can't load service module ${moduleName}`)
+    }
+
     try {
-      const module = require(`./services/${moduleName}`)
+      const module = services[moduleName]()
 
       await module
-        .default(config, options)
+        .default(config, options, extractionResult)
         .then(console.log)
         .catch(console.error)
     } catch (err) {
@@ -140,12 +155,11 @@ type CliArgs = {
   clean: boolean
   overwrite: boolean
   locale: string[]
-  prevFormat: string | null
   watch?: boolean
   workers?: number
 }
 
-if (require.main === module) {
+if (import.meta.main) {
   program
     .option("--config <path>", "Path to the config file")
     .option(
@@ -156,23 +170,19 @@ if (require.main === module) {
           .split(",")
           .map((s) => s.trim())
           .filter(Boolean)
-      }
+      },
     )
     .option(
       "--workers <n>",
-      "Number of worker threads to use (default: CPU count - 1, capped at 8). Pass `--workers 1` to disable worker threads and run everything in a single process"
+      "Number of worker threads to use (default: CPU count - 1, capped at 8). Pass `--workers 1` to disable worker threads and run everything in a single process",
     )
     .option("--overwrite", "Overwrite translations for source locale")
     .option("--clean", "Remove obsolete translations")
     .option(
       "--debounce <delay>",
-      "Debounces extraction for given amount of milliseconds"
+      "Debounces extraction for given amount of milliseconds",
     )
     .option("--verbose", "Verbose output")
-    .option(
-      "--convert-from <format>",
-      "Convert from previous format of message catalogs"
-    )
     .option("--watch", "Enables Watch Mode")
     .parse(process.argv)
 
@@ -184,28 +194,16 @@ if (require.main === module) {
 
   let hasErrors = false
 
-  const prevFormat = options.convertFrom
-  if (prevFormat && config.format === prevFormat) {
-    hasErrors = true
-    console.error("Trying to migrate message catalog to the same format")
-    console.error(
-      `Set ${pico.bold("new")} format in LinguiJS configuration\n` +
-        ` and ${pico.bold("previous")} format using --convert-from option.`
-    )
-    console.log()
-    console.log(`Example: Convert from lingui format to minimal`)
-    console.log(pico.yellow(helpRun(`extract --convert-from lingui`)))
-    process.exit(1)
-  }
-
   if (options.locale) {
     const missingLocale = options.locale.find(
-      (l) => !config.locales.includes(l)
+      (l) => !config.locales.includes(l),
     )
 
     if (missingLocale) {
       hasErrors = true
-      console.error(`Locale ${pico.bold(missingLocale)} does not exist.`)
+      console.error(
+        `Locale ${styleText("bold", missingLocale)} does not exist.`,
+      )
       console.error()
     }
   }
@@ -220,7 +218,6 @@ if (require.main === module) {
       locale: options.locale,
       watch: options.watch || false,
       files: filePath?.length ? filePath : undefined,
-      prevFormat,
       workersOptions: resolveWorkersOptions(options),
     })
   }
@@ -250,24 +247,25 @@ if (require.main === module) {
 
   // Check if Watch Mode is enabled
   if (options.watch) {
-    console.info(pico.bold("Initializing Watch Mode..."))
+    console.info(styleText("bold", "Initializing Watch Mode..."))
     ;(async function initWatch() {
-      const catalogs = await getCatalogs(config)
-      const paths: string[] = []
-      const ignored: string[] = []
+      const { paths, ignored } = await getPathsForExtractWatcher(config)
 
-      catalogs.forEach((catalog) => {
-        paths.push(...catalog.include)
-        ignored.push(...catalog.exclude)
-      })
+      const matchedPaths: string[] = []
+      for await (const path of glob(paths)) {
+        matchedPaths.push(path)
+      }
 
-      const watcher = chokidar.watch(paths, {
-        ignored: ["/(^|[/\\])../", ...ignored],
+      const watcher = chokidar.watch(matchedPaths, {
+        ignored: [
+          "/(^|[/\\])../",
+          (path: string) => micromatch.any(path, ignored),
+        ],
         persistent: true,
       })
 
       const onReady = () => {
-        console.info(pico.green(pico.bold("Watcher is ready!")))
+        console.info(styleText(["green", "bold"], "Watcher is ready!"))
         watcher
           .on("add", (path) => dispatchExtract([path]))
           .on("change", (path) => dispatchExtract([path]))

@@ -1,16 +1,16 @@
-import { Catalog, writeCompiled } from "../catalog"
+import { Catalog, writeCompiled } from "../catalog.js"
 import { LinguiConfigNormalized } from "@lingui/conf"
-import pico from "picocolors"
-import { getMergedCatalogPath } from "../catalog/getCatalogs"
-import { CliCompileOptions } from "../../lingui-compile"
-import { ProgramExit } from "../ProgramExit"
-import { createCompiledCatalog } from "../compile"
+import { styleText } from "node:util"
+import { getMergedCatalogPath } from "../catalog/getCatalogs.js"
+import { CliCompileOptions } from "../../lingui-compile.js"
+import { ProgramExit } from "../ProgramExit.js"
+import { createCompiledCatalog } from "../compile.js"
 
 import normalizePath from "normalize-path"
 import nodepath from "path"
-import { createCompilationErrorMessage } from "../messages"
-import { getTranslationsForCatalog } from "../catalog/getTranslationsForCatalog"
-import { Logger } from "../logger"
+import { createCompilationErrorMessage } from "../messages.js"
+import { getTranslationsForCatalog } from "../catalog/getTranslationsForCatalog.js"
+import { Logger } from "../logger.js"
 
 export async function compileLocale(
   catalogs: Catalog[],
@@ -18,7 +18,7 @@ export async function compileLocale(
   options: CliCompileOptions,
   config: LinguiConfigNormalized,
   doMerge: boolean,
-  logger: Logger
+  logger: Logger,
 ) {
   let mergedCatalogs: Record<string, string> = {}
 
@@ -35,13 +35,14 @@ export async function compileLocale(
       missingMessages.length > 0
     ) {
       logger.error(
-        pico.red(
-          `Error: Failed to compile catalog for locale ${pico.bold(locale)}!`
-        )
+        styleText(
+          "red",
+          `Error: Failed to compile catalog for locale ${styleText("bold", locale)}!`,
+        ),
       )
 
       if (options.verbose) {
-        logger.error(pico.red("Missing translations:"))
+        logger.error(styleText("red", "Missing translations:"))
         missingMessages.forEach((missing) => {
           const source =
             missing.source || missing.source === missing.id
@@ -52,10 +53,10 @@ export async function compileLocale(
         })
       } else {
         logger.error(
-          pico.red(`Missing ${missingMessages.length} translation(s)`)
+          styleText("red", `Missing ${missingMessages.length} translation(s)`),
         )
       }
-      logger.error()
+      logger.error("")
       throw new ProgramExit()
     }
 
@@ -69,7 +70,7 @@ export async function compileLocale(
           options,
           catalog.path,
           messages,
-          logger
+          logger,
         ))
       ) {
         throw new ProgramExit()
@@ -84,7 +85,7 @@ export async function compileLocale(
       options,
       await getMergedCatalogPath(config),
       mergedCatalogs,
-      logger
+      logger,
     )
 
     if (!result) {
@@ -99,7 +100,7 @@ async function compileAndWrite(
   options: CliCompileOptions,
   writePath: string,
   messages: Record<string, string>,
-  logger: Logger
+  logger: Logger,
 ): Promise<boolean> {
   const namespace = options.typescript
     ? "ts"
@@ -113,7 +114,7 @@ async function compileAndWrite(
       outputPrefix: options.outputPrefix,
       pseudoLocale: config.pseudoLocale,
       compilerBabelOptions: config.compilerBabelOptions,
-    }
+    },
   )
 
   if (errors.length) {
@@ -121,11 +122,11 @@ async function compileAndWrite(
 
     if (options.failOnCompileError) {
       message += `These errors fail command execution because \`--strict\` option passed`
-      logger.error(pico.red(message))
+      logger.error(styleText("red", message))
       return false
     } else {
       message += `You can fail command execution on these errors by passing \`--strict\` option`
-      logger.error(pico.red(message))
+      logger.error(styleText("red", message))
     }
   }
 
@@ -133,11 +134,12 @@ async function compileAndWrite(
     writePath,
     locale,
     compiledCatalog,
-    namespace
+    namespace,
   )
 
   compiledPath = normalizePath(nodepath.relative(config.rootDir, compiledPath))
 
-  options.verbose && logger.error(pico.green(`${locale} ⇒ ${compiledPath}`))
+  options.verbose &&
+    logger.error(styleText("green", `${locale} ⇒ ${compiledPath}`))
   return true
 }

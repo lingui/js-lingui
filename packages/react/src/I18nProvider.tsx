@@ -27,7 +27,7 @@ export const useLinguiInternal = (devErrorMessage?: string): I18nContext => {
   if (process.env.NODE_ENV !== "production") {
     if (context == null) {
       throw new Error(
-        devErrorMessage ?? "useLingui hook was used without I18nProvider."
+        devErrorMessage ?? "useLingui hook was used without I18nProvider.",
       )
     }
   }
@@ -61,7 +61,7 @@ export const I18nProvider = ({
       defaultComponent,
       _: i18n.t.bind(i18n),
     }),
-    [i18n, defaultComponent]
+    [i18n, defaultComponent],
   )
 
   const [context, setContext] = useState<I18nContext>(makeContext())
@@ -94,7 +94,7 @@ export const I18nProvider = ({
     process.env.NODE_ENV === "development" &&
       console.log(
         "I18nProvider rendered `null`. A call to `i18n.activate` needs to happen in order for translations to be activated and for the I18nProvider to render." +
-          "This is not an error but an informational message logged only in development."
+          "This is not an error but an informational message logged only in development.",
       )
     return null
   }

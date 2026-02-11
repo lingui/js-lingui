@@ -1,0 +1,31 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`vite-plugin > should not report error when macro correctly used 1`] = `"Ola"`;
+
+exports[`vite-plugin > should return compiled catalog 1`] = `
+{
+  "mVmaLu": [
+    "My name is ",
+    [
+      "name",
+    ],
+  ],
+  "mY42CM": [
+    "Hello World",
+  ],
+}
+`;
+
+exports[`vite-plugin > should return compiled catalog json 1`] = `
+{
+  "key": [
+    "Message",
+  ],
+  "key2": [
+    "Hello ",
+    [
+      "name",
+    ],
+  ],
+}
+`;

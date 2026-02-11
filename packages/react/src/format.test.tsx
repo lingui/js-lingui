@@ -1,7 +1,7 @@
 import { render } from "@testing-library/react"
 import * as React from "react"
 import { formatElements } from "./format"
-import { mockConsole } from "@lingui/jest-mocks"
+import { mockConsole } from "@lingui/test-utils"
 
 describe("formatElements", function () {
   const html = (elements: React.ReactNode) =>
@@ -18,39 +18,39 @@ describe("formatElements", function () {
 
   it("should format paired elements", function () {
     expect(html(formatElements("<0>Inner</0>", { 0: <strong /> }))).toEqual(
-      "<strong>Inner</strong>"
+      "<strong>Inner</strong>",
     )
 
     expect(
-      html(formatElements("Before <0>Inner</0> After", { 0: <strong /> }))
+      html(formatElements("Before <0>Inner</0> After", { 0: <strong /> })),
     ).toEqual("Before <strong>Inner</strong> After")
   })
 
   it("should preserve element props", function () {
     expect(
-      html(formatElements("<0>About</0>", { 0: <a href="/about" /> }))
+      html(formatElements("<0>About</0>", { 0: <a href="/about" /> })),
     ).toEqual('<a href="/about">About</a>')
   })
 
   it("should preserve newlines", function () {
     expect(html(formatElements("<0>Inn\ner</0>", { 0: <strong /> }))).toEqual(
-      "<strong>Inn\ner</strong>"
+      "<strong>Inn\ner</strong>",
     )
 
     expect(
-      html(formatElements("Before <0>Inn\r\ner</0> After", { 0: <strong /> }))
+      html(formatElements("Before <0>Inn\r\ner</0> After", { 0: <strong /> })),
     ).toEqual("Before <strong>Inn\r\ner</strong> After")
 
     expect(
-      html(formatElements("<0>Ab\rout</0>", { 0: <a href="/about" /> }))
+      html(formatElements("<0>Ab\rout</0>", { 0: <a href="/about" /> })),
     ).toEqual('<a href="/about">Ab\rout</a>')
   })
 
   it("should preserve named element props", function () {
     expect(
       html(
-        formatElements("<named>About</named>", { named: <a href="/about" /> })
-      )
+        formatElements("<named>About</named>", { named: <a href="/about" /> }),
+      ),
     ).toEqual('<a href="/about">About</a>')
   })
 
@@ -60,8 +60,8 @@ describe("formatElements", function () {
         formatElements("<named>About <b>us</b></named>", {
           named: <a href="/about" />,
           b: <strong />,
-        })
-      )
+        }),
+      ),
     ).toEqual('<a href="/about">About <strong>us</strong></a>')
   })
 
@@ -71,19 +71,19 @@ describe("formatElements", function () {
         formatElements("<0><1>Deep</1></0>", {
           0: <a href="/about" />,
           1: <strong />,
-        })
-      )
+        }),
+      ),
     ).toEqual('<a href="/about"><strong>Deep</strong></a>')
 
     expect(
       html(
         formatElements(
           "Before \n<0>Inside <1>\nNested</1>\n Between <2/> After</0>",
-          { 0: <a href="/about" />, 1: <strong />, 2: <br /> }
-        )
-      )
+          { 0: <a href="/about" />, 1: <strong />, 2: <br /> },
+        ),
+      ),
     ).toEqual(
-      'Before \n<a href="/about">Inside <strong>\nNested</strong>\n Between <br> After</a>'
+      'Before \n<a href="/about">Inside <strong>\nNested</strong>\n Between <br> After</a>',
     )
   })
 
@@ -92,7 +92,7 @@ describe("formatElements", function () {
       expect(html(formatElements("<0>First</0>"))).toEqual("First")
       expect(html(formatElements("<0>First</0>Second"))).toEqual("FirstSecond")
       expect(html(formatElements("First<0>Second</0>Third"))).toEqual(
-        "FirstSecondThird"
+        "FirstSecondThird",
       )
       expect(html(formatElements("Fir<0/>st"))).toEqual("First")
       expect(html(formatElements("<tag>text</tag>"))).toEqual("text")
@@ -125,7 +125,7 @@ describe("formatElements", function () {
   it("should ignore unpaired named element used as paired", function () {
     mockConsole((console) => {
       expect(
-        html(formatElements("<named>text</named>", { named: <br /> }))
+        html(formatElements("<named>text</named>", { named: <br /> })),
       ).toEqual("text")
 
       expect(console.warn).not.toBeCalled()
@@ -135,13 +135,13 @@ describe("formatElements", function () {
 
   it("should ignore paired element used as unpaired", function () {
     expect(html(formatElements("text<0/>", { 0: <span /> }))).toEqual(
-      "text<span></span>"
+      "text<span></span>",
     )
   })
 
   it("should ignore paired named element used as unpaired", function () {
     expect(html(formatElements("text<named/>", { named: <span /> }))).toEqual(
-      "text<span></span>"
+      "text<span></span>",
     )
   })
 
@@ -161,7 +161,7 @@ describe("formatElements", function () {
     const childKeys = childElements.map((el) => el?.key).filter(Boolean)
 
     expect(cleanPrefix(childKeys[0] as string)).toBeLessThan(
-      cleanPrefix(childKeys[1] as string)
+      cleanPrefix(childKeys[1] as string),
     )
   })
 })

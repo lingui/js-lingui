@@ -25,7 +25,7 @@ export type LinguiLoaderOptions = {
 }
 
 const loader: LoaderDefinitionFunction<LinguiLoaderOptions> = async function (
-  source
+  source,
 ) {
   const options = this.getOptions() || {}
 
@@ -38,7 +38,7 @@ const loader: LoaderDefinitionFunction<LinguiLoaderOptions> = async function (
 
   const fileCatalog = getCatalogForFile(
     catalogRelativePath,
-    await getCatalogs(config)
+    await getCatalogs(config),
   )
 
   if (!fileCatalog) {
@@ -53,7 +53,7 @@ ${config.catalogs.map((c) => c.path).join("\n")}
 Working dir is: 
 ${process.cwd()}
 
-Please check that \`catalogs.path\` is filled properly.\n`
+Please check that \`catalogs.path\` is filled properly.\n`,
     )
   }
 
@@ -66,7 +66,7 @@ Please check that \`catalogs.path\` is filled properly.\n`
     {
       fallbackLocales: config.fallbackLocales,
       sourceLocale: config.sourceLocale,
-    }
+    },
   )
 
   if (
@@ -76,7 +76,7 @@ Please check that \`catalogs.path\` is filled properly.\n`
   ) {
     const message = createMissingErrorMessage(locale, missingMessages, "loader")
     throw new Error(
-      `${message}\nYou see this error because \`failOnMissing=true\` in Lingui Loader configuration.`
+      `${message}\nYou see this error because \`failOnMissing=true\` in Lingui Loader configuration.`,
     )
   }
 
@@ -88,7 +88,7 @@ Please check that \`catalogs.path\` is filled properly.\n`
 
   const { source: code, errors } = createCompiledCatalog(locale, messages, {
     strict,
-    namespace: this._module.type === "json" ? "json" : "es",
+    namespace: this._module!.type === "json" ? "json" : "es",
     pseudoLocale: config.pseudoLocale,
   })
 
@@ -97,13 +97,13 @@ Please check that \`catalogs.path\` is filled properly.\n`
 
     if (options.failOnCompileError) {
       throw new Error(
-        `${message} These errors fail build because \`failOnCompileError=true\` in Lingui Loader configuration.`
+        `${message} These errors fail build because \`failOnCompileError=true\` in Lingui Loader configuration.`,
       )
     } else {
       this.emitWarning(
         new Error(
-          `${message} You can fail the build on these errors by setting \`failOnCompileError=true\` in Lingui Loader configuration.`
-        )
+          `${message} You can fail the build on these errors by setting \`failOnCompileError=true\` in Lingui Loader configuration.`,
+        ),
       )
     }
   }

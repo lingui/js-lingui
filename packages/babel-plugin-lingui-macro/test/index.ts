@@ -8,7 +8,7 @@ describe("macro", function () {
   const transformTypes = ["plugin", "macro"] as const
 
   function forTransforms(
-    run: (_transformCode: (code: string) => () => string) => any
+    run: (_transformCode: (code: string) => () => string) => any,
   ) {
     return () =>
       transformTypes.forEach((transformType) => {
@@ -25,20 +25,13 @@ describe("macro", function () {
       try {
         return transformSync(
           code,
-          getDefaultBabelOptions(transformType)
+          getDefaultBabelOptions(transformType),
         ).code.trim()
       } catch (e) {
         ;(e as Error).message = (e as Error).message.replace(/([^:]*:){2}/, "")
         throw e
       }
     }
-
-  it("Should throw error if used without babel-macro-plugin", async () => {
-    await expect(async () => {
-      const mod = await import("../src/macro")
-      return (mod as any).Trans
-    }).rejects.toThrow('The macro you imported from "@lingui/core/macro"')
-  })
 
   describe.skip("validation", function () {
     describe("plural/select/selectordinal", function () {
@@ -123,7 +116,7 @@ describe("macro", function () {
         expect(transformCode("number(value, currency);")).not.toThrow()
         expect(transformCode("number(value, { digits: 4 });")).not.toThrow()
         expect(
-          transformCode("number(value, 42);")
+          transformCode("number(value, 42);"),
         ).toThrowErrorMatchingSnapshot()
       })
     })
@@ -131,13 +124,13 @@ describe("macro", function () {
     describe("Plural/Select/SelectOrdinal", function () {
       it("children are not allowed", function () {
         expect(
-          transformCode("<Plural>Not allowed</Plural>")
+          transformCode("<Plural>Not allowed</Plural>"),
         ).toThrowErrorMatchingSnapshot()
         expect(
-          transformCode("<Select>Not allowed</Select>")
+          transformCode("<Select>Not allowed</Select>"),
         ).toThrowErrorMatchingSnapshot()
         expect(
-          transformCode("<SelectOrdinal>Not allowed</SelectOrdinal>")
+          transformCode("<SelectOrdinal>Not allowed</SelectOrdinal>"),
         ).toThrowErrorMatchingSnapshot()
       })
 
@@ -183,9 +176,9 @@ describe("macro", function () {
        
        `
         expect(transformCode(code)).toThrowError(
-          "Error: `useLingui` macro must be used in variable declaration."
+          "Error: `useLingui` macro must be used in variable declaration.",
         )
-      })
+      }),
     )
 
     describe(
@@ -198,9 +191,9 @@ describe("macro", function () {
        
        `
         expect(transformCode(code)).toThrowError(
-          "You have to destructure `t` when using the `useLingui` macro"
+          "You have to destructure `t` when using the `useLingui` macro",
         )
-      })
+      }),
     )
   })
 
@@ -213,7 +206,7 @@ describe("macro", function () {
         <Trans>{...spread}</Trans>
        `
         expect(transformCode(code)).toThrowError("Incorrect usage of Trans")
-      })
+      }),
     )
 
     describe(
@@ -224,7 +217,7 @@ describe("macro", function () {
       <Trans id={msg} />;
        `
         expect(transformCode(code)).toThrowError("Incorrect usage of Trans")
-      })
+      }),
     )
   })
 })

@@ -42,7 +42,7 @@ export function remoteLoader<T>({
       parsedFallbackMessages?.[key]?.translation
         ? parsedFallbackMessages[key].translation
         : parsedMessages[key].translation,
-    ])
+    ]),
   )
 
   return createBrowserCompiledCatalog(mapTranslationsToInterpolatedString)

@@ -4,7 +4,7 @@ type ModuleSrc = [source: string, identifier: string]
 
 const getSymbolSource = (
   defaults: ModuleSrc,
-  config: LinguiConfig["runtimeConfigModule"]
+  config: LinguiConfig["runtimeConfigModule"],
 ): ModuleSrc => {
   const name = defaults[1]
   if (Array.isArray(config)) {
@@ -24,22 +24,22 @@ const getSymbolSource = (
 }
 
 export function normalizeRuntimeConfigModule(
-  config: Pick<LinguiConfig, "runtimeConfigModule">
+  config: Pick<LinguiConfig, "runtimeConfigModule">,
 ) {
   return {
     ...config,
     runtimeConfigModule: {
       i18n: getSymbolSource(
         ["@lingui/core", "i18n"],
-        config.runtimeConfigModule
+        config.runtimeConfigModule,
       ),
       useLingui: getSymbolSource(
         ["@lingui/react", "useLingui"],
-        config.runtimeConfigModule
+        config.runtimeConfigModule,
       ),
       Trans: getSymbolSource(
         ["@lingui/react", "Trans"],
-        config.runtimeConfigModule
+        config.runtimeConfigModule,
       ),
     } satisfies LinguiConfigNormalized["runtimeConfigModule"],
   }

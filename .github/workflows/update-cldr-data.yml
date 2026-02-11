@@ -1,0 +1,62 @@
+name: Update CLDR plural rules
+
+on:
+  schedule:
+    # At 00:00 on the 1st day of every month
+    - cron: "0 0 1 * *"
+  workflow_dispatch: {}
+
+jobs:
+  update-plurals:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.2"
+          tools: composer
+
+      - name: Install gettext/languages
+        run: composer global require gettext/languages
+
+      - name: Add composer global bin to PATH
+        run: echo "$HOME/.composer/vendor/bin" >> $GITHUB_PATH
+
+      - name: Generate plural rules from CLDR
+        working-directory: packages/format-po-gettext
+        run: |
+          export-plural-rules --output=gettext-plurals.json json
+
+      - name: Setup node
+        uses: actions/setup-node@v6
+
+      - run: npx prettier --write packages/format-po-gettext/gettext-plurals.json
+
+      - name: Check if target file changed
+        id: diff
+        run: |
+          if git diff --quiet -- packages/format-po-gettext/gettext-plurals.json; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+            echo "No changes detected in target file"
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
+            echo "Target file changed"
+          fi
+
+      - name: Create Pull Request
+        if: steps.diff.outputs.changed == 'true'
+        uses: peter-evans/create-pull-request@v8
+        with:
+          commit-message: "chore: update CLDR plural rules"
+          title: "chore: update CLDR plural rules"
+          body: |
+            This PR updates plural rules generated from the CLDR database
+            using gettext/languages.
+
+            Automated monthly update.
+          branch: chore/update-cldr-plurals
+          delete-branch: true

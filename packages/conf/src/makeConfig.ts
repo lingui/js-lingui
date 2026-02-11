@@ -3,7 +3,7 @@ import type {
   LinguiConfig,
   LinguiConfigNormalized,
 } from "./types"
-import pico from "picocolors"
+import { styleText } from "node:util"
 import { replaceRootDir } from "./utils/replaceRootDir"
 import { multipleValidOptions, validate } from "jest-validate"
 import { setCldrParentLocales } from "./migrations/setCldrParentLocales"
@@ -16,7 +16,7 @@ export function makeConfig(
   opts: {
     skipValidation?: boolean
     resolvedConfigPath?: string
-  } = {}
+  } = {},
 ): LinguiConfigNormalized {
   let config: LinguiConfig = {
     ...defaultConfig,
@@ -28,6 +28,7 @@ export function makeConfig(
   }
 
   if (!opts.skipValidation) {
+    validateFormat(config)
     validate(config, configValidation)
     validateLocales(config)
   }
@@ -39,7 +40,7 @@ export function makeConfig(
   // `replaceRootDir` should always be the last
   const out = replaceRootDir(
     config,
-    config.rootDir
+    config.rootDir,
   ) as unknown as LinguiConfigNormalized
 
   return {
@@ -48,7 +49,7 @@ export function makeConfig(
   }
 }
 
-export const defaultConfig: LinguiConfig = {
+export const defaultConfig = {
   catalogs: [
     {
       path: pathJoinPosix("<rootDir>", "locale", "{locale}", "messages"),
@@ -69,38 +70,40 @@ export const defaultConfig: LinguiConfig = {
     tsExperimentalDecorators: false,
   },
   fallbackLocales: {} as FallbackLocales,
-  format: "po",
-  formatOptions: { origins: true, lineNumbers: true },
   locales: [],
   orderBy: "message",
   pseudoLocale: "",
   rootDir: ".",
   runtimeConfigModule: ["@lingui/core", "i18n"],
   macro: {
-    corePackage: ["@lingui/macro", "@lingui/core/macro"],
-    jsxPackage: ["@lingui/macro", "@lingui/react/macro"],
+    corePackage: ["@lingui/core/macro"],
+    jsxPackage: ["@lingui/react/macro"],
   },
   sourceLocale: "",
-  service: { name: "", apiKey: "" },
-}
+} satisfies LinguiConfig
+
 export const exampleConfig = {
   ...defaultConfig,
-  format: multipleValidOptions({}, "po"),
+  format: multipleValidOptions({}, {}),
   extractors: multipleValidOptions([], ["babel"], [Object]),
   runtimeConfigModule: multipleValidOptions(
     { i18n: ["@lingui/core", "i18n"], Trans: ["@lingui/react", "Trans"] },
-    ["@lingui/core", "i18n"]
+    ["@lingui/core", "i18n"],
   ),
   fallbackLocales: multipleValidOptions(
     {},
     { "en-US": "en" },
     { "en-US": ["en"] },
     { default: "en" },
-    false
+    false,
   ),
   extractorParserOptions: {
     flow: false,
     tsExperimentalDecorators: false,
+  },
+  service: {
+    apiKey: "",
+    name: "",
   },
   experimental: {
     extractor: {
@@ -119,15 +122,35 @@ const configValidation = {
   comment: "Documentation: https://lingui.dev/ref/conf",
 }
 
+function validateFormat(config: LinguiConfig) {
+  if (typeof config.format === "string") {
+    throw new Error(
+      `String formats like \`{format: ${config.format}}\` are no longer supported.
+      
+Formatters must now be installed as separate packages and provided via format in lingui config:
+        
+import { formatter } from "@lingui/format-po"
+
+export default {
+  [...]
+  format: formatter({lineNumbers: false}),
+}
+`.trim(),
+    )
+  }
+}
+
 function validateLocales(config: LinguiConfig) {
   if (!Array.isArray(config.locales) || !config.locales.length) {
     console.error("No locales defined!\n")
     console.error(
-      `Add ${pico.yellow(
-        "'locales'"
-      )} to your configuration. See ${pico.underline(
-        "https://lingui.dev/ref/conf#locales"
-      )}`
+      `Add ${styleText(
+        "yellow",
+        "'locales'",
+      )} to your configuration. See ${styleText(
+        "underline",
+        "https://lingui.dev/ref/conf#locales",
+      )}`,
     )
   }
 }

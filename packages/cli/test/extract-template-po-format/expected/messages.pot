@@ -32,9 +32,9 @@ msgstr ""
 #. js-lingui-explicit-id
 #: fixtures/file-b.tsx:15
 msgid "jsx.custom.id"
-msgstr ""
+msgstr "This JSX element has custom id"
 
 #. js-lingui-explicit-id
 #: fixtures/file-a.ts:11
 msgid "custom.id"
-msgstr ""
+msgstr "This message has custom id"

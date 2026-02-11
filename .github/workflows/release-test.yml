@@ -14,14 +14,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
       - name: Setup node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
-          always-auth: true
           node-version: 'lts/*'
           cache: 'yarn'
 
@@ -35,12 +34,14 @@ jobs:
           nohup verdaccio --config .github/verdaccio/config.yaml &>verdaccio.log &
           yarn verdaccio:release
 
-      - name: Run tests in create-react-app
+      - name: Run tests in vite-project-react-babel
         run: |
-          cp ./.github/verdaccio/.yarnrc.yml ./examples/create-react-app/.yarnrc.yml
-          cd ./examples/create-react-app
+          cp ./.github/verdaccio/.yarnrc.yml ./examples/vite-project-react-babel/.yarnrc.yml
+          cd ./examples/vite-project-react-babel
           yarn up "@lingui/*"
-          yarn test:ci
+          yarn messages:extract
+          yarn test
+          yarn build
 
       - name: Print Verdaccio Log
         if: ${{ failure() }}

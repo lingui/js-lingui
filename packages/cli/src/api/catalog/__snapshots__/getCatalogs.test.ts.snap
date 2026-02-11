@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`getCatalogs should warn about missing {name} pattern in catalog path 1`] = `[Error: Catalog with path "./locales/{locale}" doesn't have a {name} pattern in it, but one of source directories uses it: "{name}". Either add {name} pattern to "./locales/{locale}" or remove it from all source directories.]`;
+exports[`getCatalogs > should warn about missing {name} pattern in catalog path 1`] = `[Error: Catalog with path "./locales/{locale}" doesn't have a {name} pattern in it, but one of source directories uses it: "{name}". Either add {name} pattern to "./locales/{locale}" or remove it from all source directories.]`;
 
-exports[`getCatalogs should warn if catalogPath is a directory 1`] = `[Error: Remove trailing slash from "./locales/{locale}/". Catalog path isn't a directory, but translation file without extension. For example, catalog path "./locales/{locale}" results in translation file "./locales/en.po".]`;
+exports[`getCatalogs > should warn if catalogPath is a directory 1`] = `[Error: Remove trailing slash from "./locales/{locale}/". Catalog path isn't a directory, but translation file without extension. For example, catalog path "./locales/{locale}" results in translation file "./locales/en.po".]`;
 
-exports[`getCatalogs should warn if catalogPath is a directory 2`] = `[Error: Remove trailing slash from "./locales/{locale}/". Catalog path isn't a directory, but translation file without extension. For example, catalog path "./locales/{locale}" results in translation file "./locales/en.po".]`;
+exports[`getCatalogs > should warn if catalogPath is a directory 2`] = `[Error: Remove trailing slash from "./locales/{locale}/". Catalog path isn't a directory, but translation file without extension. For example, catalog path "./locales/{locale}" results in translation file "./locales/en.po".]`;

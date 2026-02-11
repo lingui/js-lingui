@@ -1,7 +1,7 @@
-import { Catalog } from "../catalog"
+import { Catalog } from "../catalog.js"
 import { FallbackLocales } from "@lingui/conf"
-import type { AllCatalogsType, CatalogType, MessageType } from "../types"
-import { getFallbackListForLocale } from "./getFallbackListForLocale"
+import type { AllCatalogsType, CatalogType, MessageType } from "../types.js"
+import { getFallbackListForLocale } from "./getFallbackListForLocale.js"
 
 export type TranslationMissingEvent = {
   source: string
@@ -16,7 +16,7 @@ export type GetTranslationsOptions = {
 export async function getTranslationsForCatalog(
   catalog: Catalog,
   locale: string,
-  options: GetTranslationsOptions
+  options: GetTranslationsOptions,
 ) {
   const locales = new Set([
     locale,
@@ -39,17 +39,17 @@ export async function getTranslationsForCatalog(
     (acc, key) => {
       acc[key] = getTranslation(
         catalogs,
-        input[key],
+        input[key]!,
         locale,
         key,
         (event) => {
           missing.push(event)
         },
-        options
+        options,
       )
       return acc
     },
-    {}
+    {},
   )
 
   return {
@@ -58,9 +58,9 @@ export async function getTranslationsForCatalog(
   }
 }
 
-function sourceLocaleFallback(catalog: CatalogType, key: string) {
+function sourceLocaleFallback(catalog: CatalogType | undefined, key: string) {
   if (!catalog?.[key]) {
-    return null
+    return undefined
   }
 
   return catalog[key].translation || catalog[key].message
@@ -72,7 +72,7 @@ function getTranslation(
   locale: string,
   key: string,
   onMissing: (message: TranslationMissingEvent) => void,
-  options: GetTranslationsOptions
+  options: GetTranslationsOptions,
 ) {
   const { fallbackLocales, sourceLocale } = options
 
@@ -111,7 +111,8 @@ function getTranslation(
   if (!translation) {
     onMissing({
       id: key,
-      source: msg.message || sourceLocaleFallback(catalogs[sourceLocale], key),
+      source:
+        msg.message || sourceLocaleFallback(catalogs[sourceLocale], key) || "",
     })
   }
 

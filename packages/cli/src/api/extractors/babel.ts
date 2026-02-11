@@ -8,7 +8,7 @@ import linguiExtractMessages from "@lingui/babel-plugin-extract-messages"
 
 import {
   ExtractorType,
-  LinguiConfig,
+  LinguiConfigNormalized,
   ExtractedMessage,
   ExtractorCtx,
 } from "@lingui/conf"
@@ -18,18 +18,39 @@ import linguiMacroPlugin, {
   type LinguiPluginOpts,
 } from "@lingui/babel-plugin-lingui-macro"
 
+import type { RawSourceMap } from "source-map"
+
 export const babelRe = new RegExp(
   "\\.(" +
     [...DEFAULT_EXTENSIONS, ".ts", ".mts", ".cts", ".tsx"]
       .map((ext) => ext.slice(1))
       .join("|") +
     ")$",
-  "i"
+  "i",
 )
 
 const inlineSourceMapsRE = new RegExp(
-  /\/[/*][#@]\s+sourceMappingURL=data:application\/json;(?:charset:utf-8;)?base64,/i
+  /\/[/*][#@]\s+sourceMappingURL=data:application\/json;(?:charset[:=]utf-8;)?base64,([A-Za-z0-9+/=]+)/i,
 )
+const globalInlineSourceMapsRE = new RegExp(inlineSourceMapsRE.source, "gi")
+
+const extractInlineSourceMap = (code: string): RawSourceMap | null => {
+  let base64Data: string | undefined
+
+  globalInlineSourceMapsRE.lastIndex = 0
+  for (const match of code.matchAll(globalInlineSourceMapsRE)) {
+    base64Data = match[1]
+  }
+
+  if (!base64Data) return null
+
+  try {
+    const jsonString = Buffer.from(base64Data, "base64").toString("utf-8")
+    return JSON.parse(jsonString) as RawSourceMap
+  } catch {
+    return null
+  }
+}
 
 /**
  * Create a source mapper which could read original positions
@@ -40,41 +61,33 @@ const inlineSourceMapsRE = new RegExp(
  * @param code source code
  * @param sourceMaps Raw Sourcemaps object to mapping from. Check the https://github.com/mozilla/source-map#new-sourcemapconsumerrawsourcemap
  */
-async function createSourceMapper(code: string, sourceMaps?: any) {
-  let sourceMapsConsumer: import("source-map").SourceMapConsumer
-
-  if (sourceMaps) {
-    const { SourceMapConsumer } = await import("source-map")
-    sourceMapsConsumer = await new SourceMapConsumer(sourceMaps)
-  } else if (code.search(inlineSourceMapsRE) != -1) {
-    const { SourceMapConsumer } = await import("source-map")
-    const { fromSource } = await import("convert-source-map")
-
-    const t = fromSource(code).toObject()
-
-    sourceMapsConsumer = await new SourceMapConsumer(t)
+async function createSourceMapper(code: string, sourceMaps?: RawSourceMap) {
+  const map = sourceMaps ?? extractInlineSourceMap(code)
+  if (!map) {
+    return {
+      destroy: () => {},
+      originalPositionFor: (origin: Origin): Origin => origin,
+    }
   }
 
+  const { SourceMapConsumer } = await import("source-map")
+  const sourceMapsConsumer = await new SourceMapConsumer(map)
+
   return {
-    destroy: () => {
-      if (sourceMapsConsumer) {
-        sourceMapsConsumer.destroy()
-      }
-    },
-
+    destroy: () => sourceMapsConsumer.destroy(),
     originalPositionFor: (origin: Origin): Origin => {
-      if (!sourceMapsConsumer) {
-        return origin
-      }
-
       const [_, line, column] = origin
 
       const mappedPosition = sourceMapsConsumer.originalPositionFor({
         line,
-        column,
+        column: column!,
       })
 
-      return [mappedPosition.source, mappedPosition.line, mappedPosition.column]
+      return [
+        mappedPosition.source!,
+        mappedPosition.line!,
+        mappedPosition.column!,
+      ]
     },
   }
 }
@@ -110,7 +123,7 @@ export async function extractFromFileWithBabel(
   onMessageExtracted: (msg: ExtractedMessage) => void,
   ctx: ExtractorCtx,
   parserOpts: ParserOptions,
-  skipMacroPlugin = false
+  skipMacroPlugin = false,
 ) {
   const mapper = await createSourceMapper(code, ctx?.sourceMaps)
 
@@ -144,7 +157,7 @@ export async function extractFromFileWithBabel(
           onMessageExtracted: (msg) => {
             return onMessageExtracted({
               ...msg,
-              origin: mapper.originalPositionFor(msg.origin),
+              origin: mapper.originalPositionFor(msg.origin!),
             })
           },
         } satisfies ExtractPluginOpts,
@@ -157,7 +170,7 @@ export async function extractFromFileWithBabel(
 
 export function getBabelParserOptions(
   filename: string,
-  parserOptions: LinguiConfig["extractorParserOptions"]
+  parserOptions: LinguiConfigNormalized["extractorParserOptions"],
 ) {
   // https://babeljs.io/docs/en/babel-parser#latest-ecmascript-features
   const parserPlugins: ParserPlugin[] = [

@@ -1,18 +1,4 @@
-/**
- * @deprecated please pass formatter directly to `format`
- *
- * @example
- * ```js
- * // lingui.config.{js,ts}
- * import {formatter} from "@lingui/format-po"
- *
- * export default {
- *   [...]
- *   format: formatter({lineNumbers: false}),
- * }
- * ```
- */
-export type CatalogFormat = "lingui" | "minimal" | "po" | "csv" | "po-gettext"
+import { defaultConfig } from "./makeConfig"
 
 export type ExtractorCtx = {
   /**
@@ -25,7 +11,14 @@ export type ExtractorCtx = {
 
 type CatalogExtra = Record<string, unknown>
 export type MessageOrigin = [filename: string, line?: number]
-export type ExtractedMessageType<Extra = CatalogExtra> = {
+export type ExtractedMessageType = {
+  message?: string
+  origin: MessageOrigin[]
+  comments: string[]
+  context?: string
+  placeholders: Record<string, string[]>
+}
+export type MessageType<Extra = CatalogExtra> = {
   message?: string
   origin?: MessageOrigin[]
   comments?: string[]
@@ -37,12 +30,10 @@ export type ExtractedMessageType<Extra = CatalogExtra> = {
    */
   extra?: Extra
   placeholders?: Record<string, string[]>
+  translation?: string
 }
-export type MessageType<Extra = CatalogExtra> = ExtractedMessageType<Extra> & {
-  translation: string
-}
-export type ExtractedCatalogType<Extra = CatalogExtra> = {
-  [msgId: string]: ExtractedMessageType<Extra>
+export type ExtractedCatalogType = {
+  [msgId: string]: ExtractedMessageType
 }
 export type CatalogType<Extra = CatalogExtra> = {
   [msgId: string]: MessageType<Extra>
@@ -54,7 +45,7 @@ export type ExtractorType = {
     filename: string,
     code: string,
     onMessageExtracted: (msg: ExtractedMessage) => void,
-    ctx?: ExtractorCtx
+    ctx: ExtractorCtx,
   ): Promise<void> | void
 }
 
@@ -67,16 +58,16 @@ export type CatalogFormatter = {
   templateExtension?: string
   parse(
     content: string,
-    ctx: { locale: string | null; sourceLocale: string; filename: string }
+    ctx: { locale: string | undefined; sourceLocale: string; filename: string },
   ): Promise<CatalogType> | CatalogType
   serialize(
     catalog: CatalogType,
     ctx: {
-      locale: string | null
+      locale: string | undefined
       sourceLocale: string
       filename: string
-      existing: string | null
-    }
+      existing: string | undefined
+    },
   ): Promise<string> | string
 }
 
@@ -91,21 +82,15 @@ export type ExtractedMessage = {
   placeholders?: Record<string, string>
 }
 
-export type CatalogFormatOptions = {
-  origins?: boolean
-  lineNumbers?: boolean
-  disableSelectWarning?: boolean
-}
-
 export type OrderByFn = (
   a: {
     messageId: string
-    entry: ExtractedMessageType
+    entry: MessageType
   },
   b: {
     messageId: string
-    entry: ExtractedMessageType
-  }
+    entry: MessageType
+  },
 ) => number
 export type OrderBy = "messageId" | "message" | "origin" | OrderByFn
 
@@ -225,14 +210,26 @@ export type LinguiConfig = {
    * https://lingui.dev/guides/custom-extractor
    */
   extractors?: ExtractorType[]
-  prevFormat?: CatalogFormat
   /**
-   * Message catalog format. The po formatter is used by default. Other formatters are available as separate packages.
+   * Message catalog format. If not set, po formatter would be used.
    *
-   * @default "po"
+   * Other formatters are available as separate packages.
+   *
+   * If you want to set additional options for po formatter you need to
+   * install it as a separate package and provide in config:
+   *
+   * @example
+   * ```js
+   * import {formatter} from "@lingui/format-po"
+   *
+   * export default {
+   *   [...]
+   *   format: formatter({lineNumbers: false}),
+   * }
+   * ```
+   *
    */
-  format?: CatalogFormat | CatalogFormatter
-  formatOptions?: CatalogFormatOptions
+  format?: CatalogFormatter
   /**
    * The locale tags used in the project. The `extract` and `compile` commands write a catalog for each locale specified.
    *
@@ -331,7 +328,7 @@ export type LinguiConfig = {
      * msg`Hello` // <-- would be correctly picked up by macro
      * ```
      *
-     * @default ["@lingui/macro", "@lingui/core/macro"]
+     * @default [ "@lingui/core/macro"]
      */
     corePackage?: string[]
     /**
@@ -351,7 +348,7 @@ export type LinguiConfig = {
      * <Trans>Hello</Trans> // <-- would be correctly picked up by macro
      * ```
      *
-     * @default ["@lingui/macro", "@lingui/react/macro"]
+     * @default ["@lingui/react/macro"]
      */
     jsxPackage?: string[]
   }
@@ -363,11 +360,10 @@ export type LinguiConfig = {
 type ModuleSourceNormalized = readonly [module: string, specifier: string]
 
 export type LinguiConfigNormalized = Omit<
-  LinguiConfig,
+  LinguiConfig & typeof defaultConfig,
   "runtimeConfigModule"
 > & {
   resolvedConfigPath?: string
-  fallbackLocales?: FallbackLocales
   runtimeConfigModule: {
     i18n: ModuleSourceNormalized
     useLingui: ModuleSourceNormalized

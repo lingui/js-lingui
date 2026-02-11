@@ -15,7 +15,7 @@ const deserialize = (raw: string): { [key: string]: MessageType } => {
   const messages: CatalogType = {}
   if (rawCatalog.errors.length) {
     throw new Error(
-      rawCatalog.errors.map((err) => JSON.stringify(err)).join(";")
+      rawCatalog.errors.map((err) => JSON.stringify(err)).join(";"),
     )
   }
   rawCatalog.data.forEach(([key, translation]) => {

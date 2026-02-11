@@ -33,7 +33,7 @@ const voidElementTags = {
  */
 function formatElements(
   value: string,
-  elements: { [key: string]: React.ReactElement } = {}
+  elements: { [key: string]: React.ReactElement } = {},
 ): string | React.ReactElement | Array<React.ReactElement | string> {
   const parts = value.split(tagRe)
   // no inline elements, return
@@ -56,11 +56,11 @@ function formatElements(
     ) {
       if (!element) {
         console.error(
-          `Can't use element at index '${index}' as it is not declared in the original translation`
+          `Can't use element at index '${index}' as it is not declared in the original translation`,
         )
       } else {
         console.error(
-          `${element.type} is a void element tag therefore it must have no children`
+          `${element.type} is a void element tag therefore it must have no children`,
         )
       }
 
@@ -79,8 +79,8 @@ function formatElements(
 
         // format children for pair tags
         // unpaired tags might have children if it's a component passed as a variable
-        children ? formatElements(children, elements) : element.props.children
-      )
+        children ? formatElements(children, elements) : element.props.children,
+      ),
     )
 
     if (after) tree.push(after)
@@ -104,7 +104,7 @@ function formatElements(
  * Returns: Array<[elementIndex, children, after]>
  */
 function getElements(
-  parts: string[]
+  parts: string[],
 ): Array<readonly [string | undefined, string, string | undefined]> {
   if (!parts.length) return []
 

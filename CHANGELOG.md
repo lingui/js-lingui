@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.9.0](https://github.com/lingui/js-lingui/compare/v5.8.0...v5.9.0) (2026-01-23)
+
+### Bug Fixes
+
+* **jsx-macro:** skip unsupported attributes on Plural / Select ([#2407](https://github.com/lingui/js-lingui/issues/2407)) ([e63992d](https://github.com/lingui/js-lingui/commit/e63992dee2a0a9bc53e91944e7e5d0e6a7a177fc))
+* keep catalog extra from previous catalog ([#2399](https://github.com/lingui/js-lingui/issues/2399)) ([25cfdde](https://github.com/lingui/js-lingui/commit/25cfdde3b0c3d95697752a0e698bff9ede6d9a4e))
+
+### Features
+
+* **message-utils:** separate browser/node exports for generateMessageId ([#2401](https://github.com/lingui/js-lingui/issues/2401)) ([2afe02f](https://github.com/lingui/js-lingui/commit/2afe02f42cd7bb4bcaf586b28ed33cfcddb81772))
+
 # [5.8.0](https://github.com/lingui/js-lingui/compare/v5.7.0...v5.8.0) (2026-01-16)
 
 ### Bug Fixes

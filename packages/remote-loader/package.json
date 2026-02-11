@@ -1,12 +1,10 @@
 {
   "name": "@lingui/remote-loader",
   "version": "3.11.0",
+  "type": "commonjs",
   "sideEffects": false,
   "private": true,
   "description": "Load remotely your translations",
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
   "author": {
     "name": "Sergio Moreno",
     "email": "sergiomorenoalbert@gmail.com"
@@ -23,8 +21,7 @@
     "messageformat"
   ],
   "scripts": {
-    "build": "rimraf ./dist && unbuild",
-    "stub": "unbuild --stub"
+    "build": "unbuild"
   },
   "homepage": "https://lingui.dev",
   "repository": {
@@ -36,7 +33,7 @@
     "url": "https://github.com/lingui/js-lingui/issues"
   },
   "engines": {
-    "node": ">=20.0.0"
+    "node": ">=22.19.0"
   },
   "exports": {
     ".": {
@@ -51,10 +48,12 @@
     "dist/"
   ],
   "dependencies": {
-    "@lingui/core": "4.0.0",
-    "@lingui/message-utils": "4.0.0"
+    "@lingui/message-utils": "workspace:*"
   },
   "devDependencies": {
     "unbuild": "2.0.0"
+  },
+  "unbuild": {
+    "declaration": "node16"
   }
 }

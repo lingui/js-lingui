@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`Nested macros 1`] = `
 import { select, plural } from "@lingui/core/macro";
@@ -24,7 +24,7 @@ _i18n._(
       gender: gender,
       numOfGuests: numOfGuests,
     },
-  }
+  },
 );
 
 `;
@@ -54,7 +54,7 @@ _i18n._(
       numOfGuests: numOfGuests,
       someOtherExp: someOtherExp,
     },
-  }
+  },
 );
 
 `;

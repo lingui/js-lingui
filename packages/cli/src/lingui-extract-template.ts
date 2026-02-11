@@ -1,29 +1,29 @@
-import pico from "picocolors"
+import { styleText } from "node:util"
 import { program } from "commander"
 
 import { getConfig, LinguiConfigNormalized } from "@lingui/conf"
 
-import { getCatalogs } from "./api"
+import { getCatalogs } from "./api/index.js"
 import nodepath from "path"
 import normalizePath from "normalize-path"
 import {
   createExtractWorkerPool,
   ExtractWorkerPool,
-} from "./api/extractWorkerPool"
+} from "./api/workerPools.js"
 import {
   resolveWorkersOptions,
   WorkersOptions,
-} from "./api/resolveWorkersOptions"
+} from "./api/resolveWorkersOptions.js"
 
-export type CliExtractTemplateOptions = {
-  verbose: boolean
+type CliExtractTemplateOptions = {
+  verbose?: boolean
   files?: string[]
   workersOptions: WorkersOptions
 }
 
 export default async function command(
   config: LinguiConfigNormalized,
-  options: Partial<CliExtractTemplateOptions>
+  options: CliExtractTemplateOptions,
 ): Promise<boolean> {
   options.verbose && console.log("Extracting messages from source files…")
   const catalogs = await getCatalogs(config)
@@ -31,7 +31,7 @@ export default async function command(
 
   let commandSuccess = true
 
-  let workerPool: ExtractWorkerPool
+  let workerPool: ExtractWorkerPool | undefined
 
   if (options.workersOptions.poolSize) {
     options.verbose &&
@@ -44,7 +44,7 @@ export default async function command(
     await Promise.all(
       catalogs.map(async (catalog) => {
         const result = await catalog.makeTemplate({
-          ...(options as CliExtractTemplateOptions),
+          ...options,
           orderBy: config.orderBy,
           workerPool,
         })
@@ -52,21 +52,21 @@ export default async function command(
         if (result) {
           catalogStats[
             normalizePath(
-              nodepath.relative(config.rootDir, catalog.templateFile)
+              nodepath.relative(config.rootDir, catalog.templateFile),
             )
           ] = Object.keys(result).length
         }
         commandSuccess &&= Boolean(result)
-      })
+      }),
     )
   } finally {
     if (workerPool) {
-      await workerPool.terminate(true)
+      await workerPool.destroy()
     }
   }
   Object.entries(catalogStats).forEach(([key, value]) => {
     console.log(
-      `Catalog statistics for ${pico.bold(key)}: ${pico.green(value)} messages`
+      `Catalog statistics for ${styleText("bold", key)}: ${styleText("green", String(value))} messages`,
     )
     console.log()
   })
@@ -80,13 +80,13 @@ type CliArgs = {
   workers?: number
 }
 
-if (require.main === module) {
+if (import.meta.main) {
   program
     .option("--config <path>", "Path to the config file")
     .option("--verbose", "Verbose output")
     .option(
       "--workers <n>",
-      "Number of worker threads to use (default: CPU count - 1, capped at 8). Pass `--workers 1` to disable worker threads and run everything in a single process"
+      "Number of worker threads to use (default: CPU count - 1, capped at 8). Pass `--workers 1` to disable worker threads and run everything in a single process",
     )
     .parse(process.argv)
 

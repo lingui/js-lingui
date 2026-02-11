@@ -8,5 +8,4 @@ export default defineConfig({
       path: "<rootDir>/locale/{locale}",
     },
   ],
-  format: "po",
 })

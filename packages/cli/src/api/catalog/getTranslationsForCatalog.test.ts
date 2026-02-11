@@ -1,10 +1,10 @@
-import { getTranslationsForCatalog } from "./getTranslationsForCatalog"
-import { Catalog } from "../catalog"
-import type { AllCatalogsType, CatalogType } from "../types"
+import { getTranslationsForCatalog } from "./getTranslationsForCatalog.js"
+import { Catalog } from "../catalog.js"
+import type { AllCatalogsType, CatalogType } from "../types.js"
 
 function getCatalogStub(
   catalogs: AllCatalogsType,
-  template: CatalogType = {}
+  template: CatalogType = {},
 ): Catalog {
   const catalogStub: Partial<Catalog> = {
     async readAll(): Promise<AllCatalogsType> {
@@ -21,7 +21,7 @@ function getCatalogStub(
 
 function lang(
   locale: string,
-  messages: Array<(locale: string) => CatalogType>
+  messages: Array<(locale: string) => CatalogType>,
 ) {
   return {
     [locale]: messages.reduce((acc, msgFn) => {
@@ -37,7 +37,9 @@ function message(id: string, source: string, noTranslation = false) {
   return (locale: string): CatalogType => ({
     [id]: {
       message: source,
-      translation: noTranslation ? null : `${locale}: translation: ${source}`,
+      translation: noTranslation
+        ? undefined
+        : `${locale}: translation: ${source}`,
     },
   })
 }
@@ -205,7 +207,7 @@ describe("getTranslationsForCatalog", () => {
           missing: [],
         }
       `)
-    }
+    },
   )
 
   it("Should fallback to source locale if no other fallbacks and report missing", async () => {
@@ -298,7 +300,7 @@ describe("getTranslationsForCatalog", () => {
     })
 
     const actual = await getTranslationsForCatalog(catalogStub, "pl", {
-      sourceLocale: null,
+      sourceLocale: "",
       fallbackLocales: {},
     })
 

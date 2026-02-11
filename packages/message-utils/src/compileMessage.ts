@@ -1,10 +1,8 @@
 import { Content, parse, Token } from "@messageformat/parser"
-// eslint-disable-next-line import/no-extraneous-dependencies
 import {
   DateFormatError,
   getDateFormatOptions,
-} from "@messageformat/date-skeleton/lib/options"
-// eslint-disable-next-line import/no-extraneous-dependencies
+} from "@messageformat/date-skeleton/lib/options.js"
 import { parseDateTokens } from "@messageformat/date-skeleton"
 
 export type CompiledIcuChoices = Record<string, CompiledMessage> & {
@@ -16,14 +14,14 @@ export type CompiledMessageToken =
   | [
       name: string,
       type?: string,
-      format?: null | string | unknown | CompiledIcuChoices
+      format?: null | string | unknown | CompiledIcuChoices,
     ]
 
 export type CompiledMessage = CompiledMessageToken[]
 
 type MapTextFn = (value: string) => string
 
-function processTokens(tokens: Token[], mapText?: MapTextFn): CompiledMessage {
+function processTokens(tokens: Token[], mapText: MapTextFn): CompiledMessage {
   if (!tokens.filter((token) => token.type !== "content").length) {
     return tokens.map((token) => mapText((token as Content).value))
   }
@@ -80,8 +78,8 @@ function processTokens(tokens: Token[], mapText?: MapTextFn): CompiledMessage {
 }
 
 function compileDateExpression(
-  format: string | undefined,
-  onError: (error: DateFormatError) => void
+  format: string,
+  onError: (error: DateFormatError) => void,
 ) {
   if (/^::/.test(format)) {
     const tokens = parseDateTokens(format.substring(2))
@@ -93,14 +91,14 @@ function compileDateExpression(
 
 export function compileMessageOrThrow(
   message: string,
-  mapText: MapTextFn = (v) => v
+  mapText: MapTextFn = (v) => v,
 ): CompiledMessage {
   return processTokens(parse(message), mapText)
 }
 
 export function compileMessage(
   message: string,
-  mapText: MapTextFn = (v) => v
+  mapText: MapTextFn = (v) => v,
 ): CompiledMessage {
   try {
     return compileMessageOrThrow(message, mapText)
