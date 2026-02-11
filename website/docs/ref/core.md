@@ -234,8 +234,6 @@ Format a date using the conventional format for the active language.
 ```ts
 new Intl.DateTimeFormat(i18n.locale, format).format(d);
 ```
-
-For more context and migration tips, see the blog post: [Intl wrapper deprecation](/blog/2025/12/17/deprecating-intl-wrappers).
 :::
 
 ```ts
@@ -271,8 +269,6 @@ Format a number using the conventional format for the active language.
 ```ts
 new Intl.NumberFormat(i18n.locale, format).format(value);
 ```
-
-For more context and migration tips, see the blog post: [Intl wrapper deprecation](/blog/2025/12/17/deprecating-intl-wrappers).
 :::
 
 ```ts
