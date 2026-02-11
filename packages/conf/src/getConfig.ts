@@ -5,6 +5,7 @@ import path from "path"
 import { makeConfig } from "./makeConfig"
 import { createJiti } from "jiti"
 import { styleText } from "node:util"
+import normalizePath from "normalize-path"
 
 function configExists(path?: string): path is string {
   return !!path && fs.existsSync(path)
@@ -80,12 +81,12 @@ export function getConfig({
     throw new Error("No Lingui config found")
   }
 
-  const userConfig = result ? result.config : {}
-
   return makeConfig(
     {
-      rootDir: result ? path.dirname(result.filepath) : defaultRootDir,
-      ...userConfig,
+      rootDir: result
+        ? normalizePath(path.dirname(result.filepath))
+        : defaultRootDir,
+      ...result.config,
     },
     { skipValidation, resolvedConfigPath: result.filepath },
   )

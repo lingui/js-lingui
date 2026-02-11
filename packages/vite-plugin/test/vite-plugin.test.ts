@@ -7,7 +7,7 @@ import { build, createLogger } from "vite"
 import lingui, { LinguiPluginOpts } from "../src"
 import macrosPlugin from "vite-plugin-babel-macros"
 
-describe.skipIf(platform() === "win32")("vite-plugin", () => {
+describe("vite-plugin", () => {
   it("should return compiled catalog", async () => {
     const { mod } = await runVite(`po-format`)
     expect((await mod.load()).messages).toMatchSnapshot()
