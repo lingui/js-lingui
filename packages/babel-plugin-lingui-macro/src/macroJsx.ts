@@ -220,6 +220,12 @@ export class MacroJSX {
     if (path.isJSXExpressionContainer()) {
       const exp = path.get("expression") as NodePath<Expression>
 
+      // Ignore JSX comments like {/* comment */} - they should not affect
+      // the message or consume expression indices
+      if (exp.isJSXEmptyExpression()) {
+        return []
+      }
+
       if (exp.isStringLiteral()) {
         return [this.tokenizeText(exp.node.value)]
       }
