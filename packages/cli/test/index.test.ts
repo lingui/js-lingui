@@ -347,6 +347,32 @@ describe("E2E Extractor Test", () => {
       compareFolders(actualPath, expectedPath)
     })
 
+    it("should not hang when no entry points match with worker pool", async () => {
+      const { rootDir, actualPath, expectedPath } = await prepare(
+        "extractor-experimental-no-entries",
+      )
+
+      await mockConsole(async (console) => {
+        const config = getConfig({ cwd: rootDir })
+
+        const result = await extractExperimentalCommand(config, {
+          workersOptions: {
+            poolSize: 2,
+          },
+        })
+
+        expect(getConsoleMockCalls(console.error)).toBeFalsy()
+        expect(result).toBeTruthy()
+        expect(getConsoleMockCalls(console.log)).toMatchInlineSnapshot(`
+          You have using an experimental feature
+          Experimental features are not covered by semver, and may cause unexpected or broken application behavior. Use at your own risk.
+
+        `)
+      })
+
+      compareFolders(actualPath, expectedPath)
+    })
+
     it("should extract and clean obsolete", async () => {
       const { rootDir, actualPath, expectedPath } = await prepare(
         "extractor-experimental-clean",
