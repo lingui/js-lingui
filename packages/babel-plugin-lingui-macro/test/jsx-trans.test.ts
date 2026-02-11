@@ -311,6 +311,27 @@ macroTester({
       `,
     },
     {
+      name: "JSX comment should not affect expression index",
+      code: `
+        import { Trans } from '@lingui/react/macro';
+        // Without comment - expression gets index 0
+        <Trans>
+          Click here
+          <Link>
+            {getText()}
+          </Link>
+        </Trans>;
+        // With comment before expression - expression should STILL get index 0
+        <Trans>
+          Click here
+          <Link>
+            {/* @ts-expect-error */}
+            {getText()}
+          </Link>
+        </Trans>;
+      `,
+    },
+    {
       name: "Use decoded html entities",
       code: `
         import { Trans } from "@lingui/react/macro";
