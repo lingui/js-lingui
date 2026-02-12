@@ -73,14 +73,6 @@ export default defineConfig(
     },
   },
   {
-    // TODO: something is wrong with this file,
-    // it should be commonjs, but it has esm syntax, need to investigate
-    files: ["packages/**/macro/browser.cjs"],
-    languageOptions: {
-      sourceType: "module",
-    },
-  },
-  {
     files: ["packages/react/**/*.{ts,tsx,js,jsx}"],
     extends: [
       pluginReact.configs.flat.recommended,
