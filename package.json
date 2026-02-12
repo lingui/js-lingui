@@ -49,7 +49,7 @@
     "lint-staged": "^13.1.0",
     "mock-fs": "^5.2.0",
     "npm-cli-login": "^0.1.1",
-    "ora": "^5.1.0",
+    "ora": "^9.1.0",
     "prettier": "3.8.1",
     "size-limit": "^11.1.6",
     "tstyche": "^4.0.0",
