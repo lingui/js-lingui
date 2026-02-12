@@ -50,7 +50,7 @@
     "pofile": "^1.1.4"
   },
   "devDependencies": {
-    "unbuild": "2.0.0",
+    "unbuild": "3.6.1",
     "vitest": "4.0.18"
   },
   "unbuild": {

@@ -44,7 +44,7 @@
   "devDependencies": {
     "@lingui/test-utils": "workspace:*",
     "@types/normalize-path": "^3.0.0",
-    "unbuild": "^2.0.0",
+    "unbuild": "3.6.1",
     "vitest": "4.0.18"
   },
   "unbuild": {
