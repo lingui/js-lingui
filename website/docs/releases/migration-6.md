@@ -120,9 +120,33 @@ The `@lingui/macro` package continued to work in v5 but emitted deprecation warn
 
 If you were still using `@lingui/macro`, see the [v5 migration guide](/releases/migration-5#react-and-js-macros-were-split-to-separate-packages) for detailed migration instructions and available codemods.
 
-## Deprecated Intl Wrappers
+## Deprecated `Intl` Wrappers
 
-<!-- TODO -->
+Lingui wrappers around `Intl` (`i18n.date`, `i18n.number`, and shared helpers) are deprecated. Use native `Intl.*` APIs instead.
+
+Lingui only ever wrapped two Intl APIs (date and number), so it was unclear what was supported and users had to look elsewhere for things like `Intl.ListFormat`. The wrappers also increase bundle size - class methods cannot be tree-shaken and add maintenance. Lingui is focusing on message extraction and catalogs; formatting dates and numbers is the job of the native `Intl` API. The deprecated methods will be removed in a future major release.
+
+### Migration
+
+Replace wrapper calls with `Intl.DateTimeFormat` and `Intl.NumberFormat`, passing `i18n.locale`:
+
+- `i18n.date(date, options)` → `new Intl.DateTimeFormat(i18n.locale, options).format(date)`
+- `i18n.number(n, options)` → `new Intl.NumberFormat(i18n.locale, options).format(n)`
+
+**Plain JS/TS:**
+
+```ts
+const dateFormatter = new Intl.DateTimeFormat(i18n.locale, { dateStyle: "medium" });
+const numberFormatter = new Intl.NumberFormat(i18n.locale, { style: "currency", currency: "EUR" });
+// dateFormatter.format(date) - numberFormatter.format(total)
+```
+
+**React:** Memoize formatters with `useMemo` so they update when the locale changes:
+
+```tsx
+const { i18n } = useLingui();
+const dateFormatter = useMemo(() => new Intl.DateTimeFormat(i18n.locale, { dateStyle: "medium" }), [i18n.locale]);
+```
 
 ## YAML Configuration Support Removed
 
