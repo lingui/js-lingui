@@ -1,3 +1,4 @@
+import type * as BabelTypesNamespace from "@babel/types"
 import type {
   Expression,
   Identifier,
@@ -5,12 +6,7 @@ import type {
   ObjectExpression,
   ObjectProperty,
 } from "@babel/types"
-import type {
-  PluginObj,
-  PluginPass,
-  NodePath,
-  types as BabelTypesNamespace,
-} from "@babel/core"
+import type { PluginObj, PluginPass, NodePath } from "@babel/core"
 import type { Hub } from "@babel/traverse"
 
 type BabelTypes = typeof BabelTypesNamespace

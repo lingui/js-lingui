@@ -1,6 +1,6 @@
 import linguiMacroPlugin, { LinguiPluginOpts } from "../src"
 import { transformFileSync, transformSync, TransformOptions } from "@babel/core"
-import { format } from "prettier"
+import prettier from "prettier"
 import path from "path"
 import fs from "fs"
 import { macro } from "../src/macro"
@@ -45,7 +45,9 @@ export function macroTester(opts: MacroTesterOptions) {
   process.env.LINGUI_CONFIG = path.join(__dirname, "lingui.config.js")
 
   const clean = (value: string) =>
-    format(value, { parser: "typescript" }).then((c) => c.replace(/\n+/, "\n"))
+    prettier
+      .format(value, { parser: "typescript" })
+      .then((c) => c.replace(/\n+/, "\n"))
 
   opts.cases.forEach((testCase, index) => {
     const {
