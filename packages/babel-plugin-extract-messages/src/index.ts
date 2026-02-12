@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-duplicates
 import type * as BabelTypesNamespace from "@babel/types"
 import type {
   Expression,
@@ -5,6 +6,7 @@ import type {
   Node,
   ObjectExpression,
   ObjectProperty,
+  // eslint-disable-next-line import/no-duplicates
 } from "@babel/types"
 import type { PluginObj, PluginPass, NodePath } from "@babel/core"
 import type { Hub } from "@babel/traverse"
