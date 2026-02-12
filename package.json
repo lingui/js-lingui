@@ -44,8 +44,6 @@
     "eslint": "^10.0.0",
     "eslint-import-resolver-typescript": "^4.4.4",
     "eslint-plugin-import": "^2.32.0",
-    "eslint-plugin-react": "^7.37.5",
-    "eslint-plugin-react-hooks": "^7.0.1",
     "husky": "^8.0.3",
     "lerna": "^9.0.0",
     "lint-staged": "^13.1.0",
