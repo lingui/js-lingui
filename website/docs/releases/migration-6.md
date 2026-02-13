@@ -4,9 +4,7 @@ This guide will help you migrate from Lingui 5.x to 6.x. It covers the most impo
 
 Need to upgrade an older project to v5 first? See our [older migration guide](/releases/migration-5).
 
-<!-- TODO: create dedicated deployment for 5.x documentation -->
-
-If you're looking for 5.x documentation, you can find it [here](https://lingui.dev).
+If you're looking for 5.x documentation, it will continue to be available at [lingui.dev](https://lingui.dev) until v6 is officially released.
 
 ## Node.js Version
 
@@ -32,7 +30,7 @@ All Lingui packages have been converted to ESM-only distribution, except `@lingu
 
 ### Migration
 
-For most users, no changes are required. Modern bundlers (Vite, Webpack, esbuild, Rollup) and Node.js versions that support `require()` for ESM modules (20.16+, 22.19+, or 24+) handle ESM imports transparently.
+For most users, no changes are required. Modern bundlers (Vite, Webpack, esbuild, Rollup) and Node.js versions that support `require()` for ESM modules (22.19+, or 24+) handle ESM imports transparently.
 
 ## Deprecated `format` String and `formatOptions` Removed
 
