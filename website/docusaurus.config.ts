@@ -21,6 +21,14 @@ const config: Config = {
       disableSwitch: false,
       respectPrefersColorScheme: true,
     },
+    announcementBar: {
+      id: "v6_prerelease",
+      content:
+        '🎉 <strong>Lingui v6 Pre-release is now available!</strong> Try it out and share your feedback. <a target="_blank" rel="noopener noreferrer" href="https://github.com/lingui/js-lingui/releases?q=tag%3Av6&expanded=true">Check it out!</a> 🚀',
+      backgroundColor: "#ffd21e",
+      textColor: "#091E42",
+      isCloseable: true,
+    },
     metadata: [
       {
         name: "title",

@@ -3,6 +3,8 @@
 
 🌍📖 A readable, automated, and optimized (2 kb) internationalization for JavaScript
 
+🎉 **Lingui v6 Pre-release is now available!** Try it out and share your feedback. [Check it out!](https://github.com/lingui/js-lingui/releases?q=tag%3Av6&expanded=true) 🚀
+
 <hr />
 
 ![Main Suite][Badge-MainSuite-GithubCI]
