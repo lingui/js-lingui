@@ -20,3 +20,4 @@ Check out the example projects below:
 - [Rspack with SWC](https://github.com/lingui/js-lingui/tree/main/examples/rspack)
 - [Remix with Vite and Babel](https://github.com/lingui/js-lingui/tree/main/examples/remix-vite-babel)
 - [Tanstack Start with Vite and Babel](https://github.com/lingui/js-lingui/tree/main/examples/tanstack-start)
+- [React Webpack with gettext-style PO files](https://github.com/lingui/js-lingui/tree/main/examples/react-webpack-gettext)
