@@ -499,6 +499,54 @@ const message = /*i18n*/ {
 
 :::
 
+### `ph`
+
+The `ph` macro is used to provide explicit labels for placeholders. By default, only simple variables are referenced by name in transformed messages. Complex expressions (like function calls) are referenced by numeric index (`{0}`, `{1}`), which provides little context for translators.
+
+The `ph` macro solves this by letting you assign meaningful names to any expression:
+
+```js
+import { t, ph } from "@lingui/core/macro";
+
+// Without ph(): "Hello {0}"
+t`Hello ${getUserName()}`;
+
+// With ph(): "Hello {name}"
+t`Hello ${ph({ name: getUserName() })}`;
+```
+
+It works by taking an object with a single property, where the key becomes the placeholder name and the value is the expression:
+
+```js
+import { t, ph } from "@lingui/core/macro";
+const message = t`Hello ${ph({ name: getUserName() })}`;
+
+// ↓ ↓ ↓ ↓ ↓ ↓
+
+import { i18n } from "@lingui/core";
+const message = i18n._(
+  /*i18n*/ {
+    id: "OUzSsf",
+    message: "Hello {name}",
+    values: { name: getUserName() },
+  }
+);
+```
+
+The `ph` macro can be used with any other macro that accepts expressions, including [`plural`](#plural), [`select`](#select), and JSX macros like [`Trans`](#trans):
+
+```jsx
+import { Trans } from "@lingui/react/macro";
+import { ph } from "@lingui/core/macro";
+
+<Trans>Welcome back, {ph({ username: getUser().name })}!</Trans>;
+
+// ↓ ↓ ↓ ↓ ↓ ↓
+
+import { Trans } from "@lingui/react";
+<Trans id={"Z5GF+g"} message="Welcome back, {username}!" values={{ username: getUser().name }} />;
+```
+
 ## React Macros
 
 React (JSX) Macros are used in JSX elements and are transformed into the [`Trans`](/ref/react#trans) component imported from the [`@lingui/react`](/ref/react) package.
