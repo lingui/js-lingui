@@ -10,7 +10,7 @@ In this tutorial, we'll learn how to add internationalization (i18n) to an exist
 :::tip Example
 If you're looking for a working solution, check out the [Examples](/examples) page. It contains several sample projects with the complete setup using Lingui and React.
 
-It includes examples for _Create React App_, _React with Vite and Babel_, _React with Vite and SWC_, and more.
+It includes examples for _React with Vite and Babel_, _React with Vite and SWC_, and more.
 :::
 
 ## Installing Lingui
