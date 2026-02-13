@@ -228,6 +228,15 @@ Format a date using the conventional format for the active language.
   When `value` is a string, a `Date` object is created using `new Date(date)`.
 - `format`: an optional object that is passed to the `options` argument of the [`Intl.DateTimeFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat) constructor. This allows for customization of the date formatting.
 
+:::caution Deprecated
+`i18n.date` will be removed. Prefer using `Intl.DateTimeFormat` directly:
+
+```ts
+new Intl.DateTimeFormat(i18n.locale, format).format(d);
+```
+
+:::
+
 ```ts
 import { i18n } from "@lingui/core";
 
@@ -254,6 +263,15 @@ Format a number using the conventional format for the active language.
 
 - `value`: the number to be formatted, as accepted by [`Intl.NumberFormat.prototype.format`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/format#parameters).
 - `format`: an optional object that is passed to the `options` argument of the [`Intl.NumberFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/NumberFormat) constructor. This allows for customization of the date formatting.
+
+:::caution Deprecated
+`i18n.number` will be removed. Prefer using `Intl.NumberFormat` directly:
+
+```ts
+new Intl.NumberFormat(i18n.locale, format).format(value);
+```
+
+:::
 
 ```ts
 import { i18n } from "@lingui/core";
