@@ -24,13 +24,13 @@ In line with the principles of [Semantic Versioning](https://semver.org/), this 
   - [Embracing the AI Era](#embracing-the-ai-era)
   - [CLI Multithreading](#cli-multithreading)
   - [Explicit Placeholder Labels with `ph()`](#explicit-placeholder-labels-with-ph)
-  - [Enhanced Date/Time Formatting](#enhanced-datetime-formatting)
 - [What's New in 6.0?](#whats-new-in-60)
   - [ESM-Only Distribution](#esm-only-distribution)
-  - [Configuration Changes](#configuration-changes)
-  - [The `@lingui/macro` Package No Longer Maintained](#the-linguimacro-package-no-longer-maintained)
+  - [Vue Extractor: support for Vue 3 Reactivity Transform](#vue-extractor-support-for-vue-3-reactivity-transform)
   - [TypeScript Improvements](#typescript-improvements)
   - [Developer Experience Improvements](#developer-experience-improvements)
+    - [Migration from Jest to Vitest](#migration-from-jest-to-vitest)
+    - [Monorepo Infrastructure](#monorepo-infrastructure)
 - [What's Next?](#whats-next)
 
 ## What is Lingui?
@@ -129,32 +129,35 @@ t`Hello ${ph({ name: getUserName() })}`;
 
 📖 Read more about the `ph()` macro in the [macro documentation](/ref/macro#ph).
 
-### Enhanced Date/Time Formatting
-
-Dates and times in messages are now formatted according to the active locale using ICU standard format styles (`short`, `default`, `long`, `full`):
-
-```js
-// {someDate, date, short}  → "12/06/2014"
-// {someDate, date, long}   → "December 6, 2014"
-// {someDate, time, short}  → "17:40"
-// {someDate, time, full}   → "17:40:00 UTC"
-```
-
 ## What's New in 6.0?
 
 ### ESM-Only Distribution
 
-<!-- TODO: focus advantages, some background, bundle size, etc. -->
+Lingui 6.0 is distributed as **ESM-only** (ECMAScript Modules). ESM is the official, standardized module system for JavaScript, and the ecosystem has largely converged on it. After years of shipping dual ESM/CommonJS builds, we've taken the step to simplify.
 
-#### Node.js Version Requirement
+**Why ESM-only?** Dual builds came with real costs: they nearly doubled our package sizes, added maintenance complexity (conditionals, workarounds, and separate entry points), and occasionally led to subtle bugs from module duplication and dependency resolution. Going ESM-only makes Lingui smaller, simpler to maintain, and aligned with where the ecosystem is headed. With Node.js supporting [`require(esm)`](https://joyeecheung.github.io/blog/2024/03/18/require-esm-in-node-js/) in recent versions, the transition is smooth for most users.
 
-### Configuration Changes
+We've reduced both distribution and installation footprint. You can see the impact in the numbers:
 
-#### Deprecated `format` String and `formatOptions` Removed
+<!-- TODO: add distribution size, e.g. npm unpacked size or bundle size for a representative package -->
 
-#### YAML Configuration Support Removed
+Smaller packages mean faster installs and less disk usage, especially for projects using Lingui via CLI or in constrained environments.
 
-### The `@lingui/macro` Package No Longer Maintained
+Lingui 6.0 requires **Node.js v22.19+** (or v24+). This aligns with the ESM-only move and lets us rely on modern Node behavior without legacy workarounds.
+
+### Vue Extractor: support for Vue 3 Reactivity Transform
+
+The Vue extractor now supports [Vue's Reactivity Transform](https://github.com/vuejs/rfcs/discussions/502) (reactive props destructure in `<script setup>`). In Vue 3, destructuring props from `defineProps()` is compiled in a way that can change how variables appear in the generated code. If the extractor runs on the raw source while your app runs on the compiled output, message IDs can diverge and translations may not resolve at runtime.
+
+To align extraction with your build, use the new `createVueExtractor()` factory and enable the `reactivityTransform` option when your project uses the transform:
+
+```js title="lingui.config.{js,ts}"
+import { createVueExtractor } from "@lingui/extractor-vue";
+
+extractors: [babel, createVueExtractor({ reactivityTransform: true })],
+```
+
+The option is opt-in (`reactivityTransform: false` by default) so existing setups keep working.
 
 ### TypeScript Improvements
 
