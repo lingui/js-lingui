@@ -227,7 +227,7 @@ describe("I18nProvider", () => {
     expect(getByText("Ahoj světe")).toBeTruthy()
   })
 
-  it("", () => {
+  it("keeps memoized useLingui().i18n locale in sync on locale change", () => {
     const i18n = setupI18n({
       locale: "en",
       messages: {
