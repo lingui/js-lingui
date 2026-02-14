@@ -47,9 +47,9 @@
     },
     "./server": "./dist/server.mjs",
     "./macro": {
-      "browser": "./macro/browser.cjs",
-      "types": "./macro/index.d.cts",
-      "default": "./macro/index.cjs"
+      "browser": "./macro/browser.mjs",
+      "types": "./macro/index.d.mts",
+      "default": "./macro/index.mjs"
     },
     "./package.json": "./package.json"
   },
@@ -57,9 +57,9 @@
     "LICENSE",
     "README.md",
     "dist/",
-    "macro/browser.cjs",
-    "macro/index.d.cts",
-    "macro/index.cjs"
+    "macro/browser.mjs",
+    "macro/index.d.mts",
+    "macro/index.mjs"
   ],
   "peerDependencies": {
     "babel-plugin-macros": "2 || 3",
@@ -78,8 +78,9 @@
     "@lingui/test-utils": "workspace:*",
     "@testing-library/react": "^14.0.0",
     "@types/react": "^18.2.13",
-    "eslint-plugin-react": "^7.32.2",
-    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint": "^10.0.0",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.0.1",
     "happy-dom": "^20.0.10",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

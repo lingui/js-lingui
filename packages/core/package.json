@@ -37,9 +37,9 @@
   "exports": {
     ".": "./dist/index.mjs",
     "./macro": {
-      "browser": "./macro/browser.cjs",
-      "types": "./macro/index.d.cts",
-      "default": "./macro/index.cjs"
+      "browser": "./macro/browser.mjs",
+      "types": "./macro/index.d.mts",
+      "default": "./macro/index.mjs"
     },
     "./package.json": "./package.json"
   },
@@ -47,9 +47,9 @@
     "LICENSE",
     "README.md",
     "dist/",
-    "macro/browser.cjs",
-    "macro/index.d.cts",
-    "macro/index.cjs"
+    "macro/browser.mjs",
+    "macro/index.d.mts",
+    "macro/index.mjs"
   ],
   "dependencies": {
     "@lingui/babel-plugin-lingui-macro": "workspace:*",

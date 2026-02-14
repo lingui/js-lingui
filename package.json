@@ -36,14 +36,14 @@
     "node": ">=22.19.0"
   },
   "devDependencies": {
-    "@eslint/js": "^9.17.0",
+    "@eslint/js": "^10.0.1",
     "@size-limit/preset-small-lib": "^11.1.6",
     "@types/mock-fs": "^4.13.1",
     "@types/node": "22",
     "@vitest/coverage-v8": "4.0.18",
-    "eslint": "^9.17.0",
-    "eslint-plugin-import": "^2.31.0",
-    "eslint-plugin-react": "^7.37.2",
+    "eslint": "^10.0.0",
+    "eslint-import-resolver-typescript": "^4.4.4",
+    "eslint-plugin-import": "^2.32.0",
     "husky": "^8.0.3",
     "lerna": "^9.0.0",
     "lint-staged": "^13.1.0",
@@ -55,7 +55,7 @@
     "tstyche": "^4.0.0",
     "tsx": "^4.21.0",
     "typescript": "^5.7.2",
-    "typescript-eslint": "^8.18.1",
+    "typescript-eslint": "^8.55.0",
     "vitest": "4.0.18"
   },
   "workspaces": [

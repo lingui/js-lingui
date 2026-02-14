@@ -15,7 +15,7 @@ export type ChoiceOptions = {
   [digit: `${number}`]: string
 }
 
-type MacroMessageDescriptor = (
+export type MacroMessageDescriptor = (
   | {
       id: string
       message?: string

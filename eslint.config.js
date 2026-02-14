@@ -1,29 +1,33 @@
+import { defineConfig } from "eslint/config"
 import pluginJs from "@eslint/js"
 import tseslint from "typescript-eslint"
-import pluginReact from "eslint-plugin-react"
-import { config } from "typescript-eslint"
 import importPlugin from "eslint-plugin-import"
 
-export default config(
-  { files: ["./packages/**/*.{ts,tsx,js,jsx}"] },
-  pluginJs.configs.recommended,
-  ...tseslint.configs.recommended,
-  {
-    plugins: {
-      import: importPlugin,
-    },
-  },
-  importPlugin.flatConfigs.typescript,
+export default defineConfig(
   {
     ignores: [
-      "**/dist/*",
-      "**/fixtures/*",
-      "**/locale/*",
-      "**/test/**/expected/*",
-      "**/test/**/actual/*",
+      "**/dist/**",
+      "**/fixtures/**",
+      "**/locale/**",
+      "**/test/**/expected/**",
+      "**/test/**/actual/**",
+      "**/loader/test/**",
     ],
   },
   {
+    files: ["**/*.{ts,tsx,js,jsx}"],
+    extends: [
+      pluginJs.configs.recommended,
+      ...tseslint.configs.recommended,
+      importPlugin.flatConfigs.recommended,
+      importPlugin.flatConfigs.typescript,
+    ],
+    settings: {
+      "import/resolver": {
+        typescript: true,
+        node: true,
+      },
+    },
     rules: {
       "@typescript-eslint/no-unused-expressions": [
         "error",
@@ -48,17 +52,18 @@ export default config(
           ],
         },
       ],
+    },
+  },
+  {
+    files: ["**/*.{js,jsx}"],
+    rules: {
       "no-undef": "off",
     },
   },
   {
-    files: ["**/*.test.{ts,tsx}", "**/*.tst.{ts,tsx}", "eslint.config.mjs"],
+    files: ["**/*.test.{ts,tsx}", "**/*.tst.{ts,tsx}", "**/test/**/*.{ts,tsx}"],
     rules: {
       "import/no-extraneous-dependencies": "off",
     },
-  },
-  {
-    files: ["./packages/react/*.{ts,tsx,js,jsx}"],
-    ...pluginReact.configs.flat.recommended,
   },
 )

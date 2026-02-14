@@ -43,7 +43,7 @@ export const I18nProvider = ({
   defaultComponent,
   children,
 }: I18nProviderProps) => {
-  const latestKnownLocale = useRef<string | undefined>(i18n.locale)
+  const latestKnownLocale = useRef<string | null>(i18n.locale || null)
   /**
    * We can't pass `i18n` object directly through context, because even when locale
    * or messages are changed, i18n object is still the same. Context provider compares
@@ -75,7 +75,7 @@ export const I18nProvider = ({
    */
   useEffect(() => {
     const updateContext = () => {
-      latestKnownLocale.current = i18n.locale
+      latestKnownLocale.current = i18n.locale || null
       setContext(makeContext())
     }
     const unsubscribe = i18n.on("change", updateContext)
@@ -90,7 +90,7 @@ export const I18nProvider = ({
     return unsubscribe
   }, [i18n, makeContext])
 
-  if (!latestKnownLocale.current) {
+  if (latestKnownLocale.current === null) {
     process.env.NODE_ENV === "development" &&
       console.log(
         "I18nProvider rendered `null`. A call to `i18n.activate` needs to happen in order for translations to be activated and for the I18nProvider to render." +
