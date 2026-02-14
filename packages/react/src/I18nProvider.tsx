@@ -54,10 +54,13 @@ export const I18nProvider = ({
    * of creating a separate Provider/Consumer pair.
    *
    * We can't use useMemo hook either, because we want to recalculate value manually.
+   *
+   * We wrap `i18n` in a Proxy to create a new reference on each context update.
+   * This ensures React Compiler correctly invalidates memoized values that depend on `i18n`.
    */
   const makeContext = useCallback(
     () => ({
-      i18n,
+      i18n: new Proxy(i18n, {}),
       defaultComponent,
       _: i18n.t.bind(i18n),
     }),
