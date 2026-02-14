@@ -136,9 +136,3 @@ export function useLingui(): Omit<I18nContext, "_"> & {
     (literals: TemplateStringsArray, ...placeholders: any[]): string
   }
 }
-
-declare const linguiMacro: {
-  isBabelMacro: boolean
-}
-
-export default linguiMacro

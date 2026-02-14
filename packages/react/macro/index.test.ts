@@ -1,7 +1,7 @@
-import macro from "@lingui/react/macro"
+import * as macroModule from "@lingui/react/macro"
 
 describe("react-macro", () => {
   it("Should re-export Macro", () => {
-    expect((macro as any).isBabelMacro).toBeTruthy()
+    expect((macroModule as any).default.isBabelMacro).toBeTruthy()
   })
 })

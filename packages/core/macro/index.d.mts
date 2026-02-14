@@ -233,9 +233,3 @@ export const msg: typeof defineMessage
  * Helps to define a name for a variable in the message
  */
 export function ph(def: LabeledExpression<string | number>): string
-
-declare const linguiMacro: {
-  isBabelMacro: boolean
-}
-
-export default linguiMacro
