@@ -56,7 +56,7 @@ export const I18nProvider = ({
    * We can't use useMemo hook either, because we want to recalculate value manually.
    *
    * We wrap `i18n` in a Proxy to create a new reference on each context update.
-   * This ensures React Compiler correctly invalidates memoized values that depend on `i18n`.
+   * This ensures React correctly invalidates memoized values that depend on `i18n`.
    */
   const makeContext = useCallback(
     () => ({
