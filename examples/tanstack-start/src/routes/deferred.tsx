@@ -1,13 +1,14 @@
+import { msg } from "@lingui/core/macro"
 import { Trans } from "@lingui/react/macro"
 import { Await, createFileRoute } from "@tanstack/react-router"
 import { Suspense, useState } from "react"
 import { personServerFn, slowServerFn } from "~/functions/deferred"
 
 export const Route = createFileRoute("/deferred")({
-  loader: async () => {
+  loader: async ({ context }) => {
     return {
       deferredStuff: new Promise<string>((r) =>
-        setTimeout(() => r("Hello deferred!"), 2000)
+        setTimeout(() => r(context.i18n._(msg`Hello deferred!`)), 2000)
       ),
       deferredPerson: slowServerFn({ data: "Tanner Linsley" }),
       person: await personServerFn({ data: "John Doe" }),
