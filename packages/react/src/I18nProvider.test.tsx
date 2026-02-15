@@ -3,7 +3,7 @@ import { act, render } from "@testing-library/react"
 
 import { I18nProvider, useLingui } from "./I18nProvider"
 import { I18n, setupI18n } from "@lingui/core"
-import { useMemo } from "react"
+import { useMemo, useCallback } from "react"
 
 describe("I18nProvider", () => {
   it(
@@ -225,5 +225,41 @@ describe("I18nProvider", () => {
     })
 
     expect(getByText("Ahoj světe")).toBeTruthy()
+  })
+
+  it("keeps memoized useLingui().i18n locale in sync on locale change", () => {
+    const i18n = setupI18n({
+      locale: "en",
+      messages: {
+        en: {},
+        cs: {},
+      },
+    })
+
+    const ComponentWithMemoizedI18n = () => {
+      const { i18n } = useLingui()
+
+      const getLocale = useCallback(
+        (i18nInstance: I18n) => i18nInstance.locale,
+        [],
+      )
+      const currentLocale = useMemo(() => getLocale(i18n), [getLocale, i18n])
+
+      return <div data-testid="locale">{currentLocale}</div>
+    }
+
+    const { getByTestId } = render(
+      <I18nProvider i18n={i18n}>
+        <ComponentWithMemoizedI18n />
+      </I18nProvider>,
+    )
+
+    expect(getByTestId("locale").textContent).toBe("en")
+
+    act(() => {
+      i18n.activate("cs")
+    })
+
+    expect(getByTestId("locale").textContent).toBe("cs")
   })
 })
