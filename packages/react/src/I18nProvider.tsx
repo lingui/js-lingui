@@ -67,7 +67,7 @@ export const I18nProvider = ({
     [i18n, defaultComponent],
   )
 
-  const [context, setContext] = useState<I18nContext>(makeContext())
+  const [context, setContext] = useState<I18nContext>(makeContext)
 
   /**
    * Subscribe for locale/message changes
