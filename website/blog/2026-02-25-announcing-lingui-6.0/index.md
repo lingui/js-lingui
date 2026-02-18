@@ -98,13 +98,11 @@ We've introduced a new example project featuring Lingui + [TanStack Start](https
 
 With the growing prevalence of AI-powered development tools, we've worked to ensure Lingui integrates seamlessly with this new paradigm.
 
-We now provide [llms.txt](https://lingui.dev/llms.txt) and [llms-full.txt](https://lingui.dev/llms-full.txt) documentation files following the [llms.txt specification](https://llmstxt.org/), optimized for LLM context windows. [Context7](https://context7.com/lingui/js-lingui) provides Lingui documentation via MCP, allowing AI assistants to fetch up-to-date docs directly into prompts.
+We now provide [`llms.txt`](https://lingui.dev/llms.txt) and [`llms-full.txt`](https://lingui.dev/llms-full.txt) documentation files following the [llms.txt specification](https://llmstxt.org/), optimized for LLM context windows. [Context7](https://context7.com/lingui/js-lingui) provides Lingui documentation via MCP, allowing AI assistants to fetch up-to-date docs directly into prompts.
 
-We've also released [Lingui Skills](https://github.com/lingui/skills) - Agent Skills that help AI coding assistants implement internationalization correctly. Available skills cover best practices and other helpful tips. Install with:
+We've also released [Lingui Skills](https://github.com/lingui/skills) - Agent Skills that help AI coding assistants implement internationalization correctly. Available skills cover best practices and other helpful tips.
 
-```bash
-npx skills add lingui/skills
-```
+📖 See the [i18n with AI](/ai-tools) documentation page for more details.
 
 ### CLI Multithreading
 
