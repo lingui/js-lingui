@@ -39,7 +39,7 @@ Read more about the specification at [llmstxt.org](https://llmstxt.org/).
 
 Add `use context7` to any prompt and Context7-enabled agents will automatically pull relevant Lingui documentation:
 
-```
+```text
 Add i18n to my React app using Lingui. use context7
 ```
 
