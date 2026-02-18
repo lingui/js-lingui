@@ -21,10 +21,6 @@ exports[`getConfig > default config and snapshots > should return default config
     },
     "minified": true,
   },
-  "extractorParserOptions": {
-    "flow": false,
-    "tsExperimentalDecorators": false,
-  },
   "fallbackLocales": {
     "en-gb": "en",
   },
