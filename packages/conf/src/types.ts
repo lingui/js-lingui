@@ -188,6 +188,19 @@ export type LinguiConfig = {
   compileNamespace?: "es" | "ts" | "cjs" | string
   /**
    * Specify additional options used to parse source files when extracting messages.
+   *
+   * @deprecated please pass options directly to the extractor implementation
+   *
+   * @example
+   * ```ts
+   * import { createBabelExtractor } from '@lingui/cli/api/extractors/babel'
+   *
+   * export default {
+   *   [...]
+   *   extractors: [createBabelExtractor({parserOptions: { tsExperimentalDecorators: true }})],
+   * }
+   * ```
+   * https://lingui.dev/guides/custom-extractor
    */
   extractorParserOptions?: {
     /**

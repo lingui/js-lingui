@@ -31,6 +31,7 @@ export function makeConfig(
     validateFormat(config)
     validate(config, configValidation)
     validateLocales(config)
+    validateParserOptions(config)
   }
 
   // List config migrations from oldest to newest
@@ -66,8 +67,8 @@ export const defaultConfig = {
     },
   },
   extractorParserOptions: {
-    flow: false,
-    tsExperimentalDecorators: false,
+    flow: false as boolean,
+    tsExperimentalDecorators: false as boolean,
   },
   fallbackLocales: {} as FallbackLocales,
   locales: [],
@@ -122,9 +123,27 @@ const configValidation = {
   comment: "Documentation: https://lingui.dev/ref/conf",
 }
 
+function validateParserOptions(config: LinguiConfig) {
+  if (config.extractorParserOptions) {
+    console.error(
+      `\`extractorParserOptions\` config option is deprecated.
+      
+Please pass options directly to the extractor implementation:
+      
+import { createBabelExtractor } from '@lingui/cli/api/extractors/babel'
+
+export default {
+  [...]
+  extractors: [createBabelExtractor({parserOptions: { tsExperimentalDecorators: true }})],
+}
+`.trim(),
+    )
+  }
+}
+
 function validateFormat(config: LinguiConfig) {
   if (typeof config.format === "string") {
-    throw new Error(
+    console.error(
       `String formats like \`{format: ${config.format}}\` are no longer supported.
       
 Formatters must now be installed as separate packages and provided via format in lingui config:
