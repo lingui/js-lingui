@@ -18,7 +18,7 @@ import {
 import { AllCatalogsType } from "./types.js"
 import { extractFromFiles } from "./catalog/extractFromFiles.js"
 import { FormatterWrapper, getFormat } from "./formats/index.js"
-import { createBabelExtractor } from "./extractors/babel"
+import { createBabelExtractor } from "./extractors/babel.js"
 
 export const fixture = (...dirs: string[]) =>
   (
