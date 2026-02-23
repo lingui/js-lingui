@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.9.2](https://github.com/lingui/js-lingui/compare/v5.9.1...v5.9.2) (2026-02-23)
+
+### Bug Fixes
+
+* extract performance caused by catalog sort ([#2460](https://github.com/lingui/js-lingui/issues/2460)) ([f26a9d9](https://github.com/lingui/js-lingui/commit/f26a9d99a62db378b2a5895aaac3cab39558b568))
+
 ## [5.9.1](https://github.com/lingui/js-lingui/compare/v5.9.0...v5.9.1) (2026-02-11)
 
 ### Bug Fixes
