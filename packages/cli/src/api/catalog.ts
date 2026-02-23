@@ -373,11 +373,11 @@ export async function writeCompiled(
   return filename
 }
 
-export const orderByMessage: OrderByFn = (a, b) => {
-  // hardcoded en-US locale to have consistent sorting
-  // @see https://github.com/lingui/js-lingui/pull/1808
-  const collator = new Intl.Collator("en-US")
+// hardcoded en-US locale to have consistent sorting
+// @see https://github.com/lingui/js-lingui/pull/1808
+const collator = new Intl.Collator("en-US")
 
+export const orderByMessage: OrderByFn = (a, b) => {
   const aMsg = a.entry.message || ""
   const bMsg = b.entry.message || ""
   const aCtxt = a.entry.context || ""
