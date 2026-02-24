@@ -6,12 +6,7 @@ import type {
 } from "@lingui/babel-plugin-extract-messages"
 import linguiExtractMessages from "@lingui/babel-plugin-extract-messages"
 
-import {
-  ExtractorType,
-  LinguiConfigNormalized,
-  ExtractedMessage,
-  ExtractorCtx,
-} from "@lingui/conf"
+import { ExtractorType, ExtractedMessage, ExtractorCtx } from "@lingui/conf"
 import { ParserPlugin } from "@babel/parser"
 
 import linguiMacroPlugin, {
@@ -170,7 +165,7 @@ export async function extractFromFileWithBabel(
 
 export function getBabelParserOptions(
   filename: string,
-  parserOptions: LinguiConfigNormalized["extractorParserOptions"],
+  parserOptions: BabelExtractorOptions["parserOptions"],
 ) {
   // https://babeljs.io/docs/en/babel-parser#latest-ecmascript-features
   const parserPlugins: ParserPlugin[] = [
@@ -182,7 +177,7 @@ export function getBabelParserOptions(
 
   if ([/\.ts$/, /\.mts$/, /\.cts$/, /\.tsx$/].some((r) => filename.match(r))) {
     parserPlugins.push("typescript")
-    if (parserOptions.tsExperimentalDecorators) {
+    if (parserOptions?.tsExperimentalDecorators) {
       parserPlugins.push("decorators-legacy")
     } else {
       parserPlugins.push("decorators")
@@ -202,18 +197,40 @@ export function getBabelParserOptions(
   return parserPlugins
 }
 
-const extractor: ExtractorType = {
-  match(filename) {
-    return babelRe.test(filename)
-  },
-
-  async extract(filename, code, onMessageExtracted, ctx) {
-    const parserOptions = ctx.linguiConfig.extractorParserOptions
-
-    return extractFromFileWithBabel(filename, code, onMessageExtracted, ctx, {
-      plugins: getBabelParserOptions(filename, parserOptions),
-    })
-  },
+export type BabelExtractorOptions = {
+  parserOptions?: {
+    /**
+     * default false
+     *
+     * By default, standard decorators (Stage3) are applied for TS files
+     * Enable this if you want to use TypesScript's experimental decorators.
+     */
+    tsExperimentalDecorators?: boolean
+    /**
+     * Enable if you use flow. This will apply Flow syntax to js files
+     */
+    flow?: boolean
+  }
 }
 
-export default extractor
+export function createBabelExtractor(
+  options?: BabelExtractorOptions,
+): ExtractorType {
+  return {
+    match(filename) {
+      return babelRe.test(filename)
+    },
+
+    async extract(filename, code, onMessageExtracted, ctx) {
+      const parserOptions =
+        options?.parserOptions ?? ctx.linguiConfig.extractorParserOptions
+
+      return extractFromFileWithBabel(filename, code, onMessageExtracted, ctx, {
+        plugins: getBabelParserOptions(filename, parserOptions),
+      })
+    },
+  }
+}
+
+export const babelExtractor = createBabelExtractor()
+export default babelExtractor

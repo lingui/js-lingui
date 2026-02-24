@@ -18,6 +18,7 @@ import {
 import { AllCatalogsType } from "./types.js"
 import { extractFromFiles } from "./catalog/extractFromFiles.js"
 import { FormatterWrapper, getFormat } from "./formats/index.js"
+import { createBabelExtractor } from "./extractors/babel.js"
 
 export const fixture = (...dirs: string[]) =>
   (
@@ -228,9 +229,13 @@ describe("Catalog", () => {
       const messages = await extractFromFiles(
         [fixture("collect-typescript-jsx/tsx-experimental-decorators.tsx")],
         mockConfig({
-          extractorParserOptions: {
-            tsExperimentalDecorators: true,
-          },
+          extractors: [
+            createBabelExtractor({
+              parserOptions: {
+                tsExperimentalDecorators: true,
+              },
+            }),
+          ],
         }),
       )
 
@@ -263,9 +268,13 @@ describe("Catalog", () => {
           format,
         },
         mockConfig({
-          extractorParserOptions: {
-            flow: true,
-          },
+          extractors: [
+            createBabelExtractor({
+              parserOptions: {
+                flow: true,
+              },
+            }),
+          ],
         }),
       )
 

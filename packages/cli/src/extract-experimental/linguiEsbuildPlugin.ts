@@ -33,10 +33,7 @@ export const pluginLinguiMacro = (options: {
 
         sourceMaps: "inline",
         parserOpts: {
-          plugins: getBabelParserOptions(
-            filename,
-            options.linguiConfig.extractorParserOptions,
-          ),
+          plugins: getBabelParserOptions(filename, {}),
         },
 
         plugins: [

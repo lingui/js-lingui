@@ -31,6 +31,7 @@ export function makeConfig(
     validateFormat(config)
     validate(config, configValidation)
     validateLocales(config)
+    deprecateParserOptions(config)
   }
 
   // List config migrations from oldest to newest
@@ -64,10 +65,6 @@ export const defaultConfig = {
     jsescOption: {
       minimal: true,
     },
-  },
-  extractorParserOptions: {
-    flow: false,
-    tsExperimentalDecorators: false,
   },
   fallbackLocales: {} as FallbackLocales,
   locales: [],
@@ -120,6 +117,24 @@ export const exampleConfig = {
 const configValidation = {
   exampleConfig,
   comment: "Documentation: https://lingui.dev/ref/conf",
+}
+
+function deprecateParserOptions(config: LinguiConfig) {
+  if (config.extractorParserOptions) {
+    console.error(
+      `\`extractorParserOptions\` config option is deprecated.
+      
+Please pass options directly to the extractor implementation:
+      
+import { createBabelExtractor } from '@lingui/cli/api/extractors/babel'
+
+export default {
+  [...]
+  extractors: [createBabelExtractor({parserOptions: { tsExperimentalDecorators: true }})],
+}
+`.trim(),
+    )
+  }
 }
 
 function validateFormat(config: LinguiConfig) {

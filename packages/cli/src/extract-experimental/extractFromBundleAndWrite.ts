@@ -6,11 +6,7 @@ import {
 import { FormatterWrapper } from "../api/formats/index.js"
 import { mergeExtractedMessage } from "../api/catalog/extractFromFiles.js"
 import { writeCatalogs, writeTemplate } from "./writeCatalogs.js"
-import fs from "fs/promises"
-import {
-  extractFromFileWithBabel,
-  getBabelParserOptions,
-} from "../api/extractors/babel.js"
+import extract from "../api/extractors/index.js"
 
 async function extractFromBundle(
   filename: string,
@@ -21,23 +17,12 @@ async function extractFromBundle(
   let success: boolean
 
   try {
-    const file = await fs.readFile(filename)
-
-    const parserOptions = linguiConfig.extractorParserOptions
-
-    await extractFromFileWithBabel(
+    await extract(
       filename,
-      file.toString(),
       (msg: ExtractedMessage) => {
         mergeExtractedMessage(msg, messages, linguiConfig)
       },
-      {
-        linguiConfig,
-      },
-      {
-        plugins: getBabelParserOptions(filename, parserOptions),
-      },
-      true,
+      linguiConfig,
     )
 
     success = true
