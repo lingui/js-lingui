@@ -1,22 +1,22 @@
-import { t } from "@lingui/core/macro"
 import { useLingui } from "@lingui/react/macro"
 import { Link, Outlet, createFileRoute } from "@tanstack/react-router"
 import axios from "redaxios"
-import { DEPLOY_URL } from "../utils/users"
-import type { User } from "../utils/users"
-import { i18n } from "@lingui/core"
+import { DEPLOY_URL } from "~/utils/users"
+import type { User } from "~/utils/users"
+import { msg } from "@lingui/core/macro"
 
 export const Route = createFileRoute("/users")({
-  loader: async () => {
+  loader: async ({ context }) => {
     return await axios
       .get<Array<User>>(DEPLOY_URL + "/api/users", {
         headers: {
-          "Accept-Language": i18n.locale,
+          "Accept-Language": context.i18n.locale,
         },
       })
       .then((r) => r.data)
-      .catch(() => {
-        throw new Error(i18n._("Failed to fetch users"))
+      .catch((e) => {
+        console.error(e)
+        throw new Error(context.i18n._(msg`Failed to fetch users`))
       })
   },
   component: UsersLayoutComponent,
