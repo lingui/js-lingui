@@ -23,11 +23,11 @@ In line with the principles of [Semantic Versioning](https://semver.org/), this 
   - [Ecosystem](#ecosystem)
   - [Embracing the AI Era](#embracing-the-ai-era)
   - [CLI Multithreading](#cli-multithreading)
-  - [Explicit Placeholder Labels with `ph()`](#explicit-placeholder-labels-with-ph)
+  - [Explicit Placeholder Labels Macro](#explicit-placeholder-labels-macro)
 - [What's New in 6.0?](#whats-new-in-60)
   - [ESM-Only Distribution](#esm-only-distribution)
   - [Reduced Package Size](#reduced-package-size)
-  - [Vue Extractor: support for Vue 3 Reactivity Transform](#vue-extractor-support-for-vue-3-reactivity-transform)
+  - [Vue 3 Reactivity Transform in Vue Extractor](#vue-3-reactivity-transform-in-vue-extractor)
   - [Stronger Type Safety](#stronger-type-safety)
 - [What's Next?](#whats-next)
 
@@ -83,7 +83,7 @@ Additionally, `eslint-plugin-lingui` has seen strong adoption, with monthly down
 
 ## Recap
 
-Let's quickly review some of the major changes that have been released between 5.0 and 6.0.
+Let's quickly walk through some of the major changes that have happened between 5.0 and 6.0.
 
 ### Ecosystem
 
@@ -113,7 +113,7 @@ lingui extract --workers 4
 
 By default, Lingui uses CPU cores - 1, capped at 8. Use `--workers 1` to disable multithreading and run in a single process.
 
-### Explicit Placeholder Labels with `ph()`
+### Explicit Placeholder Labels Macro
 
 The [`ph()`](/ref/macro#ph) macro allows labeling placeholders with meaningful names. Without it, complex
 expressions become positional placeholders (`{0}`, `{1}`). With `ph()`, you can assign names that provide
@@ -143,7 +143,7 @@ Lingui 6.0 is distributed as **ESM-only** (ECMAScript Modules). ESM is the offic
 
 **Why ESM-only?** Dual builds came with real costs: they nearly doubled our package sizes, added maintenance complexity (conditionals, workarounds, and separate entry points), and occasionally led to subtle bugs from module duplication and dependency resolution. Going ESM-only makes Lingui smaller, simpler to maintain, and aligned with where the ecosystem is headed. With Node.js supporting [`require(esm)`](https://joyeecheung.github.io/blog/2024/03/18/require-esm-in-node-js/) in recent versions, the transition is smooth for most users.
 
-Lingui 6.0 requires **Node.js v22.19+** (or v24+). This aligns with the ESM-only move and lets us rely on modern Node behavior without legacy workarounds.
+**Node.js v22.19+** (or v24+) is now required. This aligns with the ESM-only move and lets us rely on modern Node behavior without legacy workarounds.
 
 ### Reduced Package Size
 
@@ -161,23 +161,27 @@ The transitive dependency tree shrank from **146 packages down to 104** — 42 f
 
 ![Dependency graph comparison](./deps.png)
 
-### Vue Extractor: support for Vue 3 Reactivity Transform
+### Vue 3 Reactivity Transform in Vue Extractor
 
 The Vue extractor now supports [Vue's Reactivity Transform](https://github.com/vuejs/rfcs/discussions/502) (reactive props destructure in `<script setup>`). In Vue 3, destructuring props from `defineProps()` is compiled in a way that can change how variables appear in the generated code. If the extractor runs on the raw source while your app runs on the compiled output, message IDs can diverge and translations may not resolve at runtime.
 
 To align extraction with your build, use the new `createVueExtractor()` factory and enable the `reactivityTransform` option when your project uses the transform:
 
 ```js title="lingui.config.{js,ts}"
+import { defineConfig } from "@lingui/cli";
 import { createVueExtractor } from "@lingui/extractor-vue";
 
-extractors: [babel, createVueExtractor({ reactivityTransform: true })],
+export default defineConfig({
+  locales: ["en", "cs"],
+  extractors: [createVueExtractor({ reactivityTransform: true })],
+});
 ```
 
 The option is opt-in (`reactivityTransform: false` by default) so existing setups keep working.
 
 ### Stronger Type Safety
 
-Lingui 6.0 tightens TypeScript types for better safety across core packages.
+This release tightens TypeScript types for better safety across core packages.
 
 Several packages now use stricter nullability behavior, and optional values are handled consistently with TypeScript conventions (e.g. `undefined` instead of `null` where appropriate). We've also clarified the separation between extracted-message shapes and loaded-catalog message shapes for better type accuracy in custom extractors, formatters, or tooling.
 
