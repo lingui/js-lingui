@@ -116,12 +116,23 @@ By default, Lingui uses CPU cores - 1, capped at 8. Use `--workers 1` to disable
 
 ### Explicit Placeholder Labels with `ph()`
 
-The [`ph()`](/ref/macro#ph) macro allows labeling placeholders with meaningful names. Without it, complex expressions become positional placeholders (`{0}`, `{1}`). With `ph()`, you can assign names that provide better context for translators:
+The [`ph()`](/ref/macro#ph) macro allows labeling placeholders with meaningful names. Without it, complex
+expressions become positional placeholders (`{0}`, `{1}`). With `ph()`, you can assign names that provide
+better context for translators:
 
-```js
-// Without ph(): "Hello {0}"  →  With ph(): "Hello {name}"
-t`Hello ${ph({ name: getUserName() })}`;
+```diff
+- t`Hello ${getUserName()}`;
++ t`Hello ${ph({ name: getUserName() })}`;
 ```
+
+```diff
+- msgid "Hello {0}"
+- msgstr "Hello {0}"
++ msgid "Hello {name}"
++ msgstr "Hello {name}"
+```
+
+Named placeholders help translators understand _what_ the value represents, so they can choose the correct grammar or wording for the target language.
 
 📖 Read more about the `ph()` macro in the [macro documentation](/ref/macro#ph).
 
