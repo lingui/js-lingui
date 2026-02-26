@@ -27,9 +27,7 @@ In line with the principles of [Semantic Versioning](https://semver.org/), this 
 - [What's New in 6.0?](#whats-new-in-60)
   - [ESM-Only Distribution](#esm-only-distribution)
   - [Vue Extractor: support for Vue 3 Reactivity Transform](#vue-extractor-support-for-vue-3-reactivity-transform)
-  - [TypeScript Improvements](#typescript-improvements)
-  - [Developer Experience Improvements](#developer-experience-improvements)
-    - [Migration from Jest to Vitest](#migration-from-jest-to-vitest)
+  - [Stronger Type Safety](#stronger-type-safety)
 - [What's Next?](#whats-next)
 
 ## What is Lingui?
@@ -166,11 +164,13 @@ extractors: [babel, createVueExtractor({ reactivityTransform: true })],
 
 The option is opt-in (`reactivityTransform: false` by default) so existing setups keep working.
 
-### TypeScript Improvements
+### Stronger Type Safety
 
-### Developer Experience Improvements
+Lingui 6.0 tightens TypeScript types for better safety across core packages.
 
-#### Migration from Jest to Vitest
+Several packages now use stricter nullability behavior, and optional values are handled consistently with TypeScript conventions (e.g. `undefined` instead of `null` where appropriate). We've also clarified the separation between extracted-message shapes and loaded-catalog message shapes for better type accuracy in custom extractors, formatters, or tooling.
+
+Most apps are unaffected, but custom integrations may need small updates.
 
 ## What's Next?
 
