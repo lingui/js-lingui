@@ -5,7 +5,7 @@ tags: [release]
 image: ./social-card.png
 ---
 
-Today we are pleased to announce the release of Lingui 6.0! :rocket:
+We're announcing Lingui 6.0! :rocket:
 
 This release focuses primarily on **technical improvements and modernization** of the codebase. It includes the transition to ESM-only distribution, removal of deprecated APIs, and improved TypeScript support. In this post, we'll highlight the key changes in this release.
 
@@ -26,6 +26,7 @@ In line with the principles of [Semantic Versioning](https://semver.org/), this 
   - [Explicit Placeholder Labels with `ph()`](#explicit-placeholder-labels-with-ph)
 - [What's New in 6.0?](#whats-new-in-60)
   - [ESM-Only Distribution](#esm-only-distribution)
+  - [Reduced Package Size](#reduced-package-size)
   - [Vue Extractor: support for Vue 3 Reactivity Transform](#vue-extractor-support-for-vue-3-reactivity-transform)
   - [Stronger Type Safety](#stronger-type-safety)
 - [What's Next?](#whats-next)
@@ -44,7 +45,7 @@ Before we dive into the changes in 6.0, let's take a look at the project's metri
 %%{init: {"themeCSS": ".node rect { rx: 5; ry: 5; }"} }%%
 
 graph LR
-    subgraph NOV2024["<b>October 2024</b>"]
+    subgraph OCT2024["<b>October 2024</b>"]
         stars1["GitHub Stars ⭐<br/>4.6K"]
 
         subgraph downloads1["Downloads 📥 / month"]
@@ -87,7 +88,7 @@ Let's quickly review some of the major changes that have been released between 5
 
 ### Ecosystem
 
-We've introduced a new example project featuring Lingui + [TanStack Start](https://tanstack.com/start/latest)! Easily add internationalization to your TanStack Start apps using Lingui's powerful localization tools with Vite and Babel plugin integration.
+We've introduced a new example project featuring Lingui + [TanStack Start](https://tanstack.com/start/latest)! Add internationalization to your TanStack Start apps using Lingui's powerful localization tools with Vite and Babel plugin integration.
 
 📖 View the [TanStack Start example](https://github.com/lingui/js-lingui/tree/main/examples/tanstack-start).
 
