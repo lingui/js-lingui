@@ -7,7 +7,7 @@ image: ./social-card.png
 
 We're announcing Lingui 6.0! :rocket:
 
-This release focuses primarily on **technical improvements and modernization** of the codebase. It includes the transition to ESM-only distribution, removal of deprecated APIs, and improved TypeScript support. In this post, we'll highlight the key changes in this release.
+This release focuses primarily on **technical improvements and modernization** of the codebase. It includes the transition to ESM-only distribution, reduced dependency graph, removal of deprecated APIs, and improved TypeScript support. In this post, we'll highlight the key changes in this release.
 
 In line with the principles of [Semantic Versioning](https://semver.org/), this release contains **breaking changes** that we have thoroughly documented in the [v6 migration guide](/releases/migration-6).
 
@@ -53,7 +53,6 @@ graph LR
             A2["@lingui/react<br/>770k"]
             A3["@lingui/swc-plugin<br/>186k"]
             A4["@lingui/vite-plugin<br/>147k"]
-            A5["eslint-plugin-lingui<br/>107k"]
         end
     end
 
@@ -65,7 +64,6 @@ graph LR
             B2["@lingui/react<br/>1.6M"]
             B3["@lingui/swc-plugin<br/>655k"]
             B4["@lingui/vite-plugin<br/>460k"]
-            B5["eslint-plugin-lingui<br/>624k"]
         end
     end
 
@@ -74,13 +72,14 @@ graph LR
     A2 -->|"<b>ㅤ+108%ㅤ</b>"| B2
     A3 -->|"<b>ㅤ+252%ㅤ</b>"| B3
     A4 -->|"<b>ㅤ+213%ㅤ</b>"| B4
-    A5 -->|"<b>ㅤ+483%ㅤ</b>"| B5
 
 style stars1 stroke-width:2px,rx:20,ry:20
 style stars2 stroke-width:2px,rx:20,ry:20
 ```
 
 (_The download numbers are based on the [npm-stat.com](https://npm-stat.com/) data_)
+
+Additionally, `eslint-plugin-lingui` has seen strong adoption, with monthly downloads growing from **~107k** to **~624k** (+483%) over the same period.
 
 ## Recap
 
