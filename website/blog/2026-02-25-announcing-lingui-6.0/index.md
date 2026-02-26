@@ -30,7 +30,6 @@ In line with the principles of [Semantic Versioning](https://semver.org/), this 
   - [TypeScript Improvements](#typescript-improvements)
   - [Developer Experience Improvements](#developer-experience-improvements)
     - [Migration from Jest to Vitest](#migration-from-jest-to-vitest)
-    - [Monorepo Infrastructure](#monorepo-infrastructure)
 - [What's Next?](#whats-next)
 
 ## What is Lingui?
@@ -135,13 +134,23 @@ Lingui 6.0 is distributed as **ESM-only** (ECMAScript Modules). ESM is the offic
 
 **Why ESM-only?** Dual builds came with real costs: they nearly doubled our package sizes, added maintenance complexity (conditionals, workarounds, and separate entry points), and occasionally led to subtle bugs from module duplication and dependency resolution. Going ESM-only makes Lingui smaller, simpler to maintain, and aligned with where the ecosystem is headed. With Node.js supporting [`require(esm)`](https://joyeecheung.github.io/blog/2024/03/18/require-esm-in-node-js/) in recent versions, the transition is smooth for most users.
 
-We've reduced both distribution and installation footprint. You can see the impact in the numbers:
-
-<!-- TODO: add distribution size, e.g. npm unpacked size or bundle size for a representative package -->
-
-Smaller packages mean faster installs and less disk usage, especially for projects using Lingui via CLI or in constrained environments.
-
 Lingui 6.0 requires **Node.js v22.19+** (or v24+). This aligns with the ESM-only move and lets us rely on modern Node behavior without legacy workarounds.
+
+### Reduced Package Size
+
+Lingui 6.0 is noticeably lighter to install and maintain. Across the core packages, we cut both disk usage and transitive dependency count.
+
+To make this representative of real projects, the numbers are calculated for `@lingui/core`, `@lingui/react`, and `@lingui/cli` together. Most apps use this combination, so measuring them as a set captures the practical install footprint better than showing each package in isolation.
+
+#### `node_modules` Footprint
+
+The combined install of `@lingui/core` + `@lingui/react` + `@lingui/cli` dropped from **62 MB to 35 MB** — a ~44% reduction. That means faster `npm install`, lighter CI caches, and less disk clutter on every developer's machine.
+
+#### Dependency Count
+
+The transitive dependency tree shrank from **146 packages down to 104** — 42 fewer packages to resolve, download, and audit on every install. The graph below shows just how much the tree thinned out:
+
+![Dependency graph comparison](./deps.png)
 
 ### Vue Extractor: support for Vue 3 Reactivity Transform
 
@@ -162,8 +171,6 @@ The option is opt-in (`reactivityTransform: false` by default) so existing setup
 ### Developer Experience Improvements
 
 #### Migration from Jest to Vitest
-
-#### Monorepo Infrastructure
 
 ## What's Next?
 
