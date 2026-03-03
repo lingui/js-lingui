@@ -29,15 +29,17 @@ In line with the principles of [Semantic Versioning](https://semver.org/), this 
   - [Reduced Package Size](#reduced-package-size)
   - [Vue 3 Reactivity Transform in Vue Extractor](#vue-3-reactivity-transform-in-vue-extractor)
   - [Stronger Type Safety](#stronger-type-safety)
-- [What's Next?](#whats-next)
+  - [New Example](#new-example)
+- [Conclusion](#conclusion)
+- [Links](#links)
 
 ## What is Lingui?
 
-Lingui is an open-source JavaScript library for internationalization (i18n) and localization (l10n). Designed to make it easy for developers to build fully translated, multilingual applications, it offers support for React, React Native, Vue.js, Node.js, TypeScript, and more.
+Lingui is an open-source JavaScript library for internationalization (**i18n**) and localization (**l10n**). Designed to make it easy for developers to build fully translated, multilingual applications, it offers support for React, React Native, Vue.js, Node.js, TypeScript, Svelte (_community supported_), and more.
 
 ## Progress Highlights
 
-The journey from [Lingui 5.0](/blog/2024/11/28/announcing-lingui-5.0) includes **18 version updates** (minor and patch), more than **117 closed issues**, and more than **130 merged pull requests**.
+The journey from [Lingui 5.0](/blog/2024/11/28/announcing-lingui-5.0) includes **20 version updates** (minor and patch), more than **120 closed issues**, and more than **130 merged pull requests**.
 
 Before we dive into the changes in 6.0, let's take a look at the project's metrics since version 5.0. The project has grown significantly, with GitHub stars up 22% and downloads more than doubling across all packages:
 
@@ -56,22 +58,22 @@ graph LR
         end
     end
 
-    subgraph JAN2026["<b>January 2026</b>"]
+    subgraph FEB2026["<b>February 2026</b>"]
         stars2["GitHub Stars ⭐<br/>5.6K"]
 
         subgraph downloads2["Downloads 📥 / month"]
-            B1["@lingui/core<br/>3.5M"]
-            B2["@lingui/react<br/>1.6M"]
-            B3["@lingui/swc-plugin<br/>655k"]
-            B4["@lingui/vite-plugin<br/>460k"]
+            B1["@lingui/core<br/>3.8M"]
+            B2["@lingui/react<br/>1.8M"]
+            B3["@lingui/swc-plugin<br/>684k"]
+            B4["@lingui/vite-plugin<br/>588k"]
         end
     end
 
     stars1 -->|"<b>ㅤ+22%ㅤ</b>"| stars2
-    A1 -->|"<b>ㅤ+169%ㅤ</b>"| B1
-    A2 -->|"<b>ㅤ+108%ㅤ</b>"| B2
-    A3 -->|"<b>ㅤ+252%ㅤ</b>"| B3
-    A4 -->|"<b>ㅤ+213%ㅤ</b>"| B4
+    A1 -->|"<b>ㅤ+193%ㅤ</b>"| B1
+    A2 -->|"<b>ㅤ+133%ㅤ</b>"| B2
+    A3 -->|"<b>ㅤ+267%ㅤ</b>"| B3
+    A4 -->|"<b>ㅤ+300%ㅤ</b>"| B4
 
 style stars1 stroke-width:2px,rx:20,ry:20
 style stars2 stroke-width:2px,rx:20,ry:20
@@ -79,7 +81,7 @@ style stars2 stroke-width:2px,rx:20,ry:20
 
 (_The download numbers are based on the [npm-stat.com](https://npm-stat.com/) data_)
 
-Additionally, `eslint-plugin-lingui` has seen strong adoption, with monthly downloads growing from **~107k** to **~624k** (+483%) over the same period.
+Additionally, `eslint-plugin-lingui` has seen strong adoption, with monthly downloads growing from **~107k** to **~774k** (+623%) over the same period.
 
 ## Recap
 
@@ -159,7 +161,8 @@ The combined install of `@lingui/core` + `@lingui/react` + `@lingui/cli` dropped
 
 The transitive dependency tree shrank from **146 packages down to 104** — 42 fewer packages to resolve, download, and audit on every install. The graph below shows just how much the tree thinned out:
 
-![Dependency graph comparison](./deps.png)
+![Dependency graph comparison](./deps-light.png#gh-light-mode-only)
+![Dependency graph comparison](./deps-dark.png#gh-dark-mode-only)
 
 ### Vue 3 Reactivity Transform in Vue Extractor
 
@@ -187,6 +190,18 @@ Several packages now use stricter nullability behavior, and optional values are 
 
 Most apps are unaffected, but custom integrations may need small updates.
 
-## What's Next?
+### New Example
 
-<!-- TODO: Links to all commits and PRs, acknowledge contributions -->
+We now have a [React Webpack Po-Gettext](https://github.com/lingui/js-lingui/tree/main/examples/react-webpack-gettext) example in the repo. It uses the [po-gettext](/ref/catalog-formats#po-gettext) formatter for plurals, a minimal webpack setup for React and TypeScript, and dynamic loading of compiled JSON catalogs. It is listed on our [Examples page](/docs/examples) alongside the other starter projects.
+
+## Conclusion
+
+We're excited to continue improving Lingui and hope you enjoy using Lingui 6.0. We look forward to hearing your feedback!
+
+A huge thank you to everyone who contributed to this release - it simply wouldn't have been possible without the amazing [community](/community)!
+
+## Links
+
+- [Migration guide](/releases/migration-6)
+- [Release notes & changelog](https://github.com/lingui/js-lingui/releases/tag/v6.0.0)
+- [Changes since v5.6.1](https://github.com/lingui/js-lingui/compare/v5.6.1...v6.0.0)
