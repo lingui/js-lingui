@@ -40,8 +40,7 @@ The deprecated `format` (as a string) and `formatOptions` configuration options 
 
 The old configuration style using a format string and separate options object is no longer supported:
 
-```js title="lingui.config.js"
-// No longer supported
+```js title="lingui.config.{js,ts}"
 export default {
   locales: ["en", "cs"],
   format: "po",
@@ -53,7 +52,7 @@ export default {
 
 Update your configuration to use the formatter function instead:
 
-```js title="lingui.config.js"
+```js title="lingui.config.{js,ts}" {2,6}
 import { defineConfig } from "@lingui/cli";
 import { formatter } from "@lingui/format-po";
 
@@ -215,24 +214,71 @@ Switch to the dedicated Babel or SWC plugins:
 
 See [Installation](/installation) for configuration details.
 
-## Vue Extractor: `vueExtractor` Replaced by `createVueExtractor()`
+## Deprecated `extractorParserOptions`
 
-The `vueExtractor` export from `@lingui/extractor-vue` is deprecated. Use the new `createVueExtractor()` factory function instead:
+The top-level `extractorParserOptions` configuration option has been removed. Parser options must be passed directly to the extractor implementation. The old configuration style allowed specifying parser options at the root level:
 
 ```js title="lingui.config.{js,ts}"
-// Before
-import { vueExtractor } from "@lingui/extractor-vue";
-extractors: [babel, vueExtractor],
+import { defineConfig } from "@lingui/cli";
 
-// After
-import { createVueExtractor } from "@lingui/extractor-vue";
-extractors: [babel, createVueExtractor()],
+export default defineConfig({
+  locales: ["en", "cs"],
+  extractorParserOptions: {
+    tsExperimentalDecorators: true,
+    flow: false,
+  },
+});
 ```
 
-`createVueExtractor()` accepts an options object. If your project uses Vue's [Reactivity Transform](https://github.com/vuejs/rfcs/discussions/502), enable `reactivityTransform` so message IDs match between extraction and runtime:
+### Migration
+
+Pass parser options to the extractor instead. For the default Babel extractor, use `createBabelExtractor` from `@lingui/cli/api/extractors/babel` and pass a `parserOptions` object:
+
+```js title="lingui.config.{js,ts}" {7-12}
+import { defineConfig } from "@lingui/cli";
+import { createBabelExtractor } from "@lingui/cli/api/extractors/babel";
+
+export default defineConfig({
+  locales: ["en", "cs"],
+  extractors: [
+    createBabelExtractor({
+      parserOptions: {
+        tsExperimentalDecorators: true,
+        flow: false,
+      },
+    }),
+  ],
+});
+```
+
+If you use multiple extractors (e.g. Babel and Vue), include each in the `extractors` array and pass parser options only to the Babel extractor. See [Configuration](/ref/conf#extractorparseroptions) for the full reference.
+
+## Deprecated `vueExtractor`
+
+The `vueExtractor` export from `@lingui/extractor-vue` is deprecated. Use the new `createVueExtractor()` factory function instead. The old configuration used the `vueExtractor` export directly:
 
 ```js title="lingui.config.{js,ts}"
-extractors: [babel, createVueExtractor({ reactivityTransform: true })],
+import { defineConfig } from "@lingui/cli";
+import { vueExtractor } from "@lingui/extractor-vue";
+
+export default defineConfig({
+  locales: ["en", "cs"],
+  extractors: [vueExtractor],
+});
+```
+
+### Migration
+
+Use `createVueExtractor()` instead. It accepts an options object. If your project uses Vue's [Reactivity Transform](https://github.com/vuejs/rfcs/discussions/502), enable `reactivityTransform` so message IDs match between extraction and runtime:
+
+```js title="lingui.config.{js,ts}" {6}
+import { defineConfig } from "@lingui/cli";
+import { createVueExtractor } from "@lingui/extractor-vue";
+
+export default defineConfig({
+  locales: ["en", "cs"],
+  extractors: [createVueExtractor({ reactivityTransform: true })],
+});
 ```
 
 The option is opt-in (`reactivityTransform: false` by default) to avoid breaking existing setups.
