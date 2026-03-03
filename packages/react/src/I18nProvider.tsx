@@ -1,26 +1,33 @@
-import React, { ComponentType } from "react"
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react"
 import type { I18n } from "@lingui/core"
 import type { TransRenderProps } from "./TransNoContext"
 
 export type I18nContext = {
   i18n: I18n
   _: I18n["_"]
-  defaultComponent?: ComponentType<TransRenderProps>
+  defaultComponent?: React.ComponentType<TransRenderProps>
 }
 
 export type I18nProviderProps = Omit<I18nContext, "_"> & {
   children?: React.ReactNode
 }
 
-export const LinguiContext = React.createContext<I18nContext | null>(null)
+export const LinguiContext = createContext<I18nContext | null>(null)
 
 export const useLinguiInternal = (devErrorMessage?: string): I18nContext => {
-  const context = React.useContext(LinguiContext)
+  const context = useContext(LinguiContext)
 
   if (process.env.NODE_ENV !== "production") {
     if (context == null) {
       throw new Error(
-        devErrorMessage ?? "useLingui hook was used without I18nProvider."
+        devErrorMessage ?? "useLingui hook was used without I18nProvider.",
       )
     }
   }
@@ -31,12 +38,12 @@ export function useLingui(): I18nContext {
   return useLinguiInternal()
 }
 
-export function I18nProvider({
+export const I18nProvider = ({
   i18n,
   defaultComponent,
   children,
-}: I18nProviderProps) {
-  const latestKnownLocale = React.useRef<string | undefined>(i18n.locale)
+}: I18nProviderProps) => {
+  const latestKnownLocale = useRef<string | undefined>(i18n.locale)
   /**
    * We can't pass `i18n` object directly through context, because even when locale
    * or messages are changed, i18n object is still the same. Context provider compares
@@ -48,16 +55,16 @@ export function I18nProvider({
    *
    * We can't use useMemo hook either, because we want to recalculate value manually.
    */
-  const makeContext = React.useCallback(
+  const makeContext = useCallback(
     () => ({
       i18n,
       defaultComponent,
       _: i18n.t.bind(i18n),
     }),
-    [i18n, defaultComponent]
+    [i18n, defaultComponent],
   )
 
-  const [context, setContext] = React.useState<I18nContext>(makeContext())
+  const [context, setContext] = useState<I18nContext>(makeContext())
 
   /**
    * Subscribe for locale/message changes
@@ -66,7 +73,7 @@ export function I18nProvider({
    * data (active locale, catalogs). When new messages are loaded or locale is changed
    * we need to trigger re-rendering of LinguiContext.Consumers.
    */
-  React.useEffect(() => {
+  useEffect(() => {
     const updateContext = () => {
       latestKnownLocale.current = i18n.locale
       setContext(makeContext())
@@ -87,7 +94,7 @@ export function I18nProvider({
     process.env.NODE_ENV === "development" &&
       console.log(
         "I18nProvider rendered `null`. A call to `i18n.activate` needs to happen in order for translations to be activated and for the I18nProvider to render." +
-          "This is not an error but an informational message logged only in development."
+          "This is not an error but an informational message logged only in development.",
       )
     return null
   }

@@ -220,12 +220,22 @@ import { i18n } from "@lingui/core";
 i18n.t({ id: "Hello" });
 ```
 
-### `i18n.date(value: string | Date[, format: Intl.DateTimeFormatOptions])` {#i18n.date}
+### `i18n.date(value: string | Date | number[, format: Intl.DateTimeFormatOptions])` {#i18n.date}
 
 Format a date using the conventional format for the active language.
 
-- `date`: a `Date` object to be formatted. When `date` is a string, the `Date` object is created using `new Date(date)`.
+- `value`: the date to be formatted, as accepted by [`Intl.DateTimeFormat.prototype.format`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/format#parameters).
+  When `value` is a string, a `Date` object is created using `new Date(date)`.
 - `format`: an optional object that is passed to the `options` argument of the [`Intl.DateTimeFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat) constructor. This allows for customization of the date formatting.
+
+:::caution Deprecated
+`i18n.date` will be removed. Prefer using `Intl.DateTimeFormat` directly:
+
+```ts
+new Intl.DateTimeFormat(i18n.locale, format).format(d);
+```
+
+:::
 
 ```ts
 import { i18n } from "@lingui/core";
@@ -247,12 +257,21 @@ i18n.date(d);
 // Returns "23. 7. 2021"
 ```
 
-### `i18n.number(value: number[, format: Intl.NumberFormatOptions])` {#i18n.number}
+### `i18n.number(value: number | bigint | Intl.StringNumericLiteral[, format: Intl.NumberFormatOptions])` {#i18n.number}
 
 Format a number using the conventional format for the active language.
 
-- `number`: a number to be formatted.
+- `value`: the number to be formatted, as accepted by [`Intl.NumberFormat.prototype.format`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/format#parameters).
 - `format`: an optional object that is passed to the `options` argument of the [`Intl.NumberFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/NumberFormat) constructor. This allows for customization of the date formatting.
+
+:::caution Deprecated
+`i18n.number` will be removed. Prefer using `Intl.NumberFormat` directly:
+
+```ts
+new Intl.NumberFormat(i18n.locale, format).format(value);
+```
+
+:::
 
 ```ts
 import { i18n } from "@lingui/core";

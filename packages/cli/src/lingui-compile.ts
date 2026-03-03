@@ -1,18 +1,18 @@
-import pico from "picocolors"
+import { styleText } from "node:util"
 import chokidar from "chokidar"
 import { program } from "commander"
 
 import { getConfig, LinguiConfigNormalized } from "@lingui/conf"
-import { helpRun } from "./api/help"
-import { getCatalogs, getFormat } from "./api"
-import { compileLocale } from "./api/compile/compileLocale"
-import { Pool, spawn, Worker } from "threads"
-import { CompileWorker } from "./workers/compileWorker"
+import { helpRun } from "./api/help.js"
+import { getCatalogs } from "./api/index.js"
+import { compileLocale } from "./api/compile/compileLocale.js"
+import { createCompileWorkerPool } from "./api/workerPools.js"
 import {
   resolveWorkersOptions,
   WorkersOptions,
-} from "./api/resolveWorkersOptions"
+} from "./api/resolveWorkersOptions.js"
 import ms from "ms"
+import { getPathsForCompileWatcher } from "./api/getPathsForCompileWatcher.js"
 
 export type CliCompileOptions = {
   verbose?: boolean
@@ -22,11 +22,12 @@ export type CliCompileOptions = {
   watch?: boolean
   namespace?: string
   workersOptions: WorkersOptions
+  outputPrefix?: string
 }
 
 export async function command(
   config: LinguiConfigNormalized,
-  options: CliCompileOptions
+  options: CliCompileOptions,
 ) {
   const startTime = Date.now()
 
@@ -53,28 +54,28 @@ export async function command(
       }
     }
   } else {
-    if (!config.resolvedConfigPath) {
+    const resolvedConfigPath = config.resolvedConfigPath
+    if (!resolvedConfigPath) {
       throw new Error(
-        "Multithreading is only supported when lingui config loaded from file system, not passed by API"
+        "Multithreading is only supported when lingui config loaded from file system, not passed by API",
       )
     }
 
     options.verbose &&
       console.log(`Use worker pool of size ${options.workersOptions.poolSize}`)
 
-    const pool = Pool(
-      () => spawn<CompileWorker>(new Worker("./workers/compileWorker")),
-      { size: options.workersOptions.poolSize }
-    )
+    const pool = createCompileWorkerPool({
+      poolSize: options.workersOptions.poolSize,
+    })
 
     try {
-      for (const locale of config.locales) {
-        pool.queue(async (worker) => {
-          const { logs, error, exitProgram } = await worker.compileLocale(
+      await Promise.all(
+        config.locales.map(async (locale) => {
+          const { logs, error, exitProgram } = await pool.run(
             locale,
             options,
             doMerge,
-            config.resolvedConfigPath
+            resolvedConfigPath,
           )
 
           if (logs.errors) {
@@ -89,12 +90,10 @@ export async function command(
           if (error) {
             throw error
           }
-        })
-      }
-
-      await pool.completed(true)
+        }),
+      )
     } finally {
-      await pool.terminate()
+      await pool.destroy()
     }
   }
 
@@ -113,9 +112,10 @@ type CliArgs = {
   config?: string
   debounce?: number
   workers?: number
+  outputPrefix?: string
 }
 
-if (require.main === module) {
+if (import.meta.main) {
   program
     .description("Compile message catalogs to compiled bundle.")
     .option("--config <path>", "Path to the config file")
@@ -124,21 +124,25 @@ if (require.main === module) {
     .option("--typescript", "Create Typescript definition for compiled bundle")
     .option(
       "--workers <n>",
-      "Number of worker threads to use (default: CPU count - 1, capped at 8). Pass `--workers 1` to disable worker threads and run everything in a single process"
+      "Number of worker threads to use (default: CPU count - 1, capped at 8). Pass `--workers 1` to disable worker threads and run everything in a single process",
     )
     .option(
       "--namespace <namespace>",
-      "Specify namespace for compiled bundle. Ex: cjs(default) -> module.exports, es -> export, window.test -> window.test"
+      "Specify namespace for compiled bundle. Ex: cjs(default) -> module.exports, es -> export, window.test -> window.test",
     )
     .option("--watch", "Enables Watch Mode")
     .option(
       "--debounce <delay>",
-      "Debounces compilation for given amount of milliseconds"
+      "Debounces compilation for given amount of milliseconds",
+    )
+    .option(
+      "--output-prefix <prefix>",
+      "Add a custom string to the beginning of compiled files (header/prefix). Useful for tools like linters or coverage directives. Defaults to '/*eslint-disable*/'",
     )
     .on("--help", function () {
       console.log("\n  Examples:\n")
       console.log(
-        "    # Compile translations and use defaults or message IDs for missing translations"
+        "    # Compile translations and use defaults or message IDs for missing translations",
       )
       console.log(`    $ ${helpRun("compile")}`)
       console.log("")
@@ -165,7 +169,8 @@ if (require.main === module) {
         typescript:
           options.typescript || config.compileNamespace === "ts" || false,
         namespace: options.namespace, // we want this to be undefined if user does not specify so default can be used
-      })
+        outputPrefix: options.outputPrefix,
+      }),
     )
 
     return previousRun
@@ -184,33 +189,16 @@ if (require.main === module) {
 
   // Check if Watch Mode is enabled
   if (options.watch) {
-    console.info(pico.bold("Initializing Watch Mode..."))
+    console.info(styleText("bold", "Initializing Watch Mode..."))
     ;(async function initWatch() {
-      const format = await getFormat(
-        config.format,
-        config.formatOptions,
-        config.sourceLocale
-      )
-      const catalogs = await getCatalogs(config)
-
-      const paths: string[] = []
-
-      config.locales.forEach((locale) => {
-        catalogs.forEach((catalog) => {
-          paths.push(
-            `${catalog.path
-              .replace(/{locale}/g, locale)
-              .replace(/{name}/g, "*")}${format.getCatalogExtension()}`
-          )
-        })
-      })
+      const { paths } = await getPathsForCompileWatcher(config)
 
       const watcher = chokidar.watch(paths, {
         persistent: true,
       })
 
       const onReady = () => {
-        console.info(pico.green(pico.bold("Watcher is ready!")))
+        console.info(styleText(["green", "bold"], "Watcher is ready!"))
         watcher
           .on("add", () => dispatchCompile())
           .on("change", () => dispatchCompile())

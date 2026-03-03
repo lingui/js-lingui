@@ -1,7 +1,7 @@
-import { command } from "../lingui-compile"
+import { command } from "../lingui-compile.js"
 import { getConfig, LinguiConfig, makeConfig } from "@lingui/conf"
-import { getConsoleMockCalls, mockConsole } from "@lingui/jest-mocks"
-import { createFixtures, readFsToListing } from "../tests"
+import { getConsoleMockCalls, mockConsole } from "@lingui/test-utils"
+import { createFixtures, readFsToListing } from "../tests.js"
 
 describe("CLI Command: Compile", () => {
   function getTestConfig(rootDir: string, pseudoLocale?: string) {
@@ -85,7 +85,7 @@ msgstr ""
           en: actualFiles["en.js"],
         }).toMatchSnapshot()
 
-        let log = getConsoleMockCalls(console.error)
+        let log = getConsoleMockCalls(console.error)!
         log = log.split("\n\n").sort().join("\n\n")
 
         expect(log).toMatchSnapshot()
@@ -303,7 +303,7 @@ msgstr "[PL] Bar Hello World"
       const config: LinguiConfig = {
         locales: ["en", "pl"],
         sourceLocale: "en",
-        format: "po",
+
         catalogs: [
           {
             path: "<rootDir>/{locale}",
@@ -453,6 +453,74 @@ msgstr "{plural,  }"
         const log = getConsoleMockCalls(console.error)
         expect(log).toContain("invalid syntax at line")
         expect(result).toBeFalsy()
+      })
+    })
+  })
+
+  describe("outputPrefix", () => {
+    it("Should use custom output prefix in compiled files", async () => {
+      const rootDir = await createFixtures({
+        "en.po": `
+msgid "Hello World"
+msgstr "Hello World"
+        `,
+        "pl.po": `
+msgid "Hello World"
+msgstr "Witaj świecie"
+        `,
+      })
+
+      const config = getTestConfig(rootDir)
+
+      await mockConsole(async () => {
+        const result = await command(config, {
+          outputPrefix: "/*biome-ignore lint: auto-generated*/",
+          workersOptions: {
+            poolSize: 0,
+          },
+        })
+
+        const actualFiles = readFsToListing(rootDir)
+
+        expect(actualFiles["en.js"]).toContain(
+          "/*biome-ignore lint: auto-generated*/",
+        )
+        expect(actualFiles["pl.js"]).toContain(
+          "/*biome-ignore lint: auto-generated*/",
+        )
+        expect(actualFiles["en.js"]).not.toContain("eslint-disable")
+        expect(actualFiles["pl.js"]).not.toContain("eslint-disable")
+        expect(result).toBeTruthy()
+      })
+    })
+
+    it("Should use oxlint-disable prefix directive", async () => {
+      const rootDir = await createFixtures({
+        "en.po": `
+msgid "Test"
+msgstr "Test"
+        `,
+        "pl.po": `
+msgid "Test"
+msgstr "Test PL"
+        `,
+      })
+
+      const config = getTestConfig(rootDir)
+
+      await mockConsole(async () => {
+        const result = await command(config, {
+          outputPrefix: "/*oxlint-disable*/",
+          workersOptions: {
+            poolSize: 0,
+          },
+        })
+
+        const actualFiles = readFsToListing(rootDir)
+
+        expect(actualFiles["en.js"]).toContain("/*oxlint-disable*/")
+        expect(actualFiles["en.js"]).not.toContain("eslint-disable")
+        expect(result).toBeTruthy()
       })
     })
   })

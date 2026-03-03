@@ -21,18 +21,21 @@
  * (use "npm run compile" to compile catalogs for production)
  */
 import { resolve, join } from "path"
+import { readFileSync } from "node:fs"
 
 export function helpRun(command: string) {
-  let findRootPkgJson: Record<string, unknown>
+  let findRootPkgJson: Record<string, unknown> | undefined
   try {
-    findRootPkgJson = require(resolve(join(process.cwd(), "package.json")))
+    findRootPkgJson = JSON.parse(
+      readFileSync(resolve(join(process.cwd(), "package.json")), "utf8"),
+    )
   } catch (error) {
     // noting
   }
 
   if (findRootPkgJson?.scripts) {
     const res = Object.entries(findRootPkgJson.scripts).find(([_, value]) =>
-      value.includes(`lingui ${command}`)
+      value.includes(`lingui ${command}`),
     )
 
     if (res) {

@@ -1,7 +1,6 @@
-import { expose } from "threads/worker"
 import { getConfig, LinguiConfigNormalized } from "@lingui/conf"
-import { extractFromBundleAndWrite } from "../extractFromBundleAndWrite"
-import { FormatterWrapper, getFormat } from "../../api/formats"
+import { extractFromBundleAndWrite } from "../extractFromBundleAndWrite.js"
+import { FormatterWrapper, getFormat } from "../../api/formats/index.js"
 
 export type ExtractWorkerFunction = typeof extractWorker
 
@@ -16,8 +15,8 @@ const extractWorker = async (
   template: boolean,
   locales: string[],
   clean: boolean,
-  overwrite: boolean
-): Promise<{ success: boolean; stat?: string }> => {
+  overwrite: boolean,
+) => {
   if (!linguiConfig) {
     // initialize config once per worker, speed up workers follow execution
     linguiConfig = getConfig({
@@ -27,11 +26,7 @@ const extractWorker = async (
   }
 
   if (!format) {
-    format = await getFormat(
-      linguiConfig.format,
-      linguiConfig.formatOptions,
-      linguiConfig.sourceLocale
-    )
+    format = await getFormat(linguiConfig.format, linguiConfig.sourceLocale)
   }
 
   return await extractFromBundleAndWrite({
@@ -47,4 +42,4 @@ const extractWorker = async (
   })
 }
 
-expose(extractWorker)
+export { extractWorker }

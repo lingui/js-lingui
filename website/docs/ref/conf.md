@@ -10,8 +10,6 @@ The following reference covers all supported configuration options in Lingui. To
 By default, Lingui looks for the configuration in the following locations:
 
 - `lingui.config.js` or `lingui.config.ts` file exporting a configuration object (recommended).
-- `.linguirc` file in JSON format.
-- `lingui` section in `package.json`.
 
 You can also define the environment variable `LINGUI_CONFIG` with the path to your config file.
 
@@ -298,8 +296,8 @@ Use ES6 named export + `.ts` file with an additional `{compiledFile}.d.ts` file:
 /* eslint-disable */export const messages = {"..."}
 ```
 
-```js
-import { Messages } from '@lingui/core';
+```ts
+import { Messages } from "@lingui/core";
 declare const messages: Messages;
 export { messages };
 ```
@@ -322,7 +320,19 @@ For example, setting [`compileNamespace`](#compilenamespace) to `window.i18n` cr
 
 ## extractorParserOptions
 
-Default value: `{}`
+:::note
+This option is deprecated. If you want to change parser options, pass it directly to extractor implementation
+
+```ts
+import { createBabelExtractor } from "@lingui/cli/api/extractors/babel";
+
+export default {
+  // [...]
+  extractors: [createBabelExtractor({ parserOptions: { tsExperimentalDecorators: true } })],
+};
+```
+
+:::
 
 Specify additional options used to parse source files when extracting messages.
 
@@ -409,6 +419,33 @@ Sort by the message ID, `js-lingui-id` will be used if no custom id provided.
 #### origin
 
 Sort by message origin (e.g. `App.js:3`)
+
+#### Custom Function
+
+You can provide custom sort function:
+
+```ts
+export default defineConfig({
+  // [...]
+  orderBy: (a, b) => {
+    /* `a` and `b` has a shape
+     * {
+     *   messageId: string
+     *   entry: ExtractedMessageType
+     * }
+     */
+    const aIsGlobal = a.messageId.startsWith("global.");
+    const bIsGlobal = b.messageId.startsWith("global.");
+
+    // Put `global.*` entries first
+    if (aIsGlobal && !bIsGlobal) return -1;
+    if (!aIsGlobal && bIsGlobal) return 1;
+
+    // Otherwise, sort alphabetically
+    return a.messageId.localeCompare(b.messageId);
+  },
+});
+```
 
 ## rootDir
 

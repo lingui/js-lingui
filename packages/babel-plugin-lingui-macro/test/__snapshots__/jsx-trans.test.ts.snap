@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`Elements are replaced with placeholders 1`] = `
 import { Trans } from "@lingui/react/macro";
@@ -154,7 +154,7 @@ import { Trans as _Trans } from "@lingui/react";
   {
     /*i18n*/
     ...{
-      id: "SO/WB8",
+      id: "SO_WB8",
       message: "Hello World",
       context: "my context",
     }
@@ -176,7 +176,7 @@ import { Trans as _Trans } from "@lingui/react";
   {
     /*i18n*/
     ...{
-      id: "K/1Xpr",
+      id: "K_1Xpr",
       message: "<0>This should work \\xA0</0>",
       components: {
         0: <Text />,
@@ -237,7 +237,7 @@ import { Trans as _Trans } from "@lingui/react";
             {
               /*i18n*/
               ...{
-                id: "39nd+2",
+                id: "39nd-2",
                 message: "guys",
               }
             }
@@ -288,7 +288,7 @@ import { Trans as _Trans } from "@lingui/react";
             {
               /*i18n*/
               ...{
-                id: "lV+268",
+                id: "lV-268",
                 message: "nested",
               }
             }
@@ -298,12 +298,66 @@ import { Trans as _Trans } from "@lingui/react";
             {
               /*i18n*/
               ...{
-                id: "39nd+2",
+                id: "39nd-2",
                 message: "guys",
               }
             }
           />
         ),
+      },
+    }
+  }
+/>;
+
+`;
+
+exports[`JSX comment should not affect expression index 1`] = `
+import { Trans } from "@lingui/react/macro";
+// Without comment - expression gets index 0
+<Trans>
+  Click here
+  <Link>{getText()}</Link>
+</Trans>;
+// With comment before expression - expression should STILL get index 0
+<Trans>
+  Click here
+  <Link>
+    {/* @ts-expect-error */}
+    {getText()}
+  </Link>
+</Trans>;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+// Without comment - expression gets index 0
+import { Trans as _Trans } from "@lingui/react";
+<_Trans
+  {
+    /*i18n*/
+    ...{
+      id: "HW7Brx",
+      message: "Click here<0>{0}</0>",
+      values: {
+        0: getText(),
+      },
+      components: {
+        0: <Link />,
+      },
+    }
+  }
+/>;
+// With comment before expression - expression should STILL get index 0
+<_Trans
+  {
+    /*i18n*/
+    ...{
+      id: "HW7Brx",
+      message: "Click here<0>{0}</0>",
+      values: {
+        0: getText(),
+      },
+      components: {
+        0: <Link />,
       },
     }
   }
@@ -324,7 +378,7 @@ import { Trans as _Trans } from "@lingui/react";
   {
     /*i18n*/
     ...{
-      id: "eqk/cH",
+      id: "eqk_cH",
       message: "Hi {name}, my name is {myName}",
       values: {
         name: getUserName(),
@@ -351,7 +405,7 @@ import { Trans as _Trans } from "@lingui/react";
   {
     /*i18n*/
     ...{
-      id: "eqk/cH",
+      id: "eqk_cH",
       message: "Hi {name}, my name is {myName}",
       values: {
         name: getUserName(),
@@ -377,7 +431,7 @@ import { Trans as _Trans } from "@lingui/react";
   {
     /*i18n*/
     ...{
-      id: "eqk/cH",
+      id: "eqk_cH",
       message: "Hi {name}, my name is {myName}",
       values: {
         name: getUserName(),
@@ -529,7 +583,7 @@ import { Trans as _Trans } from "@lingui/react";
 `;
 
 exports[`Production - message prop is kept if stripMessageField: false 1`] = `
-import { Trans } from "@lingui/macro";
+import { Trans } from "@lingui/react/macro";
 <Trans id="msg.hello" comment="Hello World">
   Hello World
 </Trans>;
@@ -660,7 +714,7 @@ import { Trans as _Trans } from "@lingui/react";
   {
     /*i18n*/
     ...{
-      id: "U8dd/d",
+      id: "U8dd_d",
       message: "hello {count, plural, one {world} other {worlds}}",
     }
   }
@@ -818,7 +872,7 @@ import { i18n as _i18n } from "@lingui/core";
                 values: {
                   articleName: articleName,
                 },
-              }
+              },
             )}
           />
         ),
@@ -854,7 +908,7 @@ import { i18n as _i18n } from "@lingui/core";
       values: {
         count: count,
       },
-    }
+    },
   )}
 >
   About
@@ -919,7 +973,7 @@ import { Trans as _Trans } from "@lingui/react";
   {
     /*i18n*/
     ...{
-      id: "+nhkwg",
+      id: "-nhkwg",
       message: "{duplicate} variable {duplicate}",
       values: {
         duplicate: duplicate,
@@ -969,7 +1023,7 @@ import { myTrans as _Trans } from "@my/lingui";
 `;
 
 exports[`stripMessageField option - message prop is removed if stripMessageField: true 1`] = `
-import { Trans } from "@lingui/macro";
+import { Trans } from "@lingui/react/macro";
 <Trans id="msg.hello">Hello World</Trans>;
 
 ↓ ↓ ↓ ↓ ↓ ↓

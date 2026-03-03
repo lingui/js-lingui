@@ -1,1 +1,5 @@
-export { vueExtractor } from "./vue-extractor"
+export {
+  vueExtractor,
+  createVueExtractor,
+  type VueExtractorConfig,
+} from "./vue-extractor"

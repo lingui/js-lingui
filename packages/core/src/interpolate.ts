@@ -2,7 +2,9 @@ import { CompiledMessage, Formats, Locales, Values } from "./i18n"
 import {
   date,
   DateTimeFormatSize,
+  type DateTimeFormatValue,
   number,
+  type NumberFormatValue,
   plural,
   type PluralOptions,
   time,
@@ -16,7 +18,7 @@ const OCTOTHORPE_PH = "%__lingui_octothorpe__%"
 const getDefaultFormats = (
   locale: string,
   passedLocales?: Locales,
-  formats: Formats = {}
+  formats: Formats = {},
 ) => {
   const locales = passedLocales || locale
 
@@ -51,21 +53,21 @@ const getDefaultFormats = (
     select: selectFormatter,
 
     number: (
-      value: number,
-      format: string | Intl.NumberFormatOptions
+      value: NumberFormatValue,
+      format: string | Intl.NumberFormatOptions,
     ): string =>
       number(
         locales,
         value,
-        style(format) || ({ style: format } as Intl.NumberFormatOptions)
+        style(format) || ({ style: format } as Intl.NumberFormatOptions),
       ),
 
     date: (
-      value: string,
-      format: Intl.DateTimeFormatOptions | string
+      value: string | DateTimeFormatValue,
+      format: Intl.DateTimeFormatOptions | string,
     ): string =>
       date(locales, value, style(format) || (format as DateTimeFormatSize)),
-    time: (value: string, format: string): string =>
+    time: (value: string | DateTimeFormatValue, format: string): string =>
       time(locales, value, style(format) || (format as DateTimeFormatSize)),
   } as const
 }
@@ -81,7 +83,7 @@ const selectFormatter = (value: string, rules: Record<string, any>) =>
 export function interpolate(
   translation: CompiledMessage,
   locale: string,
-  locales?: Locales
+  locales?: Locales,
 ) {
   /**
    * @param values  - Parameters for variable interpolation
@@ -92,7 +94,7 @@ export function interpolate(
 
     const formatMessage = (
       tokens: CompiledMessage | number | undefined,
-      replaceOctothorpe: boolean = false
+      replaceOctothorpe: boolean = false,
     ) => {
       if (!Array.isArray(tokens)) return tokens
 
@@ -118,9 +120,9 @@ export function interpolate(
             ([key, value]) => {
               interpolatedFormat[key] = formatMessage(
                 value,
-                type === "plural" || type === "selectordinal"
+                type === "plural" || type === "selectordinal",
               )
-            }
+            },
           )
         } else {
           interpolatedFormat = format

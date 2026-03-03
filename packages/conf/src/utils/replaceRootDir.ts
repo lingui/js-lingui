@@ -2,7 +2,7 @@ import { LinguiConfig } from "../types"
 
 export function replaceRootDir<T extends Partial<LinguiConfig>>(
   config: T,
-  rootDir: string | undefined
+  rootDir: string | undefined,
 ): T {
   if (!rootDir) {
     return config

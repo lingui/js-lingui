@@ -3,6 +3,66 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.9.0](https://github.com/lingui/js-lingui/compare/v5.8.0...v5.9.0) (2026-01-23)
+
+### Bug Fixes
+
+* **jsx-macro:** skip unsupported attributes on Plural / Select ([#2407](https://github.com/lingui/js-lingui/issues/2407)) ([e63992d](https://github.com/lingui/js-lingui/commit/e63992dee2a0a9bc53e91944e7e5d0e6a7a177fc))
+* keep catalog extra from previous catalog ([#2399](https://github.com/lingui/js-lingui/issues/2399)) ([25cfdde](https://github.com/lingui/js-lingui/commit/25cfdde3b0c3d95697752a0e698bff9ede6d9a4e))
+
+### Features
+
+* **message-utils:** separate browser/node exports for generateMessageId ([#2401](https://github.com/lingui/js-lingui/issues/2401)) ([2afe02f](https://github.com/lingui/js-lingui/commit/2afe02f42cd7bb4bcaf586b28ed33cfcddb81772))
+
+# [5.8.0](https://github.com/lingui/js-lingui/compare/v5.7.0...v5.8.0) (2026-01-16)
+
+### Bug Fixes
+
+* **po-gettext:** revert readable ICU comment ([#2395](https://github.com/lingui/js-lingui/issues/2395)) ([0897ea9](https://github.com/lingui/js-lingui/commit/0897ea996b733622d2ff8b7531728f0628e6ff1e))
+
+### Features
+
+* allow passing custom orderBy function ([#2394](https://github.com/lingui/js-lingui/issues/2394)) ([7de6af5](https://github.com/lingui/js-lingui/commit/7de6af59a55ca3c8832bfdafdaafbc4c12079b78))
+* **po-format:** print source message as translation for explicit id ([#2390](https://github.com/lingui/js-lingui/issues/2390)) ([94efdc0](https://github.com/lingui/js-lingui/commit/94efdc05b62a3e4a296c582e9ee757a80e6aeea7))
+
+### Reverts
+
+* "fix: use makePathRegexSafe with globSync ([#2242](https://github.com/lingui/js-lingui/issues/2242))" ([#2396](https://github.com/lingui/js-lingui/issues/2396)) ([3c979fc](https://github.com/lingui/js-lingui/commit/3c979fc33c7395f2c4c4b45e573ab9a8998847b6))
+
+# [5.7.0](https://github.com/lingui/js-lingui/compare/v5.6.1...v5.7.0) (2025-12-12)
+
+### Bug Fixes
+
+* **cli:** allow using PO formatter function with Translation.IO ([#2375](https://github.com/lingui/js-lingui/issues/2375)) ([f8b90e2](https://github.com/lingui/js-lingui/commit/f8b90e2ff05657b2af17568cb8c8279eb9484719))
+* Gettext formatter merges duplicate plural entries ([#2347](https://github.com/lingui/js-lingui/issues/2347)) ([d72b23f](https://github.com/lingui/js-lingui/commit/d72b23f38f3dcffb5809964aaeb07cfcfaa8ec48))
+
+### Features
+
+* **cli:** add --output-prefix option to customize compiled file headers ([#2377](https://github.com/lingui/js-lingui/issues/2377)) ([ef77310](https://github.com/lingui/js-lingui/commit/ef77310e1ec664f8c059bc16179c169c818f1801))
+
+## [5.6.1](https://github.com/lingui/js-lingui/compare/v5.6.0...v5.6.1) (2025-11-28)
+
+### Bug Fixes
+
+* **macro:** recrawl scope only if useLingui was used ([#2370](https://github.com/lingui/js-lingui/issues/2370)) ([9fd8b84](https://github.com/lingui/js-lingui/commit/9fd8b8455d5d5f4fc2b774155e7c8a457dac40d2))
+
+# [5.6.0](https://github.com/lingui/js-lingui/compare/v5.5.2...v5.6.0) (2025-11-12)
+
+### Bug Fixes
+
+* improve type of values accepted by date/time/number formats ([#2359](https://github.com/lingui/js-lingui/issues/2359)) ([c1f2800](https://github.com/lingui/js-lingui/commit/c1f28006632565a0f572eb604f0b3b62ddbe54d2))
+
+### Features
+
+* **experimental-extractor:** reconsider includeDeps ([#2362](https://github.com/lingui/js-lingui/issues/2362)) ([a4883fc](https://github.com/lingui/js-lingui/commit/a4883fc076534f1d3e19f67aa40709733a9a5137))
+
+## [5.5.2](https://github.com/lingui/js-lingui/compare/v5.5.1...v5.5.2) (2025-10-30)
+
+### Bug Fixes
+
+* **cli:** process hang when error happend in extract ([#2349](https://github.com/lingui/js-lingui/issues/2349)) ([09ab46d](https://github.com/lingui/js-lingui/commit/09ab46d4097744975d4e76b3d713de7ce1ba30fc))
+* **macro:** correctly update bindings after transformation ([#2356](https://github.com/lingui/js-lingui/issues/2356)) ([a9fdf3f](https://github.com/lingui/js-lingui/commit/a9fdf3f0ce69314ab8eaae6668d8c6daa48b3f2a))
+
 ## [5.5.1](https://github.com/lingui/js-lingui/compare/v5.5.0...v5.5.1) (2025-10-10)
 
 ### Bug Fixes

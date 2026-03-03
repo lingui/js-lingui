@@ -3,41 +3,26 @@ import {
   ExtractedMessage,
   LinguiConfigNormalized,
 } from "@lingui/conf"
-import { FormatterWrapper } from "../api/formats"
-import { mergeExtractedMessage } from "../api/catalog/extractFromFiles"
-import { writeCatalogs, writeTemplate } from "./writeCatalogs"
-import fs from "fs/promises"
-import {
-  extractFromFileWithBabel,
-  getBabelParserOptions,
-} from "../api/extractors/babel"
+import { FormatterWrapper } from "../api/formats/index.js"
+import { mergeExtractedMessage } from "../api/catalog/extractFromFiles.js"
+import { writeCatalogs, writeTemplate } from "./writeCatalogs.js"
+import extract from "../api/extractors/index.js"
 
 async function extractFromBundle(
   filename: string,
-  linguiConfig: LinguiConfigNormalized
+  linguiConfig: LinguiConfigNormalized,
 ) {
   const messages: ExtractedCatalogType = {}
 
   let success: boolean
 
   try {
-    const file = await fs.readFile(filename)
-
-    const parserOptions = linguiConfig.extractorParserOptions
-
-    await extractFromFileWithBabel(
+    await extract(
       filename,
-      file.toString(),
       (msg: ExtractedMessage) => {
         mergeExtractedMessage(msg, messages, linguiConfig)
       },
-      {
-        linguiConfig,
-      },
-      {
-        plugins: getBabelParserOptions(filename, parserOptions),
-      },
-      true
+      linguiConfig,
     )
 
     success = true
@@ -60,7 +45,7 @@ export async function extractFromBundleAndWrite(params: {
   locales: string[]
   clean: boolean
   overwrite: boolean
-}) {
+}): Promise<{ success: false } | { success: true; stat: string }> {
   const {
     linguiConfig,
     entryPoint,
@@ -74,7 +59,7 @@ export async function extractFromBundleAndWrite(params: {
 
   const { messages, success } = await extractFromBundle(
     params.bundleFile,
-    params.linguiConfig
+    params.linguiConfig,
   )
 
   if (!success) {

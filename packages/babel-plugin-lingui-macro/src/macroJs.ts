@@ -48,23 +48,23 @@ export class MacroJs {
     this._ctx = createMacroJsContext(
       opts.isLinguiIdentifier,
       opts.stripNonEssentialProps,
-      opts.stripMessageProp
+      opts.stripMessageProp,
     )
   }
 
   private replacePathWithMessage = (
     path: NodePath,
     tokens: Tokens,
-    linguiInstance?: babelTypes.Expression
+    linguiInstance?: babelTypes.Expression,
   ) => {
     return this.createI18nCall(
       createMessageDescriptorFromTokens(
         tokens,
         path.node.loc,
         this._ctx.stripNonEssentialProps,
-        this._ctx.stripMessageProp
+        this._ctx.stripMessageProp,
       ),
-      linguiInstance
+      linguiInstance,
     )
   }
 
@@ -79,7 +79,7 @@ export class MacroJs {
     ) {
       return processDescriptor(
         path.get("arguments")[0].node as ObjectExpression,
-        ctx
+        ctx,
       )
     }
 
@@ -93,7 +93,7 @@ export class MacroJs {
         tokens,
         path.node.loc,
         ctx.stripNonEssentialProps,
-        ctx.stripMessageProp
+        ctx.stripMessageProp,
       )
     }
 
@@ -127,7 +127,7 @@ export class MacroJs {
         return this.replaceTAsFunction(
           path.node as CallExpression,
           ctx,
-          i18nInstance
+          i18nInstance,
         )
       }
     }
@@ -167,7 +167,7 @@ export class MacroJs {
   private replaceTAsFunction = (
     node: CallExpression,
     ctx: MacroJsContext,
-    linguiInstance?: babelTypes.Expression
+    linguiInstance?: babelTypes.Expression,
   ): babelTypes.CallExpression => {
     let arg: Expression = node.arguments[0] as Expression
 
@@ -207,7 +207,7 @@ export class MacroJs {
  Example:
 
  const { t } = useLingui()
-      `
+      `,
       )
     }
 
@@ -222,14 +222,14 @@ export class MacroJs {
  const { t } = useLingui()
  or
  const { t: _ } = useLingui()
- `
+ `,
       )
     }
 
     const _property = t.isObjectPattern(varDec.id)
       ? varDec.id.properties.find(
           (
-            property
+            property,
           ): property is ObjectProperty & {
             value: Identifier
             key: Identifier
@@ -237,7 +237,7 @@ export class MacroJs {
             t.isObjectProperty(property) &&
             t.isIdentifier(property.key) &&
             t.isIdentifier(property.value) &&
-            property.key.name == "t"
+            property.key.name == "t",
         )
       : null
 
@@ -259,7 +259,7 @@ export class MacroJs {
         const _ctx = createMacroJsContext(
           ctx.isLinguiIdentifier,
           ctx.stripNonEssentialProps,
-          ctx.stripMessageProp
+          ctx.stripMessageProp,
         )
 
         // { t } = useLingui()
@@ -271,12 +271,12 @@ export class MacroJs {
             tokens,
             currentPath.node.loc,
             _ctx.stripNonEssentialProps,
-            _ctx.stripMessageProp
+            _ctx.stripMessageProp,
           )
 
           const callExpr = t.callExpression(
             t.identifier(uniqTIdentifier.name),
-            [descriptor]
+            [descriptor],
           )
 
           return currentPath.replaceWith(callExpr)
@@ -291,11 +291,11 @@ export class MacroJs {
           const descriptor = processDescriptor(
             (currentPath.get("arguments")[0] as NodePath<ObjectExpression>)
               .node,
-            _ctx
+            _ctx,
           )
           const callExpr = t.callExpression(
             t.identifier(uniqTIdentifier.name),
-            [descriptor]
+            [descriptor],
           )
 
           return currentPath.replaceWith(callExpr)
@@ -315,14 +315,14 @@ export class MacroJs {
 
   private createI18nCall(
     messageDescriptor: Expression | undefined,
-    linguiInstance?: Expression
+    linguiInstance?: Expression,
   ) {
     return t.callExpression(
       t.memberExpression(
         linguiInstance ?? t.identifier(this.i18nImportName),
-        t.identifier("_")
+        t.identifier("_"),
       ),
-      messageDescriptor ? [messageDescriptor] : []
+      messageDescriptor ? [messageDescriptor] : [],
     )
   }
 }

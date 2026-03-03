@@ -3,6 +3,38 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.9.0](https://github.com/lingui/js-lingui/compare/v5.8.0...v5.9.0) (2026-01-23)
+
+**Note:** Version bump only for package @lingui/format-po-gettext
+
+# [5.8.0](https://github.com/lingui/js-lingui/compare/v5.7.0...v5.8.0) (2026-01-16)
+
+### Bug Fixes
+
+* **po-gettext:** revert readable ICU comment ([#2395](https://github.com/lingui/js-lingui/issues/2395)) ([0897ea9](https://github.com/lingui/js-lingui/commit/0897ea996b733622d2ff8b7531728f0628e6ff1e))
+
+### Features
+
+* **po-format:** print source message as translation for explicit id ([#2390](https://github.com/lingui/js-lingui/issues/2390)) ([94efdc0](https://github.com/lingui/js-lingui/commit/94efdc05b62a3e4a296c582e9ee757a80e6aeea7))
+
+# [5.7.0](https://github.com/lingui/js-lingui/compare/v5.6.1...v5.7.0) (2025-12-12)
+
+### Bug Fixes
+
+* Gettext formatter merges duplicate plural entries ([#2347](https://github.com/lingui/js-lingui/issues/2347)) ([d72b23f](https://github.com/lingui/js-lingui/commit/d72b23f38f3dcffb5809964aaeb07cfcfaa8ec48))
+
+## [5.6.1](https://github.com/lingui/js-lingui/compare/v5.6.0...v5.6.1) (2025-11-28)
+
+**Note:** Version bump only for package @lingui/format-po-gettext
+
+# [5.6.0](https://github.com/lingui/js-lingui/compare/v5.5.2...v5.6.0) (2025-11-12)
+
+**Note:** Version bump only for package @lingui/format-po-gettext
+
+## [5.5.2](https://github.com/lingui/js-lingui/compare/v5.5.1...v5.5.2) (2025-10-30)
+
+**Note:** Version bump only for package @lingui/format-po-gettext
+
 ## [5.5.1](https://github.com/lingui/js-lingui/compare/v5.5.0...v5.5.1) (2025-10-10)
 
 **Note:** Version bump only for package @lingui/format-po-gettext

@@ -1,5 +1,5 @@
 import { i18n } from "@lingui/core"
-import { defineMessage, t } from "@lingui/macro"
+import { defineMessage, t } from "@lingui/core/macro"
 
 const msg = t`Hello world`
 

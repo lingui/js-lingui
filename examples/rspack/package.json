@@ -9,18 +9,18 @@
     "compile": "lingui compile --typescript"
   },
   "dependencies": {
-    "@lingui/react": "^4.7.2",
+    "@lingui/core": "^5.9.0",
+    "@lingui/react": "^5.9.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@lingui/cli": "^4.7.2",
-    "@lingui/macro": "^4.7.2",
-    "@lingui/swc-plugin": "^4.0.7",
-    "@rspack/cli": "^0.6.2",
-    "@rspack/core": "^0.6.2",
+    "@lingui/swc-plugin": "^5.10.0",
+    "@rspack/cli": "^1.7.4",
+    "@rspack/core": "^1.7.4",
     "@types/react": "^18.2.79",
     "@types/react-dom": "18.2.1",
-    "typescript": "^5.0.4"
+    "typescript": "^5.9.3"
   }
 }

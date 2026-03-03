@@ -1,10 +1,11 @@
 import fs from "fs"
 import { LinguiConfigNormalized } from "./types"
-import { cosmiconfigSync, LoaderSync } from "cosmiconfig"
+import { lilconfigSync, LoaderSync } from "lilconfig"
 import path from "path"
 import { makeConfig } from "./makeConfig"
 import { createJiti } from "jiti"
-import pico from "picocolors"
+import { styleText } from "node:util"
+import normalizePath from "normalize-path"
 
 function configExists(path?: string): path is string {
   return !!path && fs.existsSync(path)
@@ -12,7 +13,7 @@ function configExists(path?: string): path is string {
 
 function JitiLoader(): LoaderSync {
   return (filepath) => {
-    const jiti = createJiti(__filename)
+    const jiti = createJiti(import.meta.url)
 
     const mod = jiti(filepath)
     return mod?.default ?? mod
@@ -21,7 +22,7 @@ function JitiLoader(): LoaderSync {
 
 const moduleName = "lingui"
 
-const configExplorer = cosmiconfigSync(moduleName, {
+const configExplorer = lilconfigSync(moduleName, {
   searchPlaces: [
     `${moduleName}.config.js`,
     `${moduleName}.config.cjs`,
@@ -30,8 +31,6 @@ const configExplorer = cosmiconfigSync(moduleName, {
     "package.json",
     `.${moduleName}rc`,
     `.${moduleName}rc.json`,
-    `.${moduleName}rc.yaml`,
-    `.${moduleName}rc.yml`,
     `.${moduleName}rc.ts`,
     `.${moduleName}rc.js`,
   ],
@@ -55,31 +54,40 @@ export function getConfig({
 
   configPath = configPath || process.env.LINGUI_CONFIG
 
-  const result = configExists(configPath)
-    ? configExplorer.load(configPath)
-    : configExplorer.search(defaultRootDir)
+  let result
+
+  try {
+    result = configExists(configPath)
+      ? configExplorer.load(configPath)
+      : configExplorer.search(defaultRootDir)
+  } catch (error) {
+    // If lilconfig throws an error (e.g., directory doesn't exist), treat it as no config found
+    result = null
+  }
 
   if (!result) {
     console.error("Lingui was unable to find a config!\n")
     console.error(
-      `Create ${pico.bold(
-        "'lingui.config.js'"
-      )} file with LinguiJS configuration in root of your project (next to package.json). See ${pico.underline(
-        "https://lingui.dev/ref/conf"
-      )}`
+      `Create ${styleText(
+        "bold",
+        "'lingui.config.js'",
+      )} file with LinguiJS configuration in root of your project (next to package.json). See ${styleText(
+        "underline",
+        "https://lingui.dev/ref/conf",
+      )}`,
     )
 
     // gracefully stop further executing
     throw new Error("No Lingui config found")
   }
 
-  const userConfig = result ? result.config : {}
-
   return makeConfig(
     {
-      rootDir: result ? path.dirname(result.filepath) : defaultRootDir,
-      ...userConfig,
+      rootDir: result
+        ? normalizePath(path.dirname(result.filepath))
+        : defaultRootDir,
+      ...result.config,
     },
-    { skipValidation, resolvedConfigPath: result.filepath }
+    { skipValidation, resolvedConfigPath: result.filepath },
   )
 }

@@ -21,13 +21,6 @@ const config: Config = {
       disableSwitch: false,
       respectPrefersColorScheme: true,
     },
-    announcementBar: {
-      id: "v5_release-available",
-      content:
-        'Lingui <b>v5.0</b> is officially released! <a href="/blog/2024/11/28/announcing-lingui-5.0" target="_blank" rel="noopener noreferrer">Check it out!</a>',
-      backgroundColor: "#89cecf",
-      textColor: "#1a1a1a",
-    },
     metadata: [
       {
         name: "title",

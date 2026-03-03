@@ -172,6 +172,7 @@ lingui compile
     [--namespace <namespace>]
     [--watch [--debounce <delay>]]
     [--workers]
+    [--output-prefix <prefix>]
 ```
 
 Once you have all the catalogs ready and translated, you can use this command to compile all the catalogs into minified JS/TS files. It compiles message catalogs located in the [`path`](/ref/conf#catalogs) directory and generates minified JavaScript files. The resulting file is a string that is parsed into a plain JS object using `JSON.parse`.
@@ -249,6 +250,33 @@ Use the `--verbose` flag to see the actual pool size.
 Worker threads can significantly improve performance on large projects. However, on small projects they may provide little benefit or even be slightly slower due to thread startup overhead.
 
 A larger worker pool also increases memory usage. Adjust this value for your project to achieve the best performance.
+
+#### `--output-prefix <prefix>` {#compile-output-prefix}
+
+Adds a custom string to the beginning of compiled message catalogs (a header/prefix). By default, Lingui adds `/*eslint-disable*/` to prevent linters from reporting issues in generated files.
+
+Use this option for other tools that rely on header directives (e.g., different linters, coverage tools, or formatters). Provide the full prefix exactly as it should appear in the output.
+
+**Default value:** `/*eslint-disable*/`
+
+**Examples:**
+
+```shell
+# For Oxlint
+lingui compile --output-prefix "/*oxlint-disable*/"
+
+# For Biome
+lingui compile --output-prefix "/*biome-ignore lint: auto-generated*/"
+
+# For no prefix at all
+lingui compile --output-prefix ""
+```
+
+The generated file header will look like:
+
+```js
+/*your-prefix-here*/ export const messages = JSON.parse("{}");
+```
 
 ## Configuring the Source Locale
 

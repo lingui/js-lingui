@@ -6,7 +6,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: @lingui/cli\n"
 
-#: fixtures/pages/about.page.tsx:16
+#: fixtures/pages/about.page.tsx:19
 msgid "about page message"
 msgstr ""
 
@@ -18,6 +18,10 @@ msgstr ""
 msgid "header message"
 msgstr ""
 
-#: fixtures/pages/about.page.tsx:19
+#: fixtures/pages/about.page.tsx:22
 msgid "JSX: about page message"
+msgstr ""
+
+#: fixtures/components/subpath-import.ts:3
+msgid "subpath import module message"
 msgstr ""

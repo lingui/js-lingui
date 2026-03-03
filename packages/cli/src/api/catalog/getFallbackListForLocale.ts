@@ -2,7 +2,7 @@ import { FallbackLocales } from "@lingui/conf"
 
 export function getFallbackListForLocale(
   fallbackLocales: FallbackLocales,
-  locale: string
+  locale: string,
 ): string[] {
   const fL: string[] = []
 

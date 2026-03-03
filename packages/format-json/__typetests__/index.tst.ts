@@ -4,5 +4,5 @@ import { expect } from "tstyche"
 
 expect(formatter()).type.toBeAssignableTo<CatalogFormatter>()
 expect(
-  formatter({ lineNumbers: true, origins: true })
+  formatter({ lineNumbers: true, origins: true }),
 ).type.toBeAssignableTo<CatalogFormatter>()

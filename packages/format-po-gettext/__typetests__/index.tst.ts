@@ -9,5 +9,5 @@ expect(
     origins: true,
     printLinguiId: true,
     disableSelectWarning: true,
-  })
+  }),
 ).type.toBeAssignableTo<CatalogFormatter>()

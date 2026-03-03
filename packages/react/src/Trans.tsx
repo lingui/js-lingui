@@ -1,5 +1,3 @@
-import React from "react"
-
 import { useLinguiInternal } from "./I18nProvider"
 import { TransNoContext, type TransProps } from "./TransNoContext"
 
@@ -10,5 +8,6 @@ export function Trans(props: TransProps): React.ReactElement<any, any> | null {
 Attempted to render message: ${props.message} id: ${props.id}. Make sure this component is rendered inside a I18nProvider.`
   }
   const lingui = useLinguiInternal(errMessage)
-  return React.createElement(TransNoContext, { ...props, lingui })
+
+  return <TransNoContext {...props} lingui={lingui} />
 }

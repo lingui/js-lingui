@@ -22,3 +22,5 @@ junit.xml
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+.temp
+.lingui/

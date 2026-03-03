@@ -194,7 +194,7 @@ macroTester({
         stripMessageField: true,
       },
       code: `
-      import { Trans } from '@lingui/macro';
+      import { Trans } from '@lingui/react/macro';
       <Trans id="msg.hello">Hello World</Trans>
     `,
     },
@@ -213,7 +213,7 @@ macroTester({
         stripMessageField: false,
       },
       code: `
-      import { Trans } from '@lingui/macro';
+      import { Trans } from '@lingui/react/macro';
       <Trans id="msg.hello" comment="Hello World">Hello World</Trans>
     `,
     },
@@ -311,6 +311,27 @@ macroTester({
       `,
     },
     {
+      name: "JSX comment should not affect expression index",
+      code: `
+        import { Trans } from '@lingui/react/macro';
+        // Without comment - expression gets index 0
+        <Trans>
+          Click here
+          <Link>
+            {getText()}
+          </Link>
+        </Trans>;
+        // With comment before expression - expression should STILL get index 0
+        <Trans>
+          Click here
+          <Link>
+            {/* @ts-expect-error */}
+            {getText()}
+          </Link>
+        </Trans>;
+      `,
+    },
+    {
       name: "Use decoded html entities",
       code: `
         import { Trans } from "@lingui/react/macro";
@@ -335,7 +356,7 @@ macroTester({
               Trans: ["@my/lingui", "myTrans"],
             },
           },
-          { skipValidation: true }
+          { skipValidation: true },
         ),
       },
       code: `
@@ -352,7 +373,7 @@ macroTester({
               jsxPackage: ["@my-lingui/macro"],
             },
           },
-          { skipValidation: true }
+          { skipValidation: true },
         ),
       },
       skipBabelMacroTest: true,

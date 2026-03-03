@@ -5,9 +5,9 @@ import {
   I18nProvider,
   TransRenderProps,
   TransRenderCallbackOrComponent,
-} from "@lingui/react"
+} from "../src"
 import { setupI18n } from "@lingui/core"
-import { mockConsole } from "@lingui/jest-mocks"
+import { mockConsole } from "@lingui/test-utils"
 import { PropsWithChildren } from "react"
 import { TransNoContext } from "./TransNoContext"
 
@@ -93,11 +93,11 @@ describe("Trans component", () => {
             }}
           >
             <Trans {...props} id="Some text" />
-          </I18nProvider>
+          </I18nProvider>,
         )
 
         expect(console.error).toHaveBeenCalledWith(
-          expect.stringContaining(expectedLog)
+          expect.stringContaining(expectedLog),
         )
         expect(container.textContent).toBe(expectedTextContent)
       })
@@ -105,18 +105,18 @@ describe("Trans component", () => {
 
     it("when there's no i18n context available", () => {
       const originalConsole = console.error
-      console.error = jest.fn()
+      console.error = vi.fn()
 
       expect(() => render(<Trans id="unknown" />))
         .toThrowErrorMatchingInlineSnapshot(`
-        "Trans component was rendered without I18nProvider.
-        Attempted to render message: undefined id: unknown. Make sure this component is rendered inside a I18nProvider."
-      `)
+          [Error: Trans component was rendered without I18nProvider.
+          Attempted to render message: undefined id: unknown. Make sure this component is rendered inside a I18nProvider.]
+        `)
       expect(() =>
-        render(<Trans id="unknown" message={"some valid message"} />)
+        render(<Trans id="unknown" message={"some valid message"} />),
       ).toThrowErrorMatchingInlineSnapshot(`
-        "Trans component was rendered without I18nProvider.
-        Attempted to render message: some valid message id: unknown. Make sure this component is rendered inside a I18nProvider."
+        [Error: Trans component was rendered without I18nProvider.
+        Attempted to render message: some valid message id: unknown. Make sure this component is rendered inside a I18nProvider.]
       `)
 
       console.error = originalConsole
@@ -124,7 +124,7 @@ describe("Trans component", () => {
 
     it("when deprecated string built-ins are used", () => {
       const originalConsole = console.error
-      console.error = jest.fn()
+      console.error = vi.fn()
 
       // @ts-expect-error testing the error
       renderWithI18n(<Trans render="span" id="Some text" />)
@@ -149,8 +149,8 @@ describe("Trans component", () => {
           components={{
             0: <span />,
           }}
-        />
-      )
+        />,
+      ),
     ).toEqual("foo <span></span> bar")
 
     expect(
@@ -164,8 +164,8 @@ describe("Trans component", () => {
           components={{
             0: <span />,
           }}
-        />
-      )
+        />,
+      ),
     ).toEqual("foo <span>lol</span> bar")
   })
 
@@ -173,7 +173,7 @@ describe("Trans component", () => {
     expect(text(<Trans id="unknown" />)).toEqual("unknown")
 
     expect(text(<Trans id="unknown" message="Not translated yet" />)).toEqual(
-      "Not translated yet"
+      "Not translated yet",
     )
 
     expect(
@@ -182,18 +182,18 @@ describe("Trans component", () => {
           id="unknown"
           message="Not translated yet, {name}"
           values={{ name: "Dave" }}
-        />
-      )
+        />,
+      ),
     ).toEqual("Not translated yet, Dave")
   })
 
   it("should render translation", () => {
     const translation = text(
-      <Trans id="All human beings are born free and equal in dignity and rights." />
+      <Trans id="All human beings are born free and equal in dignity and rights." />,
     )
 
     expect(translation).toEqual(
-      "Všichni lidé rodí se svobodní a sobě rovní co do důstojnosti a práv."
+      "Všichni lidé rodí se svobodní a sobě rovní co do důstojnosti a práv.",
     )
   })
 
@@ -202,13 +202,13 @@ describe("Trans component", () => {
       "All human beings are born free and equal in dignity and rights."
     const translation = text(<Trans id={msg} />)
     expect(translation).toEqual(
-      "Všichni lidé rodí se svobodní a sobě rovní co do důstojnosti a práv."
+      "Všichni lidé rodí se svobodní a sobě rovní co do důstojnosti a práv.",
     )
   })
 
   it("should render component in variables", () => {
     const translation = html(
-      <Trans id="Hello {name}" values={{ name: <strong>John</strong> }} />
+      <Trans id="Hello {name}" values={{ name: <strong>John</strong> }} />,
     )
     expect(translation).toEqual("Hello <strong>John</strong>")
   })
@@ -220,7 +220,7 @@ describe("Trans component", () => {
         values={{
           name: [<strong key="1">John</strong>, <strong key="2">!</strong>],
         }}
-      />
+      />,
     )
     expect(translation).toEqual("Hello <strong>John</strong><strong>!</strong>")
   })
@@ -230,7 +230,7 @@ describe("Trans component", () => {
       <Trans
         id="Read <named>the docs</named>"
         components={{ named: <a href="/docs" /> }}
-      />
+      />,
     )
     expect(translation).toEqual(`Read <a href="/docs">the docs</a>`)
   })
@@ -240,10 +240,10 @@ describe("Trans component", () => {
       <Trans
         id="Read <link>the <strong>docs</strong></link>"
         components={{ link: <a href="/docs" />, strong: <strong /> }}
-      />
+      />,
     )
     expect(translation).toEqual(
-      `Read <a href="/docs">the <strong>docs</strong></a>`
+      `Read <a href="/docs">the <strong>docs</strong></a>`,
     )
   })
 
@@ -255,16 +255,19 @@ describe("Trans component", () => {
         values={{
           name: [<strong key="1">John</strong>, <strong key="2">!</strong>],
         }}
-      />
+      />,
     )
     expect(translation).toEqual(
-      `Read <a href="/docs">the <strong>docs</strong></a>, <strong>John</strong><strong>!</strong>`
+      `Read <a href="/docs">the <strong>docs</strong></a>, <strong>John</strong><strong>!</strong>`,
     )
   })
 
   it("should render non-named component in components", () => {
     const translation = html(
-      <Trans id="Read <0>the docs</0>" components={{ 0: <a href="/docs" /> }} />
+      <Trans
+        id="Read <0>the docs</0>"
+        components={{ 0: <a href="/docs" /> }}
+      />,
     )
     expect(translation).toEqual(`Read <a href="/docs">the docs</a>`)
   })
@@ -288,7 +291,7 @@ describe("Trans component", () => {
           0: <ComponentThatExpectsSingleElementChild asChild />,
           1: <a href="/login" />,
         }}
-      />
+      />,
     )
     expect(translation).toEqual(`please <a href="/login">sign in again</a>`)
   })
@@ -302,7 +305,7 @@ describe("Trans component", () => {
       <Trans
         render={({ translation }) => <p className="lead">{translation}</p>}
         id="Original"
-      />
+      />,
     )
 
     expect(html1).toEqual('<p class="lead">Původní</p>')
@@ -322,7 +325,7 @@ describe("Trans component", () => {
             minimumFractionDigits: 2,
           },
         }}
-      />
+      />,
     )
     expect(translation).toEqual("1,00 €")
   })
@@ -341,7 +344,7 @@ describe("Trans component", () => {
           components={{
             0: <a href="/more" />,
           }}
-        />
+        />,
       )
 
     expect(render(0)).toEqual("Zero items")
@@ -360,13 +363,13 @@ describe("Trans component", () => {
         <Trans
           render={({ id, translation }) => <h1 id={id}>{translation}</h1>}
           id="Headline"
-        />
+        />,
       )
       expect(element).toEqual(`<h1 id="Headline">Headline</h1>`)
     })
 
     it("supports render callback function", () => {
-      const spy = jest.fn()
+      const spy = vi.fn()
       text(
         <Trans
           id="ID"
@@ -375,7 +378,7 @@ describe("Trans component", () => {
             spy(props)
             return <></>
           }}
-        />
+        />,
       )
 
       expect(spy).toHaveBeenCalledWith({
@@ -393,7 +396,7 @@ describe("Trans component", () => {
       const span = render(
         <I18nProvider i18n={i18n} defaultComponent={ComponentFC}>
           <Trans id="Some text" />
-        </I18nProvider>
+        </I18nProvider>,
       ).container.innerHTML
       expect(span).toEqual(`<div>Some text</div>`)
     })
@@ -410,10 +413,10 @@ describe("Trans component", () => {
         const translation = render(
           <I18nProvider i18n={i18n} defaultComponent={ComponentFC}>
             <Trans id="Some text" {...props} />
-          </I18nProvider>
+          </I18nProvider>,
         ).container.innerHTML
         expect(translation).toEqual("Some text")
-      }
+      },
     )
   })
 
@@ -429,7 +432,7 @@ describe("Trans component", () => {
     })
 
     it("should render function component as simple prop", () => {
-      const propsSpy = jest.fn()
+      const propsSpy = vi.fn()
       function ComponentFC(props: TransRenderProps) {
         propsSpy(props)
         const [state] = React.useState("value")
@@ -465,13 +468,13 @@ describe("Trans component", () => {
       const markup = render(
         <I18nProvider i18n={i18n} defaultComponent={DefaultComponent}>
           <Trans id="ID" message="Some message" />
-        </I18nProvider>
+        </I18nProvider>,
       )
 
       expect(markup.queryByTestId("id")?.innerHTML).toEqual("ID")
       expect(markup.queryByTestId("message")?.innerHTML).toEqual("Some message")
       expect(markup.queryByTestId("translation")?.innerHTML).toEqual(
-        "Translation"
+        "Translation",
       )
     })
 
@@ -481,11 +484,11 @@ describe("Trans component", () => {
           <TransNoContext
             id="All human beings are born free and equal in dignity and rights."
             lingui={{ i18n: i18n }}
-          />
+          />,
         ).container.textContent
 
         expect(translation).toEqual(
-          "Všichni lidé rodí se svobodní a sobě rovní co do důstojnosti a práv."
+          "Všichni lidé rodí se svobodní a sobě rovní co do důstojnosti a práv.",
         )
       })
     })
