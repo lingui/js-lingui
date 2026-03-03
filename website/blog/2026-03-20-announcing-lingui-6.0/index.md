@@ -192,7 +192,7 @@ Most apps are unaffected, but custom integrations may need small updates.
 
 ### New Example
 
-We now have a [React Webpack Po-Gettext](https://github.com/lingui/js-lingui/tree/main/examples/react-webpack-gettext) example in the repo. It uses the [po-gettext](/ref/catalog-formats#po-gettext) formatter for plurals, a minimal webpack setup for React and TypeScript, and dynamic loading of compiled JSON catalogs. It is listed on our [Examples page](/docs/examples) alongside the other starter projects.
+We now have a [React Webpack Po-Gettext](https://github.com/lingui/js-lingui/tree/main/examples/react-webpack-gettext) example in the repo. It uses the [po-gettext](/ref/catalog-formats#po-gettext) formatter for plurals, a minimal webpack setup for React and TypeScript, and dynamic loading of compiled JSON catalogs. It is listed on our [Examples page](/examples) alongside the other starter projects.
 
 ## Conclusion
 
