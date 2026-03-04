@@ -10,6 +10,9 @@ export default defineConfig(...baseConfig, {
     pluginReact.configs.flat["jsx-runtime"],
     reactHooks.configs.flat["recommended-latest"],
   ],
+  rules: {
+    "react-hooks/exhaustive-deps": "error",
+  },
   settings: {
     react: {
       version: "18.2",
