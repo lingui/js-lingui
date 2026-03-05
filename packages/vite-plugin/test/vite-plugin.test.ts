@@ -4,7 +4,7 @@ import os from "os"
 import { platform } from "node:os"
 import { describe } from "vitest"
 import { build, createLogger } from "vite"
-import lingui, { LinguiPluginOpts } from "../src"
+import { lingui, LinguiPluginOpts } from "../src"
 import macrosPlugin from "vite-plugin-babel-macros"
 
 describe("vite-plugin", () => {

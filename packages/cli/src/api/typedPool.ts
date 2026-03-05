@@ -1,4 +1,4 @@
-import Tinypool, { type Options } from "tinypool"
+import { Tinypool, type Options } from "tinypool"
 
 export type TypedPool<TArgs extends unknown[], TResult> = {
   run(...args: TArgs): Promise<TResult>

@@ -130,7 +130,7 @@ function buildExportStatement(
       ]),
     )
   } else {
-    let exportExpression = null
+    let exportExpression: t.MemberExpression
     const matches = namespace.match(/^(window|global)\.([^.\s]+)$/)
     if (namespace === "cjs") {
       // module.exports.messages = { message: "Translation" }
