@@ -123,16 +123,20 @@ export default async function command(
     const moduleName =
       config.service.name.charAt(0).toLowerCase() + config.service.name.slice(1)
 
-    const services: Record<string, any> = {
-      translationIO: () => import(`./services/translationIO.js`),
+    const services: Record<
+      string,
+      () => Promise<typeof import("./services/translationIO.js")>
+    > = {
+      translationIO: () => import("./services/translationIO.js"),
     }
 
     if (!services[moduleName]) {
       console.error(`Can't load service module ${moduleName}`)
+      return false
     }
 
     try {
-      const module = services[moduleName]()
+      const module = await services[moduleName]()
 
       await module
         .default(config, options, extractionResult)
