@@ -15,6 +15,8 @@ import {
   createSegmentFromLinguiItem,
 } from "./translationIO/segment-converters.js"
 import { AllCatalogsType } from "../api/types.js"
+import { readFileSync } from "node:fs"
+import path from "node:path"
 
 const getTargetLocales = (config: LinguiConfigNormalized) => {
   const sourceLocale = config.sourceLocale || "en"
@@ -68,6 +70,17 @@ export default async function syncProcess(
   return reportError(errors)
 }
 
+function getLinguiVersion() {
+  const packageJson = JSON.parse(
+    readFileSync(
+      path.resolve(import.meta.dirname, "../../package.json"),
+      "utf8",
+    ),
+  )
+
+  return packageJson.version
+}
+
 // Initialize project with source and existing translations (only first time!)
 // Cf. https://translation.io/docs/create-library#initialization
 export async function init(
@@ -112,7 +125,7 @@ export async function init(
   const { data, error } = await tioInit(
     {
       client: "lingui",
-      version: require("@lingui/core/package.json").version,
+      version: getLinguiVersion(),
       source_language: sourceLocale,
       target_languages: targetLocales,
       segments: segments,
@@ -163,7 +176,7 @@ export async function sync(
   const { data, error } = await tioSync(
     {
       client: "lingui",
-      version: require("@lingui/core/package.json").version,
+      version: getLinguiVersion(),
       source_language: sourceLocale,
       target_languages: targetLocales,
       segments: segments,
