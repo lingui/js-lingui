@@ -28,21 +28,6 @@ export type Formats = Record<
 
 export type Values = Record<string, unknown>
 
-/**
- * @deprecated Plurals automatically used from Intl.PluralRules you can safely remove this call. Deprecated in v4
- */
-export type LocaleData = {
-  plurals?: (
-    n: number,
-    ordinal?: boolean,
-  ) => ReturnType<Intl.PluralRules["select"]>
-}
-
-/**
- * @deprecated Plurals automatically used from Intl.PluralRules you can safely remove this call. Deprecated in v4
- */
-export type AllLocaleData = Record<Locale, LocaleData>
-
 export type UncompiledMessage = string
 export type Messages = Record<string, UncompiledMessage | CompiledMessage>
 
@@ -66,10 +51,6 @@ export type I18nProps = {
   locale?: Locale
   locales?: Locales
   messages?: AllMessages
-  /**
-   * @deprecated Plurals automatically used from Intl.PluralRules you can safely remove this call. Deprecated in v4
-   */
-  localeData?: AllLocaleData
   missing?: MissingHandler
 }
 
@@ -92,7 +73,6 @@ export type MessageCompiler = (message: string) => CompiledMessage
 export class I18n extends EventEmitter<Events> {
   private _locale: Locale = ""
   private _locales?: Locales
-  private _localeData: AllLocaleData = {}
   private _messages: AllMessages = {}
   private _missing?: MissingHandler
   private _messageCompiler?: MessageCompiler
@@ -106,7 +86,6 @@ export class I18n extends EventEmitter<Events> {
 
     if (params.missing != null) this._missing = params.missing
     if (params.messages != null) this.load(params.messages)
-    if (params.localeData != null) this.loadLocaleData(params.localeData)
     if (typeof params.locale === "string" || params.locales) {
       this.activate(params.locale ?? defaultLocale, params.locales)
     }
@@ -123,23 +102,6 @@ export class I18n extends EventEmitter<Events> {
   get messages(): Messages {
     return this._messages[this._locale] ?? {}
   }
-
-  /**
-   * @deprecated this has no effect. Please remove this from the code. Deprecated in v4
-   */
-  get localeData(): LocaleData {
-    return this._localeData[this._locale] ?? {}
-  }
-
-  private _loadLocaleData(locale: Locale, localeData: LocaleData) {
-    const maybeLocaleData = this._localeData[locale]
-    if (!maybeLocaleData) {
-      this._localeData[locale] = localeData
-    } else {
-      Object.assign(maybeLocaleData, localeData)
-    }
-  }
-
   /**
    * Registers a `MessageCompiler` to enable the use of uncompiled catalogs at runtime.
    *
@@ -159,37 +121,6 @@ export class I18n extends EventEmitter<Events> {
     this._messageCompiler = compiler
     return this
   }
-
-  /**
-   * @deprecated Plurals automatically used from Intl.PluralRules you can safely remove this call. Deprecated in v4
-   */
-  public loadLocaleData(allLocaleData: AllLocaleData): void
-  /**
-   * @deprecated Plurals automatically used from Intl.PluralRules you can safely remove this call. Deprecated in v4
-   */
-  public loadLocaleData(locale: Locale, localeData: LocaleData): void
-  /**
-   * @deprecated Plurals automatically used from Intl.PluralRules you can safely remove this call. Deprecated in v4
-   */
-  loadLocaleData(
-    localeOrAllData: AllLocaleData | Locale,
-    localeData?: LocaleData,
-  ) {
-    if (typeof localeOrAllData === "string") {
-      // loadLocaleData('en', enLocaleData)
-      // Loading locale data for a single locale.
-      this._loadLocaleData(localeOrAllData, localeData!)
-    } else {
-      // loadLocaleData(allLocaleData)
-      // Loading all locale data at once.
-      Object.keys(localeOrAllData).forEach((locale) =>
-        this._loadLocaleData(locale, localeOrAllData[locale]!),
-      )
-    }
-
-    this.emit("change")
-  }
-
   private _load(locale: Locale, messages: Messages) {
     const maybeMessages = this._messages[locale]
     if (!maybeMessages) {
