@@ -1,5 +1,5 @@
 import { styleText } from "node:util"
-import chokidar from "chokidar"
+import { watch } from "chokidar"
 import { program } from "commander"
 import nodepath from "path"
 import { getConfig, LinguiConfigNormalized } from "@lingui/conf"
@@ -256,7 +256,7 @@ if (import.meta.main) {
         matchedPaths.push(path)
       }
 
-      const watcher = chokidar.watch(matchedPaths, {
+      const watcher = watch(matchedPaths, {
         ignored: [
           "/(^|[/\\])../",
           (path: string) => micromatch.any(path, ignored),

@@ -1,5 +1,5 @@
 import { styleText } from "node:util"
-import chokidar from "chokidar"
+import { watch } from "chokidar"
 import { program } from "commander"
 
 import { getConfig, LinguiConfigNormalized } from "@lingui/conf"
@@ -193,7 +193,7 @@ if (import.meta.main) {
     ;(async function initWatch() {
       const { paths } = await getPathsForCompileWatcher(config)
 
-      const watcher = chokidar.watch(paths, {
+      const watcher = watch(paths, {
         persistent: true,
       })
 
