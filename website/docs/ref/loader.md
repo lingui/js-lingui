@@ -1,4 +1,4 @@
-# Webpack / Rspack Loader
+# Webpack-compatible loader
 
 The `@lingui/loader` is a Webpack-compatible loader for Lingui message catalogs. It can be used with Webpack, Rspack, and Rsbuild. It offers an alternative to the [`lingui compile`](/ref/cli#compile) and compiles catalogs on the fly.
 
