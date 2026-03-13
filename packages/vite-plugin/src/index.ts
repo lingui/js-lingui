@@ -155,6 +155,10 @@ Please check that catalogs.path is filled properly.\n`
           return {
             code,
             map: null, // provide source map if available
+            // Vite 8+ (Rolldown) auto-detects module types by file extension.
+            // Since .po files are transformed to JS, we must explicitly declare
+            // the module type to avoid misinterpretation.
+            moduleType: "js",
           }
         }
       },

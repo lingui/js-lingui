@@ -45,7 +45,7 @@
     "@lingui/conf": "5.9.2"
   },
   "peerDependencies": {
-    "vite": "^3 || ^4 || ^5.0.9 || ^6 || ^7"
+    "vite": "^3 || ^4 || ^5.0.9 || ^6 || ^7 || ^8"
   },
   "devDependencies": {
     "@lingui/core": "workspace:^",

@@ -3350,7 +3350,7 @@ __metadata:
     vite: 6.0.2
     vite-plugin-babel-macros: ^1.0.6
   peerDependencies:
-    vite: ^3 || ^4 || ^5.0.9 || ^6 || ^7
+    vite: ^3 || ^4 || ^5.0.9 || ^6 || ^7 || ^8
   languageName: unknown
   linkType: soft
 
