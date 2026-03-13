@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.9.3](https://github.com/lingui/js-lingui/compare/v6.0.0-next.1...v5.9.3) (2026-03-13)
+
+### Bug Fixes
+
+* support vite 8 ([#2474](https://github.com/lingui/js-lingui/issues/2474)) ([e4468c7](https://github.com/lingui/js-lingui/commit/e4468c7cb01533e1f68e54c92e74a67cdfc1526d))
+
 ## [5.9.2](https://github.com/lingui/js-lingui/compare/v5.9.1...v5.9.2) (2026-02-23)
 
 ### Bug Fixes
