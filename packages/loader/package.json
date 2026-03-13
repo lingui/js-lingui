@@ -2,7 +2,7 @@
   "name": "@lingui/loader",
   "version": "6.0.0-next.1",
   "type": "module",
-  "description": "webpack loader for lingui message catalogs",
+  "description": "webpack-compatible loader for lingui message catalogs",
   "exports": {
     ".": "./dist/index.cjs"
   },
@@ -15,6 +15,8 @@
   "keywords": [
     "webpack",
     "webpack-loader",
+    "rspack",
+    "rsbuild",
     "i18n",
     "internationalization",
     "i10n",
@@ -56,7 +58,16 @@
     "webpack": "^5.76.1"
   },
   "peerDependencies": {
+    "@rsbuild/core": ">=1.0.2",
     "webpack": "^5.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@rspack/core": {
+      "optional": true
+    },
+    "webpack": {
+      "optional": true
+    }
   },
   "unbuild": {
     "declaration": "node16"
