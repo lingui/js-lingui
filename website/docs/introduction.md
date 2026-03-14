@@ -133,3 +133,4 @@ export default function Lingui({ numUsers, name = "You" }) {
 ## See Also
 
 - [Installation and Setup](/installation)
+- [i18n with AI](/ai-tools)
