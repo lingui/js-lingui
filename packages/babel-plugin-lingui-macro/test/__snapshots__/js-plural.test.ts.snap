@@ -147,6 +147,31 @@ _i18n._(
 
 `;
 
+exports[`Macro with utility arg macro usage in options 1`] = `
+import { plural, arg } from "@lingui/core/macro";
+plural(count, {
+  one: \`# book on {\${arg(today)}, date}\`,
+  other: \`# books on {\${arg(today)}, date}\`,
+});
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { i18n as _i18n } from "@lingui/core";
+_i18n._(
+  /*i18n*/
+  {
+    id: "lEIbMo",
+    message:
+      "{count, plural, one {# book on {today, date}} other {# books on {today, date}}}",
+    values: {
+      count: count,
+      today: today,
+    },
+  }
+);
+
+`;
+
 exports[`plural macro could be renamed 1`] = `
 import { plural as plural2 } from "@lingui/core/macro";
 const a = plural2(count, {
