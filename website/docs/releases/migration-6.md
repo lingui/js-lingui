@@ -283,6 +283,26 @@ export default defineConfig({
 
 The option is opt-in (`reactivityTransform: false` by default) to avoid breaking existing setups.
 
+## Deprecated `localeData` API Removed
+
+The `localeData`-related types and methods that were deprecated in Lingui v4 have been fully removed from `@lingui/core`.
+
+### What Changed
+
+The following exports have been removed from `@lingui/core`:
+
+- `LocaleData` type
+- `AllLocaleData` type
+- `I18nProps.localeData` property
+- `i18n.localeData` getter
+- `i18n.loadLocaleData()` method
+
+These APIs were originally used to supply custom plural rules to Lingui. Since v4, plural rules are automatically derived from `Intl.PluralRules` and these methods have had no effect.
+
+### Migration
+
+Remove any calls to `i18n.loadLocaleData()` and any `localeData` property passed to `setupI18n()` or `createI18n()`. No replacement is needed - plural rules are handled automatically.
+
 ## TypeScript Type Changes
 
 Several Lingui packages now use TypeScript's `strictNullChecks`, which improves type safety but may require updates if you use Lingui's internal types in custom integrations.
