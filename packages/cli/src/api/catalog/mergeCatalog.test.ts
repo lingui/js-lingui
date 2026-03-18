@@ -171,9 +171,11 @@ describe("mergeCatalog", () => {
     expect(result["Hello"]).toMatchInlineSnapshot(`
       {
         comments: [],
-        flags: [
-          myTag,
-        ],
+        extra: {
+          flags: [
+            myTag,
+          ],
+        },
         message: Hello,
         origin: [
           [
