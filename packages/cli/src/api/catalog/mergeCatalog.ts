@@ -40,7 +40,7 @@ export function mergeCatalog(
       const { obsolete, ...rest } = nextCatalog[key]
       const { extra } = prevCatalog[key]
 
-      return [key, { ...extra, ...rest, translation }]
+      return [key, { ...rest, extra, translation }]
     })
   )
 

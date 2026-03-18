@@ -170,9 +170,11 @@ describe("mergeCatalog", () => {
     const result = mergeCatalog(prevCatalog, nextCatalog, false, {})
     expect(result["Hello"]).toMatchInlineSnapshot(`
       {
-        flags: [
-          myTag,
-        ],
+        extra: {
+          flags: [
+            myTag,
+          ],
+        },
         message: Hello,
         origin: [
           [
