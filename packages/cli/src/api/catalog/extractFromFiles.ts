@@ -137,7 +137,7 @@ export async function extractFromFilesWithWorkerPool(
   }
 
   const results = await Promise.all(
-    paths.map((filename) => workerPool.run(filename, resolvedConfigPath))
+    paths.map((filename) => workerPool.run(filename, resolvedConfigPath)),
   )
 
   results.forEach((result) => {

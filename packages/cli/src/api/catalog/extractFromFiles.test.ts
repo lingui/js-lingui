@@ -64,15 +64,13 @@ describe("extractFromFilesWithWorkerPool", () => {
       origin: [file, 1],
     })
 
-    const run = vi
-      .fn()
-      .mockImplementation(async (filename: string) => {
-        if (filename.endsWith("z.ts")) {
-          await new Promise((r) => setTimeout(r, 5))
-          return { success: true as const, messages: [msg(`${rootDir}/z.ts`)] }
-        }
-        return { success: true as const, messages: [msg(`${rootDir}/a.ts`)] }
-      })
+    const run = vi.fn().mockImplementation(async (filename: string) => {
+      if (filename.endsWith("z.ts")) {
+        await new Promise((r) => setTimeout(r, 5))
+        return { success: true as const, messages: [msg(`${rootDir}/z.ts`)] }
+      }
+      return { success: true as const, messages: [msg(`${rootDir}/a.ts`)] }
+    })
 
     const pool = { run, destroy: vi.fn() } as unknown as ExtractWorkerPool
 
