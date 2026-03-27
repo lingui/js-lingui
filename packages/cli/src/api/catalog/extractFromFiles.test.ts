@@ -3,7 +3,7 @@ import { makeConfig } from "@lingui/conf"
 import { describe, expect, it, vi } from "vitest"
 import type { ExtractWorkerPool } from "../workerPools.js"
 
-vi.mock("../extractors/index.js", () => ({
+vi.mock(import("../extractors/index.js"), () => ({
   default: vi.fn().mockResolvedValue(true),
 }))
 
@@ -64,7 +64,7 @@ describe("extractFromFilesWithWorkerPool", () => {
       origin: [file, 1],
     })
 
-    const run = vi.fn().mockImplementation(async (filename: string) => {
+    const run = vi.fn(async (filename: string) => {
       if (filename.endsWith("z.ts")) {
         await new Promise((r) => setTimeout(r, 5))
         return { success: true as const, messages: [msg(`${rootDir}/z.ts`)] }
