@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.9.4](https://github.com/lingui/js-lingui/compare/v5.9.3...v5.9.4) (2026-03-27)
+
+### Bug Fixes
+
+* really keep catalog extra from previous catalog ([#2479](https://github.com/lingui/js-lingui/issues/2479)) ([c939113](https://github.com/lingui/js-lingui/commit/c939113293b29a948b80f2a6332cf8016c47ab37))
+
 ## [5.9.3](https://github.com/lingui/js-lingui/compare/v6.0.0-next.1...v5.9.3) (2026-03-13)
 
 **Note:** Version bump only for package @lingui/cli
