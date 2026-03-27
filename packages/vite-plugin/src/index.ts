@@ -58,11 +58,11 @@ export function lingui({
 
           id = id.split("?")[0]!
 
-          const catalogRelativePath = path.relative(config!.rootDir, id)
+          const catalogRelativePath = path.relative(config.rootDir, id)
 
           const fileCatalog = getCatalogForFile(
             catalogRelativePath,
-            await getCatalogs(config!),
+            await getCatalogs(config),
           )
 
           if (!fileCatalog) {
