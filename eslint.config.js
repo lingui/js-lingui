@@ -66,4 +66,10 @@ export default defineConfig(
       "import/no-extraneous-dependencies": "off",
     },
   },
+  {
+    files: ["website/**/*.{ts,tsx}"],
+    rules: {
+      "import/no-unresolved": "off",
+    },
+  },
 )

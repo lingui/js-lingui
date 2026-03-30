@@ -1,15 +1,13 @@
 import React from "react";
 import { useBaseUrlUtils } from "@docusaurus/useBaseUrl";
-
-import styles from "./Features.module.scss";
-import Button from "./Button";
-import clsx from "clsx";
+import { Button } from "./ui/button";
+import cx from "clsx";
 
 interface FeatureDetails {
   title: string;
   description: JSX.Element;
   image: string;
-  additionalClass: string;
+  className?: string;
 }
 
 const FEATURES: FeatureDetails[] = [
@@ -29,7 +27,6 @@ const FEATURES: FeatureDetails[] = [
       </p>
     ),
     image: "universal.svg",
-    additionalClass: "",
   },
   {
     title: "Powerful Tooling",
@@ -46,7 +43,6 @@ const FEATURES: FeatureDetails[] = [
       </>
     ),
     image: "tooling.png",
-    additionalClass: "",
   },
   {
     title: "Full Rich-Text Support",
@@ -57,7 +53,6 @@ const FEATURES: FeatureDetails[] = [
       </p>
     ),
     image: "rich-text.svg",
-    additionalClass: "",
   },
   {
     title: "AI Translations Ready",
@@ -74,13 +69,12 @@ const FEATURES: FeatureDetails[] = [
       </>
     ),
     image: "ai-ready.png",
-    additionalClass: "",
   },
   {
     title: "Headache-Free Professional Localization",
     description: (
       <>
-        <div className={"margin-bottom--sm"}>
+        <div className="mb-2">
           <code>Candidate knows 1 language</code>, but{" "}
           <code>
             Candidate knows 10 language<strong>s</strong>
@@ -94,7 +88,7 @@ const FEATURES: FeatureDetails[] = [
       </>
     ),
     image: "clean-and-readable.png",
-    additionalClass: styles.featureCardCellWide,
+    className: "md:col-span-2",
   },
   {
     title: "Battle-Proven & Future Proof",
@@ -110,7 +104,7 @@ const FEATURES: FeatureDetails[] = [
       </>
     ),
     image: "time.svg",
-    additionalClass: styles.featureCardCellWide,
+    className: "md:col-span-2",
   },
   {
     title: "Suitable for All Localization Platforms",
@@ -118,23 +112,22 @@ const FEATURES: FeatureDetails[] = [
       <>
         <p>Integrate Lingui with your existing workflow. It supports both explicit and auto-generated message keys.</p>
         <p>
-          Translations are stored in JSON or a standard PO file, which is supported by almost all translation tools.
+          Translations are stored in a standard PO file, which is supported by almost all translation tools. You can
+          also use JSON, CSV, or create your own formatter.
         </p>
       </>
     ),
     image: "all-platforms.svg",
-    additionalClass: "",
   },
   {
-    title: "Verified by Thousands of People",
+    title: "Verified by Thousands of Developers",
     description: (
       <p>
-        Lingui has been used and tested by thousands of satisfied users and has been proven to provide accurate and
+        Lingui has been used and tested by thousands of satisfied developers and has been proven to provide accurate and
         efficient i18n and l10n results. Join the community.
       </p>
     ),
     image: "verified.svg",
-    additionalClass: "",
   },
   {
     title: "Fully Fledged",
@@ -151,76 +144,87 @@ const FEATURES: FeatureDetails[] = [
       </>
     ),
     image: "fledged.svg",
-    additionalClass: styles.featureCardCellWide,
+    className: "md:col-span-2",
   },
 ];
 
-const FeatureCard = ({ title, description, image, additionalClass }: FeatureDetails): React.ReactElement => (
-  <div className={clsx(styles.featureCard, additionalClass)}>
-    <img loading="lazy" src={image} width="64px" height="64px" alt="Feature Logo" />
-    <div className={styles.featureCardContent}>
-      <h3>{title}</h3>
-      <div>{description}</div>
+const FeatureCard = ({ title, description, image, className }: FeatureDetails): React.ReactElement => (
+  <div
+    className={cx(
+      "relative mb-6 grid min-w-0 grid-rows-[64px_1fr] rounded-xl border border-secondary/25 bg-white/10 p-6 backdrop-blur-md transition-colors",
+      "hover:border-secondary/27 hover:bg-gray-100/20 dark:border-white/10 dark:bg-white/5 dark:hover:border-white/14 dark:hover:bg-white/[0.07]",
+      className
+    )}
+  >
+    <img
+      loading="lazy"
+      decoding="async"
+      src={image}
+      width={64}
+      height={64}
+      alt=""
+      className="h-16 w-16 select-none self-start"
+    />
+    <div className="mt-4 min-w-0">
+      <h3 className="mb-3 text-xl font-medium tracking-tight text-heading">{title}</h3>
+      <div className="text-base leading-relaxed text-body-fg [&_p]:m-0 [&_p+p]:mt-3 [&_a]:text-link [&_a]:no-underline [&_a]:underline-offset-2 [&_a:hover]:underline [&_code]:rounded-md [&_code]:bg-secondary/15 [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:text-[0.875em]">
+        {description}
+      </div>
     </div>
   </div>
 );
 
-const Features = (): React.ReactElement => {
+export function Features(): React.ReactElement {
   const { withBaseUrl } = useBaseUrlUtils();
 
+  const cards = (slice: FeatureDetails[]) =>
+    slice.map((feature) => (
+      <FeatureCard
+        key={feature.title}
+        image={withBaseUrl(`/img/features/${feature.image}`)}
+        title={feature.title}
+        description={feature.description}
+        className={feature.className}
+      />
+    ));
+
   return (
-    <section>
-      <div className="container">
-        <div className="row">
-          <div className={"col col--8 col--offset-2"}>
-            <h2 className={"text--center margin-bottom--lg"}>Why Choose Lingui for Your Localization Projects?</h2>
+    <section className="overflow-x-hidden">
+      <div className="mx-auto max-w-6xl px-4">
+        <h2 className="mx-auto mb-12 max-w-3xl text-center text-3xl font-medium tracking-tight text-heading sm:text-4xl">
+          Why Choose Lingui for Your Localization Projects?
+        </h2>
+
+        <div className="grid grid-cols-1 gap-x-6 sm:grid-cols-2 lg:grid-cols-3">
+          {cards(FEATURES.slice(0, 4))}
+          <div className="relative col-span-full row-start-2 h-0 -z-10 hidden md:block">
+            <img
+              src="./img/features/pattern-left-big.svg"
+              width="900"
+              height="680"
+              alt="Features Background"
+              className="absolute -bottom-16 -left-36 select-none"
+            />
           </div>
-          <div className="col col--offset-1 col--10">
-            <div className={styles["features--wrap"]}>
-              {FEATURES.slice(0, 4).map((feature: FeatureDetails, idx) => (
-                <FeatureCard
-                  key={idx}
-                  image={withBaseUrl(`/img/features/${feature.image}`)}
-                  title={feature.title}
-                  description={feature.description}
-                  additionalClass={feature.additionalClass}
-                />
-              ))}
-              <div className={styles["features--left-img"]}>
-                <img src={"./img/features/pattern-left-big.svg"} width="900" height="680" alt="Features Background" />
-              </div>
-              {FEATURES.slice(4, 6).map((feature: FeatureDetails, idx) => (
-                <FeatureCard
-                  key={idx}
-                  image={withBaseUrl(`/img/features/${feature.image}`)}
-                  title={feature.title}
-                  description={feature.description}
-                  additionalClass={feature.additionalClass}
-                />
-              ))}
-              <div className={styles["features--right-img"]}>
-                <img src={"./img/features/pattern-right-big.svg"} width="900" height="680" alt="Features Background" />
-              </div>
-              {FEATURES.slice(6).map((feature: FeatureDetails, idx) => (
-                <FeatureCard
-                  key={idx}
-                  image={withBaseUrl(`/img/features/${feature.image}`)}
-                  title={feature.title}
-                  description={feature.description}
-                  additionalClass={feature.additionalClass}
-                />
-              ))}
-            </div>
+          {cards(FEATURES.slice(4, 6))}
+          <div className="relative col-span-full row-start-4 z-0 h-0 hidden md:block">
+            <img
+              src="./img/features/pattern-right-big.svg"
+              width="900"
+              height="680"
+              alt="Features Background"
+              className="absolute -right-36 -top-16 select-none"
+            />
           </div>
+          {cards(FEATURES.slice(6))}
         </div>
       </div>
-      <div className="text--center">
+
+      <div className="text-center">
         <Button href={withBaseUrl("/introduction#key-features")} isOutline={true}>
           More Features
         </Button>
       </div>
     </section>
   );
-};
-
-export default Features;
+}
