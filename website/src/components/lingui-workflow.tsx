@@ -102,7 +102,7 @@ function StepIcon({ icon, bgColor, showLine = true }: { icon: ReactNode; bgColor
       >
         {icon}
       </div>
-      {showLine && <div className="w-0.5 h-18 md:h-24 bg-gradient-to-b from-cyan-400 to-cyan-400/30 mt-4" />}
+      {showLine && <div className="w-0.5 h-12 md:h-24 bg-gradient-to-b from-cyan-400 to-cyan-400/30 mt-4" />}
     </div>
   );
 }
