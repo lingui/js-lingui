@@ -6,12 +6,22 @@ import { ExtractedCatalogType, MessageOrigin } from "../types.js"
 import { prettyOrigin } from "../utils.js"
 import { ExtractWorkerPool } from "../workerPools.js"
 
+function compareOrigins(a: MessageOrigin, b: MessageOrigin): number {
+  const byPath = a[0].localeCompare(b[0])
+  if (byPath !== 0) {
+    return byPath
+  }
+  const lineA = a[1] ?? 0
+  const lineB = b[1] ?? 0
+  return lineA - lineB
+}
+
 function mergeOrigins(prev: MessageOrigin[], next: MessageOrigin | undefined) {
   if (!next) {
     return prev
   }
 
-  return [...prev, next].sort((a, b) => a[0].localeCompare(b[0]))
+  return [...prev, next].sort(compareOrigins)
 }
 
 function mergePlaceholders(
@@ -126,19 +136,19 @@ export async function extractFromFilesWithWorkerPool(
     )
   }
 
-  await Promise.all(
-    paths.map(async (filename) => {
-      const result = await workerPool.run(filename, resolvedConfigPath)
-
-      if (!result.success) {
-        catalogSuccess = false
-      } else {
-        result.messages.forEach((message) => {
-          mergeExtractedMessage(message, messages, config)
-        })
-      }
-    }),
+  const results = await Promise.all(
+    paths.map((filename) => workerPool.run(filename, resolvedConfigPath)),
   )
+
+  results.forEach((result) => {
+    if (!result.success) {
+      catalogSuccess = false
+    } else {
+      result.messages.forEach((message) => {
+        mergeExtractedMessage(message, messages, config)
+      })
+    }
+  })
 
   if (!catalogSuccess) return undefined
 

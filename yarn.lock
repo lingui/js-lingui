@@ -2380,7 +2380,7 @@ __metadata:
     vite-plugin-babel-macros: ^1.0.6
     vitest: 4.0.18
   peerDependencies:
-    vite: ^3 || ^4 || ^5.0.9 || ^6 || ^7
+    vite: ^3 || ^4 || ^5.0.9 || ^6 || ^7 || ^8
   languageName: unknown
   linkType: soft
 
