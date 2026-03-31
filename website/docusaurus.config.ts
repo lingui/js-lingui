@@ -134,7 +134,7 @@ const config: Config = {
           filename: "sitemap.xml",
         },
         theme: {
-          customCss: [require.resolve("./src/css/custom.scss")],
+          customCss: require.resolve("./src/css/custom.scss"),
         },
       } satisfies Preset.Options,
     ],
