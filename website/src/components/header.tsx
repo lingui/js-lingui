@@ -25,7 +25,7 @@ export function Header(): React.ReactElement {
         <meta name="twitter:image" content={ogImage} />
       </Head>
 
-      <div className="relative flex overflow-hidden rounded-b-lingui bg-gradient-to-b from-transparent to-red-500/5 p-0 bottom-0 rounded-b-2xl">
+      <div className="relative bottom-0 flex overflow-hidden rounded-b-3xl bg-gradient-to-b from-transparent to-red-500/5 p-0">
         <img
           src="/img/header/left-bg.svg"
           alt=""
