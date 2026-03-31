@@ -58,10 +58,14 @@
     "webpack": "^5.76.1"
   },
   "peerDependencies": {
-    "@rsbuild/core": ">=1.0.2",
+    "@rsbuild/core": ">=1.0.0",
+    "@rspack/core": ">=1.0.0",
     "webpack": "^5.0.0"
   },
   "peerDependenciesMeta": {
+    "@rsbuild/core": {
+      "optional": true
+    },
     "@rspack/core": {
       "optional": true
     },
