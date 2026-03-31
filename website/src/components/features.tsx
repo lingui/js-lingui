@@ -55,39 +55,43 @@ const FEATURES: FeatureDetails[] = [
     image: "rich-text.svg",
   },
   {
-    title: "AI Translations Ready",
+    title: "Headache-Free Localization",
     description: (
       <>
         <p>
-          For AI to do great translations for you, context is critical. Translating UI copy is difficult because
-          it&apos;s usually a list of short strings without enough context.
-        </p>
-        <p>
-          Lingui&apos;s localization formats allow developers to write descriptions of where and how their keys are
-          used.
-        </p>
-      </>
-    ),
-    image: "ai-ready.png",
-  },
-  {
-    title: "Headache-Free Professional Localization",
-    description: (
-      <>
-        <div className="mb-2">
           <code>Candidate knows 1 language</code>, but{" "}
           <code>
             Candidate knows 10 language<strong>s</strong>
           </code>
           .
-        </div>
+        </p>
         <p>
           No need to know how many plurals the language has. Create a product in one language and deliver a perfect
-          translation to users. Lingui follows Unicode ICU standards to handle plurals, genders and selects.
+          translation to users.
         </p>
       </>
     ),
     image: "clean-and-readable.png",
+  },
+  {
+    title: "Built for AI-assisted Workflows",
+    description: (
+      <>
+        <p>
+          For AI to do great translations for you, context is critical. Translating UI copy is difficult because
+          it&apos;s usually a list of short strings without enough context. Lingui&apos;s localization formats allow
+          developers to write descriptions of where and how their keys are used.
+        </p>
+        <p>
+          Install{" "}
+          <a href="https://github.com/lingui/skills" target="_blank" rel="noopener noreferrer">
+            <code>lingui/skills</code>
+          </a>{" "}
+          to help your AI assistant understand Lingui patterns and apply them consistently across your project.
+        </p>
+      </>
+    ),
+    image: "ai-ready.png",
     className: "md:col-span-2",
   },
   {
@@ -99,7 +103,7 @@ const FEATURES: FeatureDetails[] = [
         </p>
         <p>
           If your team needs to edit source texts without developer involvement, or you want the ability to deliver the
-          most recent translations directly to your customers – we&apos;ve got you covered.
+          most recent translations directly to your customers - we&apos;ve got you covered.
         </p>
       </>
     ),
@@ -134,12 +138,14 @@ const FEATURES: FeatureDetails[] = [
     description: (
       <>
         <p>
-          Lingui is a general-purpose framework with bindings for React (including RSC). It can be used on a server with
-          Node.js or in Vanilla JavaScript.
+          Lingui is a general-purpose framework with bindings for <span className="font-medium">React</span> (including
+          RSC), <span className="font-medium">Vue</span>, <span className="font-medium">Astro</span>, and{" "}
+          <span className="font-medium">Svelte</span>. It can be used on a server with{" "}
+          <span className="font-medium">Node.js</span> or in <span className="font-medium">Vanilla JavaScript</span>.
         </p>
         <p>
-          Extend its functionality with optional modules for features like lazy loading of language packs, automatic
-          user locale detection, and more.
+          Extend its capabilities with optional modules offering features such as lazy loading of language packs,
+          automatic user locale detection, and more.
         </p>
       </>
     ),
@@ -152,7 +158,7 @@ const FeatureCard = ({ title, description, image, className }: FeatureDetails): 
   <div
     className={cx(
       "relative mb-6 grid min-w-0 grid-rows-[64px_1fr] rounded-xl border border-secondary/25 bg-white/10 p-6 backdrop-blur-md transition-colors",
-      "hover:border-secondary/27 hover:bg-gray-100/20 dark:border-white/10 dark:bg-white/5 dark:hover:border-white/14 dark:hover:bg-white/[0.07]",
+      "hover:border-secondary/27 hover:bg-gray-100/30 dark:border-white/10 dark:bg-white/5 dark:hover:border-white/14 dark:hover:bg-white/8",
       className
     )}
   >
@@ -203,7 +209,7 @@ export function Features(): React.ReactElement {
               width="900"
               height="680"
               alt="Features Background"
-              className="absolute -bottom-16 -left-36 select-none"
+              className="absolute -bottom-16 -left-36 select-none pointer-events-none"
             />
           </div>
           {cards(FEATURES.slice(4, 6))}
@@ -213,7 +219,7 @@ export function Features(): React.ReactElement {
               width="900"
               height="680"
               alt="Features Background"
-              className="absolute -right-36 -top-16 select-none"
+              className="absolute -right-36 -top-16 select-none pointer-events-none"
             />
           </div>
           {cards(FEATURES.slice(6))}

@@ -130,9 +130,7 @@ export function LinguiWorkflow({ steps = defaultSteps }: LinguiWorkflowProps) {
     <section className="px-4">
       <div className="max-w-4xl mx-auto">
         <div className="mb-12 text-center">
-          <h2 className="text-2xl font-medium tracking-tight text-heading sm:text-3xl">
-            How Lingui fits your workflow
-          </h2>
+          <h2 className="text-2xl font-medium tracking-tight text-heading sm:text-3xl">Workflow</h2>
         </div>
 
         {steps.map((step, index) => (
