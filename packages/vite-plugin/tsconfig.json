@@ -14,6 +14,6 @@
     "moduleResolution": "bundler",
     "types": ["vitest/globals"]
   },
-  "include": ["src", "./test/vite-plugin.test.ts"],
+  "include": ["src", "./test/**.ts"],
   "exclude": ["node_modules"]
 }
