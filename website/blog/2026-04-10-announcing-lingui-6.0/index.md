@@ -39,9 +39,9 @@ Lingui is an open-source JavaScript library for internationalization (**i18n**) 
 
 ## Progress Highlights
 
-The journey from [Lingui 5.0](/blog/2024/11/28/announcing-lingui-5.0) includes **20 version updates** (minor and patch), more than **120 closed issues**, and more than **130 merged pull requests**.
+The journey from [Lingui 5.0](/blog/2024/11/28/announcing-lingui-5.0) includes **22 version updates** (minor and patch), more than **130 closed issues**, and more than **170 merged pull requests**.
 
-Before we dive into the changes in 6.0, let's take a look at the project's metrics since version 5.0. The project has grown significantly, with GitHub stars up 22% and downloads more than doubling across all packages:
+Before we dive into the changes in 6.0, let's take a look at the project's metrics since version 5.0. The project has grown significantly, with GitHub stars up 24% and significantly increased downloads across all packages:
 
 ```mermaid
 %%{init: {"themeCSS": ".node rect { rx: 5; ry: 5; }"} }%%
@@ -58,22 +58,22 @@ graph LR
         end
     end
 
-    subgraph FEB2026["<b>February 2026</b>"]
-        stars2["GitHub Stars ⭐<br/>5.6K"]
+    subgraph MAR2026["<b>March 2026</b>"]
+        stars2["GitHub Stars ⭐<br/>5.7K"]
 
         subgraph downloads2["Downloads 📥 / month"]
-            B1["@lingui/core<br/>3.8M"]
-            B2["@lingui/react<br/>1.8M"]
-            B3["@lingui/swc-plugin<br/>684k"]
-            B4["@lingui/vite-plugin<br/>588k"]
+            B1["@lingui/core<br/>4.4M"]
+            B2["@lingui/react<br/>2M"]
+            B3["@lingui/swc-plugin<br/>819k"]
+            B4["@lingui/vite-plugin<br/>760k"]
         end
     end
 
-    stars1 -->|"<b>ㅤ+22%ㅤ</b>"| stars2
-    A1 -->|"<b>ㅤ+193%ㅤ</b>"| B1
-    A2 -->|"<b>ㅤ+133%ㅤ</b>"| B2
-    A3 -->|"<b>ㅤ+267%ㅤ</b>"| B3
-    A4 -->|"<b>ㅤ+300%ㅤ</b>"| B4
+    stars1 -->|"<b>ㅤ+24%ㅤ</b>"| stars2
+    A1 -->|"<b>ㅤ+238%ㅤ</b>"| B1
+    A2 -->|"<b>ㅤ+160%ㅤ</b>"| B2
+    A3 -->|"<b>ㅤ+340%ㅤ</b>"| B3
+    A4 -->|"<b>ㅤ+417%ㅤ</b>"| B4
 
 style stars1 stroke-width:2px,rx:20,ry:20
 style stars2 stroke-width:2px,rx:20,ry:20
@@ -81,7 +81,7 @@ style stars2 stroke-width:2px,rx:20,ry:20
 
 (_The download numbers are based on the [npm-stat.com](https://npm-stat.com/) data_)
 
-Additionally, `eslint-plugin-lingui` has seen strong adoption, with monthly downloads growing from **~107k** to **~774k** (+623%) over the same period.
+Additionally, `eslint-plugin-lingui` has seen strong adoption, with monthly downloads growing from **~107k** to **~791k** (+639%) over the same period.
 
 ## Recap
 
