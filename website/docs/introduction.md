@@ -1,6 +1,6 @@
 ---
 title: Internationalization Framework for Global Products
-description: Lingui is a universal, clean and readable, lightweight and powerful internationalization framework for global projects
+description: Lingui is a universal, clean and readable, lightweight and powerful internationalization (i18n) framework for global projects
 ---
 
 # Introduction
@@ -21,9 +21,17 @@ Lingui is an easy yet powerful internationalization framework for global project
 
 Keep your code clean and readable, while the library uses battle-tested and powerful **ICU MessageFormat** under the hood.
 
+### Lightweight and Optimized
+
+Core library is less than [2 kB gzipped](https://bundlephobia.com/result?p=@lingui/core), React components are additional [1.3 kB gzipped](https://bundlephobia.com/result?p=@lingui/react).
+
 ### Universal
 
-Use it everywhere. [`@lingui/core`](/ref/core) provides the essential intl functionality which works in any JavaScript project, while [`@lingui/react`](/ref/react) offers components for leveraging React rendering, including React Server Components (RSC) support.
+Use it everywhere. [`@lingui/core`](/ref/core) is the framework-agnostic layer: it loads compiled catalogs, keeps track of the active locale, and formats messages with ICU MessageFormat - the same behavior in the browser, on a Node server, or in a small script.
+
+If you are not using a UI framework, the [JavaScript tutorial](/tutorials/javascript) shows how to wire up core macros and catalogs from scratch.
+
+For React apps, [`@lingui/react`](/ref/react) adds components and hooks that follow the renderer's lifecycle, including [React Server Components](/tutorials/react-rsc). For React Native, the [React Native tutorial](/tutorials/react-native) uses the same extract-and-compile workflow. Lingui is also compatible with Astro and Svelte via community-supported packages.
 
 ### Full Rich-text Support
 
@@ -35,15 +43,13 @@ Manage your intl workflow with the Lingui [CLI](/ref/cli), [Vite Plugin](/ref/vi
 
 ### Unopinionated
 
-Integrate Lingui into your existing workflow. It supports explicit message keys as well as auto-generated ones. Translations are stored either in JSON or standard PO file, which is supported in almost all translation tools.
+Integrate Lingui into your existing workflow. It supports explicit message keys as well as auto-generated ones. Translations are stored either in standard PO file, which is supported in almost all translation tools. You can also use CSV or JSON, or add a custom formatter of your own.
 
-### Lightweight and Optimized
+### Built for AI-assisted Workflows
 
-Core library is less than [2 kB gzipped](https://bundlephobia.com/result?p=@lingui/core), React components are additional [1.3 kB gzipped](https://bundlephobia.com/result?p=@lingui/react).
+For AI to do great translations for you, context is critical. Translating UI copy is difficult because it's usually a list of short strings without enough context. Lingui's localization formats allow developers to write descriptions of where and how their keys are used.
 
-### AI Translations Ready
-
-For AI to do great translations for you, context is critical. Translating UI copy is difficult because it's usually a list of short strings without enough context. Lingui's localization formats allow developers to write descriptions of where and how your keys are used. This allows both human translators and AI to make better translations.
+Install [`lingui/skills`](https://github.com/lingui/skills) to help your AI assistant understand Lingui patterns and apply them consistently across your project. For context files, MCP setup, and more, see [i18n with AI](/ai-tools).
 
 ### Active Community
 
@@ -51,59 +57,70 @@ Join the growing [community of developers](/community) who are using Lingui to b
 
 ## Workflow
 
-Using Lingui for internationalization is a straightforward process. Here's a high-level overview of the workflow.
+Using Lingui for internationalization is a straightforward cycle. You define messages in code, extract them into catalogs, translate, compile optimized runtime output, and ship localized builds.
 
-![Workflow scheme](/img/docs/lingui-workflow.svg)
+```mermaid
+flowchart LR
+  A[Define Messages] --> B[Extract]
+  B --> C[Translate]
+  C --> D[Compile]
+  D --> E[Deploy]
+```
 
 ### Define Messages
 
-Write messages directly in your codebase using Lingui's components. This keeps your code clean and readable while embedding translations naturally.
+Write user-facing text where it is used, using Lingui macros/components such as `Trans` and `t`. Keep messages close to the UI logic so they stay maintainable, and add context (for example comments or descriptions) for better translation quality.
 
 ### Extract
 
-Use the Lingui CLI to extract all translatable messages from your codebase and create or update message catalogs. This step ensures that all messages are captured and ready for translation.
+Run the Lingui CLI to scan your source files and collect translatable messages into catalog files (PO by default). Extraction updates existing catalogs, adds new messages, and marks removed ones so translators always work with the latest source text.
 
 ### Translate
 
-Translate your message catalogs either manually or through integration with translation tools.
+Translate the extracted catalogs manually or with your localization platform. Translators work on stable message IDs/source messages, preserving placeholders and ICU syntax so runtime formatting remains correct.
 
 ### Compile
 
-Use the Lingui CLI to compile your message catalogs into a format that can be used in your application. This step minimizes the size of your translation bundle and ensures that only the necessary data is bundled.
+Compile catalogs into optimized JavaScript modules for runtime usage. Compilation validates message syntax and prepares only the data your app needs, reducing bundle size and startup overhead.
 
 ### Deploy
 
-Include the compiled message catalogs in your production build to ensure that users receive localized content based on their language preferences.
+Ship compiled catalogs with your app and load the right locale based on user preference or app settings. In production, this gives users fast localized rendering and lets you repeat the same workflow whenever copy changes.
 
 ## Quick Overview
 
 ```jsx
 import React from "react";
+import { ph } from "@lingui/core/macro";
 import { Trans, Plural, useLingui } from "@lingui/react/macro";
 
-export default function Lingui({ numUsers, name = "You" }) {
+export default function Lingui({ numUsers, user }) {
   const { t } = useLingui();
 
   return (
     <div>
       <h1>
-        {/* Localized messages are simply wrapped in <Trans> */}
+        {/* Localized messages are wrapped in <Trans> */}
         <Trans>Internationalization in React</Trans>
       </h1>
 
-      {/* Element attributes are translated using t macro */}
+      {/* Element attributes are translated using the t macro */}
       <img src="./logo.png" alt={t`Logo of Lingui Project`} />
 
       <p>
-        {/* Variables are passed to messages in the same way as in JSX */}
-        <Trans>Hello {name}, Lingui is a readable, automated, and optimized i18n for JavaScript.</Trans>
+        {/*
+          ph() gives placeholders explicit names when using expressions.
+          This improves context for translators.
+        */}
+        <Trans>
+          Hello {ph({ userName: user.name })}, Lingui is a readable, automated, and optimized i18n for JavaScript.
+        </Trans>
       </p>
 
-      {/* React Elements inside messages works in the same way as in JSX */}
+      {/* React elements inside messages work in the same way as in JSX */}
       <p>
         <Trans>
-          Read the <a href="https://lingui.dev">documentation</a>
-          for more info.
+          Read the <a href="https://lingui.dev">documentation</a> for more info.
         </Trans>
       </p>
 
