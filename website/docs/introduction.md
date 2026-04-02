@@ -37,6 +37,8 @@ For React apps, [`@lingui/react`](/ref/react) adds components and hooks that fol
 
 Seamlessly use React components within localized messages, without any restrictions. Creating rich-text messages feels just like writing JSX.
 
+This keeps message catalogs in sync with the source code, preventing obsolete messages and lowering translation costs.
+
 ### Powerful Tooling
 
 Manage your intl workflow with the Lingui [CLI](/ref/cli), [Vite Plugin](/ref/vite-plugin), and [ESLint Plugin](/ref/eslint-plugin). The CLI extracts, compiles and validates messages, while the Vite plugin compiles catalogs on the fly, and the ESLint plugin helps catch common usage errors.

@@ -47,10 +47,16 @@ const FEATURES: FeatureDetails[] = [
   {
     title: "Full Rich-Text Support",
     description: (
-      <p>
-        Seamlessly use React components within localized messages, without any restrictions. Creating rich-text messages
-        feels just like writing JSX.
-      </p>
+      <>
+        <p>
+          Use React components within localized messages without any restrictions. Creating rich-text messages feels
+          just like writing JSX.
+        </p>
+        <p>
+          This keeps message catalogs in sync with the source code, preventing obsolete messages and lowering
+          translation costs.
+        </p>
+      </>
     ),
     image: "rich-text.svg",
   },
