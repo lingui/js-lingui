@@ -12,6 +12,7 @@ export default defineConfig(
       "**/test/**/expected/**",
       "**/test/**/actual/**",
       "**/loader/test/**",
+      "website/src/**",
     ],
   },
   {

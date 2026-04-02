@@ -3,7 +3,6 @@
   "include": ["src/"],
   "compilerOptions": {
     "jsx": "react",
-    "plugins": [{ "name": "typescript-plugin-css-modules" }],
     "moduleResolution": "node"
   }
 }
