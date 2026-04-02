@@ -1,7 +1,7 @@
 {
   "name": "@lingui/babel-plugin-extract-messages",
   "version": "6.0.0-next.3",
-  "description": "Babel plugin for collecting messages from source code for internationalization",
+  "description": "Babel plugin to extract translatable messages from source code into Lingui catalogs",
   "type": "module",
   "author": {
     "name": "Tomáš Ehrlich",
@@ -9,14 +9,14 @@
   },
   "license": "MIT",
   "keywords": [
+    "lingui",
     "babel-plugin",
+    "extract-messages",
+    "static-analysis",
     "i18n",
-    "internationalization",
-    "i10n",
-    "localization",
-    "i9n",
+    "catalog",
     "translation",
-    "multilingual"
+    "gettext"
   ],
   "scripts": {
     "build": "unbuild",

@@ -2,7 +2,7 @@
   "name": "@lingui/core",
   "version": "6.0.0-next.3",
   "sideEffects": false,
-  "description": "I18n tools for javascript",
+  "description": "Internationalization (i18n) tools for JavaScript",
   "type": "module",
   "author": {
     "name": "Tomáš Ehrlich",
@@ -10,13 +10,16 @@
   },
   "license": "MIT",
   "keywords": [
+    "lingui",
+    "linguijs",
     "i18n",
-    "i10n",
-    "i9n",
-    "internationalization",
+    "icu",
+    "messageformat",
+    "catalog",
+    "runtime",
     "localization",
     "translation",
-    "multilingual"
+    "pluralization"
   ],
   "scripts": {
     "build": "unbuild",
