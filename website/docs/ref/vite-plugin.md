@@ -57,6 +57,27 @@ const { messages } = await import(`./locales/${language}.json?lingui`);
 
 :::
 
+## `linguiTransformerBabelPreset`
+
+If you use `@rolldown/plugin-babel`, `@lingui/vite-plugin` exports `linguiTransformerBabelPreset` as a convenience helper for macro transformation:
+
+```ts title="vite.config.ts"
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import babel from "@rolldown/plugin-babel";
+import { lingui, linguiTransformerBabelPreset } from "@lingui/vite-plugin";
+
+export default defineConfig({
+  plugins: [
+    react(),
+    lingui(),
+    babel({
+      presets: [linguiTransformerBabelPreset()],
+    }),
+  ],
+});
+```
+
 ## See Also
 
 - [Dynamic Loading](/guides/dynamic-loading-catalogs)

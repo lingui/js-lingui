@@ -193,6 +193,19 @@ export default defineConfig({
 
 Using TypeScript configuration with `defineConfig` is recommended as it provides type safety and better IDE support.
 
+## Vite Version for `@lingui/vite-plugin`
+
+The minimum supported Vite version for `@lingui/vite-plugin` is now 6.3+ (compatible range: `^6.3.0 || ^7 || ^8`).
+
+### What Changed
+
+`@lingui/vite-plugin` adopted Vite hook filters for better performance and compatibility with newer Vite/Rolldown internals. As a result, older Vite versions are no longer supported by the plugin.
+
+### Migration
+
+- If you use Vite 6, upgrade to 6.3 or newer
+- If you use Vite 5 or earlier, upgrade to a supported Vite major (`6.3+`, `7`, or `8`)
+
 ## Create React App (CRA) Example Removed
 
 The Create React App example has been removed from the repository.

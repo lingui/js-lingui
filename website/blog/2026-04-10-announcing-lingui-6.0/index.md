@@ -28,6 +28,7 @@ In line with the principles of [Semantic Versioning](https://semver.org/), this 
   - [ESM-Only Distribution](#esm-only-distribution)
   - [Reduced Package Size](#reduced-package-size)
   - [Vue 3 Reactivity Transform in Vue Extractor](#vue-3-reactivity-transform-in-vue-extractor)
+  - [Vite Plugin Improvements](#vite-plugin-improvements)
   - [Stronger Type Safety](#stronger-type-safety)
   - [New Example](#new-example)
 - [Conclusion](#conclusion)
@@ -35,7 +36,7 @@ In line with the principles of [Semantic Versioning](https://semver.org/), this 
 
 ## What is Lingui?
 
-Lingui is an open-source JavaScript library for internationalization (**i18n**) and localization (**l10n**). Designed to make it easy for developers to build fully translated, multilingual applications, it offers support for React, React Native, Vue.js, Node.js, TypeScript, Svelte (_community supported_), and more.
+Lingui is an open-source JavaScript library for internationalization (**i18n**) and localization (**l10n**). Designed to make it easy for developers to build fully translated, multilingual applications, it offers support for React, React Native, Vue.js, Node.js, TypeScript. It is also compatible with Astro and Svelte via community-supported packages.
 
 ## Progress Highlights
 
@@ -155,11 +156,11 @@ To make this representative of real projects, the numbers are calculated for `@l
 
 #### `node_modules` Footprint
 
-The combined install of `@lingui/core` + `@lingui/react` + `@lingui/cli` dropped from **62 MB to 35 MB** — a ~44% reduction. That means faster `npm install`, lighter CI caches, and less disk clutter on every developer's machine.
+The combined install of `@lingui/core` + `@lingui/react` + `@lingui/cli` dropped from **62 MB to 35 MB** - a ~44% reduction. That means faster `npm install`, lighter CI caches, and less disk clutter on every developer's machine.
 
 #### Dependency Count
 
-The transitive dependency tree shrank from **146 packages down to 104** — 42 fewer packages to resolve, download, and audit on every install. The graph below shows just how much the tree thinned out:
+The transitive dependency tree shrank from **146 packages down to 104** - 42 fewer packages to resolve, download, and audit on every install. The graph below shows just how much the tree thinned out:
 
 ![Dependency graph comparison](./deps-light.png#gh-light-mode-only)
 ![Dependency graph comparison](./deps-dark.png#gh-dark-mode-only)
@@ -181,6 +182,27 @@ export default defineConfig({
 ```
 
 The option is opt-in (`reactivityTransform: false` by default) so existing setups keep working.
+
+### Vite Plugin Improvements
+
+`@lingui/vite-plugin` now supports Vite 8 and ships `linguiTransformerBabelPreset` - a shortcut for wiring Rolldown and Babel when you use Lingui macros in a Vite-based build:
+
+```ts title="vite.config.ts"
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import babel from "@rolldown/plugin-babel";
+import { lingui, linguiTransformerBabelPreset } from "@lingui/vite-plugin";
+
+export default defineConfig({
+  plugins: [
+    react(),
+    lingui(),
+    babel({
+      presets: [linguiTransformerBabelPreset()],
+    }),
+  ],
+});
+```
 
 ### Stronger Type Safety
 
@@ -204,4 +226,3 @@ A huge thank you to everyone who contributed to this release - it simply wouldn'
 
 - [Migration guide](/releases/migration-6)
 - [Release notes & changelog](https://github.com/lingui/js-lingui/releases/tag/v6.0.0)
-- [Changes since v5.6.1](https://github.com/lingui/js-lingui/compare/v5.6.1...v6.0.0)
