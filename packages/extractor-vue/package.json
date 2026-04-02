@@ -1,6 +1,6 @@
 {
   "name": "@lingui/extractor-vue",
-  "version": "6.0.0-next.2",
+  "version": "6.0.0-next.3",
   "type": "module",
   "description": "Custom Vue.js extractor to be used with the CLI tool",
   "keywords": [
