@@ -54,10 +54,10 @@ The extractor only matches calls by name. It doesn't check if they are really im
 For example:
 
 ```ts
-i18n._("message.id");
-i18n._({ id: "message.id" });
+i18n.t("message.id");
+i18n.t({ id: "message.id" });
 
-ctx.i18n._("message.id");
+ctx.i18n.t("message.id");
 ctx.i18n.t("message.id");
 
 ctx.request.i18n.t("message.id");
@@ -69,7 +69,7 @@ To ignore a specific call expression during extraction, you can add a `lingui-ex
 
 ```ts
 /* lingui-extract-ignore */
-ctx.i18n._("Message");
+ctx.i18n.t("Message");
 ```
 
 Messages marked with this comment will be excluded from extraction.
@@ -94,10 +94,10 @@ This means that in order for a message to be extracted, it must be defined direc
 ```ts
 // ❌ This message will not be extracted
 const message = "Message";
-i18n._(message);
+i18n.t(message);
 
 // ✅ This message will be extracted
-i18n._("Message");
+i18n.t("Message");
 ```
 
 ## Defining Sources for Analyzing

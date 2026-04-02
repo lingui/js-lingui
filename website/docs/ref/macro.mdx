@@ -368,7 +368,7 @@ const message = t({
 
 ### `defineMessage` / `msg` {#definemessage}
 
-The `defineMessage` (alias: `msg`) macro allows to define a message for later use. It has the same signature as `t` and returns a `MessageDescriptor` that you can pass to `i18n._` to get a translated string at any time later. This is useful for [Lazy Translations](/guides/lazy-translations).
+The `defineMessage` (alias: `msg`) macro allows to define a message for later use. It has the same signature as `t` and returns a `MessageDescriptor` that you can pass to `i18n.t` to get a translated string at any time later. This is useful for [Lazy Translations](/guides/lazy-translations).
 
 In other words, `t` returns a translated string at the time when it's called, while `msg` returns a `MessageDescriptor` that can produce translated strings later:
 
@@ -380,7 +380,7 @@ import { defineMessage } from "@lingui/core/macro";
 const message = defineMessage`Hello World`;
 
 // use it later
-i18n._(message);
+i18n.t(message);
 
 // ↓ ↓ ↓ ↓ ↓ ↓
 
@@ -392,7 +392,7 @@ const message = /*i18n*/ {
 };
 
 // use it later
-i18n._(message);
+i18n.t(message);
 ```
 
 You can also use a shorter alias of the `defineMessage` macro:
@@ -524,7 +524,7 @@ const message = t`Hello ${ph({ name: getUserName() })}`;
 // ↓ ↓ ↓ ↓ ↓ ↓
 
 import { i18n } from "@lingui/core";
-const message = i18n._(
+const message = i18n.t(
   /*i18n*/ {
     id: "OUzSsf",
     message: "Hello {name}",
@@ -831,7 +831,7 @@ import { msg } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react/macro";
 
 export function showAlert(i18n) {
-  alert(i18n._(msg`...`));
+  alert(i18n.t(msg`...`));
 }
 
 function MyComponent() {

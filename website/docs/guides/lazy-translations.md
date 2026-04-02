@@ -9,7 +9,7 @@ Lazy translation allows you to defer translation of a message until it's rendere
 
 ## Usage Example
 
-To render the message descriptor as a string-only translation, pass it to the [`i18n._()`](/ref/core#i18n._) method:
+To render the message descriptor as a string-only translation, pass it to the [`i18n.t()`](/ref/core#i18n.t) method:
 
 ```jsx
 import { msg } from "@lingui/core/macro";
@@ -18,7 +18,7 @@ import { i18n } from "@lingui/core";
 const favoriteColors = [msg`Red`, msg`Orange`, msg`Yellow`, msg`Green`];
 
 export function getTranslatedColorNames() {
-  return favoriteColors.map((color) => i18n._(color));
+  return favoriteColors.map((color) => i18n.t(color));
 }
 ```
 
@@ -90,7 +90,7 @@ const welcomeMessage = msg`Welcome!`;
 // ❌ Bad! This code won't work
 export function Welcome() {
   const buggyWelcome = useMemo(() => {
-    return i18n._(welcomeMessage);
+    return i18n.t(welcomeMessage);
   }, []);
 
   return <div>{buggyWelcome}</div>;
@@ -101,7 +101,7 @@ export function Welcome() {
   const { i18n } = useLingui();
 
   const buggyWelcome = useMemo(() => {
-    return i18n._(welcomeMessage);
+    return i18n.t(welcomeMessage);
   }, [i18n]);
 
   return <div>{buggyWelcome}</div>;
