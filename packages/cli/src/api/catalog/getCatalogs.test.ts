@@ -469,12 +469,12 @@ describe("getCatalogForFile", () => {
   it("should allow braces in path names", async () => {
     const catalog = new Catalog(
       {
-        name: null,
+        name: undefined,
         path: "./src/locales/{-asd}/{locale}",
         include: ["./src/"],
         format,
       },
-      mockConfig({ format: "po", rootDir: "." }),
+      mockConfig({ rootDir: "." }),
     )
     const catalogs = [catalog]
 
@@ -487,12 +487,12 @@ describe("getCatalogForFile", () => {
   it("should allow nested braces in path names", async () => {
     const catalog = new Catalog(
       {
-        name: null,
+        name: undefined,
         path: "./src/locales/{asd}/{{-asd}}/{locale}",
         include: ["./src/"],
         format,
       },
-      mockConfig({ format: "po", rootDir: "." }),
+      mockConfig({ rootDir: "." }),
     )
     const catalogs = [catalog]
 
