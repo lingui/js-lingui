@@ -46,15 +46,23 @@
     "@lingui/conf": "workspace:*"
   },
   "peerDependencies": {
+    "@babel/core": "^7.29.0 || ^8.0.0-rc.1",
     "@lingui/babel-plugin-lingui-macro": "^5 || ^6",
     "@rolldown/plugin-babel": "^0.1.7 || ^0.2.0",
+    "rolldown": "^1.0.0-rc.5",
     "vite": "^6.3.0 || ^7 || ^8"
   },
   "peerDependenciesMeta": {
+    "@babel/core": {
+      "optional": true
+    },
     "@lingui/babel-plugin-lingui-macro": {
       "optional": true
     },
     "@rolldown/plugin-babel": {
+      "optional": true
+    },
+    "rolldown": {
       "optional": true
     }
   },

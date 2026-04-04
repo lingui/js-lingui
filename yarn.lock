@@ -2401,13 +2401,19 @@ __metadata:
     vite-plugin-babel-macros: ^1.0.6
     vitest: 4.0.18
   peerDependencies:
+    "@babel/core": ^7.29.0 || ^8.0.0-rc.1
     "@lingui/babel-plugin-lingui-macro": ^5 || ^6
     "@rolldown/plugin-babel": ^0.1.7 || ^0.2.0
+    rolldown: ^1.0.0-rc.5
     vite: ^6.3.0 || ^7 || ^8
   peerDependenciesMeta:
+    "@babel/core":
+      optional: true
     "@lingui/babel-plugin-lingui-macro":
       optional: true
     "@rolldown/plugin-babel":
+      optional: true
+    rolldown:
       optional: true
   languageName: unknown
   linkType: soft
@@ -3227,23 +3233,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rollup/pluginutils@npm:^5.0.1":
-  version: 5.0.3
-  resolution: "@rollup/pluginutils@npm:5.0.3"
-  dependencies:
-    "@types/estree": ^1.0.0
-    estree-walker: ^2.0.2
-    picomatch: ^2.3.1
-  peerDependencies:
-    rollup: ^1.20.0||^2.0.0||^3.0.0
-  peerDependenciesMeta:
-    rollup:
-      optional: true
-  checksum: 8efbdeac53c58ba7b26c353a0a95acb0286cb6afec9816e0c52c3537404be80af11d897f78416a3339a8a76cbce8600269bdf4853edfdebcc89b2e90c56bf3d9
-  languageName: node
-  linkType: hard
-
-"@rollup/pluginutils@npm:^5.1.0, @rollup/pluginutils@npm:^5.2.0":
+"@rollup/pluginutils@npm:^5.0.1, @rollup/pluginutils@npm:^5.1.0, @rollup/pluginutils@npm:^5.2.0":
   version: 5.3.0
   resolution: "@rollup/pluginutils@npm:5.3.0"
   dependencies:
