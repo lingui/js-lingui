@@ -147,7 +147,7 @@ const getInterpolationValuesAndComponents = (props: TransProps) => {
     if (typeof valueForKey === "string" || typeof valueForKey === "number") {
       return
     }
-    // Preserve non-React objects, such as Date instances, for ICU formatters.
+    // Preserve non-React values, such as Date instances, instead of treating them as JSX children
     if (!isReactNodeValue(valueForKey)) {
       return
     }
