@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.9.5](https://github.com/lingui/js-lingui/compare/v5.9.4...v5.9.5) (2026-04-06)
+
+### Bug Fixes
+
+* support braces in catalog pathname ([#2495](https://github.com/lingui/js-lingui/issues/2495)) ([db14681](https://github.com/lingui/js-lingui/commit/db14681e36ae1603499fafbd2dd00942ed1c2e0b))
+
 ## [5.9.4](https://github.com/lingui/js-lingui/compare/v5.9.3...v5.9.4) (2026-03-27)
 
 ### Bug Fixes
