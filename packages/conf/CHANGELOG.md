@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.9.5](https://github.com/lingui/js-lingui/compare/v5.9.4...v5.9.5) (2026-04-06)
+
+**Note:** Version bump only for package @lingui/conf
+
 ## [5.9.4](https://github.com/lingui/js-lingui/compare/v5.9.3...v5.9.4) (2026-03-27)
 
 **Note:** Version bump only for package @lingui/conf
