@@ -1,17 +1,19 @@
 {
   "name": "@lingui/cli",
   "version": "6.0.0-next.3",
-  "description": "CLI for working wit message catalogs",
+  "description": "Lingui CLI to extract messages, compile catalogs, and manage translation workflows",
   "type": "module",
   "keywords": [
+    "lingui",
+    "linguijs",
     "cli",
     "i18n",
-    "internationalization",
-    "i10n",
-    "localization",
-    "i9n",
+    "extract",
+    "compile",
+    "catalog",
+    "gettext",
     "translation",
-    "multilingual"
+    "localization"
   ],
   "homepage": "https://lingui.dev",
   "repository": {

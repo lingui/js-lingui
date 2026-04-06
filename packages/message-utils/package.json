@@ -1,8 +1,18 @@
 {
   "name": "@lingui/message-utils",
   "version": "6.0.0-next.3",
+  "description": "Low-level Lingui utilities to compile ICU MessageFormat messages and generate stable message IDs",
   "license": "MIT",
-  "keywords": [],
+  "keywords": [
+    "lingui",
+    "messageformat",
+    "icu",
+    "i18n",
+    "compile",
+    "message-id",
+    "catalog",
+    "javascript"
+  ],
   "sideEffects": false,
   "type": "module",
   "exports": {

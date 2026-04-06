@@ -2,10 +2,14 @@
   "name": "@lingui/conf",
   "version": "6.0.0-next.3",
   "sideEffects": false,
-  "description": "Get lingui configuration from package.json",
+  "description": "Resolve and validate Lingui configuration",
   "keywords": [
     "lingui",
-    "config"
+    "lingui-config",
+    "configuration",
+    "i18n",
+    "schema",
+    "validation"
   ],
   "homepage": "https://lingui.dev",
   "repository": {

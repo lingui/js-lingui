@@ -2,19 +2,17 @@
   "name": "@lingui/extractor-vue",
   "version": "6.0.0-next.3",
   "type": "module",
-  "description": "Custom Vue.js extractor to be used with the CLI tool",
+  "description": "Vue single-file component extractor for the Lingui CLI",
   "keywords": [
-    "cli",
-    "i18n",
-    "internationalization",
-    "i10n",
-    "localization",
-    "i9n",
-    "translation",
+    "lingui",
     "vue",
-    "vue.js",
-    "multilingual",
-    "lingui-extractor"
+    "vue3",
+    "sfc",
+    "extractor",
+    "i18n",
+    "catalog-extraction",
+    "lingui-cli",
+    "translation"
   ],
   "homepage": "https://lingui.dev",
   "repository": {
