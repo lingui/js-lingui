@@ -1,5 +1,6 @@
 import { formatElements } from "./format"
 import type { I18n, MessageOptions } from "@lingui/core"
+import { isValidElement } from "react"
 
 export type TransRenderProps = {
   id: string
@@ -146,10 +147,28 @@ const getInterpolationValuesAndComponents = (props: TransProps) => {
     if (typeof valueForKey === "string" || typeof valueForKey === "number") {
       return
     }
+    // Preserve non-React objects, such as Date instances, for ICU formatters.
+    if (!isReactNodeValue(valueForKey)) {
+      return
+    }
     const index = Object.keys(components).length
     // react components, arrays, falsy values, all should be processed as JSX children
     components[index] = <>{valueForKey}</>
     values[key] = `<${index}/>`
   })
   return { values, components }
+}
+
+function isReactNodeValue(value: unknown): value is React.ReactNode {
+  if (
+    value == null ||
+    typeof value === "boolean" ||
+    typeof value === "string" ||
+    typeof value === "number" ||
+    isValidElement(value)
+  ) {
+    return true
+  }
+
+  return Array.isArray(value) && value.every(isReactNodeValue)
 }

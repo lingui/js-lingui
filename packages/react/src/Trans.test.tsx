@@ -330,6 +330,27 @@ describe("Trans component", () => {
     expect(translation).toEqual("1,00 €")
   })
 
+  it("should preserve Date values for i18n interpolation", () => {
+    const deadline = new Date("2014-12-06T17:40:00.000Z")
+    const translation = html(
+      <Trans
+        id="msg.date"
+        message="It starts on {deadline} <0>{name}</0>"
+        values={{
+          deadline,
+          name: "John",
+        }}
+        components={{
+          0: <span />,
+        }}
+      />,
+    )
+
+    expect(translation).toEqual(
+      `It starts on ${deadline.toString()} <span>John</span>`,
+    )
+  })
+
   it("should render plural", () => {
     const render = (count: number) =>
       html(
