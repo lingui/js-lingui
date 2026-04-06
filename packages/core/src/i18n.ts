@@ -26,7 +26,16 @@ export type Formats = Record<
   Intl.DateTimeFormatOptions | Intl.NumberFormatOptions
 >
 
-export type Values = Record<string, unknown>
+export type MessageValue =
+  | string
+  | number
+  | bigint
+  | boolean
+  | null
+  | undefined
+  | Date
+
+export type Values = Record<string, MessageValue>
 
 export type UncompiledMessage = string
 export type Messages = Record<string, UncompiledMessage | CompiledMessage>
@@ -37,7 +46,7 @@ export type MessageDescriptor = {
   id: string
   comment?: string
   message?: string
-  values?: Record<string, unknown>
+  values?: Values
 }
 
 export type MissingMessageEvent = {

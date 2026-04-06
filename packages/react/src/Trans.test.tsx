@@ -351,6 +351,20 @@ describe("Trans component", () => {
     )
   })
 
+  it("should preserve __proto__ values for i18n interpolation", () => {
+    const translation = html(
+      <Trans
+        id="msg.proto"
+        message="Hello {__proto__}"
+        values={{
+          ["__proto__"]: "John",
+        }}
+      />,
+    )
+
+    expect(translation).toEqual("Hello John")
+  })
+
   it("should render plural", () => {
     const render = (count: number) =>
       html(

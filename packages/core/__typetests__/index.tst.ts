@@ -1,4 +1,4 @@
-import { i18n } from "@lingui/core"
+import { i18n } from "../src"
 import { expect } from "tstyche"
 
 expect(i18n._("message.id")).type.toBe<string>()
@@ -15,6 +15,18 @@ expect(
     { message: "Hello {name}", comment: "", formats: {} },
   ),
 ).type.toBe<string>()
+expect(i18n._).type.toBeCallableWith("message.id", { deadline: new Date() })
+expect(i18n._).type.not.toBeCallableWith("message.id", {
+  payload: { nested: true },
+})
+expect(i18n._).type.toBeCallableWith({
+  id: "message.id",
+  values: { deadline: new Date() },
+})
+expect(i18n._).type.not.toBeCallableWith({
+  id: "message.id",
+  values: { payload: { nested: true } },
+})
 expect(i18n._).type.not.toBeCallableWith(
   // cannot use message descriptor together with rest of params
   {

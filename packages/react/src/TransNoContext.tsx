@@ -1,5 +1,5 @@
 import { formatElements } from "./format"
-import type { I18n, MessageOptions } from "@lingui/core"
+import type { I18n, MessageOptions, MessageValue, Values } from "@lingui/core"
 import { isValidElement } from "react"
 
 export type TransRenderProps = {
@@ -21,10 +21,22 @@ export type TransRenderCallbackOrComponent =
       render?: never
     }
 
+type JSXChildValue =
+  | React.ReactElement
+  | string
+  | number
+  | boolean
+  | null
+  | undefined
+  | readonly JSXChildValue[]
+
+export type TransValue = MessageValue | JSXChildValue
+export type TransValues = Record<string, TransValue>
+
 export type TransProps = {
   id: string
   message?: string
-  values?: Record<string, unknown>
+  values?: TransValues
   components?: { [key: string]: React.ElementType | any }
   formats?: MessageOptions["formats"]
   comment?: string
@@ -116,7 +128,12 @@ const RenderChildren = ({ children }: TransRenderProps) => {
   return children
 }
 
-const getInterpolationValuesAndComponents = (props: TransProps) => {
+const getInterpolationValuesAndComponents = (
+  props: TransProps,
+): {
+  values: Values | undefined
+  components: TransProps["components"]
+} => {
   if (!props.values) {
     return {
       values: undefined,
@@ -124,8 +141,9 @@ const getInterpolationValuesAndComponents = (props: TransProps) => {
     }
   }
 
-  const values = { ...props.values }
+  const values: Values = Object.create(null)
   const components = { ...props.components }
+  let nextIndex = Object.keys(components).length
   /*
       Replace values placeholders with <INDEX /> and add values to `components`.
       This makes them processed as JSX children and follow JSX semantics.
@@ -143,23 +161,20 @@ const getInterpolationValuesAndComponents = (props: TransProps) => {
       Related discussion: https://github.com/lingui/js-lingui/issues/183
     */
   Object.entries(props.values).forEach(([key, valueForKey]) => {
-    // simple scalars should be processed as values to be able to apply formatting
-    if (typeof valueForKey === "string" || typeof valueForKey === "number") {
+    // Preserve non-React values instead of converting them into JSX placeholders.
+    if (!isPlaceholderValue(valueForKey)) {
+      values[key] = valueForKey
       return
     }
-    // Preserve non-React values, such as Date instances, instead of treating them as JSX children
-    if (!isReactNodeValue(valueForKey)) {
-      return
-    }
-    const index = Object.keys(components).length
     // react components, arrays, falsy values, all should be processed as JSX children
-    components[index] = <>{valueForKey}</>
-    values[key] = `<${index}/>`
+    components[nextIndex] = <>{valueForKey}</>
+    values[key] = `<${nextIndex}/>`
+    nextIndex += 1
   })
   return { values, components }
 }
 
-function isReactNodeValue(value: unknown): value is React.ReactNode {
+function isJSXChildValue(value: unknown): value is JSXChildValue {
   if (
     value == null ||
     typeof value === "boolean" ||
@@ -170,5 +185,15 @@ function isReactNodeValue(value: unknown): value is React.ReactNode {
     return true
   }
 
-  return Array.isArray(value) && value.every(isReactNodeValue)
+  return Array.isArray(value) && value.every(isJSXChildValue)
+}
+
+function isPlaceholderValue(
+  value: TransValue,
+): value is Exclude<JSXChildValue, string | number> {
+  if (typeof value === "string" || typeof value === "number") {
+    return false
+  }
+
+  return isJSXChildValue(value)
 }
