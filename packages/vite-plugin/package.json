@@ -1,7 +1,7 @@
 {
   "name": "@lingui/vite-plugin",
-  "version": "6.0.0-next.2",
-  "description": "Vite plugin for Lingui message catalogs",
+  "version": "6.0.0-next.3",
+  "description": "Vite plugin to integrate Lingui message catalogs with the CLI and bundler pipeline",
   "type": "module",
   "exports": {
     ".": "./dist/index.mjs"
@@ -9,16 +9,16 @@
   "sideEffects": false,
   "license": "MIT",
   "keywords": [
+    "lingui",
+    "linguijs",
+    "vite",
     "vite-plugin",
     "i18n",
-    "vite",
-    "linguijs",
+    "message-catalog",
     "internationalization",
-    "i10n",
     "localization",
-    "i9n",
     "translation",
-    "multilingual"
+    "icu-messageformat"
   ],
   "scripts": {
     "build": "unbuild",
@@ -46,14 +46,26 @@
     "@lingui/conf": "workspace:*"
   },
   "peerDependencies": {
-    "vite": "^3 || ^4 || ^5.0.9 || ^6 || ^7 || ^8"
+    "@lingui/babel-plugin-lingui-macro": "^5 || ^6",
+    "@rolldown/plugin-babel": "^0.1.7 || ^0.2.0",
+    "vite": "^6.3.0 || ^7 || ^8"
+  },
+  "peerDependenciesMeta": {
+    "@lingui/babel-plugin-lingui-macro": {
+      "optional": true
+    },
+    "@rolldown/plugin-babel": {
+      "optional": true
+    }
   },
   "devDependencies": {
+    "@lingui/babel-plugin-lingui-macro": "workspace:^",
     "@lingui/core": "workspace:^",
     "@lingui/format-json": "workspace:^",
     "@lingui/react": "workspace:^",
+    "@rolldown/plugin-babel": "^0.2.2",
     "unbuild": "3.6.1",
-    "vite": "6.0.2",
+    "vite": "^8.0.3",
     "vite-plugin-babel-macros": "^1.0.6",
     "vitest": "4.0.18"
   },

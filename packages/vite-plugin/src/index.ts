@@ -1,4 +1,4 @@
-import { getConfig } from "@lingui/conf"
+import { getConfig, LinguiConfigNormalized } from "@lingui/conf"
 import {
   createCompiledCatalog,
   getCatalogs,
@@ -9,6 +9,7 @@ import {
 } from "@lingui/cli/api"
 import path from "path"
 import type { Plugin } from "vite"
+import { linguiTransformerBabelPreset } from "./linguiTransformerPreset"
 
 const fileRegex = /(\.po|\?lingui)$/
 
@@ -33,32 +34,28 @@ export function lingui({
   failOnCompileError,
   ...linguiConfig
 }: LinguiPluginOpts = {}): Plugin[] {
-  const config = getConfig(linguiConfig)
-
-  const macroIds = new Set([
-    ...config.macro.corePackage,
-    ...config.macro.jsxPackage,
-  ])
+  let config: LinguiConfigNormalized
 
   return [
     {
-      name: "vite-plugin-lingui-report-macro-error",
+      name: "vite-plugin-lingui-get-config",
       enforce: "pre",
-      resolveDynamicImport(id, importer) {
-        if (macroIds.has(id as string)) {
-          throw new Error(
-            `The macro you imported from "${id}" cannot be dynamically imported. \n` +
-              `Please check the import statement in file "${importer}". \n` +
-              `Please see the documentation for how to configure Vite with Lingui correctly: ` +
-              "https://lingui.dev/tutorials/setup-vite",
-          )
-        }
+      configResolved: () => {
+        config = getConfig(linguiConfig)
       },
     },
     {
-      name: "vite-plugin-lingui",
-      async transform(src, id) {
-        if (fileRegex.test(id)) {
+      name: "vite-plugin-lingui-load-catalog",
+      transform: {
+        filter: {
+          id: fileRegex,
+        },
+        async handler(src, id) {
+          // Additional check for backward compatibility, don't need for Rolldown powered Vite versions (8+)
+          if (!fileRegex.test(id)) {
+            return
+          }
+
           id = id.split("?")[0]!
 
           const catalogRelativePath = path.relative(config.rootDir, id)
@@ -139,10 +136,11 @@ Please check that catalogs.path is filled properly.\n`,
             // the module type to avoid misinterpretation.
             moduleType: "js",
           }
-        }
+        },
       },
     },
   ]
 }
 
 export default lingui
+export { linguiTransformerBabelPreset }

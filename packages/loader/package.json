@@ -1,8 +1,8 @@
 {
   "name": "@lingui/loader",
-  "version": "6.0.0-next.2",
+  "version": "6.0.0-next.3",
   "type": "module",
-  "description": "webpack-compatible loader for lingui message catalogs",
+  "description": "A webpack-compatible loader to load and compile Lingui message catalogs at build time",
   "exports": {
     ".": "./dist/index.cjs"
   },
@@ -13,17 +13,17 @@
   },
   "license": "MIT",
   "keywords": [
+    "lingui",
+    "linguijs",
     "webpack",
     "webpack-loader",
     "rspack",
     "rsbuild",
     "i18n",
-    "internationalization",
-    "i10n",
+    "message-catalog",
     "localization",
-    "i9n",
     "translation",
-    "multilingual"
+    "build-tooling"
   ],
   "scripts": {
     "build": "unbuild",

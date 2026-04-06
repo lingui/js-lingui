@@ -1,4 +1,5 @@
 import { unified } from "unified";
+import remarkValidateLinks from "remark-validate-links";
 import remarkRetext from "remark-retext";
 import retextEnglish from "retext-english";
 import retextSyntaxMentions from "retext-syntax-mentions";
@@ -23,7 +24,14 @@ export default {
     "remark-lint-no-tabs",
     "remark-lint-no-trailing-spaces",
     "remark-heading-id",
-    "remark-validate-links",
+    [
+      remarkValidateLinks,
+      {
+        // Docusaurus uses root URLs (/blog/..., /img/...). With a GitHub remote, 13.1+ resolves
+        // those as files under the local git root - not site routes. 'repository: false' avoids that.
+        repository: false,
+      },
+    ],
 
     [
       remarkRetext,

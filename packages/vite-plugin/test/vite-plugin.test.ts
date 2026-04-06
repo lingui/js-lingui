@@ -1,10 +1,6 @@
-import path from "path"
-import { mkdtempSync } from "fs"
-import os from "os"
-import { platform } from "node:os"
 import { describe } from "vitest"
-import { build, createLogger } from "vite"
 import { lingui, LinguiPluginOpts } from "../src"
+import { runVite as _runVite } from "./run-vite"
 import macrosPlugin from "vite-plugin-babel-macros"
 
 describe("vite-plugin", () => {
@@ -81,11 +77,18 @@ describe("vite-plugin", () => {
   it("should report error when @lingui/core/macro is dynamically imported", async () => {
     expect.assertions(1)
     try {
-      await runVite(`dynamic-macro-error`, {}, { useMacroPlugin: true })
-    } catch (e) {
-      expect((e as Error).message).toContain(
-        'The macro you imported from "@lingui/core/macro" cannot be dynamically imported.',
+      const { mod } = await runVite(
+        `dynamic-macro-error`,
+        {},
+        { useMacroPlugin: true },
       )
+      await mod.load()
+    } catch (e) {
+      expect((e as Error).message).toMatchInlineSnapshot(`
+        "The macro you imported from "@lingui/core/macro" is being executed outside the context of compilation. 
+        This indicates that you don't configured correctly one of the "babel-plugin-macros" / "@lingui/swc-plugin" / "babel-plugin-lingui-macro" 
+        Additionally, dynamic imports — e.g., \`await import('@lingui/core/macro')\` — are not supported."
+      `)
     }
   })
 })
@@ -98,65 +101,8 @@ async function runVite(
     useVitePlugin = true,
   }: { useMacroPlugin?: boolean; useVitePlugin?: boolean } = {},
 ) {
-  const oldCwd = process.cwd()
-  const cwd = path.join(import.meta.dirname, fixturesPath)
-  process.chdir(cwd)
-
-  const outDir = mkdtempSync(
-    path.join(os.tmpdir(), `lingui-test-${process.pid}`),
-  )
-
-  const logger = createLogger()
-
-  const infoMsgs: string[] = []
-  const warnMsgs: string[] = []
-
-  logger.info = (msg, options) => {
-    infoMsgs.push(msg)
-  }
-
-  logger.warn = (msg, options) => {
-    warnMsgs.push(msg)
-  }
-
-  logger.error = (msg, options) => {
-    warnMsgs.push(msg)
-  }
-
-  try {
-    await build({
-      customLogger: logger,
-      build: {
-        emptyOutDir: true,
-        lib: {
-          entry: path.resolve(
-            import.meta.dirname,
-            fixturesPath,
-            "entrypoint.js",
-          ),
-          fileName: "bundle",
-          formats: ["es"],
-        },
-        outDir,
-      },
-      plugins: [
-        useVitePlugin
-          ? lingui({
-              cwd,
-              ...pluginConfig,
-            })
-          : null,
-
-        useMacroPlugin ? macrosPlugin() : null,
-      ],
-    })
-  } finally {
-    process.chdir(oldCwd)
-  }
-
-  return {
-    warn: warnMsgs.join("\n"),
-    info: infoMsgs.join("\n"),
-    mod: await import(path.resolve(outDir, "bundle.js")),
-  }
+  return _runVite(fixturesPath, [
+    useVitePlugin ? lingui(pluginConfig) : null,
+    useMacroPlugin ? macrosPlugin() : null,
+  ])
 }

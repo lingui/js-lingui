@@ -465,4 +465,42 @@ describe("getCatalogForFile", () => {
       catalog,
     })
   })
+
+  it("should allow braces in path names", async () => {
+    const catalog = new Catalog(
+      {
+        name: undefined,
+        path: "./src/locales/{-asd}/{locale}",
+        include: ["./src/"],
+        format,
+      },
+      mockConfig({ rootDir: "." }),
+    )
+    const catalogs = [catalog]
+
+    expect(getCatalogForFile("./src/locales/{-asd}/en.po", catalogs)).toEqual({
+      locale: "en",
+      catalog,
+    })
+  })
+
+  it("should allow nested braces in path names", async () => {
+    const catalog = new Catalog(
+      {
+        name: undefined,
+        path: "./src/locales/{asd}/{{-asd}}/{locale}",
+        include: ["./src/"],
+        format,
+      },
+      mockConfig({ rootDir: "." }),
+    )
+    const catalogs = [catalog]
+
+    expect(
+      getCatalogForFile("./src/locales/{asd}/{{-asd}}/en.po", catalogs),
+    ).toEqual({
+      locale: "en",
+      catalog,
+    })
+  })
 })
