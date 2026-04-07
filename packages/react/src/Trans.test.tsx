@@ -351,6 +351,34 @@ describe("Trans component", () => {
     )
   })
 
+  it("should preserve false values for i18n interpolation", () => {
+    const translation = html(
+      <Trans
+        id="msg.bool.false"
+        message="Flag {active}"
+        values={{
+          active: false,
+        }}
+      />,
+    )
+
+    expect(translation).toEqual("Flag false")
+  })
+
+  it("should preserve true values for i18n interpolation", () => {
+    const translation = html(
+      <Trans
+        id="msg.bool.true"
+        message="Flag {active}"
+        values={{
+          active: true,
+        }}
+      />,
+    )
+
+    expect(translation).toEqual("Flag true")
+  })
+
   it("should preserve __proto__ values for i18n interpolation", () => {
     const translation = html(
       <Trans

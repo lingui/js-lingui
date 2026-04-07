@@ -166,7 +166,7 @@ const getInterpolationValuesAndComponents = (
       values[key] = valueForKey
       return
     }
-    // react components, arrays, falsy values, all should be processed as JSX children
+    // React elements, arrays, and nullish values should be processed as JSX children
     components[nextIndex] = <>{valueForKey}</>
     values[key] = `<${nextIndex}/>`
     nextIndex += 1
@@ -191,7 +191,11 @@ function isJSXChildValue(value: unknown): value is JSXChildValue {
 function isPlaceholderValue(
   value: TransValue,
 ): value is Exclude<JSXChildValue, string | number> {
-  if (typeof value === "string" || typeof value === "number") {
+  if (
+    typeof value === "string" ||
+    typeof value === "number" ||
+    typeof value === "boolean"
+  ) {
     return false
   }
 
