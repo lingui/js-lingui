@@ -351,6 +351,20 @@ describe("Trans component", () => {
     )
   })
 
+  it("should preserve bigint values for i18n interpolation", () => {
+    const translation = html(
+      <Trans
+        id="msg.bigint"
+        message="Count {total}"
+        values={{
+          total: BigInt(1),
+        }}
+      />,
+    )
+
+    expect(translation).toEqual("Count 1")
+  })
+
   it("should preserve false values for i18n interpolation", () => {
     const translation = html(
       <Trans
@@ -378,6 +392,26 @@ describe("Trans component", () => {
 
     expect(translation).toEqual("Flag true")
   })
+
+  it.each([
+    ["null", null],
+    ["undefined", undefined],
+  ] as const)(
+    "should omit %s values during i18n interpolation",
+    (_label, optional) => {
+      const translation = html(
+        <Trans
+          id="msg.empty"
+          message="Value {optional}"
+          values={{
+            optional,
+          }}
+        />,
+      )
+
+      expect(translation).toEqual("Value ")
+    },
+  )
 
   it("should preserve __proto__ values for i18n interpolation", () => {
     const translation = html(

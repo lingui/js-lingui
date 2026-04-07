@@ -16,12 +16,27 @@ expect(
   ),
 ).type.toBe<string>()
 expect(i18n._).type.toBeCallableWith("message.id", { deadline: new Date() })
+expect(i18n._).type.toBeCallableWith("message.id", { total: BigInt(1) })
+expect(i18n._).type.toBeCallableWith("message.id", { optional: null })
+expect(i18n._).type.toBeCallableWith("message.id", { optional: undefined })
 expect(i18n._).type.not.toBeCallableWith("message.id", {
   payload: { nested: true },
 })
 expect(i18n._).type.toBeCallableWith({
   id: "message.id",
   values: { deadline: new Date() },
+})
+expect(i18n._).type.toBeCallableWith({
+  id: "message.id",
+  values: { total: BigInt(1) },
+})
+expect(i18n._).type.toBeCallableWith({
+  id: "message.id",
+  values: { optional: null },
+})
+expect(i18n._).type.toBeCallableWith({
+  id: "message.id",
+  values: { optional: undefined },
 })
 expect(i18n._).type.not.toBeCallableWith({
   id: "message.id",
