@@ -26,16 +26,16 @@ export type TransRenderCallbackOrComponent =
       render?: never
     }
 
-type JSXChildValue =
+type ReactRenderableValue =
   | React.ReactElement
   | string
   | number
   | boolean
   | null
   | undefined
-  | readonly JSXChildValue[]
+  | readonly ReactRenderableValue[]
 
-export type TransValue = MessagePlaceholderValue | JSXChildValue
+export type TransValue = MessagePlaceholderValue | ReactRenderableValue
 export type TransValues = Record<string, TransValue>
 
 export type TransProps = {
@@ -166,8 +166,8 @@ const getInterpolationValuesAndComponents = (
       Related discussion: https://github.com/lingui/js-lingui/issues/183
     */
   Object.entries(props.values).forEach(([key, valueForKey]) => {
-    // Preserve non-React values instead of converting them into JSX placeholders.
-    if (!isPlaceholderValue(valueForKey)) {
+    // Preserve scalar interpolation values so i18n formatting stays intact.
+    if (!shouldWrapAsPlaceholder(valueForKey)) {
       values[key] = valueForKey
       return
     }
@@ -179,7 +179,7 @@ const getInterpolationValuesAndComponents = (
   return { values, components }
 }
 
-function isJSXChildValue(value: unknown): value is JSXChildValue {
+function isReactRenderableValue(value: unknown): value is ReactRenderableValue {
   if (
     value == null ||
     typeof value === "boolean" ||
@@ -190,12 +190,12 @@ function isJSXChildValue(value: unknown): value is JSXChildValue {
     return true
   }
 
-  return Array.isArray(value) && value.every(isJSXChildValue)
+  return Array.isArray(value) && value.every(isReactRenderableValue)
 }
 
-function isPlaceholderValue(
+function shouldWrapAsPlaceholder(
   value: TransValue,
-): value is Exclude<JSXChildValue, string | number> {
+): value is Exclude<ReactRenderableValue, string | number | boolean> {
   if (
     typeof value === "string" ||
     typeof value === "number" ||
@@ -204,5 +204,5 @@ function isPlaceholderValue(
     return false
   }
 
-  return isJSXChildValue(value)
+  return isReactRenderableValue(value)
 }
