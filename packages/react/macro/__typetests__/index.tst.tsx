@@ -32,6 +32,16 @@ m = (
 m = <Trans id="custom.id" comment="comment" context="context" />
 
 m = <Trans>Hello {{ username: user.name }}</Trans>
+m = <Trans>Hello {{ active: false }}</Trans>
+m = <Trans>Hello {{ deadline: new Date() }}</Trans>
+m = (
+  <Trans>
+    {
+      // @ts-expect-error: nested objects are not supported as interpolation values
+      { payload: { nested: true } }
+    }
+  </Trans>
+)
 
 m = (
   <Trans>

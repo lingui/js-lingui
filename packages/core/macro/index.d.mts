@@ -1,4 +1,4 @@
-import type { I18n, MessageDescriptor } from "@lingui/core"
+import type { I18n, MessageDescriptor, MessageValue } from "@lingui/core"
 
 export type ChoiceOptions = {
   /** Offset of value when calculating plural forms */
@@ -56,10 +56,10 @@ export type MacroMessageDescriptor = (
 export function t(descriptor: MacroMessageDescriptor): string
 
 export type LabeledExpression<T> = Record<string, T>
+export type MessagePlaceholderValue = MessageValue
 export type MessagePlaceholder =
-  | string
-  | number
-  | LabeledExpression<string | number>
+  | MessagePlaceholderValue
+  | LabeledExpression<MessagePlaceholderValue>
 
 /**
  * Translates a template string using the global I18n instance
@@ -232,4 +232,4 @@ export const msg: typeof defineMessage
 /**
  * Helps to define a name for a variable in the message
  */
-export function ph(def: LabeledExpression<string | number>): string
+export function ph(def: LabeledExpression<MessagePlaceholderValue>): string

@@ -1,5 +1,9 @@
 import type { ReactNode } from "react"
-import type { TransRenderCallbackOrComponent, I18nContext } from "@lingui/react"
+import type {
+  TransRenderCallbackOrComponent,
+  I18nContext,
+} from "@lingui/react"
+import type { MessageValue } from "@lingui/core"
 import type {
   MacroMessageDescriptor,
   LabeledExpression,
@@ -11,7 +15,7 @@ type CommonProps = TransRenderCallbackOrComponent & {
   context?: string
 }
 
-type TransChildren = ReactNode | LabeledExpression<string | number>
+type TransChildren = ReactNode | LabeledExpression<MessageValue>
 type TransProps = {
   children: TransChildren | TransChildren[]
 } & CommonProps
