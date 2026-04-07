@@ -53,7 +53,7 @@ export function Header(): React.ReactElement {
             React Native), Vue, Node.js, and more.
           </p>
 
-          <div className="my-6 flex flex-wrap items-center justify-center gap-3">
+          <div className="my-6 flex flex-wrap items-center justify-center gap-4">
             <Button href={useBaseUrl("/introduction")}>Get Started</Button>
             <Button href={useBaseUrl("/examples")} isOutline={true}>
               Examples
