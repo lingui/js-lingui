@@ -26,7 +26,7 @@ export type Formats = Record<
   Intl.DateTimeFormatOptions | Intl.NumberFormatOptions
 >
 
-export type MessageValue =
+export type MessagePlaceholderValue =
   | string
   | number
   | bigint
@@ -35,7 +35,9 @@ export type MessageValue =
   | undefined
   | Date
 
-export type Values = Record<string, MessageValue>
+// left it as a compatible alias to MessagePlaceholderValue so as not to break the external API.
+export type MessageValue = MessagePlaceholderValue
+export type Values = Record<string, MessagePlaceholderValue>
 
 export type UncompiledMessage = string
 export type Messages = Record<string, UncompiledMessage | CompiledMessage>

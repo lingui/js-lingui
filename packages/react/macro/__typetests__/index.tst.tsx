@@ -149,6 +149,9 @@ m = <Select value={gender} male="..." female=".." other={"..."} />
 
 m = <Select value={{ gender }} _male="..." _female=".." other={"..."} />
 
+// @ts-expect-error: labeled value for Select should be string only
+m = <Select value={{ gender: 1 }} _male="..." _female=".." other={"..."} />
+
 // should support JSX in props
 m = (
   <Select

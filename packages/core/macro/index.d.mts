@@ -1,4 +1,8 @@
-import type { I18n, MessageDescriptor, MessageValue } from "@lingui/core"
+import type {
+  I18n,
+  MessageDescriptor,
+  MessagePlaceholderValue,
+} from "@lingui/core"
 
 export type ChoiceOptions = {
   /** Offset of value when calculating plural forms */
@@ -56,7 +60,6 @@ export type MacroMessageDescriptor = (
 export function t(descriptor: MacroMessageDescriptor): string
 
 export type LabeledExpression<T> = Record<string, T>
-export type MessagePlaceholderValue = MessageValue
 export type MessagePlaceholder =
   | MessagePlaceholderValue
   | LabeledExpression<MessagePlaceholderValue>
@@ -109,6 +112,9 @@ export function t(i18n: I18n): {
   (descriptor: MacroMessageDescriptor): string
 }
 
+export type PluralValue = number | string | LabeledExpression<number | string>
+export type SelectValue = string | LabeledExpression<string>
+
 /**
  * Pluralize a message
  *
@@ -125,7 +131,7 @@ export function t(i18n: I18n): {
  * @param options Object with available plural forms
  */
 export function plural(
-  value: number | string | LabeledExpression<number | string>,
+  value: PluralValue,
   options: ChoiceOptions
 ): string
 
@@ -150,7 +156,7 @@ export function plural(
  * @param options Object with available plural forms
  */
 export function selectOrdinal(
-  value: number | string | LabeledExpression<number | string>,
+  value: PluralValue,
   options: ChoiceOptions
 ): string
 
@@ -181,7 +187,7 @@ type SelectOptions = {
  * @param choices
  */
 export function select(
-  value: string | LabeledExpression<string>,
+  value: SelectValue,
   choices: SelectOptions
 ): string
 

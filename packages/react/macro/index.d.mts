@@ -3,10 +3,12 @@ import type {
   TransRenderCallbackOrComponent,
   I18nContext,
 } from "@lingui/react"
-import type { MessageValue } from "@lingui/core"
+import type { MessagePlaceholderValue } from "@lingui/core"
 import type {
   MacroMessageDescriptor,
   LabeledExpression,
+  PluralValue,
+  SelectValue,
 } from "@lingui/core/macro"
 
 type CommonProps = TransRenderCallbackOrComponent & {
@@ -15,13 +17,13 @@ type CommonProps = TransRenderCallbackOrComponent & {
   context?: string
 }
 
-type TransChildren = ReactNode | LabeledExpression<MessageValue>
+type TransChildren = ReactNode | LabeledExpression<MessagePlaceholderValue>
 type TransProps = {
   children: TransChildren | TransChildren[]
 } & CommonProps
 
 type PluralChoiceProps = {
-  value: string | number | LabeledExpression<string | number>
+  value: PluralValue
   /** Offset of value when calculating plural forms */
   offset?: number
   zero?: ReactNode
@@ -37,7 +39,7 @@ type PluralChoiceProps = {
 } & CommonProps
 
 type SelectChoiceProps = {
-  value: string | LabeledExpression<string | number>
+  value: SelectValue
   /** Catch-all option */
   other: ReactNode
   [option: `_${string}`]: ReactNode

@@ -1,5 +1,10 @@
 import { formatElements } from "./format"
-import type { I18n, MessageOptions, MessageValue, Values } from "@lingui/core"
+import type {
+  I18n,
+  MessageOptions,
+  MessagePlaceholderValue,
+  Values,
+} from "@lingui/core"
 import { isValidElement } from "react"
 
 export type TransRenderProps = {
@@ -30,7 +35,7 @@ type JSXChildValue =
   | undefined
   | readonly JSXChildValue[]
 
-export type TransValue = MessageValue | JSXChildValue
+export type TransValue = MessagePlaceholderValue | JSXChildValue
 export type TransValues = Record<string, TransValue>
 
 export type TransProps = {
