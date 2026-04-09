@@ -37,12 +37,13 @@ type ReactRenderableValue =
 
 export type TransValue = MessagePlaceholderValue | ReactRenderableValue
 export type TransValues = Record<string, TransValue>
+type TransComponents = { [key: string]: React.ElementType | any }
 
 export type TransProps = {
   id: string
   message?: string
   values?: TransValues
-  components?: { [key: string]: React.ElementType | any }
+  components?: TransComponents
   formats?: MessageOptions["formats"]
   comment?: string
 } & TransRenderCallbackOrComponent
@@ -137,7 +138,7 @@ const getInterpolationValuesAndComponents = (
   props: TransProps,
 ): {
   values: Values | undefined
-  components: TransProps["components"]
+  components: TransComponents | undefined
 } => {
   if (!props.values) {
     return {
@@ -147,8 +148,10 @@ const getInterpolationValuesAndComponents = (
   }
 
   const values: Values = Object.create(null)
-  const components = { ...props.components }
-  let nextIndex = Object.keys(components).length
+  const components: TransComponents = {
+    ...props.components,
+  }
+  let nextIndex = getNextPlaceholderIndex(components)
   /*
       Replace values placeholders with <INDEX /> and add values to `components`.
       This makes them processed as JSX children and follow JSX semantics.
@@ -177,6 +180,10 @@ const getInterpolationValuesAndComponents = (
     nextIndex += 1
   })
   return { values, components }
+}
+
+function getNextPlaceholderIndex(components: TransComponents): number {
+  return Object.keys(components).length
 }
 
 function isReactRenderableValue(value: unknown): value is ReactRenderableValue {
