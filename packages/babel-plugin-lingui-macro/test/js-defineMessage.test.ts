@@ -21,7 +21,7 @@ macroTester({
     {
       name: "should expand macros in message property",
       code: `
-        import { defineMessage, plural, arg } from '@lingui/core/macro';
+        import { defineMessage, plural } from '@lingui/core/macro';
         const message = defineMessage({
           comment: "Description",
           message: plural(value, { one: "book", other: "books" })
