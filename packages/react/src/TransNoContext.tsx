@@ -5,7 +5,6 @@ import type {
   MessagePlaceholderValue,
   Values,
 } from "@lingui/core"
-import { isValidElement } from "react"
 
 export type TransRenderProps = {
   id: string
@@ -26,16 +25,10 @@ export type TransRenderCallbackOrComponent =
       render?: never
     }
 
-type ReactRenderableValue =
-  | React.ReactElement
-  | string
-  | number
-  | boolean
-  | null
-  | undefined
-  | readonly ReactRenderableValue[]
+type CoreInterpolationValue = string | number | bigint | Date
+type TransChildValue = Exclude<React.ReactNode, string | number>
 
-export type TransValue = MessagePlaceholderValue | ReactRenderableValue
+export type TransValue = CoreInterpolationValue | TransChildValue
 export type TransValues = Record<string, TransValue>
 type TransComponents = { [key: string]: React.ElementType | any }
 
@@ -169,12 +162,13 @@ const getInterpolationValuesAndComponents = (
       Related discussion: https://github.com/lingui/js-lingui/issues/183
     */
   Object.entries(props.values).forEach(([key, valueForKey]) => {
-    // Preserve scalar interpolation values so i18n formatting stays intact.
-    if (!shouldWrapAsPlaceholder(valueForKey)) {
+    if (isCoreInterpolationValue(valueForKey)) {
       values[key] = valueForKey
       return
     }
-    // React elements, arrays, and nullish values should be processed as JSX children
+
+    // `Trans` intentionally keeps React child semantics for these values
+    // instead of flowing them through core string interpolation.
     components[nextIndex] = <>{valueForKey}</>
     values[key] = `<${nextIndex}/>`
     nextIndex += 1
@@ -186,26 +180,13 @@ function getNextPlaceholderIndex(components: TransComponents): number {
   return Object.keys(components).length
 }
 
-function isReactRenderableValue(value: unknown): value is ReactRenderableValue {
-  if (
-    value == null ||
-    typeof value === "boolean" ||
+function isCoreInterpolationValue(
+  value: TransValue,
+): value is CoreInterpolationValue {
+  return (
     typeof value === "string" ||
     typeof value === "number" ||
-    isValidElement(value)
-  ) {
-    return true
-  }
-
-  return Array.isArray(value) && value.every(isReactRenderableValue)
-}
-
-function shouldWrapAsPlaceholder(
-  value: TransValue,
-): value is Exclude<ReactRenderableValue, string | number> {
-  if (typeof value === "string" || typeof value === "number") {
-    return false
-  }
-
-  return isReactRenderableValue(value)
+    typeof value === "bigint" ||
+    value instanceof Date
+  )
 }
