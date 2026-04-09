@@ -30,7 +30,7 @@ type TransChildValue = Exclude<React.ReactNode, string | number>
 
 export type TransValue = CoreInterpolationValue | TransChildValue
 export type TransValues = Record<string, TransValue>
-type TransComponents = { [key: string]: React.ElementType | any }
+type TransComponents = Record<string, React.ReactElement>
 
 export type TransProps = {
   id: string
