@@ -476,6 +476,77 @@ describe("I18n", () => {
     `)
   })
 
+  describe("global custom formats", () => {
+    const i18n = setupI18n({
+      locale: "fr",
+      formats: {
+        myDateStyle: {
+          day: "numeric",
+        },
+        myNumberStyle: {
+          maximumFractionDigits: 2,
+        },
+      },
+      messages: { fr: {} },
+    })
+
+    const date = new Date("2014-12-06")
+
+    const number = 123.4567
+
+    it("._ should respect global custom date formats", () => {
+      expect(
+        i18n._("It starts on {someDate, date, myDateStyle}", {
+          someDate: date,
+        })
+      ).toMatchInlineSnapshot(`"It starts on 6"`)
+    })
+
+    it("._ should respect global custom number formats", () => {
+      expect(
+        i18n._("Number is {someNumber, number, myNumberStyle}", {
+          someNumber: number,
+        })
+      ).toMatchInlineSnapshot(`"Number is 123,46"`)
+    })
+
+    it("._ should override global custom date formats with local ones", () => {
+      expect(
+        i18n._(
+          "It starts on {someDate, date, myDateStyle}",
+          {
+            someDate: date,
+          },
+          {
+            formats: {
+              myDateStyle: {
+                day: "2-digit",
+              },
+            },
+          }
+        )
+      ).toMatchInlineSnapshot(`"It starts on 06"`)
+    })
+
+    it("._ should override global custom number formats with local ones", () => {
+      expect(
+        i18n._(
+          "Number is {someNumber, number, myNumberStyle}",
+          {
+            someNumber: number,
+          },
+          {
+            formats: {
+              myNumberStyle: {
+                maximumFractionDigits: 3,
+              },
+            },
+          }
+        )
+      ).toMatchInlineSnapshot(`"Number is 123,457"`)
+    })
+  })
+
   describe("ICU date format", () => {
     const i18n = setupI18n({
       locale: "fr",
