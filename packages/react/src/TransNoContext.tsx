@@ -1,10 +1,5 @@
 import { formatElements } from "./format"
-import type {
-  I18n,
-  MessageOptions,
-  MessagePlaceholderValue,
-  Values,
-} from "@lingui/core"
+import type { I18n, MessageOptions, Values } from "@lingui/core"
 
 export type TransRenderProps = {
   id: string
