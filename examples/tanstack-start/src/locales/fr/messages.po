@@ -13,26 +13,33 @@ msgstr ""
 "Plural-Forms: \n"
 "X-Generator: Poedit 3.5\n"
 
-#. js-lingui-explicit-id
-#: src/routes/users.$userId.tsx:18
-msgid "Failed to fetch user"
-msgstr "Échec du chargement de l'utilisateur"
-
-#. js-lingui-explicit-id
-#: src/routes/users.route.tsx:18
-msgid "Failed to fetch users"
-msgstr "Échec du chargement des utilisateurs"
-
-#. js-lingui-explicit-id
-#: src/routes/api/users.$id.ts:22
-msgid "User not found"
-msgstr "Utilisateur non trouvé"
-
 #: src/routes/posts_.$postId.deep.tsx:24
 msgid "← All Posts"
 msgstr "← Tous les articles"
 
-#: src/routes/deferred.tsx:70
+#: src/routes/$lang/content-bis.tsx:13
+msgid "Another translated content from the URL."
+msgstr "Un autre contenu traduit depuis l'URL."
+
+#: src/routes/$lang/route.tsx:26
+msgid "Check out other contents:"
+msgstr "Découvrez d'autres contenus:"
+
+#: src/routes/$lang/content.tsx:15
+#: src/routes/$lang/content-bis.tsx:16
+msgid "Check this content in other languages:"
+msgstr "Découvrez ce contenu dans d'autres langues:"
+
+#: src/routes/__root.tsx:144
+#: src/routes/$lang/route.tsx:31
+msgid "Content"
+msgstr "Contenu"
+
+#: src/routes/$lang/route.tsx:38
+msgid "Content Bis"
+msgstr "Contenu bis"
+
+#: src/routes/deferred.tsx:58
 msgid "Count: {count}"
 msgstr "Compte: {count}"
 
@@ -40,9 +47,17 @@ msgstr "Compte: {count}"
 msgid "Deep View"
 msgstr "Vue détaillée"
 
-#: src/routes/__root.tsx:138
+#: src/routes/__root.tsx:135
 msgid "Deferred"
 msgstr "Différé"
+
+#: src/routes/users.$userId.tsx:20
+msgid "Failed to fetch user"
+msgstr "Échec du chargement des utilisateurs"
+
+#: src/routes/users.route.tsx:19
+msgid "Failed to fetch users"
+msgstr "Échec du chargement de l'utilisateur"
 
 #: src/components/NotFound.tsx:19
 msgid "Go back"
@@ -60,7 +75,12 @@ msgstr "Aller à la route A"
 msgid "Go to route B"
 msgstr "Aller à la route B"
 
-#: src/routes/__root.tsx:106
+#: src/routes/deferred.tsx:11
+msgid "Hello deferred!"
+msgstr "Bonjour différé !"
+
+#: src/routes/users.index.tsx:10
+#: src/routes/__root.tsx:103
 #: src/components/DefaultCatchBoundary.tsx:37
 msgid "Home"
 msgstr "Accueil"
@@ -81,15 +101,15 @@ msgstr "Je suis A !"
 msgid "I'm B!"
 msgstr "Je suis B !"
 
-#: src/routes/deferred.tsx:74
+#: src/routes/deferred.tsx:62
 msgid "Increment"
 msgstr "Incrémenter"
 
-#: src/routes/deferred.tsx:44
+#: src/routes/deferred.tsx:32
 msgid "Loading person..."
 msgstr "Chargement de la personne..."
 
-#: src/routes/deferred.tsx:60
+#: src/routes/deferred.tsx:48
 msgid "Loading stuff..."
 msgstr "Chargement de choses..."
 
@@ -97,11 +117,11 @@ msgstr "Chargement de choses..."
 msgid "Non-existent Post"
 msgstr "Article non-existant"
 
-#: src/routes/users.route.tsx:33
+#: src/routes/users.route.tsx:34
 msgid "Non-existent User"
 msgstr "Utilisateur non-existant"
 
-#: src/routes/__root.tsx:130
+#: src/routes/__root.tsx:127
 msgid "Pathless Layout"
 msgstr "Layout sans chemin"
 
@@ -109,7 +129,8 @@ msgstr "Layout sans chemin"
 msgid "Post not found"
 msgstr "Article non trouvé"
 
-#: src/routes/__root.tsx:114
+#: src/routes/users.index.tsx:11
+#: src/routes/__root.tsx:111
 msgid "Posts"
 msgstr "Articles"
 
@@ -117,7 +138,7 @@ msgstr "Articles"
 msgid "Select a post."
 msgstr "Sélectionnez un article."
 
-#: src/routes/users.index.tsx:11
+#: src/routes/users.index.tsx:22
 msgid "Select a user."
 msgstr "Sélectionnez un utilisateur."
 
@@ -129,19 +150,24 @@ msgstr "Recommencer"
 msgid "The page you are looking for does not exist."
 msgstr "La page que vous cherchez n'existe pas."
 
-#: src/routes/__root.tsx:147
+#: src/routes/__root.tsx:153
 msgid "This Route Does Not Exist"
 msgstr "Cette route n'existe pas"
+
+#: src/routes/$lang/content.tsx:12
+msgid "Translated content from the URL."
+msgstr "Contenu traduit depuis l'URL"
 
 #: src/components/DefaultCatchBoundary.tsx:30
 msgid "Try Again"
 msgstr "Réessayer"
 
-#: src/routes/users.$userId.tsx:26
+#: src/routes/users.$userId.tsx:28
+#: src/routes/api/users.$id.ts:28
 msgid "User not found"
 msgstr "Utilisateur non trouvé"
 
-#: src/routes/__root.tsx:122
+#: src/routes/__root.tsx:119
 msgid "Users"
 msgstr "Utilisateurs"
 
