@@ -3,10 +3,9 @@ import type {
   TransRenderCallbackOrComponent,
   I18nContext,
 } from "@lingui/react"
-import type { MessagePlaceholderValue } from "@lingui/core"
 import type {
   MacroMessageDescriptor,
-  LabeledExpression,
+  LabeledMessagePlaceholder,
   PluralValue,
   SelectValue,
 } from "@lingui/core/macro"
@@ -17,7 +16,7 @@ type CommonProps = TransRenderCallbackOrComponent & {
   context?: string
 }
 
-type TransChildren = ReactNode | LabeledExpression<MessagePlaceholderValue>
+type TransChildren = ReactNode | LabeledMessagePlaceholder
 type TransProps = {
   children: TransChildren | TransChildren[]
 } & CommonProps

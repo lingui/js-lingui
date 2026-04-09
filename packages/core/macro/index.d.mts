@@ -60,9 +60,11 @@ export type MacroMessageDescriptor = (
 export function t(descriptor: MacroMessageDescriptor): string
 
 export type LabeledExpression<T> = Record<string, T>
+export type LabeledMessagePlaceholder =
+  LabeledExpression<MessagePlaceholderValue>
 export type MessagePlaceholder =
   | MessagePlaceholderValue
-  | LabeledExpression<MessagePlaceholderValue>
+  | LabeledMessagePlaceholder
 
 /**
  * Translates a template string using the global I18n instance
@@ -238,4 +240,4 @@ export const msg: typeof defineMessage
 /**
  * Helps to define a name for a variable in the message
  */
-export function ph(def: LabeledExpression<MessagePlaceholderValue>): string
+export function ph(def: LabeledMessagePlaceholder): string
