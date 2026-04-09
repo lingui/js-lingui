@@ -45,7 +45,7 @@ Manage your intl workflow with the Lingui [CLI](/ref/cli), [Vite Plugin](/ref/vi
 
 ### Unopinionated
 
-Integrate Lingui into your existing workflow. It supports explicit message keys as well as auto-generated ones. Translations are stored either in standard PO file, which is supported in almost all translation tools. You can also use CSV or JSON, or add a custom formatter of your own.
+Integrate Lingui into your existing workflow. It supports explicit message keys as well as auto-generated ones. Translations are stored in a standard PO file, which is supported by almost all translation tools. You can also use CSV or JSON, or add a custom formatter of your own.
 
 ### Built for AI-assisted Workflows
 

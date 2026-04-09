@@ -429,7 +429,7 @@ The `change` event is triggered **after** changing the locale or loading a new m
 
 ### `missing`
 
-The `missing` event is triggered when a translation is requested using [`i18n.t`](/ref/core#i18n.t) that does not exist in the messages of the active locale.The event provides information about the locale and the missing message ID.
+The `missing` event is triggered when a translation is requested using [`i18n.t`](/ref/core#i18n.t) that does not exist in the messages of the active locale. The event provides information about the locale and the missing message ID.
 
 ```ts
 i18n.on("missing", (event) => {

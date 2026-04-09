@@ -229,7 +229,7 @@ See [Installation](/installation) for configuration details.
 
 ## Deprecated `extractorParserOptions`
 
-The top-level `extractorParserOptions` configuration option has been removed. Parser options must be passed directly to the extractor implementation. The old configuration style allowed specifying parser options at the root level:
+The top-level `extractorParserOptions` configuration option is deprecated and will be removed in a future release. Parser options should be passed directly to the extractor implementation instead. The old configuration style allowed specifying parser options at the root level:
 
 ```js title="lingui.config.{js,ts}"
 import { defineConfig } from "@lingui/cli";

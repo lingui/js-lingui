@@ -29,7 +29,7 @@ Example:
 
 ### Generated IDs
 
-On the other hand, generated IDs are created automatically by the internalization library. In Lingui, such IDs are created based on the source message and [context](#context).
+On the other hand, generated IDs are created automatically by the internationalization library. In Lingui, such IDs are created based on the source message and [context](#context).
 
 Example:
 
