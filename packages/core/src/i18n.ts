@@ -33,8 +33,36 @@ export type Messages = Record<string, UncompiledMessage | CompiledMessage>
 
 export type AllMessages = Record<Locale, Messages>
 
+/**
+ * Register interface for module augmentation.
+ * Users can augment this interface to narrow MessageId to a specific union type.
+ *
+ * @example
+ * ```ts
+ * // src/lingui.d.ts
+ * import type enMessages from "./locales/en/messages.json";
+ *
+ * declare module "@lingui/core" {
+ *   interface Register {
+ *     messageIds: keyof typeof enMessages;
+ *   }
+ * }
+ * ```
+ */
+export interface Register {}
+
+/**
+ * Resolves to the registered message ID union, or falls back to `string`
+ * when no augmentation exists.
+ */
+export type MessageId = Register extends {
+  messageIds: infer TIds extends string
+}
+  ? TIds
+  : string
+
 export type MessageDescriptor = {
-  id: string
+  id: MessageId
   comment?: string
   message?: string
   values?: Record<string, unknown>
@@ -42,7 +70,7 @@ export type MessageDescriptor = {
 
 export type MissingMessageEvent = {
   locale: Locale
-  id: string
+  id: MessageId
 }
 
 type MissingHandler = string | ((locale: string, id: string) => string)
@@ -174,9 +202,9 @@ export class I18n extends EventEmitter<Events> {
 
   // method for translation and formatting
   _(descriptor: MessageDescriptor): string
-  _(id: string, values?: Values, options?: MessageOptions): string
+  _(id: MessageId, values?: Values, options?: MessageOptions): string
   _(
-    id: MessageDescriptor | string,
+    id: MessageDescriptor | MessageId,
     values?: Values,
     options?: MessageOptions,
   ): string {
