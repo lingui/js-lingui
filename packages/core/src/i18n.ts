@@ -35,8 +35,6 @@ export type MessagePlaceholderValue =
   | undefined
   | Date
 
-// left it as a compatible alias to MessagePlaceholderValue so as not to break the external API.
-export type MessageValue = MessagePlaceholderValue
 export type Values = Record<string, MessagePlaceholderValue>
 
 export type UncompiledMessage = string

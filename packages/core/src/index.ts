@@ -4,7 +4,6 @@ export type {
   AllMessages,
   MessageDescriptor,
   MessagePlaceholderValue,
-  MessageValue,
   Messages,
   Locale,
   Locales,
