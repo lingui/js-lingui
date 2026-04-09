@@ -195,12 +195,8 @@ function isReactRenderableValue(value: unknown): value is ReactRenderableValue {
 
 function shouldWrapAsPlaceholder(
   value: TransValue,
-): value is Exclude<ReactRenderableValue, string | number | boolean> {
-  if (
-    typeof value === "string" ||
-    typeof value === "number" ||
-    typeof value === "boolean"
-  ) {
+): value is Exclude<ReactRenderableValue, string | number> {
+  if (typeof value === "string" || typeof value === "number") {
     return false
   }
 

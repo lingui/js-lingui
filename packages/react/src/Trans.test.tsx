@@ -157,6 +157,21 @@ describe("Trans component", () => {
       html(
         <Trans
           id="unknown"
+          message={"foo <0>{active}</0> bar"}
+          values={{
+            active: false,
+          }}
+          components={{
+            0: <span />,
+          }}
+        />,
+      ),
+    ).toEqual("foo <span></span> bar")
+
+    expect(
+      html(
+        <Trans
+          id="unknown"
           message={"foo <0>{0}</0> bar"}
           values={{
             0: "lol",
@@ -365,7 +380,7 @@ describe("Trans component", () => {
     expect(translation).toEqual("Count 1")
   })
 
-  it("should preserve false values for i18n interpolation", () => {
+  it("should omit false values during Trans interpolation", () => {
     const translation = html(
       <Trans
         id="msg.bool.false"
@@ -376,10 +391,10 @@ describe("Trans component", () => {
       />,
     )
 
-    expect(translation).toEqual("Flag false")
+    expect(translation).toEqual("Flag ")
   })
 
-  it("should preserve true values for i18n interpolation", () => {
+  it("should omit true values during Trans interpolation", () => {
     const translation = html(
       <Trans
         id="msg.bool.true"
@@ -390,7 +405,7 @@ describe("Trans component", () => {
       />,
     )
 
-    expect(translation).toEqual("Flag true")
+    expect(translation).toEqual("Flag ")
   })
 
   it.each([
