@@ -15,6 +15,7 @@ const name = "Jack"
 const user = { name: "Jack" }
 const i18n: I18n = null as any
 const numberValue = 2
+const bigintValue = BigInt(1)
 const deadline = new Date()
 
 // simple
@@ -29,8 +30,9 @@ expect(t`Hello ${ph({ name: user.name })}`).type.toBe<string>()
 
 // allow numbers
 expect(t`Hello ${numberValue}`).type.toBe<string>()
-expect(t`Hello ${{ active: false }}`).type.toBe<string>()
-expect(t`Hello ${{ deadline }}`).type.toBe<string>()
+expect(
+  t`Hello ${bigintValue} ${deadline} ${{ active: false }}`,
+).type.toBe<string>()
 
 // with custom i18n
 expect(t(i18n)`With custom i18n instance`).type.toBe<string>()
@@ -101,9 +103,6 @@ expect(
 // allow numbers
 expect(msg`Hello ${numberValue}`).type.toBe<MessageDescriptor>()
 expect(defineMessage`Hello ${numberValue}`).type.toBe<MessageDescriptor>()
-expect(msg`Hello ${{ active: false }}`).type.toBe<MessageDescriptor>()
-expect(defineMessage`Hello ${{ deadline }}`).type.toBe<MessageDescriptor>()
-expect(ph({ active: false })).type.toBe<string>()
 expect(ph({ deadline })).type.toBe<string>()
 expect(ph).type.not.toBeCallableWith({ payload: { nested: true } })
 

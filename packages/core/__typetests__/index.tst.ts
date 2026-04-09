@@ -1,6 +1,14 @@
 import { i18n } from "../src"
 import { expect } from "tstyche"
 
+const supportedValues = {
+  deadline: new Date(),
+  total: BigInt(1),
+  active: false,
+  optional: null,
+  missing: undefined,
+}
+
 expect(i18n._("message.id")).type.toBe<string>()
 expect(
   i18n._({
@@ -15,28 +23,13 @@ expect(
     { message: "Hello {name}", comment: "", formats: {} },
   ),
 ).type.toBe<string>()
-expect(i18n._).type.toBeCallableWith("message.id", { deadline: new Date() })
-expect(i18n._).type.toBeCallableWith("message.id", { total: BigInt(1) })
-expect(i18n._).type.toBeCallableWith("message.id", { optional: null })
-expect(i18n._).type.toBeCallableWith("message.id", { optional: undefined })
+expect(i18n._).type.toBeCallableWith("message.id", supportedValues)
 expect(i18n._).type.not.toBeCallableWith("message.id", {
   payload: { nested: true },
 })
 expect(i18n._).type.toBeCallableWith({
   id: "message.id",
-  values: { deadline: new Date() },
-})
-expect(i18n._).type.toBeCallableWith({
-  id: "message.id",
-  values: { total: BigInt(1) },
-})
-expect(i18n._).type.toBeCallableWith({
-  id: "message.id",
-  values: { optional: null },
-})
-expect(i18n._).type.toBeCallableWith({
-  id: "message.id",
-  values: { optional: undefined },
+  values: supportedValues,
 })
 expect(i18n._).type.not.toBeCallableWith({
   id: "message.id",

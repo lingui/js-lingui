@@ -157,21 +157,6 @@ describe("Trans component", () => {
       html(
         <Trans
           id="unknown"
-          message={"foo <0>{active}</0> bar"}
-          values={{
-            active: false,
-          }}
-          components={{
-            0: <span />,
-          }}
-        />,
-      ),
-    ).toEqual("foo <span></span> bar")
-
-    expect(
-      html(
-        <Trans
-          id="unknown"
           message={"foo <0>{0}</0> bar"}
           values={{
             0: "lol",
@@ -345,14 +330,15 @@ describe("Trans component", () => {
     expect(translation).toEqual("1,00 €")
   })
 
-  it("should preserve Date values for i18n interpolation", () => {
+  it("should preserve Date and bigint values for i18n interpolation", () => {
     const deadline = new Date("2014-12-06T17:40:00.000Z")
     const translation = html(
       <Trans
-        id="msg.date"
-        message="It starts on {deadline} <0>{name}</0>"
+        id="msg.scalars"
+        message="It starts on {deadline}, count {total} <0>{name}</0>"
         values={{
           deadline,
+          total: BigInt(1),
           name: "John",
         }}
         components={{
@@ -362,64 +348,24 @@ describe("Trans component", () => {
     )
 
     expect(translation).toEqual(
-      `It starts on ${deadline.toString()} <span>John</span>`,
+      `It starts on ${deadline.toString()}, count 1 <span>John</span>`,
     )
-  })
-
-  it("should preserve bigint values for i18n interpolation", () => {
-    const translation = html(
-      <Trans
-        id="msg.bigint"
-        message="Count {total}"
-        values={{
-          total: BigInt(1),
-        }}
-      />,
-    )
-
-    expect(translation).toEqual("Count 1")
-  })
-
-  it("should omit false values during Trans interpolation", () => {
-    const translation = html(
-      <Trans
-        id="msg.bool.false"
-        message="Flag {active}"
-        values={{
-          active: false,
-        }}
-      />,
-    )
-
-    expect(translation).toEqual("Flag ")
-  })
-
-  it("should omit true values during Trans interpolation", () => {
-    const translation = html(
-      <Trans
-        id="msg.bool.true"
-        message="Flag {active}"
-        values={{
-          active: true,
-        }}
-      />,
-    )
-
-    expect(translation).toEqual("Flag ")
   })
 
   it.each([
+    ["false", false],
+    ["true", true],
     ["null", null],
     ["undefined", undefined],
   ] as const)(
-    "should omit %s values during i18n interpolation",
-    (_label, optional) => {
+    "should omit %s values during Trans interpolation",
+    (_label, value) => {
       const translation = html(
         <Trans
           id="msg.empty"
-          message="Value {optional}"
+          message="Value {value}"
           values={{
-            optional,
+            value,
           }}
         />,
       )
