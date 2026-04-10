@@ -88,6 +88,7 @@ export const exampleConfig = {
       {},
       { a: "link", em: "em", strong: "b" },
     ),
+    jsxRuntime: multipleValidOptions("react", "solid"),
   },
   format: multipleValidOptions({}, {}),
   extractors: multipleValidOptions([], ["babel"], [Object]),

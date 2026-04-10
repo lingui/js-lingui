@@ -20,6 +20,10 @@ export type TextWithLoc = {
   loc?: SourceLocation
 }
 
+type MessageDescriptorElementTransforms = {
+  transformElement?: (value: Expression) => Expression
+}
+
 function isObjectProperty(
   node: TextWithLoc | ObjectProperty,
 ): node is ObjectProperty {
@@ -41,9 +45,21 @@ export function createMessageDescriptorFromTokens(
     id?: TextWithLoc | ObjectProperty
     idPrefixLeader?: string
   } = {},
+  transforms: MessageDescriptorElementTransforms = {},
 ) {
+  const result = buildICUFromTokens(tokens)
+
+  if (result.elements && transforms.transformElement) {
+    result.elements = Object.fromEntries(
+      Object.entries(result.elements).map(([key, value]) => [
+        key,
+        transforms.transformElement(value),
+      ]),
+    )
+  }
+
   return createMessageDescriptor(
-    buildICUFromTokens(tokens),
+    result,
     oldLoc,
     descriptorFields,
     defaults,
@@ -186,6 +202,33 @@ function createValuesProperty(key: string, values: Record<string, Expression>) {
   return types.objectProperty(
     types.identifier(key),
     types.objectExpression(valuesObject),
+  )
+}
+
+export function wrapJsxElementAsComponent(value: Expression): Expression {
+  if (!types.isJSXElement(value)) {
+    return value
+  }
+
+  const props = types.identifier("props")
+
+  return types.arrowFunctionExpression(
+    [props],
+    types.jsxElement(
+      types.jsxOpeningElement(
+        types.cloneNode(value.openingElement.name),
+        [
+          ...value.openingElement.attributes.map((attribute) =>
+            types.cloneNode(attribute),
+          ),
+          types.jsxSpreadAttribute(props),
+        ],
+        true,
+      ),
+      null,
+      [],
+      true,
+    ),
   )
 }
 
