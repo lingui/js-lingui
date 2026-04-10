@@ -59,7 +59,8 @@ export type LabeledExpression<T> = Record<string, T>
 export type MessagePlaceholder =
   | string
   | number
-  | LabeledExpression<string | number>
+  | bigint
+  | LabeledExpression<string | number | bigint>
 
 /**
  * Translates a template string using the global I18n instance
