@@ -202,10 +202,12 @@ export default function ({ types: t }: { types: BabelTypes }): PluginObj {
   function isTransComponent(path: NodePath) {
     return (
       path.isJSXElement() &&
-      path
-        .get("openingElement")
-        .get("name")
-        .referencesImport("@lingui/react", "Trans")
+      ["@lingui/react", "@lingui/solid"].some((moduleName) =>
+        path
+          .get("openingElement")
+          .get("name")
+          .referencesImport(moduleName, "Trans"),
+      )
     )
   }
 

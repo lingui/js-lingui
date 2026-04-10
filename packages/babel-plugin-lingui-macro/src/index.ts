@@ -5,6 +5,7 @@ import { MacroJSX } from "./macroJsx"
 import type { NodePath } from "@babel/traverse"
 import { MacroJs } from "./macroJs"
 import { JsMacroName } from "./constants"
+import { wrapJsxElementAsComponent } from "./messageDescriptorUtils"
 import {
   getConfig as loadConfig,
   LinguiConfig,
@@ -276,6 +277,10 @@ export default function ({
                     descriptorFields: resolveDescriptorFields(
                       state.opts as LinguiPluginOpts,
                     ),
+                    transformElement:
+                      config.macro.jsxRuntime === "solid"
+                        ? wrapJsxElementAsComponent
+                        : undefined,
                     isLinguiIdentifier: (node: Identifier, macro) =>
                       isLinguiIdentifier(path, node, macro),
                     jsxPlaceholderAttribute:

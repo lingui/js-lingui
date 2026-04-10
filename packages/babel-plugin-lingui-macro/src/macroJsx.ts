@@ -60,6 +60,7 @@ export type MacroJsxContext = MacroJsContext & {
 export type MacroJsxOpts = {
   descriptorFields: ResolvedDescriptorFields
   transImportName: string
+  transformElement?: (value: Expression) => Expression
   isLinguiIdentifier: (node: Identifier, macro: JsMacroName) => boolean
   jsxPlaceholderAttribute?: string
   jsxPlaceholderDefaults?: Record<string, string>
@@ -81,9 +82,11 @@ const choiceComponentAttributesWhitelist = [
 export class MacroJSX {
   types: typeof babelTypes
   ctx: MacroJsxContext
+  transformElement?: (value: Expression) => Expression
 
   constructor({ types }: { types: typeof babelTypes }, opts: MacroJsxOpts) {
     this.types = types
+    this.transformElement = opts.transformElement
 
     this.ctx = {
       ...createMacroJsContext(opts.isLinguiIdentifier, opts.descriptorFields),
@@ -122,6 +125,9 @@ export class MacroJSX {
         id,
         context,
         comment,
+      },
+      {
+        transformElement: this.transformElement,
       },
     )
 
