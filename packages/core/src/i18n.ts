@@ -49,6 +49,7 @@ export type AllMessages = Record<Locale, Messages>
  * }
  * ```
  */
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type -- intentionally empty; users augment this via module augmentation
 export interface Register {}
 
 /**
@@ -254,9 +255,9 @@ export class I18n extends EventEmitter<Events> {
 > ${translation}
 
 That means you use raw catalog or your catalog doesn't have a translation for the message and fallback was used.
-ICU features such as interpolation and plurals will not work properly for that message. 
+ICU features such as interpolation and plurals will not work properly for that message.
 
-Please compile your catalog first. 
+Please compile your catalog first.
 `)
       }
     }

@@ -7,7 +7,7 @@ description: Learn how to opt in to type-safe message IDs for autocomplete and c
 
 Lingui supports opt-in typed message IDs via TypeScript module augmentation. When enabled, all functions and components that accept a message `id` (i.e. `i18n._()`, `i18n.t()`, and `<Trans>`) will be narrowed to your specific set of known IDs, giving you autocomplete and compile-time errors for invalid IDs.
 
-Without augmentation, `id` remains `string` and existing behaviour is unchanged.
+Without augmentation, `id` remains `string` and existing behavior is unchanged.
 
 ## Setup
 
@@ -40,7 +40,7 @@ const msg = t({ id: "welcome.title", message: "Welcome!" });
 const bad = t({ id: "welcme.title", message: "Welcome!" });
 
 // ✅ Autocomplete works in JSX too
-<Trans id="welcome.title">Welcome!</Trans>
+<Trans id="welcome.title">Welcome!</Trans>;
 ```
 
 ## Notes
