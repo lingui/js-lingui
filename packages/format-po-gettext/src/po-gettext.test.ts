@@ -538,6 +538,63 @@ msgstr[3] "# dní"
       expect(pofile).toMatchSnapshot()
     })
 
+    it("should deduplicate file references when merging duplicate entries without line numbers", () => {
+      const duplicateFormatter = createFormat({
+        mergePlurals: true,
+        origins: true,
+        lineNumbers: false,
+      })
+      const message1 = "{count, plural, one {one book} other {many books}}"
+      const message2 =
+        "{anotherCount, plural, one {one book} other {many books}}"
+
+      const id1 = generateMessageId(message1)
+      const id2 = generateMessageId(message2)
+
+      const catalog: CatalogType = {
+        [id1]: {
+          message: message1,
+          translation: message1,
+          origin: [["src/App.tsx", 60]],
+        },
+        [id2]: {
+          message: message2,
+          translation: message2,
+          origin: [["src/App.tsx", 66]],
+        },
+      }
+
+      const pofile = duplicateFormatter.serialize(
+        catalog,
+        defaultSerializeCtx,
+      ) as string
+
+      expect(pofile).toMatchInlineSnapshot(`
+        "msgid ""
+        msgstr ""
+        "POT-Creation-Date: 2018-08-27 10:00+0000\\n"
+        "MIME-Version: 1.0\\n"
+        "Content-Type: text/plain; charset=utf-8\\n"
+        "Content-Transfer-Encoding: 8bit\\n"
+        "X-Generator: @lingui/cli\\n"
+        "Language: en\\n"
+        "Project-Id-Version: \\n"
+        "Report-Msgid-Bugs-To: \\n"
+        "PO-Revision-Date: \\n"
+        "Last-Translator: \\n"
+        "Language-Team: \\n"
+        "Plural-Forms: \\n"
+
+        #. js-lingui:icu=%7B%24var%2C+plural%2C+one+%7Bone+book%7D+other+%7Bmany+books%7D%7D&pluralize_on=count%2CanotherCount
+        #: src/App.tsx
+        msgid "one book"
+        msgid_plural "many books"
+        msgstr[0] "one book"
+        msgstr[1] "many books"
+        "
+      `)
+    })
+
     it("should keep all non-plurals entries intact", () => {
       const duplicateFormatter = createFormat({
         mergePlurals: true,
