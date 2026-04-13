@@ -119,7 +119,10 @@ if (import.meta.main) {
   program
     .description("Compile message catalogs to compiled bundle.")
     .option("--config <path>", "Path to the config file")
-    .option("--strict", "Disable defaults for missing translations")
+    .option(
+      "--strict",
+      "Fail if the target catalog has missing translations before fallback resolution",
+    )
     .option("--verbose", "Verbose output")
     .option("--typescript", "Create Typescript definition for compiled bundle")
     .option(
