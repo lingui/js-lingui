@@ -11,6 +11,7 @@ export type TranslationMissingEvent = {
 export type GetTranslationsOptions = {
   sourceLocale: string
   fallbackLocales: FallbackLocales
+  missingBehavior?: "resolved" | "catalog"
 }
 
 export async function getTranslationsForCatalog(
@@ -76,7 +77,7 @@ function getTranslation(
 ) {
   const { fallbackLocales, sourceLocale } = options
 
-  const getTranslation = (_locale: string) => {
+  const getCatalogTranslation = (_locale: string) => {
     const localeCatalog = catalogs[_locale]
     return localeCatalog?.[key]?.translation
   }
@@ -87,8 +88,8 @@ function getTranslation(
     if (!fL.length) return null
 
     for (const fallbackLocale of fL) {
-      if (catalogs[fallbackLocale] && getTranslation(fallbackLocale)) {
-        return getTranslation(fallbackLocale)
+      if (catalogs[fallbackLocale] && getCatalogTranslation(fallbackLocale)) {
+        return getCatalogTranslation(fallbackLocale)
       }
     }
   }
@@ -99,16 +100,23 @@ function getTranslation(
   // -> template message
   // ** last resort **
   // -> id
+  const catalogTranslation = getCatalogTranslation(locale)
+
   const translation =
     // Get translation in target locale
-    getTranslation(locale) ||
+    catalogTranslation ||
     // We search in fallbackLocales as dependent of each locale
     getMultipleFallbacks(locale) ||
     (sourceLocale &&
       sourceLocale === locale &&
       sourceLocaleFallback(catalogs[sourceLocale], key))
 
-  if (!translation) {
+  const isMissingTranslation =
+    options.missingBehavior === "catalog"
+      ? locale !== sourceLocale && !catalogTranslation
+      : !translation
+
+  if (isMissingTranslation) {
     onMissing({
       id: key,
       source:

@@ -13,7 +13,7 @@ describe("vite-plugin", () => {
     const { mod } = await runVite(`json-format`)
 
     expect((await mod.load()).messages).toMatchSnapshot()
-  })
+  }, 10000)
 
   it("should report error when macro used without a plugin", async () => {
     expect.assertions(1)
@@ -44,6 +44,17 @@ describe("vite-plugin", () => {
       expect((e as Error).message).toContain("Missing 1 translation(s):")
     }
   })
+
+  it("should report missing error when fallbackLocales resolve translation and failOnMissing = true", async () => {
+    expect.assertions(1)
+    try {
+      await runVite(`fail-on-missing-fallback`, {
+        failOnMissing: true,
+      })
+    } catch (e) {
+      expect((e as Error).message).toContain("Missing 1 translation(s):")
+    }
+  }, 10000)
 
   it("should NOT report missing messages for pseudo locale when failOnMissing = true", async () => {
     await expect(

@@ -27,6 +27,7 @@ export async function compileLocale(
       await getTranslationsForCatalog(catalog, locale, {
         fallbackLocales: config.fallbackLocales,
         sourceLocale: config.sourceLocale,
+        missingBehavior: "catalog",
       })
 
     if (

@@ -66,6 +66,7 @@ Please check that \`catalogs.path\` is filled properly.\n`,
     {
       fallbackLocales: config.fallbackLocales,
       sourceLocale: config.sourceLocale,
+      missingBehavior: "catalog",
     },
   )
 

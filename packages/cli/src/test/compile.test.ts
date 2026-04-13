@@ -155,6 +155,54 @@ msgstr ""
         expect(result).toBeFalsy()
       })
     })
+
+    it("Should fail even when fallbackLocales can resolve missing translation", async () => {
+      expect.assertions(4)
+
+      const rootDir = await createFixtures({
+        "en-US.po": `
+msgid "Hello World"
+msgstr "Hello World"
+        `,
+        "en-GB.po": `
+msgid "Hello World"
+msgstr ""
+        `,
+      })
+
+      const config = makeConfig({
+        locales: ["en-US", "en-GB"],
+        sourceLocale: "en-US",
+        fallbackLocales: {
+          default: "en-US",
+        },
+        rootDir,
+        catalogs: [
+          {
+            path: "<rootDir>/{locale}",
+            include: ["<rootDir>"],
+            exclude: [],
+          },
+        ],
+      })
+
+      await mockConsole(async (console) => {
+        const result = await command(config, {
+          allowEmpty: false,
+          workersOptions: {
+            poolSize: 0,
+          },
+        })
+        const actualFiles = readFsToListing(config.rootDir)
+
+        expect(actualFiles["en-US.js"]).toBeTruthy()
+        expect(actualFiles["en-GB.js"]).toBeFalsy()
+
+        const log = getConsoleMockCalls(console.error)
+        expect(log).toContain("Missing 1 translation(s)")
+        expect(result).toBeFalsy()
+      })
+    })
   })
 
   describe("failOnCompileError", () => {

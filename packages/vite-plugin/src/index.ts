@@ -86,6 +86,7 @@ Please check that catalogs.path is filled properly.\n`,
             await catalog.getTranslations(locale, {
               fallbackLocales: config.fallbackLocales,
               sourceLocale: config.sourceLocale,
+              missingBehavior: "catalog",
             })
 
           if (

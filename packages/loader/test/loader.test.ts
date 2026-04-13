@@ -64,6 +64,20 @@ describe("lingui-loader", () => {
     expect(built.stats.warnings).toEqual([])
   })
 
+  it("should report missing error when fallbackLocales resolve translation and failOnMissing = true", async () => {
+    const built = await build(
+      path.join(__dirname, "./fail-on-missing-fallback/entrypoint.js"),
+      {
+        failOnMissing: true,
+      },
+    )
+
+    expect(built.stats.errors![0]!.message).toContain(
+      "Missing 1 translation(s):",
+    )
+    expect(built.stats.warnings).toEqual([])
+  })
+
   it("should NOT report missing messages for pseudo locale when failOnMissing = true", async () => {
     const built = await build(
       path.join(__dirname, "./fail-on-missing-pseudo/entrypoint.js"),

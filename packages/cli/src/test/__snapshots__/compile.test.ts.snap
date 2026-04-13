@@ -8,15 +8,12 @@ Missing 1 translation(s)
 
 exports[`CLI Command: Compile > allowEmpty = false > Should show error and stop compilation of catalog if message doesnt have a translation (with template) 1`] = `
 {
-  en: undefined,
+  en: /*eslint-disable*/module.exports={messages:JSON.parse("{\\"mY42CM\\":[\\"Hello World\\"]}")};,
   pl: undefined,
 }
 `;
 
 exports[`CLI Command: Compile > allowEmpty = false > Should show error and stop compilation of catalog if message doesnt have a translation (with template) 2`] = `
-Error: Failed to compile catalog for locale en!
-Missing 1 translation(s)
-
 Error: Failed to compile catalog for locale pl!
 Missing 1 translation(s)
 
