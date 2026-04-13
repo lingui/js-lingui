@@ -1,0 +1,203 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Deduplication: Explicit names with different attributes throw an error 1`] = `
+[SyntaxError: <cwd>/<filename>jsx: Unsupported macro usage. Please check the examples at https://lingui.dev/ref/macro#examples-of-js-macros.
+ If you think this is a bug, fill in an issue at https://github.com/lingui/js-lingui/issues
+
+ Error: Multiple distinct JSX elements with the same placeholder name (\`link\`). Differentiate them by adding/modifying the \`_t\` attribute (e.g. \`<element _t="newName" />\`).
+  1 |
+  2 |         import { Trans } from '@lingui/react/macro';
+> 3 |         <Trans>Hello <a _t="link" href="/a">link 1</a>, normal, <a _t="link" href="/b">link 2</a>.</Trans>
+    |                                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  4 |       
+  1 |
+  2 |         import { Trans } from '@lingui/react/macro';
+> 3 |         <Trans>Hello <a _t="link" href="/a">link 1</a>, normal, <a _t="link" href="/b">link 2</a>.</Trans>
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  4 |       ]
+`;
+
+exports[`Deduplication: Identical elements are reused 1`] = `
+import { Trans } from "@lingui/react/macro";
+<Trans>
+  Hello <em>emphasis</em>, normal, <em>more emphasis</em>.
+</Trans>;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { Trans as _Trans } from "@lingui/react";
+<_Trans
+  {
+    /*i18n*/
+    ...{
+      id: "idxihm",
+      message: "Hello <em>emphasis</em>, normal, <em>more emphasis</em>.",
+      components: {
+        em: <em />,
+      },
+    }
+  }
+/>;
+
+`;
+
+exports[`Deduplication: Identical elements with different prop order are reused 1`] = `
+import { Trans } from "@lingui/react/macro";
+<Trans>
+  Hello{" "}
+  <a _t="link" href="/a" class="foo">
+    link 1
+  </a>
+  , normal,{" "}
+  <a _t="link" class="foo" href="/a">
+    link 1 copy
+  </a>
+  .
+</Trans>;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { Trans as _Trans } from "@lingui/react";
+<_Trans
+  {
+    /*i18n*/
+    ...{
+      id: "9en3MH",
+      message: "Hello <link>link 1</link>, normal, <link>link 1 copy</link>.",
+      components: {
+        link: <a class="foo" href="/a" />,
+      },
+    }
+  }
+/>;
+
+`;
+
+exports[`Deduplication: Implicit names with distinct attributes throw an error 1`] = `
+[SyntaxError: <cwd>/<filename>jsx: Unsupported macro usage. Please check the examples at https://lingui.dev/ref/macro#examples-of-js-macros.
+ If you think this is a bug, fill in an issue at https://github.com/lingui/js-lingui/issues
+
+ Error: Multiple distinct JSX elements with the same placeholder name (\`a\`). Differentiate them by setting \`macro.jsxPlaceholderAttribute\` in the lingui config and then adding the attribute to your JSX elements (e.g. \`<element _t="newName" />\`).
+  1 |
+  2 |         import { Trans } from '@lingui/react/macro';
+> 3 |         <Trans>Hello <a href="/a">link 1</a>, normal, <a href="/b">link 2</a>.</Trans>
+    |                                                       ^^^^^^^^^^^^^^^^^^^^^^^
+  4 |       
+  1 |
+  2 |         import { Trans } from '@lingui/react/macro';
+> 3 |         <Trans>Hello <a href="/a">link 1</a>, normal, <a href="/b">link 2</a>.</Trans>
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  4 |       ]
+`;
+
+exports[`Deduplication: Same explicit placeholder with identical attributes does not throw 1`] = `
+import { Trans } from "@lingui/react/macro";
+<Trans>
+  Hello{" "}
+  <a _t="link" href="/a">
+    link 1
+  </a>
+  , normal,{" "}
+  <a _t="link" href="/a">
+    link 1 copy
+  </a>
+  .
+</Trans>;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { Trans as _Trans } from "@lingui/react";
+<_Trans
+  {
+    /*i18n*/
+    ...{
+      id: "9en3MH",
+      message: "Hello <link>link 1</link>, normal, <link>link 1 copy</link>.",
+      components: {
+        link: <a href="/a" />,
+      },
+    }
+  }
+/>;
+
+`;
+
+exports[`Mixing explicit _t together with jsxPlaceholderDefaults 1`] = `
+import { Trans } from "@lingui/react/macro";
+<Trans>
+  Hello <a href="/a">link 1</a>, normal,{" "}
+  <a _t="link2" href="/b">
+    link 2
+  </a>
+  .
+</Trans>;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { Trans as _Trans } from "@lingui/react";
+<_Trans
+  {
+    /*i18n*/
+    ...{
+      id: "yU9TUm",
+      message: "Hello <link>link 1</link>, normal, <link2>link 2</link2>.",
+      components: {
+        link: <a href="/a" />,
+        link2: <a href="/b" />,
+      },
+    }
+  }
+/>;
+
+`;
+
+exports[`Placeholder attribute is stripped from AST 1`] = `
+import { Trans } from "@lingui/react/macro";
+<Trans>
+  <a _t="link" href="/about">
+    About
+  </a>
+</Trans>;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { Trans as _Trans } from "@lingui/react";
+<_Trans
+  {
+    /*i18n*/
+    ...{
+      id: "Ym2S6K",
+      message: "<link>About</link>",
+      components: {
+        link: <a href="/about" />,
+      },
+    }
+  }
+/>;
+
+`;
+
+exports[`Respects jsxPlaceholderDefaults 1`] = `
+import { Trans } from "@lingui/react/macro";
+<Trans>
+  Here's a <a>link</a> and <em>emphasis</em>.
+</Trans>;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { Trans as _Trans } from "@lingui/react";
+<_Trans
+  {
+    /*i18n*/
+    ...{
+      id: "Jg_WOt",
+      message: "Here's a <link>link</link> and <em>emphasis</em>.",
+      components: {
+        link: <a />,
+        em: <em />,
+      },
+    }
+  }
+/>;
+
+`;

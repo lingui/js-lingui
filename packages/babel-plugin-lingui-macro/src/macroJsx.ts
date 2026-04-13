@@ -49,6 +49,9 @@ function maybeNodeValue(node: Node): { text: string; loc: SourceLocation } {
 export type MacroJsxContext = MacroJsContext & {
   elementIndex: () => number
   transImportName: string
+  elementsTracking: Map<string, JSXElement>
+  jsxPlaceholderAttribute?: string
+  jsxPlaceholderDefaults?: Record<string, string>
 }
 
 export type MacroJsxOpts = {
@@ -56,6 +59,8 @@ export type MacroJsxOpts = {
   stripMessageProp: boolean
   transImportName: string
   isLinguiIdentifier: (node: Identifier, macro: JsMacroName) => boolean
+  jsxPlaceholderAttribute?: string
+  jsxPlaceholderDefaults?: Record<string, string>
 }
 
 const choiceComponentAttributesWhitelist = [
@@ -86,6 +91,9 @@ export class MacroJSX {
       ),
       transImportName: opts.transImportName,
       elementIndex: makeCounter(),
+      elementsTracking: new Map(),
+      jsxPlaceholderAttribute: opts.jsxPlaceholderAttribute,
+      jsxPlaceholderDefaults: opts.jsxPlaceholderDefaults,
     }
   }
 
@@ -351,18 +359,85 @@ export class MacroJSX {
   }
 
   tokenizeElement = (path: NodePath<JSXElement>): ElementToken => {
-    // !!! Important: Calculate element index before traversing children.
-    // That way outside elements are numbered before inner elements. (...and it looks pretty).
-    const name = this.ctx.elementIndex()
+    const {
+      jsxPlaceholderAttribute,
+      jsxPlaceholderDefaults,
+      elementsTracking,
+    } = this.ctx
+
+    let node = path.node
+    let name: string | undefined = undefined
+
+    if (jsxPlaceholderAttribute) {
+      const { attributes } = node.openingElement
+      const attrIndex = attributes.findIndex(
+        (attr) =>
+          attr.type === "JSXAttribute" &&
+          attr.name.name === jsxPlaceholderAttribute,
+      )
+
+      if (attrIndex !== -1) {
+        const attr = attributes[attrIndex] as JSXAttribute
+        if (attr.value && attr.value.type === "StringLiteral") {
+          name = attr.value.value
+        }
+
+        const newAttributes = [...attributes]
+        newAttributes.splice(attrIndex, 1)
+
+        node = {
+          ...node,
+          openingElement: {
+            ...node.openingElement,
+            attributes: newAttributes,
+          },
+        }
+      }
+    }
+
+    if (!name && jsxPlaceholderDefaults) {
+      const tagName = node.openingElement.name
+      if (tagName.type === "JSXIdentifier") {
+        name = jsxPlaceholderDefaults[tagName.name]
+      }
+    }
+
+    if (!name) {
+      name = String(this.ctx.elementIndex())
+      elementsTracking.set(name, node)
+    } else {
+      const existingElement = elementsTracking.get(name)
+
+      if (existingElement) {
+        const existingAttrs = existingElement.openingElement.attributes
+        const openingAttrs = node.openingElement.attributes
+        if (
+          existingAttrs.length !== openingAttrs.length ||
+          !existingAttrs.every((a) =>
+            openingAttrs.some((b) => this.types.isNodesEquivalent(a, b)),
+          )
+        ) {
+          const eg = `(e.g. \`<element ${jsxPlaceholderAttribute || '_t'}="newName" />\`)`
+          const msg = `Multiple distinct JSX elements with the same placeholder name (\`${name}\`). `
+            + (jsxPlaceholderAttribute
+              ? `Differentiate them by adding/modifying the \`${jsxPlaceholderAttribute}\` attribute ${eg}.`
+              : `Differentiate them by setting \`macro.jsxPlaceholderAttribute\` in the lingui config and then adding the attribute to your JSX elements ${eg}.`
+            )
+          throw path.buildCodeFrameError(msg)
+        }
+      } else {
+        elementsTracking.set(name, node)
+      }
+    }
 
     return {
       type: "element",
       name,
       value: {
-        ...path.node,
+        ...node,
         children: [],
         openingElement: {
-          ...path.node.openingElement,
+          ...node.openingElement,
           selfClosing: true,
         },
       },

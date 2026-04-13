@@ -31,6 +31,7 @@ type TestCaseCommon = {
   macroOpts?: LinguiPluginOpts
   only?: boolean
   skip?: boolean
+  shouldThrow?: boolean
   /**
    * Will not execute test using babel-macro-plugin
    */
@@ -111,6 +112,28 @@ export function macroTester(opts: MacroTesterOptions) {
 
           expect(await clean(actualPlugin)).toEqual(await clean(expected))
         } else {
+          if (testCase.shouldThrow) {
+            expect(() => {
+              try {
+                transformSync(
+                  testCase.code,
+                  getDefaultBabelOptions(
+                    "plugin",
+                    macroOpts,
+                    useTypescriptPreset,
+                    useReactCompiler,
+                  ),
+                )
+              } catch (e: any) {
+                if (e && e.message) {
+                  e.message = e.message.replace(process.cwd(), "<cwd>")
+                }
+                throw e
+              }
+            }).toThrowErrorMatchingSnapshot()
+            return
+          }
+
           const actualPlugin = transformSync(
             testCase.code,
             getDefaultBabelOptions(

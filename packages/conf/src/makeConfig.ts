@@ -81,6 +81,14 @@ export const defaultConfig = {
 
 export const exampleConfig = {
   ...defaultConfig,
+  macro: {
+    ...defaultConfig.macro,
+    jsxPlaceholderAttribute: "_t",
+    jsxPlaceholderDefaults: multipleValidOptions(
+      {},
+      { a: "link", em: "em", strong: "b" },
+    ),
+  },
   format: multipleValidOptions({}, {}),
   extractors: multipleValidOptions([], ["babel"], [Object]),
   runtimeConfigModule: multipleValidOptions(

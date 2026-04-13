@@ -351,7 +351,7 @@ export type LinguiConfig = {
      * // lingui.config
      * {
      *   macro: {
-     *     jsxPackage: ["@lingui/myMacro"];
+     *     jsxPackage: ["@lingui/myMacro"]
      *   }
      * }
      *
@@ -364,6 +364,48 @@ export type LinguiConfig = {
      * @default ["@lingui/react/macro"]
      */
     jsxPackage?: string[]
+    /**
+     * The JSX attribute name used to assign explicit placeholder names to JSX elements inside `<Trans>`.
+     *
+     * When set, the macro will read this attribute from JSX elements to use as the placeholder name
+     * in the message string, and strip the attribute from the output.
+     *
+     * ```tsx
+     * // lingui.config
+     * {
+     *   macro: {
+     *     jsxPlaceholderAttribute: "_t" 
+     *   }
+     * }
+     *
+     * // source
+     * <Trans>Click <a _t="link" href="/">here</a></Trans>
+     *
+     * // extracted message: "Click <link>here</link>"
+     * ```
+     */
+    jsxPlaceholderAttribute?: string
+    /**
+     * A mapping of JSX element tag names to default placeholder names.
+     *
+     * When a JSX element inside `<Trans>` matches a key in this map and does not have an explicit
+     * placeholder attribute, the corresponding value is used as the placeholder name.
+     *
+     * ```tsx
+     * // lingui.config
+     * {
+     *   macro: {
+     *     jsxPlaceholderDefaults: { a: "link", em: "em" } 
+     *   }
+     * }
+     *
+     * // source
+     * <Trans>Click <a href="/">here</a> and <em>this</em></Trans>
+     *
+     * // extracted message: "Click <link>here</link> and <em>this</em>"
+     * ```
+     */
+    jsxPlaceholderDefaults?: Record<string, string>
   }
   experimental?: {
     extractor?: ExperimentalExtractorOptions
