@@ -88,8 +88,10 @@ function getTranslation(
     if (!fL.length) return null
 
     for (const fallbackLocale of fL) {
-      if (catalogs[fallbackLocale] && getCatalogTranslation(fallbackLocale)) {
-        return getCatalogTranslation(fallbackLocale)
+      const fallbackTranslation = getCatalogTranslation(fallbackLocale)
+
+      if (catalogs[fallbackLocale] && fallbackTranslation) {
+        return fallbackTranslation
       }
     }
   }
