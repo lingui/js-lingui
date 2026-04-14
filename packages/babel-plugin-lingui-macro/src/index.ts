@@ -1,48 +1,34 @@
-import type { PluginObj, Visitor, PluginPass } from "@babel/core"
+import type { PluginObj, PluginPass, Visitor } from "@babel/core"
 import type * as babelTypes from "@babel/types"
-import { Program, Identifier } from "@babel/types"
+import { Identifier, Program } from "@babel/types"
 import { MacroJSX } from "./macroJsx"
 import type { NodePath } from "@babel/traverse"
 import { MacroJs } from "./macroJs"
 import { JsMacroName } from "./constants"
 import {
-  type LinguiConfigNormalized,
   getConfig as loadConfig,
   LinguiConfig,
+  type LinguiConfigNormalized,
 } from "@lingui/conf"
+import { ResolvedDescriptorFields } from "./messageDescriptorUtils"
 
 let config: LinguiConfigNormalized
-
-/**
- * Controls which descriptor fields are preserved in the transformed code.
- *
- * - `"auto"` (default): In production (`NODE_ENV === "production"`), keeps only the `id`.
- *    Otherwise, behaves like `"all"`.
- * - `"all"`: Keeps every field: `id`, `message`, `context`, and `comment`.
- *    Used by Lingui CLI during extraction.
- * - `"id-only"`: Strips everything except the `id`. Most optimized for production.
- * - `"message"`: Keeps `id`, `message`, and `context` (but not `comment`).
- *    Use when you need runtime access to message and context.
- */
-export type DescriptorFields = "auto" | "all" | "id-only" | "message"
-
-/**
- * The resolved mode after evaluating `"auto"` against the current environment.
- */
-export type ResolvedDescriptorFields = "all" | "id-only" | "message"
 
 export type LinguiPluginOpts = {
   /**
    * Controls which descriptor fields are preserved in the transformed code.
    *
-   * - `"auto"` (default): In production, keeps only the `id`. Otherwise, keeps all fields.
-   * - `"all"`: Keeps `id`, `message`, `context`, and `comment`. Used by CLI during extraction.
-   * - `"id-only"`: Strips everything except `id`. Most optimized for production.
+   * - `"auto"` (default): In production (`NODE_ENV === "production"`), keeps only the `id`.
+   *    Otherwise, behaves like `"all"`.
+   * - `"all"`: Keeps every field: `id`, `message`, `context`, and `comment`.
+   *    Used by Lingui CLI during extraction.
+   * - `"id-only"`: Strips everything except the `id`. Most optimized for production.
    * - `"message"`: Keeps `id`, `message`, and `context` (but not `comment`).
+   *    Use when you need runtime access to message and context.
    *
    * @default "auto"
    */
-  descriptorFields?: DescriptorFields
+  descriptorFields?: "auto" | "all" | "id-only" | "message"
 
   /**
    * Resolved and normalized Lingui Configuration

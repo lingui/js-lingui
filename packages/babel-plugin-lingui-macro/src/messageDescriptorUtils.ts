@@ -1,14 +1,13 @@
-import { ICUMessageFormat, Tokens, ParsedResult } from "./icu"
+import { ICUMessageFormat, ParsedResult, Tokens } from "./icu"
+import * as types from "@babel/types"
 import {
-  SourceLocation,
-  ObjectProperty,
-  ObjectExpression,
   Expression,
+  ObjectExpression,
+  ObjectProperty,
+  SourceLocation,
 } from "@babel/types"
 import { EXTRACT_MARK, MsgDescriptorPropKey } from "./constants"
-import * as types from "@babel/types"
 import { generateMessageId } from "@lingui/message-utils/generateMessageId"
-import type { ResolvedDescriptorFields } from "./index"
 
 function buildICUFromTokens(tokens: Tokens) {
   const messageFormat = new ICUMessageFormat()
@@ -25,6 +24,13 @@ function isObjectProperty(
 ): node is ObjectProperty {
   return "type" in node
 }
+
+/**
+ * The resolved mode after evaluating `"auto"` against the current environment.
+ *
+ * @see LinguiPluginOpts.descriptorFields
+ */
+export type ResolvedDescriptorFields = "all" | "id-only" | "message"
 
 export function createMessageDescriptorFromTokens(
   tokens: Tokens,

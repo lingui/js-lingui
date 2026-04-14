@@ -151,7 +151,7 @@ You want to keep original messages, context, and use runtime compilation, even i
 
 ```ts
 // Macro config
-descriptorFields: "message"
+descriptorFields: "message";
 
 // Runtime setup
 i18n.setMessagesCompiler(compileMessage);
@@ -167,7 +167,7 @@ You want everything to be stripped in both environments. Useful for catching iss
 
 ```ts
 // Macro config
-descriptorFields: "id-only"
+descriptorFields: "id-only";
 
 // Runtime setup
 i18n.setMessagesCompiler(null);

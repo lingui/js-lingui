@@ -13,7 +13,10 @@ import type { NodePath } from "@babel/traverse"
 
 import { Tokens } from "./icu"
 import { JsMacroName } from "./constants"
-import { createMessageDescriptorFromTokens } from "./messageDescriptorUtils"
+import {
+  createMessageDescriptorFromTokens,
+  ResolvedDescriptorFields,
+} from "./messageDescriptorUtils"
 import {
   isLinguiIdentifier,
   isDefineMessage,
@@ -23,7 +26,6 @@ import {
   createMacroJsContext,
   MacroJsContext,
 } from "./macroJsAst"
-import type { ResolvedDescriptorFields } from "./index"
 
 export type MacroJsOpts = {
   i18nImportName: string

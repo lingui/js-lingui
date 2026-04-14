@@ -20,7 +20,10 @@ import { ArgToken, ElementToken, TextToken, Token } from "./icu"
 import { makeCounter } from "./utils"
 import { JsxMacroName, MsgDescriptorPropKey, JsMacroName } from "./constants"
 import cleanJSXElementLiteralChild from "./utils/cleanJSXElementLiteralChild"
-import { createMessageDescriptorFromTokens } from "./messageDescriptorUtils"
+import {
+  createMessageDescriptorFromTokens,
+  ResolvedDescriptorFields,
+} from "./messageDescriptorUtils"
 import {
   createMacroJsContext,
   MacroJsContext,
@@ -28,7 +31,6 @@ import {
 } from "./macroJsAst"
 import { LinguiConfigNormalized } from "@lingui/conf"
 import { PluginPass } from "@babel/core"
-import type { ResolvedDescriptorFields } from "./index"
 
 const pluralRuleRe = /(_[\d\w]+|zero|one|two|few|many|other)/
 const jsx2icuExactChoice = (value: string) =>

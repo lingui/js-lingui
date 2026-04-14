@@ -11,9 +11,11 @@ import {
 } from "@babel/types"
 import { JsMacroName, MsgDescriptorPropKey } from "./constants"
 import { ArgToken, TextToken, Token } from "./icu"
-import { createMessageDescriptorFromTokens } from "./messageDescriptorUtils"
+import {
+  createMessageDescriptorFromTokens,
+  ResolvedDescriptorFields,
+} from "./messageDescriptorUtils"
 import { makeCounter } from "./utils"
-import type { ResolvedDescriptorFields } from "./index"
 
 export type MacroJsContext = {
   // Positional expressions counter (e.g. for placeholders `Hello {0}, today is {1}`)
