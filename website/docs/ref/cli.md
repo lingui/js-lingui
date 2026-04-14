@@ -209,9 +209,9 @@ Overwrite source locale translations from source.
 
 #### `--strict` {#compile-strict}
 
-Fail if the target locale catalog has missing translations before `fallbackLocales` are applied.
+Fail if the target locale catalog has missing translations before `fallbackLocales` are applied, or if message compilation produces errors.
 
-This check only affects whether compilation fails. The compiled output still uses fallback resolution when strict mode is not enabled.
+This flag only affects validation and whether compilation succeeds. The compiled output uses the normal fallback resolution behavior regardless of strict mode, although catalogs for locales that fail strict validation may not be emitted.
 
 #### `--format <format>` {#compile-format}
 

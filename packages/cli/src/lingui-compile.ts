@@ -121,7 +121,7 @@ if (import.meta.main) {
     .option("--config <path>", "Path to the config file")
     .option(
       "--strict",
-      "Fail if the target catalog has missing translations before fallback resolution",
+      "Fail if the target catalog has missing translations before applying fallbackLocales, or if compilation errors occur",
     )
     .option("--verbose", "Verbose output")
     .option("--typescript", "Create Typescript definition for compiled bundle")
@@ -149,9 +149,9 @@ if (import.meta.main) {
       )
       console.log(`    $ ${helpRun("compile")}`)
       console.log("")
-      console.log("    # Compile translations but fail when there are missing")
-      console.log("    # translations (don't replace missing translations with")
-      console.log("    # default messages or message IDs)")
+      console.log("    # Compile translations but fail when they are missing")
+      console.log("    # before fallbackLocales are applied or if compilation")
+      console.log("    # errors occur")
       console.log(`    $ ${helpRun("compile --strict")}`)
     })
     .parse(process.argv)
