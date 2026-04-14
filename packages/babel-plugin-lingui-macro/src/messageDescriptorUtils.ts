@@ -8,6 +8,7 @@ import {
 import { EXTRACT_MARK, MsgDescriptorPropKey } from "./constants"
 import * as types from "@babel/types"
 import { generateMessageId } from "@lingui/message-utils/generateMessageId"
+import type { ResolvedDescriptorFields } from "./index"
 
 function buildICUFromTokens(tokens: Tokens) {
   const messageFormat = new ICUMessageFormat()
@@ -28,8 +29,7 @@ function isObjectProperty(
 export function createMessageDescriptorFromTokens(
   tokens: Tokens,
   oldLoc: SourceLocation,
-  stripNonEssentialProps: boolean,
-  stripMessageProp: boolean,
+  descriptorFields: ResolvedDescriptorFields,
   defaults: {
     id?: TextWithLoc | ObjectProperty
     context?: TextWithLoc | ObjectProperty
@@ -39,8 +39,7 @@ export function createMessageDescriptorFromTokens(
   return createMessageDescriptor(
     buildICUFromTokens(tokens),
     oldLoc,
-    stripNonEssentialProps,
-    stripMessageProp,
+    descriptorFields,
     defaults,
   )
 }
@@ -48,8 +47,7 @@ export function createMessageDescriptorFromTokens(
 export function createMessageDescriptor(
   result: Partial<ParsedResult>,
   oldLoc: SourceLocation,
-  stripNonEssentialProps: boolean,
-  stripMessageProp: boolean,
+  descriptorFields: ResolvedDescriptorFields,
   defaults: {
     id?: TextWithLoc | ObjectProperty
     context?: TextWithLoc | ObjectProperty
@@ -57,6 +55,14 @@ export function createMessageDescriptor(
   } = {},
 ) {
   const { message, values, elements } = result
+
+  // Field inclusion rules based on descriptorFields mode:
+  //   "all"     → id, message, context, comment
+  //   "message" → id, message, context
+  //   "id-only" → id
+  const keepMessage = descriptorFields !== "id-only"
+  const keepContext = descriptorFields !== "id-only"
+  const keepComment = descriptorFields === "all"
 
   const properties: ObjectProperty[] = []
 
@@ -79,38 +85,34 @@ export function createMessageDescriptor(
         ),
   )
 
-  if (!stripMessageProp) {
-    if (message) {
-      properties.push(
-        createStringObjectProperty(MsgDescriptorPropKey.message, message),
-      )
-    }
+  if (keepMessage && message) {
+    properties.push(
+      createStringObjectProperty(MsgDescriptorPropKey.message, message),
+    )
   }
 
-  if (!stripNonEssentialProps) {
-    if (defaults.comment) {
-      properties.push(
-        isObjectProperty(defaults.comment)
-          ? defaults.comment
-          : createStringObjectProperty(
-              MsgDescriptorPropKey.comment,
-              defaults.comment.text,
-              defaults.comment.loc,
-            ),
-      )
-    }
+  if (keepComment && defaults.comment) {
+    properties.push(
+      isObjectProperty(defaults.comment)
+        ? defaults.comment
+        : createStringObjectProperty(
+            MsgDescriptorPropKey.comment,
+            defaults.comment.text,
+            defaults.comment.loc,
+          ),
+    )
+  }
 
-    if (defaults.context) {
-      properties.push(
-        isObjectProperty(defaults.context)
-          ? defaults.context
-          : createStringObjectProperty(
-              MsgDescriptorPropKey.context,
-              defaults.context.text,
-              defaults.context.loc,
-            ),
-      )
-    }
+  if (keepContext && defaults.context) {
+    properties.push(
+      isObjectProperty(defaults.context)
+        ? defaults.context
+        : createStringObjectProperty(
+            MsgDescriptorPropKey.context,
+            defaults.context.text,
+            defaults.context.loc,
+          ),
+    )
   }
 
   if (values) {

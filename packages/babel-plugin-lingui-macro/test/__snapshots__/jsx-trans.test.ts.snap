@@ -539,7 +539,7 @@ import { Trans as _Trans } from "@lingui/react";
 
 `;
 
-exports[`Production - all props kept if extract: true 1`] = `
+exports[`Production - all props kept with descriptorFields: all 1`] = `
 import { Trans } from "@lingui/react/macro";
 <Trans id="msg.hello" comment="Hello World">
   Hello World
@@ -582,7 +582,7 @@ import { Trans as _Trans } from "@lingui/react";
 
 `;
 
-exports[`Production - message prop is kept if stripMessageField: false 1`] = `
+exports[`Production - message and context kept with descriptorFields: message 1`] = `
 import { Trans } from "@lingui/react/macro";
 <Trans id="msg.hello" comment="Hello World">
   Hello World
@@ -984,6 +984,24 @@ import { Trans as _Trans } from "@lingui/react";
 
 `;
 
+exports[`descriptorFields: id-only - message prop is removed 1`] = `
+import { Trans } from "@lingui/react/macro";
+<Trans id="msg.hello">Hello World</Trans>;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { Trans as _Trans } from "@lingui/react";
+<_Trans
+  {
+    /*i18n*/
+    ...{
+      id: "msg.hello",
+    }
+  }
+/>;
+
+`;
+
 exports[`should detects macro imported from config.macro.jsxPackage 1`] = `
 import { Trans } from "@my-lingui/macro";
 <Trans>Hello World</Trans>;
@@ -1016,24 +1034,6 @@ import { myTrans as _Trans } from "@my/lingui";
     ...{
       id: "mY42CM",
       message: "Hello World",
-    }
-  }
-/>;
-
-`;
-
-exports[`stripMessageField option - message prop is removed if stripMessageField: true 1`] = `
-import { Trans } from "@lingui/react/macro";
-<Trans id="msg.hello">Hello World</Trans>;
-
-↓ ↓ ↓ ↓ ↓ ↓
-
-import { Trans as _Trans } from "@lingui/react";
-<_Trans
-  {
-    /*i18n*/
-    ...{
-      id: "msg.hello",
     }
   }
 />;

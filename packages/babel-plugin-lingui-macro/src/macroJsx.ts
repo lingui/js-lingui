@@ -28,6 +28,7 @@ import {
 } from "./macroJsAst"
 import { LinguiConfigNormalized } from "@lingui/conf"
 import { PluginPass } from "@babel/core"
+import type { ResolvedDescriptorFields } from "./index"
 
 const pluralRuleRe = /(_[\d\w]+|zero|one|two|few|many|other)/
 const jsx2icuExactChoice = (value: string) =>
@@ -52,8 +53,7 @@ export type MacroJsxContext = MacroJsContext & {
 }
 
 export type MacroJsxOpts = {
-  stripNonEssentialProps: boolean
-  stripMessageProp: boolean
+  descriptorFields: ResolvedDescriptorFields
   transImportName: string
   isLinguiIdentifier: (node: Identifier, macro: JsMacroName) => boolean
 }
@@ -79,11 +79,7 @@ export class MacroJSX {
     this.types = types
 
     this.ctx = {
-      ...createMacroJsContext(
-        opts.isLinguiIdentifier,
-        opts.stripNonEssentialProps,
-        opts.stripMessageProp,
-      ),
+      ...createMacroJsContext(opts.isLinguiIdentifier, opts.descriptorFields),
       transImportName: opts.transImportName,
       elementIndex: makeCounter(),
     }
@@ -111,8 +107,7 @@ export class MacroJSX {
     const messageDescriptor = createMessageDescriptorFromTokens(
       tokens,
       path.node.loc,
-      this.ctx.stripNonEssentialProps,
-      this.ctx.stripMessageProp,
+      this.ctx.descriptorFields,
       {
         id,
         context,

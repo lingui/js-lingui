@@ -13,21 +13,36 @@ import {
 
 let config: LinguiConfigNormalized
 
+/**
+ * Controls which descriptor fields are preserved in the transformed code.
+ *
+ * - `"auto"` (default): In production (`NODE_ENV === "production"`), keeps only the `id`.
+ *    Otherwise, behaves like `"all"`.
+ * - `"all"`: Keeps every field: `id`, `message`, `context`, and `comment`.
+ *    Used by Lingui CLI during extraction.
+ * - `"id-only"`: Strips everything except the `id`. Most optimized for production.
+ * - `"message"`: Keeps `id`, `message`, and `context` (but not `comment`).
+ *    Use when you need runtime access to message and context.
+ */
+export type DescriptorFields = "auto" | "all" | "id-only" | "message"
+
+/**
+ * The resolved mode after evaluating `"auto"` against the current environment.
+ */
+export type ResolvedDescriptorFields = "all" | "id-only" | "message"
+
 export type LinguiPluginOpts = {
-  /*
-   * When set `true` all auxiliary data such as `comment`, `context`,
-   * and default message would be kept regardless of the current environment
-   *
-   * This flag explicitly set by Lingui CLI when running extraction process
-   */
-  extract?: boolean
   /**
-   * Setting `stripMessageField` to `true` will strip messages and comments from both development and production bundles.
-   * Alternatively, set it to `false` to keep the original messages in both environments.
+   * Controls which descriptor fields are preserved in the transformed code.
    *
-   * If not set value would be determined based on `process.env.NODE_ENV === "production"`
+   * - `"auto"` (default): In production, keeps only the `id`. Otherwise, keeps all fields.
+   * - `"all"`: Keeps `id`, `message`, `context`, and `comment`. Used by CLI during extraction.
+   * - `"id-only"`: Strips everything except `id`. Most optimized for production.
+   * - `"message"`: Keeps `id`, `message`, and `context` (but not `comment`).
+   *
+   * @default "auto"
    */
-  stripMessageField?: boolean
+  descriptorFields?: DescriptorFields
 
   /**
    * Resolved and normalized Lingui Configuration
@@ -58,13 +73,15 @@ function reportUnsupportedSyntax(path: NodePath, e: Error) {
   throw codeFrameError
 }
 
-function shouldStripMessageProp(opts: LinguiPluginOpts) {
-  if (typeof opts.stripMessageField === "boolean") {
-    // if explicitly set in options, use it
-    return opts.stripMessageField
+function resolveDescriptorFields(
+  opts: LinguiPluginOpts,
+): ResolvedDescriptorFields {
+  const mode = opts.descriptorFields ?? "auto"
+  if (mode !== "auto") {
+    return mode
   }
-  // default to strip message in production if no explicit option is set and not during extract
-  return process.env.NODE_ENV === "production" && !opts.extract
+  // "auto": production → "id-only", otherwise → "all"
+  return process.env.NODE_ENV === "production" ? "id-only" : "all"
 }
 
 type LinguiSymbol = "Trans" | "useLingui" | "i18n"
@@ -236,10 +253,7 @@ export default function ({
                   { types: t },
                   {
                     transImportName: getSymbolIdentifier(state, "Trans").name,
-                    stripNonEssentialProps:
-                      process.env.NODE_ENV == "production" &&
-                      !(state.opts as LinguiPluginOpts).extract,
-                    stripMessageProp: shouldStripMessageProp(
+                    descriptorFields: resolveDescriptorFields(
                       state.opts as LinguiPluginOpts,
                     ),
                     isLinguiIdentifier: (node: Identifier, macro) =>
@@ -269,10 +283,7 @@ export default function ({
                 state: PluginPass,
               ) {
                 const macro = new MacroJs({
-                  stripNonEssentialProps:
-                    process.env.NODE_ENV == "production" &&
-                    !(state.opts as LinguiPluginOpts).extract,
-                  stripMessageProp: shouldStripMessageProp(
+                  descriptorFields: resolveDescriptorFields(
                     state.opts as LinguiPluginOpts,
                   ),
                   i18nImportName: getSymbolIdentifier(state, "i18n").name,
