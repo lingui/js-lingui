@@ -218,7 +218,7 @@ const serialize = (
 
     if (options.origins !== false) {
       if (message.origin && options.lineNumbers === false) {
-        item.references = message.origin.map(([path]) => path)
+        item.references = [...new Set(message.origin.map(([path]) => path))]
       } else {
         item.references = message.origin ? message.origin.map(joinOrigin) : []
       }

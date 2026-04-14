@@ -354,8 +354,10 @@ function mergeDuplicatePluralEntries(
         ctxPrefix,
       )
 
-      // Merge references
-      mergedItem.references = duplicateItems.flatMap((item) => item.references)
+      // Merge references, preserving only unique file paths.
+      mergedItem.references = [
+        ...new Set(duplicateItems.flatMap((item) => item.references)),
+      ]
 
       mergedItems.push(mergedItem)
     }
