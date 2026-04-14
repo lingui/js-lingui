@@ -11,6 +11,10 @@ import {
   type LinguiConfigNormalized,
 } from "@lingui/conf"
 import { ResolvedDescriptorFields } from "./messageDescriptorUtils"
+import {
+  collectLinguiDirectives,
+  findDirectiveForLine,
+} from "./linguiDirective"
 
 let config: LinguiConfigNormalized
 
@@ -262,6 +266,12 @@ export default function ({
             useLingui: path.scope.generateUidIdentifier("useLingui"),
           } satisfies Record<LinguiSymbol, babelTypes.Identifier>)
 
+          const directives = collectLinguiDirectives(
+            (state.file.ast as babelTypes.File).comments,
+          )
+          const getDirective = (line: number) =>
+            findDirectiveForLine(directives, line)
+
           path.traverse(
             {
               JSXElement(path, state) {
@@ -278,6 +288,7 @@ export default function ({
                     ),
                     isLinguiIdentifier: (node: Identifier, macro) =>
                       isLinguiIdentifier(path, node, macro),
+                    getDirective,
                     jsxPlaceholderAttribute:
                       linguiConfig.macro?.jsxPlaceholderAttribute,
                     jsxPlaceholderDefaults:
@@ -313,9 +324,9 @@ export default function ({
                   i18nImportName: getSymbolIdentifier(state, "i18n").name,
                   useLinguiImportName: getSymbolIdentifier(state, "useLingui")
                     .name,
-
                   isLinguiIdentifier: (node: Identifier, macro) =>
                     isLinguiIdentifier(path, node, macro),
+                  getDirective,
                 })
                 let newNode: false | babelTypes.Node
 

@@ -8,13 +8,14 @@ import {
 } from "@babel/types"
 import { EXTRACT_MARK, MsgDescriptorPropKey } from "./constants"
 import { generateMessageId } from "@lingui/message-utils/generateMessageId"
+import type { DirectiveValues } from "./linguiDirective"
 
 function buildICUFromTokens(tokens: Tokens) {
   const messageFormat = new ICUMessageFormat()
   return messageFormat.fromTokens(tokens)
 }
 
-type TextWithLoc = {
+export type TextWithLoc = {
   text: string
   loc?: SourceLocation
 }
@@ -36,10 +37,8 @@ export function createMessageDescriptorFromTokens(
   tokens: Tokens,
   oldLoc: SourceLocation,
   descriptorFields: ResolvedDescriptorFields,
-  defaults: {
+  defaults: DirectiveValues & {
     id?: TextWithLoc | ObjectProperty
-    context?: TextWithLoc | ObjectProperty
-    comment?: TextWithLoc | ObjectProperty
   } = {},
 ) {
   return createMessageDescriptor(
@@ -54,10 +53,8 @@ export function createMessageDescriptor(
   result: Partial<ParsedResult>,
   oldLoc: SourceLocation,
   descriptorFields: ResolvedDescriptorFields,
-  defaults: {
+  defaults: DirectiveValues & {
     id?: TextWithLoc | ObjectProperty
-    context?: TextWithLoc | ObjectProperty
-    comment?: TextWithLoc | ObjectProperty
   } = {},
 ) {
   const { message, values, elements } = result
@@ -75,10 +72,17 @@ export function createMessageDescriptor(
   properties.push(
     defaults.id
       ? isObjectProperty(defaults.id)
-        ? defaults.id
+        ? defaults.idPrefix
+          ? createStringObjectProperty(
+              MsgDescriptorPropKey.id,
+              defaults.idPrefix +
+                getTextFromExpression(defaults.id.value as Expression),
+              defaults.id.loc,
+            )
+          : defaults.id
         : createStringObjectProperty(
             MsgDescriptorPropKey.id,
-            defaults.id.text,
+            (defaults.idPrefix ?? "") + defaults.id.text,
             defaults.id.loc,
           )
       : createIdProperty(

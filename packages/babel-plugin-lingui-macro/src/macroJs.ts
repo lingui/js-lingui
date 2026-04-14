@@ -33,6 +33,7 @@ export type MacroJsOpts = {
 
   descriptorFields: ResolvedDescriptorFields
   isLinguiIdentifier: (node: Identifier, macro: JsMacroName) => boolean
+  getDirective?: MacroJsContext["getDirective"]
 }
 
 export class MacroJs {
@@ -52,6 +53,7 @@ export class MacroJs {
     this._ctx = createMacroJsContext(
       opts.isLinguiIdentifier,
       opts.descriptorFields,
+      opts.getDirective,
     )
   }
 
@@ -65,6 +67,7 @@ export class MacroJs {
         tokens,
         path.node.loc,
         this._ctx.descriptorFields,
+        this._ctx.getDirective ? this._ctx.getDirective(path.node.loc?.start.line) : undefined,
       ),
       linguiInstance,
     )
@@ -95,6 +98,7 @@ export class MacroJs {
         tokens,
         path.node.loc,
         ctx.descriptorFields,
+        ctx.getDirective ? ctx.getDirective(path.node.loc?.start.line) : undefined,
       )
     }
 
@@ -260,6 +264,7 @@ export class MacroJs {
         const _ctx = createMacroJsContext(
           ctx.isLinguiIdentifier,
           ctx.descriptorFields,
+          ctx.getDirective,
         )
 
         // { t } = useLingui()
@@ -271,6 +276,7 @@ export class MacroJs {
             tokens,
             currentPath.node.loc,
             _ctx.descriptorFields,
+            _ctx.getDirective ? _ctx.getDirective(currentPath.node.loc?.start.line) : undefined,
           )
 
           const callExpr = t.callExpression(

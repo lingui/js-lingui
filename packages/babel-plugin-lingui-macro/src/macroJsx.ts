@@ -61,6 +61,7 @@ export type MacroJsxOpts = {
   descriptorFields: ResolvedDescriptorFields
   transImportName: string
   isLinguiIdentifier: (node: Identifier, macro: JsMacroName) => boolean
+  getDirective?: MacroJsContext["getDirective"]
   jsxPlaceholderAttribute?: string
   jsxPlaceholderDefaults?: Record<string, string>
 }
@@ -86,7 +87,11 @@ export class MacroJSX {
     this.types = types
 
     this.ctx = {
-      ...createMacroJsContext(opts.isLinguiIdentifier, opts.descriptorFields),
+      ...createMacroJsContext(
+        opts.isLinguiIdentifier,
+        opts.descriptorFields,
+        opts.getDirective,
+      ),
       transImportName: opts.transImportName,
       elementIndex: makeCounter(),
       elementsTracking: new Map(),
@@ -106,22 +111,25 @@ export class MacroJSX {
       return false
     }
 
-    const { attributes, id, comment, context } = this.stripMacroAttributes(
-      path as NodePath<JSXElement>,
-    )
-
     if (!tokens.length) {
       throw new Error("Incorrect usage of Trans")
     }
+
+    const directive = this.ctx.getDirective(path.node.loc?.start.line)
+
+    const { attributes, id, comment, context } = this.stripMacroAttributes(
+      path as NodePath<JSXElement>,
+    )
 
     const messageDescriptor = createMessageDescriptorFromTokens(
       tokens,
       path.node.loc,
       this.ctx.descriptorFields,
       {
+        ...directive,
         id,
-        context,
-        comment,
+        context: context ?? directive?.context,
+        comment: comment ?? directive?.comment,
       },
     )
 
