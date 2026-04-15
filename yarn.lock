@@ -2302,6 +2302,9 @@ __metadata:
     webpack: ^5.76.1
   peerDependencies:
     webpack: ^5.0.0
+  peerDependenciesMeta:
+    webpack:
+      optional: true
   languageName: unknown
   linkType: soft
 

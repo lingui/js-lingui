@@ -1,21 +1,43 @@
-import React from 'react';
-import { useLingui } from '@lingui/react';
-import Locale from './locales';
+import { useState } from "react";
+import { useLingui } from "@lingui/react";
+
+import { dynamicActivate } from "./i18n";
+import Locale from "./locales";
 
 function LocaleSwitcher() {
-    const { i18n } = useLingui();
+  const { i18n } = useLingui();
+  const [isLoading, setIsLoading] = useState(false);
 
-    const handleLocaleChange = (newLocale: Locale) => {
-        i18n.activate(newLocale);
-    };
+  const handleLocaleChange = async (newLocale: Locale) => {
+    if (isLoading || newLocale === i18n.locale) {
+      return;
+    }
 
-    return (
-        <div>
-            <button onClick={() => handleLocaleChange(Locale.ENGLISH)}>English</button>
-            <button onClick={() => handleLocaleChange(Locale.FRENCH)}>Français</button>
-            {/* Add more buttons for other supported locales */}
-        </div>
-    );
+    setIsLoading(true);
+
+    try {
+      await dynamicActivate(i18n, newLocale);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <div>
+      <button
+        disabled={isLoading || i18n.locale === Locale.ENGLISH}
+        onClick={() => void handleLocaleChange(Locale.ENGLISH)}
+      >
+        English
+      </button>
+      <button
+        disabled={isLoading || i18n.locale === Locale.FRENCH}
+        onClick={() => void handleLocaleChange(Locale.FRENCH)}
+      >
+        Français
+      </button>
+    </div>
+  );
 }
 
 export default LocaleSwitcher;

@@ -18,6 +18,17 @@ module.exports = {
         type: "asset",
       },
       {
+        test: /\.po$/,
+        use: [
+          {
+            loader: "@lingui/loader",
+            options: {
+              failOnCompileError: true,
+            },
+          },
+        ],
+      },
+      {
         test: /\.(jsx?|tsx?)$/,
         exclude: /node_modules/,
         use: [
