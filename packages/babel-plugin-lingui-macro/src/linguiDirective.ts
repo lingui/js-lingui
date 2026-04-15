@@ -2,9 +2,9 @@ import type { Comment, ObjectProperty } from "@babel/types"
 import type { TextWithLoc } from "./messageDescriptorUtils"
 
 export type DirectiveValues = {
-  context?: TextWithLoc | ObjectProperty
-  comment?: TextWithLoc | ObjectProperty
-  idPrefix?: string
+  context?: TextWithLoc | ObjectProperty | null
+  comment?: TextWithLoc | ObjectProperty | null
+  idPrefix?: string | null
 }
 
 type SortedDirective = {
@@ -14,12 +14,13 @@ type SortedDirective = {
 }
 
 const DIRECTIVE_PREFIX = "@lingui"
-const DIRECTIVE_PARAM_RE = /(\w+)(?:="([^"]*)")?/g
-const VALID_KEYS = new Set<keyof DirectiveValues>([
+const VALID_PARAMS = new Set<keyof DirectiveValues>([
   "context",
   "comment",
   "idPrefix",
 ])
+
+const VALID_TOKEN_RE = /\s+|(\w+)(?:="([^"]*)")?/g
 
 export function parseLinguiDirective(
   commentValue: string,
@@ -32,32 +33,70 @@ export function parseLinguiDirective(
 
   const rest = trimmed.slice(DIRECTIVE_PREFIX.length)
 
+  // Verify the entire rest string is consumed by valid tokens
+  let consumed = 0
   const values: DirectiveValues = {}
-  let hasMatch = false
+  let hasParams = false
   let reset = false
   let match: RegExpExecArray | null
 
-  DIRECTIVE_PARAM_RE.lastIndex = 0
+  VALID_TOKEN_RE.lastIndex = 0
 
-  while ((match = DIRECTIVE_PARAM_RE.exec(rest)) !== null) {
+  while ((match = VALID_TOKEN_RE.exec(rest)) !== null) {
+    if (match.index !== consumed) {
+      throw new Error(
+        `@lingui directive has invalid syntax: ${trimmed}`
+      )
+    }
+    consumed = match.index + match[0].length
+
     const key = match[1] as keyof DirectiveValues | "reset"
+    if (!key) continue // whitespace-only match
+
     const value = match[2]
 
     if (key === "reset") {
-      hasMatch = true
+      if (value !== undefined) {
+        throw new Error(
+          `@lingui directive: "reset" is a keyword and does not accept a value`
+        )
+      }
+      hasParams = true
       reset = true
-    } else if (VALID_KEYS.has(key) && value !== undefined) {
-      hasMatch = true
-      if (value === "") continue
-      if (key === "idPrefix") {
+    } else if (VALID_PARAMS.has(key)) {
+      if (value === undefined) {
+        throw new Error(
+          `@lingui directive: "${key}" requires a value, e.g. ${key}="..."`
+        )
+      }
+      hasParams = true
+      if (value === "") {
+        values[key] = null
+      } else if (key === "idPrefix") {
         values[key] = value
       } else {
         values[key] = { text: value }
       }
+    } else {
+      throw new Error(
+        `@lingui directive has unknown param "${key}". Valid params: ${[...VALID_PARAMS].join(", ")}, reset`
+      )
     }
   }
 
-  return hasMatch ? { reset, values } : null
+  if (consumed !== rest.length) {
+    throw new Error(
+      `@lingui directive has invalid syntax: ${trimmed}`
+    )
+  }
+
+  if (!hasParams) {
+    throw new Error(
+      `@lingui directive requires at least one param. Valid params: ${[...VALID_PARAMS].join(", ")}, reset`
+    )
+  }
+
+  return { reset, values }
 }
 
 export function collectLinguiDirectives(
@@ -79,12 +118,17 @@ export function collectLinguiDirectives(
 
   // Each directive carries the accumulated values of all prior
   // directives, starting from the most recent `reset`.
+  // A `null` value means "unset this key" (from empty-string param).
   let accumulated: DirectiveValues = {}
   for (const d of directives) {
     if (d.reset) {
       d.values = { ...d.values }
     } else {
       d.values = { ...accumulated, ...d.values }
+    }
+    // Strip null entries (empty-string params used to unset keys)
+    for (const k of Object.keys(d.values) as (keyof DirectiveValues)[]) {
+      if (d.values[k] === null) delete d.values[k]
     }
     accumulated = d.values
   }

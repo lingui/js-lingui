@@ -127,7 +127,7 @@ const msg2 = _i18n._(
 
 `;
 
-exports[`@lingui directive: JS macros > empty string clears single key but inherits others 1`] = `
+exports[`@lingui directive: JS macros > empty param value clears single param while leaving others intact 1`] = `
 import { t } from "@lingui/core/macro";
 /* @lingui context="first" comment="second" */
 const msg1 = t\`Hello\`;
@@ -150,10 +150,9 @@ const msg1 = _i18n._(
 const msg2 = _i18n._(
   /*i18n*/
   {
-    id: "HGBvBG",
+    id: "v-jdqd",
     message: "World",
     comment: "second",
-    context: "first",
   },
 );
 

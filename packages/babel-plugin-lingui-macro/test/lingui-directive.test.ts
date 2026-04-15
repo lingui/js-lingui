@@ -49,9 +49,44 @@ describe("parseLinguiDirective", () => {
     expect(parseLinguiDirective(" i18n ")).toBeNull()
   })
 
-  it("should return null for @lingui with no valid params", () => {
-    expect(parseLinguiDirective(" @lingui ")).toBeNull()
-    expect(parseLinguiDirective(' @lingui unknown="value" ')).toBeNull()
+  it("should throw for @lingui with no params", () => {
+    expect(() => parseLinguiDirective(" @lingui ")).toThrow(
+      "requires at least one param"
+    )
+  })
+
+  it("should throw for unknown params", () => {
+    expect(() =>
+      parseLinguiDirective(' @lingui unknown="value" ')
+    ).toThrow('unknown param "unknown"')
+
+    expect(() =>
+      parseLinguiDirective(' @lingui context="ctx" foo="bar" ')
+    ).toThrow('unknown param "foo"')
+  })
+
+  it("should throw for valid key without a value", () => {
+    expect(() => parseLinguiDirective(" @lingui context ")).toThrow(
+      '"context" requires a value'
+    )
+    expect(() => parseLinguiDirective(" @lingui comment ")).toThrow(
+      '"comment" requires a value'
+    )
+  })
+
+  it("should throw for reset with a value", () => {
+    expect(() =>
+      parseLinguiDirective(' @lingui reset="yes" ')
+    ).toThrow('"reset" is a keyword and does not accept a value')
+  })
+
+  it("should throw for invalid syntax", () => {
+    expect(() =>
+      parseLinguiDirective(" @lingui context='single' ")
+    ).toThrow("requires a value")
+    expect(() =>
+      parseLinguiDirective(" @lingui context=single ")
+    ).toThrow("requires a value")
   })
 
   it("should handle values with spaces", () => {
@@ -65,14 +100,17 @@ describe("parseLinguiDirective", () => {
     })
   })
 
-  it("should omit empty string values", () => {
+  it("should set empty string values to null (unset sentinel)", () => {
     expect(parseLinguiDirective(' @lingui context="" ')).toEqual({
       reset: false,
-      values: {},
+      values: { context: null },
     })
     expect(
       parseLinguiDirective(' @lingui context="" comment="note" '),
-    ).toEqual({ reset: false, values: { comment: { text: "note" } } })
+    ).toEqual({
+      reset: false,
+      values: { context: null, comment: { text: "note" } },
+    })
   })
 
   it("should parse reset keyword", () => {
@@ -326,7 +364,7 @@ describe("@lingui directive: JS macros", () => {
         `,
       },
       {
-        name: "empty string clears single key but inherits others",
+        name: "empty param value clears single param while leaving others intact",
         code: `
           import { t } from '@lingui/core/macro';
           /* @lingui context="first" comment="second" */
