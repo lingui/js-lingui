@@ -95,6 +95,70 @@ const msg2 = _i18n._(
 
 `;
 
+exports[`@lingui directive: JS macros > directives merge with preceding ones 1`] = `
+import { t } from "@lingui/core/macro";
+/* @lingui context="ctx" comment="cmt" */
+const msg1 = t\`Hello\`;
+/* @lingui context="new ctx" */
+const msg2 = t\`World\`;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+/* @lingui context="ctx" comment="cmt" */ import { i18n as _i18n } from "@lingui/core";
+const msg1 = _i18n._(
+  /*i18n*/
+  {
+    id: "3ZSjnQ",
+    message: "Hello",
+    comment: "cmt",
+    context: "ctx",
+  },
+);
+/* @lingui context="new ctx" */
+const msg2 = _i18n._(
+  /*i18n*/
+  {
+    id: "Wrs89z",
+    message: "World",
+    comment: "cmt",
+    context: "new ctx",
+  },
+);
+
+`;
+
+exports[`@lingui directive: JS macros > empty string clears single key but inherits others 1`] = `
+import { t } from "@lingui/core/macro";
+/* @lingui context="first" comment="second" */
+const msg1 = t\`Hello\`;
+/* @lingui context="" */
+const msg2 = t\`World\`;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+/* @lingui context="first" comment="second" */ import { i18n as _i18n } from "@lingui/core";
+const msg1 = _i18n._(
+  /*i18n*/
+  {
+    id: "VUeJYD",
+    message: "Hello",
+    comment: "second",
+    context: "first",
+  },
+);
+/* @lingui context="" */
+const msg2 = _i18n._(
+  /*i18n*/
+  {
+    id: "HGBvBG",
+    message: "World",
+    comment: "second",
+    context: "first",
+  },
+);
+
+`;
+
 exports[`@lingui directive: JS macros > explicit comment overrides directive 1`] = `
 import { t } from "@lingui/core/macro";
 /* @lingui comment="directive cmt" */
@@ -219,6 +283,67 @@ const msg = _i18n._(
   /*i18n*/
   {
     id: "WMU_Op",
+  },
+);
+
+`;
+
+exports[`@lingui directive: JS macros > reset clears all inherited values 1`] = `
+import { t } from "@lingui/core/macro";
+/* @lingui context="first" comment="second" idPrefix="prefix." */
+const msg1 = t\`Hello\`;
+/* @lingui reset */
+const msg2 = t\`World\`;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+/* @lingui context="first" comment="second" idPrefix="prefix." */ import { i18n as _i18n } from "@lingui/core";
+const msg1 = _i18n._(
+  /*i18n*/
+  {
+    id: "VUeJYD",
+    message: "Hello",
+    comment: "second",
+    context: "first",
+  },
+);
+/* @lingui reset */
+const msg2 = _i18n._(
+  /*i18n*/
+  {
+    id: "v-jdqd",
+    message: "World",
+  },
+);
+
+`;
+
+exports[`@lingui directive: JS macros > reset combined with new values 1`] = `
+import { t } from "@lingui/core/macro";
+/* @lingui context="first" comment="second" */
+const msg1 = t\`Hello\`;
+/* @lingui reset context="fresh" */
+const msg2 = t\`World\`;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+/* @lingui context="first" comment="second" */ import { i18n as _i18n } from "@lingui/core";
+const msg1 = _i18n._(
+  /*i18n*/
+  {
+    id: "VUeJYD",
+    message: "Hello",
+    comment: "second",
+    context: "first",
+  },
+);
+/* @lingui reset context="fresh" */
+const msg2 = _i18n._(
+  /*i18n*/
+  {
+    id: "aENyP6",
+    message: "World",
+    context: "fresh",
   },
 );
 

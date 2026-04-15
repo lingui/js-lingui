@@ -10,10 +10,11 @@ export type DirectiveValues = {
 type SortedDirective = {
   line: number
   values: DirectiveValues
+  reset?: boolean
 }
 
 const DIRECTIVE_PREFIX = "@lingui"
-const DIRECTIVE_PARAM_RE = /(\w+)="([^"]*)"/g
+const DIRECTIVE_PARAM_RE = /(\w+)(?:="([^"]*)")?/g
 const VALID_KEYS = new Set<keyof DirectiveValues>([
   "context",
   "comment",
@@ -22,7 +23,7 @@ const VALID_KEYS = new Set<keyof DirectiveValues>([
 
 export function parseLinguiDirective(
   commentValue: string,
-): DirectiveValues | null {
+): { reset: boolean; values: DirectiveValues } | null {
   const trimmed = commentValue.trim()
 
   if (!trimmed.startsWith(DIRECTIVE_PREFIX)) {
@@ -32,26 +33,31 @@ export function parseLinguiDirective(
   const rest = trimmed.slice(DIRECTIVE_PREFIX.length)
 
   const values: DirectiveValues = {}
-  let hasValues = false
+  let hasMatch = false
+  let reset = false
   let match: RegExpExecArray | null
 
   DIRECTIVE_PARAM_RE.lastIndex = 0
 
   while ((match = DIRECTIVE_PARAM_RE.exec(rest)) !== null) {
-    const key = match[1] as keyof DirectiveValues
+    const key = match[1] as keyof DirectiveValues | "reset"
     const value = match[2]
 
-    if (VALID_KEYS.has(key)) {
+    if (key === "reset") {
+      hasMatch = true
+      reset = true
+    } else if (VALID_KEYS.has(key) && value !== undefined) {
+      hasMatch = true
+      if (value === "") continue
       if (key === "idPrefix") {
         values[key] = value
       } else {
         values[key] = { text: value }
       }
-      hasValues = true
     }
   }
 
-  return hasValues ? values : null
+  return hasMatch ? { reset, values } : null
 }
 
 export function collectLinguiDirectives(
@@ -64,12 +70,24 @@ export function collectLinguiDirectives(
   for (const comment of comments) {
     const values = parseLinguiDirective(comment.value)
     if (values) {
-      directives.push({ line: comment.loc.start.line, values })
+      directives.push({ line: comment.loc.start.line, ...values })
     }
   }
 
   // Comments are typically already in order, but sort to be safe
   directives.sort((a, b) => a.line - b.line)
+
+  // Each directive carries the accumulated values of all prior
+  // directives, starting from the most recent `reset`.
+  let accumulated: DirectiveValues = {}
+  for (const d of directives) {
+    if (d.reset) {
+      d.values = { ...d.values }
+    } else {
+      d.values = { ...accumulated, ...d.values }
+    }
+    accumulated = d.values
+  }
 
   return directives
 }

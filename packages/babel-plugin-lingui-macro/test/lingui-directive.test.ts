@@ -10,19 +10,22 @@ import { macroTester } from "./macroTester"
 describe("parseLinguiDirective", () => {
   it("should parse context", () => {
     expect(parseLinguiDirective(' @lingui context="my context" ')).toEqual({
-      context: { text: "my context" },
+      reset: false,
+      values: { context: { text: "my context" } },
     })
   })
 
   it("should parse comment", () => {
     expect(parseLinguiDirective(' @lingui comment="my comment" ')).toEqual({
-      comment: { text: "my comment" },
+      reset: false,
+      values: { comment: { text: "my comment" } },
     })
   })
 
   it("should parse idPrefix", () => {
     expect(parseLinguiDirective(' @lingui idPrefix="prefix." ')).toEqual({
-      idPrefix: "prefix.",
+      reset: false,
+      values: { idPrefix: "prefix." },
     })
   })
 
@@ -32,9 +35,12 @@ describe("parseLinguiDirective", () => {
         ' @lingui context="ctx" comment="cmt" idPrefix="p." ',
       ),
     ).toEqual({
-      context: { text: "ctx" },
-      comment: { text: "cmt" },
-      idPrefix: "p.",
+      reset: false,
+      values: {
+        context: { text: "ctx" },
+        comment: { text: "cmt" },
+        idPrefix: "p.",
+      },
     })
   })
 
@@ -53,12 +59,53 @@ describe("parseLinguiDirective", () => {
       parseLinguiDirective(
         ' @lingui context="my custom context with spaces" ',
       ),
-    ).toEqual({ context: { text: "my custom context with spaces" } })
+    ).toEqual({
+      reset: false,
+      values: { context: { text: "my custom context with spaces" } },
+    })
   })
 
-  it("should handle empty string values", () => {
+  it("should omit empty string values", () => {
     expect(parseLinguiDirective(' @lingui context="" ')).toEqual({
-      context: { text: "" },
+      reset: false,
+      values: {},
+    })
+    expect(
+      parseLinguiDirective(' @lingui context="" comment="note" '),
+    ).toEqual({ reset: false, values: { comment: { text: "note" } } })
+  })
+
+  it("should parse reset keyword", () => {
+    expect(parseLinguiDirective(" @lingui reset")).toEqual({
+      reset: true,
+      values: {},
+    })
+  })
+
+  it("should not treat reset as keyword when used in a value", () => {
+    expect(
+      parseLinguiDirective(' @lingui context="reset" '),
+    ).toEqual({
+      reset: false,
+      values: { context: { text: "reset" } },
+    })
+  })
+
+  it("should parse reset combined with values", () => {
+    expect(
+      parseLinguiDirective(' @lingui reset context="new ctx" '),
+    ).toEqual({
+      reset: true,
+      values: { context: { text: "new ctx" } },
+    })
+  })
+
+  it("should parse without leading or trailing spaces", () => {
+    expect(
+      parseLinguiDirective('@lingui context="ctx" comment="cmt"'),
+    ).toEqual({
+      reset: false,
+      values: { context: { text: "ctx" }, comment: { text: "cmt" } },
     })
   })
 })
@@ -102,12 +149,37 @@ describe("collectLinguiDirectives", () => {
           identifierName: undefined,
         },
       },
+      {
+        type: "CommentLine",
+        value: ' @lingui reset context="ctx2" ',
+        start: 81,
+        end: 115,
+        loc: {
+          start: { line: 8, column: 0, index: 81 },
+          end: { line: 8, column: 34, index: 115 },
+          filename: "",
+          identifierName: undefined,
+        },
+      },
     ]
 
     const result = collectLinguiDirectives(comments)
     expect(result).toEqual([
-      { line: 1, values: { context: { text: "ctx1" } } },
-      { line: 5, values: { comment: { text: "cmt" } } },
+      {
+        line: 1,
+        reset: false,
+        values: { context: { text: "ctx1" } },
+      },
+      {
+        line: 5,
+        reset: false,
+        values: { context: { text: "ctx1" }, comment: { text: "cmt" } },
+      },
+      {
+        line: 8,
+        reset: true,
+        values: { context: { text: "ctx2" } },
+      },
     ])
   })
 
@@ -118,6 +190,7 @@ describe("collectLinguiDirectives", () => {
 })
 
 describe("findDirectiveForLine", () => {
+  // These represent pre-merged directives (as produced by collectLinguiDirectives)
   const directives = [
     { line: 3, values: { context: { text: "first" } } },
     { line: 10, values: { context: { text: "second" } } },
@@ -219,6 +292,46 @@ describe("@lingui directive: JS macros", () => {
           /* @lingui context="first" */
           const msg1 = t\`Hello\`
           /* @lingui context="second" */
+          const msg2 = t\`World\`
+        `,
+      },
+      {
+        name: "directives merge with preceding ones",
+        code: `
+          import { t } from '@lingui/core/macro';
+          /* @lingui context="ctx" comment="cmt" */
+          const msg1 = t\`Hello\`
+          /* @lingui context="new ctx" */
+          const msg2 = t\`World\`
+        `,
+      },
+      {
+        name: "reset clears all inherited values",
+        code: `
+          import { t } from '@lingui/core/macro';
+          /* @lingui context="first" comment="second" idPrefix="prefix." */
+          const msg1 = t\`Hello\`
+          /* @lingui reset */
+          const msg2 = t\`World\`
+        `,
+      },
+      {
+        name: "reset combined with new values",
+        code: `
+          import { t } from '@lingui/core/macro';
+          /* @lingui context="first" comment="second" */
+          const msg1 = t\`Hello\`
+          /* @lingui reset context="fresh" */
+          const msg2 = t\`World\`
+        `,
+      },
+      {
+        name: "empty string clears single key but inherits others",
+        code: `
+          import { t } from '@lingui/core/macro';
+          /* @lingui context="first" comment="second" */
+          const msg1 = t\`Hello\`
+          /* @lingui context="" */
           const msg2 = t\`World\`
         `,
       },
