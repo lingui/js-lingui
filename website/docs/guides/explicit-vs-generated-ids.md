@@ -59,7 +59,7 @@ Example:
 - **Predictability:** since explicit IDs are manually assigned, they remain stable across different versions of your application, reducing the likelihood of breaking changes during updates.
 
 :::tip
-If you use explicit IDs, you can opt in to [Typed Message IDs](/guides/typed-message-ids.md) for autocomplete and compile-time validation of your message identifiers.
+If you use explicit IDs, you can opt in to [Typed Message IDs](/guides/typed-message-ids) for autocomplete and compile-time validation of your message identifiers.
 :::
 
 The choice between these two strategies depends on your project requirements and priorities. However, it's important to note that Lingui provides the full range of benefits, especially with generated IDs.
