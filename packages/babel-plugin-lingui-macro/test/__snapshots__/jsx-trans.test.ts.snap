@@ -1037,7 +1037,7 @@ import { Trans as _Trans } from "@lingui/solid";
       id: "lqG909",
       message: "Hello <0>docs</0>.",
       components: {
-        0: (props) => <a href="/docs" {...props} />,
+        0: (_props) => <a href="/docs" {..._props} />,
       },
     }
   }
