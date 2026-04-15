@@ -6,6 +6,7 @@ import {
   ObjectProperty,
   SourceLocation,
 } from "@babel/types"
+import type { Scope } from "@babel/traverse"
 import { EXTRACT_MARK, MsgDescriptorPropKey } from "./constants"
 import { generateMessageId } from "@lingui/message-utils/generateMessageId"
 
@@ -179,12 +180,15 @@ function createValuesProperty(key: string, values: Record<string, Expression>) {
   )
 }
 
-export function wrapJsxElementAsComponent(value: Expression): Expression {
+export function wrapJsxElementAsComponent(
+  value: Expression,
+  scope: Scope,
+): Expression {
   if (!types.isJSXElement(value)) {
     return value
   }
 
-  const props = types.identifier("props")
+  const props = scope.generateUidIdentifier("props")
 
   return types.arrowFunctionExpression(
     [props],

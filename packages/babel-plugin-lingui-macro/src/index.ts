@@ -279,7 +279,8 @@ export default function ({
                     ),
                     transformElement:
                       config.macro.jsxRuntime === "solid"
-                        ? wrapJsxElementAsComponent
+                        ? (value) =>
+                            wrapJsxElementAsComponent(value, path.scope)
                         : undefined,
                     isLinguiIdentifier: (node: Identifier, macro) =>
                       isLinguiIdentifier(path, node, macro),
