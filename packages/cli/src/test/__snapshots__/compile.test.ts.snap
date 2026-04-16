@@ -23,8 +23,8 @@ exports[`CLI Command: Compile > allowEmpty = false > Should show missing message
 en ⇒ en.js
 Error: Failed to compile catalog for locale pl!
 Missing translations:
-mY42CM: (Hello World)
-2ZeN02: (Test String)
+pl.po: mY42CM: (Hello World)
+pl.po: 2ZeN02: (Test String)
 
 `;
 

@@ -106,19 +106,116 @@ function isGeneratedId(id: string, message: MessageType): boolean {
   return id === generateMessageId(message.message!, message.context)
 }
 
-function getCreateHeaders(
+const MANAGED_HEADERS = [
+  "POT-Creation-Date",
+  "MIME-Version",
+  "Content-Type",
+  "Content-Transfer-Encoding",
+  "X-Generator",
+  "Language",
+] as const
+
+const EMPTY_DEFAULT_HEADERS = [
+  "Project-Id-Version",
+  "Report-Msgid-Bugs-To",
+  "PO-Revision-Date",
+  "Last-Translator",
+  "Language-Team",
+  "Plural-Forms",
+] as const
+
+function shouldKeepExistingHeader(
+  key: string,
+  value: string | undefined,
+  customHeaderAttributes: PoFormatterOptions["customHeaderAttributes"],
+) {
+  if (MANAGED_HEADERS.includes(key as (typeof MANAGED_HEADERS)[number])) {
+    return false
+  }
+
+  if (customHeaderAttributes && key in customHeaderAttributes) {
+    return false
+  }
+
+  if (
+    EMPTY_DEFAULT_HEADERS.includes(
+      key as (typeof EMPTY_DEFAULT_HEADERS)[number],
+    ) &&
+    !value
+  ) {
+    return false
+  }
+
+  return true
+}
+
+function getNormalizedHeaders(
   language: string | undefined,
   customHeaderAttributes: PoFormatterOptions["customHeaderAttributes"],
+  existingHeaders: PO["headers"] | undefined,
 ): PO["headers"] {
-  return {
-    "POT-Creation-Date": formatPotCreationDate(new Date()),
-    "MIME-Version": "1.0",
-    "Content-Type": "text/plain; charset=utf-8",
-    "Content-Transfer-Encoding": "8bit",
-    "X-Generator": "@lingui/cli",
-    ...(language ? { Language: language } : {}),
-    ...(customHeaderAttributes ?? {}),
+  const nextHeaders: PO["headers"] = {}
+
+  if (existingHeaders) {
+    Object.entries(existingHeaders).forEach(([key, value]) => {
+      if (shouldKeepExistingHeader(key, value, customHeaderAttributes)) {
+        nextHeaders[key] = value
+      }
+    })
   }
+
+  nextHeaders["POT-Creation-Date"] =
+    customHeaderAttributes?.["POT-Creation-Date"] ??
+    existingHeaders?.["POT-Creation-Date"] ??
+    formatPotCreationDate(new Date())
+  nextHeaders["MIME-Version"] = "1.0"
+  nextHeaders["Content-Type"] = "text/plain; charset=utf-8"
+  nextHeaders["Content-Transfer-Encoding"] = "8bit"
+  nextHeaders["X-Generator"] = "@lingui/cli"
+
+  if (language) {
+    nextHeaders.Language = language
+  }
+
+  Object.entries(customHeaderAttributes ?? {}).forEach(([key, value]) => {
+    nextHeaders[key] = value
+  })
+
+  return nextHeaders
+}
+
+function getHeaderOrder(
+  headers: PO["headers"],
+  language: string | undefined,
+  customHeaderAttributes: PoFormatterOptions["customHeaderAttributes"],
+  existingHeaderOrder: string[] | undefined,
+) {
+  const managedOrder = [
+    "POT-Creation-Date",
+    "MIME-Version",
+    "Content-Type",
+    "Content-Transfer-Encoding",
+    "X-Generator",
+    ...(language ? ["Language"] : []),
+    ...Object.keys(customHeaderAttributes ?? {}).filter(
+      (key) =>
+        !MANAGED_HEADERS.includes(key as (typeof MANAGED_HEADERS)[number]),
+    ),
+  ]
+
+  const order = new Set(managedOrder)
+
+  existingHeaderOrder?.forEach((key) => {
+    if (key in headers) {
+      order.add(key)
+    }
+  })
+
+  Object.keys(headers).forEach((key) => {
+    order.add(key)
+  })
+
+  return [...order]
 }
 
 const EXPLICIT_ID_FLAG = "js-lingui-explicit-id"
@@ -285,19 +382,23 @@ export function formatter(options: PoFormatterOptions = {}): CatalogFormatter {
     },
 
     serialize(catalog, ctx): string {
-      let po: PO
+      const existingPo = ctx.existing ? PO.parse(ctx.existing) : undefined
+      const po = new PO()
 
-      if (ctx.existing) {
-        po = PO.parse(ctx.existing)
-      } else {
-        po = new PO()
-        po.headers = getCreateHeaders(
-          ctx.locale,
-          options.customHeaderAttributes,
-        )
-        // accessing private property
-        ;(po as any).headerOrder = Object.keys(po.headers)
-      }
+      po.comments = [...(existingPo?.comments ?? [])]
+      po.extractedComments = [...(existingPo?.extractedComments ?? [])]
+      po.headers = getNormalizedHeaders(
+        ctx.locale,
+        options.customHeaderAttributes,
+        existingPo?.headers,
+      )
+      // accessing private property
+      ;(po as any).headerOrder = getHeaderOrder(
+        po.headers,
+        ctx.locale,
+        options.customHeaderAttributes,
+        existingPo ? (existingPo as any).headerOrder : undefined,
+      )
 
       po.items = serialize(catalog, options, {
         locale: ctx.locale,

@@ -1,5 +1,5 @@
 import { CatalogFormatter, CatalogType } from "@lingui/conf"
-import { readFile, writeFileIfChanged } from "../utils.js"
+import { readFile, writeFile } from "../utils.js"
 import { RethrownError } from "../rethrownError.js"
 
 export class FormatterWrapper {
@@ -16,19 +16,31 @@ export class FormatterWrapper {
     return this.f.templateExtension || this.f.catalogExtension
   }
 
+  async serialize(
+    filename: string,
+    catalog: CatalogType,
+    locale?: string,
+    existing?: string,
+  ): Promise<string> {
+    return await this.f.serialize(catalog, {
+      locale,
+      sourceLocale: this.sourceLocale,
+      existing: existing ?? (await readFile(filename)),
+      filename,
+    })
+  }
+
   async write(
     filename: string,
     catalog: CatalogType,
     locale?: string,
   ): Promise<void> {
-    const content = await this.f.serialize(catalog, {
-      locale,
-      sourceLocale: this.sourceLocale,
-      existing: await readFile(filename),
-      filename,
-    })
+    const existing = await readFile(filename)
+    const content = await this.serialize(filename, catalog, locale, existing)
 
-    await writeFileIfChanged(filename, content)
+    if (content !== existing) {
+      await writeFile(filename, content)
+    }
   }
 
   async read(

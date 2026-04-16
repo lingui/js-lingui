@@ -1,11 +1,11 @@
 ---
 title: Lingui CLI
-description: Learn how to set up and use Lingui CLI to extract, merge and compile message catalogs
+description: Learn how to set up and use Lingui CLI to extract, check, merge and compile message catalogs
 ---
 
 # Lingui CLI
 
-The `@lingui/cli` tool provides the `lingui` command which allows you to extract messages from source files into message catalogs and compile these catalogs for production use.
+The `@lingui/cli` tool provides the `lingui` command which allows you to extract messages from source files into message catalogs, check them, and compile these catalogs for production use.
 
 ## Installation
 
@@ -279,6 +279,92 @@ The generated file header will look like:
 ```js
 /*your-prefix-here*/ export const messages = JSON.parse("{}");
 ```
+
+### `check`
+
+```shell
+lingui check <command>
+```
+
+The `check` command is a namespace for validation subcommands. Running `lingui check` without a subcommand prints help and exits without running any validation.
+
+These subcommands are useful in CI when you want to fail fast on stale catalogs or missing translations but do not need compilation artifacts yet.
+
+#### `sync`
+
+```shell
+lingui check sync
+    [--locale <locale, [...]>]
+    [--clean]
+    [--overwrite]
+    [--verbose]
+    [--workers]
+```
+
+Checks whether locale catalogs are synchronized with the current source code. This validation mirrors the behavior of `lingui extract` in dry-run mode and fails if extract would create or update any locale catalog file.
+
+This validation checks locale catalogs only. It does not validate `.pot` / template freshness.
+
+#### `missing`
+
+```shell
+lingui check missing
+    [--locale <locale, [...]>]
+    [--verbose]
+    [--workers]
+```
+
+Checks whether locale catalogs have missing translations before `fallbackLocales` are applied. This validation shares the same missing-detection semantics as `lingui compile --strict`, but does not compile catalogs.
+
+#### `sync --locale <locale, [...]>` {#check-sync-locale}
+
+Only check the specified locales when running `lingui check sync`.
+
+#### `sync --clean` {#check-sync-clean}
+
+When running the `sync` validation, mirror `lingui extract --clean`. Obsolete messages are expected to be removed.
+
+#### `sync --overwrite` {#check-sync-overwrite}
+
+When running the `sync` validation, mirror `lingui extract --overwrite`. Source locale translations are expected to be overwritten from source messages.
+
+#### `sync --verbose` {#check-sync-verbose}
+
+Print detailed findings for each failing `sync` validation.
+
+#### `sync --workers` {#check-sync-workers}
+
+Specifies the number of worker threads to use for `lingui check sync`.
+
+Pass `--workers 1` to disable workers and run everything in a single process.
+
+By default, the tool uses a simple heuristic:
+
+- On machines with more than 2 cores → `cpu.count - 1` workers
+- On 2-core machines → all cores
+
+Use the `--verbose` flag to see the actual pool size.
+
+#### `missing --locale <locale, [...]>` {#check-missing-locale}
+
+Only check the specified locales when running `lingui check missing`.
+
+#### `missing --verbose` {#check-missing-verbose}
+
+Print detailed findings for each failing `missing` validation.
+
+#### `missing --workers` {#check-missing-workers}
+
+Specifies the number of worker threads to use for `lingui check missing`.
+
+Pass `--workers 1` to disable workers and run everything in a single process.
+
+By default, the tool uses a simple heuristic:
+
+- On machines with more than 2 cores → `cpu.count - 1` workers
+- On 2-core machines → all cores
+
+Use the `--verbose` flag to see the actual pool size.
 
 ## Configuring the Source Locale
 

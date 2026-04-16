@@ -113,6 +113,38 @@ describe("FormatterWrapper", () => {
   })
 
   describe("write", () => {
+    it("should serialize catalog without writing to FS", async () => {
+      const format = new FormatterWrapper(
+        {
+          serialize: (catalog) => JSON.stringify(catalog),
+          parse: () => ({}),
+          catalogExtension: ".po",
+          templateExtension: ".pot",
+        },
+        "en",
+      )
+
+      mockFs({
+        "messages.json": `{"existing":{"translation":"Existing message"}}`,
+      })
+
+      const content = await format.serialize(
+        "messages.json",
+        {
+          static: {
+            translation: "Static message",
+          },
+        },
+        "en",
+      )
+
+      mockFs.restore()
+
+      expect(content).toMatchInlineSnapshot(
+        `{"static":{"translation":"Static message"}}`,
+      )
+    })
+
     it("should write to FS and serialize catalog using provided formatter", async () => {
       const format = new FormatterWrapper(
         {
