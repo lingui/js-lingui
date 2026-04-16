@@ -5,22 +5,22 @@
   "scripts": {
     "dev": "rspack serve",
     "build": "rspack build",
-    "extract": "lingui extract",
-    "compile": "lingui compile --typescript"
+    "extract": "lingui extract"
   },
   "dependencies": {
-    "@lingui/core": "^5.9.0",
-    "@lingui/react": "^5.9.0",
+    "@lingui/core": "^5.9.5",
+    "@lingui/react": "^5.9.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "@lingui/cli": "^4.7.2",
+    "@lingui/cli": "^5.9.5",
+    "@lingui/loader": "^5.9.5",
     "@lingui/swc-plugin": "^5.10.0",
-    "@rspack/cli": "^1.7.4",
-    "@rspack/core": "^1.7.4",
+    "@rspack/cli": "^1.7.11",
+    "@rspack/core": "^1.7.11",
     "@types/react": "^18.2.79",
-    "@types/react-dom": "18.2.1",
+    "@types/react-dom": "^18.2.1",
     "typescript": "^5.9.3"
   }
 }

@@ -213,6 +213,7 @@ declare module "*.txt" {
 }
 
 declare module "*.po" {
-    const src: string;
-    export default src;
+    import type { Messages } from "@lingui/core";
+
+    export const messages: Messages;
 }
