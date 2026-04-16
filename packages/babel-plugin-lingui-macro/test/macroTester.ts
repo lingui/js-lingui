@@ -5,6 +5,7 @@ import path from "path"
 import fs from "fs"
 import { macro } from "../src/macro"
 import Module from "node:module"
+import { stripVTControlCharacters } from "node:util"
 
 export type TestCase = TestCaseInline | TestCaseFixture
 
@@ -126,7 +127,9 @@ export function macroTester(opts: MacroTesterOptions) {
                 )
               } catch (e: any) {
                 if (e && e.message) {
-                  e.message = e.message.replace(process.cwd(), "<cwd>")
+                  e.message = stripVTControlCharacters(
+                    e.message.replace(process.cwd(), "<cwd>"),
+                  )
                 }
                 throw e
               }

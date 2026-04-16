@@ -12,12 +12,15 @@ macroTester({
         </Trans>
       `,
       macroOpts: {
-        linguiConfig: makeConfig({
-          macro: {
-            jsxPlaceholderAttribute: "_t",
-          }
-        })
-      }
+        linguiConfig: makeConfig(
+          {
+            macro: {
+              jsxPlaceholderAttribute: "_t",
+            },
+          },
+          { skipValidation: true },
+        ),
+      },
     },
     {
       name: "Respects jsxPlaceholderDefaults",
@@ -28,15 +31,18 @@ macroTester({
         </Trans>
       `,
       macroOpts: {
-        linguiConfig: makeConfig({
-          macro: {
-            jsxPlaceholderDefaults: {
-              a: "link",
-              em: "em"
-            }
-          }
-        })
-      }
+        linguiConfig: makeConfig(
+          {
+            macro: {
+              jsxPlaceholderDefaults: {
+                a: "link",
+                em: "em",
+              },
+            },
+          },
+          { skipValidation: true },
+        ),
+      },
     },
     {
       name: "Mixing explicit _t together with jsxPlaceholderDefaults",
@@ -47,15 +53,18 @@ macroTester({
         </Trans>
       `,
       macroOpts: {
-        linguiConfig: makeConfig({
-          macro: {
-            jsxPlaceholderAttribute: "_t",
-            jsxPlaceholderDefaults: {
-              a: "link",
-            }
-          }
-        })
-      }
+        linguiConfig: makeConfig(
+          {
+            macro: {
+              jsxPlaceholderAttribute: "_t",
+              jsxPlaceholderDefaults: {
+                a: "link",
+              },
+            },
+          },
+          { skipValidation: true },
+        ),
+      },
     },
     {
       name: "Deduplication: Identical elements are reused",
@@ -64,14 +73,17 @@ macroTester({
         <Trans>Hello <em>emphasis</em>, normal, <em>more emphasis</em>.</Trans>
       `,
       macroOpts: {
-        linguiConfig: makeConfig({
-          macro: {
-            jsxPlaceholderDefaults: {
-              em: "em",
-            }
-          }
-        })
-      }
+        linguiConfig: makeConfig(
+          {
+            macro: {
+              jsxPlaceholderDefaults: {
+                em: "em",
+              },
+            },
+          },
+          { skipValidation: true },
+        ),
+      },
     },
     {
       name: "Deduplication: Same explicit placeholder with identical attributes does not throw",
@@ -80,12 +92,15 @@ macroTester({
         <Trans>Hello <a _t="link" href="/a">link 1</a>, normal, <a _t="link" href="/a">link 1 copy</a>.</Trans>
       `,
       macroOpts: {
-        linguiConfig: makeConfig({
-          macro: {
-            jsxPlaceholderAttribute: "_t",
-          }
-        })
-      }
+        linguiConfig: makeConfig(
+          {
+            macro: {
+              jsxPlaceholderAttribute: "_t",
+            },
+          },
+          { skipValidation: true },
+        ),
+      },
     },
     {
       name: "Deduplication: Identical elements with different prop order are reused",
@@ -94,12 +109,15 @@ import { Trans } from "@lingui/react/macro";
 <Trans>Hello <a _t="link" href="/a" class="foo">link 1</a>, normal, <a _t="link" class="foo" href="/a">link 1 copy</a>.</Trans>;
       `,
       macroOpts: {
-        linguiConfig: makeConfig({
-          macro: {
-            jsxPlaceholderAttribute: "_t",
-          }
-        })
-      }
+        linguiConfig: makeConfig(
+          {
+            macro: {
+              jsxPlaceholderAttribute: "_t",
+            },
+          },
+          { skipValidation: true },
+        ),
+      },
     },
     {
       name: "Deduplication: Implicit names with distinct attributes throw an error",
@@ -109,14 +127,17 @@ import { Trans } from "@lingui/react/macro";
       `,
       shouldThrow: true,
       macroOpts: {
-        linguiConfig: makeConfig({
-          macro: {
-            jsxPlaceholderDefaults: {
-              a: "a",
-            }
-          }
-        })
-      }
+        linguiConfig: makeConfig(
+          {
+            macro: {
+              jsxPlaceholderDefaults: {
+                a: "a",
+              },
+            },
+          },
+          { skipValidation: true },
+        ),
+      },
     },
     {
       name: "Deduplication: Explicit names with different attributes throw an error",
@@ -126,12 +147,15 @@ import { Trans } from "@lingui/react/macro";
       `,
       shouldThrow: true,
       macroOpts: {
-        linguiConfig: makeConfig({
-          macro: {
-            jsxPlaceholderAttribute: "_t",
-          }
-        })
-      }
+        linguiConfig: makeConfig(
+          {
+            macro: {
+              jsxPlaceholderAttribute: "_t",
+            },
+          },
+          { skipValidation: true },
+        ),
+      },
     },
-  ]
+  ],
 })

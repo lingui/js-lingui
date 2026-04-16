@@ -590,11 +590,11 @@ Without this option, JSX elements are assigned auto-generated numeric placeholde
 In React/TypeScript projects, you need to declare the custom attribute so that TypeScript doesn't report an error. Add the following to a `.d.ts` file included in your project:
 
 ```ts
-import "react"
+import "react";
 
 declare module "react" {
   interface Attributes {
-    _t?: string // replace with your `jsxPlaceholderAttribute` value
+    _t?: string; // replace with your `jsxPlaceholderAttribute` value
   }
 }
 ```
