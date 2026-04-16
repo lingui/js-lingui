@@ -248,5 +248,62 @@ import { Trans } from "@lingui/react/macro";
         ),
       },
     },
+    {
+      name: "Deduplication: Identical spreads are reused",
+      code: `
+        import { Trans } from '@lingui/react/macro';
+        const props = { href: "/a" };
+        <Trans><a _t="link" {...props}>A</a> and <a _t="link" {...props}>B</a></Trans>
+      `,
+      macroOpts: {
+        linguiConfig: makeConfig(
+          {
+            macro: {
+              jsxPlaceholderAttribute: "_t",
+            },
+          },
+          { skipValidation: true },
+        ),
+      },
+    },
+    {
+      name: "Deduplication: Different spreads throw an error",
+      code: `
+        import { Trans } from '@lingui/react/macro';
+        const p1 = { href: "/a" };
+        const p2 = { href: "/b" };
+        <Trans><a _t="link" {...p1}>A</a> and <a _t="link" {...p2}>B</a></Trans>
+      `,
+      shouldThrow: true,
+      macroOpts: {
+        linguiConfig: makeConfig(
+          {
+            macro: {
+              jsxPlaceholderAttribute: "_t",
+            },
+          },
+          { skipValidation: true },
+        ),
+      },
+    },
+    {
+      name: "Deduplication: Same spread with different attribute order throws an error",
+      code: `
+        import { Trans } from '@lingui/react/macro';
+        const props = { href: "/b" };
+        <Trans><a _t="link" {...props} href="/a">A</a> and <a _t="link" href="/a" {...props}>B</a></Trans>
+      `,
+      shouldThrow: true,
+      macroOpts: {
+        linguiConfig: makeConfig(
+          {
+            macro: {
+              jsxPlaceholderAttribute: "_t",
+            },
+          },
+          { skipValidation: true },
+        ),
+      },
+    },
   ],
 })

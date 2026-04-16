@@ -431,12 +431,26 @@ export class MacroJSX {
         const currentTag = node.openingElement.name
         const existingAttrs = existingElement.openingElement.attributes
         const openingAttrs = node.openingElement.attributes
+
+        const hasSpreads = existingAttrs.some(
+          (a) => a.type === "JSXSpreadAttribute",
+        )
+
+        // When spreads are present, attribute order matters for React
+        // semantics so we compare positionally. Otherwise, order-insensitive.
+        const attrsEqual =
+          existingAttrs.length === openingAttrs.length &&
+          (hasSpreads
+            ? existingAttrs.every((a, i) =>
+                this.types.isNodesEquivalent(a, openingAttrs[i]),
+              )
+            : existingAttrs.every((a) =>
+                openingAttrs.some((b) => this.types.isNodesEquivalent(a, b)),
+              ))
+
         if (
           !this.types.isNodesEquivalent(existingTag, currentTag) ||
-          existingAttrs.length !== openingAttrs.length ||
-          !existingAttrs.every((a) =>
-            openingAttrs.some((b) => this.types.isNodesEquivalent(a, b)),
-          )
+          !attrsEqual
         ) {
           const eg = `(e.g. \`<element ${jsxPlaceholderAttribute || '_t'}="newName" />\`)`
           const msg = `Multiple distinct JSX elements with the same placeholder name (\`${name}\`). `

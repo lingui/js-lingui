@@ -1,5 +1,22 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
+exports[`Deduplication: Different spreads throw an error 1`] = `
+[SyntaxError: <cwd>/<filename>jsx: Unsupported macro usage. Please check the examples at https://lingui.dev/ref/macro#examples-of-js-macros.
+ If you think this is a bug, fill in an issue at https://github.com/lingui/js-lingui/issues
+
+ Error: Multiple distinct JSX elements with the same placeholder name (\`link\`). Differentiate them by adding/modifying the \`_t\` attribute (e.g. \`<element _t="newName" />\`).
+  3 |         const p1 = { href: "/a" };
+  4 |         const p2 = { href: "/b" };
+> 5 |         <Trans><a _t="link" {...p1}>A</a> and <a _t="link" {...p2}>B</a></Trans>
+    |                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |       
+  3 |         const p1 = { href: "/a" };
+  4 |         const p2 = { href: "/b" };
+> 5 |         <Trans><a _t="link" {...p1}>A</a> and <a _t="link" {...p2}>B</a></Trans>
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |       ]
+`;
+
 exports[`Deduplication: Explicit names with different attributes throw an error 1`] = `
 [SyntaxError: <cwd>/<filename>jsx: Unsupported macro usage. Please check the examples at https://lingui.dev/ref/macro#examples-of-js-macros.
  If you think this is a bug, fill in an issue at https://github.com/lingui/js-lingui/issues
@@ -73,6 +90,40 @@ import { Trans as _Trans } from "@lingui/react";
 
 `;
 
+exports[`Deduplication: Identical spreads are reused 1`] = `
+import { Trans } from "@lingui/react/macro";
+const props = { href: "/a" };
+<Trans>
+  <a _t="link" {...props}>
+    A
+  </a>{" "}
+  and{" "}
+  <a _t="link" {...props}>
+    B
+  </a>
+</Trans>;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { Trans as _Trans } from "@lingui/react";
+const props = {
+  href: "/a",
+};
+<_Trans
+  {
+    /*i18n*/
+    ...{
+      id: "OdVP6t",
+      message: "<link>A</link> and <link>B</link>",
+      components: {
+        link: <a {...props} />,
+      },
+    }
+  }
+/>;
+
+`;
+
 exports[`Deduplication: Implicit names with distinct attributes throw an error 1`] = `
 [SyntaxError: <cwd>/<filename>jsx: Unsupported macro usage. Please check the examples at https://lingui.dev/ref/macro#examples-of-js-macros.
  If you think this is a bug, fill in an issue at https://github.com/lingui/js-lingui/issues
@@ -137,6 +188,23 @@ exports[`Deduplication: Same name on different element types throws an error 1`]
 > 3 |         <Trans><em _t="same">A</em> and <strong _t="same">B</strong></Trans>
     |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   4 |       ]
+`;
+
+exports[`Deduplication: Same spread with different attribute order throws an error 1`] = `
+[SyntaxError: <cwd>/<filename>jsx: Unsupported macro usage. Please check the examples at https://lingui.dev/ref/macro#examples-of-js-macros.
+ If you think this is a bug, fill in an issue at https://github.com/lingui/js-lingui/issues
+
+ Error: Multiple distinct JSX elements with the same placeholder name (\`link\`). Differentiate them by adding/modifying the \`_t\` attribute (e.g. \`<element _t="newName" />\`).
+  2 |         import { Trans } from '@lingui/react/macro';
+  3 |         const props = { href: "/b" };
+> 4 |         <Trans><a _t="link" {...props} href="/a">A</a> and <a _t="link" href="/a" {...props}>B</a></Trans>
+    |                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 |       
+  2 |         import { Trans } from '@lingui/react/macro';
+  3 |         const props = { href: "/b" };
+> 4 |         <Trans><a _t="link" {...props} href="/a">A</a> and <a _t="link" href="/a" {...props}>B</a></Trans>
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 |       ]
 `;
 
 exports[`Mixing explicit _t together with jsxPlaceholderDefaults 1`] = `
