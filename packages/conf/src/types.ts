@@ -374,7 +374,7 @@ export type LinguiConfig = {
      * // lingui.config
      * {
      *   macro: {
-     *     jsxPlaceholderAttribute: "_t" 
+     *     jsxPlaceholderAttribute: "_t"
      *   }
      * }
      *
@@ -395,7 +395,7 @@ export type LinguiConfig = {
      * // lingui.config
      * {
      *   macro: {
-     *     jsxPlaceholderDefaults: { a: "link", em: "em" } 
+     *     jsxPlaceholderDefaults: { a: "link", em: "em" }
      *   }
      * }
      *

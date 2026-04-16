@@ -452,12 +452,12 @@ export class MacroJSX {
           !this.types.isNodesEquivalent(existingTag, currentTag) ||
           !attrsEqual
         ) {
-          const eg = `(e.g. \`<element ${jsxPlaceholderAttribute || '_t'}="newName" />\`)`
-          const msg = `Multiple distinct JSX elements with the same placeholder name (\`${name}\`). `
-            + (jsxPlaceholderAttribute
+          const eg = `(e.g. \`<element ${jsxPlaceholderAttribute || "_t"}="newName" />\`)`
+          const msg =
+            `Multiple distinct JSX elements with the same placeholder name (\`${name}\`). ` +
+            (jsxPlaceholderAttribute
               ? `Differentiate them by adding/modifying the \`${jsxPlaceholderAttribute}\` attribute ${eg}.`
-              : `Differentiate them by setting \`macro.jsxPlaceholderAttribute\` in the lingui config and then adding the attribute to your JSX elements ${eg}.`
-            )
+              : `Differentiate them by setting \`macro.jsxPlaceholderAttribute\` in the lingui config and then adding the attribute to your JSX elements ${eg}.`)
           throw path.buildCodeFrameError(msg)
         }
       } else {

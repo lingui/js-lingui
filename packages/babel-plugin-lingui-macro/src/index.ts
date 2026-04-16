@@ -232,7 +232,9 @@ export default function ({
           path.traverse(
             {
               JSXElement(path, state) {
-                const linguiConfig = state.get("linguiConfig") as LinguiConfigNormalized
+                const linguiConfig = state.get(
+                  "linguiConfig",
+                ) as LinguiConfigNormalized
 
                 const macro = new MacroJSX(
                   { types: t },
