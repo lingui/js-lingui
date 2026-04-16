@@ -122,6 +122,23 @@ import { Trans as _Trans } from "@lingui/react";
 
 `;
 
+exports[`Deduplication: Same name on different element types throws an error 1`] = `
+[SyntaxError: <cwd>/<filename>jsx: Unsupported macro usage. Please check the examples at https://lingui.dev/ref/macro#examples-of-js-macros.
+ If you think this is a bug, fill in an issue at https://github.com/lingui/js-lingui/issues
+
+ Error: Multiple distinct JSX elements with the same placeholder name (\`same\`). Differentiate them by adding/modifying the \`_t\` attribute (e.g. \`<element _t="newName" />\`).
+  1 |
+  2 |         import { Trans } from '@lingui/react/macro';
+> 3 |         <Trans><em _t="same">A</em> and <strong _t="same">B</strong></Trans>
+    |                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  4 |       
+  1 |
+  2 |         import { Trans } from '@lingui/react/macro';
+> 3 |         <Trans><em _t="same">A</em> and <strong _t="same">B</strong></Trans>
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  4 |       ]
+`;
+
 exports[`Mixing explicit _t together with jsxPlaceholderDefaults 1`] = `
 import { Trans } from "@lingui/react/macro";
 <Trans>
@@ -200,4 +217,72 @@ import { Trans as _Trans } from "@lingui/react";
   }
 />;
 
+`;
+
+exports[`Throws on empty _t attribute value 1`] = `
+[SyntaxError: <cwd>/<filename>jsx: Unsupported macro usage. Please check the examples at https://lingui.dev/ref/macro#examples-of-js-macros.
+ If you think this is a bug, fill in an issue at https://github.com/lingui/js-lingui/issues
+
+ Error: The \`_t\` attribute must be a non-empty string literal.
+  1 |
+  2 |         import { Trans } from '@lingui/react/macro';
+> 3 |         <Trans><a _t="" href="/">click</a></Trans>
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  4 |       
+  1 |
+  2 |         import { Trans } from '@lingui/react/macro';
+> 3 |         <Trans><a _t="" href="/">click</a></Trans>
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  4 |       ]
+`;
+
+exports[`Throws on invalid identifier placeholder name 1`] = `
+[SyntaxError: <cwd>/<filename>jsx: Unsupported macro usage. Please check the examples at https://lingui.dev/ref/macro#examples-of-js-macros.
+ If you think this is a bug, fill in an issue at https://github.com/lingui/js-lingui/issues
+
+ Error: Placeholder name \`foo-bar\` is not a valid identifier. Only valid JS identifers are allowed; /^[a-zA-Z_$][a-zA-Z0-9_$]*$/
+  1 |
+  2 |         import { Trans } from '@lingui/react/macro';
+> 3 |         <Trans><a _t="foo-bar" href="/">click</a></Trans>
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  4 |       
+  1 |
+  2 |         import { Trans } from '@lingui/react/macro';
+> 3 |         <Trans><a _t="foo-bar" href="/">click</a></Trans>
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  4 |       ]
+`;
+
+exports[`Throws on non-string _t attribute value 1`] = `
+[SyntaxError: <cwd>/<filename>jsx: Unsupported macro usage. Please check the examples at https://lingui.dev/ref/macro#examples-of-js-macros.
+ If you think this is a bug, fill in an issue at https://github.com/lingui/js-lingui/issues
+
+ Error: The \`_t\` attribute must be a non-empty string literal.
+  2 |         import { Trans } from '@lingui/react/macro';
+  3 |         const name = "link";
+> 4 |         <Trans><a _t={name} href="/">click</a></Trans>
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 |       
+  2 |         import { Trans } from '@lingui/react/macro';
+  3 |         const name = "link";
+> 4 |         <Trans><a _t={name} href="/">click</a></Trans>
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 |       ]
+`;
+
+exports[`Throws on numeric placeholder name 1`] = `
+[SyntaxError: <cwd>/<filename>jsx: Unsupported macro usage. Please check the examples at https://lingui.dev/ref/macro#examples-of-js-macros.
+ If you think this is a bug, fill in an issue at https://github.com/lingui/js-lingui/issues
+
+ Error: Placeholder name \`0\` is not allowed because it conflicts with auto-generated numeric placeholders. Use a non-numeric name instead.
+  1 |
+  2 |         import { Trans } from '@lingui/react/macro';
+> 3 |         <Trans><a _t="0" href="/">click</a></Trans>
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  4 |       
+  1 |
+  2 |         import { Trans } from '@lingui/react/macro';
+> 3 |         <Trans><a _t="0" href="/">click</a></Trans>
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  4 |       ]
 `;

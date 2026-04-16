@@ -157,5 +157,96 @@ import { Trans } from "@lingui/react/macro";
         ),
       },
     },
+    {
+      name: "Deduplication: Same name on different element types throws an error",
+      code: `
+        import { Trans } from '@lingui/react/macro';
+        <Trans><em _t="same">A</em> and <strong _t="same">B</strong></Trans>
+      `,
+      shouldThrow: true,
+      macroOpts: {
+        linguiConfig: makeConfig(
+          {
+            macro: {
+              jsxPlaceholderAttribute: "_t",
+            },
+          },
+          { skipValidation: true },
+        ),
+      },
+    },
+    {
+      name: "Throws on non-string _t attribute value",
+      code: `
+        import { Trans } from '@lingui/react/macro';
+        const name = "link";
+        <Trans><a _t={name} href="/">click</a></Trans>
+      `,
+      shouldThrow: true,
+      macroOpts: {
+        linguiConfig: makeConfig(
+          {
+            macro: {
+              jsxPlaceholderAttribute: "_t",
+            },
+          },
+          { skipValidation: true },
+        ),
+      },
+    },
+    {
+      name: "Throws on empty _t attribute value",
+      code: `
+        import { Trans } from '@lingui/react/macro';
+        <Trans><a _t="" href="/">click</a></Trans>
+      `,
+      shouldThrow: true,
+      macroOpts: {
+        linguiConfig: makeConfig(
+          {
+            macro: {
+              jsxPlaceholderAttribute: "_t",
+            },
+          },
+          { skipValidation: true },
+        ),
+      },
+    },
+    {
+      name: "Throws on numeric placeholder name",
+      code: `
+        import { Trans } from '@lingui/react/macro';
+        <Trans><a _t="0" href="/">click</a></Trans>
+      `,
+      shouldThrow: true,
+      macroOpts: {
+        linguiConfig: makeConfig(
+          {
+            macro: {
+              jsxPlaceholderAttribute: "_t",
+            },
+          },
+          { skipValidation: true },
+        ),
+      },
+    },
+    {
+      name: "Throws on invalid identifier placeholder name",
+      code: `
+        import { Trans } from '@lingui/react/macro';
+        <Trans><a _t="foo-bar" href="/">click</a></Trans>
+      `,
+      shouldThrow: true,
+      macroOpts: {
+        linguiConfig: makeConfig(
+          {
+            macro: {
+              jsxPlaceholderAttribute: "_t",
+            },
+          },
+          { skipValidation: true },
+        ),
+      },
+    },
   ],
 })

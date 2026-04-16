@@ -378,9 +378,16 @@ export class MacroJSX {
 
       if (attrIndex !== -1) {
         const attr = attributes[attrIndex] as JSXAttribute
-        if (attr.value && attr.value.type === "StringLiteral") {
-          name = attr.value.value
+        if (
+          !attr.value ||
+          attr.value.type !== "StringLiteral" ||
+          !attr.value.value
+        ) {
+          throw path.buildCodeFrameError(
+            `The \`${jsxPlaceholderAttribute}\` attribute must be a non-empty string literal.`,
+          )
         }
+        name = attr.value.value
 
         const newAttributes = [...attributes]
         newAttributes.splice(attrIndex, 1)
@@ -406,12 +413,26 @@ export class MacroJSX {
       name = String(this.ctx.elementIndex())
       elementsTracking.set(name, node)
     } else {
+      if (/^\d+$/.test(name)) {
+        throw path.buildCodeFrameError(
+          `Placeholder name \`${name}\` is not allowed because it conflicts with auto-generated numeric placeholders. Use a non-numeric name instead.`,
+        )
+      }
+      if (!/^[a-zA-Z_$][a-zA-Z0-9_$]*$/.test(name)) {
+        throw path.buildCodeFrameError(
+          `Placeholder name \`${name}\` is not a valid identifier. Only valid JS identifers are allowed; /^[a-zA-Z_$][a-zA-Z0-9_$]*$/`,
+        )
+      }
+
       const existingElement = elementsTracking.get(name)
 
       if (existingElement) {
+        const existingTag = existingElement.openingElement.name
+        const currentTag = node.openingElement.name
         const existingAttrs = existingElement.openingElement.attributes
         const openingAttrs = node.openingElement.attributes
         if (
+          !this.types.isNodesEquivalent(existingTag, currentTag) ||
           existingAttrs.length !== openingAttrs.length ||
           !existingAttrs.every((a) =>
             openingAttrs.some((b) => this.types.isNodesEquivalent(a, b)),
