@@ -1,5 +1,57 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
+exports[`Allows dotted placeholder name 1`] = `
+import { Trans } from "@lingui/react/macro";
+<Trans>
+  <a _t="ns.link" href="/">
+    click
+  </a>
+</Trans>;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { Trans as _Trans } from "@lingui/react";
+<_Trans
+  {
+    /*i18n*/
+    ...{
+      id: "_0hJpt",
+      message: "<ns.link>click</ns.link>",
+      components: {
+        "ns.link": <a href="/" />,
+      },
+    }
+  }
+/>;
+
+`;
+
+exports[`Allows hyphenated placeholder name 1`] = `
+import { Trans } from "@lingui/react/macro";
+<Trans>
+  <a _t="foo-bar" href="/">
+    click
+  </a>
+</Trans>;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { Trans as _Trans } from "@lingui/react";
+<_Trans
+  {
+    /*i18n*/
+    ...{
+      id: "IeIam7",
+      message: "<foo-bar>click</foo-bar>",
+      components: {
+        "foo-bar": <a href="/" />,
+      },
+    }
+  }
+/>;
+
+`;
+
 exports[`Deduplication: Different spreads throw an error 1`] = `
 [SyntaxError: <cwd>/<filename>jsx: Unsupported macro usage. Please check the examples at https://lingui.dev/ref/macro#examples-of-js-macros.
  If you think this is a bug, fill in an issue at https://github.com/lingui/js-lingui/issues
@@ -304,23 +356,6 @@ exports[`Throws on empty _t attribute value 1`] = `
   4 |       ]
 `;
 
-exports[`Throws on invalid identifier placeholder name 1`] = `
-[SyntaxError: <cwd>/<filename>jsx: Unsupported macro usage. Please check the examples at https://lingui.dev/ref/macro#examples-of-js-macros.
- If you think this is a bug, fill in an issue at https://github.com/lingui/js-lingui/issues
-
- Error: Placeholder name \`foo-bar\` is not a valid identifier. Only valid JS identifers are allowed; /^[a-zA-Z_$][a-zA-Z0-9_$]*$/
-  1 |
-  2 |         import { Trans } from '@lingui/react/macro';
-> 3 |         <Trans><a _t="foo-bar" href="/">click</a></Trans>
-    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  4 |       
-  1 |
-  2 |         import { Trans } from '@lingui/react/macro';
-> 3 |         <Trans><a _t="foo-bar" href="/">click</a></Trans>
-    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  4 |       ]
-`;
-
 exports[`Throws on non-string _t attribute value 1`] = `
 [SyntaxError: <cwd>/<filename>jsx: Unsupported macro usage. Please check the examples at https://lingui.dev/ref/macro#examples-of-js-macros.
  If you think this is a bug, fill in an issue at https://github.com/lingui/js-lingui/issues
@@ -352,5 +387,39 @@ exports[`Throws on numeric placeholder name 1`] = `
   2 |         import { Trans } from '@lingui/react/macro';
 > 3 |         <Trans><a _t="0" href="/">click</a></Trans>
     |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  4 |       ]
+`;
+
+exports[`Throws on placeholder name ending with dot 1`] = `
+[SyntaxError: <cwd>/<filename>jsx: Unsupported macro usage. Please check the examples at https://lingui.dev/ref/macro#examples-of-js-macros.
+ If you think this is a bug, fill in an issue at https://github.com/lingui/js-lingui/issues
+
+ Error: Placeholder name \`foo.\` is not valid. Names must start and end with a letter/digit/underscore, but may contain \`.-\` in between.
+  1 |
+  2 |         import { Trans } from '@lingui/react/macro';
+> 3 |         <Trans><a _t="foo." href="/">click</a></Trans>
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  4 |       
+  1 |
+  2 |         import { Trans } from '@lingui/react/macro';
+> 3 |         <Trans><a _t="foo." href="/">click</a></Trans>
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  4 |       ]
+`;
+
+exports[`Throws on placeholder name starting with hyphen 1`] = `
+[SyntaxError: <cwd>/<filename>jsx: Unsupported macro usage. Please check the examples at https://lingui.dev/ref/macro#examples-of-js-macros.
+ If you think this is a bug, fill in an issue at https://github.com/lingui/js-lingui/issues
+
+ Error: Placeholder name \`-foo\` is not valid. Names must start and end with a letter/digit/underscore, but may contain \`.-\` in between.
+  1 |
+  2 |         import { Trans } from '@lingui/react/macro';
+> 3 |         <Trans><a _t="-foo" href="/">click</a></Trans>
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  4 |       
+  1 |
+  2 |         import { Trans } from '@lingui/react/macro';
+> 3 |         <Trans><a _t="-foo" href="/">click</a></Trans>
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   4 |       ]
 `;

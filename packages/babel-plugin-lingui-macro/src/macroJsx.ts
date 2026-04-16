@@ -418,9 +418,9 @@ export class MacroJSX {
           `Placeholder name \`${name}\` is not allowed because it conflicts with auto-generated numeric placeholders. Use a non-numeric name instead.`,
         )
       }
-      if (!/^[a-zA-Z_$][a-zA-Z0-9_$]*$/.test(name)) {
+      if (!/^[a-zA-Z_]([\w.-]*\w)?$/.test(name)) {
         throw path.buildCodeFrameError(
-          `Placeholder name \`${name}\` is not a valid identifier. Only valid JS identifers are allowed; /^[a-zA-Z_$][a-zA-Z0-9_$]*$/`,
+          `Placeholder name \`${name}\` is not valid. Names must start and end with a letter/digit/underscore, but may contain \`.-\` in between.`,
         )
       }
 

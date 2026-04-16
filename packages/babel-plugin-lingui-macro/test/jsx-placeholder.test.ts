@@ -231,10 +231,62 @@ import { Trans } from "@lingui/react/macro";
       },
     },
     {
-      name: "Throws on invalid identifier placeholder name",
+      name: "Allows hyphenated placeholder name",
       code: `
         import { Trans } from '@lingui/react/macro';
         <Trans><a _t="foo-bar" href="/">click</a></Trans>
+      `,
+      macroOpts: {
+        linguiConfig: makeConfig(
+          {
+            macro: {
+              jsxPlaceholderAttribute: "_t",
+            },
+          },
+          { skipValidation: true },
+        ),
+      },
+    },
+    {
+      name: "Allows dotted placeholder name",
+      code: `
+        import { Trans } from '@lingui/react/macro';
+        <Trans><a _t="ns.link" href="/">click</a></Trans>
+      `,
+      macroOpts: {
+        linguiConfig: makeConfig(
+          {
+            macro: {
+              jsxPlaceholderAttribute: "_t",
+            },
+          },
+          { skipValidation: true },
+        ),
+      },
+    },
+    {
+      name: "Throws on placeholder name starting with hyphen",
+      code: `
+        import { Trans } from '@lingui/react/macro';
+        <Trans><a _t="-foo" href="/">click</a></Trans>
+      `,
+      shouldThrow: true,
+      macroOpts: {
+        linguiConfig: makeConfig(
+          {
+            macro: {
+              jsxPlaceholderAttribute: "_t",
+            },
+          },
+          { skipValidation: true },
+        ),
+      },
+    },
+    {
+      name: "Throws on placeholder name ending with dot",
+      code: `
+        import { Trans } from '@lingui/react/macro';
+        <Trans><a _t="foo." href="/">click</a></Trans>
       `,
       shouldThrow: true,
       macroOpts: {
