@@ -128,7 +128,10 @@ export function macroTester(opts: MacroTesterOptions) {
               } catch (e: any) {
                 if (e && e.message) {
                   e.message = stripVTControlCharacters(
-                    e.message.replace(process.cwd(), "<cwd>"),
+                    e.message
+                      .replace(process.cwd(), "<cwd>")
+                      // normalize path on Windows
+                      .replace("<cwd>\\", "<cwd>/"),
                   )
                 }
                 throw e
