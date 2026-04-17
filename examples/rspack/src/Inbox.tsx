@@ -1,17 +1,16 @@
-import { useLingui } from "@lingui/react"
-
-import { Plural, Trans } from "@lingui/react/macro"
-
+import { useLingui, Plural, Trans } from "@lingui/react/macro"
 import LocaleSwitcher from "./LocaleSwitcher"
 
 export default function Inbox() {
   const messages = [{}, {}]
   const messagesCount = messages.length
   const lastLogin = new Date()
+
+  const { i18n, t } = useLingui()
+
   const markAsRead = () => {
-    alert("Marked as read.")
+    alert(t`Marked as read.`)
   }
-  const { i18n } = useLingui()
 
   return (
     <div>
@@ -23,7 +22,7 @@ export default function Inbox() {
         <Trans>
           See all <a href="/unread">unread messages </a>
           {" or "}
-          <a onClick={markAsRead}>mark them</a> as read.
+          <button onClick={markAsRead}>mark them</button> as read.
         </Trans>
       </p>
       <p>

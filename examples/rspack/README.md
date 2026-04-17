@@ -15,11 +15,13 @@ This project shows how to use the [Rspack JavaScript bundler](https://www.rspack
 1. Wrap any messages requiring translation in `<Trans>` or a related macro.
 2. `npm run extract` to generate message catalogs in `src/locales/{locale}/messages`.
 3. Translate any new messages in the catalogs.
-4. `npm run compile` to create runtime catalogs.
+4. Restart the dev server or rebuild the app. `@lingui/loader` compiles `.po` catalogs during bundling, so no separate `lingui compile` step is required.
 
 ## Configuration File Notes
 
-- [`rspack.config.js`](./rspack.config.js) specifies the [`builtin:swc-loader`](https://www.rspack.dev/guide/builtin-swc-loader.html#builtinswc-loader) should transcompile all `.tsx` files using the Lingui SWC plugin, ensuring transcompilation of [Lingui Macros](https://lingui.dev/ref/macro) like `<Trans>` into their respective React components. When using Lingui SWC plugin, ensure version compatibility with `@rspack/core`. Refer to the [compatibility guide](https://github.com/lingui/swc-plugin#compatibility) for selecting the appropriate plugin version.
+- [`rspack.config.js`](./rspack.config.js) configures both the [`builtin:swc-loader`](https://www.rspack.dev/guide/builtin-swc-loader.html#builtinswc-loader) and `@lingui/loader`. The SWC plugin transpiles [Lingui Macros](https://lingui.dev/ref/macro) like `<Trans>` into their React runtime equivalents, while `@lingui/loader` turns imported `.po` catalogs into runtime messages at build time. When using Lingui SWC plugin, ensure version compatibility with `@rspack/core`. Refer to the [compatibility guide](https://github.com/lingui/swc-plugin#compatibility) for selecting the appropriate plugin version.
+
+- [`src/i18n.ts`](./src/i18n.ts) lazy-loads locale catalogs from `src/locales/{locale}/messages.po`, which lets `rspack` split translations into separate chunks and compile them through `@lingui/loader`.
 
 - [`lingui.config.ts`](./lingui.config.ts) specifies the available locales, defaults, and paths where the message catalogs are stored.
 

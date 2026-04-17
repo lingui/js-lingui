@@ -13,18 +13,23 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: src/Inbox.tsx:30
+#: src/Inbox.tsx:29
 msgid "{messagesCount, plural, one {There's # message in your inbox.} other {There are # messages in your inbox.}}"
 msgstr "{messagesCount, plural, one {There's # message in your inbox.} other {There are # messages in your inbox.}}"
 
-#: src/Inbox.tsx:32
+#. placeholder {0}: i18n.date(lastLogin)
+#: src/Inbox.tsx:37
 msgid "Last login on {0}."
 msgstr "Last login on {0}."
 
-#: src/Inbox.tsx:21
+#: src/Inbox.tsx:12
+msgid "Marked as read."
+msgstr "Marked as read."
+
+#: src/Inbox.tsx:19
 msgid "Message Inbox"
 msgstr "Message Inbox"
 
-#: src/Inbox.tsx:23
-msgid "See all <0>unread messages </0>or <1>mark them</1> as read."
-msgstr "See all <0>unread messages </0>or <1>mark them</1> as read."
+#: src/Inbox.tsx:22
+msgid "See all <0>unread messages </0> or <1>mark them</1> as read."
+msgstr "See all <0>unread messages </0> or <1>mark them</1> as read."
