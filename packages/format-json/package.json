@@ -1,6 +1,6 @@
 {
   "name": "@lingui/format-json",
-  "version": "6.0.0-next.3",
+  "version": "6.0.0-next.4",
   "type": "module",
   "description": "JSON formatter for Lingui message catalogs",
   "exports": {
