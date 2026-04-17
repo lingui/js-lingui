@@ -147,7 +147,12 @@ function createIdProperty(message: string, context?: string) {
 
 function createValuesProperty(key: string, values: Record<string, Expression>) {
   const valuesObject = Object.keys(values).map((key) =>
-    types.objectProperty(types.identifier(key), values[key]),
+    types.objectProperty(
+      types.isValidIdentifier(key) || /^\d+$/.test(key)
+        ? types.identifier(key)
+        : types.stringLiteral(key),
+      values[key],
+    ),
   )
 
   if (!valuesObject.length) return
