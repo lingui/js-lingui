@@ -1,33 +1,34 @@
-import type { PluginObj, Visitor, PluginPass } from "@babel/core"
+import type { PluginObj, PluginPass, Visitor } from "@babel/core"
 import type * as babelTypes from "@babel/types"
-import { Program, Identifier } from "@babel/types"
+import { Identifier, Program } from "@babel/types"
 import { MacroJSX } from "./macroJsx"
 import type { NodePath } from "@babel/traverse"
 import { MacroJs } from "./macroJs"
 import { JsMacroName } from "./constants"
 import {
-  type LinguiConfigNormalized,
   getConfig as loadConfig,
   LinguiConfig,
+  type LinguiConfigNormalized,
 } from "@lingui/conf"
+import { ResolvedDescriptorFields } from "./messageDescriptorUtils"
 
 let config: LinguiConfigNormalized
 
 export type LinguiPluginOpts = {
-  /*
-   * When set `true` all auxiliary data such as `comment`, `context`,
-   * and default message would be kept regardless of the current environment
-   *
-   * This flag explicitly set by Lingui CLI when running extraction process
-   */
-  extract?: boolean
   /**
-   * Setting `stripMessageField` to `true` will strip messages and comments from both development and production bundles.
-   * Alternatively, set it to `false` to keep the original messages in both environments.
+   * Controls which descriptor fields are preserved in the transformed code.
    *
-   * If not set value would be determined based on `process.env.NODE_ENV === "production"`
+   * - `"auto"` (default): In production (`NODE_ENV === "production"`), keeps only the `id`.
+   *    Otherwise, behaves like `"all"`.
+   * - `"all"`: Keeps every field: `id`, `message`, `context`, and `comment`.
+   *    Used by Lingui CLI during extraction.
+   * - `"id-only"`: Strips everything except the `id`. Most optimized for production.
+   * - `"message"`: Keeps `id`, `message`, and `context` (but not `comment`).
+   *    Use when you need runtime access to message and context.
+   *
+   * @default "auto"
    */
-  stripMessageField?: boolean
+  descriptorFields?: "auto" | "all" | "id-only" | "message"
 
   /**
    * Resolved and normalized Lingui Configuration
@@ -58,13 +59,45 @@ function reportUnsupportedSyntax(path: NodePath, e: Error) {
   throw codeFrameError
 }
 
-function shouldStripMessageProp(opts: LinguiPluginOpts) {
-  if (typeof opts.stripMessageField === "boolean") {
-    // if explicitly set in options, use it
-    return opts.stripMessageField
+const VALID_DESCRIPTOR_FIELDS = [
+  "auto",
+  "all",
+  "id-only",
+  "message",
+] as LinguiPluginOpts["descriptorFields"][]
+
+const REMOVED_OPTIONS: Record<string, string> = {
+  extract:
+    'Use `descriptorFields: "all"` instead of `extract: true` to preserve all fields during extraction.',
+  stripMessageField:
+    'Use `descriptorFields: "id-only"` instead of `stripMessageField: true`, ' +
+    'or `descriptorFields: "message"` to keep message and context.',
+}
+
+function resolveDescriptorFields(
+  opts: LinguiPluginOpts,
+): ResolvedDescriptorFields {
+  // introduced in v6, remove these hints in V7
+  for (const [key, hint] of Object.entries(REMOVED_OPTIONS)) {
+    if (key in (opts as Record<string, unknown>)) {
+      throw new Error(`[lingui] Option "${key}" has been removed. ${hint}`)
+    }
   }
-  // default to strip message in production if no explicit option is set and not during extract
-  return process.env.NODE_ENV === "production" && !opts.extract
+
+  const mode = opts.descriptorFields ?? "auto"
+
+  if (!VALID_DESCRIPTOR_FIELDS.includes(mode)) {
+    throw new Error(
+      `[lingui] Invalid descriptorFields value: "${mode}". ` +
+        `Expected one of: ${VALID_DESCRIPTOR_FIELDS.join(", ")}.`,
+    )
+  }
+
+  if (mode !== "auto") {
+    return mode as ResolvedDescriptorFields
+  }
+  // "auto": production → "id-only", otherwise → "all"
+  return process.env.NODE_ENV === "production" ? "id-only" : "all"
 }
 
 type LinguiSymbol = "Trans" | "useLingui" | "i18n"
@@ -236,10 +269,7 @@ export default function ({
                   { types: t },
                   {
                     transImportName: getSymbolIdentifier(state, "Trans").name,
-                    stripNonEssentialProps:
-                      process.env.NODE_ENV == "production" &&
-                      !(state.opts as LinguiPluginOpts).extract,
-                    stripMessageProp: shouldStripMessageProp(
+                    descriptorFields: resolveDescriptorFields(
                       state.opts as LinguiPluginOpts,
                     ),
                     isLinguiIdentifier: (node: Identifier, macro) =>
@@ -269,10 +299,7 @@ export default function ({
                 state: PluginPass,
               ) {
                 const macro = new MacroJs({
-                  stripNonEssentialProps:
-                    process.env.NODE_ENV == "production" &&
-                    !(state.opts as LinguiPluginOpts).extract,
-                  stripMessageProp: shouldStripMessageProp(
+                  descriptorFields: resolveDescriptorFields(
                     state.opts as LinguiPluginOpts,
                   ),
                   i18nImportName: getSymbolIdentifier(state, "i18n").name,

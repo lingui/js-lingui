@@ -107,15 +107,22 @@ You can configure the plugin by passing the `runtimeModules` option. This option
 
 For more details, refer to the [Runtime Configuration](/ref/conf#runtimeconfigmodule) section of the documentation.
 
-### Strip Non-Essential Fields
+### Descriptor Fields
 
-Lingui strips non-essential fields from builds if `NODE_ENV` is set to `production`. You can override this behavior by using the `stripNonEssentialFields` option. For example, if you want to keep all fields regardless of the environment, you can set:
+The `descriptorFields` option controls which message descriptor fields are preserved in the transformed code.
+
+- `"auto"` (default): In production (`NODE_ENV === "production"`), keeps only the `id`. Otherwise, keeps all fields.
+- `"all"`: Keeps `id`, `message`, `context`, and `comment`.
+- `"id-only"`: Strips everything except `id`. Most optimized for production.
+- `"message"`: Keeps `id`, `message`, and `context` (but not `comment`).
+
+For example, to keep `message` and `context` in production builds:
 
 ```json
 [
   "@lingui/swc-plugin",
   {
-    "stripNonEssentialFields": false
+    "descriptorFields": "message"
   }
 ]
 ```

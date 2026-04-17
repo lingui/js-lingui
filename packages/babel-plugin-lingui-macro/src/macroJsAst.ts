@@ -11,27 +11,27 @@ import {
 } from "@babel/types"
 import { JsMacroName, MsgDescriptorPropKey } from "./constants"
 import { ArgToken, TextToken, Token } from "./icu"
-import { createMessageDescriptorFromTokens } from "./messageDescriptorUtils"
+import {
+  createMessageDescriptorFromTokens,
+  ResolvedDescriptorFields,
+} from "./messageDescriptorUtils"
 import { makeCounter } from "./utils"
 
 export type MacroJsContext = {
   // Positional expressions counter (e.g. for placeholders `Hello {0}, today is {1}`)
   getExpressionIndex: () => number
-  stripNonEssentialProps: boolean
-  stripMessageProp: boolean
+  descriptorFields: ResolvedDescriptorFields
   isLinguiIdentifier: (node: Identifier, macro: JsMacroName) => boolean
 }
 
 export function createMacroJsContext(
   isLinguiIdentifier: MacroJsContext["isLinguiIdentifier"],
-  stripNonEssentialProps: boolean,
-  stripMessageProp: boolean,
+  descriptorFields: ResolvedDescriptorFields,
 ): MacroJsContext {
   return {
     getExpressionIndex: makeCounter(),
     isLinguiIdentifier,
-    stripNonEssentialProps,
-    stripMessageProp,
+    descriptorFields,
   }
 }
 
@@ -87,8 +87,7 @@ export function processDescriptor(
   return createMessageDescriptorFromTokens(
     tokens,
     descriptor.loc,
-    ctx.stripNonEssentialProps,
-    ctx.stripMessageProp,
+    ctx.descriptorFields,
     {
       id: idProperty,
       context: contextProperty,

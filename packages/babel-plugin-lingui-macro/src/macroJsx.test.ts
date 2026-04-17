@@ -38,8 +38,7 @@ function createMacro() {
   return new MacroJSX(
     { types },
     {
-      stripNonEssentialProps: false,
-      stripMessageProp: false,
+      descriptorFields: "all",
       transImportName: "Trans",
       isLinguiIdentifier: () => true,
     },

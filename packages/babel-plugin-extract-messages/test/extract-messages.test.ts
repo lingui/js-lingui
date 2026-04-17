@@ -47,7 +47,7 @@ const transformCode = (
         [
           linguiMacroPlugin,
           {
-            extract: true,
+            descriptorFields: "all",
           } satisfies LinguiPluginOpts,
         ],
         [plugin, pluginOpts],

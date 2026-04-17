@@ -40,7 +40,7 @@ export const pluginLinguiMacro = (options: {
           [
             linguiMacroPlugin,
             {
-              extract: true,
+              descriptorFields: "all",
               linguiConfig: options.linguiConfig,
             } satisfies LinguiPluginOpts,
           ],

@@ -13,7 +13,10 @@ import type { NodePath } from "@babel/traverse"
 
 import { Tokens } from "./icu"
 import { JsMacroName } from "./constants"
-import { createMessageDescriptorFromTokens } from "./messageDescriptorUtils"
+import {
+  createMessageDescriptorFromTokens,
+  ResolvedDescriptorFields,
+} from "./messageDescriptorUtils"
 import {
   isLinguiIdentifier,
   isDefineMessage,
@@ -28,8 +31,7 @@ export type MacroJsOpts = {
   i18nImportName: string
   useLinguiImportName: string
 
-  stripNonEssentialProps: boolean
-  stripMessageProp: boolean
+  descriptorFields: ResolvedDescriptorFields
   isLinguiIdentifier: (node: Identifier, macro: JsMacroName) => boolean
 }
 
@@ -49,8 +51,7 @@ export class MacroJs {
 
     this._ctx = createMacroJsContext(
       opts.isLinguiIdentifier,
-      opts.stripNonEssentialProps,
-      opts.stripMessageProp,
+      opts.descriptorFields,
     )
   }
 
@@ -63,8 +64,7 @@ export class MacroJs {
       createMessageDescriptorFromTokens(
         tokens,
         path.node.loc,
-        this._ctx.stripNonEssentialProps,
-        this._ctx.stripMessageProp,
+        this._ctx.descriptorFields,
       ),
       linguiInstance,
     )
@@ -94,8 +94,7 @@ export class MacroJs {
       return createMessageDescriptorFromTokens(
         tokens,
         path.node.loc,
-        ctx.stripNonEssentialProps,
-        ctx.stripMessageProp,
+        ctx.descriptorFields,
       )
     }
 
@@ -260,8 +259,7 @@ export class MacroJs {
 
         const _ctx = createMacroJsContext(
           ctx.isLinguiIdentifier,
-          ctx.stripNonEssentialProps,
-          ctx.stripMessageProp,
+          ctx.descriptorFields,
         )
 
         // { t } = useLingui()
@@ -272,8 +270,7 @@ export class MacroJs {
           const descriptor = createMessageDescriptorFromTokens(
             tokens,
             currentPath.node.loc,
-            _ctx.stripNonEssentialProps,
-            _ctx.stripMessageProp,
+            _ctx.descriptorFields,
           )
 
           const callExpr = t.callExpression(
