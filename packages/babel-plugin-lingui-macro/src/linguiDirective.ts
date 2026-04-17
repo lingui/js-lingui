@@ -13,7 +13,6 @@ type SortedDirective = {
   reset?: boolean
 }
 
-const DIRECTIVE_PREFIX = "@lingui"
 const VALID_PARAMS = new Set<keyof DirectiveValues>([
   "context",
   "comment",
@@ -26,18 +25,16 @@ export function parseLinguiDirective(
   commentValue: string,
 ): { reset: boolean; values: DirectiveValues } | null {
   const trimmed = commentValue.trim()
-
-  if (!trimmed.startsWith(DIRECTIVE_PREFIX)) {
-    return null
-  }
-
-  const rest = trimmed.slice(DIRECTIVE_PREFIX.length)
+  const directiveMatch = /^(lingui-(set|reset))(?:\s|$)(.*)/.exec(trimmed)
+  if (!directiveMatch) return null
+  const directiveName = directiveMatch[1] as "lingui-set" | "lingui-reset"
+  const reset = directiveName === "lingui-reset"
+  const rest = directiveMatch[3].trim()
 
   // Verify the entire rest string is consumed by valid tokens
   let consumed = 0
   const values: DirectiveValues = {}
   let hasParams = false
-  let reset = false
   let match: RegExpExecArray | null
 
   VALID_TOKEN_RE.lastIndex = 0
@@ -45,54 +42,45 @@ export function parseLinguiDirective(
   while ((match = VALID_TOKEN_RE.exec(rest)) !== null) {
     if (match.index !== consumed) {
       throw new Error(
-        `@lingui directive has invalid syntax: ${trimmed}`
+        `\`${directiveName}\` directive has invalid syntax: ${trimmed}`,
       )
     }
     consumed = match.index + match[0].length
 
-    const key = match[1] as keyof DirectiveValues | "reset"
+    const key = match[1] as keyof DirectiveValues
     if (!key) continue // whitespace-only match
 
     const value = match[2]
 
-    if (key === "reset") {
-      if (value !== undefined) {
-        throw new Error(
-          `@lingui directive: "reset" is a keyword and does not accept a value`
-        )
-      }
-      hasParams = true
-      reset = true
-    } else if (VALID_PARAMS.has(key)) {
-      if (value === undefined) {
-        throw new Error(
-          `@lingui directive: "${key}" requires a value, e.g. ${key}="..."`
-        )
-      }
-      hasParams = true
-      if (value === "") {
-        values[key] = null
-      } else if (key === "idPrefix") {
-        values[key] = value
-      } else {
-        values[key] = { text: value }
-      }
-    } else {
+    if (!VALID_PARAMS.has(key)) {
       throw new Error(
-        `@lingui directive has unknown param "${key}". Valid params: ${[...VALID_PARAMS].join(", ")}, reset`
+        `\`${directiveName}\` directive has unknown param "${key}". Valid params: ${[...VALID_PARAMS].join(", ")}`,
       )
+    }
+    if (value === undefined) {
+      throw new Error(
+        `\`${directiveName}\` directive: "${key}" requires a value, e.g. ${key}="..."`,
+      )
+    }
+    hasParams = true
+    if (value === "") {
+      values[key] = null
+    } else if (key === "idPrefix") {
+      values[key] = value
+    } else {
+      values[key] = { text: value }
     }
   }
 
   if (consumed !== rest.length) {
     throw new Error(
-      `@lingui directive has invalid syntax: ${trimmed}`
+      `\`${directiveName}\` directive has invalid syntax: ${trimmed}`,
     )
   }
 
-  if (!hasParams) {
+  if (!hasParams && !reset) {
     throw new Error(
-      `@lingui directive requires at least one param. Valid params: ${[...VALID_PARAMS].join(", ")}, reset`
+      `\`${directiveName}\` directive requires at least one param. Valid params: ${[...VALID_PARAMS].join(", ")}`,
     )
   }
 

@@ -547,16 +547,19 @@ import { Trans } from "@lingui/react";
 <Trans id={"Z5GF+g"} message="Welcome back, {username}!" values={{ username: getUser().name }} />;
 ```
 
-### `@lingui` Comment Directive {#lingui-directive}
+### `lingui-set` / `lingui-reset` Comment Directives {#lingui-directive}
 
-Instead of passing `context`, `comment`, or `id` prefix to every macro call, you can use the `@lingui` comment directive to set these values for all subsequent macros in the same file (or until the next directive).
+Instead of passing `context` and/or `comment` to every macro call, you can use the `lingui-set` and `lingui-reset` comment directives to set these values for all subsequent macros in the same file (or until the next directive resets/overrides them).
+
+- **`lingui-set`**: Sets the specified parameters for all subsequent macros. Requires at least one parameter.
+- **`lingui-reset`**: Clears all previously set parameters. Also accepts new parameters to set like `lingui-set`.
 
 The directive is placed in a comment directly above (or anywhere before) the macro calls it should affect:
 
 ```js
 import { t } from "@lingui/core/macro";
 
-// @lingui context="homepage"
+// lingui-set context="homepage"
 const msg1 = t`Welcome`;
 const msg2 = t`Sign up`;
 ```
@@ -570,18 +573,19 @@ Both `msg1` and `msg2` will have `context` set to `"homepage"`.
 | `context`  | `context="homepage"`           | Sets the [context](/guides/explicit-vs-generated-ids#context) for ID generation |
 | `comment`  | `comment="translator note"`    | Sets the [comment](#comment) for translators             |
 | `idPrefix` | `idPrefix="module."`           | Prefixes explicit `id` values (does not affect generated IDs) |
-| `reset`    | `reset`                        | Clears all inherited directive values (keyword, no value) |
 
 #### Syntax
 
 Both line comments and block comments are supported:
 
 ```js
-// @lingui context="homepage"
-/* @lingui context="homepage" comment="note" */
+// lingui-set context="homepage"
+/* lingui-set context="homepage" comment="note" */
+// lingui-reset
+/* lingui-reset context="new context" */
 ```
 
-Params use the `key="value"` syntax. Values must be wrapped in double quotes. `reset` is a keyword and does not accept a value.
+Params use the `key="value"` syntax. Values must be wrapped in double quotes.
 
 #### Merging and Scoping
 
@@ -590,10 +594,10 @@ Directives are **file-scoped**. Each directive merges its values with values fro
 ```js
 import { t } from "@lingui/core/macro";
 
-// @lingui context="settings" comment="Settings page"
+// lingui-set context="settings" comment="Settings page"
 const msg1 = t`Save`;
 
-// @lingui comment="Updated note"
+// lingui-set comment="Updated note"
 const msg2 = t`Cancel`; // context="settings", comment="Updated note"
 ```
 
@@ -604,27 +608,27 @@ Setting a param to an empty string unsets that specific value, without affecting
 ```js
 import { t } from "@lingui/core/macro";
 
-// @lingui context="settings" comment="note"
+// lingui-set context="settings" comment="note"
 const msg1 = t`Save`; // context="settings", comment="note"
 
-// @lingui context=""
+// lingui-set context=""
 const msg2 = t`Cancel`; // comment="note" (context is removed)
 ```
 
-#### `reset`
+#### Resetting Prior Values
 
-The `reset` keyword clears **all** inherited values. You can combine it with new values:
+The `lingui-reset` directive clears **all** inherited values. You can combine it with new values to immediately set a new context:
 
 ```js
 import { t } from "@lingui/core/macro";
 
-// @lingui context="settings" comment="note"
+// lingui-set context="settings" comment="note"
 const msg1 = t`Save`;
 
-// @lingui reset
+// lingui-reset
 const msg2 = t`Cancel`; // no context & no comment
 
-// @lingui reset context="new section"
+// lingui-reset context="new section"
 const msg3 = t`Delete`; // context="new section"
 ```
 
@@ -635,7 +639,7 @@ Values passed directly to a macro always take precedence over directive values:
 ```js
 import { t } from "@lingui/core/macro";
 
-// @lingui context="directive ctx"
+// lingui-set context="directive ctx"
 const msg = t({ message: "Hello", context: "explicit ctx" });
 // → context will be "explicit ctx"
 ```
@@ -647,7 +651,7 @@ The directive works with React macros too:
 ```jsx
 import { Trans } from "@lingui/react/macro";
 
-{/* @lingui idPrefix="homepage." context="homepage" */}
+{/* lingui-set idPrefix="homepage." context="homepage" */}
 <Trans>Welcome</Trans>
 <Trans id="copyright">Copyright</Trans>
 ```

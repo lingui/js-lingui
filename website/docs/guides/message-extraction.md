@@ -74,21 +74,21 @@ ctx.i18n.t("Message");
 
 Messages marked with this comment will be excluded from extraction.
 
-### `@lingui` Comment Directive
+### `lingui-set` Comment Directive
 
-You can use the `@lingui` comment directive to set `context`, `comment`, or `idPrefix` for subsequent macro calls without passing them to every call:
+You can use the `lingui-set` comment directive to set `context` and/or `comment` for subsequent macro calls without passing them to every call:
 
 ```ts
 import { t } from "@lingui/core/macro";
 
-// @lingui context="settings" comment="Settings page"
+// lingui-set context="settings" comment="Settings page"
 const msg1 = t`Save`;
 const msg2 = t`Cancel`;
 ```
 
-Both messages will be extracted with `context="settings"` and `comment="Settings page"`. The directive values persist for all subsequent macros until overridden by another directive or cleared with `@lingui reset`.
+Both messages will be extracted with `context="settings"` and `comment="Settings page"`. The directive values persist for all subsequent macros until overridden by another directive or cleared with `lingui-reset`.
 
-See [`@lingui` Comment Directive](/ref/macro#lingui-directive) in the Macros reference for full details and examples.
+See [`lingui-set` Comment Directive](/ref/macro#lingui-directive) in the Macros reference for full details and examples.
 
 ### Explicitly Marking Messages
 

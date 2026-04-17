@@ -1,15 +1,15 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`@lingui directive: JS macros > closest directive takes precedence 1`] = `
+exports[`lingui-set directive: JS macros > closest directive takes precedence 1`] = `
 import { t } from "@lingui/core/macro";
-/* @lingui context="first" */
+/* lingui-set context="first" */
 const msg1 = t\`Hello\`;
-/* @lingui context="second" */
+/* lingui-set context="second" */
 const msg2 = t\`World\`;
 
 ↓ ↓ ↓ ↓ ↓ ↓
 
-/* @lingui context="first" */ import { i18n as _i18n } from "@lingui/core";
+/* lingui-set context="first" */ import { i18n as _i18n } from "@lingui/core";
 const msg1 = _i18n._(
   /*i18n*/
   {
@@ -18,7 +18,7 @@ const msg1 = _i18n._(
     context: "first",
   },
 );
-/* @lingui context="second" */
+/* lingui-set context="second" */
 const msg2 = _i18n._(
   /*i18n*/
   {
@@ -30,14 +30,14 @@ const msg2 = _i18n._(
 
 `;
 
-exports[`@lingui directive: JS macros > defineMessage tagged template with directive 1`] = `
+exports[`lingui-set directive: JS macros > defineMessage tagged template with directive 1`] = `
 import { defineMessage } from "@lingui/core/macro";
-/* @lingui context="my context" comment="note" */
+/* lingui-set context="my context" comment="note" */
 const msg = defineMessage\`Hello\`;
 
 ↓ ↓ ↓ ↓ ↓ ↓
 
-/* @lingui context="my context" comment="note" */
+/* lingui-set context="my context" comment="note" */
 const msg =
   /*i18n*/
   {
@@ -49,14 +49,14 @@ const msg =
 
 `;
 
-exports[`@lingui directive: JS macros > defineMessage with directive context 1`] = `
+exports[`lingui-set directive: JS macros > defineMessage with directive context 1`] = `
 import { defineMessage } from "@lingui/core/macro";
-/* @lingui context="my context" */
+/* lingui-set context="my context" */
 const msg = defineMessage({ message: "Hello" });
 
 ↓ ↓ ↓ ↓ ↓ ↓
 
-/* @lingui context="my context" */
+/* lingui-set context="my context" */
 const msg =
   /*i18n*/
   {
@@ -67,15 +67,15 @@ const msg =
 
 `;
 
-exports[`@lingui directive: JS macros > directive applies to multiple subsequent macros 1`] = `
+exports[`lingui-set directive: JS macros > directive applies to multiple subsequent macros 1`] = `
 import { t } from "@lingui/core/macro";
-/* @lingui context="shared" */
+/* lingui-set context="shared" */
 const msg1 = t\`Hello\`;
 const msg2 = t\`World\`;
 
 ↓ ↓ ↓ ↓ ↓ ↓
 
-/* @lingui context="shared" */ import { i18n as _i18n } from "@lingui/core";
+/* lingui-set context="shared" */ import { i18n as _i18n } from "@lingui/core";
 const msg1 = _i18n._(
   /*i18n*/
   {
@@ -95,16 +95,16 @@ const msg2 = _i18n._(
 
 `;
 
-exports[`@lingui directive: JS macros > directives merge with preceding ones 1`] = `
+exports[`lingui-set directive: JS macros > directives merge with preceding ones 1`] = `
 import { t } from "@lingui/core/macro";
-/* @lingui context="ctx" comment="cmt" */
+/* lingui-set context="ctx" comment="cmt" */
 const msg1 = t\`Hello\`;
-/* @lingui context="new ctx" */
+/* lingui-set context="new ctx" */
 const msg2 = t\`World\`;
 
 ↓ ↓ ↓ ↓ ↓ ↓
 
-/* @lingui context="ctx" comment="cmt" */ import { i18n as _i18n } from "@lingui/core";
+/* lingui-set context="ctx" comment="cmt" */ import { i18n as _i18n } from "@lingui/core";
 const msg1 = _i18n._(
   /*i18n*/
   {
@@ -114,7 +114,7 @@ const msg1 = _i18n._(
     context: "ctx",
   },
 );
-/* @lingui context="new ctx" */
+/* lingui-set context="new ctx" */
 const msg2 = _i18n._(
   /*i18n*/
   {
@@ -127,16 +127,16 @@ const msg2 = _i18n._(
 
 `;
 
-exports[`@lingui directive: JS macros > empty param value clears single param while leaving others intact 1`] = `
+exports[`lingui-set directive: JS macros > empty param value clears single param while leaving others intact 1`] = `
 import { t } from "@lingui/core/macro";
-/* @lingui context="first" comment="second" */
+/* lingui-set context="first" comment="second" */
 const msg1 = t\`Hello\`;
-/* @lingui context="" */
+/* lingui-set context="" */
 const msg2 = t\`World\`;
 
 ↓ ↓ ↓ ↓ ↓ ↓
 
-/* @lingui context="first" comment="second" */ import { i18n as _i18n } from "@lingui/core";
+/* lingui-set context="first" comment="second" */ import { i18n as _i18n } from "@lingui/core";
 const msg1 = _i18n._(
   /*i18n*/
   {
@@ -146,7 +146,7 @@ const msg1 = _i18n._(
     context: "first",
   },
 );
-/* @lingui context="" */
+/* lingui-set context="" */
 const msg2 = _i18n._(
   /*i18n*/
   {
@@ -158,14 +158,14 @@ const msg2 = _i18n._(
 
 `;
 
-exports[`@lingui directive: JS macros > explicit comment overrides directive 1`] = `
+exports[`lingui-set directive: JS macros > explicit comment overrides directive 1`] = `
 import { t } from "@lingui/core/macro";
-/* @lingui comment="directive cmt" */
+/* lingui-set comment="directive cmt" */
 const msg = t({ message: "Hello", comment: "explicit cmt" });
 
 ↓ ↓ ↓ ↓ ↓ ↓
 
-/* @lingui comment="directive cmt" */ import { i18n as _i18n } from "@lingui/core";
+/* lingui-set comment="directive cmt" */ import { i18n as _i18n } from "@lingui/core";
 const msg = _i18n._(
   /*i18n*/
   {
@@ -177,14 +177,14 @@ const msg = _i18n._(
 
 `;
 
-exports[`@lingui directive: JS macros > explicit context overrides directive 1`] = `
+exports[`lingui-set directive: JS macros > explicit context overrides directive 1`] = `
 import { defineMessage } from "@lingui/core/macro";
-/* @lingui context="directive ctx" comment="directive cmt" */
+/* lingui-set context="directive ctx" comment="directive cmt" */
 const msg = defineMessage({ message: "Hello", context: "explicit ctx" });
 
 ↓ ↓ ↓ ↓ ↓ ↓
 
-/* @lingui context="directive ctx" comment="directive cmt" */
+/* lingui-set context="directive ctx" comment="directive cmt" */
 const msg =
   /*i18n*/
   {
@@ -196,14 +196,14 @@ const msg =
 
 `;
 
-exports[`@lingui directive: JS macros > idPrefix does NOT apply to auto-generated id 1`] = `
+exports[`lingui-set directive: JS macros > idPrefix does NOT apply to auto-generated id 1`] = `
 import { t } from "@lingui/core/macro";
-/* @lingui idPrefix="module." */
+/* lingui-set idPrefix="module." */
 const msg = t\`Hello\`;
 
 ↓ ↓ ↓ ↓ ↓ ↓
 
-/* @lingui idPrefix="module." */ import { i18n as _i18n } from "@lingui/core";
+/* lingui-set idPrefix="module." */ import { i18n as _i18n } from "@lingui/core";
 const msg = _i18n._(
   /*i18n*/
   {
@@ -214,14 +214,14 @@ const msg = _i18n._(
 
 `;
 
-exports[`@lingui directive: JS macros > idPrefix with explicit id 1`] = `
+exports[`lingui-set directive: JS macros > idPrefix with explicit id 1`] = `
 import { defineMessage } from "@lingui/core/macro";
-/* @lingui idPrefix="module." */
+/* lingui-set idPrefix="module." */
 const msg = defineMessage({ id: "greeting", message: "Hello" });
 
 ↓ ↓ ↓ ↓ ↓ ↓
 
-/* @lingui idPrefix="module." */
+/* lingui-set idPrefix="module." */
 const msg =
   /*i18n*/
   {
@@ -231,7 +231,7 @@ const msg =
 
 `;
 
-exports[`@lingui directive: JS macros > no directive - normal behavior 1`] = `
+exports[`lingui-set directive: JS macros > no directive - normal behavior 1`] = `
 import { t } from "@lingui/core/macro";
 const msg = t\`Hello\`;
 
@@ -248,14 +248,14 @@ const msg = _i18n._(
 
 `;
 
-exports[`@lingui directive: JS macros > plural with directive context 1`] = `
+exports[`lingui-set directive: JS macros > plural with directive context 1`] = `
 import { plural } from "@lingui/core/macro";
-/* @lingui context="my context" */
+/* lingui-set context="my context" */
 const msg = plural(count, { one: "# book", other: "# books" });
 
 ↓ ↓ ↓ ↓ ↓ ↓
 
-/* @lingui context="my context" */ import { i18n as _i18n } from "@lingui/core";
+/* lingui-set context="my context" */ import { i18n as _i18n } from "@lingui/core";
 const msg = _i18n._(
   /*i18n*/
   {
@@ -270,14 +270,14 @@ const msg = _i18n._(
 
 `;
 
-exports[`@lingui directive: JS macros > production: directive context affects id hash 1`] = `
+exports[`lingui-set directive: JS macros > production: directive context affects id hash 1`] = `
 import { t } from "@lingui/core/macro";
-/* @lingui context="my context" */
+/* lingui-set context="my context" */
 const msg = t\`Hello\`;
 
 ↓ ↓ ↓ ↓ ↓ ↓
 
-/* @lingui context="my context" */ import { i18n as _i18n } from "@lingui/core";
+/* lingui-set context="my context" */ import { i18n as _i18n } from "@lingui/core";
 const msg = _i18n._(
   /*i18n*/
   {
@@ -287,16 +287,16 @@ const msg = _i18n._(
 
 `;
 
-exports[`@lingui directive: JS macros > reset clears all inherited values 1`] = `
+exports[`lingui-set directive: JS macros > reset clears all inherited values 1`] = `
 import { t } from "@lingui/core/macro";
-/* @lingui context="first" comment="second" idPrefix="prefix." */
+/* lingui-set context="first" comment="second" idPrefix="prefix." */
 const msg1 = t\`Hello\`;
-/* @lingui reset */
+/* lingui-reset */
 const msg2 = t\`World\`;
 
 ↓ ↓ ↓ ↓ ↓ ↓
 
-/* @lingui context="first" comment="second" idPrefix="prefix." */ import { i18n as _i18n } from "@lingui/core";
+/* lingui-set context="first" comment="second" idPrefix="prefix." */ import { i18n as _i18n } from "@lingui/core";
 const msg1 = _i18n._(
   /*i18n*/
   {
@@ -306,7 +306,7 @@ const msg1 = _i18n._(
     context: "first",
   },
 );
-/* @lingui reset */
+/* lingui-reset */
 const msg2 = _i18n._(
   /*i18n*/
   {
@@ -317,16 +317,16 @@ const msg2 = _i18n._(
 
 `;
 
-exports[`@lingui directive: JS macros > reset combined with new values 1`] = `
+exports[`lingui-set directive: JS macros > reset combined with new values 1`] = `
 import { t } from "@lingui/core/macro";
-/* @lingui context="first" comment="second" */
+/* lingui-set context="first" comment="second" */
 const msg1 = t\`Hello\`;
-/* @lingui reset context="fresh" */
+/* lingui-reset context="fresh" */
 const msg2 = t\`World\`;
 
 ↓ ↓ ↓ ↓ ↓ ↓
 
-/* @lingui context="first" comment="second" */ import { i18n as _i18n } from "@lingui/core";
+/* lingui-set context="first" comment="second" */ import { i18n as _i18n } from "@lingui/core";
 const msg1 = _i18n._(
   /*i18n*/
   {
@@ -336,7 +336,7 @@ const msg1 = _i18n._(
     context: "first",
   },
 );
-/* @lingui reset context="fresh" */
+/* lingui-reset context="fresh" */
 const msg2 = _i18n._(
   /*i18n*/
   {
@@ -348,14 +348,14 @@ const msg2 = _i18n._(
 
 `;
 
-exports[`@lingui directive: JS macros > select with directive context 1`] = `
+exports[`lingui-set directive: JS macros > select with directive context 1`] = `
 import { select } from "@lingui/core/macro";
-/* @lingui context="my context" */
+/* lingui-set context="my context" */
 const msg = select(gender, { male: "he", female: "she", other: "they" });
 
 ↓ ↓ ↓ ↓ ↓ ↓
 
-/* @lingui context="my context" */ import { i18n as _i18n } from "@lingui/core";
+/* lingui-set context="my context" */ import { i18n as _i18n } from "@lingui/core";
 const msg = _i18n._(
   /*i18n*/
   {
@@ -370,14 +370,14 @@ const msg = _i18n._(
 
 `;
 
-exports[`@lingui directive: JS macros > t with directive comment (line comment) 1`] = `
+exports[`lingui-set directive: JS macros > t with directive comment (line comment) 1`] = `
 import { t } from "@lingui/core/macro";
-// @lingui comment="translator note"
+// lingui-set comment="translator note"
 const msg = t\`Hello\`;
 
 ↓ ↓ ↓ ↓ ↓ ↓
 
-// @lingui comment="translator note"
+// lingui-set comment="translator note"
 import { i18n as _i18n } from "@lingui/core";
 const msg = _i18n._(
   /*i18n*/
@@ -390,14 +390,14 @@ const msg = _i18n._(
 
 `;
 
-exports[`@lingui directive: JS macros > t with directive context (block comment) 1`] = `
+exports[`lingui-set directive: JS macros > t with directive context (block comment) 1`] = `
 import { t } from "@lingui/core/macro";
-/* @lingui context="my context" */
+/* lingui-set context="my context" */
 const msg = t\`Hello\`;
 
 ↓ ↓ ↓ ↓ ↓ ↓
 
-/* @lingui context="my context" */ import { i18n as _i18n } from "@lingui/core";
+/* lingui-set context="my context" */ import { i18n as _i18n } from "@lingui/core";
 const msg = _i18n._(
   /*i18n*/
   {
@@ -409,14 +409,14 @@ const msg = _i18n._(
 
 `;
 
-exports[`@lingui directive: JS macros > t with directive context and comment 1`] = `
+exports[`lingui-set directive: JS macros > t with directive context and comment 1`] = `
 import { t } from "@lingui/core/macro";
-/* @lingui context="ctx" comment="cmt" */
+/* lingui-set context="ctx" comment="cmt" */
 const msg = t\`Hello\`;
 
 ↓ ↓ ↓ ↓ ↓ ↓
 
-/* @lingui context="ctx" comment="cmt" */ import { i18n as _i18n } from "@lingui/core";
+/* lingui-set context="ctx" comment="cmt" */ import { i18n as _i18n } from "@lingui/core";
 const msg = _i18n._(
   /*i18n*/
   {
@@ -429,14 +429,14 @@ const msg = _i18n._(
 
 `;
 
-exports[`@lingui directive: JSX macros > Plural with directive context 1`] = `
+exports[`lingui-set directive: JSX macros > Plural with directive context 1`] = `
 import { Plural } from "@lingui/react/macro";
-/* @lingui context="my context" */
+/* lingui-set context="my context" */
 const el = <Plural value={count} one="# book" other="# books" />;
 
 ↓ ↓ ↓ ↓ ↓ ↓
 
-/* @lingui context="my context" */ import { Trans as _Trans } from "@lingui/react";
+/* lingui-set context="my context" */ import { Trans as _Trans } from "@lingui/react";
 const el = (
   <_Trans
     {
@@ -455,14 +455,14 @@ const el = (
 
 `;
 
-exports[`@lingui directive: JSX macros > Select with directive context 1`] = `
+exports[`lingui-set directive: JSX macros > Select with directive context 1`] = `
 import { Select } from "@lingui/react/macro";
-/* @lingui context="my context" */
+/* lingui-set context="my context" */
 const el = <Select value={gender} male="he" female="she" other="they" />;
 
 ↓ ↓ ↓ ↓ ↓ ↓
 
-/* @lingui context="my context" */ import { Trans as _Trans } from "@lingui/react";
+/* lingui-set context="my context" */ import { Trans as _Trans } from "@lingui/react";
 const el = (
   <_Trans
     male="he"
@@ -483,14 +483,14 @@ const el = (
 
 `;
 
-exports[`@lingui directive: JSX macros > Trans with directive comment 1`] = `
+exports[`lingui-set directive: JSX macros > Trans with directive comment 1`] = `
 import { Trans } from "@lingui/react/macro";
-// @lingui comment="translator note"
+// lingui-set comment="translator note"
 const el = <Trans>Hello</Trans>;
 
 ↓ ↓ ↓ ↓ ↓ ↓
 
-// @lingui comment="translator note"
+// lingui-set comment="translator note"
 import { Trans as _Trans } from "@lingui/react";
 const el = (
   <_Trans
@@ -507,14 +507,14 @@ const el = (
 
 `;
 
-exports[`@lingui directive: JSX macros > Trans with directive context 1`] = `
+exports[`lingui-set directive: JSX macros > Trans with directive context 1`] = `
 import { Trans } from "@lingui/react/macro";
-/* @lingui context="my context" */
+/* lingui-set context="my context" */
 const el = <Trans>Hello</Trans>;
 
 ↓ ↓ ↓ ↓ ↓ ↓
 
-/* @lingui context="my context" */ import { Trans as _Trans } from "@lingui/react";
+/* lingui-set context="my context" */ import { Trans as _Trans } from "@lingui/react";
 const el = (
   <_Trans
     {
@@ -530,14 +530,14 @@ const el = (
 
 `;
 
-exports[`@lingui directive: JSX macros > Trans with directive idPrefix and explicit id 1`] = `
+exports[`lingui-set directive: JSX macros > Trans with directive idPrefix and explicit id 1`] = `
 import { Trans } from "@lingui/react/macro";
-/* @lingui idPrefix="module." */
+/* lingui-set idPrefix="module." */
 const el = <Trans id="greeting">Hello</Trans>;
 
 ↓ ↓ ↓ ↓ ↓ ↓
 
-/* @lingui idPrefix="module." */ import { Trans as _Trans } from "@lingui/react";
+/* lingui-set idPrefix="module." */ import { Trans as _Trans } from "@lingui/react";
 const el = (
   <_Trans
     {
@@ -552,14 +552,14 @@ const el = (
 
 `;
 
-exports[`@lingui directive: JSX macros > Trans with directive idPrefix without explicit id 1`] = `
+exports[`lingui-set directive: JSX macros > Trans with directive idPrefix without explicit id 1`] = `
 import { Trans } from "@lingui/react/macro";
-/* @lingui idPrefix="module." */
+/* lingui-set idPrefix="module." */
 const el = <Trans>Hello</Trans>;
 
 ↓ ↓ ↓ ↓ ↓ ↓
 
-/* @lingui idPrefix="module." */ import { Trans as _Trans } from "@lingui/react";
+/* lingui-set idPrefix="module." */ import { Trans as _Trans } from "@lingui/react";
 const el = (
   <_Trans
     {
@@ -574,14 +574,14 @@ const el = (
 
 `;
 
-exports[`@lingui directive: JSX macros > Trans with explicit context overrides directive 1`] = `
+exports[`lingui-set directive: JSX macros > Trans with explicit context overrides directive 1`] = `
 import { Trans } from "@lingui/react/macro";
-/* @lingui context="directive ctx" */
+/* lingui-set context="directive ctx" */
 const el = <Trans context="explicit ctx">Hello</Trans>;
 
 ↓ ↓ ↓ ↓ ↓ ↓
 
-/* @lingui context="directive ctx" */ import { Trans as _Trans } from "@lingui/react";
+/* lingui-set context="directive ctx" */ import { Trans as _Trans } from "@lingui/react";
 const el = (
   <_Trans
     {
@@ -597,16 +597,16 @@ const el = (
 
 `;
 
-exports[`@lingui directive: JSX macros > multiple directives switching context mid-file 1`] = `
+exports[`lingui-set directive: JSX macros > multiple directives switching context mid-file 1`] = `
 import { Trans } from "@lingui/react/macro";
-/* @lingui context="header" */
+/* lingui-set context="header" */
 const h = <Trans>Title</Trans>;
-/* @lingui context="footer" */
+/* lingui-set context="footer" */
 const f = <Trans>Copyright</Trans>;
 
 ↓ ↓ ↓ ↓ ↓ ↓
 
-/* @lingui context="header" */ import { Trans as _Trans } from "@lingui/react";
+/* lingui-set context="header" */ import { Trans as _Trans } from "@lingui/react";
 const h = (
   <_Trans
     {
@@ -619,7 +619,7 @@ const h = (
     }
   />
 );
-/* @lingui context="footer" */
+/* lingui-set context="footer" */
 const f = (
   <_Trans
     {
@@ -635,13 +635,13 @@ const f = (
 
 `;
 
-exports[`@lingui directive: useLingui > useLingui t with directive applied per-reference 1`] = `
+exports[`lingui-set directive: useLingui > useLingui t with directive applied per-reference 1`] = `
 import { useLingui } from "@lingui/react/macro";
 function App() {
   const { t } = useLingui();
-  /* @lingui context="first" */
+  /* lingui-set context="first" */
   const msg1 = t\`Hello\`;
-  /* @lingui context="second" */
+  /* lingui-set context="second" */
   const msg2 = t\`World\`;
   return msg1 + msg2;
 }
@@ -651,7 +651,7 @@ function App() {
 import { useLingui as _useLingui } from "@lingui/react";
 function App() {
   const { _: _t } = _useLingui();
-  /* @lingui context="first" */
+  /* lingui-set context="first" */
   const msg1 = _t(
     /*i18n*/
     {
@@ -660,7 +660,7 @@ function App() {
       context: "first",
     },
   );
-  /* @lingui context="second" */
+  /* lingui-set context="second" */
   const msg2 = _t(
     /*i18n*/
     {
@@ -674,11 +674,11 @@ function App() {
 
 `;
 
-exports[`@lingui directive: useLingui > useLingui t with directive context 1`] = `
+exports[`lingui-set directive: useLingui > useLingui t with directive context 1`] = `
 import { useLingui } from "@lingui/react/macro";
 function App() {
   const { t } = useLingui();
-  /* @lingui context="my context" */
+  /* lingui-set context="my context" */
   return t\`Hello\`;
 }
 
@@ -687,7 +687,7 @@ function App() {
 import { useLingui as _useLingui } from "@lingui/react";
 function App() {
   const { _: _t } = _useLingui();
-  /* @lingui context="my context" */
+  /* lingui-set context="my context" */
   return _t(
     /*i18n*/
     {

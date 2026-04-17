@@ -67,7 +67,7 @@ export class MacroJs {
         tokens,
         path.node.loc,
         this._ctx.descriptorFields,
-        this._ctx.getDirective ? this._ctx.getDirective(path.node.loc?.start.line) : undefined,
+        this._ctx.getDirective(path.node.loc?.start.line),
       ),
       linguiInstance,
     )
@@ -98,7 +98,7 @@ export class MacroJs {
         tokens,
         path.node.loc,
         ctx.descriptorFields,
-        ctx.getDirective ? ctx.getDirective(path.node.loc?.start.line) : undefined,
+        this._ctx.getDirective(path.node.loc?.start.line),
       )
     }
 
@@ -276,7 +276,7 @@ export class MacroJs {
             tokens,
             currentPath.node.loc,
             _ctx.descriptorFields,
-            _ctx.getDirective ? _ctx.getDirective(currentPath.node.loc?.start.line) : undefined,
+            _ctx.getDirective(currentPath.node.loc?.start.line),
           )
 
           const callExpr = t.callExpression(

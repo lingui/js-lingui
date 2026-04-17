@@ -9,21 +9,21 @@ import { macroTester } from "./macroTester"
 
 describe("parseLinguiDirective", () => {
   it("should parse context", () => {
-    expect(parseLinguiDirective(' @lingui context="my context" ')).toEqual({
+    expect(parseLinguiDirective(' lingui-set context="my context" ')).toEqual({
       reset: false,
       values: { context: { text: "my context" } },
     })
   })
 
   it("should parse comment", () => {
-    expect(parseLinguiDirective(' @lingui comment="my comment" ')).toEqual({
+    expect(parseLinguiDirective(' lingui-set comment="my comment" ')).toEqual({
       reset: false,
       values: { comment: { text: "my comment" } },
     })
   })
 
   it("should parse idPrefix", () => {
-    expect(parseLinguiDirective(' @lingui idPrefix="prefix." ')).toEqual({
+    expect(parseLinguiDirective(' lingui-set idPrefix="prefix." ')).toEqual({
       reset: false,
       values: { idPrefix: "prefix." },
     })
@@ -32,7 +32,7 @@ describe("parseLinguiDirective", () => {
   it("should parse multiple keys", () => {
     expect(
       parseLinguiDirective(
-        ' @lingui context="ctx" comment="cmt" idPrefix="p." ',
+        ' lingui-set context="ctx" comment="cmt" idPrefix="p." ',
       ),
     ).toEqual({
       reset: false,
@@ -49,50 +49,50 @@ describe("parseLinguiDirective", () => {
     expect(parseLinguiDirective(" i18n ")).toBeNull()
   })
 
-  it("should throw for @lingui with no params", () => {
-    expect(() => parseLinguiDirective(" @lingui ")).toThrow(
-      "requires at least one param"
+  it("should throw for lingui-set with no params", () => {
+    expect(() => parseLinguiDirective(" lingui-set ")).toThrow(
+      "requires at least one param",
     )
   })
 
   it("should throw for unknown params", () => {
-    expect(() =>
-      parseLinguiDirective(' @lingui unknown="value" ')
-    ).toThrow('unknown param "unknown"')
+    expect(() => parseLinguiDirective(' lingui-set unknown="value" ')).toThrow(
+      'unknown param "unknown"',
+    )
 
     expect(() =>
-      parseLinguiDirective(' @lingui context="ctx" foo="bar" ')
+      parseLinguiDirective(' lingui-set context="ctx" foo="bar" '),
     ).toThrow('unknown param "foo"')
   })
 
   it("should throw for valid key without a value", () => {
-    expect(() => parseLinguiDirective(" @lingui context ")).toThrow(
-      '"context" requires a value'
+    expect(() => parseLinguiDirective(" lingui-set context ")).toThrow(
+      '"context" requires a value',
     )
-    expect(() => parseLinguiDirective(" @lingui comment ")).toThrow(
-      '"comment" requires a value'
+    expect(() => parseLinguiDirective(" lingui-set comment ")).toThrow(
+      '"comment" requires a value',
     )
-  })
-
-  it("should throw for reset with a value", () => {
-    expect(() =>
-      parseLinguiDirective(' @lingui reset="yes" ')
-    ).toThrow('"reset" is a keyword and does not accept a value')
+    expect(() => parseLinguiDirective(" lingui-reset comment ")).toThrow(
+      '"comment" requires a value',
+    )
   })
 
   it("should throw for invalid syntax", () => {
-    expect(() =>
-      parseLinguiDirective(" @lingui context='single' ")
-    ).toThrow("requires a value")
-    expect(() =>
-      parseLinguiDirective(" @lingui context=single ")
-    ).toThrow("requires a value")
+    expect(() => parseLinguiDirective(" lingui-set context='single' ")).toThrow(
+      "requires a value",
+    )
+    expect(() => parseLinguiDirective(" lingui-set context=single ")).toThrow(
+      "requires a value",
+    )
+    expect(() => parseLinguiDirective(" lingui-reset context=single ")).toThrow(
+      "requires a value",
+    )
   })
 
   it("should handle values with spaces", () => {
     expect(
       parseLinguiDirective(
-        ' @lingui context="my custom context with spaces" ',
+        ' lingui-set context="my custom context with spaces" ',
       ),
     ).toEqual({
       reset: false,
@@ -101,12 +101,12 @@ describe("parseLinguiDirective", () => {
   })
 
   it("should set empty string values to null (unset sentinel)", () => {
-    expect(parseLinguiDirective(' @lingui context="" ')).toEqual({
+    expect(parseLinguiDirective(' lingui-set context="" ')).toEqual({
       reset: false,
       values: { context: null },
     })
     expect(
-      parseLinguiDirective(' @lingui context="" comment="note" '),
+      parseLinguiDirective(' lingui-set context="" comment="note" '),
     ).toEqual({
       reset: false,
       values: { context: null, comment: { text: "note" } },
@@ -114,25 +114,21 @@ describe("parseLinguiDirective", () => {
   })
 
   it("should parse reset keyword", () => {
-    expect(parseLinguiDirective(" @lingui reset")).toEqual({
+    expect(parseLinguiDirective(" lingui-reset")).toEqual({
       reset: true,
       values: {},
     })
   })
 
   it("should not treat reset as keyword when used in a value", () => {
-    expect(
-      parseLinguiDirective(' @lingui context="reset" '),
-    ).toEqual({
+    expect(parseLinguiDirective(' lingui-set context="reset" ')).toEqual({
       reset: false,
       values: { context: { text: "reset" } },
     })
   })
 
   it("should parse reset combined with values", () => {
-    expect(
-      parseLinguiDirective(' @lingui reset context="new ctx" '),
-    ).toEqual({
+    expect(parseLinguiDirective(' lingui-reset context="new ctx" ')).toEqual({
       reset: true,
       values: { context: { text: "new ctx" } },
     })
@@ -140,7 +136,7 @@ describe("parseLinguiDirective", () => {
 
   it("should parse without leading or trailing spaces", () => {
     expect(
-      parseLinguiDirective('@lingui context="ctx" comment="cmt"'),
+      parseLinguiDirective('lingui-set context="ctx" comment="cmt"'),
     ).toEqual({
       reset: false,
       values: { context: { text: "ctx" }, comment: { text: "cmt" } },
@@ -153,7 +149,7 @@ describe("collectLinguiDirectives", () => {
     const comments: Comment[] = [
       {
         type: "CommentBlock",
-        value: ' @lingui context="ctx1" ',
+        value: ' lingui-set context="ctx1" ',
         start: 0,
         end: 30,
         loc: {
@@ -177,7 +173,7 @@ describe("collectLinguiDirectives", () => {
       },
       {
         type: "CommentLine",
-        value: ' @lingui comment="cmt" ',
+        value: ' lingui-set comment="cmt" ',
         start: 51,
         end: 80,
         loc: {
@@ -189,7 +185,7 @@ describe("collectLinguiDirectives", () => {
       },
       {
         type: "CommentLine",
-        value: ' @lingui reset context="ctx2" ',
+        value: ' lingui-reset context="ctx2" ',
         start: 81,
         end: 115,
         loc: {
@@ -240,13 +236,21 @@ describe("findDirectiveForLine", () => {
   })
 
   it("should return the directive on its own line", () => {
-    expect(findDirectiveForLine(directives, 3)).toEqual({ context: { text: "first" } })
+    expect(findDirectiveForLine(directives, 3)).toEqual({
+      context: { text: "first" },
+    })
   })
 
   it("should return closest preceding directive", () => {
-    expect(findDirectiveForLine(directives, 7)).toEqual({ context: { text: "first" } })
-    expect(findDirectiveForLine(directives, 15)).toEqual({ context: { text: "second" } })
-    expect(findDirectiveForLine(directives, 100)).toEqual({ comment: { text: "third" } })
+    expect(findDirectiveForLine(directives, 7)).toEqual({
+      context: { text: "first" },
+    })
+    expect(findDirectiveForLine(directives, 15)).toEqual({
+      context: { text: "second" },
+    })
+    expect(findDirectiveForLine(directives, 100)).toEqual({
+      comment: { text: "third" },
+    })
   })
 
   it("should return undefined for empty directives", () => {
@@ -255,14 +259,14 @@ describe("findDirectiveForLine", () => {
 })
 
 // Integration tests with babel transform
-describe("@lingui directive: JS macros", () => {
+describe("lingui-set directive: JS macros", () => {
   macroTester({
     cases: [
       {
         name: "t with directive context (block comment)",
         code: `
           import { t } from '@lingui/core/macro';
-          /* @lingui context="my context" */
+          /* lingui-set context="my context" */
           const msg = t\`Hello\`
         `,
       },
@@ -270,7 +274,7 @@ describe("@lingui directive: JS macros", () => {
         name: "t with directive comment (line comment)",
         code: `
           import { t } from '@lingui/core/macro';
-          // @lingui comment="translator note"
+          // lingui-set comment="translator note"
           const msg = t\`Hello\`
         `,
       },
@@ -278,7 +282,7 @@ describe("@lingui directive: JS macros", () => {
         name: "t with directive context and comment",
         code: `
           import { t } from '@lingui/core/macro';
-          /* @lingui context="ctx" comment="cmt" */
+          /* lingui-set context="ctx" comment="cmt" */
           const msg = t\`Hello\`
         `,
       },
@@ -286,7 +290,7 @@ describe("@lingui directive: JS macros", () => {
         name: "defineMessage with directive context",
         code: `
           import { defineMessage } from '@lingui/core/macro';
-          /* @lingui context="my context" */
+          /* lingui-set context="my context" */
           const msg = defineMessage({ message: "Hello" })
         `,
       },
@@ -294,7 +298,7 @@ describe("@lingui directive: JS macros", () => {
         name: "defineMessage tagged template with directive",
         code: `
           import { defineMessage } from '@lingui/core/macro';
-          /* @lingui context="my context" comment="note" */
+          /* lingui-set context="my context" comment="note" */
           const msg = defineMessage\`Hello\`
         `,
       },
@@ -302,7 +306,7 @@ describe("@lingui directive: JS macros", () => {
         name: "explicit context overrides directive",
         code: `
           import { defineMessage } from '@lingui/core/macro';
-          /* @lingui context="directive ctx" comment="directive cmt" */
+          /* lingui-set context="directive ctx" comment="directive cmt" */
           const msg = defineMessage({ message: "Hello", context: "explicit ctx" })
         `,
       },
@@ -310,7 +314,7 @@ describe("@lingui directive: JS macros", () => {
         name: "explicit comment overrides directive",
         code: `
           import { t } from '@lingui/core/macro';
-          /* @lingui comment="directive cmt" */
+          /* lingui-set comment="directive cmt" */
           const msg = t({ message: "Hello", comment: "explicit cmt" })
         `,
       },
@@ -318,7 +322,7 @@ describe("@lingui directive: JS macros", () => {
         name: "directive applies to multiple subsequent macros",
         code: `
           import { t } from '@lingui/core/macro';
-          /* @lingui context="shared" */
+          /* lingui-set context="shared" */
           const msg1 = t\`Hello\`
           const msg2 = t\`World\`
         `,
@@ -327,9 +331,9 @@ describe("@lingui directive: JS macros", () => {
         name: "closest directive takes precedence",
         code: `
           import { t } from '@lingui/core/macro';
-          /* @lingui context="first" */
+          /* lingui-set context="first" */
           const msg1 = t\`Hello\`
-          /* @lingui context="second" */
+          /* lingui-set context="second" */
           const msg2 = t\`World\`
         `,
       },
@@ -337,9 +341,9 @@ describe("@lingui directive: JS macros", () => {
         name: "directives merge with preceding ones",
         code: `
           import { t } from '@lingui/core/macro';
-          /* @lingui context="ctx" comment="cmt" */
+          /* lingui-set context="ctx" comment="cmt" */
           const msg1 = t\`Hello\`
-          /* @lingui context="new ctx" */
+          /* lingui-set context="new ctx" */
           const msg2 = t\`World\`
         `,
       },
@@ -347,9 +351,9 @@ describe("@lingui directive: JS macros", () => {
         name: "reset clears all inherited values",
         code: `
           import { t } from '@lingui/core/macro';
-          /* @lingui context="first" comment="second" idPrefix="prefix." */
+          /* lingui-set context="first" comment="second" idPrefix="prefix." */
           const msg1 = t\`Hello\`
-          /* @lingui reset */
+          /* lingui-reset */
           const msg2 = t\`World\`
         `,
       },
@@ -357,9 +361,9 @@ describe("@lingui directive: JS macros", () => {
         name: "reset combined with new values",
         code: `
           import { t } from '@lingui/core/macro';
-          /* @lingui context="first" comment="second" */
+          /* lingui-set context="first" comment="second" */
           const msg1 = t\`Hello\`
-          /* @lingui reset context="fresh" */
+          /* lingui-reset context="fresh" */
           const msg2 = t\`World\`
         `,
       },
@@ -367,9 +371,9 @@ describe("@lingui directive: JS macros", () => {
         name: "empty param value clears single param while leaving others intact",
         code: `
           import { t } from '@lingui/core/macro';
-          /* @lingui context="first" comment="second" */
+          /* lingui-set context="first" comment="second" */
           const msg1 = t\`Hello\`
-          /* @lingui context="" */
+          /* lingui-set context="" */
           const msg2 = t\`World\`
         `,
       },
@@ -377,7 +381,7 @@ describe("@lingui directive: JS macros", () => {
         name: "plural with directive context",
         code: `
           import { plural } from '@lingui/core/macro';
-          /* @lingui context="my context" */
+          /* lingui-set context="my context" */
           const msg = plural(count, { one: "# book", other: "# books" })
         `,
       },
@@ -385,7 +389,7 @@ describe("@lingui directive: JS macros", () => {
         name: "select with directive context",
         code: `
           import { select } from '@lingui/core/macro';
-          /* @lingui context="my context" */
+          /* lingui-set context="my context" */
           const msg = select(gender, { male: "he", female: "she", other: "they" })
         `,
       },
@@ -393,7 +397,7 @@ describe("@lingui directive: JS macros", () => {
         name: "idPrefix with explicit id",
         code: `
           import { defineMessage } from '@lingui/core/macro';
-          /* @lingui idPrefix="module." */
+          /* lingui-set idPrefix="module." */
           const msg = defineMessage({ id: "greeting", message: "Hello" })
         `,
       },
@@ -401,7 +405,7 @@ describe("@lingui directive: JS macros", () => {
         name: "idPrefix does NOT apply to auto-generated id",
         code: `
           import { t } from '@lingui/core/macro';
-          /* @lingui idPrefix="module." */
+          /* lingui-set idPrefix="module." */
           const msg = t\`Hello\`
         `,
       },
@@ -417,7 +421,7 @@ describe("@lingui directive: JS macros", () => {
         production: true,
         code: `
           import { t } from '@lingui/core/macro';
-          /* @lingui context="my context" */
+          /* lingui-set context="my context" */
           const msg = t\`Hello\`
         `,
       },
@@ -425,7 +429,7 @@ describe("@lingui directive: JS macros", () => {
   })
 })
 
-describe("@lingui directive: useLingui", () => {
+describe("lingui-set directive: useLingui", () => {
   macroTester({
     cases: [
       {
@@ -434,7 +438,7 @@ describe("@lingui directive: useLingui", () => {
           import { useLingui } from '@lingui/react/macro';
           function App() {
             const { t } = useLingui()
-            /* @lingui context="my context" */
+            /* lingui-set context="my context" */
             return t\`Hello\`
           }
         `,
@@ -445,9 +449,9 @@ describe("@lingui directive: useLingui", () => {
           import { useLingui } from '@lingui/react/macro';
           function App() {
             const { t } = useLingui()
-            /* @lingui context="first" */
+            /* lingui-set context="first" */
             const msg1 = t\`Hello\`
-            /* @lingui context="second" */
+            /* lingui-set context="second" */
             const msg2 = t\`World\`
             return msg1 + msg2
           }
@@ -457,14 +461,14 @@ describe("@lingui directive: useLingui", () => {
   })
 })
 
-describe("@lingui directive: JSX macros", () => {
+describe("lingui-set directive: JSX macros", () => {
   macroTester({
     cases: [
       {
         name: "Trans with directive context",
         code: `
           import { Trans } from '@lingui/react/macro';
-          /* @lingui context="my context" */
+          /* lingui-set context="my context" */
           const el = <Trans>Hello</Trans>
         `,
       },
@@ -472,7 +476,7 @@ describe("@lingui directive: JSX macros", () => {
         name: "Trans with directive comment",
         code: `
           import { Trans } from '@lingui/react/macro';
-          // @lingui comment="translator note"
+          // lingui-set comment="translator note"
           const el = <Trans>Hello</Trans>
         `,
       },
@@ -480,7 +484,7 @@ describe("@lingui directive: JSX macros", () => {
         name: "Trans with explicit context overrides directive",
         code: `
           import { Trans } from '@lingui/react/macro';
-          /* @lingui context="directive ctx" */
+          /* lingui-set context="directive ctx" */
           const el = <Trans context="explicit ctx">Hello</Trans>
         `,
       },
@@ -488,7 +492,7 @@ describe("@lingui directive: JSX macros", () => {
         name: "Plural with directive context",
         code: `
           import { Plural } from '@lingui/react/macro';
-          /* @lingui context="my context" */
+          /* lingui-set context="my context" */
           const el = <Plural value={count} one="# book" other="# books" />
         `,
       },
@@ -496,7 +500,7 @@ describe("@lingui directive: JSX macros", () => {
         name: "Select with directive context",
         code: `
           import { Select } from '@lingui/react/macro';
-          /* @lingui context="my context" */
+          /* lingui-set context="my context" */
           const el = <Select value={gender} male="he" female="she" other="they" />
         `,
       },
@@ -504,7 +508,7 @@ describe("@lingui directive: JSX macros", () => {
         name: "Trans with directive idPrefix and explicit id",
         code: `
           import { Trans } from '@lingui/react/macro';
-          /* @lingui idPrefix="module." */
+          /* lingui-set idPrefix="module." */
           const el = <Trans id="greeting">Hello</Trans>
         `,
       },
@@ -512,7 +516,7 @@ describe("@lingui directive: JSX macros", () => {
         name: "Trans with directive idPrefix without explicit id",
         code: `
           import { Trans } from '@lingui/react/macro';
-          /* @lingui idPrefix="module." */
+          /* lingui-set idPrefix="module." */
           const el = <Trans>Hello</Trans>
         `,
       },
@@ -520,9 +524,9 @@ describe("@lingui directive: JSX macros", () => {
         name: "multiple directives switching context mid-file",
         code: `
           import { Trans } from '@lingui/react/macro';
-          /* @lingui context="header" */
+          /* lingui-set context="header" */
           const h = <Trans>Title</Trans>
-          /* @lingui context="footer" */
+          /* lingui-set context="footer" */
           const f = <Trans>Copyright</Trans>
         `,
       },
