@@ -145,6 +145,43 @@ describe("FormatterWrapper", () => {
       )
     })
 
+    it("should not re-read file when existing is passed explicitly as undefined", async () => {
+      const serializeMock = vi
+        .fn()
+        .mockImplementation((catalog) => JSON.stringify(catalog))
+      const readFileSpy = vi.spyOn(fs.promises, "readFile")
+      const format = new FormatterWrapper(
+        {
+          serialize: serializeMock,
+          parse: () => ({}),
+          catalogExtension: ".po",
+          templateExtension: ".pot",
+        },
+        "en",
+      )
+
+      mockFs({})
+
+      await format.serialize(
+        "messages.json",
+        {
+          static: {
+            translation: "Static message",
+          },
+        },
+        "en",
+        undefined,
+      )
+
+      mockFs.restore()
+      readFileSpy.mockRestore()
+
+      expect(readFileSpy).not.toHaveBeenCalled()
+      expect(serializeMock.mock.calls[0]?.[1]).toMatchObject({
+        existing: undefined,
+      })
+    })
+
     it("should write to FS and serialize catalog using provided formatter", async () => {
       const format = new FormatterWrapper(
         {

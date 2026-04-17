@@ -63,8 +63,8 @@ async function getCatalogSyncFindings(
       return {
         code: "catalog_out_of_sync",
         message: existing
-          ? `Catalog ${catalogPath} is out of sync with extract output`
-          : `Catalog ${catalogPath} is missing and would be created by extract`,
+          ? "Catalog is out of sync with extract output"
+          : "Catalog is missing and would be created by extract",
         locale,
         catalogPath,
       }

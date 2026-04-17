@@ -22,10 +22,13 @@ export class FormatterWrapper {
     locale?: string,
     existing?: string,
   ): Promise<string> {
+    const resolvedExisting =
+      arguments.length >= 4 ? existing : await readFile(filename)
+
     return await this.f.serialize(catalog, {
       locale,
       sourceLocale: this.sourceLocale,
-      existing: existing ?? (await readFile(filename)),
+      existing: resolvedExisting,
       filename,
     })
   }

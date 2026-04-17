@@ -308,6 +308,8 @@ t\`New Message\`
     const rendered = renderCheckResult(result, true)
 
     expect(rendered[0]).toContain("FAIL sync")
-    expect(rendered[1]).toContain("locales/en/messages.po")
+    expect(rendered[1]).toBe(
+      "locales/en/messages.po: Catalog is out of sync with extract output",
+    )
   })
 })
