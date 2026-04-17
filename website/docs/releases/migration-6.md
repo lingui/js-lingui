@@ -227,6 +227,30 @@ Switch to the dedicated Babel or SWC plugins:
 
 See [Installation](/installation) for configuration details.
 
+## `extract` and `stripMessageField` Replaced by `descriptorFields`
+
+The legacy metadata transformation flags were consolidated into a single `descriptorFields` option.
+
+### What Changed
+
+The following options are no longer supported: `extract`, `stripMessageField`. Use `descriptorFields` instead (supported by both `@lingui/babel-plugin-lingui-macro` and `@lingui/swc-plugin`):
+
+- `"auto"` (default): keeps all fields in development and only `id` in production
+- `"all"`: keeps `id`, `message`, `context`, and `comment`
+- `"id-only"`: keeps only `id`
+- `"message"`: keeps `id`, `message`, and `context`
+
+:::note
+When using `"message"`, `context` is preserved as well to ensure message identity remains correct.
+:::
+
+### Migration
+
+If you've been using `extract` or `stripMessageField` in your configuration, use this mapping for your new configuration:
+
+- `extract: true` -> `descriptorFields: "all"`
+- `stripMessageField: true` -> `descriptorFields: "id-only"`
+
 ## Deprecated `extractorParserOptions`
 
 The top-level `extractorParserOptions` configuration option is deprecated and will be removed in a future release. Parser options should be passed directly to the extractor implementation instead. The old configuration style allowed specifying parser options at the root level:
