@@ -59,12 +59,42 @@ function reportUnsupportedSyntax(path: NodePath, e: Error) {
   throw codeFrameError
 }
 
+const VALID_DESCRIPTOR_FIELDS = [
+  "auto",
+  "all",
+  "id-only",
+  "message",
+] as LinguiPluginOpts["descriptorFields"][]
+
+const REMOVED_OPTIONS: Record<string, string> = {
+  extract:
+    'Use `descriptorFields: "all"` instead of `extract: true` to preserve all fields during extraction.',
+  stripMessageField:
+    'Use `descriptorFields: "id-only"` instead of `stripMessageField: true`, ' +
+    'or `descriptorFields: "message"` to keep message and context.',
+}
+
 function resolveDescriptorFields(
   opts: LinguiPluginOpts,
 ): ResolvedDescriptorFields {
+  // introduced in v6, remove these hints in V7
+  for (const [key, hint] of Object.entries(REMOVED_OPTIONS)) {
+    if (key in (opts as Record<string, unknown>)) {
+      throw new Error(`[lingui] Option "${key}" has been removed. ${hint}`)
+    }
+  }
+
   const mode = opts.descriptorFields ?? "auto"
+
+  if (!VALID_DESCRIPTOR_FIELDS.includes(mode)) {
+    throw new Error(
+      `[lingui] Invalid descriptorFields value: "${mode}". ` +
+        `Expected one of: ${VALID_DESCRIPTOR_FIELDS.join(", ")}.`,
+    )
+  }
+
   if (mode !== "auto") {
-    return mode
+    return mode as ResolvedDescriptorFields
   }
   // "auto": production → "id-only", otherwise → "all"
   return process.env.NODE_ENV === "production" ? "id-only" : "all"
