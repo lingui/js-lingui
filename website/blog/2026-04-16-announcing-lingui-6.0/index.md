@@ -7,7 +7,7 @@ image: ./social-card.png
 
 We're announcing Lingui 6.0! :rocket:
 
-This release focuses primarily on **technical improvements and modernization** of the codebase. It includes the transition to ESM-only distribution, reduced dependency graph, removal of deprecated APIs, and improved TypeScript support. In this post, we'll highlight the key changes in this release.
+This release focuses primarily on **technical improvements and modernization** of the codebase. It includes the transition to ESM-only distribution, reduced dependency graph, removal of deprecated APIs, and improved TypeScript support. It also introduces a few new features. In this post, we'll highlight the key changes in this release.
 
 In line with the principles of [Semantic Versioning](https://semver.org/), this release contains **breaking changes** that we have thoroughly documented in the [v6 migration guide](/releases/migration-6).
 
@@ -27,6 +27,7 @@ In line with the principles of [Semantic Versioning](https://semver.org/), this 
 - [What's New in 6.0?](#whats-new-in-60)
   - [ESM-Only Distribution](#esm-only-distribution)
   - [Reduced Package Size](#reduced-package-size)
+  - [Configurable JSX Placeholder Names in `<Trans>`](#configurable-jsx-placeholder-names-in-trans)
   - [Vue 3 Reactivity Transform in Vue Extractor](#vue-3-reactivity-transform-in-vue-extractor)
   - [Vite Plugin Improvements](#vite-plugin-improvements)
   - [Stronger Type Safety](#stronger-type-safety)
@@ -164,6 +165,64 @@ The transitive dependency tree shrank from **146 packages down to 104** - 42 few
 
 ![Dependency graph comparison](./deps-light.png#gh-light-mode-only)
 ![Dependency graph comparison](./deps-dark.png#gh-dark-mode-only)
+
+### Configurable JSX Placeholder Names in `<Trans>`
+
+When `<Trans>` includes JSX elements, extracted messages traditionally used numeric placeholders like `<0>...</0>`. This works, but creates two translation problems:
+
+- Numeric tags provide little context to translators, especially in longer messages with several nested elements.
+- Reordering or refactoring JSX can change placeholder indices, producing noisy catalog diffs and increasing the chance of unnecessary re-translation.
+
+Lingui 6.0 introduces two new macro config options to make placeholders semantic and more stable:
+
+- [`macro.jsxPlaceholderAttribute`](/ref/conf#macrojsxplaceholderattribute) for explicit local naming (for example, `_t="link"`).
+- [`macro.jsxPlaceholderDefaults`](/ref/conf#macrojsxplaceholderdefaults) for project-wide default names by element/tag.
+
+```jsx title="lingui.config.{js,ts}"
+import { defineConfig } from "@lingui/cli";
+
+export default defineConfig({
+  macro: {
+    jsxPlaceholderAttribute: "_t",
+    jsxPlaceholderDefaults: {
+      a: "link",
+      strong: "bold",
+    },
+  },
+});
+```
+
+```jsx title="App.jsx"
+<Trans>
+  Open <a href="/">docs</a> and read the <strong>important</strong> note.
+</Trans>
+```
+
+```diff title="en.po"
+- "Open <0>docs</0> and read the <1>important</1> note."
++ "Open <link>docs</link> and read the <bold>important</bold> note."
+```
+
+You can also set an explicit name directly in markup:
+
+```jsx title="App.jsx"
+<Trans>
+  Read the{" "}
+  <a _t="docsLink" href="/docs">
+    documentation
+  </a>
+  .
+</Trans>
+```
+
+```diff title="en.po"
+- "Read the <0>documentation</0>."
++ "Read the <docsLink>documentation</docsLink>."
+```
+
+The result is more human-readable messages, better translator context, and fewer accidental translation breaks when UI markup changes.
+
+The same capability is also available in [`@lingui/swc-plugin`](/ref/swc-plugin), so teams using either Babel or SWC can keep placeholder naming behavior consistent.
 
 ### Vue 3 Reactivity Transform in Vue Extractor
 

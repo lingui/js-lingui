@@ -107,6 +107,28 @@ You can configure the plugin by passing the `runtimeModules` option. This option
 
 For more details, refer to the [Runtime Configuration](/ref/conf#runtimeconfigmodule) section of the documentation.
 
+### JSX Placeholder Naming in `<Trans>`
+
+You can configure semantic JSX placeholder names for elements inside `<Trans>` with:
+
+- `jsxPlaceholderAttribute` - custom attribute used to set an explicit placeholder name in JSX (for example, `_t="link"`).
+- `jsxPlaceholderDefaults` - default placeholder names per JSX tag.
+
+```json
+[
+  "@lingui/swc-plugin",
+  {
+    "jsxPlaceholderAttribute": "_t",
+    "jsxPlaceholderDefaults": {
+      "a": "link",
+      "strong": "bold"
+    }
+  }
+]
+```
+
+For behavior details and examples, see [`macro.jsxPlaceholderAttribute`](/ref/conf#macrojsxplaceholderattribute) and [`macro.jsxPlaceholderDefaults`](/ref/conf#macrojsxplaceholderdefaults).
+
 ### Descriptor Fields
 
 The `descriptorFields` option controls which message descriptor fields are preserved in the transformed code.
