@@ -640,9 +640,9 @@ If defined, the `/* lingui-set idPrefix="..." */`) directive will only prepend `
 // lingui.config
 export default {
   macro: {
-    idPrefixLeader: '.',
-  }
-}
+    idPrefixLeader: ".",
+  },
+};
 ```
 
 ```jsx
