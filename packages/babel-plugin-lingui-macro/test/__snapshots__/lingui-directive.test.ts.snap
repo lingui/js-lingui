@@ -1,5 +1,31 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
+exports[`lingui-set directive: JS macros > With idPrefixLeader 1`] = `
+import { i18n } from "@lingui/core/macro";
+import { t } from "@lingui/core/macro";
+/* lingui-set idPrefix="module" comment="cmt" */
+const msg = i18n.t({ id: "unprefixed", message: "Welcome" });
+const msg2 = t({ id: ".my.id", message: "Welcome" });
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { i18n as _i18n } from "@lingui/core";
+/* lingui-set idPrefix="module" comment="cmt" */
+const msg = i18n.t({
+  id: "unprefixed",
+  message: "Welcome",
+});
+const msg2 = _i18n._(
+  /*i18n*/
+  {
+    id: "module.my.id",
+    message: "Welcome",
+    comment: "cmt",
+  },
+);
+
+`;
+
 exports[`lingui-set directive: JS macros > closest directive takes precedence 1`] = `
 import { t } from "@lingui/core/macro";
 /* lingui-set context="first" */
@@ -196,7 +222,27 @@ const msg =
 
 `;
 
-exports[`lingui-set directive: JS macros > idPrefix does NOT apply to auto-generated id 1`] = `
+exports[`lingui-set directive: JS macros > idPrefix + idPrefixLeader with dynamic id 1`] = `
+import { t } from "@lingui/core/macro";
+/* lingui-set idPrefix="module" */
+const dynId = "dynamic";
+const msg = t({ id: dynId, message: "Welcome" });
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+/* lingui-set idPrefix="module" */ import { i18n as _i18n } from "@lingui/core";
+const dynId = "dynamic";
+const msg = _i18n._(
+  /*i18n*/
+  {
+    id: dynId,
+    message: "Welcome",
+  },
+);
+
+`;
+
+exports[`lingui-set directive: JS macros > idPrefix and implicit ID 1`] = `
 import { t } from "@lingui/core/macro";
 /* lingui-set idPrefix="module." */
 const msg = t\`Hello\`;
@@ -543,7 +589,7 @@ const el = (
     {
       /*i18n*/
       ...{
-        id: "module.greeting",
+        id: "greeting",
         message: "Hello",
       }
     }
@@ -574,6 +620,51 @@ const el = (
 
 `;
 
+exports[`lingui-set directive: JSX macros > Trans with dynamic ID and idPrefix 1`] = `
+import { Trans } from "@lingui/react/macro";
+/* lingui-set idPrefix="module." */
+const el = <Trans id={dynId}>Hello</Trans>;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+/* lingui-set idPrefix="module." */ import { Trans as _Trans } from "@lingui/react";
+const el = (
+  <_Trans
+    {
+      /*i18n*/
+      ...{
+        id: "uzTaYi",
+        message: "Hello",
+      }
+    }
+  />
+);
+
+`;
+
+exports[`lingui-set directive: JSX macros > Trans with dynamic id and no idPrefix 1`] = `
+import { Trans } from "@lingui/react/macro";
+const dynId = "dynamic";
+const el = <Trans id={dynId}>Hello</Trans>;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { Trans as _Trans } from "@lingui/react";
+const dynId = "dynamic";
+const el = (
+  <_Trans
+    {
+      /*i18n*/
+      ...{
+        id: "uzTaYi",
+        message: "Hello",
+      }
+    }
+  />
+);
+
+`;
+
 exports[`lingui-set directive: JSX macros > Trans with explicit context overrides directive 1`] = `
 import { Trans } from "@lingui/react/macro";
 /* lingui-set context="directive ctx" */
@@ -590,6 +681,76 @@ const el = (
         id: "Mxe6B4",
         message: "Hello",
         context: "explicit ctx",
+      }
+    }
+  />
+);
+
+`;
+
+exports[`lingui-set directive: JSX macros > Trans with idPrefixLeader 1`] = `
+import { Trans } from "@lingui/react/macro";
+/* lingui-set idPrefix="checkout" */
+const el1 = <Trans id=".usesPrefix">Hello</Trans>;
+const el2 = <Trans id=".usesPrefix.with.subpath">Hello</Trans>;
+const el3 = <Trans id="unprefixed.key">Hello</Trans>;
+const el4 = <Trans id="unprefixed">Hello</Trans>;
+const el5 = <Trans id="test">Hello</Trans>;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+/* lingui-set idPrefix="checkout" */ import { Trans as _Trans } from "@lingui/react";
+const el1 = (
+  <_Trans
+    {
+      /*i18n*/
+      ...{
+        id: "checkout.usesPrefix",
+        message: "Hello",
+      }
+    }
+  />
+);
+const el2 = (
+  <_Trans
+    {
+      /*i18n*/
+      ...{
+        id: "checkout.usesPrefix.with.subpath",
+        message: "Hello",
+      }
+    }
+  />
+);
+const el3 = (
+  <_Trans
+    {
+      /*i18n*/
+      ...{
+        id: "unprefixed.key",
+        message: "Hello",
+      }
+    }
+  />
+);
+const el4 = (
+  <_Trans
+    {
+      /*i18n*/
+      ...{
+        id: "unprefixed",
+        message: "Hello",
+      }
+    }
+  />
+);
+const el5 = (
+  <_Trans
+    {
+      /*i18n*/
+      ...{
+        id: "test",
+        message: "Hello",
       }
     }
   />

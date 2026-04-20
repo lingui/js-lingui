@@ -406,6 +406,11 @@ export type LinguiConfig = {
      * ```
      */
     jsxPlaceholderDefaults?: Record<string, string>
+    /**
+     * If defined, `idPrefix` will only be prepended to explicit IDs that
+     * start with this leader string. The leader string is kept in the final ID.
+     */
+    idPrefixLeader?: string
   }
   experimental?: {
     extractor?: ExperimentalExtractorOptions

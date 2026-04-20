@@ -293,6 +293,7 @@ export default function ({
                       linguiConfig.macro?.jsxPlaceholderAttribute,
                     jsxPlaceholderDefaults:
                       linguiConfig.macro?.jsxPlaceholderDefaults,
+                    idPrefixLeader: linguiConfig.macro?.idPrefixLeader,
                   },
                 )
 
@@ -317,6 +318,10 @@ export default function ({
                 >,
                 state: PluginPass,
               ) {
+                const linguiConfig = state.get(
+                  "linguiConfig",
+                ) as LinguiConfigNormalized
+
                 const macro = new MacroJs({
                   descriptorFields: resolveDescriptorFields(
                     state.opts as LinguiPluginOpts,
@@ -327,6 +332,7 @@ export default function ({
                   isLinguiIdentifier: (node: Identifier, macro) =>
                     isLinguiIdentifier(path, node, macro),
                   getDirective,
+                  idPrefixLeader: linguiConfig.macro?.idPrefixLeader,
                 })
                 let newNode: false | babelTypes.Node
 

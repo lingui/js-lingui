@@ -24,6 +24,7 @@ export type MacroJsContext = {
   descriptorFields: ResolvedDescriptorFields
   isLinguiIdentifier: (node: Identifier, macro: JsMacroName) => boolean
   getDirective: (line: number) => DirectiveValues | undefined
+  idPrefixLeader?: string
 }
 
 export function createMacroJsContext(
@@ -32,8 +33,8 @@ export function createMacroJsContext(
   getDirective: MacroJsContext["getDirective"] = () => undefined,
 ): MacroJsContext {
   return {
-    getExpressionIndex: makeCounter(),
     isLinguiIdentifier,
+    getExpressionIndex: makeCounter(),
     descriptorFields,
     getDirective,
   }
@@ -97,6 +98,7 @@ export function processDescriptor(
     {
       ...directive,
       id: idProperty,
+      idPrefixLeader: ctx.idPrefixLeader,
       context: contextProperty ?? directive?.context,
       comment: commentProperty ?? directive?.comment,
     },

@@ -25,7 +25,6 @@ import {
   ResolvedDescriptorFields,
 } from "./messageDescriptorUtils"
 import {
-  createMacroJsContext,
   MacroJsContext,
   tokenizeExpression,
 } from "./macroJsAst"
@@ -64,6 +63,7 @@ export type MacroJsxOpts = {
   getDirective?: MacroJsContext["getDirective"]
   jsxPlaceholderAttribute?: string
   jsxPlaceholderDefaults?: Record<string, string>
+  idPrefixLeader?: string
 }
 
 const choiceComponentAttributesWhitelist = [
@@ -87,16 +87,11 @@ export class MacroJSX {
     this.types = types
 
     this.ctx = {
-      ...createMacroJsContext(
-        opts.isLinguiIdentifier,
-        opts.descriptorFields,
-        opts.getDirective,
-      ),
-      transImportName: opts.transImportName,
+      getDirective: () => undefined,
+      ...opts,
+      getExpressionIndex: makeCounter(),
       elementIndex: makeCounter(),
       elementsTracking: new Map(),
-      jsxPlaceholderAttribute: opts.jsxPlaceholderAttribute,
-      jsxPlaceholderDefaults: opts.jsxPlaceholderDefaults,
     }
   }
 
@@ -128,6 +123,7 @@ export class MacroJSX {
       {
         ...directive,
         id,
+        idPrefixLeader: this.ctx.idPrefixLeader,
         context: context ?? directive?.context,
         comment: comment ?? directive?.comment,
       },

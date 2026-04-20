@@ -39,6 +39,7 @@ export function createMessageDescriptorFromTokens(
   descriptorFields: ResolvedDescriptorFields,
   defaults: DirectiveValues & {
     id?: TextWithLoc | ObjectProperty
+    idPrefixLeader?: string
   } = {},
 ) {
   return createMessageDescriptor(
@@ -55,6 +56,7 @@ export function createMessageDescriptor(
   descriptorFields: ResolvedDescriptorFields,
   defaults: DirectiveValues & {
     id?: TextWithLoc | ObjectProperty
+    idPrefixLeader?: string
   } = {},
 ) {
   const { message, values, elements } = result
@@ -69,22 +71,39 @@ export function createMessageDescriptor(
 
   const properties: ObjectProperty[] = []
 
+  let explicitId = ""
+  let shouldPrefix = false
+  if (defaults.id) {
+    explicitId = isObjectProperty(defaults.id)
+      ? getTextFromExpression(defaults.id.value as Expression)
+      : defaults.id.text
+
+    if (
+      explicitId !== undefined &&
+      defaults.idPrefix &&
+      (!defaults.idPrefixLeader ||
+        explicitId.startsWith(defaults.idPrefixLeader))
+    ) {
+      shouldPrefix = true
+      explicitId = defaults.idPrefix + explicitId
+    }
+  }
+
   properties.push(
     defaults.id
-      ? isObjectProperty(defaults.id)
-        ? defaults.idPrefix
-          ? createStringObjectProperty(
+      ? shouldPrefix
+        ? createStringObjectProperty(
+            MsgDescriptorPropKey.id,
+            explicitId,
+            isObjectProperty(defaults.id) ? defaults.id.loc : defaults.id.loc,
+          )
+        : isObjectProperty(defaults.id)
+          ? defaults.id
+          : createStringObjectProperty(
               MsgDescriptorPropKey.id,
-              defaults.idPrefix +
-                getTextFromExpression(defaults.id.value as Expression),
+              explicitId,
               defaults.id.loc,
             )
-          : defaults.id
-        : createStringObjectProperty(
-            MsgDescriptorPropKey.id,
-            (defaults.idPrefix ?? "") + defaults.id.text,
-            defaults.id.loc,
-          )
       : createIdProperty(
           message,
           defaults.context

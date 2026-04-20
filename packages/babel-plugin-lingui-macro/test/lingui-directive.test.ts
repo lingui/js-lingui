@@ -1,4 +1,5 @@
 import { describe, it, expect } from "vitest"
+import { makeConfig } from "@lingui/conf"
 import {
   parseLinguiDirective,
   collectLinguiDirectives,
@@ -394,6 +395,14 @@ describe("lingui-set directive: JS macros", () => {
         `,
       },
       {
+        name: "idPrefix and implicit ID",
+        code: `
+          import { t } from '@lingui/core/macro';
+          /* lingui-set idPrefix="module." */
+          const msg = t\`Hello\`
+        `,
+      },
+      {
         name: "idPrefix with explicit id",
         code: `
           import { defineMessage } from '@lingui/core/macro';
@@ -402,11 +411,43 @@ describe("lingui-set directive: JS macros", () => {
         `,
       },
       {
-        name: "idPrefix does NOT apply to auto-generated id",
+        name: "With idPrefixLeader",
+        macroOpts: {
+          linguiConfig: makeConfig(
+            {
+              macro: {
+                idPrefixLeader: ".",
+              },
+            },
+            { skipValidation: true },
+          ),
+        },
+        code: `
+          import { i18n } from '@lingui/core/macro';
+          import { t } from '@lingui/core/macro';
+          /* lingui-set idPrefix="module" comment="cmt" */
+          const msg = i18n.t({ id: "unprefixed", message: "Welcome" })
+          const msg2 = t({ id: ".my.id", message: "Welcome" })
+        `,
+      },
+      {
+        name: "idPrefix + idPrefixLeader with dynamic id",
+        shouldThrow: false,
+        macroOpts: {
+          linguiConfig: makeConfig(
+            {
+              macro: {
+                idPrefixLeader: ".",
+              },
+            },
+            { skipValidation: true },
+          ),
+        },
         code: `
           import { t } from '@lingui/core/macro';
-          /* lingui-set idPrefix="module." */
-          const msg = t\`Hello\`
+          /* lingui-set idPrefix="module" */
+          const dynId = "dynamic";
+          const msg = t({ id: dynId, message: "Welcome" })
         `,
       },
       {
@@ -505,6 +546,23 @@ describe("lingui-set directive: JSX macros", () => {
         `,
       },
       {
+        name: "Trans with dynamic id and no idPrefix",
+        code: `
+          import { Trans } from '@lingui/react/macro';
+          const dynId = "dynamic";
+          const el = <Trans id={dynId}>Hello</Trans>
+        `,
+      },
+      {
+        name: "Trans with dynamic ID and idPrefix",
+        shouldThrow: false,
+        code: `
+          import { Trans } from '@lingui/react/macro';
+          /* lingui-set idPrefix="module." */
+          const el = <Trans id={dynId}>Hello</Trans>
+        `,
+      },
+      {
         name: "Trans with directive idPrefix and explicit id",
         code: `
           import { Trans } from '@lingui/react/macro';
@@ -518,6 +576,28 @@ describe("lingui-set directive: JSX macros", () => {
           import { Trans } from '@lingui/react/macro';
           /* lingui-set idPrefix="module." */
           const el = <Trans>Hello</Trans>
+        `,
+      },
+      {
+        name: "Trans with idPrefixLeader",
+        macroOpts: {
+          linguiConfig: makeConfig(
+            {
+              macro: {
+                idPrefixLeader: ".",
+              },
+            },
+            { skipValidation: true },
+          ),
+        },
+        code: `
+          import { Trans } from '@lingui/react/macro';
+          /* lingui-set idPrefix="checkout" */
+          const el1 = <Trans id=".usesPrefix">Hello</Trans>
+          const el2 = <Trans id=".usesPrefix.with.subpath">Hello</Trans>
+          const el3 = <Trans id="unprefixed.key">Hello</Trans>
+          const el4 = <Trans id="unprefixed">Hello</Trans>
+          const el5 = <Trans id="test">Hello</Trans>
         `,
       },
       {
