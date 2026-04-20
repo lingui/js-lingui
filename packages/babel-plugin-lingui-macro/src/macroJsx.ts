@@ -24,10 +24,7 @@ import {
   createMessageDescriptorFromTokens,
   ResolvedDescriptorFields,
 } from "./messageDescriptorUtils"
-import {
-  MacroJsContext,
-  tokenizeExpression,
-} from "./macroJsAst"
+import { MacroJsContext, tokenizeExpression } from "./macroJsAst"
 import { LinguiConfigNormalized } from "@lingui/conf"
 import { PluginPass } from "@babel/core"
 

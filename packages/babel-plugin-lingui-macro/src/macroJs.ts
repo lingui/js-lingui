@@ -71,7 +71,7 @@ export class MacroJs {
         {
           ...this._ctx.getDirective(path.node.loc?.start.line),
           idPrefixLeader: this._ctx.idPrefixLeader,
-        }
+        },
       ),
       linguiInstance,
     )
@@ -105,7 +105,7 @@ export class MacroJs {
         {
           ...this._ctx.getDirective(path.node.loc?.start.line),
           idPrefixLeader: ctx.idPrefixLeader,
-        }
+        },
       )
     }
 
@@ -285,7 +285,7 @@ export class MacroJs {
             {
               ..._ctx.getDirective(currentPath.node.loc?.start.line),
               idPrefixLeader: _ctx.idPrefixLeader,
-            }
+            },
           )
 
           const callExpr = t.callExpression(
