@@ -43,7 +43,7 @@ Lingui is an open-source JavaScript library for internationalization (**i18n**) 
 
 The journey from [Lingui 5.0](/blog/2024/11/28/announcing-lingui-5.0) includes **22 version updates** (minor and patch), more than **130 closed issues**, and more than **170 merged pull requests**.
 
-Before we dive into the changes in 6.0, let's take a look at the project's metrics since version 5.0. The project has grown significantly, with GitHub stars up 24% and significantly increased downloads across all packages:
+Before we dive into the changes in 6.0, let's take a look at the project's metrics since version 5.0. The project has grown significantly, with GitHub stars up 24% and substantially increased downloads across all packages:
 
 ```mermaid
 %%{init: {"themeCSS": ".node rect { rx: 5; ry: 5; }"} }%%
