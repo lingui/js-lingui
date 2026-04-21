@@ -57,7 +57,7 @@ For example:
 i18n.t("message.id");
 i18n.t({ id: "message.id" });
 
-ctx.i18n.t("message.id");
+ctx.i18n._("message.id");
 ctx.i18n.t("message.id");
 
 ctx.request.i18n.t("message.id");

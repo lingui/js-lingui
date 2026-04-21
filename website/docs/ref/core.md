@@ -212,7 +212,7 @@ Read more about [Message Descriptor](/ref/macro#core-macros).
 
 ### `i18n._(...)` {#i18n.\_}
 
-Alias for [`i18n.t`](#i18n.t).
+Canonical translation method. [`i18n.t`](#i18n.t) is an alias for this method.
 
 ```ts
 import { i18n } from "@lingui/core";
