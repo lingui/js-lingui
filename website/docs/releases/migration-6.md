@@ -40,8 +40,7 @@ The deprecated `format` (as a string) and `formatOptions` configuration options 
 
 The old configuration style using a format string and separate options object is no longer supported:
 
-```js title="lingui.config.js"
-// No longer supported
+```js title="lingui.config.{js,ts}"
 export default {
   locales: ["en", "cs"],
   format: "po",
@@ -53,7 +52,7 @@ export default {
 
 Update your configuration to use the formatter function instead:
 
-```js title="lingui.config.js"
+```js title="lingui.config.{js,ts}" {2,6}
 import { defineConfig } from "@lingui/cli";
 import { formatter } from "@lingui/format-po";
 
@@ -194,6 +193,19 @@ export default defineConfig({
 
 Using TypeScript configuration with `defineConfig` is recommended as it provides type safety and better IDE support.
 
+## Vite Version for `@lingui/vite-plugin`
+
+The minimum supported Vite version for `@lingui/vite-plugin` is now 6.3+ (compatible range: `^6.3.0 || ^7 || ^8`).
+
+### What Changed
+
+`@lingui/vite-plugin` adopted Vite hook filters for better performance and compatibility with newer Vite/Rolldown internals. As a result, older Vite versions are no longer supported by the plugin.
+
+### Migration
+
+- If you use Vite 6, upgrade to 6.3 or newer
+- If you use Vite 5 or earlier, upgrade to a supported Vite major (`6.3+`, `7`, or `8`)
+
 ## Create React App (CRA) Example Removed
 
 The Create React App example has been removed from the repository.
@@ -215,27 +227,118 @@ Switch to the dedicated Babel or SWC plugins:
 
 See [Installation](/installation) for configuration details.
 
-## Vue Extractor: `vueExtractor` Replaced by `createVueExtractor()`
+## `extract` and `stripMessageField` Replaced by `descriptorFields`
 
-The `vueExtractor` export from `@lingui/extractor-vue` is deprecated. Use the new `createVueExtractor()` factory function instead:
+The legacy metadata transformation flags were consolidated into a single `descriptorFields` option.
+
+### What Changed
+
+The following options are no longer supported: `extract`, `stripMessageField`. Use `descriptorFields` instead (supported by both `@lingui/babel-plugin-lingui-macro` and `@lingui/swc-plugin`):
+
+- `"auto"` (default): keeps all fields in development and only `id` in production
+- `"all"`: keeps `id`, `message`, `context`, and `comment`
+- `"id-only"`: keeps only `id`
+- `"message"`: keeps `id`, `message`, and `context`
+
+:::note
+When using `"message"`, `context` is preserved as well to ensure message identity remains correct.
+:::
+
+### Migration
+
+If you've been using `extract` or `stripMessageField` in your configuration, use this mapping for your new configuration:
+
+- `extract: true` -> `descriptorFields: "all"`
+- `stripMessageField: true` -> `descriptorFields: "id-only"`
+
+## Deprecated `extractorParserOptions`
+
+The top-level `extractorParserOptions` configuration option is deprecated and will be removed in a future release. Parser options should be passed directly to the extractor implementation instead. The old configuration style allowed specifying parser options at the root level:
 
 ```js title="lingui.config.{js,ts}"
-// Before
-import { vueExtractor } from "@lingui/extractor-vue";
-extractors: [babel, vueExtractor],
+import { defineConfig } from "@lingui/cli";
 
-// After
-import { createVueExtractor } from "@lingui/extractor-vue";
-extractors: [babel, createVueExtractor()],
+export default defineConfig({
+  locales: ["en", "cs"],
+  extractorParserOptions: {
+    tsExperimentalDecorators: true,
+    flow: false,
+  },
+});
 ```
 
-`createVueExtractor()` accepts an options object. If your project uses Vue's [Reactivity Transform](https://github.com/vuejs/rfcs/discussions/502), enable `reactivityTransform` so message IDs match between extraction and runtime:
+### Migration
+
+Pass parser options to the extractor instead. For the default Babel extractor, use `createBabelExtractor` from `@lingui/cli/api/extractors/babel` and pass a `parserOptions` object:
+
+```js title="lingui.config.{js,ts}" {7-12}
+import { defineConfig } from "@lingui/cli";
+import { createBabelExtractor } from "@lingui/cli/api/extractors/babel";
+
+export default defineConfig({
+  locales: ["en", "cs"],
+  extractors: [
+    createBabelExtractor({
+      parserOptions: {
+        tsExperimentalDecorators: true,
+        flow: false,
+      },
+    }),
+  ],
+});
+```
+
+If you use multiple extractors (e.g. Babel and Vue), include each in the `extractors` array and pass parser options only to the Babel extractor. See [Configuration](/ref/conf#extractorparseroptions) for the full reference.
+
+## Deprecated `vueExtractor`
+
+The `vueExtractor` export from `@lingui/extractor-vue` is deprecated. Use the new `createVueExtractor()` factory function instead. The old configuration used the `vueExtractor` export directly:
 
 ```js title="lingui.config.{js,ts}"
-extractors: [babel, createVueExtractor({ reactivityTransform: true })],
+import { defineConfig } from "@lingui/cli";
+import { vueExtractor } from "@lingui/extractor-vue";
+
+export default defineConfig({
+  locales: ["en", "cs"],
+  extractors: [vueExtractor],
+});
+```
+
+### Migration
+
+Use `createVueExtractor()` instead. It accepts an options object. If your project uses Vue's [Reactivity Transform](https://github.com/vuejs/rfcs/discussions/502), enable `reactivityTransform` so message IDs match between extraction and runtime:
+
+```js title="lingui.config.{js,ts}" {6}
+import { defineConfig } from "@lingui/cli";
+import { createVueExtractor } from "@lingui/extractor-vue";
+
+export default defineConfig({
+  locales: ["en", "cs"],
+  extractors: [createVueExtractor({ reactivityTransform: true })],
+});
 ```
 
 The option is opt-in (`reactivityTransform: false` by default) to avoid breaking existing setups.
+
+## Deprecated `localeData` API Removed
+
+The `localeData`-related types and methods that were deprecated in Lingui v4 have been fully removed from `@lingui/core`.
+
+### What Changed
+
+The following exports have been removed from `@lingui/core`:
+
+- `LocaleData` type
+- `AllLocaleData` type
+- `I18nProps.localeData` property
+- `i18n.localeData` getter
+- `i18n.loadLocaleData()` method
+
+These APIs were originally used to supply custom plural rules to Lingui. Since v4, plural rules are automatically derived from `Intl.PluralRules` and these methods have had no effect.
+
+### Migration
+
+Remove any calls to `i18n.loadLocaleData()` and any `localeData` property passed to `setupI18n()` or `createI18n()`. No replacement is needed - plural rules are handled automatically.
 
 ## TypeScript Type Changes
 
