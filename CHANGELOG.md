@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.0](https://github.com/lingui/js-lingui/compare/v5.9.5...v6.0.0) (2026-04-22)
+
+This release modernizes the codebase and packages (ESM-only distribution, smaller dependency graph, deprecated API removals, improved TypeScript support) and still ships meaningful new features and bug fixes.
+
+Check out the links below for more details:
+
+- [Blog Post: Announcing Lingui 6.0](https://lingui.dev/blog/2026/04/22/announcing-lingui-6.0)
+- [Migration Guide from 5.x to 6.x](https://lingui.dev/releases/migration-6)
+- [Full Changelog](https://github.com/lingui/js-lingui/compare/v5.9.5...v6.0.0)
+
 ## [5.9.5](https://github.com/lingui/js-lingui/compare/v5.9.4...v5.9.5) (2026-04-06)
 
 ### Bug Fixes
@@ -15,7 +25,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 * really keep catalog extra from previous catalog ([#2479](https://github.com/lingui/js-lingui/issues/2479)) ([c939113](https://github.com/lingui/js-lingui/commit/c939113293b29a948b80f2a6332cf8016c47ab37))
 
-## [5.9.3](https://github.com/lingui/js-lingui/compare/v6.0.0-next.1...v5.9.3) (2026-03-13)
+## [5.9.3](https://github.com/lingui/js-lingui/compare/v5.9.2...v5.9.3) (2026-03-13)
 
 ### Bug Fixes
 
