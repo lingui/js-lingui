@@ -21,7 +21,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v6
         with:
-          node-version: 22
+          node-version: 'lts/*'
           cache: 'yarn'
 
       - name: Install dependencies if needed
@@ -30,7 +30,7 @@ jobs:
       - name: Publish with Verdaccio
         run: |
           git switch -c "pull-request"
-          npm i -g {verdaccio,verdaccio-auth-memory,verdaccio-memory}
+          npm i -g verdaccio verdaccio-auth-memory verdaccio-memory@10.4.1
           nohup verdaccio --config .github/verdaccio/config.yaml &>verdaccio.log &
           yarn verdaccio:release
 
