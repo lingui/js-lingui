@@ -33,7 +33,6 @@ In line with the principles of [Semantic Versioning](https://semver.org/), this 
   - [Stronger Type Safety](#stronger-type-safety)
   - [New Example](#new-example)
 - [Conclusion](#conclusion)
-- [Links](#links)
 
 ## What is Lingui?
 
@@ -279,9 +278,4 @@ We now have a [React Webpack Po-Gettext](https://github.com/lingui/js-lingui/tre
 
 We're excited to continue improving Lingui and hope you enjoy using Lingui 6.0. We look forward to hearing your feedback!
 
-A huge thank you to everyone who contributed to this release - it simply wouldn't have been possible without the amazing [community](/community)!
-
-## Links
-
-- [Migration guide](/releases/migration-6)
-- [Release notes & changelog](https://github.com/lingui/js-lingui/releases/tag/v6.0.0)
+A huge thank you to everyone who helped with this release - it simply wouldn't have been possible without the amazing [community](/community) and [contributors](https://github.com/lingui/js-lingui/graphs/contributors)!

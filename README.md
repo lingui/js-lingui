@@ -3,6 +3,8 @@
 
 🌍📖 A readable, automated, and optimized (2 kb) internationalization for JavaScript
 
+🎉 **Lingui v6 is now available!** [Read the release announcement →](https://lingui.dev/blog/2026/04/22/announcing-lingui-6.0)
+
 <hr />
 
 ![Main Suite][Badge-MainSuite-GithubCI]
@@ -23,15 +25,17 @@ Lingui is an easy yet powerful internationalization (i18n) framework for global 
 
 - **Clean and readable** - Keep your code clean and readable, while the library uses battle-tested and powerful **ICU MessageFormat** under the hood.
 
-- **Universal** - Use it everywhere. `@lingui/core` provides the essential intl functionality which works in any JavaScript project while `@lingui/react` offers components to leverage React rendering, including React Server Components (RSC) support.
+- **Universal** - Use it everywhere. `@lingui/core` provides the essential intl functionality which works in any JavaScript project while `@lingui/react` offers components to leverage React rendering, including React Server Components (RSC) support. The same extract-and-compile workflow applies to React Native. Astro and Svelte work through community-supported packages.
 
-- **Full rich-text support** - Use React components inside localized messages without any limitation. Writing rich-text messages is as easy as writing JSX.
+- **Full rich-text support** - Use React components inside localized messages without any limitation. Writing rich-text messages is as easy as writing JSX. That helps keep message catalogs in sync with your source code.
 
 - **Powerful tooling** - Manage your intl workflow with the Lingui [CLI](https://lingui.dev/ref/cli), [Vite Plugin](https://lingui.dev/ref/vite-plugin), and [ESLint Plugin](https://lingui.dev/ref/eslint-plugin). The CLI extracts, compiles and validates messages, while the Vite plugin compiles catalogs on the fly, and the ESLint plugin helps catch common usage errors.
 
-- **Unopinionated** - Integrate Lingui into your existing workflow. It supports message keys as well as auto-generated messages. Translations are stored either in JSON or standard PO files, which are supported in almost all translation tools.
+- **Unopinionated** - Integrate Lingui into your existing workflow. It supports explicit message keys as well as auto-generated ones. Translations are stored in a standard PO file, which is supported in almost all translation tools. You can also use CSV or JSON, or add a custom formatter of your own.
 
 - **Lightweight and optimized** - Core library is less than [2 kB gzipped](https://bundlephobia.com/result?p=@lingui/core), React components are additional [1.3 kB gzipped](https://bundlephobia.com/result?p=@lingui/react).
+
+- **Built for AI-assisted workflows** - Good translations need context, especially for short UI strings. Lingui's localization formats let you describe where and how keys are used. Install [`lingui/skills`](https://github.com/lingui/skills) to help your AI assistant apply Lingui patterns consistently, and see [i18n with AI](https://lingui.dev/ai-tools) for MCP setup and more.
 
 - **Active community** - Join the growing [community of developers](https://lingui.dev/community) who are using Lingui to build global products.
 
