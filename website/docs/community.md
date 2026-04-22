@@ -15,7 +15,7 @@ Before participating, please take a moment to review our [Code of Conduct](https
 
 ### Discussion Forums
 
-The [Lingui Discord Server](https://discord.gg/gFWwAYnMtA) is a place where you can learn, share, and collaborate about anything and everything Lingui.
+The [Lingui Discord Server](https://discord.gg/tBZqKpeF) is a place where you can learn, share, and collaborate about anything and everything Lingui.
 
 ![Join the community on Discord](https://img.shields.io/discord/974702239358783608.svg?label=Discord&logo=Discord&colorB=7289da&style=flat-square)
 
