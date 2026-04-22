@@ -4,7 +4,7 @@ This guide will help you migrate from Lingui 5.x to 6.x. It covers the most impo
 
 Need to upgrade an older project to v5 first? See our [older migration guide](/releases/migration-5).
 
-If you're looking for 5.x documentation, it will continue to be available at [lingui.dev](https://lingui.dev) until v6 is officially released.
+If you're looking for 5.x documentation, you can find it [here](https://js-lingui-git-stable-5x-crowdin.vercel.app/).
 
 ## Node.js Version
 
