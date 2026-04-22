@@ -9,7 +9,7 @@ Minimal required versions are:
 
 :::info
 
-If you encounter any difficulties during the migration process, don't hesitate to ask for assistance on the Lingui [Discord server](https://discord.gg/gFWwAYnMtA).
+If you encounter any difficulties during the migration process, don't hesitate to ask for assistance on the Lingui [Discord server](https://discord.gg/tBZqKpeF).
 
 :::
 
