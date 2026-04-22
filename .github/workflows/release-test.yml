@@ -27,6 +27,7 @@ jobs:
       - name: Install dependencies if needed
         run: yarn install
 
+      # TODO: temporarily pin the version due to https://github.com/verdaccio/verdaccio/issues/5828
       - name: Publish with Verdaccio
         run: |
           git switch -c "pull-request"
