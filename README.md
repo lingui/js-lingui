@@ -13,7 +13,7 @@
 [![PRs Welcome][Badge-PRWelcome]][PRWelcome]
 [![Join the community on Discord][Badge-Discord]][Discord]
 
-[**Documentation**][Documentation] · [**Quickstart**](#quickstart) · [**Example**](#example) · [**Support**](#support) · [**Contribute**](#contribute) · [**License**](#license)
+[**Documentation**][Documentation] · [**Example**](#example) · [**Support**](#support) · [**Contribute**](#contribute) · [**License**](#license)
 
 </div>
 
@@ -22,6 +22,8 @@
 > --- [ W3C Web Internationalization FAQ](https://www.w3.org/International/questions/qa-i18n)
 
 Lingui is an easy yet powerful internationalization (i18n) framework for global projects.
+
+## Key Features
 
 - **Clean and readable** - Keep your code clean and readable, while the library uses battle-tested and powerful **ICU MessageFormat** under the hood.
 
@@ -79,15 +81,6 @@ If you are having issues, please let us know.
 - If something doesn't work as documented, documentation is missing or if you just want to suggest a new feature, [create an issue][Issues].
 - You can also [Ask Lingui JS Guru](https://gurubase.io/g/lingui-js), it is a Lingui JS focused AI to answer your questions.
 
-## Docs for LLMs
-
-For developers working with AI and language models, we provide specialized documentation files following the [llms.txt specification](https://llmstxt.org/):
-
-- [llms.txt](https://lingui.dev/llms.txt) - Concise documentation optimized for LLM context windows
-- [llms-full.txt](https://lingui.dev/llms-full.txt) - Comprehensive documentation including all referenced URLs
-
-These files provide LLM-friendly content in a standardized format, helping language models understand and work with Lingui's documentation at inference time. The format is designed to be both human and LLM readable, with structured information that can be processed programmatically.
-
 ## Contribute
 
 Contribution to open-source project is everything from spreading the word, writing documentation to implement features and fixing bugs.
@@ -112,7 +105,6 @@ The project is licensed under the [MIT][License] license.
 </div>
 
 [Documentation]: https://lingui.dev
-[Examples]: https://github.com/lingui/js-lingui/tree/main/examples
 [Badge-MainSuite-GithubCI]: https://github.com/lingui/js-lingui/workflows/main-suite/badge.svg
 [Badge-ReleaseWorkflowTesting-GithubCI]: https://github.com/lingui/js-lingui/workflows/release-workflow-test/badge.svg
 [Badge-Coverage]: https://img.shields.io/codecov/c/github/lingui/js-lingui/main.svg
