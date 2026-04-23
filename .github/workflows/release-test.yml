@@ -27,11 +27,10 @@ jobs:
       - name: Install dependencies if needed
         run: yarn install
 
-      # TODO: temporarily pin the version due to https://github.com/verdaccio/verdaccio/issues/5828
       - name: Publish with Verdaccio
         run: |
           git switch -c "pull-request"
-          npm i -g verdaccio verdaccio-auth-memory verdaccio-memory@10.4.1
+          npm i -g verdaccio@6.5.2 verdaccio-auth-memory@13.0.0 verdaccio-memory@10.4.3
           nohup verdaccio --config .github/verdaccio/config.yaml &>verdaccio.log &
           yarn verdaccio:release
 
