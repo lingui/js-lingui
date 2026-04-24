@@ -24,6 +24,13 @@ const COLUMNS: FooterColumn[] = [
     ],
   },
   {
+    title: "Versions",
+    links: [
+      { label: "Lingui v5 Docs", href: "https://v5.lingui.dev/", external: true },
+      { label: "Lingui v4 Docs", href: "https://v4.lingui.dev/", external: true },
+    ],
+  },
+  {
     title: "Community",
     links: [
       { label: "Discord", href: "https://discord.gg/tBZqKpeF", external: true },
@@ -77,7 +84,7 @@ export function SiteFooter(): React.ReactElement {
   return (
     <footer className="bg-[#282d37] px-4 pb-14 pt-8 text-white sm:px-6">
       <div className="mx-auto max-w-6xl">
-        <nav className="grid grid-cols-2 gap-x-8 gap-y-10 sm:grid-cols-3" aria-label="Footer">
+        <nav className="grid grid-cols-2 gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-4" aria-label="Footer">
           {COLUMNS.map((col) => (
             <div key={col.title}>
               <p className="mb-4 text-xl font-medium tracking-tight text-white">{col.title}</p>
