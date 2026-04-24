@@ -2,6 +2,25 @@ import type { Config } from "@docusaurus/types";
 import type * as Preset from "@docusaurus/preset-classic";
 import { themes } from "prism-react-renderer";
 
+const isLegacyDocs = process.env["LEGACY_DOCS"] === "true";
+
+const customAnnouncementBar = {
+  id: "lingui-6.0",
+  content: `✨ Lingui <strong>6.0</strong> is now available. <a href="/blog/2026/04/22/announcing-lingui-6.0">Read the release announcement</a> for what's new ✨`,
+  backgroundColor: "#0d9488",
+  textColor: "#ffffff",
+  isCloseable: true,
+};
+
+const legacyDocsAnnouncementBar = {
+  id: "lingui-legacy-docs",
+  content:
+    'This is archived documentation for older version of Lingui. For the latest Lingui docs, visit <a href="https://lingui.dev">lingui.dev</a>.',
+  backgroundColor: "#92400e",
+  textColor: "#ffffff",
+  isCloseable: false,
+};
+
 const config: Config = {
   title: "Lingui",
   tagline: "Internationalization Framework for Global Products",
@@ -23,13 +42,7 @@ const config: Config = {
       disableSwitch: false,
       respectPrefersColorScheme: true,
     },
-    announcementBar: {
-      id: "lingui-6.0",
-      content: `✨ Lingui <strong>6.0</strong> is now available. <a href="/blog/2026/04/22/announcing-lingui-6.0">Read the release announcement</a> for what's new ✨`,
-      backgroundColor: "#0d9488",
-      textColor: "#ffffff",
-      isCloseable: true,
-    },
+    announcementBar: isLegacyDocs ? legacyDocsAnnouncementBar : customAnnouncementBar,
     metadata: [
       {
         name: "title",
@@ -45,6 +58,12 @@ const config: Config = {
         content:
           "internationalization, localization, multilingual, translation, i18n, l10n, react, react native, vue, next.js, ICU, javascript, typescript, pseudolocalization, internationalization framework",
       },
+      ...(isLegacyDocs
+        ? [
+            { name: "robots", content: "noindex, nofollow, noarchive" },
+            { name: "googlebot", content: "noindex, nofollow, noarchive" },
+          ]
+        : []),
     ],
     navbar: {
       title: "",
@@ -136,10 +155,12 @@ const config: Config = {
           showReadingTime: true,
           editUrl: "https://github.com/lingui/js-lingui/tree/main/website/",
         },
-        sitemap: {
-          priority: 0.5,
-          filename: "sitemap.xml",
-        },
+        sitemap: isLegacyDocs
+          ? false
+          : {
+              priority: 0.5,
+              filename: "sitemap.xml",
+            },
         theme: {
           customCss: require.resolve("./src/css/custom.scss"),
         },
