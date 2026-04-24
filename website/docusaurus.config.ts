@@ -18,11 +18,12 @@ const config: Config = {
       respectPrefersColorScheme: true,
     },
     announcementBar: {
-      id: "v5_release",
+      id: "lingui-archived-v4-docs",
       content:
-        'The <b>v5.0.0</b> Pre-Release is here, <a target="_blank" rel="noopener noreferrer" href="https://github.com/lingui/js-lingui/releases?q=tag%3Av5&expanded=true">discover its new capabilities!</a>',
-      backgroundColor: "#f36c6c",
-      textColor: "#1a1a1a",
+        'This is archived documentation for Lingui <strong>4.x</strong>. For the latest docs, visit <a href="https://lingui.dev">lingui.dev</a>.',
+      backgroundColor: "#334155",
+      textColor: "#f8fafc",
+      isCloseable: false,
     },
     metadata: [
       {
@@ -39,6 +40,8 @@ const config: Config = {
         content:
           "internationalization, localization, multilingual, translation, i18n, l10n, react, react native, vue, next.js, ICU, javascript, typescript, pseudolocalization, internationalization framework",
       },
+      { name: "robots", content: "noindex, nofollow, noarchive" },
+      { name: "googlebot", content: "noindex, nofollow, noarchive" },
     ],
     navbar: {
       title: "",
@@ -180,10 +183,7 @@ const config: Config = {
           showReadingTime: true,
           editUrl: "https://github.com/lingui/js-lingui/tree/main/website/",
         },
-        sitemap: {
-          priority: 0.5,
-          filename: "sitemap.xml",
-        },
+        sitemap: false,
         theme: {
           customCss: require.resolve("./src/css/custom.scss"),
         },
