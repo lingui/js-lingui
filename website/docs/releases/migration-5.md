@@ -4,7 +4,7 @@ This guide will help you migrate from Lingui 4.x to 5.x. It covers the most impo
 
 Need to upgrade an older project to v4 first? See our [older migration guide](/releases/migration-4).
 
-If you're looking for 4.x documentation, you can find it [here](https://js-lingui-m3z8jlqt6-crowdin.vercel.app/).
+If you're looking for 4.x documentation, you can find it at [v4.lingui.dev](https://v4.lingui.dev/).
 
 ## Node.js Version
 
