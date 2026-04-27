@@ -1,0 +1,40 @@
+{
+  "name": "vite-project-solid",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "messages:extract": "lingui extract",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "prettier": "prettier --write '**/*.{ts,tsx,js,jsx}'"
+  },
+  "dependencies": {
+    "@lingui/core": "link:../../packages/core",
+    "@lingui/solid": "link:../../packages/solid",
+    "solid-js": "^1.9.5"
+  },
+  "devDependencies": {
+    "@lingui/babel-plugin-lingui-macro": "link:../../packages/babel-plugin-lingui-macro",
+    "@lingui/cli": "^6.0.0",
+    "@lingui/conf": "link:../../packages/conf",
+    "@lingui/vite-plugin": "^6.0.0",
+    "@solidjs/testing-library": "^0.8.10",
+    "@testing-library/dom": "^10.4.1",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/user-event": "^14.6.1",
+    "happy-dom": "^20.0.10",
+    "prettier": "^3.8.1",
+    "typescript": "^5.9.3",
+    "vite": "^7.3.1",
+    "vite-plugin-solid": "^2.11.12",
+    "vitest": "^4.0.18"
+  },
+  "resolutions": {
+    "@lingui/babel-plugin-lingui-macro": "link:../../packages/babel-plugin-lingui-macro",
+    "@lingui/core": "link:../../packages/core",
+    "@lingui/conf": "link:../../packages/conf"
+  }
+}
