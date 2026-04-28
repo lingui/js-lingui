@@ -10,5 +10,4 @@ module.exports = {
   fallbackLocales: {
     cs: "en",
   },
-  format: "po",
 }

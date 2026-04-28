@@ -2,20 +2,20 @@ import {
   compile,
   CompiledCatalogNamespace,
   createCompiledCatalog,
-} from "./compile"
+} from "./compile.js"
 
 describe("compile", () => {
   describe("with pseudo-localization", () => {
     const getPSource = (message: string) => compile(message, true)
 
     it("should pseudolocalize strings", () => {
-      expect(getPSource("Martin Černý")).toEqual(["Màŕţĩń Čēŕńý"])
+      expect(getPSource("Martin Černý")).toEqual(["Ḿàŕţĩń Čēŕńý"])
     })
 
     it("should pseudolocalize escaping syntax characters", () => {
       // TODO: should this turn into pseudoLocale string?
       expect(getPSource("'{name}'")).toEqual(["{name}"])
-      // expect(getPSource("'{name}'")).toEqual('"{ńàmē}"')
+      // expect(getPSource("'{name}'")).toEqual('"{ńàḿē}"')
     })
 
     it("should not pseudolocalize arguments", () => {
@@ -32,13 +32,13 @@ describe("compile", () => {
 
     it("should not pseudolocalize HTML tags", () => {
       expect(getPSource('Martin <span id="spanId">Černý</span>')).toEqual([
-        'Màŕţĩń <span id="spanId">Čēŕńý</span>',
+        'Ḿàŕţĩń <span id="spanId">Čēŕńý</span>',
       ])
       expect(
-        getPSource("Martin Cerny  123a<span id='id'>Černý</span>")
-      ).toEqual(["Màŕţĩń Ćēŕńŷ  123à<span id='id'>Čēŕńý</span>"])
+        getPSource("Martin Cerny  123a<span id='id'>Černý</span>"),
+      ).toEqual(["Ḿàŕţĩń Ćēŕńŷ  123à<span id='id'>Čēŕńý</span>"])
       expect(getPSource("Martin <a title='>>a'>a</a>")).toEqual([
-        "Màŕţĩń <a title='>>a'>à</a>",
+        "Ḿàŕţĩń <a title='>>a'>à</a>",
       ])
       expect(getPSource("<a title=TITLE>text</a>")).toEqual([
         "<a title=TITLE>ţēxţ</a>",
@@ -48,7 +48,7 @@ describe("compile", () => {
     describe("Plurals", () => {
       it("with value", () => {
         expect(
-          getPSource("{value, plural, one {# book} other {# books}}")
+          getPSource("{value, plural, one {# book} other {# books}}"),
         ).toEqual([
           ["value", "plural", { one: ["#", " ƀōōķ"], other: ["#", " ƀōōķś"] }],
         ])
@@ -57,8 +57,8 @@ describe("compile", () => {
       it("with variable placeholder", () => {
         expect(
           getPSource(
-            "{count, plural, one {{countString} book} other {{countString} books}}"
-          )
+            "{count, plural, one {{countString} book} other {{countString} books}}",
+          ),
         ).toEqual([
           [
             "count",
@@ -74,16 +74,16 @@ describe("compile", () => {
       it("with offset", () => {
         expect(
           getPSource(
-            "{count, plural, offset:1 zero {There are no messages} other {There are # messages in your inbox}}"
-          )
+            "{count, plural, offset:1 zero {There are no messages} other {There are # messages in your inbox}}",
+          ),
         ).toEqual([
           [
             "count",
             "plural",
             {
               offset: 1,
-              zero: ["Ţĥēŕē àŕē ńō mēśśàĝēś"],
-              other: ["Ţĥēŕē àŕē ", "#", " mēśśàĝēś ĩń ŷōũŕ ĩńƀōx"],
+              zero: ["Ţĥēŕē àŕē ńō ḿēśśàĝēś"],
+              other: ["Ţĥēŕē àŕē ", "#", " ḿēśśàĝēś ĩń ŷōũŕ ĩńƀōx"],
             },
           ],
         ])
@@ -92,15 +92,15 @@ describe("compile", () => {
       it("with HTML tags", () => {
         expect(
           getPSource(
-            "{count, plural, zero {There's # <span>message</span>} other {There are # messages}}"
-          )
+            "{count, plural, zero {There's # <span>message</span>} other {There are # messages}}",
+          ),
         ).toEqual([
           [
             "count",
             "plural",
             {
-              zero: ["Ţĥēŕē'ś ", "#", " <span>mēśśàĝē</span>"],
-              other: ["Ţĥēŕē àŕē ", "#", " mēśśàĝēś"],
+              zero: ["Ţĥēŕē'ś ", "#", " <span>ḿēśśàĝē</span>"],
+              other: ["Ţĥēŕē àŕē ", "#", " ḿēśśàĝēś"],
             },
           ],
         ])
@@ -109,15 +109,15 @@ describe("compile", () => {
       it("with exact number", () => {
         expect(
           getPSource(
-            "{count, plural, =0 {There's # <span>message</span>} other {There are # messages}}"
-          )
+            "{count, plural, =0 {There's # <span>message</span>} other {There are # messages}}",
+          ),
         ).toEqual([
           [
             "count",
             "plural",
             {
-              0: ["Ţĥēŕē'ś ", "#", " <span>mēśśàĝē</span>"],
-              other: ["Ţĥēŕē àŕē ", "#", " mēśśàĝēś"],
+              0: ["Ţĥēŕē'ś ", "#", " <span>ḿēśśàĝē</span>"],
+              other: ["Ţĥēŕē àŕē ", "#", " ḿēśśàĝēś"],
             },
           ],
         ])
@@ -127,8 +127,8 @@ describe("compile", () => {
     it("SelectOrdinal", () => {
       expect(
         getPSource(
-          "{count, selectordinal, offset:1 one {#st} two {#nd} few {#rd} =4 {4th} many {testMany} other {#th}}"
-        )
+          "{count, selectordinal, offset:1 one {#st} two {#nd} few {#rd} =4 {4th} many {testMany} other {#th}}",
+        ),
       ).toEqual([
         [
           "count",
@@ -139,7 +139,7 @@ describe("compile", () => {
             two: ["#", "ńď"],
             few: ["#", "ŕď"],
             4: ["4ţĥ"],
-            many: ["ţēśţMàńŷ"],
+            many: ["ţēśţḾàńŷ"],
             other: ["#", "ţĥ"],
           },
         ],
@@ -149,8 +149,8 @@ describe("compile", () => {
     it("Select", () => {
       expect(
         getPSource(
-          "{gender, select, male {He} female {She} other {<span>Other</span>}}"
-        )
+          "{gender, select, male {He} female {She} other {<span>Other</span>}}",
+        ),
       ).toEqual([
         [
           "gender",
@@ -168,8 +168,8 @@ describe("compile", () => {
     it("Multiple Plurals", () => {
       expect(
         getPSource(
-          "{bcount, plural, one {boy} other {# boys}} {gcount, plural, one {girl} other {# girls}}"
-        )
+          "{bcount, plural, one {boy} other {# boys}} {gcount, plural, one {girl} other {# girls}}",
+        ),
       ).toEqual([
         ["bcount", "plural", { one: ["ƀōŷ"], other: ["#", " ƀōŷś"] }],
         " ",
@@ -189,7 +189,7 @@ describe("createCompiledCatalog", () => {
         },
         {
           namespace,
-        }
+        },
       ).source
 
     it("should compile with json", () => {
@@ -228,7 +228,7 @@ describe("createCompiledCatalog", () => {
         },
         {
           strict,
-        }
+        },
       ).source
 
     it("should return message key as a fallback translation", () => {
@@ -249,7 +249,7 @@ describe("createCompiledCatalog", () => {
         },
         {
           pseudoLocale,
-        }
+        },
       ).source
 
     it("should return catalog with pseudolocalized messages", () => {
@@ -268,7 +268,7 @@ describe("createCompiledCatalog", () => {
         {
           Hello: "Alohà",
         },
-        opts
+        opts,
       ).source
 
     it("by default should return catalog without ASCII chars", () => {
@@ -283,7 +283,7 @@ describe("createCompiledCatalog", () => {
               minimal: false,
             },
           },
-        })
+        }),
       ).toMatchSnapshot()
     })
   })
@@ -297,7 +297,7 @@ describe("createCompiledCatalog", () => {
         },
         {
           outputPrefix,
-        }
+        },
       ).source
 
     it("should use default eslint-disable directive when not specified", () => {
@@ -322,7 +322,7 @@ describe("createCompiledCatalog", () => {
         result.startsWith("export") ||
           result.startsWith("module") ||
           result.startsWith("window") ||
-          result.startsWith("global")
+          result.startsWith("global"),
       ).toBeTruthy()
     })
   })
@@ -334,7 +334,7 @@ describe("createCompiledCatalog", () => {
         Hello: "{plural,  }",
         Second: "{bla, }",
       },
-      {}
+      {},
     )
 
     expect(res.errors).toHaveLength(2)
@@ -343,13 +343,13 @@ describe("createCompiledCatalog", () => {
       source: "{plural,  }",
     })
 
-    expect(res.errors[0].error.message).toContain("invalid syntax at line")
+    expect(res.errors[0]!.error.message).toContain("invalid syntax at line")
 
     expect(res.errors[1]).toMatchObject({
       id: "Second",
       source: "{bla, }",
     })
 
-    expect(res.errors[1].error.message).toContain("invalid syntax at line")
+    expect(res.errors[1]!.error.message).toContain("invalid syntax at line")
   })
 })

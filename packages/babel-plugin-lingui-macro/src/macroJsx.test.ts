@@ -38,11 +38,10 @@ function createMacro() {
   return new MacroJSX(
     { types },
     {
-      stripNonEssentialProps: false,
-      stripMessageProp: false,
+      descriptorFields: "all",
       transImportName: "Trans",
       isLinguiIdentifier: () => true,
-    }
+    },
   )
 }
 
@@ -102,7 +101,7 @@ describe("jsx macro", () => {
     it("message with plural", () => {
       const macro = createMacro()
       const exp = parseExpression(
-        "<Trans>Message <Plural value={count} /></Trans>"
+        "<Trans>Message <Plural value={count} /></Trans>",
       )
       const tokens = macro.tokenizeTrans(exp)
       expect(tokens).toEqual([
@@ -127,7 +126,7 @@ describe("jsx macro", () => {
     it("plural", () => {
       const macro = createMacro()
       const exp = parseExpression(
-        "<Plural value={count} one='# book' other='# books' />"
+        "<Plural value={count} one='# book' other='# books' />",
       )
       const tokens = macro.tokenizeChoiceComponent(exp, JsxMacroName.Plural)
       expect(tokens).toEqual({
@@ -154,7 +153,7 @@ describe("jsx macro", () => {
           _0='No books'
           one='# book'
           other='# books'
-         />`
+         />`,
       )
       const tokens = macro.tokenizeChoiceComponent(exp, JsxMacroName.Plural)
       expect(tokens).toEqual({
@@ -183,7 +182,7 @@ describe("jsx macro", () => {
           _0='No books'
           one='# book'
           other='# books'
-         />`
+         />`,
       )
       const tokens = macro.tokenizeChoiceComponent(exp, JsxMacroName.Plural)
       expect(tokens).toEqual({
@@ -205,7 +204,7 @@ describe("jsx macro", () => {
     it("plural with template literal", () => {
       const macro = createMacro()
       const exp = parseExpression(
-        "<Plural value={count} one={`# glass of ${drink}`} other={`# glasses of ${drink}`} />"
+        "<Plural value={count} one={`# glass of ${drink}`} other={`# glasses of ${drink}`} />",
       )
       const tokens = macro.tokenizeChoiceComponent(exp, JsxMacroName.Plural)
       expect(tokens).toEqual({
@@ -262,7 +261,7 @@ describe("jsx macro", () => {
               other="they"
             />
           }
-        />`
+        />`,
       )
       const tokens = macro.tokenizeChoiceComponent(exp, JsxMacroName.Plural)
       expect(tokens).toEqual({
@@ -299,11 +298,11 @@ describe("jsx macro", () => {
       const exp = parseExpression(
         `<Select
           value={gender}
-          male="he"
+          _male="he"
           one="heone"
-          female="she"
+          _female="she"
           other="they"
-        />`
+        />`,
       )
       const tokens = macro.tokenizeNode(exp)
       expect(tokens[0]).toMatchObject({

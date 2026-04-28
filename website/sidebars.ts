@@ -13,6 +13,11 @@ const sidebar = [
         label: "Installation and Setup",
         id: "installation",
       },
+      {
+        type: "doc",
+        label: "i18n with AI",
+        id: "ai-tools",
+      },
     ],
   },
   {
@@ -219,7 +224,7 @@ const sidebar = [
   {
     type: "category",
     label: "Releases",
-    items: ["releases/migration-5", "releases/migration-4", "releases/migration-3"],
+    items: ["releases/migration-6", "releases/migration-5", "releases/migration-4", "releases/migration-3"],
   },
 ];
 

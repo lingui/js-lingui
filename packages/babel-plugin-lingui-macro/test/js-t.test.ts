@@ -191,12 +191,12 @@ macroTester({
       `,
     },
     {
-      name: "stripMessageField option - message prop is removed if stripMessageField: true",
+      name: "descriptorFields: id-only - message prop is removed",
       macroOpts: {
-        stripMessageField: true,
+        descriptorFields: "id-only",
       },
       code: `
-          import { t } from '@lingui/macro'
+          import { t } from '@lingui/core/macro'
           const msg = t\`Message\`
         `,
     },
@@ -249,13 +249,13 @@ macroTester({
     `,
     },
     {
-      name: "Production - message prop is kept if stripMessageField: false",
+      name: "Production - message and context kept with descriptorFields: message",
       production: true,
       macroOpts: {
-        stripMessageField: false,
+        descriptorFields: "message",
       },
       code: `
-          import { t } from '@lingui/macro';
+          import { t } from '@lingui/core/macro';
           const msg = t({
               message: \`Hello \${name}\`,
               id: 'msgId',
@@ -265,10 +265,10 @@ macroTester({
       `,
     },
     {
-      name: "Production - all props kept if extract: true",
+      name: "Production - all props kept with descriptorFields: all",
       production: true,
       macroOpts: {
-        extract: true,
+        descriptorFields: "all",
       },
       code: `
         import { t } from '@lingui/core/macro';
@@ -320,11 +320,11 @@ macroTester({
               i18n: ["@my/lingui", "myI18n"],
             },
           },
-          { skipValidation: true }
+          { skipValidation: true },
         ),
       },
       code: `
-         import { t } from '@lingui/macro'
+         import { t } from '@lingui/core/macro'
          const msg = t\`Message\`
       `,
     },
@@ -337,7 +337,7 @@ macroTester({
               corePackage: ["@my-lingui/macro"],
             },
           },
-          { skipValidation: true }
+          { skipValidation: true },
         ),
       },
       skipBabelMacroTest: true,

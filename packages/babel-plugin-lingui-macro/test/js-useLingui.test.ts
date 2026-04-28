@@ -250,7 +250,7 @@ function Home() {
               useLingui: ["@my/lingui-react", "myUselingui"],
             },
           },
-          { skipValidation: true }
+          { skipValidation: true },
         ),
       },
       code: `

@@ -1,4 +1,4 @@
-import { buildIncludeDepsFilter } from "./buildIncludeDepsFilter"
+import { buildIncludeDepsFilter } from "./buildIncludeDepsFilter.js"
 
 describe("buildExternalizeFilter", () => {
   it("should not externalize packages from includeDeps", () => {

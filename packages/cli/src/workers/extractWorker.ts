@@ -1,19 +1,18 @@
-import { expose } from "threads/worker"
 import {
   ExtractedMessage,
   getConfig,
   LinguiConfigNormalized,
 } from "@lingui/conf"
-import extract from "../api/extractors"
+import extract from "../api/extractors/index.js"
 
 export type ExtractWorkerFunction = typeof extractWorker
 
 let linguiConfig: LinguiConfigNormalized | undefined
 
-const extractWorker = async (
+export const extractWorker = async (
   filename: string,
-  linguiConfigPath: string
-): Promise<{ messages?: ExtractedMessage[]; success: boolean }> => {
+  linguiConfigPath: string,
+): Promise<{ messages: ExtractedMessage[]; success: boolean }> => {
   if (!linguiConfig) {
     // initialize config once per worker, speed up workers follow execution
     linguiConfig = getConfig({
@@ -29,10 +28,8 @@ const extractWorker = async (
     (msg: ExtractedMessage) => {
       messages.push(msg)
     },
-    linguiConfig
+    linguiConfig,
   )
 
   return { success, messages }
 }
-
-expose(extractWorker)

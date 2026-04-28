@@ -27,7 +27,7 @@ const getLinguiCache = () => {
     cache = React.cache(
       (): CtxValueRef => ({
         current: null,
-      })
+      }),
     )
   }
 
@@ -52,7 +52,7 @@ const getLinguiCache = () => {
  */
 export function setI18n(
   i18n: I18n,
-  defaultComponent?: I18nContext["defaultComponent"]
+  defaultComponent?: I18nContext["defaultComponent"],
 ) {
   getLinguiCache().current = {
     i18n,

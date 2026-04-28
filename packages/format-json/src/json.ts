@@ -49,7 +49,7 @@ const serializeMinimal = (catalog: CatalogType): MinimalCatalogType => {
 }
 
 const deserializeMinimal = (
-  minimalCatalog: MinimalCatalogType
+  minimalCatalog: MinimalCatalogType,
 ): CatalogType => {
   const result: CatalogType = {}
   for (const key in minimalCatalog) {
@@ -73,7 +73,7 @@ const removeOrigins = (catalog: CatalogType): NoOriginsCatalogType => {
 }
 
 const removeLineNumbers = (
-  catalog: ExtractedMessageType
+  catalog: ExtractedMessageType,
 ): NoOriginsCatalogType => {
   const result: NoOriginsCatalogType = {}
   for (const key in catalog) {
@@ -86,7 +86,7 @@ const removeLineNumbers = (
 }
 
 export function formatter(
-  options: JsonFormatterOptions = {}
+  options: JsonFormatterOptions = {},
 ): CatalogFormatter {
   options = {
     origins: true,

@@ -8,5 +8,5 @@ expect(
     lineNumbers: true,
     origins: true,
     printLinguiId: true,
-  })
+  }),
 ).type.toBeAssignableTo<CatalogFormatter>()

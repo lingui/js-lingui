@@ -1,11 +1,10 @@
-import { mockConsole } from "@lingui/jest-mocks"
+import { mockConsole } from "@lingui/test-utils"
 import fs from "fs"
 import path from "path"
 
 import { CatalogFormatter, CatalogType } from "@lingui/conf"
 import { formatter as createFormat } from "./po-gettext"
 import { generateMessageId } from "@lingui/message-utils/generateMessageId"
-import MockDate from "mockdate"
 
 const defaultParseCtx: Parameters<CatalogFormatter["parse"]>[1] = {
   locale: "en",
@@ -15,7 +14,7 @@ const defaultParseCtx: Parameters<CatalogFormatter["parse"]>[1] = {
 
 const defaultSerializeCtx: Parameters<CatalogFormatter["serialize"]>[1] = {
   locale: "en",
-  existing: null,
+  existing: undefined,
   filename: "file.po",
   sourceLocale: "en",
 }
@@ -24,11 +23,7 @@ describe("po-gettext format", () => {
   const format = createFormat()
 
   beforeAll(() => {
-    MockDate.set(new Date("2018-08-27T10:00Z"))
-  })
-
-  afterAll(() => {
-    MockDate.reset()
+    vi.setSystemTime(new Date("2018-08-27T10:00Z"))
   })
 
   it("should convert ICU plural messages to gettext plurals", () => {
@@ -98,15 +93,15 @@ describe("po-gettext format", () => {
         ...defaultSerializeCtx,
         sourceLocale: "en",
         locale: "en",
-      })
+      }),
     ).toMatchSnapshot("source locale catalog")
 
     expect(
       format.serialize(catalog, {
         ...defaultSerializeCtx,
         sourceLocale: "en",
-        locale: null,
-      })
+        locale: undefined,
+      }),
     ).toMatchSnapshot("template locale catalog")
 
     expect(
@@ -114,7 +109,7 @@ describe("po-gettext format", () => {
         ...defaultSerializeCtx,
         sourceLocale: "en",
         locale: "pl",
-      })
+      }),
     ).toMatchSnapshot("target locale catalog")
   })
 
@@ -159,7 +154,7 @@ describe("po-gettext format", () => {
 
       expect(console.warn).toHaveBeenCalledWith(
         expect.stringContaining("Nested plurals"),
-        "nested_plural_message"
+        "nested_plural_message",
       )
     })
   })
@@ -184,17 +179,17 @@ msgstr[2] "# dní"
     // Note that the last case must be `other` (the 4th CLDR case name) instead of `many` (the 3rd CLDR case name).
     expect(parsed).toMatchInlineSnapshot(`
       {
-        Y8Xw2Y: {
-          comments: [],
-          context: null,
-          extra: {
-            flags: [],
-            translatorComments: [],
+        "Y8Xw2Y": {
+          "comments": [],
+          "context": undefined,
+          "extra": {
+            "flags": [],
+            "translatorComments": [],
           },
-          message: {#, plural, one {day} other {days}},
-          obsolete: false,
-          origin: [],
-          translation: {#, plural, one {# den} few {# dny} other {# dní}},
+          "message": "{#, plural, one {day} other {days}}",
+          "obsolete": false,
+          "origin": [],
+          "translation": "{#, plural, one {# den} few {# dny} other {# dní}}",
         },
       }
     `)
@@ -214,7 +209,7 @@ msgstr[2] "# dní"
 
         expect(console.warn).toHaveBeenCalledWith(
           expect.stringContaining("select"),
-          "select_message"
+          "select_message",
         )
       })
     })
@@ -244,7 +239,7 @@ msgstr[2] "# dní"
 
         expect(console.warn).toHaveBeenCalledWith(
           expect.stringContaining("selectOrdinal"),
-          "select_ordinal_message"
+          "select_ordinal_message",
         )
       })
     })
@@ -263,7 +258,7 @@ msgstr[2] "# dní"
   it("convertPluralsToIco handle correctly locales with 4-letter", () => {
     const pofile = fs
       .readFileSync(
-        path.join(__dirname, "fixtures/messages_plural-4-letter.po")
+        path.join(__dirname, "fixtures/messages_plural-4-letter.po"),
       )
       .toString()
 
@@ -292,17 +287,17 @@ msgstr[2] "{count} jours"
     // Note that the last case must be `other` (the 4th CLDR case name) instead of `many` (the 3rd CLDR case name).
     expect(parsed).toMatchInlineSnapshot(`
       {
-        ZETJEQ: {
-          comments: [],
-          context: null,
-          extra: {
-            flags: [],
-            translatorComments: [],
+        "ZETJEQ": {
+          "comments": [],
+          "context": undefined,
+          "extra": {
+            "flags": [],
+            "translatorComments": [],
           },
-          message: {0, plural, one {{count} day} other {{count} days}},
-          obsolete: false,
-          origin: [],
-          translation: {0, plural, one {{count} jour} many {{count} jours} other {{count} jours}},
+          "message": "{0, plural, one {{count} day} other {{count} days}}",
+          "obsolete": false,
+          "origin": [],
+          "translation": "{0, plural, one {{count} jour} many {{count} jours} other {{count} jours}}",
         },
       }
     `)
@@ -331,17 +326,17 @@ msgstr[3] "# dní"
     // Note that the last case must be `other` (the 4th CLDR case name) instead of `many` (the 3rd CLDR case name).
     expect(parsed).toMatchInlineSnapshot(`
       {
-        GMnlGy: {
-          comments: [],
-          context: null,
-          extra: {
-            flags: [],
-            translatorComments: [],
+        "GMnlGy": {
+          "comments": [],
+          "context": undefined,
+          "extra": {
+            "flags": [],
+            "translatorComments": [],
           },
-          message: {count, plural, one {{count} day} few {{count} days} many {{count} days} other {{count} days}},
-          obsolete: false,
-          origin: [],
-          translation: {#, plural, one {# den} few {# dny}  other {# dní}},
+          "message": "{count, plural, one {{count} day} few {{count} days} many {{count} days} other {{count} days}}",
+          "obsolete": false,
+          "origin": [],
+          "translation": "{#, plural, one {# den} few {# dny}  other {# dní}}",
         },
       }
     `)
@@ -354,7 +349,7 @@ msgstr[3] "# dní"
         .toString()
       const customProfile = defaultProfile.replace(
         /js-lingui:/g,
-        "custom-prefix:"
+        "custom-prefix:",
       )
 
       const defaultPrefix = createFormat()
@@ -362,7 +357,7 @@ msgstr[3] "# dní"
 
       const defaultCatalog = defaultPrefix.parse(
         defaultProfile,
-        defaultParseCtx
+        defaultParseCtx,
       )
       const customCatalog = customPrefix.parse(customProfile, defaultParseCtx)
 
@@ -380,13 +375,13 @@ msgstr[3] "# dní"
       mockConsole((console) => {
         const catalog = usingInvalidPrefix.parse(
           defaultProfile,
-          defaultParseCtx
+          defaultParseCtx,
         )
         expect(console.warn).toHaveBeenCalledWith(
           expect.stringContaining(
-            "should be stored in a comment starting with"
+            "should be stored in a comment starting with",
           ),
-          expect.anything()
+          expect.anything(),
         )
         expect(catalog).toMatchSnapshot()
       })
@@ -458,7 +453,7 @@ msgstr[3] "# dní"
       ])
       const pofile = duplicateFormatter.serialize(
         catalog,
-        defaultSerializeCtx
+        defaultSerializeCtx,
       ) as string
 
       expect(pofile).toMatchSnapshot()
@@ -472,7 +467,7 @@ msgstr[3] "# dní"
 
       const pofile = duplicateFormatter.serialize(
         catalog,
-        defaultSerializeCtx
+        defaultSerializeCtx,
       ) as string
 
       expect(pofile).toMatchSnapshot()
@@ -488,7 +483,7 @@ msgstr[3] "# dní"
       ])
       const pofile = duplicateFormatter.serialize(
         catalog,
-        defaultSerializeCtx
+        defaultSerializeCtx,
       ) as string
 
       expect(pofile).toMatchSnapshot()
@@ -505,7 +500,7 @@ msgstr[3] "# dní"
       ])
       const pofile = duplicateFormatter.serialize(
         catalog,
-        defaultSerializeCtx
+        defaultSerializeCtx,
       ) as string
 
       expect(pofile).toMatchSnapshot()
@@ -537,10 +532,67 @@ msgstr[3] "# dní"
 
       const pofile = duplicateFormatter.serialize(
         catalog,
-        defaultSerializeCtx
+        defaultSerializeCtx,
       ) as string
 
       expect(pofile).toMatchSnapshot()
+    })
+
+    it("should deduplicate file references when merging duplicate entries without line numbers", () => {
+      const duplicateFormatter = createFormat({
+        mergePlurals: true,
+        origins: true,
+        lineNumbers: false,
+      })
+      const message1 = "{count, plural, one {one book} other {many books}}"
+      const message2 =
+        "{anotherCount, plural, one {one book} other {many books}}"
+
+      const id1 = generateMessageId(message1)
+      const id2 = generateMessageId(message2)
+
+      const catalog: CatalogType = {
+        [id1]: {
+          message: message1,
+          translation: message1,
+          origin: [["src/App.tsx", 60]],
+        },
+        [id2]: {
+          message: message2,
+          translation: message2,
+          origin: [["src/App.tsx", 66]],
+        },
+      }
+
+      const pofile = duplicateFormatter.serialize(
+        catalog,
+        defaultSerializeCtx,
+      ) as string
+
+      expect(pofile).toMatchInlineSnapshot(`
+        "msgid ""
+        msgstr ""
+        "POT-Creation-Date: 2018-08-27 10:00+0000\\n"
+        "MIME-Version: 1.0\\n"
+        "Content-Type: text/plain; charset=utf-8\\n"
+        "Content-Transfer-Encoding: 8bit\\n"
+        "X-Generator: @lingui/cli\\n"
+        "Language: en\\n"
+        "Project-Id-Version: \\n"
+        "Report-Msgid-Bugs-To: \\n"
+        "PO-Revision-Date: \\n"
+        "Last-Translator: \\n"
+        "Language-Team: \\n"
+        "Plural-Forms: \\n"
+
+        #. js-lingui:icu=%7B%24var%2C+plural%2C+one+%7Bone+book%7D+other+%7Bmany+books%7D%7D&pluralize_on=count%2CanotherCount
+        #: src/App.tsx
+        msgid "one book"
+        msgid_plural "many books"
+        msgstr[0] "one book"
+        msgstr[1] "many books"
+        "
+      `)
     })
 
     it("should keep all non-plurals entries intact", () => {
@@ -626,7 +678,7 @@ msgstr[3] "# dní"
           ...pluralsCatalog,
           ...catalog,
         },
-        defaultSerializeCtx
+        defaultSerializeCtx,
       )
 
       expect(pofile).toMatchSnapshot()
@@ -760,13 +812,13 @@ msgstr[1] "many books"
         // Serialize to PO
         const poContent = duplicateFormatter.serialize(
           originalCatalog,
-          defaultSerializeCtx
+          defaultSerializeCtx,
         ) as string
 
         // Parse back to catalog
         const parsedCatalog = duplicateFormatter.parse(
           poContent,
-          defaultParseCtx
+          defaultParseCtx,
         )
 
         expect(parsedCatalog).toMatchObject(originalCatalog)

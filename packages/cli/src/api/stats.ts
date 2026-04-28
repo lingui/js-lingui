@@ -1,28 +1,26 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import Table from "cli-table"
-import pico from "picocolors"
+import Table from "cli-table3"
+import { styleText } from "node:util"
 
 import { LinguiConfigNormalized } from "@lingui/conf"
 
-import { AllCatalogsType, CatalogType } from "./types"
+import { AllCatalogsType, CatalogType } from "./types.js"
 
 type CatalogStats = [number, number]
 
 export function getStats(catalog: CatalogType): CatalogStats {
   return [
     Object.keys(catalog).length,
-    Object.keys(catalog).filter((key) => !catalog[key].translation).length,
+    Object.keys(catalog).filter((key) => !catalog[key]!.translation).length,
   ]
 }
 
 export function printStats(
   config: LinguiConfigNormalized,
-  catalogs: AllCatalogsType
+  catalogs: AllCatalogsType,
 ) {
   const table = new Table({
     head: ["Language", "Total count", "Missing"],
-    colAligns: ["left", "middle", "middle"],
+    colAligns: ["left", "center", "center"],
     style: {
       head: ["green"],
       border: [],
@@ -45,7 +43,7 @@ export function printStats(
       const [all, translated] = catalog ? getStats(catalog) : ["-", "-"]
 
       if (config.sourceLocale === locale) {
-        table.push({ [`${pico.bold(locale)} (source)`]: [all, "-"] })
+        table.push({ [`${styleText("bold", locale)} (source)`]: [all, "-"] })
       } else {
         table.push({ [locale]: [all, translated] })
       }

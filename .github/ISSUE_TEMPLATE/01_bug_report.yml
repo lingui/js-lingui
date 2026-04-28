@@ -66,4 +66,4 @@ body:
   - type: input
     attributes:
       label: Framework
-      description: E.g. Create React App, Next.js, Vite
+      description: E.g. Next.js, Vite

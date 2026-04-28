@@ -1,18 +1,16 @@
-import type { Mock } from "jest-mock"
+import { vi } from "vitest"
+vi.mock(import("node:os"), () => ({ availableParallelism: vi.fn() }))
 
-jest.mock("node:os", () => ({ availableParallelism: jest.fn() }))
+import { availableParallelism } from "node:os"
+import { resolveWorkersOptions } from "./resolveWorkersOptions.js"
 
-import os from "node:os"
-import { resolveWorkersOptions } from "./resolveWorkersOptions"
+const mockAvail = vi.mocked(availableParallelism)
 
-const mockAvail = os.availableParallelism as unknown as Mock<
-  typeof os.availableParallelism
->
 const setCores = (n: number) => mockAvail.mockReturnValue(n)
 
 describe("resolveWorkerOptions", () => {
   beforeEach(() => {
-    jest.clearAllMocks()
+    vi.clearAllMocks()
   })
 
   test("support arg as string", () => {

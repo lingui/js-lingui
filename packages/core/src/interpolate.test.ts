@@ -11,7 +11,7 @@ describe("interpolate", () => {
   it("should process string chunks with provided map fn", () => {
     const tokens = compile(
       "Message {value, plural, one {{value} Book} other {# Books}}",
-      (text) => `<${text}>`
+      (text) => `<${text}>`,
     )
     expect(tokens).toEqual([
       "<Message >",
@@ -39,7 +39,7 @@ describe("interpolate", () => {
 
   it("should interpolate plurals", () => {
     const plural = prepare(
-      "{value, plural, one {{value} Book} =4 {Four books} =99 { Books with problems } other {# Books}}"
+      "{value, plural, one {{value} Book} =4 {Four books} =99 { Books with problems } other {# Books}}",
     )
     expect(plural({ value: 1 })).toEqual("1 Book")
     expect(plural({ value: 2 })).toEqual("2 Books")
@@ -47,7 +47,7 @@ describe("interpolate", () => {
     expect(plural({ value: 99 })).toEqual(" Books with problems ")
 
     const offset = prepare(
-      "{value, plural, offset:1 =0 {No Books} one {# Book} other {# Books}}"
+      "{value, plural, offset:1 =0 {No Books} one {# Book} other {# Books}}",
     )
     expect(offset({ value: 0 })).toEqual("No Books")
     expect(offset({ value: 2 })).toEqual("1 Book")
@@ -62,21 +62,21 @@ describe("interpolate", () => {
 
   it("should not replace `#` symbol passed in the variable in the jsx expression", () => {
     const plural = prepare(
-      "{value, plural, one {There is a notification in <1>{documentTitle}</1>} other {There are # notifications in <1>{documentTitle}</1>}}"
+      "{value, plural, one {There is a notification in <1>{documentTitle}</1>} other {There are # notifications in <1>{documentTitle}</1>}}",
     )
 
     expect(plural({ value: 1, documentTitle: "Title #1" })).toEqual(
-      "There is a notification in <1>Title #1</1>"
+      "There is a notification in <1>Title #1</1>",
     )
     expect(plural({ value: 2, documentTitle: "Title #1" })).toEqual(
-      "There are 2 notifications in <1>Title #1</1>"
+      "There are 2 notifications in <1>Title #1</1>",
     )
   })
 
   it("should not replace `#` symbol outside plural and selectordinal", () => {
     const cache = compile("#{place} in best seller list")
     expect(interpolate(cache, "en", [])({ place: 7 })).toEqual(
-      "#7 in best seller list"
+      "#7 in best seller list",
     )
   })
 
@@ -95,7 +95,7 @@ describe("interpolate", () => {
 
   it("should interpolate selectordinal", () => {
     const cache = prepare(
-      "{value, selectordinal, one {#st Book} two {#nd Book}}"
+      "{value, selectordinal, one {#st Book} two {#nd Book}}",
     )
     expect(cache({ value: 1 })).toEqual("1st Book")
     expect(cache({ value: 2 })).toEqual("2nd Book")
@@ -107,23 +107,23 @@ describe("interpolate", () => {
       gender, select,
       male {{numOfGuests, plural, one {He invites one guest} other {He invites # guests}}}
       female {{numOfGuests, plural, one {She invites one guest} other {She invites # guests}}}
-      other {They is {gender}}}`
+      other {They is {gender}}}`,
     )
 
     expect(cache({ numOfGuests: 1, gender: "male" })).toEqual(
-      "He invites one guest"
+      "He invites one guest",
     )
     expect(cache({ numOfGuests: 3, gender: "male" })).toEqual(
-      "He invites 3 guests"
+      "He invites 3 guests",
     )
     expect(cache({ numOfGuests: 1, gender: "female" })).toEqual(
-      "She invites one guest"
+      "She invites one guest",
     )
     expect(cache({ numOfGuests: 3, gender: "female" })).toEqual(
-      "She invites 3 guests"
+      "She invites 3 guests",
     )
     expect(cache({ numOfGuests: 3, gender: "unknown" })).toEqual(
-      "They is unknown"
+      "They is unknown",
     )
   })
 
@@ -184,17 +184,17 @@ describe("interpolate", () => {
   it("should not crash on a unicode sequences", () => {
     const cache = compile("Hey {name}!")
     expect(interpolate(cache, "en", [])({ name: "Joe\\xaa" })).toEqual(
-      "Hey Joeª!"
+      "Hey Joeª!",
     )
   })
 
   it("should not crash on a unicode sequences if the same string goes twice in a row", () => {
     const cache = compile("Hey {name}!")
     expect(interpolate(cache, "en", [])({ name: "Joe\\xaa" })).toEqual(
-      "Hey Joeª!"
+      "Hey Joeª!",
     )
     expect(interpolate(cache, "en", [])({ name: "Joe\\xaa" })).toEqual(
-      "Hey Joeª!"
+      "Hey Joeª!",
     )
   })
 })

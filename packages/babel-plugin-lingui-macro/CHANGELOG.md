@@ -3,6 +3,38 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.0.0](https://github.com/lingui/js-lingui/compare/v5.9.5...v6.0.0) (2026-04-22)
+
+- [Announcing Lingui 6.0](https://lingui.dev/blog/2026/04/22/announcing-lingui-6.0)
+
+## [5.9.5](https://github.com/lingui/js-lingui/compare/v5.9.4...v5.9.5) (2026-04-06)
+
+**Note:** Version bump only for package @lingui/babel-plugin-lingui-macro
+
+## [5.9.4](https://github.com/lingui/js-lingui/compare/v5.9.3...v5.9.4) (2026-03-27)
+
+**Note:** Version bump only for package @lingui/babel-plugin-lingui-macro
+
+## [5.9.3](https://github.com/lingui/js-lingui/compare/v5.9.2...v5.9.3) (2026-03-13)
+
+**Note:** Version bump only for package @lingui/babel-plugin-lingui-macro
+
+## [5.9.2](https://github.com/lingui/js-lingui/compare/v5.9.1...v5.9.2) (2026-02-23)
+
+**Note:** Version bump only for package @lingui/babel-plugin-lingui-macro
+
+## [5.9.1](https://github.com/lingui/js-lingui/compare/v5.9.0...v5.9.1) (2026-02-11)
+
+### Bug Fixes
+
+* **macro:** Ignore JSX comments when generating message ids ([#2434](https://github.com/lingui/js-lingui/issues/2434)) ([c09deaa](https://github.com/lingui/js-lingui/commit/c09deaac19f2297a8c136cd98f1f3f76178891b0))
+
+# [5.9.0](https://github.com/lingui/js-lingui/compare/v5.8.0...v5.9.0) (2026-01-23)
+
+### Bug Fixes
+
+* **jsx-macro:** skip unsupported attributes on Plural / Select ([#2407](https://github.com/lingui/js-lingui/issues/2407)) ([e63992d](https://github.com/lingui/js-lingui/commit/e63992dee2a0a9bc53e91944e7e5d0e6a7a177fc))
+
 # [5.8.0](https://github.com/lingui/js-lingui/compare/v5.7.0...v5.8.0) (2026-01-16)
 
 **Note:** Version bump only for package @lingui/babel-plugin-lingui-macro

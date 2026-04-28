@@ -1,12 +1,12 @@
-import { ICUMessageFormat, Tokens, ParsedResult } from "./icu"
+import { ICUMessageFormat, ParsedResult, Tokens } from "./icu"
+import * as types from "@babel/types"
 import {
-  SourceLocation,
-  ObjectProperty,
-  ObjectExpression,
   Expression,
+  ObjectExpression,
+  ObjectProperty,
+  SourceLocation,
 } from "@babel/types"
 import { EXTRACT_MARK, MsgDescriptorPropKey } from "./constants"
-import * as types from "@babel/types"
 import { generateMessageId } from "@lingui/message-utils/generateMessageId"
 
 function buildICUFromTokens(tokens: Tokens) {
@@ -20,43 +20,55 @@ type TextWithLoc = {
 }
 
 function isObjectProperty(
-  node: TextWithLoc | ObjectProperty
+  node: TextWithLoc | ObjectProperty,
 ): node is ObjectProperty {
   return "type" in node
 }
 
+/**
+ * The resolved mode after evaluating `"auto"` against the current environment.
+ *
+ * @see LinguiPluginOpts.descriptorFields
+ */
+export type ResolvedDescriptorFields = "all" | "id-only" | "message"
+
 export function createMessageDescriptorFromTokens(
   tokens: Tokens,
   oldLoc: SourceLocation,
-  stripNonEssentialProps: boolean,
-  stripMessageProp: boolean,
+  descriptorFields: ResolvedDescriptorFields,
   defaults: {
     id?: TextWithLoc | ObjectProperty
     context?: TextWithLoc | ObjectProperty
     comment?: TextWithLoc | ObjectProperty
-  } = {}
+  } = {},
 ) {
   return createMessageDescriptor(
     buildICUFromTokens(tokens),
     oldLoc,
-    stripNonEssentialProps,
-    stripMessageProp,
-    defaults
+    descriptorFields,
+    defaults,
   )
 }
 
 export function createMessageDescriptor(
   result: Partial<ParsedResult>,
   oldLoc: SourceLocation,
-  stripNonEssentialProps: boolean,
-  stripMessageProp: boolean,
+  descriptorFields: ResolvedDescriptorFields,
   defaults: {
     id?: TextWithLoc | ObjectProperty
     context?: TextWithLoc | ObjectProperty
     comment?: TextWithLoc | ObjectProperty
-  } = {}
+  } = {},
 ) {
   const { message, values, elements } = result
+
+  // Field inclusion rules based on descriptorFields mode:
+  //   "all"     → id, message, context, comment
+  //   "message" → id, message, context
+  //   "id-only" → id
+  const keepMessage = descriptorFields !== "id-only"
+  const keepContext = descriptorFields !== "id-only"
+  const keepComment = descriptorFields === "all"
 
   const properties: ObjectProperty[] = []
 
@@ -67,7 +79,7 @@ export function createMessageDescriptor(
         : createStringObjectProperty(
             MsgDescriptorPropKey.id,
             defaults.id.text,
-            defaults.id.loc
+            defaults.id.loc,
           )
       : createIdProperty(
           message,
@@ -75,42 +87,38 @@ export function createMessageDescriptor(
             ? isObjectProperty(defaults.context)
               ? getTextFromExpression(defaults.context.value as Expression)
               : defaults.context.text
-            : null
-        )
+            : null,
+        ),
   )
 
-  if (!stripMessageProp) {
-    if (message) {
-      properties.push(
-        createStringObjectProperty(MsgDescriptorPropKey.message, message)
-      )
-    }
+  if (keepMessage && message) {
+    properties.push(
+      createStringObjectProperty(MsgDescriptorPropKey.message, message),
+    )
   }
 
-  if (!stripNonEssentialProps) {
-    if (defaults.comment) {
-      properties.push(
-        isObjectProperty(defaults.comment)
-          ? defaults.comment
-          : createStringObjectProperty(
-              MsgDescriptorPropKey.comment,
-              defaults.comment.text,
-              defaults.comment.loc
-            )
-      )
-    }
+  if (keepComment && defaults.comment) {
+    properties.push(
+      isObjectProperty(defaults.comment)
+        ? defaults.comment
+        : createStringObjectProperty(
+            MsgDescriptorPropKey.comment,
+            defaults.comment.text,
+            defaults.comment.loc,
+          ),
+    )
+  }
 
-    if (defaults.context) {
-      properties.push(
-        isObjectProperty(defaults.context)
-          ? defaults.context
-          : createStringObjectProperty(
-              MsgDescriptorPropKey.context,
-              defaults.context.text,
-              defaults.context.loc
-            )
-      )
-    }
+  if (keepContext && defaults.context) {
+    properties.push(
+      isObjectProperty(defaults.context)
+        ? defaults.context
+        : createStringObjectProperty(
+            MsgDescriptorPropKey.context,
+            defaults.context.text,
+            defaults.context.loc,
+          ),
+    )
   }
 
   if (values) {
@@ -119,45 +127,50 @@ export function createMessageDescriptor(
 
   if (elements) {
     properties.push(
-      createValuesProperty(MsgDescriptorPropKey.components, elements)
+      createValuesProperty(MsgDescriptorPropKey.components, elements),
     )
   }
 
   return createMessageDescriptorObjectExpression(
     properties,
     // preserve line numbers for extractor
-    oldLoc
+    oldLoc,
   )
 }
 
 function createIdProperty(message: string, context?: string) {
   return createStringObjectProperty(
     MsgDescriptorPropKey.id,
-    generateMessageId(message, context)
+    generateMessageId(message, context),
   )
 }
 
 function createValuesProperty(key: string, values: Record<string, Expression>) {
   const valuesObject = Object.keys(values).map((key) =>
-    types.objectProperty(types.identifier(key), values[key])
+    types.objectProperty(
+      types.isValidIdentifier(key) || /^\d+$/.test(key)
+        ? types.identifier(key)
+        : types.stringLiteral(key),
+      values[key],
+    ),
   )
 
   if (!valuesObject.length) return
 
   return types.objectProperty(
     types.identifier(key),
-    types.objectExpression(valuesObject)
+    types.objectExpression(valuesObject),
   )
 }
 
 export function createStringObjectProperty(
   key: string,
   value: string,
-  oldLoc?: SourceLocation
+  oldLoc?: SourceLocation,
 ) {
   const property = types.objectProperty(
     types.identifier(key),
-    types.stringLiteral(value)
+    types.stringLiteral(value),
   )
   if (oldLoc) {
     property.loc = oldLoc
@@ -180,7 +193,7 @@ function getTextFromExpression(exp: Expression): string {
 
 function createMessageDescriptorObjectExpression(
   properties: ObjectProperty[],
-  oldLoc?: SourceLocation
+  oldLoc?: SourceLocation,
 ): ObjectExpression {
   const newDescriptor = types.objectExpression(properties.filter(Boolean))
   types.addComment(newDescriptor, "leading", EXTRACT_MARK)

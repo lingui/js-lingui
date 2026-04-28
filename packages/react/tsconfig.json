@@ -1,10 +1,13 @@
 {
-  "extends": "../../tsconfig.json",
   "compilerOptions": {
     "strict": true,
+    "jsx": "react-jsx",
     "noUncheckedIndexedAccess": true,
     "isolatedModules": true,
     "forceConsistentCasingInFileNames": true,
-    "jsx": "react-jsx"
+    "skipLibCheck": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "types": ["vitest/globals"]
   }
 }

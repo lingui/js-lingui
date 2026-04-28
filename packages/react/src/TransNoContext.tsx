@@ -41,7 +41,7 @@ export function TransNoContext(
       i18n: I18n
       defaultComponent?: React.ComponentType<TransRenderProps>
     }
-  }
+  },
 ): React.ReactElement<any, any> | null {
   const {
     render,
@@ -82,17 +82,17 @@ export function TransNoContext(
   // Validation of `render` and `component` props
   if (render && component) {
     console.error(
-      "You can't use both `component` and `render` prop at the same time. `component` is ignored."
+      "You can't use both `component` and `render` prop at the same time. `component` is ignored.",
     )
   } else if (render && typeof render !== "function") {
     console.error(
-      `Invalid value supplied to prop \`render\`. It must be a function, provided ${render}`
+      `Invalid value supplied to prop \`render\`. It must be a function, provided ${render}`,
     )
   } else if (component && typeof component !== "function") {
     // Apparently, both function components and class components are functions
     // See https://stackoverflow.com/a/41658173/1535540
     console.error(
-      `Invalid value supplied to prop \`component\`. It must be a React component, provided ${component}`
+      `Invalid value supplied to prop \`component\`. It must be a React component, provided ${component}`,
     )
 
     return <FallbackComponent {...i18nProps}>{translation}</FallbackComponent>

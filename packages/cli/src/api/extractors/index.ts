@@ -1,19 +1,29 @@
 import fs from "fs/promises"
-import babel from "./babel"
+import { createBabelExtractor } from "./babel.js"
 import {
   ExtractedMessage,
   ExtractorType,
   LinguiConfigNormalized,
 } from "@lingui/conf"
 
-const DEFAULT_EXTRACTORS: ExtractorType[] = [babel]
+let defaultExtractor: ExtractorType
+function createDefaultExtractor(linguiConfig: LinguiConfigNormalized) {
+  if (!defaultExtractor) {
+    defaultExtractor = createBabelExtractor({
+      parserOptions: linguiConfig.extractorParserOptions,
+    })
+  }
+  return defaultExtractor
+}
 
 export default async function extract(
   filename: string,
   onMessageExtracted: (msg: ExtractedMessage) => void,
-  linguiConfig: LinguiConfigNormalized
+  linguiConfig: LinguiConfigNormalized,
 ): Promise<boolean> {
-  const extractorsToExtract = linguiConfig.extractors ?? DEFAULT_EXTRACTORS
+  const extractorsToExtract = linguiConfig.extractors ?? [
+    createDefaultExtractor(linguiConfig),
+  ]
 
   for (const ext of extractorsToExtract) {
     if (!ext.match(filename)) continue

@@ -1,3 +1,3 @@
 export type Logger = {
-  error: (msg?: string) => void
+  error: (msg: string) => void
 }

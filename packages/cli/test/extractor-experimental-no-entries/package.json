@@ -1,0 +1,10 @@
+{
+  "name": "extractor-experimental-no-entries",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@lingui/core": "*",
+    "@lingui/conf": "*"
+  }
+}

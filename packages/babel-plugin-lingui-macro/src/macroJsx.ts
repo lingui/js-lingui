@@ -20,7 +20,10 @@ import { ArgToken, ElementToken, TextToken, Token } from "./icu"
 import { makeCounter } from "./utils"
 import { JsxMacroName, MsgDescriptorPropKey, JsMacroName } from "./constants"
 import cleanJSXElementLiteralChild from "./utils/cleanJSXElementLiteralChild"
-import { createMessageDescriptorFromTokens } from "./messageDescriptorUtils"
+import {
+  createMessageDescriptorFromTokens,
+  ResolvedDescriptorFields,
+} from "./messageDescriptorUtils"
 import {
   createMacroJsContext,
   MacroJsContext,
@@ -49,14 +52,31 @@ function maybeNodeValue(node: Node): { text: string; loc: SourceLocation } {
 export type MacroJsxContext = MacroJsContext & {
   elementIndex: () => number
   transImportName: string
+  elementsTracking: Map<string, JSXElement>
+  jsxPlaceholderAttribute?: string
+  jsxPlaceholderDefaults?: Record<string, string>
 }
 
 export type MacroJsxOpts = {
-  stripNonEssentialProps: boolean
-  stripMessageProp: boolean
+  descriptorFields: ResolvedDescriptorFields
   transImportName: string
   isLinguiIdentifier: (node: Identifier, macro: JsMacroName) => boolean
+  jsxPlaceholderAttribute?: string
+  jsxPlaceholderDefaults?: Record<string, string>
 }
+
+const choiceComponentAttributesWhitelist = [
+  "_\\w+",
+  "_\\d+",
+  "zero",
+  "one",
+  "two",
+  "few",
+  "many",
+  "other",
+  "value",
+  "offset",
+]
 
 export class MacroJSX {
   types: typeof babelTypes
@@ -66,13 +86,12 @@ export class MacroJSX {
     this.types = types
 
     this.ctx = {
-      ...createMacroJsContext(
-        opts.isLinguiIdentifier,
-        opts.stripNonEssentialProps,
-        opts.stripMessageProp
-      ),
+      ...createMacroJsContext(opts.isLinguiIdentifier, opts.descriptorFields),
       transImportName: opts.transImportName,
       elementIndex: makeCounter(),
+      elementsTracking: new Map(),
+      jsxPlaceholderAttribute: opts.jsxPlaceholderAttribute,
+      jsxPlaceholderDefaults: opts.jsxPlaceholderDefaults,
     }
   }
 
@@ -88,7 +107,7 @@ export class MacroJSX {
     }
 
     const { attributes, id, comment, context } = this.stripMacroAttributes(
-      path as NodePath<JSXElement>
+      path as NodePath<JSXElement>,
     )
 
     if (!tokens.length) {
@@ -98,13 +117,12 @@ export class MacroJSX {
     const messageDescriptor = createMessageDescriptorFromTokens(
       tokens,
       path.node.loc,
-      this.ctx.stripNonEssentialProps,
-      this.ctx.stripMessageProp,
+      this.ctx.descriptorFields,
       {
         id,
         context,
         comment,
-      }
+      },
     )
 
     attributes.push(this.types.jsxSpreadAttribute(messageDescriptor))
@@ -113,11 +131,11 @@ export class MacroJSX {
       this.types.jsxOpeningElement(
         this.types.jsxIdentifier(this.ctx.transImportName),
         attributes,
-        true
+        true,
       ),
       null,
       [],
-      true
+      true,
     )
     newNode.loc = path.node.loc
 
@@ -136,13 +154,13 @@ export class MacroJSX {
     const { attributes } = path.node.openingElement
     const id = attributes.find(this.attrName([MsgDescriptorPropKey.id]))
     const message = attributes.find(
-      this.attrName([MsgDescriptorPropKey.message])
+      this.attrName([MsgDescriptorPropKey.message]),
     )
     const comment = attributes.find(
-      this.attrName([MsgDescriptorPropKey.comment])
+      this.attrName([MsgDescriptorPropKey.comment]),
     )
     const context = attributes.find(
-      this.attrName([MsgDescriptorPropKey.context])
+      this.attrName([MsgDescriptorPropKey.context]),
     )
 
     let reserved: string[] = [
@@ -153,19 +171,7 @@ export class MacroJSX {
     ]
 
     if (this.isChoiceComponent(path)) {
-      reserved = [
-        ...reserved,
-        "_\\w+",
-        "_\\d+",
-        "zero",
-        "one",
-        "two",
-        "few",
-        "many",
-        "other",
-        "value",
-        "offset",
-      ]
+      reserved = [...reserved, ...choiceComponentAttributesWhitelist]
     }
 
     return {
@@ -180,7 +186,7 @@ export class MacroJSX {
   tokenizeNode = (
     path: NodePath,
     ignoreExpression = false,
-    ignoreElement = false
+    ignoreElement = false,
   ): Token[] => {
     if (this.isTransComponent(path)) {
       // t
@@ -194,7 +200,7 @@ export class MacroJSX {
       return [
         this.tokenizeChoiceComponent(
           path as NodePath<JSXElement>,
-          componentName
+          componentName,
         ),
       ]
     }
@@ -219,6 +225,12 @@ export class MacroJSX {
     if (path.isJSXExpressionContainer()) {
       const exp = path.get("expression") as NodePath<Expression>
 
+      // Ignore JSX comments like {/* comment */} - they should not affect
+      // the message or consume expression indices
+      if (exp.isJSXEmptyExpression()) {
+        return []
+      }
+
       if (exp.isStringLiteral()) {
         return [this.tokenizeText(exp.node.value)]
       }
@@ -237,7 +249,7 @@ export class MacroJSX {
       return this.tokenizeNode(path)
     } else if (path.isJSXSpreadChild()) {
       throw new Error(
-        "Incorrect usage of Trans: Spread could not be used as Trans children"
+        "Incorrect usage of Trans: Spread could not be used as Trans children",
       )
     } else if (path.isJSXText()) {
       return [this.tokenizeText(cleanJSXElementLiteralChild(path.node.value))]
@@ -268,26 +280,13 @@ export class MacroJSX {
 
   tokenizeChoiceComponent = (
     path: NodePath<JSXElement>,
-    componentName: JsxMacroName
+    componentName: JsxMacroName,
   ): Token => {
     const element = path.get("openingElement")
 
     const format = componentName.toLowerCase()
     const props = element.get("attributes").filter((attr) => {
-      return this.attrName(
-        [
-          MsgDescriptorPropKey.id,
-          MsgDescriptorPropKey.comment,
-          MsgDescriptorPropKey.message,
-          MsgDescriptorPropKey.context,
-          "key",
-          // we remove <Trans /> react props that are not useful for translation
-          "render",
-          "component",
-          "components",
-        ],
-        true
-      )(attr.node)
+      return this.attrName(choiceComponentAttributesWhitelist)(attr.node)
     })
 
     let token: Token = {
@@ -320,7 +319,7 @@ export class MacroJSX {
         token = {
           ...token,
           ...this.tokenizeExpression(
-            value.isLiteral() ? value : value.get("expression")
+            value.isLiteral() ? value : value.get("expression"),
           ),
         }
       } else if (format !== "select" && name === "offset") {
@@ -330,7 +329,7 @@ export class MacroJSX {
             ? (value.node.value as string)
             : (
                 (value as NodePath<JSXExpressionContainer>).get(
-                  "expression"
+                  "expression",
                 ) as NodePath<StringLiteral>
               ).node.value
       } else {
@@ -339,7 +338,7 @@ export class MacroJSX {
         if (value.isStringLiteral()) {
           option = (value.node.extra.raw as string).replace(
             /(["'])(.*)\1/,
-            "$2"
+            "$2",
           )
         } else {
           option = this.tokenizeChildren(value as JSXChildPath)
@@ -357,18 +356,120 @@ export class MacroJSX {
   }
 
   tokenizeElement = (path: NodePath<JSXElement>): ElementToken => {
-    // !!! Important: Calculate element index before traversing children.
-    // That way outside elements are numbered before inner elements. (...and it looks pretty).
-    const name = this.ctx.elementIndex()
+    const {
+      jsxPlaceholderAttribute,
+      jsxPlaceholderDefaults,
+      elementsTracking,
+    } = this.ctx
+
+    let node = path.node
+    let name: string | undefined = undefined
+
+    if (jsxPlaceholderAttribute) {
+      const { attributes } = node.openingElement
+      const attrIndex = attributes.findIndex(
+        (attr) =>
+          attr.type === "JSXAttribute" &&
+          attr.name.name === jsxPlaceholderAttribute,
+      )
+
+      if (attrIndex !== -1) {
+        const attr = attributes[attrIndex] as JSXAttribute
+        if (
+          !attr.value ||
+          attr.value.type !== "StringLiteral" ||
+          !attr.value.value
+        ) {
+          throw path.buildCodeFrameError(
+            `The \`${jsxPlaceholderAttribute}\` attribute must be a non-empty string literal.`,
+          )
+        }
+        name = attr.value.value
+
+        const newAttributes = [...attributes]
+        newAttributes.splice(attrIndex, 1)
+
+        node = {
+          ...node,
+          openingElement: {
+            ...node.openingElement,
+            attributes: newAttributes,
+          },
+        }
+      }
+    }
+
+    if (!name && jsxPlaceholderDefaults) {
+      const tagName = node.openingElement.name
+      if (tagName.type === "JSXIdentifier") {
+        name = jsxPlaceholderDefaults[tagName.name]
+      }
+    }
+
+    if (!name) {
+      name = String(this.ctx.elementIndex())
+      elementsTracking.set(name, node)
+    } else {
+      if (/^\d+$/.test(name)) {
+        throw path.buildCodeFrameError(
+          `Placeholder name \`${name}\` is not allowed because it conflicts with auto-generated numeric placeholders. Use a non-numeric name instead.`,
+        )
+      }
+      if (!/^[a-zA-Z_]([\w.-]*\w)?$/.test(name)) {
+        throw path.buildCodeFrameError(
+          `Placeholder name \`${name}\` is not valid. Names must start and end with a letter/digit/underscore, but may contain \`.-\` in between.`,
+        )
+      }
+
+      const existingElement = elementsTracking.get(name)
+
+      if (existingElement) {
+        const existingTag = existingElement.openingElement.name
+        const currentTag = node.openingElement.name
+        const existingAttrs = existingElement.openingElement.attributes
+        const openingAttrs = node.openingElement.attributes
+
+        const hasSpreads = existingAttrs.some(
+          (a) => a.type === "JSXSpreadAttribute",
+        )
+
+        // When spreads are present, attribute order matters for React
+        // semantics so we compare positionally. Otherwise, order-insensitive.
+        const attrsEqual =
+          existingAttrs.length === openingAttrs.length &&
+          (hasSpreads
+            ? existingAttrs.every((a, i) =>
+                this.types.isNodesEquivalent(a, openingAttrs[i]),
+              )
+            : existingAttrs.every((a) =>
+                openingAttrs.some((b) => this.types.isNodesEquivalent(a, b)),
+              ))
+
+        if (
+          !this.types.isNodesEquivalent(existingTag, currentTag) ||
+          !attrsEqual
+        ) {
+          const eg = `(e.g. \`<element ${jsxPlaceholderAttribute || "_t"}="newName" />\`)`
+          const msg =
+            `Multiple distinct JSX elements with the same placeholder name (\`${name}\`). ` +
+            (jsxPlaceholderAttribute
+              ? `Differentiate them by adding/modifying the \`${jsxPlaceholderAttribute}\` attribute ${eg}.`
+              : `Differentiate them by setting \`macro.jsxPlaceholderAttribute\` in the lingui config and then adding the attribute to your JSX elements ${eg}.`)
+          throw path.buildCodeFrameError(msg)
+        }
+      } else {
+        elementsTracking.set(name, node)
+      }
+    }
 
     return {
       type: "element",
       name,
       value: {
-        ...path.node,
+        ...node,
         children: [],
         openingElement: {
-          ...path.node.openingElement,
+          ...node.openingElement,
           selfClosing: true,
         },
       },
@@ -381,7 +482,7 @@ export class MacroJSX {
   }
 
   tokenizeConditionalExpression = (
-    exp: NodePath<ConditionalExpression>
+    exp: NodePath<ConditionalExpression>,
   ): ArgToken => {
     exp.traverse(
       {
@@ -392,7 +493,7 @@ export class MacroJSX {
           }
         },
       },
-      exp.state
+      exp.state,
     )
 
     return this.tokenizeExpression(exp)
@@ -407,19 +508,19 @@ export class MacroJSX {
 
   isLinguiComponent = (
     path: NodePath,
-    name: JsxMacroName
+    name: JsxMacroName,
   ): path is NodePath<JSXElement> => {
     if (!path.isJSXElement()) {
       return false
     }
 
     const config = (path.context.state as PluginPass).get(
-      "linguiConfig"
+      "linguiConfig",
     ) as LinguiConfigNormalized
     const identifier = path.get("openingElement").get("name")
 
     return config.macro.jsxPackage.some((moduleSource) =>
-      identifier.referencesImport(moduleSource, name)
+      identifier.referencesImport(moduleSource, name),
     )
   }
 

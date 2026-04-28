@@ -11,15 +11,24 @@ const config: Config = {
   organizationName: "lingui",
   onBrokenLinks: "throw",
   onBrokenAnchors: "throw",
-  onBrokenMarkdownLinks: "throw",
   markdown: {
     mermaid: true,
+    hooks: {
+      onBrokenMarkdownLinks: "throw",
+    },
   },
   themes: ["@docusaurus/theme-mermaid"],
   themeConfig: {
     colorMode: {
       disableSwitch: false,
       respectPrefersColorScheme: true,
+    },
+    announcementBar: {
+      id: "lingui-6.0",
+      content: `✨ Lingui <strong>6.0</strong> is now available. <a href="/blog/2026/04/22/announcing-lingui-6.0">Read the release announcement</a> for what's new ✨`,
+      backgroundColor: "#0d9488",
+      textColor: "#ffffff",
+      isCloseable: true,
     },
     metadata: [
       {
@@ -74,83 +83,24 @@ const config: Config = {
           "aria-label": "GitHub repository",
         },
         {
-          href: "https://discord.gg/gFWwAYnMtA",
+          href: "https://discord.gg/tBZqKpeF",
           position: "right",
           className: "header-discord-link",
           title: "Discord",
           "aria-label": "Discord",
+        },
+        {
+          href: "https://x.com/LinguiJS",
+          position: "right",
+          className: "header-x-link",
+          title: "X",
+          "aria-label": "X",
         },
       ],
     },
     footer: {
       style: "dark",
       copyright: `Copyright © 2017-2022 Tom Ehrlich, © 2022-${new Date().getFullYear()} Crowdin.`,
-      links: [
-        {
-          title: "Docs",
-          items: [
-            {
-              label: "Introduction",
-              to: "/introduction/",
-            },
-            {
-              label: "CLI Reference",
-              to: "/ref/cli",
-            },
-            {
-              label: "Configuration",
-              to: "/ref/conf",
-            },
-          ],
-        },
-        {
-          title: "Community",
-          items: [
-            {
-              label: "Discord",
-              href: "https://discord.gg/gFWwAYnMtA",
-            },
-            {
-              label: "Stack Overflow",
-              href: "https://stackoverflow.com/questions/tagged/linguijs",
-            },
-            {
-              label: "Discussions",
-              href: "https://github.com/lingui/js-lingui/discussions",
-            },
-          ],
-        },
-        {
-          title: "More",
-          items: [
-            {
-              label: "Blog",
-              to: "/blog",
-            },
-            {
-              label: "X",
-              href: "https://x.com/LinguiJS",
-            },
-            {
-              label: "GitHub",
-              href: "https://github.com/lingui/js-lingui",
-            },
-          ],
-        },
-        {
-          title: "Docs for LLMs",
-          items: [
-            {
-              label: "llms.txt",
-              href: "https://lingui.dev/llms.txt",
-            },
-            {
-              label: "llms-full.txt",
-              href: "https://lingui.dev/llms-full.txt",
-            },
-          ],
-        },
-      ],
     },
     algolia: {
       appId: "JJFVB18YWS",
