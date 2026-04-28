@@ -35,7 +35,7 @@ Lingui is an easy yet powerful internationalization (i18n) framework for global 
 
 - **Unopinionated** - Integrate Lingui into your existing workflow. It supports explicit message keys as well as auto-generated ones. Translations are stored in a standard PO file, which is supported in almost all translation tools. You can also use CSV or JSON, or add a custom formatter of your own.
 
-- **Lightweight and optimized** - Core library is less than [2 kB gzipped](https://bundlephobia.com/result?p=@lingui/core), React components are additional [1.3 kB gzipped](https://bundlephobia.com/result?p=@lingui/react).
+- **Lightweight and optimized** - Core library [![@lingui/core](https://deno.bundlejs.com/?q=%40lingui%2Fcore&treeshake=%5B%7Bi18n%7D%5D&badge=)](https://bundlejs.com/?q=%40lingui%2Fcore), React components [![@lingui/react](https://deno.bundlejs.com/?q=%40lingui%2Freact&config=%7B%22esbuild%22%3A%7B%22external%22%3A%5B%22react%22%2C%22%40lingui%2Fcore%22%5D%7D%7D&badge=)](https://bundlejs.com/?q=%40lingui%2Freact&config=%7B%22esbuild%22%3A%7B%22external%22%3A%5B%22react%22%2C%22%40lingui%2Fcore%22%5D%7D%7D).
 
 - **Built for AI-assisted workflows** - Good translations need context, especially for short UI strings. Lingui's localization formats let you describe where and how keys are used. Install [`lingui/skills`](https://github.com/lingui/skills) to help your AI assistant apply Lingui patterns consistently, and see [i18n with AI](https://lingui.dev/ai-tools) for MCP setup and more.
 
