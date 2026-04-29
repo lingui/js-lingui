@@ -1,3 +1,5 @@
+[![MseeP.ai Security Assessment Badge](https://mseep.net/pr/lingui-js-lingui-badge.png)](https://mseep.ai/app/lingui-js-lingui)
+
 <div align="center">
 <h1>Lingui<sub>js</sub></h1>
 
