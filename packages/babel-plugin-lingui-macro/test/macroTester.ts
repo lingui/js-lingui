@@ -5,6 +5,7 @@ import path from "path"
 import fs from "fs"
 import { macro } from "../src/macro"
 import Module from "node:module"
+import { stripVTControlCharacters } from "node:util"
 
 export type TestCase = TestCaseInline | TestCaseFixture
 
@@ -31,6 +32,7 @@ type TestCaseCommon = {
   macroOpts?: LinguiPluginOpts
   only?: boolean
   skip?: boolean
+  shouldThrow?: boolean
   /**
    * Will not execute test using babel-macro-plugin
    */
@@ -111,6 +113,33 @@ export function macroTester(opts: MacroTesterOptions) {
 
           expect(await clean(actualPlugin)).toEqual(await clean(expected))
         } else {
+          if (testCase.shouldThrow) {
+            expect(() => {
+              try {
+                transformSync(
+                  testCase.code,
+                  getDefaultBabelOptions(
+                    "plugin",
+                    macroOpts,
+                    useTypescriptPreset,
+                    useReactCompiler,
+                  ),
+                )
+              } catch (e: any) {
+                if (e && e.message) {
+                  e.message = stripVTControlCharacters(
+                    e.message
+                      .replace(process.cwd(), "<cwd>")
+                      // normalize path on Windows
+                      .replace("<cwd>\\", "<cwd>/"),
+                  )
+                }
+                throw e
+              }
+            }).toThrowErrorMatchingSnapshot()
+            return
+          }
+
           const actualPlugin = transformSync(
             testCase.code,
             getDefaultBabelOptions(

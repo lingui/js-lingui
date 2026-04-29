@@ -1,12 +1,12 @@
-import { ICUMessageFormat, Tokens, ParsedResult } from "./icu"
+import { ICUMessageFormat, ParsedResult, Tokens } from "./icu"
+import * as types from "@babel/types"
 import {
-  SourceLocation,
-  ObjectProperty,
-  ObjectExpression,
   Expression,
+  ObjectExpression,
+  ObjectProperty,
+  SourceLocation,
 } from "@babel/types"
 import { EXTRACT_MARK, MsgDescriptorPropKey } from "./constants"
-import * as types from "@babel/types"
 import { generateMessageId } from "@lingui/message-utils/generateMessageId"
 
 function buildICUFromTokens(tokens: Tokens) {
@@ -25,11 +25,17 @@ function isObjectProperty(
   return "type" in node
 }
 
+/**
+ * The resolved mode after evaluating `"auto"` against the current environment.
+ *
+ * @see LinguiPluginOpts.descriptorFields
+ */
+export type ResolvedDescriptorFields = "all" | "id-only" | "message"
+
 export function createMessageDescriptorFromTokens(
   tokens: Tokens,
   oldLoc: SourceLocation,
-  stripNonEssentialProps: boolean,
-  stripMessageProp: boolean,
+  descriptorFields: ResolvedDescriptorFields,
   defaults: {
     id?: TextWithLoc | ObjectProperty
     context?: TextWithLoc | ObjectProperty
@@ -39,8 +45,7 @@ export function createMessageDescriptorFromTokens(
   return createMessageDescriptor(
     buildICUFromTokens(tokens),
     oldLoc,
-    stripNonEssentialProps,
-    stripMessageProp,
+    descriptorFields,
     defaults,
   )
 }
@@ -48,8 +53,7 @@ export function createMessageDescriptorFromTokens(
 export function createMessageDescriptor(
   result: Partial<ParsedResult>,
   oldLoc: SourceLocation,
-  stripNonEssentialProps: boolean,
-  stripMessageProp: boolean,
+  descriptorFields: ResolvedDescriptorFields,
   defaults: {
     id?: TextWithLoc | ObjectProperty
     context?: TextWithLoc | ObjectProperty
@@ -57,6 +61,14 @@ export function createMessageDescriptor(
   } = {},
 ) {
   const { message, values, elements } = result
+
+  // Field inclusion rules based on descriptorFields mode:
+  //   "all"     → id, message, context, comment
+  //   "message" → id, message, context
+  //   "id-only" → id
+  const keepMessage = descriptorFields !== "id-only"
+  const keepContext = descriptorFields !== "id-only"
+  const keepComment = descriptorFields === "all"
 
   const properties: ObjectProperty[] = []
 
@@ -79,38 +91,34 @@ export function createMessageDescriptor(
         ),
   )
 
-  if (!stripMessageProp) {
-    if (message) {
-      properties.push(
-        createStringObjectProperty(MsgDescriptorPropKey.message, message),
-      )
-    }
+  if (keepMessage && message) {
+    properties.push(
+      createStringObjectProperty(MsgDescriptorPropKey.message, message),
+    )
   }
 
-  if (!stripNonEssentialProps) {
-    if (defaults.comment) {
-      properties.push(
-        isObjectProperty(defaults.comment)
-          ? defaults.comment
-          : createStringObjectProperty(
-              MsgDescriptorPropKey.comment,
-              defaults.comment.text,
-              defaults.comment.loc,
-            ),
-      )
-    }
+  if (keepComment && defaults.comment) {
+    properties.push(
+      isObjectProperty(defaults.comment)
+        ? defaults.comment
+        : createStringObjectProperty(
+            MsgDescriptorPropKey.comment,
+            defaults.comment.text,
+            defaults.comment.loc,
+          ),
+    )
+  }
 
-    if (defaults.context) {
-      properties.push(
-        isObjectProperty(defaults.context)
-          ? defaults.context
-          : createStringObjectProperty(
-              MsgDescriptorPropKey.context,
-              defaults.context.text,
-              defaults.context.loc,
-            ),
-      )
-    }
+  if (keepContext && defaults.context) {
+    properties.push(
+      isObjectProperty(defaults.context)
+        ? defaults.context
+        : createStringObjectProperty(
+            MsgDescriptorPropKey.context,
+            defaults.context.text,
+            defaults.context.loc,
+          ),
+    )
   }
 
   if (values) {
@@ -139,7 +147,12 @@ function createIdProperty(message: string, context?: string) {
 
 function createValuesProperty(key: string, values: Record<string, Expression>) {
   const valuesObject = Object.keys(values).map((key) =>
-    types.objectProperty(types.identifier(key), values[key]),
+    types.objectProperty(
+      types.isValidIdentifier(key) || /^\d+$/.test(key)
+        ? types.identifier(key)
+        : types.stringLiteral(key),
+      values[key],
+    ),
   )
 
   if (!valuesObject.length) return
