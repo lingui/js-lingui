@@ -9,8 +9,7 @@
     "moduleResolution": "bundler",
     "target": "ES2022",
     "esModuleInterop": true,
-    "skipLibCheck": true,
-    "types": ["vitest/globals"]
+    "skipLibCheck": true
   },
-  "exclude": ["__typetests__/typed-ids"]
+  "include": ["./**/*.ts"]
 }

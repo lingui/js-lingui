@@ -1,4 +1,4 @@
-import type { I18n, MessageDescriptor } from "@lingui/core"
+import type { I18n, MessageDescriptor, MessageId } from "@lingui/core"
 
 export type ChoiceOptions = {
   /** Offset of value when calculating plural forms */
@@ -17,11 +17,11 @@ export type ChoiceOptions = {
 
 export type MacroMessageDescriptor = (
   | {
-      id: string
+      id: MessageId
       message?: string
     }
   | {
-      id?: string
+      id?: MessageId
       message: string
     }
 ) & {
@@ -126,7 +126,7 @@ export function t(i18n: I18n): {
  */
 export function plural(
   value: number | string | LabeledExpression<number | string>,
-  options: ChoiceOptions
+  options: ChoiceOptions,
 ): string
 
 /**
@@ -151,7 +151,7 @@ export function plural(
  */
 export function selectOrdinal(
   value: number | string | LabeledExpression<number | string>,
-  options: ChoiceOptions
+  options: ChoiceOptions,
 ): string
 
 type SelectOptions = {
@@ -182,7 +182,7 @@ type SelectOptions = {
  */
 export function select(
   value: string | LabeledExpression<string>,
-  choices: SelectOptions
+  choices: SelectOptions,
 ): string
 
 /**
@@ -203,7 +203,7 @@ export function select(
  * @param descriptor The message descriptor
  */
 export function defineMessage(
-  descriptor: MacroMessageDescriptor
+  descriptor: MacroMessageDescriptor,
 ): MessageDescriptor
 
 /**
