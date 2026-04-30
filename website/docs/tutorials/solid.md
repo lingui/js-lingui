@@ -467,9 +467,7 @@ import { Trans, useLingui } from "@lingui/solid/macro";
 
 export default function Inbox() {
   const { i18n } = useLingui();
-  const dateFormatter = createMemo(
-    () => new Intl.DateTimeFormat(i18n().locale),
-  );
+  const dateFormatter = createMemo(() => new Intl.DateTimeFormat(i18n().locale));
 
   return (
     <div>
@@ -734,9 +732,7 @@ export default function Inbox() {
     alert(t`Marked as read.`);
   };
 
-  const dateFormatter = createMemo(
-    () => new Intl.DateTimeFormat(i18n().locale),
-  );
+  const dateFormatter = createMemo(() => new Intl.DateTimeFormat(i18n().locale));
 
   return (
     <div>
