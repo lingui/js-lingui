@@ -1,11 +1,10 @@
 import type { PluginObj, PluginPass, Visitor } from "@babel/core"
 import type * as babelTypes from "@babel/types"
-import { Identifier, Program } from "@babel/types"
+import { Expression, Identifier, Program } from "@babel/types"
 import { MacroJSX } from "./macroJsx"
-import type { NodePath } from "@babel/traverse"
+import type { NodePath, Scope } from "@babel/traverse"
 import { MacroJs } from "./macroJs"
 import { JsMacroName } from "./constants"
-import { wrapJsxElementAsComponent } from "./messageDescriptorUtils"
 import {
   getConfig as loadConfig,
   LinguiConfig,
@@ -283,7 +282,7 @@ export default function ({
                     transformElement:
                       config.macro.jsxRuntime === "solid"
                         ? (value) =>
-                            wrapJsxElementAsComponent(value, path.scope)
+                            wrapJsxElementAsComponent(t, value, path.scope)
                         : undefined,
                     isLinguiIdentifier: (node: Identifier, macro) =>
                       isLinguiIdentifier(path, node, macro, linguiConfig),
@@ -370,4 +369,35 @@ export default function ({
       },
     } as Visitor<PluginPass>,
   }
+}
+
+function wrapJsxElementAsComponent(
+  t: typeof babelTypes,
+  value: Expression,
+  scope: Scope,
+): Expression {
+  if (!t.isJSXElement(value)) {
+    return value
+  }
+
+  const props = scope.generateUidIdentifier("props")
+
+  return t.arrowFunctionExpression(
+    [props],
+    t.jsxElement(
+      t.jsxOpeningElement(
+        t.cloneNode(value.openingElement.name),
+        [
+          ...value.openingElement.attributes.map((attribute) =>
+            t.cloneNode(attribute),
+          ),
+          t.jsxSpreadAttribute(props),
+        ],
+        true,
+      ),
+      null,
+      [],
+      true,
+    ),
+  )
 }
