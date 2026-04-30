@@ -163,7 +163,10 @@ function extractFromObjectExpression(
 
   const textKeys = ["id", "message", "comment", "context"] as const
 
-  ;(exp.properties as ObjectProperty[]).forEach(({ key, value }, i) => {
+  exp.properties.forEach((prop, i) => {
+    if (prop.type !== "ObjectProperty") return
+    const { key, value } = prop
+
     const name = (key as Identifier).name
 
     if (name === "values" && t.isObjectExpression(value)) {

@@ -60,8 +60,8 @@
   },
   "devDependencies": {
     "@lingui/test-utils": "workspace:*",
-    "unbuild": "3.6.1",
-    "vitest": "4.0.18"
+    "unbuild": "catalog:",
+    "vitest": "catalog:"
   },
   "peerDependencies": {
     "babel-plugin-macros": "2 || 3"
