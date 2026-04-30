@@ -131,10 +131,10 @@ The `I18nProvider` provides Lingui context to all components in the subtree. It 
 
 It ensures that its children are only rendered after a locale has been activated, guaranteeing that any components relying on `i18n` have access to the translations. Additionally, the `I18nProvider` subscribes to change events emitted by the `i18n` object, automatically updating computations that consume the Lingui context whenever messages are updated or a new locale is activated.
 
-| Prop name          | Type                  | Description                                                                    |
-| ------------------ | --------------------- | ------------------------------------------------------------------------------ |
-| `i18n`             | `I18n`                | The `I18n` object instance (usually the one imported from `@lingui/core`)      |
-| `children`         | `JSXElement`          | Solid children                                                                 |
+| Prop name          | Type                          | Description                                                                    |
+| ------------------ | ----------------------------- | ------------------------------------------------------------------------------ |
+| `i18n`             | `I18n`                        | The `I18n` object instance (usually the one imported from `@lingui/core`)      |
+| `children`         | `JSXElement`                  | Solid children                                                                 |
 | `defaultComponent` | `Component<TransRenderProps>` | A Solid component within which translation strings will be rendered (optional) |
 
 The `defaultComponent` serves the same purpose as the `component` prop in other i18n components. For a detailed explanation of how translations are rendered, see the [Rendering of Translations](#rendering-translations) section at the beginning of this document.
@@ -166,11 +166,11 @@ const App = () => {
 
 The `useLingui` hook provides access to the Lingui context. It returns an object with the following properties:
 
-| Key                | Type                                      | Description                                                             |
-| ------------------ | ----------------------------------------- | ----------------------------------------------------------------------- |
-| `i18n`             | `Accessor<I18n>`                          | Accessor for the `I18n` object instance that you passed to `I18nProvider` |
-| `_`                | `I18n["_"]`                               | Reference to the [`i18n._`](/ref/core#i18n._) function, explained below |
-| `defaultComponent` | `Accessor<Component<TransRenderProps>>` | The same `defaultComponent` you passed to `I18nProvider`, if provided |
+| Key                | Type                                    | Description                                                               |
+| ------------------ | --------------------------------------- | ------------------------------------------------------------------------- |
+| `i18n`             | `Accessor<I18n>`                        | Accessor for the `I18n` object instance that you passed to `I18nProvider` |
+| `_`                | `I18n["_"]`                             | Reference to the [`i18n._`](/ref/core#i18n._) function, explained below   |
+| `defaultComponent` | `Accessor<Component<TransRenderProps>>` | The same `defaultComponent` you passed to `I18nProvider`, if provided     |
 
 The `i18n` value returned from `useLingui` is a Solid signal. Call `i18n()` inside the JSX or computation that should react to locale and / or catalog updates.
 
@@ -204,6 +204,7 @@ const CurrentLocale = () => {
   return <span>{t`Hello ${userName}`}</span>;
 };
 ```
+
 :::
 
 ## Components
