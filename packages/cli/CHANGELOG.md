@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.1](https://github.com/lingui/js-lingui/compare/v6.0.0...v6.0.1) (2026-04-30)
+
+### Bug Fixes
+
+* **cli:** declare files arguments ([#2532](https://github.com/lingui/js-lingui/issues/2532)) ([4a55abe](https://github.com/lingui/js-lingui/commit/4a55abe7b3d046b972cb26a3c5a11acf397f1d7a))
+
 # [6.0.0](https://github.com/lingui/js-lingui/compare/v5.9.5...v6.0.0) (2026-04-22)
 
 - [Announcing Lingui 6.0](https://lingui.dev/blog/2026/04/22/announcing-lingui-6.0)
