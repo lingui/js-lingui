@@ -49,8 +49,8 @@
   "devDependencies": {
     "@lingui/babel-plugin-extract-messages": "workspace:*",
     "@lingui/core": "workspace:*",
-    "unbuild": "3.6.1",
-    "vitest": "4.0.18"
+    "unbuild": "catalog:",
+    "vitest": "catalog:"
   },
   "unbuild": {
     "declaration": "node16"

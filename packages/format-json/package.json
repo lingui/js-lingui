@@ -43,8 +43,8 @@
     "@lingui/conf": "workspace:*"
   },
   "devDependencies": {
-    "unbuild": "3.6.1",
-    "vitest": "4.0.18"
+    "unbuild": "catalog:",
+    "vitest": "catalog:"
   },
   "unbuild": {
     "declaration": "node16"
