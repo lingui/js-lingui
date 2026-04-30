@@ -61,7 +61,7 @@
   "devDependencies": {
     "@lingui/test-utils": "workspace:*",
     "unbuild": "3.6.1",
-    "vitest": "4.0.18"
+    "vitest": "catalog:"
   },
   "peerDependencies": {
     "babel-plugin-macros": "2 || 3"

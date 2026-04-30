@@ -48,7 +48,7 @@
   },
   "devDependencies": {
     "unbuild": "3.6.1",
-    "vitest": "4.0.18"
+    "vitest": "catalog:"
   },
   "unbuild": {
     "declaration": "node16"
