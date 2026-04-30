@@ -6,7 +6,6 @@ import {
   ObjectProperty,
   SourceLocation,
 } from "@babel/types"
-import type { Scope } from "@babel/traverse"
 import { EXTRACT_MARK, MsgDescriptorPropKey } from "./constants"
 import { generateMessageId } from "@lingui/message-utils/generateMessageId"
 
@@ -59,12 +58,7 @@ export function createMessageDescriptorFromTokens(
     )
   }
 
-  return createMessageDescriptor(
-    result,
-    oldLoc,
-    descriptorFields,
-    defaults,
-  )
+  return createMessageDescriptor(result, oldLoc, descriptorFields, defaults)
 }
 
 export function createMessageDescriptor(
@@ -177,36 +171,6 @@ function createValuesProperty(key: string, values: Record<string, Expression>) {
   return types.objectProperty(
     types.identifier(key),
     types.objectExpression(valuesObject),
-  )
-}
-
-export function wrapJsxElementAsComponent(
-  value: Expression,
-  scope: Scope,
-): Expression {
-  if (!types.isJSXElement(value)) {
-    return value
-  }
-
-  const props = scope.generateUidIdentifier("props")
-
-  return types.arrowFunctionExpression(
-    [props],
-    types.jsxElement(
-      types.jsxOpeningElement(
-        types.cloneNode(value.openingElement.name),
-        [
-          ...value.openingElement.attributes.map((attribute) =>
-            types.cloneNode(attribute),
-          ),
-          types.jsxSpreadAttribute(props),
-        ],
-        true,
-      ),
-      null,
-      [],
-      true,
-    ),
   )
 }
 
