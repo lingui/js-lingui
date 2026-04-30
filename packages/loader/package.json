@@ -53,7 +53,7 @@
   "devDependencies": {
     "@lingui/format-json": "workspace:*",
     "jiti": "^2.6.1",
-    "unbuild": "3.6.1",
+    "unbuild": "catalog:",
     "vitest": "catalog:",
     "webpack": "^5.76.1"
   },

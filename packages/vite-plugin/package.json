@@ -72,7 +72,7 @@
     "@lingui/format-json": "workspace:^",
     "@lingui/react": "workspace:^",
     "@rolldown/plugin-babel": "^0.2.2",
-    "unbuild": "3.6.1",
+    "unbuild": "catalog:",
     "vite": "^8.0.3",
     "vite-plugin-babel-macros": "^1.0.6",
     "vitest": "catalog:"

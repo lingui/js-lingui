@@ -51,7 +51,7 @@
     "@lingui/message-utils": "workspace:*"
   },
   "devDependencies": {
-    "unbuild": "3.6.1"
+    "unbuild": "catalog:"
   },
   "unbuild": {
     "declaration": "node16"

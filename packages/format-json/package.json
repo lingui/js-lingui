@@ -43,7 +43,7 @@
     "@lingui/conf": "workspace:*"
   },
   "devDependencies": {
-    "unbuild": "3.6.1",
+    "unbuild": "catalog:",
     "vitest": "catalog:"
   },
   "unbuild": {
