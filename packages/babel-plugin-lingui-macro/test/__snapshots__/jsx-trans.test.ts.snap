@@ -1021,6 +1021,30 @@ import { Trans as _Trans } from "@lingui/react";
 
 `;
 
+exports[`should generate Solid components 1`] = `
+import { Trans } from "@lingui/solid/macro";
+<Trans>
+  Hello <a href="/docs">docs</a>.
+</Trans>;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { Trans as _Trans } from "@lingui/solid";
+<_Trans
+  {
+    /*i18n*/
+    ...{
+      id: "lqG909",
+      message: "Hello <0>docs</0>.",
+      components: {
+        0: (_props) => <a href="/docs" {..._props} />,
+      },
+    }
+  }
+/>;
+
+`;
+
 exports[`should respect runtimeConfigModule 1`] = `
 import { Trans } from "@lingui/react/macro";
 <Trans>Hello World</Trans>;

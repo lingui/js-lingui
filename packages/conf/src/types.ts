@@ -406,6 +406,12 @@ export type LinguiConfig = {
      * ```
      */
     jsxPlaceholderDefaults?: Record<string, string>
+    /**
+     * Controls which JSX runtime semantics the Lingui JSX macro emit.
+     *
+     * @default undefined
+     */
+    jsxRuntime?: "react" | "solid"
   }
   experimental?: {
     extractor?: ExperimentalExtractorOptions

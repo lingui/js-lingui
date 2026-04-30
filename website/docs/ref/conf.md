@@ -629,3 +629,18 @@ A mapping of JSX element tag names to default placeholder names. When a JSX elem
 ```
 
 Explicit attributes (via `jsxPlaceholderAttribute`) take priority over defaults.
+
+## macro.jsxRuntime
+
+Default value: `undefined`
+
+Controls which JSX runtime semantics the Lingui JSX macro emit.
+
+```ts
+// lingui.config
+{
+  macro: {
+    jsxRuntime: "solid";
+  }
+}
+```
