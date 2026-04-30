@@ -11,7 +11,7 @@ export function mergeCatalog(
   const nextKeys = Object.keys(nextCatalog)
   const prevKeys = Object.keys(prevCatalog)
 
-  const hasKeysInBothCatalogs = prevKeys.length && nextKeys.length
+  const hasKeysInBothCatalogs = prevKeys.length > 0 && nextKeys.length > 0
   let newKeys: string[]
   let mergeKeys: string[]
   let obsoleteKeys: string[]
