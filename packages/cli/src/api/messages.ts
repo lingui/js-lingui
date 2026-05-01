@@ -1,15 +1,31 @@
-import { TranslationMissingEvent } from "./catalog/getTranslationsForCatalog.js"
+import type {
+  MissingBehavior,
+  TranslationMissingEvent,
+} from "./catalog/getTranslationsForCatalog.js"
+import { isMissingBehavior } from "./catalog/getTranslationsForCatalog.js"
 import { styleText } from "node:util"
-import { MessageCompilationError } from "./compile.js"
+import type { MessageCompilationError } from "./compile.js"
+
+export function getMissingBehaviorDescription(
+  missingBehavior: MissingBehavior,
+) {
+  return missingBehavior === "catalog"
+    ? "before applying fallbackLocales"
+    : "after applying fallbackLocales"
+}
 
 export function createMissingErrorMessage(
   locale: string,
   missingMessages: TranslationMissingEvent[],
-  configurationMsg: string,
+  missingBehaviorOrConfigurationMsg: MissingBehavior | string = "resolved",
 ) {
+  const missingBehavior = isMissingBehavior(missingBehaviorOrConfigurationMsg)
+    ? missingBehaviorOrConfigurationMsg
+    : "resolved"
+
   let message = `Failed to compile catalog for locale ${styleText("bold", locale)}!
 
-Missing ${missingMessages.length} translation(s):
+Missing ${missingMessages.length} translation(s) ${getMissingBehaviorDescription(missingBehavior)}:
 \n`
 
   missingMessages.forEach((missing) => {
