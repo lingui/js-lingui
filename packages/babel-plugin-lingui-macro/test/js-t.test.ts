@@ -191,9 +191,9 @@ macroTester({
       `,
     },
     {
-      name: "stripMessageField option - message prop is removed if stripMessageField: true",
+      name: "descriptorFields: id-only - message prop is removed",
       macroOpts: {
-        stripMessageField: true,
+        descriptorFields: "id-only",
       },
       code: `
           import { t } from '@lingui/core/macro'
@@ -249,10 +249,10 @@ macroTester({
     `,
     },
     {
-      name: "Production - message prop is kept if stripMessageField: false",
+      name: "Production - message and context kept with descriptorFields: message",
       production: true,
       macroOpts: {
-        stripMessageField: false,
+        descriptorFields: "message",
       },
       code: `
           import { t } from '@lingui/core/macro';
@@ -265,10 +265,10 @@ macroTester({
       `,
     },
     {
-      name: "Production - all props kept if extract: true",
+      name: "Production - all props kept with descriptorFields: all",
       production: true,
       macroOpts: {
-        extract: true,
+        descriptorFields: "all",
       },
       code: `
         import { t } from '@lingui/core/macro';

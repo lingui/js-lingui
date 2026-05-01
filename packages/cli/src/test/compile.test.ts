@@ -59,7 +59,7 @@ msgstr ""
     })
 
     it("Should show error and stop compilation of catalog if message doesnt have a translation (with template)", async () => {
-      expect.assertions(3)
+      expect.assertions(4)
       const rootDir = await createFixtures({
         "messages.pot": `
 msgid "Hello World"
@@ -85,8 +85,9 @@ msgstr ""
           en: actualFiles["en.js"],
         }).toMatchSnapshot()
 
-        let log = getConsoleMockCalls(console.error)!
-        log = log.split("\n\n").sort().join("\n\n")
+        const rawLog = getConsoleMockCalls(console.error)
+        expect(rawLog).toBeDefined()
+        const log = rawLog?.split("\n\n").sort().join("\n\n")
 
         expect(log).toMatchSnapshot()
         expect(result).toBeFalsy()
@@ -156,7 +157,7 @@ msgstr ""
       })
     })
 
-    it("Should fail even when fallbackLocales can resolve missing translation", async () => {
+    it("Should pass by default when fallbackLocales can resolve missing translation", async () => {
       expect.assertions(4)
 
       const rootDir = await createFixtures({
@@ -196,10 +197,61 @@ msgstr ""
         const actualFiles = readFsToListing(config.rootDir)
 
         expect(actualFiles["en-US.js"]).toBeTruthy()
+        expect(actualFiles["en-GB.js"]).toBeTruthy()
+
+        const log = getConsoleMockCalls(console.error)
+        expect(log).toBeUndefined()
+        expect(result).toBeTruthy()
+      })
+    })
+
+    it("Should fail when catalog missing behavior ignores fallbackLocales", async () => {
+      expect.assertions(4)
+
+      const rootDir = await createFixtures({
+        "en-US.po": `
+msgid "Hello World"
+msgstr "Hello World"
+        `,
+        "en-GB.po": `
+msgid "Hello World"
+msgstr ""
+        `,
+      })
+
+      const config = makeConfig({
+        locales: ["en-US", "en-GB"],
+        sourceLocale: "en-US",
+        fallbackLocales: {
+          default: "en-US",
+        },
+        rootDir,
+        catalogs: [
+          {
+            path: "<rootDir>/{locale}",
+            include: ["<rootDir>"],
+            exclude: [],
+          },
+        ],
+      })
+
+      await mockConsole(async (console) => {
+        const result = await command(config, {
+          allowEmpty: false,
+          missingBehavior: "catalog",
+          workersOptions: {
+            poolSize: 0,
+          },
+        })
+        const actualFiles = readFsToListing(config.rootDir)
+
+        expect(actualFiles["en-US.js"]).toBeTruthy()
         expect(actualFiles["en-GB.js"]).toBeFalsy()
 
         const log = getConsoleMockCalls(console.error)
-        expect(log).toContain("Missing 1 translation(s)")
+        expect(log).toContain(
+          "Missing 1 translation(s) before applying fallbackLocales",
+        )
         expect(result).toBeFalsy()
       })
     })

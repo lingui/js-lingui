@@ -1,7 +1,7 @@
 {
   "name": "js-lingui-workspaces",
   "private": true,
-  "version": "5.0.0",
+  "version": "6.0.0",
   "type": "module",
   "author": {
     "name": "Tomáš Ehrlich",

@@ -33,7 +33,7 @@ async function activate(locale: string) {
 activate("cs");
 
 // returns the Czech translation of "Hello World"
-const translation = i18n._("Hello World");
+const translation = i18n.t("Hello World");
 ```
 
 :::info Advanced
@@ -134,19 +134,19 @@ i18n.setMessagesCompiler(compileMessage);
 
 ### `i18n.activate(locale[, locales])` {#i18n.activate}
 
-Activate the specified locale and any alternate locales. After calling this method, calling `i18n._` will return messages in the activated locale.
+Activate the specified locale and any alternate locales. After calling this method, calling `i18n.t` will return messages in the activated locale.
 
 ```ts
 import { i18n } from "@lingui/core";
 
 i18n.activate("en");
-i18n._("Hello"); // Return "Hello" in English
+i18n.t("Hello"); // Return "Hello" in English
 
 i18n.activate("cs");
-i18n._("Hello"); // Return "Hello" in Czech
+i18n.t("Hello"); // Return "Hello" in Czech
 ```
 
-### `i18n._(messageId[, values[, options]])` {#i18n.\_}
+### `i18n.t(messageId[, values[, options]])` {#i18n.t}
 
 The core method for translating and formatting messages.
 
@@ -159,31 +159,31 @@ The core method for translating and formatting messages.
 import { i18n } from "@lingui/core";
 
 // Simple message
-i18n._("Hello");
+i18n.t("Hello");
 
 // Message with variables
-i18n._("My name is {name}", { name: "Tom" });
+i18n.t("My name is {name}", { name: "Tom" });
 
 // Message with custom messageId
-i18n._("msg.id", { name: "Tom" }, { message: "My name is {name}" });
+i18n.t("msg.id", { name: "Tom" }, { message: "My name is {name}" });
 
 const date = new Date("2014-12-06");
 const time = new Date("2014-12-06T17:40:00Z");
 
 // Short date format
-i18n._("It starts on {someDate, date, short}", { someDate: date });
+i18n.t("It starts on {someDate, date, short}", { someDate: date });
 
 // Short time format
-i18n._("It starts on {someTime, time, short}", { someTime: time });
+i18n.t("It starts on {someTime, time, short}", { someTime: time });
 
 // Date skeleton format
-i18n._("It starts on {someDate, date, ::GrMMMdd}", { someDate: date });
+i18n.t("It starts on {someDate, date, ::GrMMMdd}", { someDate: date });
 
 // Custom date format
-i18n._("It starts on {someDate, date, myStyle}", { someDate: date }, { formats: { myStyle: { day: "numeric" } } });
+i18n.t("It starts on {someDate, date, myStyle}", { someDate: date }, { formats: { myStyle: { day: "numeric" } } });
 ```
 
-### `i18n._(messageDescriptor)`
+### `i18n.t(messageDescriptor)`
 
 `messageDescriptor` is an object with a message ID, default message and other parameters. It's useful when you need to use the declared message later in the code.
 
@@ -191,16 +191,16 @@ i18n._("It starts on {someDate, date, myStyle}", { someDate: date }, { formats: 
 import { i18n } from "@lingui/core";
 
 // Simple message
-i18n._({ id: "Hello" });
+i18n.t({ id: "Hello" });
 
 // Simple message using custom ID
-i18n._({ id: "msg.hello", message: "Hello" });
+i18n.t({ id: "msg.hello", message: "Hello" });
 
 // Message with variable
-i18n._({ id: "My name is {name}", values: { name: "Tom" } });
+i18n.t({ id: "My name is {name}", values: { name: "Tom" } });
 
 // Message with comment, custom ID and variable
-i18n._({
+i18n.t({
   id: "msg.name",
   message: "My name is {name}",
   comment: "Message showing the passed in name",
@@ -210,14 +210,14 @@ i18n._({
 
 Read more about [Message Descriptor](/ref/macro#core-macros).
 
-### `i18n.t(...)` {#i18n.t}
+### `i18n._(...)` {#i18n.\_}
 
-Alias for [`i18n._`](#i18n._).
+Canonical translation method. [`i18n.t`](#i18n.t) is an alias for this method.
 
 ```ts
 import { i18n } from "@lingui/core";
 
-i18n.t({ id: "Hello" });
+i18n._({ id: "Hello" });
 ```
 
 ### `i18n.date(value: string | Date | number[, format: Intl.DateTimeFormatOptions])` {#i18n.date}
@@ -366,7 +366,7 @@ A custom message to be returned when a translation is missing. This feature is u
 import { setupI18n } from "@lingui/core";
 
 const i18n = setupI18n({ missing: "🚨" });
-i18n._("missing translation") === "🚨"; // Returns the custom missing message
+i18n.t("missing translation") === "🚨"; // Returns the custom missing message
 ```
 
 Alternatively, `missing` can be a function that receives the active locale and message ID as arguments:
@@ -380,7 +380,7 @@ function missing(locale, id) {
 }
 
 const i18n = setupI18n({ missing });
-i18n._("missing translation"); // Triggers an alert
+i18n.t("missing translation"); // Triggers an alert
 ```
 
 ## AllMessages
@@ -429,7 +429,7 @@ The `change` event is triggered **after** changing the locale or loading a new m
 
 ### `missing`
 
-The `missing` event is triggered when a translation is requested using [`i18n._`](/ref/core#i18n._) that does not exist in the messages of the active locale.The event provides information about the locale and the missing message ID.
+The `missing` event is triggered when a translation is requested using [`i18n.t`](/ref/core#i18n.t) that does not exist in the messages of the active locale. The event provides information about the locale and the missing message ID.
 
 ```ts
 i18n.on("missing", (event) => {

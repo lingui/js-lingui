@@ -184,7 +184,7 @@ This instance is the source of truth for the active locale. For string constants
 const deleteTitle = msg`Are you sure to delete this?`
 ...
 const showDeleteConfirmation = () => {
-  Alert.alert(i18n._(deleteTitle))
+  Alert.alert(i18n.t(deleteTitle))
 }
 ```
 

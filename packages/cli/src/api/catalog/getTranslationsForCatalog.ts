@@ -8,10 +8,12 @@ export type TranslationMissingEvent = {
   id: string
 }
 
+export type MissingBehavior = "resolved" | "catalog"
+
 export type GetTranslationsOptions = {
   sourceLocale: string
   fallbackLocales: FallbackLocales
-  missingBehavior?: "resolved" | "catalog"
+  missingBehavior?: MissingBehavior
 }
 
 export async function getTranslationsForCatalog(
@@ -113,8 +115,9 @@ function getTranslation(
       sourceLocale === locale &&
       sourceLocaleFallback(catalogs[sourceLocale], key))
 
+  const missingBehavior = options.missingBehavior ?? "resolved"
   const isMissingTranslation =
-    options.missingBehavior === "catalog"
+    missingBehavior === "catalog"
       ? locale !== sourceLocale && !catalogTranslation
       : !translation
 

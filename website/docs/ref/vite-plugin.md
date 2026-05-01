@@ -48,6 +48,20 @@ export async function dynamicActivate(locale: string) {
 
 Remember that the file extension is mandatory.
 
+## Options
+
+### `failOnMissing`
+
+Fail the build when missing translations are detected.
+
+- `true` or `"resolved"`: fail only if a translation is still missing after `fallbackLocales` are applied.
+- `"catalog"`: fail if the target locale catalog itself has missing translations before `fallbackLocales` are applied.
+- `false` or omitted: do not fail the build on missing translations.
+
+### `failOnCompileError`
+
+Fail the build when message compilation produces errors.
+
 :::tip
 If you are using a format that has a different extension than `*.po`, you need to specify the `?lingui` suffix:
 
@@ -56,6 +70,27 @@ const { messages } = await import(`./locales/${language}.json?lingui`);
 ```
 
 :::
+
+## `linguiTransformerBabelPreset`
+
+If you use `@rolldown/plugin-babel`, `@lingui/vite-plugin` exports `linguiTransformerBabelPreset` as a convenience helper for macro transformation:
+
+```ts title="vite.config.ts"
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import babel from "@rolldown/plugin-babel";
+import { lingui, linguiTransformerBabelPreset } from "@lingui/vite-plugin";
+
+export default defineConfig({
+  plugins: [
+    react(),
+    lingui(),
+    babel({
+      presets: [linguiTransformerBabelPreset()],
+    }),
+  ],
+});
+```
 
 ## See Also
 

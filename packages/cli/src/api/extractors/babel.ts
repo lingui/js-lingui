@@ -140,7 +140,7 @@ export async function extractFromFileWithBabel(
             [
               linguiMacroPlugin,
               {
-                extract: true,
+                descriptorFields: "all",
                 linguiConfig: ctx.linguiConfig,
               } satisfies LinguiPluginOpts,
             ],

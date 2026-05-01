@@ -3,6 +3,10 @@ import { lingui, LinguiPluginOpts } from "../src"
 import { runVite as _runVite } from "./run-vite"
 import macrosPlugin from "vite-plugin-babel-macros"
 
+function getErrorMessage(error: unknown) {
+  return error instanceof Error ? error.message : String(error)
+}
+
 describe("vite-plugin", () => {
   it("should return compiled catalog", async () => {
     const { mod } = await runVite(`po-format`)
@@ -24,7 +28,7 @@ describe("vite-plugin", () => {
         { useVitePlugin: false, useMacroPlugin: false },
       )
     } catch (e) {
-      expect((e as Error).message).toContain(
+      expect(getErrorMessage(e)).toContain(
         'The macro you imported from "@lingui/core/macro" is being executed outside the context of compilation.',
       )
     }
@@ -41,18 +45,39 @@ describe("vite-plugin", () => {
         failOnMissing: true,
       })
     } catch (e) {
-      expect((e as Error).message).toContain("Missing 1 translation(s):")
+      expect(getErrorMessage(e)).toContain(
+        "Missing 1 translation(s) after applying fallbackLocales:",
+      )
     }
   })
 
-  it("should report missing error when fallbackLocales resolve translation and failOnMissing = true", async () => {
-    expect.assertions(1)
+  it("should not report missing error when fallbackLocales resolve translation and failOnMissing = true", async () => {
+    await expect(
+      runVite(`fail-on-missing-fallback`, {
+        failOnMissing: true,
+      }),
+    ).resolves.toBeTruthy()
+  }, 10000)
+
+  it('should not report missing error when fallbackLocales resolve translation and failOnMissing = "resolved"', async () => {
+    await expect(
+      runVite(`fail-on-missing-fallback`, {
+        failOnMissing: "resolved",
+      }),
+    ).resolves.toBeTruthy()
+  }, 10000)
+
+  it('should report missing error when fallbackLocales resolve translation and failOnMissing = "catalog"', async () => {
+    expect.assertions(2)
     try {
       await runVite(`fail-on-missing-fallback`, {
-        failOnMissing: true,
+        failOnMissing: "catalog",
       })
     } catch (e) {
-      expect((e as Error).message).toContain("Missing 1 translation(s):")
+      expect(getErrorMessage(e)).toContain(
+        "Missing 1 translation(s) before applying fallbackLocales:",
+      )
+      expect(getErrorMessage(e)).toContain('failOnMissing="catalog"')
     }
   }, 10000)
 
@@ -71,7 +96,7 @@ describe("vite-plugin", () => {
         failOnCompileError: true,
       })
     } catch (e) {
-      expect((e as Error).message).toContain(
+      expect(getErrorMessage(e)).toContain(
         "Compilation error for 2 translation(s)",
       )
     }
@@ -95,7 +120,7 @@ describe("vite-plugin", () => {
       )
       await mod.load()
     } catch (e) {
-      expect((e as Error).message).toMatchInlineSnapshot(`
+      expect(getErrorMessage(e)).toMatchInlineSnapshot(`
         "The macro you imported from "@lingui/core/macro" is being executed outside the context of compilation. 
         This indicates that you don't configured correctly one of the "babel-plugin-macros" / "@lingui/swc-plugin" / "babel-plugin-lingui-macro" 
         Additionally, dynamic imports — e.g., \`await import('@lingui/core/macro')\` — are not supported."

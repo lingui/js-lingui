@@ -107,15 +107,44 @@ You can configure the plugin by passing the `runtimeModules` option. This option
 
 For more details, refer to the [Runtime Configuration](/ref/conf#runtimeconfigmodule) section of the documentation.
 
-### Strip Non-Essential Fields
+### JSX Placeholder Naming in `<Trans>`
 
-Lingui strips non-essential fields from builds if `NODE_ENV` is set to `production`. You can override this behavior by using the `stripNonEssentialFields` option. For example, if you want to keep all fields regardless of the environment, you can set:
+You can configure semantic JSX placeholder names for elements inside `<Trans>` with:
+
+- `jsxPlaceholderAttribute` - custom attribute used to set an explicit placeholder name in JSX (for example, `_t="link"`).
+- `jsxPlaceholderDefaults` - default placeholder names per JSX tag.
 
 ```json
 [
   "@lingui/swc-plugin",
   {
-    "stripNonEssentialFields": false
+    "jsxPlaceholderAttribute": "_t",
+    "jsxPlaceholderDefaults": {
+      "a": "link",
+      "strong": "bold"
+    }
+  }
+]
+```
+
+For behavior details and examples, see [`macro.jsxPlaceholderAttribute`](/ref/conf#macrojsxplaceholderattribute) and [`macro.jsxPlaceholderDefaults`](/ref/conf#macrojsxplaceholderdefaults).
+
+### Descriptor Fields
+
+The `descriptorFields` option controls which message descriptor fields are preserved in the transformed code.
+
+- `"auto"` (default): In production (`NODE_ENV === "production"`), keeps only the `id`. Otherwise, keeps all fields.
+- `"all"`: Keeps `id`, `message`, `context`, and `comment`.
+- `"id-only"`: Strips everything except `id`. Most optimized for production.
+- `"message"`: Keeps `id`, `message`, and `context` (but not `comment`).
+
+For example, to keep `message` and `context` in production builds:
+
+```json
+[
+  "@lingui/swc-plugin",
+  {
+    "descriptorFields": "message"
   }
 ]
 ```

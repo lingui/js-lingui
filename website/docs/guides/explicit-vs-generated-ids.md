@@ -1,6 +1,6 @@
 ---
-title: Choosing between generated and explicit IDs
-description: Learn about the differences between explicit and generated IDs and how to choose the right approach for your project
+title: Explicit vs Generated Message IDs in Lingui
+description: Compare explicit and generated message IDs in Lingui i18n, understand the trade-offs, and choose the best approach for your localization workflow
 ---
 
 # Explicit vs Generated IDs
@@ -9,66 +9,64 @@ When internationalizing your application, you may need to decide whether to use 
 
 In this guide, we explore the basic concepts of explicit and generated IDs, and then delve into a comprehensive comparison, highlighting the advantages and disadvantages of each approach.
 
-## What are Explicit IDs and Generated IDs?
+## Differences Between Explicit and Generated IDs
 
 ### Explicit ID
 
-An explicit ID, often referred to as a user-defined or custom ID, is a manually assigned identifier associated with a specific message. These IDs are typically chosen by developers and are explicitly specified within your code.
+An explicit ID, often referred to as a user-defined or custom ID, is a manually assigned identifier associated with a specific message. These IDs are typically chosen by developers and are explicitly specified within your code. The typical explicit ID may look like `index.header.title` or `modal.buttons.cancel`.
 
-The typical explicit id may look like `index.header.title` or `modal.buttons.cancel`.
-
-Lingui example:
+Example:
 
 ```jsx
-<Trans id="index.header.title">LinguiJS example</Trans>
+<Trans id="index.header.title">Lingui example</Trans>
 
 // extracted as
 {
   id: "index.header.title",
-  message: "LinguiJS example",
+  message: "Lingui example",
 }
 ```
 
 ### Generated IDs
 
-On the other hand, generated IDs are created automatically by the internalization library. In Lingui, such IDs are created based on the source message and [context](#context).
+On the other hand, generated IDs are created automatically by the internationalization library. In Lingui, such IDs are created based on the source message and [context](#context).
 
-Lingui example:
+Example:
 
 ```jsx
-<Trans>LinguiJS example</Trans>
+<Trans>Lingui example</Trans>
 
 // extracted as
 {
-  id: "uxV9Xq",
-  message: "LinguiJS example",
+  id: "MbT6FE",
+  message: "Lingui example",
 }
 ```
 
 ### Benefits of Generated IDs
 
-- **Avoiding the "naming things" problem:** You don't need to come up with a name for each single phrase in the app. Lingui generates the IDs (in the form of short hashes) from the messages.
-- **Better developer experience:** Developers can focus on coding without needing to manually assign IDs, leading to a more streamlined development process. Searching for a user-facing string will lead to the place in code where it's used, as opposed to taking you to a (typically JSON) file full of translations.
-- **Avoiding duplicates:** Duplicate messages are merged together automatically. Your translators will not have to translate the same phrases again and again. This could lead to cost savings, especially if translators charge by word count.
-- **Smaller bundle:** Lingui generates short IDs such as `uxV9Xq` which are typically shorter than manually crafted IDs like `index.header.title`. This results in a smaller bundle size, optimizing your application's performance.
-- **Preventing ID collisions:** As your application scales, explicit IDs can potentially lead to conflicts. Lingui's generated IDs ensure you steer clear of such collisions.
+- **Avoiding the "naming things" problem:** you don't need to come up with a name for each single phrase in the app. Lingui generates the IDs (in the form of short hashes) from the messages.
+- **Better developer experience:** developers can focus on coding without needing to manually assign IDs, leading to a more streamlined development process. Searching for a user-facing string will lead to the place in code where it's used, as opposed to taking you to a (typically JSON) file full of translations.
+- **Avoiding duplicates:** duplicate messages are merged together automatically. Translators will not have to translate the same phrases again and again. This could lead to cost savings, especially if translators charge by word count.
+- **Smaller bundle:** Lingui generates short IDs such as `MbT6FE` which are typically shorter than manually crafted IDs like `index.header.title`. This results in a smaller bundle size, optimizing your application's performance.
+- **Preventing ID collisions:** as your application scales, explicit IDs can potentially lead to conflicts. Lingui's generated IDs help avoid such collisions.
 
 ### Benefits of Explicit IDs
 
-- **Control:** Developers have full control over the naming and assignment of explicit IDs. This control allows for precise targeting and easy maintenance of internationalization keys.
-- **Loose coupling:** Explicit IDs are loosely coupled with the messages (as opposed to when they are generated from the messages). This means that if the message changes, the ID remains the same. When your team uses a TMS (Translation Management System), this makes it easier even for non-technical people to update the strings.
-- **Readability:** Explicit IDs often have meaningful names, making it easier for developers, translators, and content creators to understand their purpose within the codebase.
-- **Predictability:** Since explicit IDs are manually assigned, they remain stable across different versions of your application, reducing the likelihood of breaking changes during updates.
+- **Control:** developers have full control over the naming and assignment of explicit IDs. This control allows for precise targeting and easy maintenance of internationalization keys.
+- **Loose coupling:** explicit IDs are loosely coupled with the messages (as opposed to when they are generated from the messages). This means that if the message changes, the ID remains the same. When your team uses a TMS (Translation Management System), this makes it easier even for non-technical people to update the strings.
+- **Readability:** explicit IDs often have meaningful names, making it easier for developers, translators, and content creators to understand their purpose within the codebase.
+- **Predictability:** since explicit IDs are manually assigned, they remain stable across different versions of your application, reducing the likelihood of breaking changes during updates.
 
-In conclusion, the choice between these two strategies depends on your project requirements and priorities. However, it's important to note that Lingui provides the full range of benefits, especially with generated IDs.
+The choice between these two strategies depends on your project requirements and priorities. However, it's important to note that Lingui provides the full range of benefits, especially with generated IDs.
 
 :::note
 You don't have to worry about the readability of the IDs because you would hardly see them. When extracted into a PO file, translators would see the source string and its corresponding translation, while the IDs remain behind the scenes:
 
 ```gettext
 #: src/App.tsx:1
-msgid "LinguiJS example"
-msgstr "LinguiJS przyklad"
+msgid "Lingui example"
+msgstr "Lingui przyklad"
 ```
 
 :::
@@ -88,12 +86,14 @@ Examples:
 
 ```jsx
 import { Trans } from "@lingui/react/macro";
+
 <Trans context="direction">right</Trans>;
 <Trans context="correctness">right</Trans>;
 
 // ↓ ↓ ↓ ↓ ↓ ↓
 
 import { Trans } from "@lingui/react";
+
 <Trans id={"d1wX4r"} message="right" />;
 <Trans id={"16eaSK"} message="right" />;
 ```
@@ -114,6 +114,8 @@ const ex2 = msg({
 });
 
 // ↓ ↓ ↓ ↓ ↓ ↓
+
+import { msg } from "@lingui/core/macro";
 
 const ex1 = {
   id: "d1wX4r",
@@ -136,7 +138,7 @@ function render() {
   return (
     <>
       <h1>
-        <Trans>LinguiJS example</Trans>
+        <Trans>Lingui example</Trans>
       </h1>
       <p>
         <Trans>
@@ -153,11 +155,11 @@ In the example code above, the content of [`Trans`](/ref/macro#trans) is transfo
 ```js
 const catalog = [
   {
-    id: "uxV9Xq",
-    message: "LinguiJS example",
+    id: "MbT6FE",
+    message: "Lingui example",
   },
   {
-    id: "9/omjw",
+    id: "9_omjw",
     message: "Hello <0>{name}</0>.",
   },
 ];
@@ -173,7 +175,7 @@ import { msg } from "@lingui/core/macro";
 msg`Hello World`;
 ```
 
-## Using Custom IDs
+## Using Explicit IDs
 
 ### With JSX Macro
 
@@ -186,7 +188,7 @@ function render() {
   return (
     <>
       <h1>
-        <Trans id="msg.header">LinguiJS example</Trans>
+        <Trans id="msg.header">Lingui example</Trans>
       </h1>
       <p>
         <Trans id="msg.hello">
@@ -198,7 +200,7 @@ function render() {
 }
 ```
 
-The messages with IDs `msg.header` and `msg.hello` will be extracted with their default values as `LinguiJS example` and `Hello <0>{name}</0>.` respectively.
+The messages with IDs `msg.header` and `msg.hello` will be extracted with their default values as `Lingui example` and `Hello <0>{name}</0>.` respectively.
 
 ### With Core Macro
 
@@ -225,6 +227,10 @@ msg({
   }),
 });
 ```
+
+:::tip
+Enforce explicit IDs with the Lingui [ESLint Plugin](/ref/eslint-plugin) rule [`require-explicit-id`](https://github.com/lingui/eslint-plugin/blob/main/docs/rules/require-explicit-id.md).
+:::
 
 ## See Also
 

@@ -1,0 +1,425 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Allows dotted placeholder name 1`] = `
+import { Trans } from "@lingui/react/macro";
+<Trans>
+  <a _t="ns.link" href="/">
+    click
+  </a>
+</Trans>;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { Trans as _Trans } from "@lingui/react";
+<_Trans
+  {
+    /*i18n*/
+    ...{
+      id: "_0hJpt",
+      message: "<ns.link>click</ns.link>",
+      components: {
+        "ns.link": <a href="/" />,
+      },
+    }
+  }
+/>;
+
+`;
+
+exports[`Allows hyphenated placeholder name 1`] = `
+import { Trans } from "@lingui/react/macro";
+<Trans>
+  <a _t="foo-bar" href="/">
+    click
+  </a>
+</Trans>;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { Trans as _Trans } from "@lingui/react";
+<_Trans
+  {
+    /*i18n*/
+    ...{
+      id: "IeIam7",
+      message: "<foo-bar>click</foo-bar>",
+      components: {
+        "foo-bar": <a href="/" />,
+      },
+    }
+  }
+/>;
+
+`;
+
+exports[`Deduplication: Different spreads throw an error 1`] = `
+[SyntaxError: <cwd>/<filename>jsx: Unsupported macro usage. Please check the examples at https://lingui.dev/ref/macro#examples-of-js-macros.
+ If you think this is a bug, fill in an issue at https://github.com/lingui/js-lingui/issues
+
+ Error: Multiple distinct JSX elements with the same placeholder name (\`link\`). Differentiate them by adding/modifying the \`_t\` attribute (e.g. \`<element _t="newName" />\`).
+  3 |         const p1 = { href: "/a" };
+  4 |         const p2 = { href: "/b" };
+> 5 |         <Trans><a _t="link" {...p1}>A</a> and <a _t="link" {...p2}>B</a></Trans>
+    |                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |       
+  3 |         const p1 = { href: "/a" };
+  4 |         const p2 = { href: "/b" };
+> 5 |         <Trans><a _t="link" {...p1}>A</a> and <a _t="link" {...p2}>B</a></Trans>
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |       ]
+`;
+
+exports[`Deduplication: Explicit names with different attributes throw an error 1`] = `
+[SyntaxError: <cwd>/<filename>jsx: Unsupported macro usage. Please check the examples at https://lingui.dev/ref/macro#examples-of-js-macros.
+ If you think this is a bug, fill in an issue at https://github.com/lingui/js-lingui/issues
+
+ Error: Multiple distinct JSX elements with the same placeholder name (\`link\`). Differentiate them by adding/modifying the \`_t\` attribute (e.g. \`<element _t="newName" />\`).
+  1 |
+  2 |         import { Trans } from '@lingui/react/macro';
+> 3 |         <Trans>Hello <a _t="link" href="/a">link 1</a>, normal, <a _t="link" href="/b">link 2</a>.</Trans>
+    |                                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  4 |       
+  1 |
+  2 |         import { Trans } from '@lingui/react/macro';
+> 3 |         <Trans>Hello <a _t="link" href="/a">link 1</a>, normal, <a _t="link" href="/b">link 2</a>.</Trans>
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  4 |       ]
+`;
+
+exports[`Deduplication: Identical elements are reused 1`] = `
+import { Trans } from "@lingui/react/macro";
+<Trans>
+  Hello <em>emphasis</em>, normal, <em>more emphasis</em>.
+</Trans>;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { Trans as _Trans } from "@lingui/react";
+<_Trans
+  {
+    /*i18n*/
+    ...{
+      id: "idxihm",
+      message: "Hello <em>emphasis</em>, normal, <em>more emphasis</em>.",
+      components: {
+        em: <em />,
+      },
+    }
+  }
+/>;
+
+`;
+
+exports[`Deduplication: Identical elements with different prop order are reused 1`] = `
+import { Trans } from "@lingui/react/macro";
+<Trans>
+  Hello{" "}
+  <a _t="link" href="/a" class="foo">
+    link 1
+  </a>
+  , normal,{" "}
+  <a _t="link" class="foo" href="/a">
+    link 1 copy
+  </a>
+  .
+</Trans>;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { Trans as _Trans } from "@lingui/react";
+<_Trans
+  {
+    /*i18n*/
+    ...{
+      id: "9en3MH",
+      message: "Hello <link>link 1</link>, normal, <link>link 1 copy</link>.",
+      components: {
+        link: <a class="foo" href="/a" />,
+      },
+    }
+  }
+/>;
+
+`;
+
+exports[`Deduplication: Identical spreads are reused 1`] = `
+import { Trans } from "@lingui/react/macro";
+const props = { href: "/a" };
+<Trans>
+  <a _t="link" {...props}>
+    A
+  </a>{" "}
+  and{" "}
+  <a _t="link" {...props}>
+    B
+  </a>
+</Trans>;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { Trans as _Trans } from "@lingui/react";
+const props = {
+  href: "/a",
+};
+<_Trans
+  {
+    /*i18n*/
+    ...{
+      id: "OdVP6t",
+      message: "<link>A</link> and <link>B</link>",
+      components: {
+        link: <a {...props} />,
+      },
+    }
+  }
+/>;
+
+`;
+
+exports[`Deduplication: Implicit names with distinct attributes throw an error 1`] = `
+[SyntaxError: <cwd>/<filename>jsx: Unsupported macro usage. Please check the examples at https://lingui.dev/ref/macro#examples-of-js-macros.
+ If you think this is a bug, fill in an issue at https://github.com/lingui/js-lingui/issues
+
+ Error: Multiple distinct JSX elements with the same placeholder name (\`a\`). Differentiate them by setting \`macro.jsxPlaceholderAttribute\` in the lingui config and then adding the attribute to your JSX elements (e.g. \`<element _t="newName" />\`).
+  1 |
+  2 |         import { Trans } from '@lingui/react/macro';
+> 3 |         <Trans>Hello <a href="/a">link 1</a>, normal, <a href="/b">link 2</a>.</Trans>
+    |                                                       ^^^^^^^^^^^^^^^^^^^^^^^
+  4 |       
+  1 |
+  2 |         import { Trans } from '@lingui/react/macro';
+> 3 |         <Trans>Hello <a href="/a">link 1</a>, normal, <a href="/b">link 2</a>.</Trans>
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  4 |       ]
+`;
+
+exports[`Deduplication: Same explicit placeholder with identical attributes does not throw 1`] = `
+import { Trans } from "@lingui/react/macro";
+<Trans>
+  Hello{" "}
+  <a _t="link" href="/a">
+    link 1
+  </a>
+  , normal,{" "}
+  <a _t="link" href="/a">
+    link 1 copy
+  </a>
+  .
+</Trans>;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { Trans as _Trans } from "@lingui/react";
+<_Trans
+  {
+    /*i18n*/
+    ...{
+      id: "9en3MH",
+      message: "Hello <link>link 1</link>, normal, <link>link 1 copy</link>.",
+      components: {
+        link: <a href="/a" />,
+      },
+    }
+  }
+/>;
+
+`;
+
+exports[`Deduplication: Same name on different element types throws an error 1`] = `
+[SyntaxError: <cwd>/<filename>jsx: Unsupported macro usage. Please check the examples at https://lingui.dev/ref/macro#examples-of-js-macros.
+ If you think this is a bug, fill in an issue at https://github.com/lingui/js-lingui/issues
+
+ Error: Multiple distinct JSX elements with the same placeholder name (\`same\`). Differentiate them by adding/modifying the \`_t\` attribute (e.g. \`<element _t="newName" />\`).
+  1 |
+  2 |         import { Trans } from '@lingui/react/macro';
+> 3 |         <Trans><em _t="same">A</em> and <strong _t="same">B</strong></Trans>
+    |                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  4 |       
+  1 |
+  2 |         import { Trans } from '@lingui/react/macro';
+> 3 |         <Trans><em _t="same">A</em> and <strong _t="same">B</strong></Trans>
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  4 |       ]
+`;
+
+exports[`Deduplication: Same spread with different attribute order throws an error 1`] = `
+[SyntaxError: <cwd>/<filename>jsx: Unsupported macro usage. Please check the examples at https://lingui.dev/ref/macro#examples-of-js-macros.
+ If you think this is a bug, fill in an issue at https://github.com/lingui/js-lingui/issues
+
+ Error: Multiple distinct JSX elements with the same placeholder name (\`link\`). Differentiate them by adding/modifying the \`_t\` attribute (e.g. \`<element _t="newName" />\`).
+  2 |         import { Trans } from '@lingui/react/macro';
+  3 |         const props = { href: "/b" };
+> 4 |         <Trans><a _t="link" {...props} href="/a">A</a> and <a _t="link" href="/a" {...props}>B</a></Trans>
+    |                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 |       
+  2 |         import { Trans } from '@lingui/react/macro';
+  3 |         const props = { href: "/b" };
+> 4 |         <Trans><a _t="link" {...props} href="/a">A</a> and <a _t="link" href="/a" {...props}>B</a></Trans>
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 |       ]
+`;
+
+exports[`Mixing explicit _t together with jsxPlaceholderDefaults 1`] = `
+import { Trans } from "@lingui/react/macro";
+<Trans>
+  Hello <a href="/a">link 1</a>, normal,{" "}
+  <a _t="link2" href="/b">
+    link 2
+  </a>
+  .
+</Trans>;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { Trans as _Trans } from "@lingui/react";
+<_Trans
+  {
+    /*i18n*/
+    ...{
+      id: "yU9TUm",
+      message: "Hello <link>link 1</link>, normal, <link2>link 2</link2>.",
+      components: {
+        link: <a href="/a" />,
+        link2: <a href="/b" />,
+      },
+    }
+  }
+/>;
+
+`;
+
+exports[`Placeholder attribute is stripped from AST 1`] = `
+import { Trans } from "@lingui/react/macro";
+<Trans>
+  <a _t="link" href="/about">
+    About
+  </a>
+</Trans>;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { Trans as _Trans } from "@lingui/react";
+<_Trans
+  {
+    /*i18n*/
+    ...{
+      id: "Ym2S6K",
+      message: "<link>About</link>",
+      components: {
+        link: <a href="/about" />,
+      },
+    }
+  }
+/>;
+
+`;
+
+exports[`Respects jsxPlaceholderDefaults 1`] = `
+import { Trans } from "@lingui/react/macro";
+<Trans>
+  Here's a <a>link</a> and <em>emphasis</em>.
+</Trans>;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { Trans as _Trans } from "@lingui/react";
+<_Trans
+  {
+    /*i18n*/
+    ...{
+      id: "Jg_WOt",
+      message: "Here's a <link>link</link> and <em>emphasis</em>.",
+      components: {
+        link: <a />,
+        em: <em />,
+      },
+    }
+  }
+/>;
+
+`;
+
+exports[`Throws on empty _t attribute value 1`] = `
+[SyntaxError: <cwd>/<filename>jsx: Unsupported macro usage. Please check the examples at https://lingui.dev/ref/macro#examples-of-js-macros.
+ If you think this is a bug, fill in an issue at https://github.com/lingui/js-lingui/issues
+
+ Error: The \`_t\` attribute must be a non-empty string literal.
+  1 |
+  2 |         import { Trans } from '@lingui/react/macro';
+> 3 |         <Trans><a _t="" href="/">click</a></Trans>
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  4 |       
+  1 |
+  2 |         import { Trans } from '@lingui/react/macro';
+> 3 |         <Trans><a _t="" href="/">click</a></Trans>
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  4 |       ]
+`;
+
+exports[`Throws on non-string _t attribute value 1`] = `
+[SyntaxError: <cwd>/<filename>jsx: Unsupported macro usage. Please check the examples at https://lingui.dev/ref/macro#examples-of-js-macros.
+ If you think this is a bug, fill in an issue at https://github.com/lingui/js-lingui/issues
+
+ Error: The \`_t\` attribute must be a non-empty string literal.
+  2 |         import { Trans } from '@lingui/react/macro';
+  3 |         const name = "link";
+> 4 |         <Trans><a _t={name} href="/">click</a></Trans>
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 |       
+  2 |         import { Trans } from '@lingui/react/macro';
+  3 |         const name = "link";
+> 4 |         <Trans><a _t={name} href="/">click</a></Trans>
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 |       ]
+`;
+
+exports[`Throws on numeric placeholder name 1`] = `
+[SyntaxError: <cwd>/<filename>jsx: Unsupported macro usage. Please check the examples at https://lingui.dev/ref/macro#examples-of-js-macros.
+ If you think this is a bug, fill in an issue at https://github.com/lingui/js-lingui/issues
+
+ Error: Placeholder name \`0\` is not allowed because it conflicts with auto-generated numeric placeholders. Use a non-numeric name instead.
+  1 |
+  2 |         import { Trans } from '@lingui/react/macro';
+> 3 |         <Trans><a _t="0" href="/">click</a></Trans>
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  4 |       
+  1 |
+  2 |         import { Trans } from '@lingui/react/macro';
+> 3 |         <Trans><a _t="0" href="/">click</a></Trans>
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  4 |       ]
+`;
+
+exports[`Throws on placeholder name ending with dot 1`] = `
+[SyntaxError: <cwd>/<filename>jsx: Unsupported macro usage. Please check the examples at https://lingui.dev/ref/macro#examples-of-js-macros.
+ If you think this is a bug, fill in an issue at https://github.com/lingui/js-lingui/issues
+
+ Error: Placeholder name \`foo.\` is not valid. Names must start and end with a letter/digit/underscore, but may contain \`.-\` in between.
+  1 |
+  2 |         import { Trans } from '@lingui/react/macro';
+> 3 |         <Trans><a _t="foo." href="/">click</a></Trans>
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  4 |       
+  1 |
+  2 |         import { Trans } from '@lingui/react/macro';
+> 3 |         <Trans><a _t="foo." href="/">click</a></Trans>
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  4 |       ]
+`;
+
+exports[`Throws on placeholder name starting with hyphen 1`] = `
+[SyntaxError: <cwd>/<filename>jsx: Unsupported macro usage. Please check the examples at https://lingui.dev/ref/macro#examples-of-js-macros.
+ If you think this is a bug, fill in an issue at https://github.com/lingui/js-lingui/issues
+
+ Error: Placeholder name \`-foo\` is not valid. Names must start and end with a letter/digit/underscore, but may contain \`.-\` in between.
+  1 |
+  2 |         import { Trans } from '@lingui/react/macro';
+> 3 |         <Trans><a _t="-foo" href="/">click</a></Trans>
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  4 |       
+  1 |
+  2 |         import { Trans } from '@lingui/react/macro';
+> 3 |         <Trans><a _t="-foo" href="/">click</a></Trans>
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  4 |       ]
+`;

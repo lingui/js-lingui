@@ -125,7 +125,7 @@ _i18n._(
 
 `;
 
-exports[`Production - all props kept if extract: true 1`] = `
+exports[`Production - all props kept with descriptorFields: all 1`] = `
 import { t } from "@lingui/core/macro";
 const msg = t({
   message: \`Hello \${name}\`,
@@ -152,7 +152,7 @@ const msg = _i18n._(
 
 `;
 
-exports[`Production - message prop is kept if stripMessageField: false 1`] = `
+exports[`Production - message and context kept with descriptorFields: message 1`] = `
 import { t } from "@lingui/core/macro";
 const msg = t({
   message: \`Hello \${name}\`,
@@ -169,6 +169,7 @@ const msg = _i18n._(
   {
     id: "msgId",
     message: "Hello {name}",
+    context: "My Context",
     values: {
       name: name,
     },
@@ -607,6 +608,22 @@ _i18n._(
 
 `;
 
+exports[`descriptorFields: id-only - message prop is removed 1`] = `
+import { t } from "@lingui/core/macro";
+const msg = t\`Message\`;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { i18n as _i18n } from "@lingui/core";
+const msg = _i18n._(
+  /*i18n*/
+  {
+    id: "xDAtGP",
+  },
+);
+
+`;
+
 exports[`should correctly process nested macro when referenced from different imports 1`] = `
 import { t } from "@lingui/core/macro";
 import { plural } from "@lingui/core/macro";
@@ -700,22 +717,6 @@ const msg = _i18n._(
   {
     id: "xDAtGP",
     message: "Message",
-  },
-);
-
-`;
-
-exports[`stripMessageField option - message prop is removed if stripMessageField: true 1`] = `
-import { t } from "@lingui/core/macro";
-const msg = t\`Message\`;
-
-↓ ↓ ↓ ↓ ↓ ↓
-
-import { i18n as _i18n } from "@lingui/core";
-const msg = _i18n._(
-  /*i18n*/
-  {
-    id: "xDAtGP",
   },
 );
 
