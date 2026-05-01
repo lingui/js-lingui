@@ -3,10 +3,16 @@ import { Catalog } from "../catalog.js"
 import { MissingTranslationFinding } from "../catalog/translations.js"
 import { CheckFindingBase } from "../findings.js"
 import { WorkersOptions } from "../resolveWorkersOptions.js"
+import type { MissingBehavior } from "../catalog/getTranslationsForCatalog.js"
 
 export type CheckName = "sync" | "missing"
-export const checkSpecificOptions = ["clean", "overwrite"] as const
-export type CheckSpecificOption = (typeof checkSpecificOptions)[number]
+export type CheckSpecificOption = "clean" | "overwrite" | "missingBehavior"
+export const checkSpecificOptions: readonly CheckSpecificOption[] = [
+  "clean",
+  "overwrite",
+  "missingBehavior",
+]
+export type CheckCliOptionName = "clean" | "overwrite" | "mode"
 
 export type CheckCliExample = {
   description: string
@@ -14,7 +20,8 @@ export type CheckCliExample = {
 }
 
 export type CheckCliOptionDefinition = {
-  name: CheckSpecificOption
+  name: CheckCliOptionName
+  runOption: CheckSpecificOption
   description: string
 }
 
@@ -46,6 +53,7 @@ export type CheckContext = {
   workersOptions: WorkersOptions
   clean: boolean
   overwrite: boolean
+  missingBehavior: MissingBehavior
 }
 
 export type CheckRunOptions = {
@@ -53,6 +61,7 @@ export type CheckRunOptions = {
   workersOptions: WorkersOptions
   clean?: boolean
   overwrite?: boolean
+  missingBehavior?: MissingBehavior
 }
 
 export type CheckDefinition = {

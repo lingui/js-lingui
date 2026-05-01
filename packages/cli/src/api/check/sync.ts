@@ -84,10 +84,12 @@ export const syncCheck: CheckDefinition = {
     options: [
       {
         name: "clean",
+        runOption: "clean",
         description: "Mirror extract --clean behavior when running sync check",
       },
       {
         name: "overwrite",
+        runOption: "overwrite",
         description:
           "Mirror extract --overwrite behavior when running sync check",
       },

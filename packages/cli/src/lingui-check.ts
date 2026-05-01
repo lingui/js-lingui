@@ -16,9 +16,10 @@ import {
   CheckName,
   CheckRunOptions,
   CheckResult,
-  CheckSpecificOption,
 } from "./api/check/types.js"
 import { resolveWorkersOptions } from "./api/resolveWorkersOptions.js"
+import { isMissingBehavior } from "./api/catalog/getTranslationsForCatalog.js"
+import type { MissingBehavior } from "./api/catalog/getTranslationsForCatalog.js"
 
 type SharedCliArgs = {
   config?: string
@@ -27,7 +28,11 @@ type SharedCliArgs = {
   workers?: number | string
 }
 
-type CheckSpecificOptions = Partial<Record<CheckSpecificOption, boolean>>
+type CheckSpecificOptions = {
+  clean?: boolean
+  overwrite?: boolean
+  mode?: MissingBehavior
+}
 
 export function renderCheckResult(result: CheckResult, verbose: boolean) {
   const status = result.passed
@@ -84,6 +89,7 @@ export async function runCheck(
     workersOptions: options.workersOptions,
     clean: options.clean ?? false,
     overwrite: options.overwrite ?? false,
+    missingBehavior: options.missingBehavior ?? "resolved",
   })
 }
 
@@ -107,6 +113,14 @@ function addCommonOptions<T extends Command>(command: T): T {
       "Number of worker threads to use (default: based on CPU count, capped at 8, with special handling for small machines). Pass `--workers 1` to disable worker threads and run everything in a single process",
     )
     .option("--verbose", "Verbose output")
+}
+
+function parseMissingBehavior(value: string): MissingBehavior {
+  if (isMissingBehavior(value)) {
+    return value
+  }
+
+  throw new Error("Option `--mode` must be either `resolved` or `catalog`.")
 }
 
 function renderHelpExamples(examples: readonly CheckCliExample[]) {
@@ -140,6 +154,7 @@ async function runCliCommand(
     workersOptions: resolveWorkersOptions(options),
     clean: options.clean ?? false,
     overwrite: options.overwrite ?? false,
+    missingBehavior: options.mode ?? "resolved",
   })
 
   const output = result.passed ? console.log : console.error
@@ -158,6 +173,15 @@ function registerCheckCommand(checkProgram: Command, check: CheckDefinition) {
   )
 
   check.cli.options.forEach((option) => {
+    if (option.name === "mode") {
+      command.option(
+        `--${option.name} <mode>`,
+        option.description,
+        parseMissingBehavior,
+      )
+      return
+    }
+
     command.option(`--${option.name}`, option.description)
   })
 
@@ -196,7 +220,7 @@ if (import.meta.main) {
   createProgram()
     .parseAsync(process.argv)
     .catch((error) => {
-      console.error((error as Error).message)
+      console.error(error instanceof Error ? error.message : String(error))
       process.exit(1)
     })
 }

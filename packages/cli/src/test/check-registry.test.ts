@@ -37,6 +37,15 @@ describe("Check Registry", () => {
     ).toThrow("Option `--overwrite` can only be used with the `sync` check.")
   })
 
+  it("Should reject missing behavior with the sync check only", () => {
+    expect(() =>
+      validateSupportedOptions(getCheck("sync"), {
+        missingBehavior: "catalog",
+        workersOptions,
+      }),
+    ).toThrow("Option `--mode` can only be used with the `missing` check.")
+  })
+
   it("Should reject unsupported options through runCheck", async () => {
     const rootDir = await createFixtures({
       "src/app.ts": `

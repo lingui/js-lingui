@@ -1,12 +1,8 @@
 import { getTranslationsForCatalog } from "./getTranslationsForCatalog.js"
-import { Catalog } from "../catalog.js"
 import type { AllCatalogsType, CatalogType } from "../types.js"
 
-function getCatalogStub(
-  catalogs: AllCatalogsType,
-  template: CatalogType = {},
-): Catalog {
-  const catalogStub: Partial<Catalog> = {
+function getCatalogStub(catalogs: AllCatalogsType, template: CatalogType = {}) {
+  return {
     async readAll(): Promise<AllCatalogsType> {
       return catalogs
     },
@@ -15,8 +11,6 @@ function getCatalogStub(
       return template
     },
   }
-
-  return catalogStub as Catalog
 }
 
 function lang(
@@ -40,6 +34,18 @@ function message(id: string, source: string, noTranslation = false) {
       translation: noTranslation
         ? undefined
         : `${locale}: translation: ${source}`,
+    },
+  })
+}
+
+function obsoleteMessage(id: string, source: string, noTranslation = false) {
+  return (locale: string): CatalogType => ({
+    [id]: {
+      message: source,
+      translation: noTranslation
+        ? undefined
+        : `${locale}: translation: ${source}`,
+      obsolete: true,
     },
   })
 }
@@ -402,6 +408,95 @@ describe("getTranslationsForCatalog", () => {
     const actual = await getTranslationsForCatalog(catalogStub, "pl", {
       sourceLocale: "en",
       fallbackLocales: {},
+    })
+
+    expect(actual).toMatchInlineSnapshot(`
+      {
+        messages: {
+          hashid1: Lorem,
+        },
+        missing: [
+          {
+            id: hashid1,
+            source: Lorem,
+          },
+        ],
+      }
+    `)
+  })
+
+  it("Should ignore obsolete messages that are not active anywhere", async () => {
+    // prettier-ignore
+    const catalogStub = getCatalogStub({
+      ...lang("pl", [
+        message("hashid1", "Lorem"),
+        obsoleteMessage("hashid2", "Ipsum", true)
+      ])
+    })
+
+    const actual = await getTranslationsForCatalog(catalogStub, "pl", {
+      sourceLocale: "en",
+      fallbackLocales: {},
+    })
+
+    expect(actual).toMatchInlineSnapshot(`
+      {
+        messages: {
+          hashid1: pl: translation: Lorem,
+        },
+        missing: [],
+      }
+    `)
+  })
+
+  it("Should not use obsolete target translations for active messages", async () => {
+    // prettier-ignore
+    const catalogStub = getCatalogStub({
+      ...lang("pl", [
+        obsoleteMessage("hashid1", "Lorem")
+      ])
+    }, lang("tpl", [
+      message("hashid1", "Lorem", true)
+    ]).tpl)
+
+    const actual = await getTranslationsForCatalog(catalogStub, "pl", {
+      sourceLocale: "en",
+      fallbackLocales: {},
+    })
+
+    expect(actual).toMatchInlineSnapshot(`
+      {
+        messages: {
+          hashid1: Lorem,
+        },
+        missing: [
+          {
+            id: hashid1,
+            source: Lorem,
+          },
+        ],
+      }
+    `)
+  })
+
+  it("Should not use obsolete fallback translations", async () => {
+    // prettier-ignore
+    const catalogStub = getCatalogStub({
+      ...lang("pl", [
+        obsoleteMessage("hashid1", "Lorem")
+      ]),
+      ...lang("ru", [
+        message("hashid1", "Lorem", true)
+      ])
+    }, lang("tpl", [
+      message("hashid1", "Lorem", true)
+    ]).tpl)
+
+    const actual = await getTranslationsForCatalog(catalogStub, "ru", {
+      sourceLocale: "en",
+      fallbackLocales: {
+        default: "pl",
+      },
     })
 
     expect(actual).toMatchInlineSnapshot(`

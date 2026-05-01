@@ -2,6 +2,7 @@ import type {
   MissingBehavior,
   TranslationMissingEvent,
 } from "./catalog/getTranslationsForCatalog.js"
+import { isMissingBehavior } from "./catalog/getTranslationsForCatalog.js"
 import { styleText } from "node:util"
 import type { MessageCompilationError } from "./compile.js"
 
@@ -11,10 +12,6 @@ export function getMissingBehaviorDescription(
   return missingBehavior === "catalog"
     ? "before applying fallbackLocales"
     : "after applying fallbackLocales"
-}
-
-function isMissingBehavior(value: string): value is MissingBehavior {
-  return value === "resolved" || value === "catalog"
 }
 
 export function createMissingErrorMessage(

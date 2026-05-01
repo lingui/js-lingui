@@ -42,8 +42,23 @@ describe("CLI: check", () => {
     expect(syncCommand?.options.map((option) => option.long)).toContain(
       "--overwrite",
     )
+    expect(syncCommand?.options.map((option) => option.long)).not.toContain(
+      "--mode",
+    )
+    expect(missingCommand?.options.map((option) => option.long)).toContain(
+      "--mode",
+    )
     expect(missingCommand?.options.map((option) => option.long)).not.toContain(
       "--clean",
     )
+  })
+
+  it("Should reject invalid missing mode values", async () => {
+    const program = createProgram()
+    program.exitOverride()
+
+    await expect(
+      program.parseAsync(["node", "lingui-check", "missing", "--mode", "raw"]),
+    ).rejects.toThrow("Option `--mode` must be either `resolved` or `catalog`.")
   })
 })

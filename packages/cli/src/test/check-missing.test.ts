@@ -68,7 +68,7 @@ msgstr ""
     expect(rendered).toContain("Hello World")
   })
 
-  it("Should fail even when fallbackLocales can resolve missing translations", async () => {
+  it("Should pass by default when fallbackLocales can resolve missing translations", async () => {
     const rootDir = await createFixtures({
       "locales/en-US/messages.po": `
 msgid "Hello World"
@@ -101,8 +101,48 @@ msgstr ""
     })
     const rendered = renderCheckResult(result, false).join("\n")
 
+    expect(result.passed).toBeTruthy()
+    expect(rendered).toContain("PASS missing")
+    expect(rendered).toContain("after applying fallbackLocales")
+  })
+
+  it("Should fail in catalog mode when fallbackLocales resolve missing translations", async () => {
+    const rootDir = await createFixtures({
+      "locales/en-US/messages.po": `
+msgid "Hello World"
+msgstr "Hello World"
+        `,
+      "locales/en-GB/messages.po": `
+msgid "Hello World"
+msgstr ""
+        `,
+    })
+
+    const config = makeConfig({
+      locales: ["en-US", "en-GB"],
+      sourceLocale: "en-US",
+      fallbackLocales: {
+        default: "en-US",
+      },
+      rootDir,
+      catalogs: [
+        {
+          path: "<rootDir>/locales/{locale}/messages",
+          include: ["<rootDir>/src"],
+          exclude: [],
+        },
+      ],
+    })
+
+    const result = await runCheck(config, "missing", {
+      missingBehavior: "catalog",
+      workersOptions,
+    })
+    const rendered = renderCheckResult(result, false).join("\n")
+
     expect(result.passed).toBeFalsy()
     expect(rendered).toContain("FAIL missing")
+    expect(rendered).toContain("before applying fallbackLocales")
   })
 
   it("Should skip pseudo locale", async () => {
@@ -188,8 +228,13 @@ t\`Hello World\`
     const result = await runCheck(config, "missing", {
       workersOptions,
     })
+    const catalogResult = await runCheck(config, "missing", {
+      missingBehavior: "catalog",
+      workersOptions,
+    })
 
     expect(catalog).toContain('#~ msgid "Obsolete Message"')
     expect(result.passed).toBeTruthy()
+    expect(catalogResult.passed).toBeTruthy()
   })
 })

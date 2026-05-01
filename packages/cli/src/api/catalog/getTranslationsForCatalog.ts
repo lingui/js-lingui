@@ -1,4 +1,3 @@
-import { Catalog } from "../catalog.js"
 import { FallbackLocales } from "@lingui/conf"
 import type { AllCatalogsType, CatalogType, MessageType } from "../types.js"
 import { getFallbackListForLocale } from "./getFallbackListForLocale.js"
@@ -10,14 +9,23 @@ export type TranslationMissingEvent = {
 
 export type MissingBehavior = "resolved" | "catalog"
 
+export function isMissingBehavior(value: string): value is MissingBehavior {
+  return value === "resolved" || value === "catalog"
+}
+
 export type GetTranslationsOptions = {
   sourceLocale: string
   fallbackLocales: FallbackLocales
   missingBehavior?: MissingBehavior
 }
 
+type CatalogTranslationsReader = {
+  readAll(locales: string[]): Promise<AllCatalogsType>
+  readTemplate(): Promise<CatalogType | undefined>
+}
+
 export async function getTranslationsForCatalog(
-  catalog: Catalog,
+  catalog: CatalogTranslationsReader,
   locale: string,
   options: GetTranslationsOptions,
 ) {
@@ -27,22 +35,24 @@ export async function getTranslationsForCatalog(
     ...getFallbackListForLocale(options.fallbackLocales, locale),
   ])
 
-  const [catalogs, template] = await Promise.all([
+  const [rawCatalogs, rawTemplate] = await Promise.all([
     catalog.readAll(Array.from(locales)),
     catalog.readTemplate(),
   ])
 
+  const catalogs = withoutObsolete(rawCatalogs)
+  const template = withoutObsoleteCatalog(rawTemplate)
   const sourceLocaleCatalog = catalogs[options.sourceLocale] || {}
 
   const input = { ...template, ...sourceLocaleCatalog, ...catalogs[locale] }
 
   const missing: TranslationMissingEvent[] = []
 
-  const messages = Object.keys(input).reduce<{ [id: string]: string }>(
-    (acc, key) => {
+  const messages = Object.entries(input).reduce<{ [id: string]: string }>(
+    (acc, [key, msg]) => {
       acc[key] = getTranslation(
         catalogs,
-        input[key]!,
+        msg,
         locale,
         key,
         (event) => {
@@ -61,12 +71,41 @@ export async function getTranslationsForCatalog(
   }
 }
 
+function isActiveMessage(
+  message: MessageType | undefined,
+): message is MessageType {
+  return Boolean(message && !message.obsolete)
+}
+
+function withoutObsolete(catalogs: AllCatalogsType): AllCatalogsType {
+  return Object.fromEntries(
+    Object.entries(catalogs).map(([locale, catalog]) => [
+      locale,
+      withoutObsoleteCatalog(catalog),
+    ]),
+  )
+}
+
+function withoutObsoleteCatalog(catalog: CatalogType | undefined): CatalogType {
+  const activeCatalog: CatalogType = {}
+
+  Object.entries(catalog ?? {}).forEach(([id, message]) => {
+    if (isActiveMessage(message)) {
+      activeCatalog[id] = message
+    }
+  })
+
+  return activeCatalog
+}
+
 function sourceLocaleFallback(catalog: CatalogType | undefined, key: string) {
-  if (!catalog?.[key]) {
+  const message = catalog?.[key]
+
+  if (!isActiveMessage(message)) {
     return undefined
   }
 
-  return catalog[key].translation || catalog[key].message
+  return message.translation || message.message
 }
 
 function getTranslation(
@@ -81,7 +120,13 @@ function getTranslation(
 
   const getCatalogTranslation = (_locale: string) => {
     const localeCatalog = catalogs[_locale]
-    return localeCatalog?.[key]?.translation
+    const message = localeCatalog?.[key]
+
+    if (!isActiveMessage(message)) {
+      return undefined
+    }
+
+    return message.translation
   }
 
   const getMultipleFallbacks = (_locale: string) => {

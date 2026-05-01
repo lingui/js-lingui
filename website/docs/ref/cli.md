@@ -320,11 +320,14 @@ This validation checks locale catalogs only. It does not validate `.pot` / templ
 ```shell
 lingui check missing
     [--locale <locale, [...]>]
+    [--mode <resolved|catalog>]
     [--verbose]
     [--workers]
 ```
 
-Checks whether locale catalogs have missing translations before `fallbackLocales` are applied. This validation shares the same missing-detection semantics as `lingui compile --strict`, but does not compile catalogs.
+Checks whether locale catalogs have missing translations. By default, this validation uses `resolved` mode, which matches `lingui compile --strict`: translations are considered missing only if they are still missing after `fallbackLocales` are applied.
+
+Use `--mode catalog` to fail when the target locale catalog itself has missing translations before `fallbackLocales` are applied. This matches `lingui compile --fail-on-missing catalog`, but does not compile catalogs.
 
 #### `sync --locale <locale, [...]>` {#check-sync-locale}
 
@@ -358,6 +361,13 @@ Use the `--verbose` flag to see the actual pool size.
 #### `missing --locale <locale, [...]>` {#check-missing-locale}
 
 Only check the specified locales when running `lingui check missing`.
+
+#### `missing --mode <resolved|catalog>` {#check-missing-mode}
+
+Controls how missing translations are detected when running `lingui check missing`.
+
+- `resolved` (default): fail only if a translation is still missing after `fallbackLocales` are applied.
+- `catalog`: fail if the target locale catalog itself has missing translations before `fallbackLocales` are applied.
 
 #### `missing --verbose` {#check-missing-verbose}
 

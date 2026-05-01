@@ -6,7 +6,7 @@ import {
   getTranslationsForCatalog,
   TranslationMissingEvent,
 } from "./getTranslationsForCatalog.js"
-import type { CatalogType } from "../types.js"
+import type { MissingBehavior } from "./getTranslationsForCatalog.js"
 
 export type MissingTranslationFinding = CheckFindingBase & {
   code: "missing_translation"
@@ -22,6 +22,7 @@ function createMissingTranslationMessage(messageId: string, source?: string) {
 export async function getCatalogTranslationsWithMissing(
   catalog: Catalog,
   locale: string,
+  missingBehavior: MissingBehavior = "resolved",
 ) {
   const { messages, missing } = await getTranslationsForCatalog(
     catalog,
@@ -29,41 +30,14 @@ export async function getCatalogTranslationsWithMissing(
     {
       fallbackLocales: catalog.config.fallbackLocales,
       sourceLocale: catalog.config.sourceLocale,
-      missingBehavior: "catalog",
+      missingBehavior,
     },
-  )
-
-  const [selectedCatalog, sourceLocaleCatalog, templateCatalog] =
-    await Promise.all([
-      catalog.read(locale),
-      catalog.read(catalog.config.sourceLocale),
-      catalog.readTemplate(),
-    ])
-
-  const activeMessageIds = getActiveMessageIds(
-    selectedCatalog,
-    sourceLocaleCatalog,
-    templateCatalog,
   )
 
   return {
     messages,
-    missing: missing.filter((entry) => activeMessageIds.has(entry.id)),
+    missing,
   }
-}
-
-function getActiveMessageIds(...catalogs: Array<CatalogType | undefined>) {
-  const activeMessageIds = new Set<string>()
-
-  catalogs.forEach((catalog) => {
-    Object.entries(catalog ?? {}).forEach(([id, message]) => {
-      if (!message.obsolete) {
-        activeMessageIds.add(id)
-      }
-    })
-  })
-
-  return activeMessageIds
 }
 
 export function createMissingTranslationFinding(
