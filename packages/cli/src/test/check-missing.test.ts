@@ -1,3 +1,4 @@
+import fs from "fs"
 import { renderCheckResult, runCheck } from "../lingui-check.js"
 import { makeConfig } from "@lingui/conf"
 import { createFixtures, readFsToListing } from "../tests.js"
@@ -149,6 +150,46 @@ t\`Hello World\`
       workersOptions,
     })
 
+    expect(result.passed).toBeTruthy()
+  })
+
+  it("Should ignore obsolete messages left by extract without clean", async () => {
+    const rootDir = await createFixtures({
+      "src/app.ts": `
+import { t } from "@lingui/core/macro"
+
+t\`Hello World\`
+t\`Obsolete Message\`
+        `,
+    })
+
+    const config = getTestConfig(rootDir)
+    await extractCatalogs(config)
+    await replaceInFile(
+      `${rootDir}/locales/pl/messages.po`,
+      'msgid "Hello World"\nmsgstr ""',
+      'msgid "Hello World"\nmsgstr "Czesc swiecie"',
+    )
+    await fs.promises.writeFile(
+      `${rootDir}/src/app.ts`,
+      `
+import { t } from "@lingui/core/macro"
+
+t\`Hello World\`
+        `,
+      "utf-8",
+    )
+    await extractCatalogs(config)
+
+    const catalog = await fs.promises.readFile(
+      `${rootDir}/locales/pl/messages.po`,
+      "utf-8",
+    )
+    const result = await runCheck(config, "missing", {
+      workersOptions,
+    })
+
+    expect(catalog).toContain('#~ msgid "Obsolete Message"')
     expect(result.passed).toBeTruthy()
   })
 })
