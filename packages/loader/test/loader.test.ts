@@ -58,13 +58,13 @@ describe("lingui-loader", () => {
       },
     )
 
-    expect(built.stats.errors![0]!.message).toContain(
-      "Missing 1 translation(s):",
+    expect(built.stats.errors?.[0]?.message).toContain(
+      "Missing 1 translation(s) after applying fallbackLocales:",
     )
     expect(built.stats.warnings).toEqual([])
   })
 
-  it("should report missing error when fallbackLocales resolve translation and failOnMissing = true", async () => {
+  it("should not report missing error when fallbackLocales resolve translation and failOnMissing = true", async () => {
     const built = await build(
       path.join(__dirname, "./fail-on-missing-fallback/entrypoint.js"),
       {
@@ -72,8 +72,35 @@ describe("lingui-loader", () => {
       },
     )
 
-    expect(built.stats.errors![0]!.message).toContain(
-      "Missing 1 translation(s):",
+    expect(built.stats.errors).toEqual([])
+    expect(built.stats.warnings).toEqual([])
+  })
+
+  it('should not report missing error when fallbackLocales resolve translation and failOnMissing = "resolved"', async () => {
+    const built = await build(
+      path.join(__dirname, "./fail-on-missing-fallback/entrypoint.js"),
+      {
+        failOnMissing: "resolved",
+      },
+    )
+
+    expect(built.stats.errors).toEqual([])
+    expect(built.stats.warnings).toEqual([])
+  })
+
+  it('should report missing error when fallbackLocales resolve translation and failOnMissing = "catalog"', async () => {
+    const built = await build(
+      path.join(__dirname, "./fail-on-missing-fallback/entrypoint.js"),
+      {
+        failOnMissing: "catalog",
+      },
+    )
+
+    expect(built.stats.errors?.[0]?.message).toContain(
+      "Missing 1 translation(s) before applying fallbackLocales:",
+    )
+    expect(built.stats.errors?.[0]?.message).toContain(
+      'failOnMissing="catalog"',
     )
     expect(built.stats.warnings).toEqual([])
   })

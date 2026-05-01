@@ -8,7 +8,10 @@ import { createCompiledCatalog } from "../compile.js"
 
 import normalizePath from "normalize-path"
 import nodepath from "path"
-import { createCompilationErrorMessage } from "../messages.js"
+import {
+  createCompilationErrorMessage,
+  getMissingBehaviorDescription,
+} from "../messages.js"
 import { getTranslationsForCatalog } from "../catalog/getTranslationsForCatalog.js"
 import { Logger } from "../logger.js"
 
@@ -27,7 +30,7 @@ export async function compileLocale(
       await getTranslationsForCatalog(catalog, locale, {
         fallbackLocales: config.fallbackLocales,
         sourceLocale: config.sourceLocale,
-        missingBehavior: "catalog",
+        missingBehavior: options.missingBehavior,
       })
 
     if (
@@ -43,7 +46,12 @@ export async function compileLocale(
       )
 
       if (options.verbose) {
-        logger.error(styleText("red", "Missing translations:"))
+        logger.error(
+          styleText(
+            "red",
+            `Missing translations ${getMissingBehaviorDescription(options.missingBehavior ?? "resolved")}:`,
+          ),
+        )
         missingMessages.forEach((missing) => {
           const source =
             missing.source || missing.source === missing.id
@@ -54,7 +62,10 @@ export async function compileLocale(
         })
       } else {
         logger.error(
-          styleText("red", `Missing ${missingMessages.length} translation(s)`),
+          styleText(
+            "red",
+            `Missing ${missingMessages.length} translation(s) ${getMissingBehaviorDescription(options.missingBehavior ?? "resolved")}`,
+          ),
         )
       }
       logger.error("")

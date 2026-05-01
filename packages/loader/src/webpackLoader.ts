@@ -8,20 +8,40 @@ import {
   createMissingErrorMessage,
   createCompilationErrorMessage,
 } from "@lingui/cli/api"
+import type { MissingBehavior } from "@lingui/cli/api"
 import type { LoaderDefinitionFunction } from "webpack"
+
+type FailOnMissingOption = boolean | MissingBehavior
 
 export type LinguiLoaderOptions = {
   config?: string
 
   /**
-   * If true would fail compilation on missing translations
+   * If true would fail compilation on missing translations after fallbackLocales are applied
    **/
-  failOnMissing?: boolean
+  failOnMissing?: FailOnMissingOption
 
   /**
    * If true would fail compilation on message compilation errors
    **/
   failOnCompileError?: boolean
+}
+
+function isFailOnMissingEnabled(option: FailOnMissingOption | undefined) {
+  return option === true || option === "resolved" || option === "catalog"
+}
+
+function getFailOnMissingBehavior(
+  option: FailOnMissingOption | undefined,
+): MissingBehavior {
+  return option === "catalog" ? "catalog" : "resolved"
+}
+
+function formatFailOnMissingOption(option: FailOnMissingOption | undefined) {
+  if (option === true) return "true"
+  if (option === "resolved") return '"resolved"'
+  if (option === "catalog") return '"catalog"'
+  return "false"
 }
 
 const loader: LoaderDefinitionFunction<LinguiLoaderOptions> = async function (
@@ -60,24 +80,29 @@ Please check that \`catalogs.path\` is filled properly.\n`,
   const { locale, catalog } = fileCatalog
   const dependency = await getCatalogDependentFiles(catalog, locale)
   dependency.forEach((file) => this.addDependency(path.normalize(file)))
+  const missingBehavior = getFailOnMissingBehavior(options.failOnMissing)
 
   const { messages, missing: missingMessages } = await catalog.getTranslations(
     locale,
     {
       fallbackLocales: config.fallbackLocales,
       sourceLocale: config.sourceLocale,
-      missingBehavior: "catalog",
+      missingBehavior,
     },
   )
 
   if (
-    options.failOnMissing &&
+    isFailOnMissingEnabled(options.failOnMissing) &&
     locale !== config.pseudoLocale &&
     missingMessages.length > 0
   ) {
-    const message = createMissingErrorMessage(locale, missingMessages, "loader")
+    const message = createMissingErrorMessage(
+      locale,
+      missingMessages,
+      missingBehavior,
+    )
     throw new Error(
-      `${message}\nYou see this error because \`failOnMissing=true\` in Lingui Loader configuration.`,
+      `${message}\nYou see this error because \`failOnMissing=${formatFailOnMissingOption(options.failOnMissing)}\` in Lingui Loader configuration.`,
     )
   }
 
