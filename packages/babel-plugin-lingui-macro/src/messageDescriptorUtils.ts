@@ -8,13 +8,14 @@ import {
 } from "@babel/types"
 import { EXTRACT_MARK, MsgDescriptorPropKey } from "./constants"
 import { generateMessageId } from "@lingui/message-utils/generateMessageId"
+import type { DirectiveValues } from "./linguiDirective"
 
 function buildICUFromTokens(tokens: Tokens) {
   const messageFormat = new ICUMessageFormat()
   return messageFormat.fromTokens(tokens)
 }
 
-type TextWithLoc = {
+export type TextWithLoc = {
   text: string
   loc?: SourceLocation
 }
@@ -36,10 +37,9 @@ export function createMessageDescriptorFromTokens(
   tokens: Tokens,
   oldLoc: SourceLocation,
   descriptorFields: ResolvedDescriptorFields,
-  defaults: {
+  defaults: DirectiveValues & {
     id?: TextWithLoc | ObjectProperty
-    context?: TextWithLoc | ObjectProperty
-    comment?: TextWithLoc | ObjectProperty
+    idPrefixLeader?: string
   } = {},
 ) {
   return createMessageDescriptor(
@@ -54,10 +54,9 @@ export function createMessageDescriptor(
   result: Partial<ParsedResult>,
   oldLoc: SourceLocation,
   descriptorFields: ResolvedDescriptorFields,
-  defaults: {
+  defaults: DirectiveValues & {
     id?: TextWithLoc | ObjectProperty
-    context?: TextWithLoc | ObjectProperty
-    comment?: TextWithLoc | ObjectProperty
+    idPrefixLeader?: string
   } = {},
 ) {
   const { message, values, elements } = result
@@ -72,15 +71,39 @@ export function createMessageDescriptor(
 
   const properties: ObjectProperty[] = []
 
+  let explicitId = ""
+  let shouldPrefix = false
+  if (defaults.id) {
+    explicitId = isObjectProperty(defaults.id)
+      ? getTextFromExpression(defaults.id.value as Expression)
+      : defaults.id.text
+
+    if (
+      explicitId !== undefined &&
+      defaults.idPrefix &&
+      (!defaults.idPrefixLeader ||
+        explicitId.startsWith(defaults.idPrefixLeader))
+    ) {
+      shouldPrefix = true
+      explicitId = defaults.idPrefix + explicitId
+    }
+  }
+
   properties.push(
     defaults.id
-      ? isObjectProperty(defaults.id)
-        ? defaults.id
-        : createStringObjectProperty(
+      ? shouldPrefix
+        ? createStringObjectProperty(
             MsgDescriptorPropKey.id,
-            defaults.id.text,
-            defaults.id.loc,
+            explicitId,
+            isObjectProperty(defaults.id) ? defaults.id.loc : defaults.id.loc,
           )
+        : isObjectProperty(defaults.id)
+          ? defaults.id
+          : createStringObjectProperty(
+              MsgDescriptorPropKey.id,
+              explicitId,
+              defaults.id.loc,
+            )
       : createIdProperty(
           message,
           defaults.context

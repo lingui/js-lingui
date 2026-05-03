@@ -1,0 +1,862 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`lingui-set directive: JS macros > With idPrefixLeader 1`] = `
+import { i18n } from "@lingui/core/macro";
+import { t } from "@lingui/core/macro";
+/* lingui-set idPrefix="module" comment="cmt" */
+const msg = i18n.t({ id: "unprefixed", message: "Welcome" });
+const msg2 = t({ id: ".my.id", message: "Welcome" });
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { i18n as _i18n } from "@lingui/core";
+/* lingui-set idPrefix="module" comment="cmt" */
+const msg = i18n.t({
+  id: "unprefixed",
+  message: "Welcome",
+});
+const msg2 = _i18n._(
+  /*i18n*/
+  {
+    id: "module.my.id",
+    message: "Welcome",
+    comment: "cmt",
+  },
+);
+
+`;
+
+exports[`lingui-set directive: JS macros > closest directive takes precedence 1`] = `
+import { t } from "@lingui/core/macro";
+/* lingui-set context="first" */
+const msg1 = t\`Hello\`;
+/* lingui-set context="second" */
+const msg2 = t\`World\`;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+/* lingui-set context="first" */ import { i18n as _i18n } from "@lingui/core";
+const msg1 = _i18n._(
+  /*i18n*/
+  {
+    id: "VUeJYD",
+    message: "Hello",
+    context: "first",
+  },
+);
+/* lingui-set context="second" */
+const msg2 = _i18n._(
+  /*i18n*/
+  {
+    id: "ovKD_8",
+    message: "World",
+    context: "second",
+  },
+);
+
+`;
+
+exports[`lingui-set directive: JS macros > defineMessage tagged template with directive 1`] = `
+import { defineMessage } from "@lingui/core/macro";
+/* lingui-set context="my context" comment="note" */
+const msg = defineMessage\`Hello\`;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+/* lingui-set context="my context" comment="note" */
+const msg =
+  /*i18n*/
+  {
+    id: "WMU_Op",
+    message: "Hello",
+    comment: "note",
+    context: "my context",
+  };
+
+`;
+
+exports[`lingui-set directive: JS macros > defineMessage with directive context 1`] = `
+import { defineMessage } from "@lingui/core/macro";
+/* lingui-set context="my context" */
+const msg = defineMessage({ message: "Hello" });
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+/* lingui-set context="my context" */
+const msg =
+  /*i18n*/
+  {
+    id: "WMU_Op",
+    message: "Hello",
+    context: "my context",
+  };
+
+`;
+
+exports[`lingui-set directive: JS macros > directive applies to multiple subsequent macros 1`] = `
+import { t } from "@lingui/core/macro";
+/* lingui-set context="shared" */
+const msg1 = t\`Hello\`;
+const msg2 = t\`World\`;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+/* lingui-set context="shared" */ import { i18n as _i18n } from "@lingui/core";
+const msg1 = _i18n._(
+  /*i18n*/
+  {
+    id: "YyfqC4",
+    message: "Hello",
+    context: "shared",
+  },
+);
+const msg2 = _i18n._(
+  /*i18n*/
+  {
+    id: "b_h2Bm",
+    message: "World",
+    context: "shared",
+  },
+);
+
+`;
+
+exports[`lingui-set directive: JS macros > directives merge with preceding ones 1`] = `
+import { t } from "@lingui/core/macro";
+/* lingui-set context="ctx" comment="cmt" */
+const msg1 = t\`Hello\`;
+/* lingui-set context="new ctx" */
+const msg2 = t\`World\`;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+/* lingui-set context="ctx" comment="cmt" */ import { i18n as _i18n } from "@lingui/core";
+const msg1 = _i18n._(
+  /*i18n*/
+  {
+    id: "3ZSjnQ",
+    message: "Hello",
+    comment: "cmt",
+    context: "ctx",
+  },
+);
+/* lingui-set context="new ctx" */
+const msg2 = _i18n._(
+  /*i18n*/
+  {
+    id: "Wrs89z",
+    message: "World",
+    comment: "cmt",
+    context: "new ctx",
+  },
+);
+
+`;
+
+exports[`lingui-set directive: JS macros > empty param value clears single param while leaving others intact 1`] = `
+import { t } from "@lingui/core/macro";
+/* lingui-set context="first" comment="second" */
+const msg1 = t\`Hello\`;
+/* lingui-set context="" */
+const msg2 = t\`World\`;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+/* lingui-set context="first" comment="second" */ import { i18n as _i18n } from "@lingui/core";
+const msg1 = _i18n._(
+  /*i18n*/
+  {
+    id: "VUeJYD",
+    message: "Hello",
+    comment: "second",
+    context: "first",
+  },
+);
+/* lingui-set context="" */
+const msg2 = _i18n._(
+  /*i18n*/
+  {
+    id: "v-jdqd",
+    message: "World",
+    comment: "second",
+  },
+);
+
+`;
+
+exports[`lingui-set directive: JS macros > explicit comment overrides directive 1`] = `
+import { t } from "@lingui/core/macro";
+/* lingui-set comment="directive cmt" */
+const msg = t({ message: "Hello", comment: "explicit cmt" });
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+/* lingui-set comment="directive cmt" */ import { i18n as _i18n } from "@lingui/core";
+const msg = _i18n._(
+  /*i18n*/
+  {
+    id: "uzTaYi",
+    message: "Hello",
+    comment: "explicit cmt",
+  },
+);
+
+`;
+
+exports[`lingui-set directive: JS macros > explicit context overrides directive 1`] = `
+import { defineMessage } from "@lingui/core/macro";
+/* lingui-set context="directive ctx" comment="directive cmt" */
+const msg = defineMessage({ message: "Hello", context: "explicit ctx" });
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+/* lingui-set context="directive ctx" comment="directive cmt" */
+const msg =
+  /*i18n*/
+  {
+    id: "Mxe6B4",
+    message: "Hello",
+    comment: "directive cmt",
+    context: "explicit ctx",
+  };
+
+`;
+
+exports[`lingui-set directive: JS macros > idPrefix + idPrefixLeader with dynamic id 1`] = `
+import { t } from "@lingui/core/macro";
+/* lingui-set idPrefix="module" */
+const dynId = "dynamic";
+const msg = t({ id: dynId, message: "Welcome" });
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+/* lingui-set idPrefix="module" */ import { i18n as _i18n } from "@lingui/core";
+const dynId = "dynamic";
+const msg = _i18n._(
+  /*i18n*/
+  {
+    id: dynId,
+    message: "Welcome",
+  },
+);
+
+`;
+
+exports[`lingui-set directive: JS macros > idPrefix and implicit ID 1`] = `
+import { t } from "@lingui/core/macro";
+/* lingui-set idPrefix="module." */
+const msg = t\`Hello\`;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+/* lingui-set idPrefix="module." */ import { i18n as _i18n } from "@lingui/core";
+const msg = _i18n._(
+  /*i18n*/
+  {
+    id: "uzTaYi",
+    message: "Hello",
+  },
+);
+
+`;
+
+exports[`lingui-set directive: JS macros > idPrefix with explicit id 1`] = `
+import { defineMessage } from "@lingui/core/macro";
+/* lingui-set idPrefix="module." */
+const msg = defineMessage({ id: "greeting", message: "Hello" });
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+/* lingui-set idPrefix="module." */
+const msg =
+  /*i18n*/
+  {
+    id: "module.greeting",
+    message: "Hello",
+  };
+
+`;
+
+exports[`lingui-set directive: JS macros > no directive - normal behavior 1`] = `
+import { t } from "@lingui/core/macro";
+const msg = t\`Hello\`;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { i18n as _i18n } from "@lingui/core";
+const msg = _i18n._(
+  /*i18n*/
+  {
+    id: "uzTaYi",
+    message: "Hello",
+  },
+);
+
+`;
+
+exports[`lingui-set directive: JS macros > plural with directive context 1`] = `
+import { plural } from "@lingui/core/macro";
+/* lingui-set context="my context" */
+const msg = plural(count, { one: "# book", other: "# books" });
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+/* lingui-set context="my context" */ import { i18n as _i18n } from "@lingui/core";
+const msg = _i18n._(
+  /*i18n*/
+  {
+    id: "SSborG",
+    message: "{count, plural, one {# book} other {# books}}",
+    context: "my context",
+    values: {
+      count: count,
+    },
+  },
+);
+
+`;
+
+exports[`lingui-set directive: JS macros > production: directive context affects id hash 1`] = `
+import { t } from "@lingui/core/macro";
+/* lingui-set context="my context" */
+const msg = t\`Hello\`;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+/* lingui-set context="my context" */ import { i18n as _i18n } from "@lingui/core";
+const msg = _i18n._(
+  /*i18n*/
+  {
+    id: "WMU_Op",
+  },
+);
+
+`;
+
+exports[`lingui-set directive: JS macros > reset clears all inherited values 1`] = `
+import { t } from "@lingui/core/macro";
+/* lingui-set context="first" comment="second" idPrefix="prefix." */
+const msg1 = t\`Hello\`;
+/* lingui-reset */
+const msg2 = t\`World\`;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+/* lingui-set context="first" comment="second" idPrefix="prefix." */ import { i18n as _i18n } from "@lingui/core";
+const msg1 = _i18n._(
+  /*i18n*/
+  {
+    id: "VUeJYD",
+    message: "Hello",
+    comment: "second",
+    context: "first",
+  },
+);
+/* lingui-reset */
+const msg2 = _i18n._(
+  /*i18n*/
+  {
+    id: "v-jdqd",
+    message: "World",
+  },
+);
+
+`;
+
+exports[`lingui-set directive: JS macros > reset combined with new values 1`] = `
+import { t } from "@lingui/core/macro";
+/* lingui-set context="first" comment="second" */
+const msg1 = t\`Hello\`;
+/* lingui-reset context="fresh" */
+const msg2 = t\`World\`;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+/* lingui-set context="first" comment="second" */ import { i18n as _i18n } from "@lingui/core";
+const msg1 = _i18n._(
+  /*i18n*/
+  {
+    id: "VUeJYD",
+    message: "Hello",
+    comment: "second",
+    context: "first",
+  },
+);
+/* lingui-reset context="fresh" */
+const msg2 = _i18n._(
+  /*i18n*/
+  {
+    id: "aENyP6",
+    message: "World",
+    context: "fresh",
+  },
+);
+
+`;
+
+exports[`lingui-set directive: JS macros > select with directive context 1`] = `
+import { select } from "@lingui/core/macro";
+/* lingui-set context="my context" */
+const msg = select(gender, { male: "he", female: "she", other: "they" });
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+/* lingui-set context="my context" */ import { i18n as _i18n } from "@lingui/core";
+const msg = _i18n._(
+  /*i18n*/
+  {
+    id: "-JBa2B",
+    message: "{gender, select, male {he} female {she} other {they}}",
+    context: "my context",
+    values: {
+      gender: gender,
+    },
+  },
+);
+
+`;
+
+exports[`lingui-set directive: JS macros > t with directive comment (line comment) 1`] = `
+import { t } from "@lingui/core/macro";
+// lingui-set comment="translator note"
+const msg = t\`Hello\`;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+// lingui-set comment="translator note"
+import { i18n as _i18n } from "@lingui/core";
+const msg = _i18n._(
+  /*i18n*/
+  {
+    id: "uzTaYi",
+    message: "Hello",
+    comment: "translator note",
+  },
+);
+
+`;
+
+exports[`lingui-set directive: JS macros > t with directive context (block comment) 1`] = `
+import { t } from "@lingui/core/macro";
+/* lingui-set context="my context" */
+const msg = t\`Hello\`;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+/* lingui-set context="my context" */ import { i18n as _i18n } from "@lingui/core";
+const msg = _i18n._(
+  /*i18n*/
+  {
+    id: "WMU_Op",
+    message: "Hello",
+    context: "my context",
+  },
+);
+
+`;
+
+exports[`lingui-set directive: JS macros > t with directive context and comment 1`] = `
+import { t } from "@lingui/core/macro";
+/* lingui-set context="ctx" comment="cmt" */
+const msg = t\`Hello\`;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+/* lingui-set context="ctx" comment="cmt" */ import { i18n as _i18n } from "@lingui/core";
+const msg = _i18n._(
+  /*i18n*/
+  {
+    id: "3ZSjnQ",
+    message: "Hello",
+    comment: "cmt",
+    context: "ctx",
+  },
+);
+
+`;
+
+exports[`lingui-set directive: JSX macros > Plural with directive context 1`] = `
+import { Plural } from "@lingui/react/macro";
+/* lingui-set context="my context" */
+const el = <Plural value={count} one="# book" other="# books" />;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+/* lingui-set context="my context" */ import { Trans as _Trans } from "@lingui/react";
+const el = (
+  <_Trans
+    {
+      /*i18n*/
+      ...{
+        id: "SSborG",
+        message: "{count, plural, one {# book} other {# books}}",
+        context: "my context",
+        values: {
+          count: count,
+        },
+      }
+    }
+  />
+);
+
+`;
+
+exports[`lingui-set directive: JSX macros > Select with directive context 1`] = `
+import { Select } from "@lingui/react/macro";
+/* lingui-set context="my context" */
+const el = <Select value={gender} male="he" female="she" other="they" />;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+/* lingui-set context="my context" */ import { Trans as _Trans } from "@lingui/react";
+const el = (
+  <_Trans
+    male="he"
+    female="she"
+    {
+      /*i18n*/
+      ...{
+        id: "vfcacx",
+        message: "{gender, select, other {they}}",
+        context: "my context",
+        values: {
+          gender: gender,
+        },
+      }
+    }
+  />
+);
+
+`;
+
+exports[`lingui-set directive: JSX macros > Trans with directive comment 1`] = `
+import { Trans } from "@lingui/react/macro";
+// lingui-set comment="translator note"
+const el = <Trans>Hello</Trans>;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+// lingui-set comment="translator note"
+import { Trans as _Trans } from "@lingui/react";
+const el = (
+  <_Trans
+    {
+      /*i18n*/
+      ...{
+        id: "uzTaYi",
+        message: "Hello",
+        comment: "translator note",
+      }
+    }
+  />
+);
+
+`;
+
+exports[`lingui-set directive: JSX macros > Trans with directive context 1`] = `
+import { Trans } from "@lingui/react/macro";
+/* lingui-set context="my context" */
+const el = <Trans>Hello</Trans>;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+/* lingui-set context="my context" */ import { Trans as _Trans } from "@lingui/react";
+const el = (
+  <_Trans
+    {
+      /*i18n*/
+      ...{
+        id: "WMU_Op",
+        message: "Hello",
+        context: "my context",
+      }
+    }
+  />
+);
+
+`;
+
+exports[`lingui-set directive: JSX macros > Trans with directive idPrefix and explicit id 1`] = `
+import { Trans } from "@lingui/react/macro";
+/* lingui-set idPrefix="module." */
+const el = <Trans id="greeting">Hello</Trans>;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+/* lingui-set idPrefix="module." */ import { Trans as _Trans } from "@lingui/react";
+const el = (
+  <_Trans
+    {
+      /*i18n*/
+      ...{
+        id: "greeting",
+        message: "Hello",
+      }
+    }
+  />
+);
+
+`;
+
+exports[`lingui-set directive: JSX macros > Trans with directive idPrefix without explicit id 1`] = `
+import { Trans } from "@lingui/react/macro";
+/* lingui-set idPrefix="module." */
+const el = <Trans>Hello</Trans>;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+/* lingui-set idPrefix="module." */ import { Trans as _Trans } from "@lingui/react";
+const el = (
+  <_Trans
+    {
+      /*i18n*/
+      ...{
+        id: "uzTaYi",
+        message: "Hello",
+      }
+    }
+  />
+);
+
+`;
+
+exports[`lingui-set directive: JSX macros > Trans with dynamic ID and idPrefix 1`] = `
+import { Trans } from "@lingui/react/macro";
+/* lingui-set idPrefix="module." */
+const el = <Trans id={dynId}>Hello</Trans>;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+/* lingui-set idPrefix="module." */ import { Trans as _Trans } from "@lingui/react";
+const el = (
+  <_Trans
+    {
+      /*i18n*/
+      ...{
+        id: "uzTaYi",
+        message: "Hello",
+      }
+    }
+  />
+);
+
+`;
+
+exports[`lingui-set directive: JSX macros > Trans with dynamic id and no idPrefix 1`] = `
+import { Trans } from "@lingui/react/macro";
+const dynId = "dynamic";
+const el = <Trans id={dynId}>Hello</Trans>;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { Trans as _Trans } from "@lingui/react";
+const dynId = "dynamic";
+const el = (
+  <_Trans
+    {
+      /*i18n*/
+      ...{
+        id: "uzTaYi",
+        message: "Hello",
+      }
+    }
+  />
+);
+
+`;
+
+exports[`lingui-set directive: JSX macros > Trans with explicit context overrides directive 1`] = `
+import { Trans } from "@lingui/react/macro";
+/* lingui-set context="directive ctx" */
+const el = <Trans context="explicit ctx">Hello</Trans>;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+/* lingui-set context="directive ctx" */ import { Trans as _Trans } from "@lingui/react";
+const el = (
+  <_Trans
+    {
+      /*i18n*/
+      ...{
+        id: "Mxe6B4",
+        message: "Hello",
+        context: "explicit ctx",
+      }
+    }
+  />
+);
+
+`;
+
+exports[`lingui-set directive: JSX macros > Trans with idPrefixLeader 1`] = `
+import { Trans } from "@lingui/react/macro";
+/* lingui-set idPrefix="checkout" */
+const el1 = <Trans id=".usesPrefix">Hello</Trans>;
+const el2 = <Trans id=".usesPrefix.with.subpath">Hello</Trans>;
+const el3 = <Trans id="unprefixed.key">Hello</Trans>;
+const el4 = <Trans id="unprefixed">Hello</Trans>;
+const el5 = <Trans id="test">Hello</Trans>;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+/* lingui-set idPrefix="checkout" */ import { Trans as _Trans } from "@lingui/react";
+const el1 = (
+  <_Trans
+    {
+      /*i18n*/
+      ...{
+        id: "checkout.usesPrefix",
+        message: "Hello",
+      }
+    }
+  />
+);
+const el2 = (
+  <_Trans
+    {
+      /*i18n*/
+      ...{
+        id: "checkout.usesPrefix.with.subpath",
+        message: "Hello",
+      }
+    }
+  />
+);
+const el3 = (
+  <_Trans
+    {
+      /*i18n*/
+      ...{
+        id: "unprefixed.key",
+        message: "Hello",
+      }
+    }
+  />
+);
+const el4 = (
+  <_Trans
+    {
+      /*i18n*/
+      ...{
+        id: "unprefixed",
+        message: "Hello",
+      }
+    }
+  />
+);
+const el5 = (
+  <_Trans
+    {
+      /*i18n*/
+      ...{
+        id: "test",
+        message: "Hello",
+      }
+    }
+  />
+);
+
+`;
+
+exports[`lingui-set directive: JSX macros > multiple directives switching context mid-file 1`] = `
+import { Trans } from "@lingui/react/macro";
+/* lingui-set context="header" */
+const h = <Trans>Title</Trans>;
+/* lingui-set context="footer" */
+const f = <Trans>Copyright</Trans>;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+/* lingui-set context="header" */ import { Trans as _Trans } from "@lingui/react";
+const h = (
+  <_Trans
+    {
+      /*i18n*/
+      ...{
+        id: "cxvq4E",
+        message: "Title",
+        context: "header",
+      }
+    }
+  />
+);
+/* lingui-set context="footer" */
+const f = (
+  <_Trans
+    {
+      /*i18n*/
+      ...{
+        id: "wtNRmE",
+        message: "Copyright",
+        context: "footer",
+      }
+    }
+  />
+);
+
+`;
+
+exports[`lingui-set directive: useLingui > useLingui t with directive applied per-reference 1`] = `
+import { useLingui } from "@lingui/react/macro";
+function App() {
+  const { t } = useLingui();
+  /* lingui-set context="first" */
+  const msg1 = t\`Hello\`;
+  /* lingui-set context="second" */
+  const msg2 = t\`World\`;
+  return msg1 + msg2;
+}
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { useLingui as _useLingui } from "@lingui/react";
+function App() {
+  const { _: _t } = _useLingui();
+  /* lingui-set context="first" */
+  const msg1 = _t(
+    /*i18n*/
+    {
+      id: "VUeJYD",
+      message: "Hello",
+      context: "first",
+    },
+  );
+  /* lingui-set context="second" */
+  const msg2 = _t(
+    /*i18n*/
+    {
+      id: "ovKD_8",
+      message: "World",
+      context: "second",
+    },
+  );
+  return msg1 + msg2;
+}
+
+`;
+
+exports[`lingui-set directive: useLingui > useLingui t with directive context 1`] = `
+import { useLingui } from "@lingui/react/macro";
+function App() {
+  const { t } = useLingui();
+  /* lingui-set context="my context" */
+  return t\`Hello\`;
+}
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { useLingui as _useLingui } from "@lingui/react";
+function App() {
+  const { _: _t } = _useLingui();
+  /* lingui-set context="my context" */
+  return _t(
+    /*i18n*/
+    {
+      id: "WMU_Op",
+      message: "Hello",
+      context: "my context",
+    },
+  );
+}
+
+`;
