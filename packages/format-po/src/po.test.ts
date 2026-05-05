@@ -582,6 +582,14 @@ describe("pofile format", () => {
             0: ["userName", "user.name", "profile.name", "authorName"],
           },
         },
+
+        // Should not erase existing comments if message does not have placeholder
+        // https://github.com/lingui/js-lingui/issues/2542
+        static5: {
+          message: "Static message {0}",
+          comments: ["placeholder: {0} = getValue()"],
+          translation: "Static message {0}",
+        },
       }
 
       const actual = format.serialize(catalog, defaultSerializeCtx)
