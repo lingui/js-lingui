@@ -123,13 +123,13 @@ Convert message catalogs from the previous format (see the [`format`](/ref/conf#
 
 Control output verbosity. Accepted values:
 
-| Level | Output |
-|-------|--------|
-| `silent` | No output |
-| `error` | Errors only |
-| `warning` | Errors and warnings |
-| `info` | Errors, warnings, and informational messages (default) |
-| `verbose` | All output including debug details |
+| Level     | Output                                                 |
+| --------- | ------------------------------------------------------ |
+| `silent`  | No output                                              |
+| `error`   | Errors only                                            |
+| `warning` | Errors and warnings                                    |
+| `info`    | Errors, warnings, and informational messages (default) |
+| `verbose` | All output including debug details                     |
 
 #### `--verbose` {#extract-verbose}
 

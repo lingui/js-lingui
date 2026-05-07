@@ -27,7 +27,7 @@ export function initLogger(logLevel: LogLevel): Logger {
       ? (...args) => console.error(...args)
       : noop,
     warn: isAtLeast(logLevel, "warning")
-      ? (...args) => console.warn(...args)
+      ? (...args) => console.log(...args)
       : noop,
     info: isAtLeast(logLevel, "info")
       ? (...args) => console.log(...args)

@@ -2,6 +2,7 @@ import extractTemplateCommand from "../src/lingui-extract-template.js"
 import extractCommand from "../src/lingui-extract.js"
 import extractExperimentalCommand from "../src/lingui-extract-experimental.js"
 import { command as compileCommand } from "../src/lingui-compile.js"
+import type { LogLevel } from "../src/api/logger.js"
 import fs from "fs/promises"
 import { globSync } from "node:fs"
 import nodepath from "path"
@@ -51,10 +52,15 @@ async function prepare(caseFolderName: string) {
   return { rootDir, actualPath, existingPath, expectedPath }
 }
 
-const defaultOptions = {
+const defaultOptions: {
+  workersOptions: { poolSize: number }
+  clean: boolean
+  logLevel: LogLevel
+  overwrite: boolean
+} = {
   workersOptions: { poolSize: 0 },
   clean: false,
-  verbose: false,
+  logLevel: "info",
   overwrite: false,
 }
 
@@ -118,6 +124,7 @@ describe("E2E Extractor Test", () => {
 
     await mockConsole(async (console) => {
       const result = await extractTemplateCommand(getConfig({ cwd: rootDir }), {
+        logLevel: "info",
         workersOptions: { poolSize: 0 },
       })
 
@@ -145,7 +152,7 @@ describe("E2E Extractor Test", () => {
     await mockConsole(async (console) => {
       const result = await extractTemplateCommand(getConfig({ cwd: rootDir }), {
         workersOptions: { poolSize: 2 },
-        verbose: true,
+        logLevel: "verbose",
       })
 
       expect(result).toBeTruthy()
@@ -168,7 +175,7 @@ describe("E2E Extractor Test", () => {
     await mockConsole(async (console) => {
       const result = await extractCommand(getConfig({ cwd: rootDir }), {
         ...defaultOptions,
-        verbose: true,
+        logLevel: "verbose",
         workersOptions: { poolSize: 2 },
       })
 
@@ -206,6 +213,7 @@ describe("E2E Extractor Test", () => {
 
       await mockConsole(async (console) => {
         const result = await extractExperimentalCommand(config, {
+          logLevel: "info",
           template: true,
           workersOptions: {
             poolSize: 0,
@@ -213,6 +221,7 @@ describe("E2E Extractor Test", () => {
         })
 
         await compileCommand(config, {
+          logLevel: "info",
           allowEmpty: true,
           workersOptions: {
             poolSize: 0,
@@ -249,12 +258,14 @@ describe("E2E Extractor Test", () => {
         const config = getConfig({ cwd: rootDir })
 
         const result = await extractExperimentalCommand(config, {
+          logLevel: "info",
           workersOptions: {
             poolSize: 0,
           },
         })
 
         await compileCommand(config, {
+          logLevel: "info",
           allowEmpty: true,
           workersOptions: {
             poolSize: 0,
@@ -301,13 +312,14 @@ describe("E2E Extractor Test", () => {
         const config = getConfig({ cwd: rootDir })
 
         const result = await extractExperimentalCommand(config, {
-          verbose: true,
+          logLevel: "verbose",
           workersOptions: {
             poolSize: 2,
           },
         })
 
         await compileCommand(config, {
+          logLevel: "info",
           allowEmpty: true,
           workersOptions: {
             poolSize: 0,
@@ -356,6 +368,7 @@ describe("E2E Extractor Test", () => {
         const config = getConfig({ cwd: rootDir })
 
         const result = await extractExperimentalCommand(config, {
+          logLevel: "info",
           workersOptions: {
             poolSize: 2,
           },
@@ -394,6 +407,7 @@ describe("E2E Extractor Test", () => {
             },
           }),
           {
+            logLevel: "info",
             workersOptions: {
               poolSize: 0,
             },

@@ -363,7 +363,7 @@ describe("TranslationIO Integration", () => {
 
   beforeEach(async () => {
     options = {
-      verbose: false,
+      logLevel: "info",
       clean: false,
       overwrite: false,
       locale: [],
