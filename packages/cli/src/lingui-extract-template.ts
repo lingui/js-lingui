@@ -17,6 +17,7 @@ import {
 
 type CliExtractTemplateOptions = {
   verbose?: boolean
+  silent?: boolean
   files?: string[]
   workersOptions: WorkersOptions
 }
@@ -25,7 +26,7 @@ export default async function command(
   config: LinguiConfigNormalized,
   options: CliExtractTemplateOptions,
 ): Promise<boolean> {
-  options.verbose && console.log("Extracting messages from source files…")
+  !options.silent && options.verbose && console.log("Extracting messages from source files…")
   const catalogs = await getCatalogs(config)
   const catalogStats: { [path: string]: number } = {}
 
@@ -34,7 +35,8 @@ export default async function command(
   let workerPool: ExtractWorkerPool | undefined
 
   if (options.workersOptions.poolSize) {
-    options.verbose &&
+    !options.silent &&
+      options.verbose &&
       console.log(`Use worker pool of size ${options.workersOptions.poolSize}`)
 
     workerPool = createExtractWorkerPool(options.workersOptions)
@@ -64,12 +66,14 @@ export default async function command(
       await workerPool.destroy()
     }
   }
-  Object.entries(catalogStats).forEach(([key, value]) => {
-    console.log(
-      `Catalog statistics for ${styleText("bold", key)}: ${styleText("green", String(value))} messages`,
-    )
-    console.log()
-  })
+  if (!options.silent) {
+    Object.entries(catalogStats).forEach(([key, value]) => {
+      console.log(
+        `Catalog statistics for ${styleText("bold", key)}: ${styleText("green", String(value))} messages`,
+      )
+      console.log()
+    })
+  }
 
   return commandSuccess
 }
@@ -77,6 +81,7 @@ export default async function command(
 type CliArgs = {
   config?: string
   verbose?: boolean
+  silent?: boolean
   workers?: number
 }
 
@@ -84,6 +89,7 @@ if (import.meta.main) {
   program
     .option("--config <path>", "Path to the config file")
     .option("--verbose", "Verbose output")
+    .option("--silent", "Suppress all output except errors")
     .option(
       "--workers <n>",
       "Number of worker threads to use (default: CPU count - 1, capped at 8). Pass `--workers 1` to disable worker threads and run everything in a single process",
@@ -97,7 +103,8 @@ if (import.meta.main) {
   })
 
   const result = command(config, {
-    verbose: options.verbose || false,
+    verbose: !options.silent && (options.verbose || false),
+    silent: options.silent || false,
     workersOptions: resolveWorkersOptions(options),
   }).then(() => {
     if (!result) process.exit(1)

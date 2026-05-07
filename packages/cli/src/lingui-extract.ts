@@ -25,6 +25,7 @@ import micromatch from "micromatch"
 
 export type CliExtractOptions = {
   verbose: boolean
+  silent?: boolean
   files?: string[]
   clean: boolean
   overwrite: boolean
@@ -38,7 +39,7 @@ export default async function command(
   options: CliExtractOptions,
 ): Promise<boolean> {
   const startTime = Date.now()
-  options.verbose && console.log("Extracting messages from source files…")
+  !options.silent && options.verbose && console.log("Extracting messages from source files…")
 
   const catalogs = await getCatalogs(config)
   const catalogStats: { [path: string]: AllCatalogsType } = {}
@@ -49,10 +50,11 @@ export default async function command(
   // important to initialize ora before worker pool, otherwise it cause
   // MaxListenersExceededWarning: Possible EventEmitter memory leak detected. 11 unpipe listeners added to [WriteStream]. MaxListeners is 10. Use emitter.setMaxListeners() to increase limit
   // when workers >= 10
-  const spinner = ora()
+  const spinner = ora({ isSilent: options.silent })
 
   if (options.workersOptions.poolSize) {
-    options.verbose &&
+    !options.silent &&
+      options.verbose &&
       console.log(`Use worker pool of size ${options.workersOptions.poolSize}`)
 
     workerPool = createExtractWorkerPool(options.workersOptions)
@@ -97,25 +99,27 @@ export default async function command(
     spinner.fail(doneMsg)
   }
 
-  Object.entries(catalogStats).forEach(([key, value]) => {
-    console.log(`Catalog statistics for ${key}: `)
-    console.log(printStats(config, value).toString())
-    console.log()
-  })
+  if (!options.silent) {
+    Object.entries(catalogStats).forEach(([key, value]) => {
+      console.log(`Catalog statistics for ${key}: `)
+      console.log(printStats(config, value).toString())
+      console.log()
+    })
 
-  if (!options.watch) {
-    console.log(
-      `(Use "${styleText(
-        "yellow",
-        helpRun("extract"),
-      )}" to update catalogs with new messages.)`,
-    )
-    console.log(
-      `(Use "${styleText(
-        "yellow",
-        helpRun("compile"),
-      )}" to compile catalogs for production. Alternatively, use bundler plugins: https://lingui.dev/ref/cli#compiling-catalogs-in-ci)`,
-    )
+    if (!options.watch) {
+      console.log(
+        `(Use "${styleText(
+          "yellow",
+          helpRun("extract"),
+        )}" to update catalogs with new messages.)`,
+      )
+      console.log(
+        `(Use "${styleText(
+          "yellow",
+          helpRun("compile"),
+        )}" to compile catalogs for production. Alternatively, use bundler plugins: https://lingui.dev/ref/cli#compiling-catalogs-in-ci)`,
+      )
+    }
   }
 
   // If service key is present in configuration, synchronize with cloud translation platform
@@ -152,6 +156,7 @@ export default async function command(
 
 type CliArgs = {
   verbose: boolean
+  silent?: boolean
   config: string
   convertFrom: string
   debounce: number
@@ -187,6 +192,7 @@ if (import.meta.main) {
       "Debounces extraction for given amount of milliseconds",
     )
     .option("--verbose", "Verbose output")
+    .option("--silent", "Suppress all output except errors")
     .option("--watch", "Enables Watch Mode")
     .argument(
       "[files...]",
@@ -220,7 +226,8 @@ if (import.meta.main) {
 
   const extract = (filePath?: string[]) => {
     return command(config, {
-      verbose: options.watch || options.verbose || false,
+      verbose: !options.silent && (options.watch || options.verbose || false),
+      silent: options.silent || false,
       clean: options.watch ? false : options.clean || false,
       overwrite: options.watch || options.overwrite || false,
       locale: options.locale,
@@ -255,7 +262,7 @@ if (import.meta.main) {
 
   // Check if Watch Mode is enabled
   if (options.watch) {
-    console.info(styleText("bold", "Initializing Watch Mode..."))
+    !options.silent && console.info(styleText("bold", "Initializing Watch Mode..."))
     ;(async function initWatch() {
       const { paths, ignored } = await getPathsForExtractWatcher(config)
 
@@ -273,7 +280,7 @@ if (import.meta.main) {
       })
 
       const onReady = () => {
-        console.info(styleText(["green", "bold"], "Watcher is ready!"))
+        !options.silent && console.info(styleText(["green", "bold"], "Watcher is ready!"))
         watcher
           .on("add", (path) => dispatchExtract([path]))
           .on("change", (path) => dispatchExtract([path]))

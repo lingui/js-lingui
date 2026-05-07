@@ -457,6 +457,67 @@ msgstr "{plural,  }"
     })
   })
 
+  describe("silent", () => {
+    it("should suppress non-error output when silent = true", async () => {
+      expect.assertions(3)
+
+      const rootDir = await createFixtures({
+        "en.po": `
+msgid "Hello World"
+msgstr "Hello World"
+        `,
+        "pl.po": `
+msgid "Hello World"
+msgstr "Cześć świat"
+        `,
+      })
+
+      const config = getTestConfig(rootDir)
+
+      await mockConsole(async (console) => {
+        const result = await command(config, {
+          silent: true,
+          workersOptions: { poolSize: 0 },
+        })
+
+        expect(result).toBeTruthy()
+        const logOutput = getConsoleMockCalls(console.log)
+        expect(logOutput).toBeUndefined()
+        const errorOutput = getConsoleMockCalls(console.error)
+        expect(errorOutput).toBeUndefined()
+      })
+    })
+
+    it("should still emit errors on stderr when silent = true and compilation fails", async () => {
+      expect.assertions(2)
+
+      const rootDir = await createFixtures({
+        "en.po": `
+msgid "Hello World"
+msgstr "Hello World"
+        `,
+        "pl.po": `
+msgid "Hello World"
+msgstr ""
+        `,
+      })
+
+      const config = getTestConfig(rootDir)
+
+      await mockConsole(async (console) => {
+        const result = await command(config, {
+          silent: true,
+          allowEmpty: false,
+          workersOptions: { poolSize: 0 },
+        })
+
+        expect(result).toBeFalsy()
+        const errorOutput = getConsoleMockCalls(console.error)
+        expect(errorOutput).toBeTruthy()
+      })
+    })
+  })
+
   describe("outputPrefix", () => {
     it("Should use custom output prefix in compiled files", async () => {
       const rootDir = await createFixtures({

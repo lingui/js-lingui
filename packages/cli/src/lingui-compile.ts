@@ -16,6 +16,7 @@ import { getPathsForCompileWatcher } from "./api/getPathsForCompileWatcher.js"
 
 export type CliCompileOptions = {
   verbose?: boolean
+  silent?: boolean
   allowEmpty?: boolean
   failOnCompileError?: boolean
   typescript?: boolean
@@ -34,7 +35,7 @@ export async function command(
   // Check config.compile.merge if catalogs for current locale are to be merged into a single compiled file
   const doMerge = !!config.catalogsMergePath
 
-  console.log("Compiling message catalogs…")
+  !options.silent && console.log("Compiling message catalogs…")
 
   let errored = false
 
@@ -61,7 +62,8 @@ export async function command(
       )
     }
 
-    options.verbose &&
+    !options.silent &&
+      options.verbose &&
       console.log(`Use worker pool of size ${options.workersOptions.poolSize}`)
 
     const pool = createCompileWorkerPool({
@@ -97,13 +99,14 @@ export async function command(
     }
   }
 
-  console.log(`Done in ${ms(Date.now() - startTime)}`)
+  !options.silent && console.log(`Done in ${ms(Date.now() - startTime)}`)
 
   return !errored
 }
 
 type CliArgs = {
   verbose?: boolean
+  silent?: boolean
   allowEmpty?: boolean
   typescript?: boolean
   watch?: boolean
@@ -121,6 +124,7 @@ if (import.meta.main) {
     .option("--config <path>", "Path to the config file")
     .option("--strict", "Disable defaults for missing translations")
     .option("--verbose", "Verbose output")
+    .option("--silent", "Suppress all output except errors")
     .option("--typescript", "Create Typescript definition for compiled bundle")
     .option(
       "--workers <n>",
@@ -162,7 +166,8 @@ if (import.meta.main) {
   const compile = () => {
     previousRun = previousRun.then(() =>
       command(config, {
-        verbose: options.watch || options.verbose || false,
+        verbose: !options.silent && (options.watch || options.verbose || false),
+        silent: options.silent || false,
         allowEmpty: !options.strict,
         failOnCompileError: !!options.strict,
         workersOptions: resolveWorkersOptions(options),
@@ -189,7 +194,7 @@ if (import.meta.main) {
 
   // Check if Watch Mode is enabled
   if (options.watch) {
-    console.info(styleText("bold", "Initializing Watch Mode..."))
+    !options.silent && console.info(styleText("bold", "Initializing Watch Mode..."))
     ;(async function initWatch() {
       const { paths } = await getPathsForCompileWatcher(config)
 
@@ -198,7 +203,7 @@ if (import.meta.main) {
       })
 
       const onReady = () => {
-        console.info(styleText(["green", "bold"], "Watcher is ready!"))
+        !options.silent && console.info(styleText(["green", "bold"], "Watcher is ready!"))
         watcher
           .on("add", () => dispatchCompile())
           .on("change", () => dispatchCompile())

@@ -18,6 +18,7 @@ import { createExtractExperimentalWorkerPool } from "./api/workerPools.js"
 
 type CliExtractTemplateOptions = {
   verbose?: boolean
+  silent?: boolean
   files?: string[]
   template?: boolean
   locales?: string[]
@@ -30,7 +31,7 @@ export default async function command(
   linguiConfig: LinguiConfigNormalized,
   options: CliExtractTemplateOptions,
 ): Promise<boolean> {
-  options.verbose && console.log("Extracting messages from source files…")
+  !options.silent && options.verbose && console.log("Extracting messages from source files…")
 
   const extractorConfig = linguiConfig.experimental?.extractor
 
@@ -40,17 +41,18 @@ export default async function command(
     )
   }
 
-  console.log(
-    styleText(
-      "yellow",
-      [
-        "You have using an experimental feature",
-        "Experimental features are not covered by semver, and may cause unexpected or broken application behavior." +
-          " Use at your own risk.",
-        "",
-      ].join("\n"),
-    ),
-  )
+  !options.silent &&
+    console.log(
+      styleText(
+        "yellow",
+        [
+          "You have using an experimental feature",
+          "Experimental features are not covered by semver, and may cause unexpected or broken application behavior." +
+            " Use at your own risk.",
+          "",
+        ].join("\n"),
+      ),
+    )
 
   // unfortunately we can't use os.tmpdir() in this case
   // on windows it might create a folder on a different disk then source code is stored
@@ -82,7 +84,8 @@ export default async function command(
       )
     }
 
-    options.verbose &&
+    !options.silent &&
+      options.verbose &&
       console.log(`Use worker pool of size ${options.workersOptions.poolSize}`)
 
     const pool = createExtractExperimentalWorkerPool({
@@ -157,11 +160,13 @@ export default async function command(
   // cleanup temp directory
   await fs.rm(tempDir, { recursive: true, force: true })
 
-  stats
-    .sort((a, b) => a.entry.localeCompare(b.entry))
-    .forEach(({ entry, content }) => {
-      console.log([`Catalog statistics for ${entry}:`, content, ""].join("\n"))
-    })
+  if (!options.silent) {
+    stats
+      .sort((a, b) => a.entry.localeCompare(b.entry))
+      .forEach(({ entry, content }) => {
+        console.log([`Catalog statistics for ${entry}:`, content, ""].join("\n"))
+      })
+  }
 
   return commandSuccess
 }
@@ -169,6 +174,7 @@ export default async function command(
 type CliArgs = {
   config?: string
   verbose?: boolean
+  silent?: boolean
   template?: boolean
   locale?: string
   overwrite?: boolean
@@ -184,6 +190,7 @@ if (import.meta.main) {
     .option("--clean", "Remove obsolete translations")
     .option("--locale <locale, [...]>", "Only extract the specified locales")
     .option("--verbose", "Verbose output")
+    .option("--silent", "Suppress all output except errors")
     .option(
       "--workers <n>",
       "Number of worker threads to use (default: CPU count - 1, capped at 8). Pass `--workers 1` to disable worker threads and run everything in a single process",
@@ -197,7 +204,8 @@ if (import.meta.main) {
   })
 
   const result = command(config, {
-    verbose: options.verbose || false,
+    verbose: !options.silent && (options.verbose || false),
+    silent: options.silent || false,
     template: options.template,
     locales: options.locale?.split(","),
     overwrite: options.overwrite,

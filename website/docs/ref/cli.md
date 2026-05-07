@@ -57,6 +57,7 @@ lingui extract [files...]
         [--locale <locale, [...]>]
         [--convert-from <format>]
         [--verbose]
+        [--silent]
         [--watch [--debounce <delay>]]
         [--workers]
 ```
@@ -122,6 +123,10 @@ Convert message catalogs from the previous format (see the [`format`](/ref/conf#
 
 Print additional information.
 
+#### `--silent` {#extract-silent}
+
+Suppress all output except errors. Useful in CI pipelines or when running `lingui extract` as part of a build script where output noise is undesirable.
+
 #### `--watch` {#extract-watch}
 
 Enable watch mode to monitor changes in files located in the paths specified in the configuration file or in the command itself. Note that this feature is intended for development use only, as it does not remove obsolete translations.
@@ -150,7 +155,7 @@ A larger worker pool also increases memory usage. Adjust this value for your pro
 ### `extract-template`
 
 ```shell
-lingui extract-template [--verbose]
+lingui extract-template [--verbose] [--silent]
 ```
 
 This command extracts messages from your source files and generates a `.pot` template file. Any artifacts created by this command can be safely ignored in version control.
@@ -161,6 +166,10 @@ If your message catalogs are not synchronized with the source and some messages 
 
 Print additional information.
 
+#### `--silent` {#extract-template-silent}
+
+Suppress all output except errors.
+
 ### `compile`
 
 ```shell
@@ -168,6 +177,7 @@ lingui compile
     [--strict]
     [--format <format>]
     [--verbose]
+    [--silent]
     [--typescript]
     [--namespace <namespace>]
     [--watch [--debounce <delay>]]
@@ -218,6 +228,10 @@ Format of message catalogs (see the [`format`](/ref/conf#format) option for more
 #### `--verbose` {#compile-verbose}
 
 Print additional information.
+
+#### `--silent` {#compile-silent}
+
+Suppress all output except errors. Useful in CI pipelines or when running `lingui compile` as part of a build script where output noise is undesirable.
 
 #### `--namespace` {#compile-namespace}
 
