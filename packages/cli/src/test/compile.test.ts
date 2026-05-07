@@ -42,6 +42,7 @@ msgstr ""
 
       await mockConsole(async (console) => {
         const result = await command(config, {
+          logLevel: "info",
           allowEmpty: false,
           workersOptions: {
             poolSize: 0,
@@ -72,6 +73,7 @@ msgstr ""
 
       await mockConsole(async (console) => {
         const result = await command(config, {
+          logLevel: "info",
           allowEmpty: false,
           workersOptions: {
             poolSize: 0,
@@ -111,6 +113,7 @@ msgstr ""
 
       await mockConsole(async (console) => {
         const result = await command(config, {
+          logLevel: "info",
           allowEmpty: false,
           workersOptions: {
             poolSize: 0,
@@ -127,7 +130,7 @@ msgstr ""
       })
     })
 
-    it("Should show missing messages verbosely when verbose = true", async () => {
+    it("Should show missing messages verbosely when logLevel = verbose", async () => {
       expect.assertions(2)
       const rootDir = await createFixtures({
         "pl.po": `
@@ -143,8 +146,8 @@ msgstr ""
 
       await mockConsole(async (console) => {
         const result = await command(config, {
+          logLevel: "verbose",
           allowEmpty: false,
-          verbose: true,
           workersOptions: {
             poolSize: 0,
           },
@@ -176,6 +179,7 @@ msgstr "Hello {hello"
 
       await mockConsole(async (console) => {
         const result = await command(config, {
+          logLevel: "info",
           failOnCompileError: true,
           allowEmpty: true,
           workersOptions: {
@@ -216,6 +220,7 @@ msgstr "Hello User"
 
       await mockConsole(async (console) => {
         const result = await command(config, {
+          logLevel: "info",
           failOnCompileError: false,
           allowEmpty: true,
           workersOptions: {
@@ -282,6 +287,7 @@ msgstr "[PL] Bar Hello World"
 
       await mockConsole(async (console) => {
         const result = await command(config, {
+          logLevel: "info",
           workersOptions: {
             poolSize: 0,
           },
@@ -339,6 +345,7 @@ msgstr "Witaj {name}"
 
       await mockConsole(async (console) => {
         const result = await command(config, {
+          logLevel: "info",
           workersOptions: { poolSize: 2 },
         })
         const actualFiles = readFsToListing(config.rootDir)
@@ -380,6 +387,7 @@ msgstr "{gender, select, male {On} female {Ona} other {Oni}}"
       // Compile with multithread disabled
       await mockConsole(async () => {
         await command(getConfig({ cwd: rootDir }), {
+          logLevel: "info",
           workersOptions: {
             poolSize: 0,
           },
@@ -415,6 +423,7 @@ msgstr "{gender, select, male {On} female {Ona} other {Oni}}"
       // Compile with multithread enabled
       await mockConsole(async () => {
         await command(getConfig({ cwd: rootDir }), {
+          logLevel: "info",
           workersOptions: {
             poolSize: 2,
           },
@@ -441,6 +450,7 @@ msgstr "{plural,  }"
 
       await mockConsole(async (console) => {
         const result = await command(getConfig({ cwd: rootDir }), {
+          logLevel: "info",
           failOnCompileError: true,
           workersOptions: {
             poolSize: 2,
@@ -457,8 +467,8 @@ msgstr "{plural,  }"
     })
   })
 
-  describe("silent", () => {
-    it("should suppress non-error output when silent = true", async () => {
+  describe("logLevel", () => {
+    it("should suppress all output when logLevel = silent", async () => {
       expect.assertions(3)
 
       const rootDir = await createFixtures({
@@ -476,19 +486,17 @@ msgstr "Cześć świat"
 
       await mockConsole(async (console) => {
         const result = await command(config, {
-          silent: true,
+          logLevel: "silent",
           workersOptions: { poolSize: 0 },
         })
 
         expect(result).toBeTruthy()
-        const logOutput = getConsoleMockCalls(console.log)
-        expect(logOutput).toBeUndefined()
-        const errorOutput = getConsoleMockCalls(console.error)
-        expect(errorOutput).toBeUndefined()
+        expect(getConsoleMockCalls(console.log)).toBeUndefined()
+        expect(getConsoleMockCalls(console.error)).toBeUndefined()
       })
     })
 
-    it("should still emit errors on stderr when silent = true and compilation fails", async () => {
+    it("should suppress errors when logLevel = silent and compilation fails", async () => {
       expect.assertions(2)
 
       const rootDir = await createFixtures({
@@ -506,14 +514,42 @@ msgstr ""
 
       await mockConsole(async (console) => {
         const result = await command(config, {
-          silent: true,
+          logLevel: "silent",
           allowEmpty: false,
           workersOptions: { poolSize: 0 },
         })
 
         expect(result).toBeFalsy()
-        const errorOutput = getConsoleMockCalls(console.error)
-        expect(errorOutput).toBeTruthy()
+        expect(getConsoleMockCalls(console.error)).toBeUndefined()
+      })
+    })
+
+    it("should emit errors on stderr when logLevel = error and compilation fails", async () => {
+      expect.assertions(3)
+
+      const rootDir = await createFixtures({
+        "en.po": `
+msgid "Hello World"
+msgstr "Hello World"
+        `,
+        "pl.po": `
+msgid "Hello World"
+msgstr ""
+        `,
+      })
+
+      const config = getTestConfig(rootDir)
+
+      await mockConsole(async (console) => {
+        const result = await command(config, {
+          logLevel: "error",
+          allowEmpty: false,
+          workersOptions: { poolSize: 0 },
+        })
+
+        expect(result).toBeFalsy()
+        expect(getConsoleMockCalls(console.error)).toBeTruthy()
+        expect(getConsoleMockCalls(console.log)).toBeUndefined()
       })
     })
   })
@@ -535,6 +571,7 @@ msgstr "Witaj świecie"
 
       await mockConsole(async () => {
         const result = await command(config, {
+          logLevel: "info",
           outputPrefix: "/*biome-ignore lint: auto-generated*/",
           workersOptions: {
             poolSize: 0,
@@ -571,6 +608,7 @@ msgstr "Test PL"
 
       await mockConsole(async () => {
         const result = await command(config, {
+          logLevel: "info",
           outputPrefix: "/*oxlint-disable*/",
           workersOptions: {
             poolSize: 0,

@@ -22,10 +22,10 @@ import { Catalog } from "./api/catalog.js"
 import { getPathsForExtractWatcher } from "./api/getPathsForExtractWatcher.js"
 import { glob } from "node:fs/promises"
 import micromatch from "micromatch"
+import { initLogger, LOG_LEVELS, LogLevel } from "./api/logger.js"
 
 export type CliExtractOptions = {
-  verbose: boolean
-  silent?: boolean
+  logLevel: LogLevel
   files?: string[]
   clean: boolean
   overwrite: boolean
@@ -39,7 +39,9 @@ export default async function command(
   options: CliExtractOptions,
 ): Promise<boolean> {
   const startTime = Date.now()
-  !options.silent && options.verbose && console.log("Extracting messages from source files…")
+  const logger = initLogger(options.logLevel)
+
+  logger.verbose("Extracting messages from source files…")
 
   const catalogs = await getCatalogs(config)
   const catalogStats: { [path: string]: AllCatalogsType } = {}
@@ -50,12 +52,12 @@ export default async function command(
   // important to initialize ora before worker pool, otherwise it cause
   // MaxListenersExceededWarning: Possible EventEmitter memory leak detected. 11 unpipe listeners added to [WriteStream]. MaxListeners is 10. Use emitter.setMaxListeners() to increase limit
   // when workers >= 10
-  const spinner = ora({ isSilent: options.silent })
+  const spinner = ora({ isSilent: options.logLevel === "silent" })
 
   if (options.workersOptions.poolSize) {
-    !options.silent &&
-      options.verbose &&
-      console.log(`Use worker pool of size ${options.workersOptions.poolSize}`)
+    logger.verbose(
+      `Use worker pool of size ${options.workersOptions.poolSize}`,
+    )
 
     workerPool = createExtractWorkerPool(options.workersOptions)
   }
@@ -99,27 +101,25 @@ export default async function command(
     spinner.fail(doneMsg)
   }
 
-  if (!options.silent) {
-    Object.entries(catalogStats).forEach(([key, value]) => {
-      console.log(`Catalog statistics for ${key}: `)
-      console.log(printStats(config, value).toString())
-      console.log()
-    })
+  Object.entries(catalogStats).forEach(([key, value]) => {
+    logger.info(`Catalog statistics for ${key}: `)
+    logger.info(printStats(config, value).toString())
+    logger.info("")
+  })
 
-    if (!options.watch) {
-      console.log(
-        `(Use "${styleText(
-          "yellow",
-          helpRun("extract"),
-        )}" to update catalogs with new messages.)`,
-      )
-      console.log(
-        `(Use "${styleText(
-          "yellow",
-          helpRun("compile"),
-        )}" to compile catalogs for production. Alternatively, use bundler plugins: https://lingui.dev/ref/cli#compiling-catalogs-in-ci)`,
-      )
-    }
+  if (!options.watch) {
+    logger.info(
+      `(Use "${styleText(
+        "yellow",
+        helpRun("extract"),
+      )}" to update catalogs with new messages.)`,
+    )
+    logger.info(
+      `(Use "${styleText(
+        "yellow",
+        helpRun("compile"),
+      )}" to compile catalogs for production. Alternatively, use bundler plugins: https://lingui.dev/ref/cli#compiling-catalogs-in-ci)`,
+    )
   }
 
   // If service key is present in configuration, synchronize with cloud translation platform
@@ -135,7 +135,7 @@ export default async function command(
     }
 
     if (!services[moduleName]) {
-      console.error(`Can't load service module ${moduleName}`)
+      logger.error(`Can't load service module ${moduleName}`)
       return false
     }
 
@@ -144,10 +144,10 @@ export default async function command(
 
       await module
         .default(config, options, extractionResult)
-        .then(console.log)
-        .catch(console.error)
+        .then((msg) => logger.info(msg))
+        .catch((err) => logger.error(err))
     } catch (err) {
-      console.error(`Can't load service module ${moduleName}`, err)
+      logger.error(`Can't load service module ${moduleName}`, err)
     }
   }
 
@@ -155,8 +155,8 @@ export default async function command(
 }
 
 type CliArgs = {
-  verbose: boolean
-  silent?: boolean
+  logLevel?: LogLevel
+  verbose?: boolean
   config: string
   convertFrom: string
   debounce: number
@@ -191,8 +191,14 @@ if (import.meta.main) {
       "--debounce <delay>",
       "Debounces extraction for given amount of milliseconds",
     )
-    .option("--verbose", "Verbose output")
-    .option("--silent", "Suppress all output except errors")
+    .option(
+      "--log-level <level>",
+      `Set log level (${LOG_LEVELS.join("|")})`,
+    )
+    .option(
+      "--verbose",
+      "Verbose output (alias for --log-level=verbose)",
+    )
     .option("--watch", "Enables Watch Mode")
     .argument(
       "[files...]",
@@ -202,9 +208,29 @@ if (import.meta.main) {
 
   const options = program.opts<CliArgs>()
 
+  if (options.logLevel && !LOG_LEVELS.includes(options.logLevel)) {
+    console.error(
+      `Invalid --log-level "${options.logLevel}". Valid levels: ${LOG_LEVELS.join(", ")}`,
+    )
+    process.exit(1)
+  }
+
+  let logLevel: LogLevel = options.logLevel ?? "info"
+
+  if (options.verbose) {
+    if (options.logLevel && options.logLevel !== "verbose") {
+      console.warn(
+        `Warning: --verbose conflicts with --log-level=${options.logLevel}. Using --log-level=verbose.`,
+      )
+    }
+    logLevel = "verbose"
+  }
+
   const config = getConfig({
     configPath: options.config,
   })
+
+  const logger = initLogger(logLevel)
 
   let hasErrors = false
 
@@ -215,10 +241,10 @@ if (import.meta.main) {
 
     if (missingLocale) {
       hasErrors = true
-      console.error(
+      logger.error(
         `Locale ${styleText("bold", missingLocale)} does not exist.`,
       )
-      console.error()
+      logger.error()
     }
   }
 
@@ -226,8 +252,7 @@ if (import.meta.main) {
 
   const extract = (filePath?: string[]) => {
     return command(config, {
-      verbose: !options.silent && (options.watch || options.verbose || false),
-      silent: options.silent || false,
+      logLevel,
       clean: options.watch ? false : options.clean || false,
       overwrite: options.watch || options.overwrite || false,
       locale: options.locale,
@@ -262,7 +287,7 @@ if (import.meta.main) {
 
   // Check if Watch Mode is enabled
   if (options.watch) {
-    !options.silent && console.info(styleText("bold", "Initializing Watch Mode..."))
+    logger.info(styleText("bold", "Initializing Watch Mode..."))
     ;(async function initWatch() {
       const { paths, ignored } = await getPathsForExtractWatcher(config)
 
@@ -280,7 +305,7 @@ if (import.meta.main) {
       })
 
       const onReady = () => {
-        !options.silent && console.info(styleText(["green", "bold"], "Watcher is ready!"))
+        logger.info(styleText(["green", "bold"], "Watcher is ready!"))
         watcher
           .on("add", (path) => dispatchExtract([path]))
           .on("change", (path) => dispatchExtract([path]))

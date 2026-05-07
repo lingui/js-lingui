@@ -40,22 +40,17 @@ export async function compileLocale(
           `Error: Failed to compile catalog for locale ${styleText("bold", locale)}!`,
         ),
       )
+      logger.error(
+        styleText("red", `Missing ${missingMessages.length} translation(s)`),
+      )
+      missingMessages.forEach((missing) => {
+        const source =
+          missing.source || missing.source === missing.id
+            ? `: (${missing.source})`
+            : ""
 
-      if (options.verbose) {
-        logger.error(styleText("red", "Missing translations:"))
-        missingMessages.forEach((missing) => {
-          const source =
-            missing.source || missing.source === missing.id
-              ? `: (${missing.source})`
-              : ""
-
-          logger.error(`${missing.id}${source}`)
-        })
-      } else {
-        logger.error(
-          styleText("red", `Missing ${missingMessages.length} translation(s)`),
-        )
-      }
+        logger.verbose(`${missing.id}${source}`)
+      })
       logger.error("")
       throw new ProgramExit()
     }
@@ -139,7 +134,6 @@ async function compileAndWrite(
 
   compiledPath = normalizePath(nodepath.relative(config.rootDir, compiledPath))
 
-  options.verbose &&
-    logger.error(styleText("green", `${locale} ⇒ ${compiledPath}`))
+  logger.verbose(styleText("green", `${locale} ⇒ ${compiledPath}`))
   return true
 }

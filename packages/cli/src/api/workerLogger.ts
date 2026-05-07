@@ -7,9 +7,13 @@ export type SerializedLogs = {
 export class WorkerLogger implements Logger {
   private errors: string[] = []
 
-  error(msg: string): void {
-    this.errors.push(msg)
+  error(...args: unknown[]): void {
+    this.errors.push(args.join(" "))
   }
+
+  warn(): void {}
+  info(): void {}
+  verbose(): void {}
 
   flush(): SerializedLogs {
     const errors = this.errors.join("\n")
