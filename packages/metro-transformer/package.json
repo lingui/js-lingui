@@ -1,6 +1,6 @@
 {
   "name": "@lingui/metro-transformer",
-  "version": "6.0.0",
+  "version": "6.0.1",
   "type": "commonjs",
   "description": "Metro transformer for Lingui catalogs in React Native and Expo projects",
   "exports": {
@@ -61,8 +61,8 @@
     "memoize-one": "^6.0.0"
   },
   "devDependencies": {
-    "unbuild": "3.6.1",
-    "vitest": "4.0.18"
+    "unbuild": "catalog:",
+    "vitest": "catalog:"
   },
   "peerDependencies": {
     "@expo/metro-config": "*",

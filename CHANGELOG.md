@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.1](https://github.com/lingui/js-lingui/compare/v6.0.0...v6.0.1) (2026-04-30)
+
+### Bug Fixes
+
+* avoid throwing on object spreads in extractFromObjectExpression ([#2538](https://github.com/lingui/js-lingui/issues/2538)) ([7cbc0a8](https://github.com/lingui/js-lingui/commit/7cbc0a8638e1cc2f5ea702922b46156c0555fe29))
+* **cli:** declare files arguments ([#2532](https://github.com/lingui/js-lingui/issues/2532)) ([4a55abe](https://github.com/lingui/js-lingui/commit/4a55abe7b3d046b972cb26a3c5a11acf397f1d7a))
+
 ## [6.0.0](https://github.com/lingui/js-lingui/compare/v5.9.5...v6.0.0) (2026-04-22)
 
 This release modernizes the codebase and packages (ESM-only distribution, smaller dependency graph, deprecated API removals, improved TypeScript support) and still ships meaningful new features and bug fixes.

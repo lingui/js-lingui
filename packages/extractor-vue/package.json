@@ -1,6 +1,6 @@
 {
   "name": "@lingui/extractor-vue",
-  "version": "6.0.0",
+  "version": "6.0.1",
   "type": "module",
   "description": "Vue single-file component extractor for the Lingui CLI",
   "keywords": [
@@ -49,8 +49,8 @@
   "devDependencies": {
     "@lingui/babel-plugin-extract-messages": "workspace:*",
     "@lingui/core": "workspace:*",
-    "unbuild": "3.6.1",
-    "vitest": "4.0.18"
+    "unbuild": "catalog:",
+    "vitest": "catalog:"
   },
   "unbuild": {
     "declaration": "node16"

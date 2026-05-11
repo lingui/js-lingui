@@ -1,6 +1,6 @@
 {
   "name": "@lingui/babel-plugin-lingui-macro",
-  "version": "6.0.0",
+  "version": "6.0.1",
   "type": "module",
   "description": "Babel plugin that transforms Lingui compile-time macros into optimized runtime calls",
   "contributors": [
@@ -67,8 +67,8 @@
     "babel-plugin-macros": "^3.1.0",
     "babel-plugin-react-compiler": "^1.0.0",
     "prettier": "3.8.1",
-    "unbuild": "3.6.1",
-    "vitest": "4.0.18"
+    "unbuild": "catalog:",
+    "vitest": "catalog:"
   },
   "unbuild": {
     "declaration": "node16"

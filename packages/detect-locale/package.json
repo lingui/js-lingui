@@ -1,6 +1,6 @@
 {
   "name": "@lingui/detect-locale",
-  "version": "6.0.0",
+  "version": "6.0.1",
   "type": "module",
   "sideEffects": false,
   "description": "Locale detection utilities for Lingui apps across browser, server, and common runtimes",
@@ -44,9 +44,9 @@
     "dist/"
   ],
   "devDependencies": {
-    "happy-dom": "^20.0.10",
-    "unbuild": "3.6.1",
-    "vitest": "4.0.18"
+    "happy-dom": "^20.9.0",
+    "unbuild": "catalog:",
+    "vitest": "catalog:"
   },
   "unbuild": {
     "declaration": "node16"

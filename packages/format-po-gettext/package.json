@@ -1,6 +1,6 @@
 {
   "name": "@lingui/format-po-gettext",
-  "version": "6.0.0",
+  "version": "6.0.1",
   "description": "Gettext PO formatter for Lingui message catalogs using gettext-style plural rules",
   "type": "module",
   "sideEffects": false,
@@ -49,8 +49,8 @@
   },
   "devDependencies": {
     "@lingui/test-utils": "workspace:*",
-    "unbuild": "3.6.1",
-    "vitest": "4.0.18"
+    "unbuild": "catalog:",
+    "vitest": "catalog:"
   },
   "unbuild": {
     "declaration": "node16"

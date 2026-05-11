@@ -1,6 +1,6 @@
 {
   "name": "@lingui/cli",
-  "version": "6.0.0",
+  "version": "6.0.1",
   "description": "Lingui CLI to extract messages, compile catalogs, and manage translation workflows",
   "type": "module",
   "keywords": [
@@ -79,6 +79,6 @@
     "@types/normalize-path": "^3.0.0",
     "mock-fs": "^5.2.0",
     "msw": "^2.12.7",
-    "vitest": "4.0.18"
+    "vitest": "catalog:"
   }
 }
