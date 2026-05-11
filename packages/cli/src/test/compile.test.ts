@@ -552,6 +552,80 @@ msgstr ""
         expect(getConsoleMockCalls(console.log)).toBeUndefined()
       })
     })
+
+    it("should emit verbose logs including worker pool size when logLevel = verbose", async () => {
+      expect.assertions(3)
+
+      function getConfigText() {
+        const config: LinguiConfig = {
+          locales: ["en", "pl"],
+          sourceLocale: "en",
+          catalogs: [
+            {
+              path: "<rootDir>/{locale}",
+              include: ["<rootDir>"],
+              exclude: [],
+            },
+          ],
+        }
+        return `export default ${JSON.stringify(config)}`
+      }
+
+      const rootDir = await createFixtures({
+        "en.po": `
+msgid "Hello World"
+msgstr "Hello World"
+        `,
+        "pl.po": `
+msgid "Hello World"
+msgstr "Cześć świat"
+        `,
+        "lingui.config.ts": getConfigText(),
+      })
+
+      const config = getConfig({ cwd: rootDir })
+
+      await mockConsole(async (console) => {
+        const result = await command(config, {
+          logLevel: "verbose",
+          workersOptions: { poolSize: 2 },
+        })
+
+        expect(result).toBeTruthy()
+        const log = getConsoleMockCalls(console.log)
+        expect(log).toContain("Use worker pool of size 2")
+        expect(getConsoleMockCalls(console.error)).toBeUndefined()
+      })
+    })
+
+    it("should emit locale => path log when logLevel = verbose (single-thread)", async () => {
+      expect.assertions(3)
+
+      const rootDir = await createFixtures({
+        "en.po": `
+msgid "Hello World"
+msgstr "Hello World"
+        `,
+        "pl.po": `
+msgid "Hello World"
+msgstr "Cześć świat"
+        `,
+      })
+
+      const config = getTestConfig(rootDir)
+
+      await mockConsole(async (console) => {
+        const result = await command(config, {
+          logLevel: "verbose",
+          workersOptions: { poolSize: 0 },
+        })
+
+        expect(result).toBeTruthy()
+        const log = getConsoleMockCalls(console.log)
+        expect(log).toContain("⇒")
+        expect(getConsoleMockCalls(console.error)).toBeUndefined()
+      })
+    })
   })
 
   describe("outputPrefix", () => {

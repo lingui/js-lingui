@@ -13,16 +13,17 @@ import { vi } from "vitest"
 
 vi.mock("ora", () => {
   return {
-    default: () => {
+    default: (opts: any) => {
+      const silent = opts?.isSilent
       return {
         start(...args: any) {
-          console.log(args)
+          if (!silent) console.log(args)
         },
         succeed(...args: any) {
-          console.log(args)
+          if (!silent) console.log(args)
         },
         fail(...args: any) {
-          console.log(args)
+          if (!silent) console.log(args)
         },
       }
     },
@@ -442,6 +443,49 @@ describe("E2E Extractor Test", () => {
       })
 
       compareFolders(actualPath, expectedPath)
+    })
+  })
+
+  it("should suppress all output when extractCommand logLevel = silent", async () => {
+    const { rootDir } = await prepare("extract-po-format")
+
+    await mockConsole(async (console) => {
+      const result = await extractCommand(
+        makeConfig({
+          rootDir: rootDir,
+          locales: ["en", "pl"],
+          sourceLocale: "en",
+          catalogs: [
+            {
+              path: "<rootDir>/actual/{locale}",
+              include: ["<rootDir>/fixtures"],
+            },
+          ],
+        }),
+        {
+          ...defaultOptions,
+          logLevel: "silent",
+        },
+      )
+
+      expect(result).toBeTruthy()
+      expect(getConsoleMockCalls(console.log)).toBeUndefined()
+      expect(getConsoleMockCalls(console.error)).toBeUndefined()
+    })
+  })
+
+  it("should suppress all output when extractTemplateCommand logLevel = silent", async () => {
+    const { rootDir } = await prepare("extract-template-po-format")
+
+    await mockConsole(async (console) => {
+      const result = await extractTemplateCommand(getConfig({ cwd: rootDir }), {
+        logLevel: "silent",
+        workersOptions: { poolSize: 0 },
+      })
+
+      expect(result).toBeTruthy()
+      expect(getConsoleMockCalls(console.log)).toBeUndefined()
+      expect(getConsoleMockCalls(console.error)).toBeUndefined()
     })
   })
 
