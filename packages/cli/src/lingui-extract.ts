@@ -55,9 +55,7 @@ export default async function command(
   const spinner = ora({ isSilent: options.logLevel === "silent" })
 
   if (options.workersOptions.poolSize) {
-    logger.verbose(
-      `Use worker pool of size ${options.workersOptions.poolSize}`,
-    )
+    logger.verbose(`Use worker pool of size ${options.workersOptions.poolSize}`)
 
     workerPool = createExtractWorkerPool(options.workersOptions)
   }
@@ -191,14 +189,8 @@ if (import.meta.main) {
       "--debounce <delay>",
       "Debounces extraction for given amount of milliseconds",
     )
-    .option(
-      "--log-level <level>",
-      `Set log level (${LOG_LEVELS.join("|")})`,
-    )
-    .option(
-      "--verbose",
-      "Verbose output (alias for --log-level=verbose)",
-    )
+    .option("--log-level <level>", `Set log level (${LOG_LEVELS.join("|")})`)
+    .option("--verbose", "Verbose output (alias for --log-level=verbose)")
     .option("--watch", "Enables Watch Mode")
     .argument(
       "[files...]",
@@ -241,9 +233,7 @@ if (import.meta.main) {
 
     if (missingLocale) {
       hasErrors = true
-      logger.error(
-        `Locale ${styleText("bold", missingLocale)} does not exist.`,
-      )
+      logger.error(`Locale ${styleText("bold", missingLocale)} does not exist.`)
       logger.error()
     }
   }

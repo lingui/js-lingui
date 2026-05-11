@@ -63,9 +63,7 @@ export async function command(
       )
     }
 
-    logger.verbose(
-      `Use worker pool of size ${options.workersOptions.poolSize}`,
-    )
+    logger.verbose(`Use worker pool of size ${options.workersOptions.poolSize}`)
 
     const pool = createCompileWorkerPool({
       poolSize: options.workersOptions.poolSize,
@@ -124,14 +122,8 @@ if (import.meta.main) {
     .description("Compile message catalogs to compiled bundle.")
     .option("--config <path>", "Path to the config file")
     .option("--strict", "Disable defaults for missing translations")
-    .option(
-      "--log-level <level>",
-      `Set log level (${LOG_LEVELS.join("|")})`,
-    )
-    .option(
-      "--verbose",
-      "Verbose output (alias for --log-level=verbose)",
-    )
+    .option("--log-level <level>", `Set log level (${LOG_LEVELS.join("|")})`)
+    .option("--verbose", "Verbose output (alias for --log-level=verbose)")
     .option("--typescript", "Create Typescript definition for compiled bundle")
     .option(
       "--workers <n>",

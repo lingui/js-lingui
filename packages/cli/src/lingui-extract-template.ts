@@ -38,9 +38,7 @@ export default async function command(
   let workerPool: ExtractWorkerPool | undefined
 
   if (options.workersOptions.poolSize) {
-    logger.verbose(
-      `Use worker pool of size ${options.workersOptions.poolSize}`,
-    )
+    logger.verbose(`Use worker pool of size ${options.workersOptions.poolSize}`)
 
     workerPool = createExtractWorkerPool(options.workersOptions)
   }
@@ -90,14 +88,8 @@ type CliArgs = {
 if (import.meta.main) {
   program
     .option("--config <path>", "Path to the config file")
-    .option(
-      "--log-level <level>",
-      `Set log level (${LOG_LEVELS.join("|")})`,
-    )
-    .option(
-      "--verbose",
-      "Verbose output (alias for --log-level=verbose)",
-    )
+    .option("--log-level <level>", `Set log level (${LOG_LEVELS.join("|")})`)
+    .option("--verbose", "Verbose output (alias for --log-level=verbose)")
     .option(
       "--workers <n>",
       "Number of worker threads to use (default: CPU count - 1, capped at 8). Pass `--workers 1` to disable worker threads and run everything in a single process",

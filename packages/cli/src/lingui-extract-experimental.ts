@@ -85,9 +85,7 @@ export default async function command(
       )
     }
 
-    logger.verbose(
-      `Use worker pool of size ${options.workersOptions.poolSize}`,
-    )
+    logger.verbose(`Use worker pool of size ${options.workersOptions.poolSize}`)
 
     const pool = createExtractExperimentalWorkerPool({
       poolSize: options.workersOptions.poolSize,
@@ -188,14 +186,8 @@ if (import.meta.main) {
     .option("--overwrite", "Overwrite translations for source locale")
     .option("--clean", "Remove obsolete translations")
     .option("--locale <locale, [...]>", "Only extract the specified locales")
-    .option(
-      "--log-level <level>",
-      `Set log level (${LOG_LEVELS.join("|")})`,
-    )
-    .option(
-      "--verbose",
-      "Verbose output (alias for --log-level=verbose)",
-    )
+    .option("--log-level <level>", `Set log level (${LOG_LEVELS.join("|")})`)
+    .option("--verbose", "Verbose output (alias for --log-level=verbose)")
     .option(
       "--workers <n>",
       "Number of worker threads to use (default: CPU count - 1, capped at 8). Pass `--workers 1` to disable worker threads and run everything in a single process",
