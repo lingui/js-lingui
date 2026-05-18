@@ -19,8 +19,8 @@ msgstr ""
 #~ msgstr "This message has custom id"
 
 #. js-lingui-explicit-id
-#: fixtures/file-a.ts:22
-#: fixtures/file-a.ts:23
+#: fixtures/file-a.ts:24
+#: fixtures/file-a.ts:25
 msgid "addToCart"
 msgstr "Add To Cart with change ignored"
 
@@ -46,6 +46,11 @@ msgstr "Hello world"
 #: fixtures/file-a.ts:16
 msgid "Message in descriptor"
 msgstr "Message in descriptor"
+
+#. placeholder {0}: Date.now()
+#: fixtures/file-a.ts:20
+msgid "Message with unlabeled placeholder {0}"
+msgstr "Message with unlabeled placeholder {0}"
 
 #. js-lingui-explicit-id
 #: fixtures/file-b.tsx:15
