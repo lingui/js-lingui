@@ -164,7 +164,7 @@ describe("po-gettext format", () => {
     const po = `
 msgid ""
 msgstr ""
-"Language: cs\n"
+"Language: cs\\n"
 
 #. js-lingui:icu=%7B#%2C+plural%2C+one+%7Bday%7D+other+%7Bdays%7D%7D&pluralize_on=#
 msgid "# day"
@@ -309,7 +309,7 @@ msgstr[2] "{count} jours"
     const po = `
 msgid ""
 msgstr ""
-"Language: cs\n"
+"Language: cs\\n"
 "Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 3;\n"
 
 #. js-lingui:icu=%7Bcount%2C+plural%2C+one+%7B%7Bcount%7D+day%7D+few+%7B%7Bcount%7D+days%7D+many+%7B%7Bcount%7D+days%7D+other+%7B%7Bcount%7D+days%7D%7D&pluralize_on=#
