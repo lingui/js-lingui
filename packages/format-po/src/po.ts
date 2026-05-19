@@ -1,10 +1,17 @@
-import PO from "pofile"
+import {
+  parsePo,
+  stringifyPo,
+  createPoFile,
+  createItem,
+  type PoFile,
+  type PoItem,
+  type Headers as POHeaders,
+  type SerializeOptions,
+} from "pofile-ts"
 
 import { CatalogFormatter, CatalogType, MessageType } from "@lingui/conf"
 import { generateMessageId } from "@lingui/message-utils/generateMessageId"
 import { formatPotCreationDate, normalizePlaceholderValue } from "./utils"
-
-type POItem = InstanceType<typeof PO.Item>
 
 const splitOrigin = (origin: string) => {
   const [file, line] = origin.split(":")
@@ -100,6 +107,40 @@ export type PoFormatterOptions = {
    * @default true
    */
   printPlaceholdersInComments?: boolean | { limit?: number }
+
+  /**
+   * Maximum line width before folding long strings.
+   *
+   * When a string exceeds this length, it will be split across multiple lines.
+   * Set to `0` to disable folding (strings will only break on actual newlines).
+   *
+   * @default 80
+   */
+  foldLength?: number
+
+  /**
+   * Use compact format for multiline strings.
+   *
+   * When `true` (default), multiline strings start with content on the first line:
+   * ```po
+   * msgid "First line\n"
+   * "Second line"
+   * ```
+   *
+   * When `false`, uses GNU gettext's traditional format with an empty first line:
+   * ```po
+   * msgid ""
+   * "First line\n"
+   * "Second line"
+   * ```
+   *
+   * The compact format is recommended as it's compatible with translation
+   * platforms like Crowdin that may strip empty first lines, avoiding
+   * unnecessary diffs.
+   *
+   * @default true
+   */
+  compactMultiline?: boolean
 }
 
 function isGeneratedId(id: string, message: MessageType): boolean {
@@ -109,7 +150,7 @@ function isGeneratedId(id: string, message: MessageType): boolean {
 function getCreateHeaders(
   language: string | undefined,
   customHeaderAttributes: PoFormatterOptions["customHeaderAttributes"],
-): PO["headers"] {
+): Partial<POHeaders> {
   return {
     "POT-Creation-Date": formatPotCreationDate(new Date()),
     "MIME-Version": "1.0",
@@ -132,7 +173,7 @@ const serialize = (
   return Object.keys(catalog).map((id) => {
     const message: MessageType<POCatalogExtra> = catalog[id]
 
-    const item = new PO.Item()
+    const item = createItem()
 
     // The extractedComments array may be modified in this method,
     // so create a new array with the message's elements.
@@ -230,7 +271,7 @@ const serialize = (
 }
 
 function deserialize(
-  items: POItem[],
+  items: PoItem[],
   options: PoFormatterOptions,
 ): CatalogType {
   return items.reduce<CatalogType<POCatalogExtra>>((catalog, item) => {
@@ -259,7 +300,7 @@ function deserialize(
         ? comments.includes(GENERATED_ID_FLAG)
         : !comments.includes(EXPLICIT_ID_FLAG)
     ) {
-      id = generateMessageId(item.msgid, item.msgctxt)
+      id = generateMessageId(item.msgid, item.msgctxt as string)
       message.message = item.msgid
     }
 
@@ -280,30 +321,38 @@ export function formatter(options: PoFormatterOptions = {}): CatalogFormatter {
     templateExtension: ".pot",
 
     parse(content): CatalogType {
-      const po = PO.parse(content)
+      const po = parsePo(content)
       return deserialize(po.items, options)
     },
 
     serialize(catalog, ctx): string {
-      let po: PO
+      let po: PoFile
 
       if (ctx.existing) {
-        po = PO.parse(ctx.existing)
+        po = parsePo(ctx.existing)
       } else {
-        po = new PO()
+        po = createPoFile()
         po.headers = getCreateHeaders(
           ctx.locale,
           options.customHeaderAttributes,
         )
-        // accessing private property
-        ;(po as any).headerOrder = Object.keys(po.headers)
+        po.headerOrder = Object.keys(po.headers)
       }
 
       po.items = serialize(catalog, options, {
         locale: ctx.locale,
         sourceLocale: ctx.sourceLocale,
       })
-      return po.toString()
+
+      const serializeOptions: SerializeOptions = {}
+      if (options.foldLength !== undefined) {
+        serializeOptions.foldLength = options.foldLength
+      }
+      if (options.compactMultiline !== undefined) {
+        serializeOptions.compactMultiline = options.compactMultiline
+      }
+
+      return stringifyPo(po, serializeOptions)
     },
   }
 }
