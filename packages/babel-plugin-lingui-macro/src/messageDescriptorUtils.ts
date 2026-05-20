@@ -70,40 +70,11 @@ export function createMessageDescriptor(
   const keepComment = descriptorFields === "all"
 
   const properties: ObjectProperty[] = []
-
-  let explicitId = ""
-  let shouldPrefix = false
-  if (defaults.id) {
-    explicitId = isObjectProperty(defaults.id)
-      ? getTextFromExpression(defaults.id.value as Expression)
-      : defaults.id.text
-
-    if (
-      explicitId !== undefined &&
-      defaults.idPrefix &&
-      (!defaults.idPrefixLeader ||
-        explicitId.startsWith(defaults.idPrefixLeader))
-    ) {
-      shouldPrefix = true
-      explicitId = defaults.idPrefix + explicitId
-    }
-  }
+  const explicitIdProperty = createExplicitIdProperty(defaults)
 
   properties.push(
-    defaults.id
-      ? shouldPrefix
-        ? createStringObjectProperty(
-            MsgDescriptorPropKey.id,
-            explicitId,
-            isObjectProperty(defaults.id) ? defaults.id.loc : defaults.id.loc,
-          )
-        : isObjectProperty(defaults.id)
-          ? defaults.id
-          : createStringObjectProperty(
-              MsgDescriptorPropKey.id,
-              explicitId,
-              defaults.id.loc,
-            )
+    explicitIdProperty
+      ? explicitIdProperty
       : createIdProperty(
           message,
           defaults.context
@@ -158,6 +129,38 @@ export function createMessageDescriptor(
     properties,
     // preserve line numbers for extractor
     oldLoc,
+  )
+}
+
+function createExplicitIdProperty(
+  defaults: DirectiveValues & {
+    id?: TextWithLoc | ObjectProperty
+    idPrefixLeader?: string
+  },
+) {
+  if (!defaults.id) {
+    return
+  }
+
+  const explicitId = isObjectProperty(defaults.id)
+    ? getTextFromExpression(defaults.id.value as Expression)
+    : defaults.id.text
+
+  const resolvedId =
+    explicitId !== undefined &&
+    defaults.idPrefix &&
+    (!defaults.idPrefixLeader || explicitId.startsWith(defaults.idPrefixLeader))
+      ? defaults.idPrefix + explicitId
+      : explicitId
+
+  if (isObjectProperty(defaults.id) && resolvedId === explicitId) {
+    return defaults.id
+  }
+
+  return createStringObjectProperty(
+    MsgDescriptorPropKey.id,
+    resolvedId,
+    defaults.id.loc,
   )
 }
 
