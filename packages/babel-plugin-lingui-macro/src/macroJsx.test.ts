@@ -329,12 +329,12 @@ describe("jsx macro", () => {
       const macro = createMacro(() => ({ idPrefix: "module." }))
       const exp = parseExpression('<Trans id="greeting">Hello</Trans>')
       const node = macro.replacePath(exp) as JSXElement
-      const spread = node.openingElement.attributes[0] as types.JSXSpreadAttribute
+      const spread = node.openingElement
+        .attributes[0] as types.JSXSpreadAttribute
       const descriptor = spread.argument as types.ObjectExpression
       const idProp = descriptor.properties[0] as types.ObjectProperty
 
       expect(idProp.value).toEqual(types.stringLiteral("module.greeting"))
     })
   })
-
 })

@@ -2,7 +2,9 @@ import * as types from "@babel/types"
 import { createMessageDescriptor } from "./messageDescriptorUtils"
 import { generateMessageId } from "@lingui/message-utils/generateMessageId"
 
-function getIdPropertyValue(descriptor: ReturnType<typeof createMessageDescriptor>) {
+function getIdPropertyValue(
+  descriptor: ReturnType<typeof createMessageDescriptor>,
+) {
   const idProp = descriptor.properties[0] as types.ObjectProperty
   return (idProp.value as types.StringLiteral).value
 }
