@@ -67,6 +67,11 @@ msgstr "Static message {0}"
 #. placeholder {0}: profile.name
 msgid "static4"
 msgstr "Static message {0}"
+
+#. placeholder: {0} = getValue()
+#. js-lingui-explicit-id
+msgid "static5"
+msgstr "Static message {0}"
 "
 `;
 

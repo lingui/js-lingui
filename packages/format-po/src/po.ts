@@ -175,7 +175,7 @@ const serialize = (
       item.msgid = id
     }
 
-    if (options.printPlaceholdersInComments !== false) {
+    if (options.printPlaceholdersInComments !== false && message.placeholders) {
       item.extractedComments = item.extractedComments.filter(
         (comment) => !comment.startsWith("placeholder "),
       )
