@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.1.0](https://github.com/lingui/js-lingui/compare/v6.0.1...v6.1.0) (2026-05-21)
+
+### Bug Fixes
+
+* disappearing placeholder comments in partial extract ([#2543](https://github.com/lingui/js-lingui/issues/2543)) ([725a2bf](https://github.com/lingui/js-lingui/commit/725a2bf4d0b0cbf5d405d6e9ed79efa391bdd572))
+
 ## [6.0.1](https://github.com/lingui/js-lingui/compare/v6.0.0...v6.0.1) (2026-04-30)
 
 ### Bug Fixes
