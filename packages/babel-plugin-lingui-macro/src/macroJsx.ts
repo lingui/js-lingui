@@ -24,11 +24,7 @@ import {
   createMessageDescriptorFromTokens,
   ResolvedDescriptorFields,
 } from "./messageDescriptorUtils"
-import {
-  createMacroJsContext,
-  MacroJsContext,
-  tokenizeExpression,
-} from "./macroJsAst"
+import { MacroJsContext, tokenizeExpression } from "./macroJsAst"
 import { LinguiConfigNormalized } from "@lingui/conf"
 import { PluginPass } from "@babel/core"
 
@@ -61,8 +57,10 @@ export type MacroJsxOpts = {
   descriptorFields: ResolvedDescriptorFields
   transImportName: string
   isLinguiIdentifier: (node: Identifier, macro: JsMacroName) => boolean
+  getDirective?: MacroJsContext["getDirective"]
   jsxPlaceholderAttribute?: string
   jsxPlaceholderDefaults?: Record<string, string>
+  idPrefixLeader?: string
 }
 
 const choiceComponentAttributesWhitelist = [
@@ -86,12 +84,11 @@ export class MacroJSX {
     this.types = types
 
     this.ctx = {
-      ...createMacroJsContext(opts.isLinguiIdentifier, opts.descriptorFields),
-      transImportName: opts.transImportName,
+      getDirective: () => undefined,
+      ...opts,
+      getExpressionIndex: makeCounter(),
       elementIndex: makeCounter(),
       elementsTracking: new Map(),
-      jsxPlaceholderAttribute: opts.jsxPlaceholderAttribute,
-      jsxPlaceholderDefaults: opts.jsxPlaceholderDefaults,
     }
   }
 
@@ -106,22 +103,26 @@ export class MacroJSX {
       return false
     }
 
-    const { attributes, id, comment, context } = this.stripMacroAttributes(
-      path as NodePath<JSXElement>,
-    )
-
     if (!tokens.length) {
       throw new Error("Incorrect usage of Trans")
     }
+
+    const directive = this.ctx.getDirective(path.node.loc?.start.line)
+
+    const { attributes, id, comment, context } = this.stripMacroAttributes(
+      path as NodePath<JSXElement>,
+    )
 
     const messageDescriptor = createMessageDescriptorFromTokens(
       tokens,
       path.node.loc,
       this.ctx.descriptorFields,
       {
+        ...directive,
         id,
-        context,
-        comment,
+        idPrefixLeader: this.ctx.idPrefixLeader,
+        context: context ?? directive?.context,
+        comment: comment ?? directive?.comment,
       },
     )
 
