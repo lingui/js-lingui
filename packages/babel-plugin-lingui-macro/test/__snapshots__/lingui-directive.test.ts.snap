@@ -633,7 +633,7 @@ const el = (
     {
       /*i18n*/
       ...{
-        id: "uzTaYi",
+        id: dynId,
         message: "Hello",
       }
     }
@@ -656,7 +656,7 @@ const el = (
     {
       /*i18n*/
       ...{
-        id: "uzTaYi",
+        id: dynId,
         message: "Hello",
       }
     }

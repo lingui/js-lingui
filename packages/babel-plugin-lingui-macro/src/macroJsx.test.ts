@@ -336,5 +336,36 @@ describe("jsx macro", () => {
 
       expect(idProp.value).toEqual(types.stringLiteral("module.greeting"))
     })
+
+    it.each([
+      [
+        "identifier",
+        "<Trans id={dynId}>Hello</Trans>",
+        { type: "Identifier", name: "dynId" },
+      ],
+      [
+        "call expression",
+        "<Trans id={getId()}>Hello</Trans>",
+        { type: "CallExpression" },
+      ],
+      [
+        "template literal with expressions",
+        "<Trans id={`prefix.${value}`}>Hello</Trans>",
+        { type: "TemplateLiteral" },
+      ],
+    ])(
+      "preserves dynamic %s ids without applying idPrefix",
+      (_, code, value) => {
+        const macro = createMacro(() => ({ idPrefix: "module." }))
+        const exp = parseExpression(code)
+        const node = macro.replacePath(exp) as JSXElement
+        const spread = node.openingElement
+          .attributes[0] as types.JSXSpreadAttribute
+        const descriptor = spread.argument as types.ObjectExpression
+        const idProp = descriptor.properties[0] as types.ObjectProperty
+
+        expect(idProp.value).toMatchObject(value)
+      },
+    )
   })
 })

@@ -9,6 +9,7 @@ import {
   JSXSpreadAttribute,
   Literal,
   Node,
+  ObjectProperty,
   StringLiteral,
   TemplateLiteral,
   SourceLocation,
@@ -43,6 +44,34 @@ function maybeNodeValue(node: Node): { text: string; loc: SourceLocation } {
   if (node.type === "TemplateLiteral" && node.expressions.length === 0)
     return { text: node.quasis[0].value.raw, loc: node.loc }
   return null
+}
+
+function maybeIdValue(
+  node: Node,
+): { text: string; loc: SourceLocation } | ObjectProperty {
+  const staticValue = maybeNodeValue(node)
+
+  if (staticValue || node?.type !== "JSXAttribute") {
+    return staticValue
+  }
+
+  if (node.value?.type !== "JSXExpressionContainer") {
+    return null
+  }
+
+  const { expression } = node.value
+
+  if (
+    expression.type === "JSXEmptyExpression" ||
+    expression.type === "BooleanLiteral"
+  ) {
+    return null
+  }
+
+  return babelTypes.objectProperty(
+    babelTypes.identifier(MsgDescriptorPropKey.id),
+    expression,
+  )
 }
 
 export type MacroJsxContext = MacroJsContext & {
@@ -176,7 +205,7 @@ export class MacroJSX {
     }
 
     return {
-      id: maybeNodeValue(id),
+      id: maybeIdValue(id),
       message: maybeNodeValue(message),
       comment: maybeNodeValue(comment),
       context: maybeNodeValue(context),

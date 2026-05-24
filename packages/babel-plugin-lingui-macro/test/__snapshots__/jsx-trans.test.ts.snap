@@ -443,6 +443,27 @@ import { Trans as _Trans } from "@lingui/react";
 
 `;
 
+exports[`Preserve custom ID (dynamic expression) 1`] = `
+import { Trans } from "@lingui/react/macro";
+const dynId = "dynamic";
+<Trans id={dynId}>Hello World</Trans>;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { Trans as _Trans } from "@lingui/react";
+const dynId = "dynamic";
+<_Trans
+  {
+    /*i18n*/
+    ...{
+      id: dynId,
+      message: "Hello World",
+    }
+  }
+/>;
+
+`;
+
 exports[`Preserve custom ID (literal expression) 1`] = `
 import { Trans } from "@lingui/react/macro";
 <Trans id={"msg.hello"}>Hello World</Trans>;
