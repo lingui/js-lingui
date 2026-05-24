@@ -9,6 +9,9 @@ on:
       - main
       - next
 
+permissions:
+  contents: read
+
 jobs:
   test:
     timeout-minutes: 20

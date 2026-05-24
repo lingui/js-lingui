@@ -32,6 +32,8 @@ jobs:
           scope: '@lingui'
 
       - name: Install dependencies if needed
+        env:
+          YARN_ENABLE_HARDENED_MODE: "1"
         run: yarn install
 
       - name: Build packages

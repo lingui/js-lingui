@@ -9,6 +9,9 @@ on:
       - main
       - next
 
+permissions:
+  contents: read
+
 jobs:
   release-test:
     runs-on: ubuntu-latest
