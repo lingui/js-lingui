@@ -280,7 +280,7 @@ export default function ({
                       state.opts as LinguiPluginOpts,
                     ),
                     transformElement:
-                      config.macro.jsxRuntime === "solid"
+                      linguiConfig.macro.jsxRuntime === "solid"
                         ? (value) =>
                             wrapJsxElementAsComponent(t, value, path.scope)
                         : undefined,
