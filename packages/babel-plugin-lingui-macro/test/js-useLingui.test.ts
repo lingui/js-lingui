@@ -103,6 +103,19 @@ function MyComponent() {
     `,
     },
     {
+      name: "throws when descriptor id is dynamic",
+      shouldThrow: true,
+      code: `
+import { useLingui } from '@lingui/react/macro';
+
+function MyComponent() {
+  const { t } = useLingui();
+  const dynId = "dynamic";
+  const a = t({ id: dynId, message: "Hello" });
+}
+    `,
+    },
+    {
       name: "support a variable",
       code: `
 import { useLingui } from '@lingui/react/macro';

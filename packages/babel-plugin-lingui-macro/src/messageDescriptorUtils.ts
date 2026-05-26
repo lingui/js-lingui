@@ -20,6 +20,8 @@ export type TextWithLoc = {
   loc?: SourceLocation
 }
 
+export const STATIC_ID_MESSAGE = "Message id must be a static string literal"
+
 function isObjectProperty(
   node: TextWithLoc | ObjectProperty,
 ): node is ObjectProperty {
@@ -146,8 +148,11 @@ function createExplicitIdProperty(
     ? getTextFromExpression(defaults.id.value as Expression)
     : defaults.id.text
 
+  if (explicitId === undefined) {
+    throw new Error(STATIC_ID_MESSAGE)
+  }
+
   const resolvedId =
-    explicitId !== undefined &&
     defaults.idPrefix &&
     (!defaults.idPrefixLeader || explicitId.startsWith(defaults.idPrefixLeader))
       ? defaults.idPrefix + explicitId
@@ -206,12 +211,16 @@ export function createStringObjectProperty(
 }
 
 function getTextFromExpression(exp: Expression): string {
+  if (types.isTSAsExpression(exp) || types.isTSTypeAssertion(exp)) {
+    return getTextFromExpression(exp.expression)
+  }
+
   if (types.isStringLiteral(exp)) {
     return exp.value
   }
 
   if (types.isTemplateLiteral(exp)) {
-    if (exp?.quasis.length === 1) {
+    if (exp.expressions.length === 0 && exp.quasis.length === 1) {
       return exp.quasis[0]?.value?.cooked
     }
   }

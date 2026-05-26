@@ -177,6 +177,23 @@ macroTester({
       `,
     },
     {
+      name: "Should throw when id is dynamic",
+      shouldThrow: true,
+      code: `
+        import { t } from '@lingui/core/macro'
+        const dynId = "dynamic"
+        const msg = t({ id: dynId, message: "Welcome" })
+      `,
+    },
+    {
+      name: "Should throw when id template literal is dynamic",
+      shouldThrow: true,
+      code: `
+        import { t } from '@lingui/core/macro'
+        const msg = t({ id: \`msg.\${name}\`, message: "Welcome" })
+      `,
+    },
+    {
       name: "Should not crash when a variable passed",
       code: `
         import { t } from '@lingui/core/macro'

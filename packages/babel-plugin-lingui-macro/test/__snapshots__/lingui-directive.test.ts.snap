@@ -223,23 +223,15 @@ const msg =
 `;
 
 exports[`lingui-set directive: JS macros > idPrefix + idPrefixLeader with dynamic id 1`] = `
-import { t } from "@lingui/core/macro";
-/* lingui-set idPrefix="module" */
-const dynId = "dynamic";
-const msg = t({ id: dynId, message: "Welcome" });
+[SyntaxError: <cwd>/<filename>jsx: Unsupported macro usage. Please check the examples at https://lingui.dev/ref/macro#examples-of-js-macros.
+ If you think this is a bug, fill in an issue at https://github.com/lingui/js-lingui/issues
 
-↓ ↓ ↓ ↓ ↓ ↓
-
-/* lingui-set idPrefix="module" */ import { i18n as _i18n } from "@lingui/core";
-const dynId = "dynamic";
-const msg = _i18n._(
-  /*i18n*/
-  {
-    id: dynId,
-    message: "Welcome",
-  },
-);
-
+ Error: Message id must be a static string literal
+  3 |           /* lingui-set idPrefix="module" */
+  4 |           const dynId = "dynamic";
+> 5 |           const msg = t({ id: dynId, message: "Welcome" })
+    |                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |         ]
 `;
 
 exports[`lingui-set directive: JS macros > idPrefix and implicit ID 1`] = `
@@ -621,48 +613,27 @@ const el = (
 `;
 
 exports[`lingui-set directive: JSX macros > Trans with dynamic ID and idPrefix 1`] = `
-import { Trans } from "@lingui/react/macro";
-/* lingui-set idPrefix="module." */
-const el = <Trans id={dynId}>Hello</Trans>;
+[SyntaxError: <cwd>/<filename>jsx: Unsupported macro usage. Please check the examples at https://lingui.dev/ref/macro#examples-of-js-macros.
+ If you think this is a bug, fill in an issue at https://github.com/lingui/js-lingui/issues
 
-↓ ↓ ↓ ↓ ↓ ↓
-
-/* lingui-set idPrefix="module." */ import { Trans as _Trans } from "@lingui/react";
-const el = (
-  <_Trans
-    {
-      /*i18n*/
-      ...{
-        id: "uzTaYi",
-        message: "Hello",
-      }
-    }
-  />
-);
-
+ Error: Message id must be a static string literal
+  2 |           import { Trans } from '@lingui/react/macro';
+  3 |           /* lingui-set idPrefix="module." */
+> 4 |           const el = <Trans id={dynId}>Hello</Trans>
+    |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 |         ]
 `;
 
 exports[`lingui-set directive: JSX macros > Trans with dynamic id and no idPrefix 1`] = `
-import { Trans } from "@lingui/react/macro";
-const dynId = "dynamic";
-const el = <Trans id={dynId}>Hello</Trans>;
+[SyntaxError: <cwd>/<filename>jsx: Unsupported macro usage. Please check the examples at https://lingui.dev/ref/macro#examples-of-js-macros.
+ If you think this is a bug, fill in an issue at https://github.com/lingui/js-lingui/issues
 
-↓ ↓ ↓ ↓ ↓ ↓
-
-import { Trans as _Trans } from "@lingui/react";
-const dynId = "dynamic";
-const el = (
-  <_Trans
-    {
-      /*i18n*/
-      ...{
-        id: "uzTaYi",
-        message: "Hello",
-      }
-    }
-  />
-);
-
+ Error: Message id must be a static string literal
+  2 |           import { Trans } from '@lingui/react/macro';
+  3 |           const dynId = "dynamic";
+> 4 |           const el = <Trans id={dynId}>Hello</Trans>
+    |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 |         ]
 `;
 
 exports[`lingui-set directive: JSX macros > Trans with explicit context overrides directive 1`] = `

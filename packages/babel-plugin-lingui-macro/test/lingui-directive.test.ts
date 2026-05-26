@@ -432,7 +432,7 @@ describe("lingui-set directive: JS macros", () => {
       },
       {
         name: "idPrefix + idPrefixLeader with dynamic id",
-        shouldThrow: false,
+        shouldThrow: true,
         macroOpts: {
           linguiConfig: makeConfig(
             {
@@ -547,6 +547,7 @@ describe("lingui-set directive: JSX macros", () => {
       },
       {
         name: "Trans with dynamic id and no idPrefix",
+        shouldThrow: true,
         code: `
           import { Trans } from '@lingui/react/macro';
           const dynId = "dynamic";
@@ -555,7 +556,7 @@ describe("lingui-set directive: JSX macros", () => {
       },
       {
         name: "Trans with dynamic ID and idPrefix",
-        shouldThrow: false,
+        shouldThrow: true,
         code: `
           import { Trans } from '@lingui/react/macro';
           /* lingui-set idPrefix="module." */

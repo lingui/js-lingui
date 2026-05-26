@@ -23,6 +23,7 @@ import cleanJSXElementLiteralChild from "./utils/cleanJSXElementLiteralChild"
 import {
   createMessageDescriptorFromTokens,
   ResolvedDescriptorFields,
+  STATIC_ID_MESSAGE,
 } from "./messageDescriptorUtils"
 import { MacroJsContext, tokenizeExpression } from "./macroJsAst"
 import { LinguiConfigNormalized } from "@lingui/conf"
@@ -39,6 +40,8 @@ function maybeNodeValue(node: Node): { text: string; loc: SourceLocation } {
   if (node.type === "StringLiteral") return { text: node.value, loc: node.loc }
   if (node.type === "JSXAttribute") return maybeNodeValue(node.value)
   if (node.type === "JSXExpressionContainer")
+    return maybeNodeValue(node.expression)
+  if (node.type === "TSAsExpression" || node.type === "TSTypeAssertion")
     return maybeNodeValue(node.expression)
   if (node.type === "TemplateLiteral" && node.expressions.length === 0)
     return { text: node.quasis[0].value.raw, loc: node.loc }
@@ -146,7 +149,8 @@ export class MacroJSX {
   attrName = (names: string[], exclude = false) => {
     const namesRe = new RegExp("^(" + names.join("|") + ")$")
     return (attr: JSXAttribute | JSXSpreadAttribute) => {
-      const name = ((attr as JSXAttribute).name as JSXIdentifier).name
+      const name = ((attr as JSXAttribute).name as JSXIdentifier)?.name
+      if (!name) return exclude
       return exclude ? !namesRe.test(name) : namesRe.test(name)
     }
   }
@@ -175,8 +179,14 @@ export class MacroJSX {
       reserved = [...reserved, ...choiceComponentAttributesWhitelist]
     }
 
+    const idValue = maybeNodeValue(id)
+
+    if (id && !idValue) {
+      throw new Error(STATIC_ID_MESSAGE)
+    }
+
     return {
-      id: maybeNodeValue(id),
+      id: idValue,
       message: maybeNodeValue(message),
       comment: maybeNodeValue(comment),
       context: maybeNodeValue(context),

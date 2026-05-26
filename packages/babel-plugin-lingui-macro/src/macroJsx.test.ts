@@ -34,7 +34,7 @@ const parseExpression = (expression: string) => {
   return path
 }
 
-function createMacro(getDirective?: (line: number) => any) {
+function createMacro(getDirective: (line: number) => any = () => undefined) {
   return new MacroJSX(
     { types },
     {
@@ -335,6 +335,15 @@ describe("jsx macro", () => {
       const idProp = descriptor.properties[0] as types.ObjectProperty
 
       expect(idProp.value).toEqual(types.stringLiteral("module.greeting"))
+    })
+
+    it("throws when an explicit id is dynamic", () => {
+      const macro = createMacro()
+      const exp = parseExpression("<Trans id={dynamicId}>Hello</Trans>")
+
+      expect(() => macro.replacePath(exp)).toThrow(
+        "Message id must be a static string literal",
+      )
     })
   })
 })
