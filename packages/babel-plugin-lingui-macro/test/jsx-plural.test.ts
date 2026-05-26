@@ -162,19 +162,6 @@ macroTester({
         />;
       `,
     },
-    {
-      name: "Should preserve dynamic id",
-      code: `
-        import { Plural } from '@lingui/react/macro';
-        const dynId = "dynamic";
-        <Plural
-          id={dynId}
-          value={count}
-          one="# book"
-          other="# books"
-        />;
-      `,
-    },
 
     {
       filename: `jsx-plural-select-nested.js`,

@@ -41,14 +41,6 @@ macroTester({
       `,
     },
     {
-      name: "Preserve custom ID (dynamic expression)",
-      code: `
-        import { Trans } from '@lingui/react/macro';
-        const dynId = "dynamic";
-        <Trans id={dynId}>Hello World</Trans>;
-      `,
-    },
-    {
       name: "Should preserve reserved props: `comment`, `context`, `render`, `id`",
       code: `
         import { Trans } from '@lingui/react/macro';

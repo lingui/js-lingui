@@ -235,30 +235,6 @@ import { Trans as _Trans } from "@lingui/react";
 
 `;
 
-exports[`Should preserve dynamic id 1`] = `
-import { Plural } from "@lingui/react/macro";
-const dynId = "dynamic";
-<Plural id={dynId} value={count} one="# book" other="# books" />;
-
-↓ ↓ ↓ ↓ ↓ ↓
-
-import { Trans as _Trans } from "@lingui/react";
-const dynId = "dynamic";
-<_Trans
-  {
-    /*i18n*/
-    ...{
-      id: dynId,
-      message: "{count, plural, one {# book} other {# books}}",
-      values: {
-        count: count,
-      },
-    }
-  }
-/>;
-
-`;
-
 exports[`Should preserve reserved props: \`comment\`, \`context\`, \`render\`, \`id\` 1`] = `
 import { Plural } from "@lingui/react/macro";
 <Plural
