@@ -629,3 +629,27 @@ A mapping of JSX element tag names to default placeholder names. When a JSX elem
 ```
 
 Explicit attributes (via `jsxPlaceholderAttribute`) take priority over defaults.
+
+## macro.idPrefixLeader
+
+Default value: `undefined`
+
+If defined, the `/* lingui-set idPrefix="..." */`) directive will only prepend `idPrefix` to explicit IDs that start with this leader string. This allows you to selectively apply prefixes to specific IDs while leaving others untouched. The leader string is **kept** in the final ID.
+
+```js
+// lingui.config
+export default {
+  macro: {
+    idPrefixLeader: ".",
+  },
+};
+```
+
+```jsx
+// source
+import { Trans } from "@lingui/react/macro"
+
+// lingui-set idPrefix="myPrefix"
+<Trans id=".withPrefix">With prefix</Trans> // id="myPrefix.withPrefix"
+<Trans id="unprefixed">Unprefixed</Trans> // id="unprefixed"
+```

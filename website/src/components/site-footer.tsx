@@ -33,7 +33,7 @@ const COLUMNS: FooterColumn[] = [
   {
     title: "Community",
     links: [
-      { label: "Discord", href: "https://discord.gg/tBZqKpeF", external: true },
+      { label: "Discord", href: "https://discord.gg/hdNuF3rupQ", external: true },
       {
         label: "Stack Overflow",
         href: "https://stackoverflow.com/questions/tagged/linguijs",

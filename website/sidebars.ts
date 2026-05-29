@@ -162,6 +162,11 @@ const sidebar = [
         items: [
           {
             type: "doc",
+            label: "Typed Message IDs",
+            id: "guides/typed-message-ids",
+          },
+          {
+            type: "doc",
             label: "Custom Extractor",
             id: "guides/custom-extractor",
           },

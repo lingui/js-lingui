@@ -11,5 +11,6 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "types": ["vitest/globals"]
-  }
+  },
+  "exclude": ["__typetests__/typed-ids"]
 }

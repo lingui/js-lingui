@@ -33,8 +33,37 @@ export type Messages = Record<string, UncompiledMessage | CompiledMessage>
 
 export type AllMessages = Record<Locale, Messages>
 
+/**
+ * Register interface for module augmentation.
+ * Users can augment this interface to narrow MessageId to a specific union type.
+ *
+ * @example
+ * ```ts
+ * // src/lingui.d.ts
+ * import type enMessages from "./locales/en/messages.json";
+ *
+ * declare module "@lingui/core" {
+ *   interface Register {
+ *     messageIds: keyof typeof enMessages;
+ *   }
+ * }
+ * ```
+ */
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type -- intentionally empty; users augment this via module augmentation
+export interface Register {}
+
+/**
+ * Resolves to the registered message ID union, or falls back to `string`
+ * when no augmentation exists.
+ */
+export type MessageId = Register extends {
+  messageIds: infer TIds extends string
+}
+  ? TIds
+  : string
+
 export type MessageDescriptor = {
-  id: string
+  id: MessageId
   comment?: string
   message?: string
   values?: Record<string, unknown>
@@ -42,7 +71,7 @@ export type MessageDescriptor = {
 
 export type MissingMessageEvent = {
   locale: Locale
-  id: string
+  id: MessageId
 }
 
 type MissingHandler = string | ((locale: string, id: string) => string)
@@ -174,9 +203,9 @@ export class I18n extends EventEmitter<Events> {
 
   // method for translation and formatting
   _(descriptor: MessageDescriptor): string
-  _(id: string, values?: Values, options?: MessageOptions): string
+  _(id: MessageId, values?: Values, options?: MessageOptions): string
   _(
-    id: MessageDescriptor | string,
+    id: MessageDescriptor | MessageId,
     values?: Values,
     options?: MessageOptions,
   ): string {
@@ -226,9 +255,9 @@ export class I18n extends EventEmitter<Events> {
 > ${translation}
 
 That means you use raw catalog or your catalog doesn't have a translation for the message and fallback was used.
-ICU features such as interpolation and plurals will not work properly for that message. 
+ICU features such as interpolation and plurals will not work properly for that message.
 
-Please compile your catalog first. 
+Please compile your catalog first.
 `)
       }
     }

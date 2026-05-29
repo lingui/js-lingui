@@ -3,10 +3,12 @@ export { setupI18n, I18n } from "./i18n"
 export type {
   AllMessages,
   MessageDescriptor,
+  MessageId,
   Messages,
   Locale,
   Locales,
   MessageOptions,
+  Register,
 } from "./i18n"
 
 // Default i18n object
