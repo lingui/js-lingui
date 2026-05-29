@@ -1,8 +1,8 @@
 import { formatElements } from "./format"
-import type { I18n, MessageOptions } from "@lingui/core"
+import type { I18n, MessageId, MessageOptions } from "@lingui/core"
 
 export type TransRenderProps = {
-  id: string
+  id: MessageId
   translation: React.ReactNode
   children: React.ReactNode
   message?: string | null
@@ -21,7 +21,7 @@ export type TransRenderCallbackOrComponent =
     }
 
 export type TransProps = {
-  id: string
+  id: MessageId
   message?: string
   values?: Record<string, unknown>
   components?: { [key: string]: React.ElementType | any }

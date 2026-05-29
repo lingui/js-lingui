@@ -1,5 +1,9 @@
 import { i18n } from "@lingui/core"
+import type { MessageId } from "@lingui/core"
 import { expect } from "tstyche"
+
+// MessageId resolves to string when Register is not augmented
+expect<MessageId>().type.toBe<string>()
 
 expect(i18n._("message.id")).type.toBe<string>()
 expect(
