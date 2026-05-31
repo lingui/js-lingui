@@ -43,6 +43,7 @@
     "@lingui/conf": "workspace:*"
   },
   "devDependencies": {
+    "typescript": "catalog:",
     "unbuild": "catalog:",
     "vitest": "catalog:"
   },
