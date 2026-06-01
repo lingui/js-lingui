@@ -1,6 +1,6 @@
 {
   "name": "@lingui/react",
-  "version": "6.1.0",
+  "version": "6.2.0",
   "sideEffects": false,
   "description": "React bindings for Lingui with Trans components, providers, and compile-time macros",
   "type": "module",

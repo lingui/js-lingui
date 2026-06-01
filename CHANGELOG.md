@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.2.0](https://github.com/lingui/js-lingui/compare/v6.1.0...v6.2.0) (2026-06-01)
+
+### Bug Fixes
+
+* provide peer deps for workspace build tools ([#2557](https://github.com/lingui/js-lingui/issues/2557)) ([dd11c28](https://github.com/lingui/js-lingui/commit/dd11c284501fd1ee2b435945a8d8a9af5eeef7cc))
+
+### Features
+
+* integrate `pofile-ts` ([#2548](https://github.com/lingui/js-lingui/issues/2548)) ([ea5b2d3](https://github.com/lingui/js-lingui/commit/ea5b2d33426560990d3ce49a97a58bdedf775cb9))
+* support typed message IDs ([#2503](https://github.com/lingui/js-lingui/issues/2503)) ([6b31d46](https://github.com/lingui/js-lingui/commit/6b31d4680a146232ccf96b628e77be4729e52933))
+
+### Performance Improvements
+
+* **cli:** speed up catalog merge key partitioning ([#2540](https://github.com/lingui/js-lingui/issues/2540)) ([c3f0aff](https://github.com/lingui/js-lingui/commit/c3f0aff0eba850c07fcd107879f30e9c00a4a8b5))
+
 # [6.1.0](https://github.com/lingui/js-lingui/compare/v6.0.1...v6.1.0) (2026-05-21)
 
 ### Bug Fixes
