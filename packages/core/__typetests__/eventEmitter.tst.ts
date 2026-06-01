@@ -1,4 +1,4 @@
-import { EventEmitter } from "../src/eventEmitter"
+import { EventEmitter } from "../src/eventEmitter.js"
 import { expect } from "tstyche"
 
 type MissingMessageEvent = {

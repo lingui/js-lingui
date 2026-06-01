@@ -12,5 +12,5 @@
     "skipLibCheck": true,
     "types": ["vitest/globals"]
   },
-  "exclude": ["__typetests__/typed-ids"]
+  "exclude": ["__typetests__/typed-ids/**/*"]
 }

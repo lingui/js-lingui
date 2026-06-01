@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noUncheckedIndexedAccess": true,
+    "target": "ESNext",
+    "module": "Node16",
+    "moduleResolution": "Node16",
+    "noEmit": true
+  }
+}
