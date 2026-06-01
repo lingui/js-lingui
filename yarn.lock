@@ -1874,7 +1874,7 @@ __metadata:
     "@lingui/message-utils": "workspace:*"
     "@lingui/test-utils": "workspace:*"
     "@messageformat/parser": "npm:^5.0.0"
-    pofile: "npm:^1.1.4"
+    pofile-ts: "npm:^4.0.3"
     typescript: "catalog:"
     unbuild: "catalog:"
     vitest: "catalog:"
@@ -1887,7 +1887,7 @@ __metadata:
   dependencies:
     "@lingui/conf": "workspace:*"
     "@lingui/message-utils": "workspace:*"
-    pofile: "npm:^1.1.4"
+    pofile-ts: "npm:^4.0.3"
     typescript: "catalog:"
     unbuild: "catalog:"
     vitest: "catalog:"
@@ -8919,7 +8919,7 @@ __metadata:
     ora: "npm:^9.1.0"
     prettier: "npm:3.8.1"
     size-limit: "npm:^11.1.6"
-    tstyche: "npm:^4.0.0"
+    tstyche: "npm:^7.0.0"
     tsx: "npm:^4.21.0"
     typescript: "catalog:"
     typescript-eslint: "npm:^8.56.1"
@@ -11473,10 +11473,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pofile@npm:^1.1.4":
-  version: 1.1.4
-  resolution: "pofile@npm:1.1.4"
-  checksum: 10/88205b404f9431c09a849d8d0f7c759649f5c4236ec9f9e777c78b0b9412335fedc492ad8116fe4869954a9484311ebc874be0c7437d80859635e2b8a60ebc04
+"pofile-ts@npm:^4.0.3":
+  version: 4.0.3
+  resolution: "pofile-ts@npm:4.0.3"
+  checksum: 10/7cc24cb3c67959826881a06fb3129d0fbbb436d07e96a15cedc8b79b38f248897a98cdaf72304b5b3c87f2f5af9dc097eed06de4b390ffe8a8a60eab14d25291
   languageName: node
   linkType: hard
 
@@ -13806,17 +13806,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tstyche@npm:^4.0.0":
-  version: 4.0.0
-  resolution: "tstyche@npm:4.0.0"
+"tstyche@npm:^7.0.0":
+  version: 7.1.0
+  resolution: "tstyche@npm:7.1.0"
   peerDependencies:
-    typescript: ">=4.7"
+    typescript: ">=5.4"
   peerDependenciesMeta:
     typescript:
       optional: true
   bin:
-    tstyche: ./build/bin.js
-  checksum: 10/3ad68c8db11c70ae2b9450bed1c721c7f9f2892c4b2ac24a684a2fd9813bc6105925aea7564bacf949b7b372b282f3f024e38e981761a47bff75777c38f3d594
+    tstyche: ./dist/bin.js
+  checksum: 10/02f28049c71988623161b97aa5ee574c9fd52c1281bcf0ddfa9a5ceb54ca3b082baaaf9f25eb8a3a962ead95e059b43232dfe38e986c4e8bac630ec0fec41b20
   languageName: node
   linkType: hard
 

@@ -8,7 +8,6 @@ import {
   SelectOrdinal,
   useLingui,
 } from "@lingui/react/macro"
-import React from "react"
 import { ph } from "@lingui/core/macro"
 
 const gender = "male"
@@ -28,7 +27,7 @@ m = (
   </Trans>
 )
 
-// @ts-expect-error: children are required here
+// @ts-expect-error: Property 'children' is missing in type
 m = <Trans id="custom.id" comment="comment" context="context" />
 
 m = <Trans>Hello {{ username: user.name }}</Trans>
@@ -50,7 +49,7 @@ m = (
 )
 m = (
   <Trans>
-    {/* @ts-expect-error: use of {} without ph() helper is not possible in the children components */}
+    {/* @ts-expect-error: 'name' does not exist in type */}
     Hello <strong>{{ name: user.name }}</strong>
   </Trans>
 )
@@ -58,21 +57,21 @@ m = (
 //// JSX Plural
 ///////////////////
 m = (
-  // @ts-expect-error: children are not allowed
+  // @ts-expect-error: Property 'children' does not exist on type
   <Plural value={5} other={"..."}>
     Message
   </Plural>
 )
 
-// @ts-expect-error: value is required
+// @ts-expect-error: Type '{}' is not assignable to type 'IntrinsicAttributes & PluralChoiceProps'
 m = <Plural />
 
 m = <Plural value={5} offset={1} one={"..."} other={"..."} _0="" _1={"..."} />
 
-//  @ts-expect-error: offset could be number only
+//  @ts-expect-error: Type 'string' is not assignable to type 'number'
 m = <Plural value={5} offset={"1"} one={"..."} other={"..."} />
 
-// @ts-expect-error: not allowed prop is passed
+// @ts-expect-error: Property 'unsupported' does not exist on type
 m = <Plural value={5} unsupported={"should be error"} />
 
 // should support JSX element as Props
@@ -84,7 +83,7 @@ m = <Plural value={"5"} one={"..."} other={"..."} />
 // with labeled value
 m = <Plural value={{ count: 5 }} one={"..."} other={"..."} />
 
-// @ts-expect-error: `other` should always be present
+// @ts-expect-error: Property 'other' is missing in type
 m = <Plural value={"5"} one={"..."} />
 
 // additional properties
@@ -117,24 +116,24 @@ m = (
 //// JSX Select
 ///////////////////
 m = (
-  // @ts-expect-error: children are not allowed here
+  // @ts-expect-error: Property 'children' does not exist on type
   <Select value={gender} other={"string"}>
     Message
   </Select>
 )
 
-// @ts-expect-error: `value` could be string only
+// @ts-expect-error: Type 'number' is not assignable to type 'string | LabeledExpression<string | number>'
 m = <Select value={5} other={"string"} />
 
-// @ts-expect-error: `other` required
+// @ts-expect-error: Property 'other' is missing in type
 m = <Select value={"male"} />
 
-// @ts-expect-error: `value` required
+// @ts-expect-error: Property 'value' is missing in type
 m = <Select other={"male"} />
 
 m = <Select value={gender} _male="..." _female="..." other={"..."} />
 
-// @ts-expect-error: exact cases should be prefixed with underscore
+// @ts-expect-error: Property 'male' does not exist on type
 m = <Select value={gender} male="..." female=".." other={"..."} />
 
 m = <Select value={{ gender }} _male="..." _female=".." other={"..."} />

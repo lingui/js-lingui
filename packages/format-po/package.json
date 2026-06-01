@@ -1,6 +1,6 @@
 {
   "name": "@lingui/format-po",
-  "version": "6.1.0",
+  "version": "6.2.0",
   "description": "Gettext PO formatter for Lingui message catalogs",
   "type": "module",
   "sideEffects": false,
@@ -44,7 +44,7 @@
   "dependencies": {
     "@lingui/conf": "workspace:*",
     "@lingui/message-utils": "workspace:*",
-    "pofile": "^1.1.4"
+    "pofile-ts": "^4.0.3"
   },
   "devDependencies": {
     "typescript": "catalog:",

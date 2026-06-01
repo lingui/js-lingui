@@ -1,6 +1,6 @@
 {
   "name": "@lingui/cli",
-  "version": "6.1.0",
+  "version": "6.2.0",
   "description": "Lingui CLI to extract messages, compile catalogs, and manage translation workflows",
   "type": "module",
   "keywords": [
