@@ -11,6 +11,7 @@ export function mergeCatalog(
   const nextKeys = Object.keys(nextCatalog)
   const prevKeys = Object.keys(prevCatalog)
 
+  // this part is optimized for performance, see https://github.com/lingui/js-lingui/pull/2540
   const hasKeysInBothCatalogs = prevKeys.length > 0 && nextKeys.length > 0
   let newKeys: string[]
   let mergeKeys: string[]
