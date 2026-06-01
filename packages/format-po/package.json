@@ -44,7 +44,7 @@
   "dependencies": {
     "@lingui/conf": "workspace:*",
     "@lingui/message-utils": "workspace:*",
-    "pofile": "^1.1.4"
+    "pofile-ts": "^4.0.3"
   },
   "devDependencies": {
     "typescript": "catalog:",

@@ -1691,7 +1691,7 @@ __metadata:
     "@lingui/message-utils": "workspace:*"
     "@lingui/test-utils": "workspace:*"
     "@messageformat/parser": "npm:^5.0.0"
-    pofile: "npm:^1.1.4"
+    pofile-ts: "npm:^4.0.3"
     typescript: "catalog:"
     unbuild: "catalog:"
     vitest: "catalog:"
@@ -1704,7 +1704,7 @@ __metadata:
   dependencies:
     "@lingui/conf": "workspace:*"
     "@lingui/message-utils": "workspace:*"
-    pofile: "npm:^1.1.4"
+    pofile-ts: "npm:^4.0.3"
     typescript: "catalog:"
     unbuild: "catalog:"
     vitest: "catalog:"
@@ -11427,10 +11427,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pofile@npm:^1.1.4":
-  version: 1.1.4
-  resolution: "pofile@npm:1.1.4"
-  checksum: 10/88205b404f9431c09a849d8d0f7c759649f5c4236ec9f9e777c78b0b9412335fedc492ad8116fe4869954a9484311ebc874be0c7437d80859635e2b8a60ebc04
+"pofile-ts@npm:^4.0.3":
+  version: 4.0.3
+  resolution: "pofile-ts@npm:4.0.3"
+  checksum: 10/7cc24cb3c67959826881a06fb3129d0fbbb436d07e96a15cedc8b79b38f248897a98cdaf72304b5b3c87f2f5af9dc097eed06de4b390ffe8a8a60eab14d25291
   languageName: node
   linkType: hard
 

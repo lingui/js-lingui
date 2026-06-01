@@ -1,2 +1,3 @@
+#. js-lingui-explicit-id
 msgid "Hello World"
 msgstr "Ahoj Brno"

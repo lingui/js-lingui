@@ -45,7 +45,7 @@
     "@lingui/format-po": "workspace:*",
     "@lingui/message-utils": "workspace:*",
     "@messageformat/parser": "^5.0.0",
-    "pofile": "^1.1.4"
+    "pofile-ts": "^4.0.3"
   },
   "devDependencies": {
     "@lingui/test-utils": "workspace:*",
