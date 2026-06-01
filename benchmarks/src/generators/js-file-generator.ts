@@ -1,11 +1,18 @@
-import { getMessageAtIndex, type MessageEntry } from "./message-pool.js"
+import {
+  getMessageAtIndex,
+  getVariableDeclarations,
+  type MessageEntry,
+} from "./message-pool.js"
 
 function renderMessage(msg: MessageEntry, varIdx: number): string {
   switch (msg.type) {
     case "simple":
       return `  const msg${varIdx} = t\`${msg.text}\``
     case "interpolated": {
-      const templateStr = msg.text.replace(/\{(\w+)\}/g, "${$1}")
+      const templateStr = msg.text.replace(/\{(\w+)\}/g, (_, name) => {
+        const varDef = msg.vars.find((v) => v.name === name)
+        return `\${${varDef ? varDef.expr : name}}`
+      })
       return `  const msg${varIdx} = t\`${templateStr}\``
     }
     case "plural": {
@@ -22,39 +29,62 @@ function getPluralForm(icuText: string, form: string): string {
   return match ? match[1]! : ""
 }
 
+function hasDirective(fileIndex: number): boolean {
+  return fileIndex % 5 === 0
+}
+
+function getDirectiveBlock(fileIndex: number): string[] {
+  const lines: string[] = []
+  const variant = fileIndex % 15
+
+  if (variant === 0) {
+    lines.push(
+      `// lingui-set context="util-${String(fileIndex).padStart(4, "0")}" comment="Utility messages"`,
+    )
+  } else if (variant === 5) {
+    lines.push(
+      `// lingui-set context="service-${String(fileIndex).padStart(4, "0")}"`,
+    )
+  } else {
+    lines.push(
+      `// lingui-set context="lib-${String(fileIndex).padStart(4, "0")}" comment="Library strings"`,
+    )
+  }
+
+  return lines
+}
+
 export function generateJsFile(
   fileIndex: number,
   messagesPerFile: number,
 ): string {
   const padded = String(fileIndex).padStart(4, "0")
   const lines: string[] = []
+  const useDirective = hasDirective(fileIndex)
 
   lines.push(`import { t, plural } from "@lingui/core/macro"`)
   lines.push(``)
-  lines.push(`export function getMessages${padded}() {`)
-  lines.push(`  const name = "user"`)
-  lines.push(`  const username = "admin"`)
-  lines.push(`  const count = 5`)
-  lines.push(`  const amount = "$99.99"`)
-  lines.push(`  const date = "2024-01-01"`)
-  lines.push(`  const email = "user@example.com"`)
-  lines.push(`  const time = "12:00"`)
-  lines.push(`  const team = "Engineering"`)
-  lines.push(`  const id = "1234"`)
-  lines.push(`  const currency = "USD"`)
-  lines.push(`  const current = 1`)
-  lines.push(`  const total = 10`)
-  lines.push(`  const query = "search"`)
-  lines.push(`  const address = "123 Main St"`)
-  lines.push(`  const code = "SAVE20"`)
-  lines.push(`  const plan = "Pro"`)
-  lines.push(`  const filename = "app.ts"`)
-  lines.push(`  const line = 42`)
 
-  const globalMsgOffset = fileIndex * messagesPerFile
+  if (useDirective) {
+    lines.push(...getDirectiveBlock(fileIndex))
+    lines.push(``)
+  }
+
+  lines.push(`export function getMessages${padded}() {`)
+
+  for (const decl of getVariableDeclarations()) {
+    lines.push(`  ${decl}`)
+  }
+
+  // Add mid-file reset for some directive files
+  const midPoint = Math.floor(messagesPerFile / 2)
+
   for (let i = 0; i < messagesPerFile; i++) {
+    if (useDirective && fileIndex % 15 === 0 && i === midPoint) {
+      lines.push(`  // lingui-reset`)
+    }
     const isPlural = i % 10 === 9
-    const msg = getMessageAtIndex(globalMsgOffset + i, isPlural)
+    const msg = getMessageAtIndex(fileIndex, i, isPlural)
     lines.push(renderMessage(msg, i))
   }
 

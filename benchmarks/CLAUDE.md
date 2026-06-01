@@ -54,9 +54,23 @@ CLI commands print progress (spinners, stats). The `silenceConsole()` helper mon
 
 ### Fixture generation
 
-Messages are deterministic — same preset always produces identical fixtures. The `message-pool.ts` provides messages by index (no randomness).
+Messages are deterministic — same preset always produces identical fixtures. The `message-pool.ts` provides ~150 base templates combined with file-specific qualifiers to achieve **10-18% message reuse** (realistic for a large project).
 
-**PO catalog generation** uses real extraction: the generator runs `lingui extract-template` against the generated source files to produce a template with correct origins (`#: file:line` references). It then populates 90% of entries with translations and writes per-locale `.po` files using the `@lingui/format-po` formatter with `origins: true`. This means the PO files contain realistic `#:` reference lines pointing to actual source locations — the same format a real project would have.
+**Message variety mechanisms:**
+- ~150 curated templates (60 simple, 70 interpolated with ~30% using complex expressions like `user.name`, `formatDate()`, 20 plurals)
+- ~30% of messages are longer (20-50 words) simulating tooltips, descriptions, error messages
+- File-scoped qualifiers ("for this project", "in your workspace" etc.) appended to ~85% of simple/interpolated messages, varying by file index to reduce collisions
+- `getMessageAtIndex(fileIndex, msgIndex, isPlural)` uses coprime strides to distribute selection across the pool
+
+**Macro patterns exercised:**
+- `<Trans>` and `<Plural>` JSX macros
+- `useLingui()` hook — ~30% of messages in JSX files use `const { t } = useLingui()` + `` t`...` ``
+- `t` tagged template and `plural()` in JS files
+- `// lingui-set context="..." comment="..."` directives on ~20% of files (file index % 5 === 0)
+- `// lingui-reset` mid-file on some directive files
+- Complex placeholder expressions: `${user.name}`, `${cart.getSubtotal()}`, `${formatDate(user.lastLogin)}`
+
+**PO catalog generation** uses real extraction: the generator runs `lingui extract-template` against the generated source files to produce a template with correct origins (`#: file:line` references). It then populates 90% of entries with translations and writes per-locale `.po` files using the `@lingui/format-po` formatter with `origins: true`. PO files contain realistic `#:` reference lines, `#.` placeholder comments for complex expressions, and `msgctxt` for context-scoped messages.
 
 Catalog overlap: 90% of unique messages have pre-existing translations. The remaining 10% simulate newly added code not yet in catalogs (empty translation string).
 
@@ -106,7 +120,7 @@ The message pool in `generators/message-pool.ts` has ~80 unique messages. For la
 - **Build first**: workspace packages must be built (`yarn release:build`) because imports resolve through `exports` fields pointing to `./dist/`
 - **Multi-worker requires config file on disk**: the CLI's worker pool re-loads config from `resolvedConfigPath` in each thread. That's why `config-builder.ts` writes a config file.
 - **SWC plugin WASM overhead**: the `@lingui/swc-plugin` has per-call WASM init cost when called via `@swc/core.transform()`. The `lingui-swc` extractor batches internally and amortizes this. So the `macro-transform` scenario (per-file transform) shows different perf characteristics than the `extract` scenario (batched extractor).
-- **Unique message count**: with the current pool size (~80 templates), PO catalogs contain ~64 unique entries regardless of file count. This is realistic (many files share messages) but means compile benchmarks process fewer catalog entries than total source messages.
+- **Unique message count**: with qualifiers and context, the catalog contains ~85-90% of total source messages as unique entries (e.g., medium preset: ~8200 unique entries from 10000 source messages). This is realistic for a large project with moderate message sharing.
 - **Fixture generation is async**: `generatePoCatalogs()` runs actual extraction via `lingui extract-template` command, so it must be awaited. This makes fixture generation slower (~400ms for small) but produces realistic PO files with proper origin references.
 - **PO origins**: the formatter uses `origins: true` — catalogs contain `#: src/components/Component0000.tsx:33` references. This adds serialization/parsing cost that a real project would have.
 
