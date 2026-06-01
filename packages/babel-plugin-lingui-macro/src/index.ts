@@ -11,8 +11,10 @@ import {
   type LinguiConfigNormalized,
 } from "@lingui/conf"
 import { ResolvedDescriptorFields } from "./messageDescriptorUtils"
-
-let config: LinguiConfigNormalized
+import {
+  collectLinguiDirectives,
+  findDirectiveForLine,
+} from "./linguiDirective"
 
 export type LinguiPluginOpts = {
   /**
@@ -37,13 +39,7 @@ export type LinguiPluginOpts = {
 }
 
 function getConfig(_config?: LinguiConfigNormalized) {
-  if (_config) {
-    config = _config
-  }
-  if (!config) {
-    config = loadConfig()
-  }
-  return config
+  return _config ?? loadConfig()
 }
 
 function reportUnsupportedSyntax(path: NodePath, e: Error) {
@@ -172,7 +168,10 @@ export default function ({
     )
   }
 
-  function getMacroImports(path: NodePath<Program>): MacroImports {
+  function getMacroImports(
+    path: NodePath<Program>,
+    config: LinguiConfigNormalized,
+  ): MacroImports {
     const corePackage = new Set(
       path
         .get("body")
@@ -215,6 +214,7 @@ export default function ({
     path: NodePath,
     node: Identifier,
     macro: JsMacroName,
+    config: LinguiConfigNormalized,
   ) {
     let identPath = getIdentifierPath(path, node)
 
@@ -245,12 +245,13 @@ export default function ({
     visitor: {
       Program: {
         enter(path, state) {
-          state.set(
-            "linguiConfig",
-            getConfig((state.opts as LinguiPluginOpts).linguiConfig),
+          const linguiConfig = getConfig(
+            (state.opts as LinguiPluginOpts).linguiConfig,
           )
 
-          const macroImports = getMacroImports(path)
+          state.set("linguiConfig", linguiConfig)
+
+          const macroImports = getMacroImports(path, linguiConfig)
 
           if (!macroImports.all.size) {
             return
@@ -262,13 +263,15 @@ export default function ({
             useLingui: path.scope.generateUidIdentifier("useLingui"),
           } satisfies Record<LinguiSymbol, babelTypes.Identifier>)
 
+          const directives = collectLinguiDirectives(
+            (state.file.ast as babelTypes.File).comments,
+          )
+          const getDirective = (line: number) =>
+            findDirectiveForLine(directives, line)
+
           path.traverse(
             {
               JSXElement(path, state) {
-                const linguiConfig = state.get(
-                  "linguiConfig",
-                ) as LinguiConfigNormalized
-
                 const macro = new MacroJSX(
                   { types: t },
                   {
@@ -277,11 +280,13 @@ export default function ({
                       state.opts as LinguiPluginOpts,
                     ),
                     isLinguiIdentifier: (node: Identifier, macro) =>
-                      isLinguiIdentifier(path, node, macro),
+                      isLinguiIdentifier(path, node, macro, linguiConfig),
+                    getDirective,
                     jsxPlaceholderAttribute:
                       linguiConfig.macro?.jsxPlaceholderAttribute,
                     jsxPlaceholderDefaults:
                       linguiConfig.macro?.jsxPlaceholderDefaults,
+                    idPrefixLeader: linguiConfig.macro?.idPrefixLeader,
                   },
                 )
 
@@ -313,9 +318,10 @@ export default function ({
                   i18nImportName: getSymbolIdentifier(state, "i18n").name,
                   useLinguiImportName: getSymbolIdentifier(state, "useLingui")
                     .name,
-
                   isLinguiIdentifier: (node: Identifier, macro) =>
-                    isLinguiIdentifier(path, node, macro),
+                    isLinguiIdentifier(path, node, macro, linguiConfig),
+                  getDirective,
+                  idPrefixLeader: linguiConfig.macro?.idPrefixLeader,
                 })
                 let newNode: false | babelTypes.Node
 
@@ -349,7 +355,10 @@ export default function ({
           )
         },
         exit(path, state) {
-          const macroImports = getMacroImports(path)
+          const linguiConfig = state.get(
+            "linguiConfig",
+          ) as LinguiConfigNormalized
+          const macroImports = getMacroImports(path, linguiConfig)
           macroImports.all.forEach((path) => path.remove())
         },
       },
