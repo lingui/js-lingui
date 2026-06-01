@@ -33,10 +33,7 @@
   "exports": {
     ".": "./dist/index.js",
     "./api": "./dist/api/index.js",
-    "./api/extractors/babel": "./dist/api/extractors/babel.js",
-    "./commands/extract": "./dist/lingui-extract.js",
-    "./commands/extract-template": "./dist/lingui-extract-template.js",
-    "./commands/compile": "./dist/lingui-compile.js"
+    "./api/extractors/babel": "./dist/api/extractors/babel.js"
   },
   "scripts": {
     "build": "tsc -p tsconfig.build.json",

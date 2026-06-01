@@ -31,26 +31,30 @@ benchmarks/
 
 ### How scenarios call the CLI
 
-Each scenario imports the `command()` function from `@lingui/cli/commands/*` (exports added in `packages/cli/package.json`). These are the same functions the CLI binary calls internally:
+Scenarios spawn `lingui` as a subprocess via `utils/run-cli.ts`:
 
 ```ts
-const { default: extractCommand } = await import("@lingui/cli/commands/extract")
-await extractCommand(config, { verbose: false, clean: false, overwrite: false, workersOptions: { poolSize: 0 } })
+runLingui(["extract", "--workers", "1"], configs.babel)
 ```
 
-The `workersOptions: { poolSize: 0 }` means single-threaded. `{ poolSize: 2 }` spawns 2 worker threads.
+This calls the `lingui` binary from `node_modules/.bin/` with `LINGUI_CONFIG` env var pointing to the config file. The subprocess approach:
+- Uses the built `dist/` code (no transpilation cost in measurement)
+- Workers resolve modules correctly (no tsx needed)
+- Measures real-world performance including Node.js startup and config loading
+
+If a command exits with non-zero code, `runLingui` throws with the command's stderr, and `throws: true` on tinybench immediately stops the benchmark.
 
 ### Config building
 
-`buildConfig()` in `utils/config-builder.ts` does two things:
-1. Calls `makeConfig()` from `@lingui/conf` with `skipValidation: true`
-2. Writes a dummy `lingui.config.js` file to the fixtures dir (required because multi-worker mode needs `resolvedConfigPath` to reload config in workers)
+`writeConfigs()` in `utils/config-builder.ts` writes two config files to the fixtures directory:
+- `lingui.config.babel.mjs` — default Babel extractor
+- `lingui.config.swc.mjs` — uses `lingui-swc` extractor
 
-The SWC extractor variant is configured by passing `extractors: [createSwcExtractor()]` from the `lingui-swc` npm package.
+Scenarios pass the appropriate config path via `LINGUI_CONFIG` env var.
 
-### Console suppression
+### Macro transform scenario
 
-CLI commands print progress (spinners, stats). The `silenceConsole()` helper monkey-patches `console.*` and `process.stdout/stderr.write` during iterations. Always restore in a `finally` block.
+The `macro-transform` scenario is the exception — it calls `@babel/core.transformAsync` and `@swc/core.transform` directly (no subprocess) since it measures pure transformation speed without CLI overhead. It uses `@lingui/babel-plugin-lingui-macro` and `@lingui/swc-plugin` as plugins.
 
 ### Fixture generation
 
@@ -122,12 +126,13 @@ To increase variety further:
 
 ## Important Details
 
-- **Build first**: workspace packages must be built (`yarn release:build`) because imports resolve through `exports` fields pointing to `./dist/`
-- **Multi-worker requires config file on disk**: the CLI's worker pool re-loads config from `resolvedConfigPath` in each thread. That's why `config-builder.ts` writes a config file.
+- **Build first**: workspace packages must be built (`yarn release:build`) because the `lingui` binary runs from `dist/` and config files import from built packages.
+- **Error handling**: `runLingui()` throws on non-zero exit with the command's stderr. Tinybench uses `throws: true` so any CLI failure immediately stops the benchmark rather than silently recording a failed task.
 - **SWC plugin WASM overhead**: the `@lingui/swc-plugin` has per-call WASM init cost when called via `@swc/core.transform()`. The `lingui-swc` extractor batches internally and amortizes this. So the `macro-transform` scenario (per-file transform) shows different perf characteristics than the `extract` scenario (batched extractor).
 - **Unique message count**: with qualifiers and context, the catalog contains ~85-90% of total source messages as unique entries (e.g., medium preset: ~8200 unique entries from 10000 source messages). This is realistic for a large project with moderate message sharing.
-- **Fixture generation is async**: `generatePoCatalogs()` runs actual extraction via `lingui extract-template` command, so it must be awaited. This makes fixture generation slower (~400ms for small) but produces realistic PO files with proper origin references.
+- **Fixture generation shells out**: `generatePoCatalogs()` runs `lingui extract-template` via `execFileSync` to produce a `.pot` with real origins, then populates translations programmatically.
 - **PO origins**: the formatter uses `origins: true` — catalogs contain `#: src/components/Component0000.tsx:33` references. This adds serialization/parsing cost that a real project would have.
+- **Subprocess overhead**: each benchmark iteration spawns a new Node.js process. This includes ~100-200ms of startup cost. For small presets this dominates; for medium/large the actual work dominates.
 
 ## CLI reference
 

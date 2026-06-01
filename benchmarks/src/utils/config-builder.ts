@@ -1,69 +1,55 @@
 import path from "path"
 import fs from "fs"
-import { makeConfig } from "@lingui/conf"
-import type { LinguiConfigNormalized } from "@lingui/conf"
-import { formatter } from "@lingui/format-po"
-import { createSwcExtractor } from "lingui-swc"
 import type { PresetConfig } from "../presets.js"
 
-export function buildConfig(
-  fixturesDir: string,
-  preset: PresetConfig,
-  useSwcExtractor = false,
-): LinguiConfigNormalized {
-  const absFixtures = path.resolve(fixturesDir)
-  const configPath = writeConfigFile(absFixtures, preset, useSwcExtractor)
-
-  return makeConfig(
-    {
-      rootDir: absFixtures,
-      locales: preset.locales,
-      sourceLocale: "en",
-      catalogs: [
-        {
-          path: path.join(absFixtures, "locale/{locale}/messages"),
-          include: [path.join(absFixtures, "src")],
-          exclude: [],
-        },
-      ],
-      format: formatter({ origins: true }),
-      ...(useSwcExtractor ? { extractors: [createSwcExtractor()] } : {}),
-    },
-    { skipValidation: true, resolvedConfigPath: configPath },
-  )
+export interface ConfigPaths {
+  babel: string
+  swc: string
 }
 
-function writeConfigFile(
+export function writeConfigs(
   fixturesDir: string,
   preset: PresetConfig,
-  useSwcExtractor: boolean,
-): string {
-  const configPath = path.join(
-    fixturesDir,
-    useSwcExtractor ? "lingui.config.swc.js" : "lingui.config.js",
-  )
+): ConfigPaths {
+  const absFixtures = path.resolve(fixturesDir)
 
-  const extractorImport = useSwcExtractor
-    ? `import { createSwcExtractor } from "lingui-swc"\n`
-    : ""
-  const extractorConfig = useSwcExtractor
-    ? `  extractors: [createSwcExtractor()],\n`
-    : ""
+  const babelConfigPath = path.join(absFixtures, "lingui.config.babel.mjs")
+  const swcConfigPath = path.join(absFixtures, "lingui.config.swc.mjs")
 
-  const content = `
+  const baseConfig = `
 import { formatter } from "@lingui/format-po"
-${extractorImport}
+
 export default {
   locales: ${JSON.stringify(preset.locales)},
   sourceLocale: "en",
   catalogs: [{
-    path: "${fixturesDir}/locale/{locale}/messages",
-    include: ["${fixturesDir}/src"],
+    path: "${absFixtures}/locale/{locale}/messages",
+    include: ["${absFixtures}/src"],
     exclude: [],
   }],
   format: formatter({ origins: true }),
-${extractorConfig}}
+}
 `
-  fs.writeFileSync(configPath, content)
-  return configPath
+
+  const swcConfig = `
+import { formatter } from "@lingui/format-po"
+import { createSwcExtractor } from "lingui-swc"
+
+export default {
+  locales: ${JSON.stringify(preset.locales)},
+  sourceLocale: "en",
+  catalogs: [{
+    path: "${absFixtures}/locale/{locale}/messages",
+    include: ["${absFixtures}/src"],
+    exclude: [],
+  }],
+  format: formatter({ origins: true }),
+  extractors: [createSwcExtractor()],
+}
+`
+
+  fs.writeFileSync(babelConfigPath, baseConfig)
+  fs.writeFileSync(swcConfigPath, swcConfig)
+
+  return { babel: babelConfigPath, swc: swcConfigPath }
 }

@@ -2,8 +2,8 @@ import fs from "fs"
 import path from "path"
 import { Bench } from "tinybench"
 import linguiMacroPlugin from "@lingui/babel-plugin-lingui-macro"
+import { makeConfig } from "@lingui/conf"
 import type { PresetConfig } from "../presets.js"
-import { buildConfig } from "../utils/config-builder.js"
 import { getBabelParserOptions } from "@lingui/cli/api/extractors/babel"
 
 interface SourceFile {
@@ -29,13 +29,16 @@ function loadSourceFiles(fixturesDir: string): SourceFile[] {
 
 export async function runMacroTransformBenchmark(
   fixturesDir: string,
-  preset: PresetConfig,
+  _preset: PresetConfig,
 ) {
   const { transformAsync } = await import("@babel/core")
   const swc = await import("@swc/core")
 
   const sourceFiles = loadSourceFiles(fixturesDir)
-  const config = buildConfig(fixturesDir, preset, false)
+  const linguiConfig = makeConfig(
+    { locales: ["en"], sourceLocale: "en" },
+    { skipValidation: true },
+  )
 
   async function compileBabel(
     code: string,
@@ -48,12 +51,7 @@ export async function runMacroTransformBenchmark(
       configFile: false,
       code: false,
       plugins: withMacro
-        ? [
-            [
-              linguiMacroPlugin,
-              { descriptorFields: "all", linguiConfig: config },
-            ],
-          ]
+        ? [[linguiMacroPlugin, { descriptorFields: "all", linguiConfig }]]
         : [],
       parserOpts: {
         plugins: getBabelParserOptions(filename, undefined),
@@ -93,11 +91,11 @@ export async function runMacroTransformBenchmark(
     })
   }
 
-  const bench = new Bench({ warmupIterations: 1, iterations: 3 })
+  const bench = new Bench({ warmupIterations: 1, iterations: 3, throws: true })
 
   bench.add("Babel", async () => {
     await Promise.all(
-      sourceFiles.map(async ({ filename, code }) =>
+      sourceFiles.map(({ filename, code }) =>
         compileBabel(code, filename, true),
       ),
     )
@@ -105,7 +103,7 @@ export async function runMacroTransformBenchmark(
 
   bench.add("Babel - no macro", async () => {
     await Promise.all(
-      sourceFiles.map(async ({ filename, code }) =>
+      sourceFiles.map(({ filename, code }) =>
         compileBabel(code, filename, false),
       ),
     )
@@ -113,15 +111,13 @@ export async function runMacroTransformBenchmark(
 
   bench.add("SWC", async () => {
     await Promise.all(
-      sourceFiles.map(async ({ filename, code }) =>
-        compileSwc(code, filename, true),
-      ),
+      sourceFiles.map(({ filename, code }) => compileSwc(code, filename, true)),
     )
   })
 
   bench.add("SWC - no macro", async () => {
     await Promise.all(
-      sourceFiles.map(async ({ filename, code }) =>
+      sourceFiles.map(({ filename, code }) =>
         compileSwc(code, filename, false),
       ),
     )

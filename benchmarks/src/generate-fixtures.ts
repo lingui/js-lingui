@@ -35,7 +35,7 @@ function resolvePreset(): PresetConfig {
   }
 }
 
-async function generateFixtures(preset: PresetConfig) {
+function generateFixtures(preset: PresetConfig) {
   if (fs.existsSync(FIXTURES_DIR)) {
     fs.rmSync(FIXTURES_DIR, { recursive: true })
   }
@@ -73,7 +73,7 @@ async function generateFixtures(preset: PresetConfig) {
   console.log(`  Source files generated in ${Date.now() - startTime}ms`)
 
   const catalogStart = Date.now()
-  await generatePoCatalogs(FIXTURES_DIR, preset)
+  generatePoCatalogs(FIXTURES_DIR, preset)
   console.log(`  PO catalogs generated in ${Date.now() - catalogStart}ms`)
 
   // Save preset config so bench can read it without needing --preset
@@ -86,4 +86,4 @@ async function generateFixtures(preset: PresetConfig) {
 }
 
 const preset = resolvePreset()
-await generateFixtures(preset)
+generateFixtures(preset)

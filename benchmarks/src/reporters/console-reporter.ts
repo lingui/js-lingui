@@ -42,7 +42,7 @@ export interface ScenarioOpts {
 }
 
 export function printScenario(title: string, bench: Bench, opts: ScenarioOpts) {
-  const tasks = bench.tasks.filter((t) => t.result)
+  const tasks = bench.tasks.filter((t) => t.result && isFinite(t.result.mean))
   if (tasks.length === 0) return
 
   console.log("")

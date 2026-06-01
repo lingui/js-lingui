@@ -1,50 +1,38 @@
 import path from "path"
 import fs from "fs"
-import { makeConfig } from "@lingui/conf"
+import { execFileSync } from "node:child_process"
 import { formatter } from "@lingui/format-po"
 import type { CatalogType } from "@lingui/conf"
 import type { PresetConfig } from "../presets.js"
-import { silenceConsole } from "../utils/silence.js"
+import { writeConfigs } from "../utils/config-builder.js"
+
+const LINGUI_BIN = path.resolve(
+  path.dirname(new URL(import.meta.url).pathname),
+  "..",
+  "..",
+  "..",
+  "node_modules",
+  ".bin",
+  "lingui",
+)
 
 function generateTranslation(text: string, locale: string): string {
   return `[${locale}] ${text}`
 }
 
-export async function generatePoCatalogs(
+export function generatePoCatalogs(
   fixturesDir: string,
   preset: PresetConfig,
-): Promise<void> {
-  const { default: extractTemplateCommand } =
-    await import("@lingui/cli/commands/extract-template")
-
-  const poFormatter = formatter({ origins: true })
-
-  const config = makeConfig(
-    {
-      rootDir: fixturesDir,
-      locales: preset.locales,
-      sourceLocale: "en",
-      catalogs: [
-        {
-          path: path.join(fixturesDir, "locale/{locale}/messages"),
-          include: [path.join(fixturesDir, "src")],
-          exclude: [],
-        },
-      ],
-      format: poFormatter,
-    },
-    { skipValidation: true },
-  )
+): void {
+  const configs = writeConfigs(fixturesDir, preset)
 
   // Run actual extraction to get a template with real origins
-  const revert = silenceConsole()
-
-  await extractTemplateCommand(config, {
-    verbose: false,
-    workersOptions: { poolSize: 0 },
+  execFileSync(LINGUI_BIN, ["extract-template", "--workers", "1"], {
+    env: { ...process.env, LINGUI_CONFIG: configs.babel },
+    stdio: "ignore",
   })
 
-  revert()
+  const poFormatter = formatter({ origins: true })
 
   // Read the generated template
   const templatePath = path.join(fixturesDir, "locale", "messages.pot")
