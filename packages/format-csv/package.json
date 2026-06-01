@@ -44,6 +44,7 @@
     "papaparse": "^5.4.0"
   },
   "devDependencies": {
+    "typescript": "catalog:",
     "unbuild": "catalog:",
     "vitest": "catalog:"
   },

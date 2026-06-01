@@ -48,6 +48,7 @@
   "devDependencies": {
     "@lingui/test-utils": "workspace:*",
     "@types/normalize-path": "^3.0.0",
+    "typescript": "catalog:",
     "unbuild": "catalog:",
     "vitest": "catalog:"
   },
