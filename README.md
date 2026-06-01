@@ -116,4 +116,4 @@ The project is licensed under the [MIT][License] license.
 [Contributing]: https://github.com/lingui/js-lingui/blob/main/CONTRIBUTING.md
 [Issues]: https://github.com/lingui/js-lingui/issues/new/choose
 [PRWelcome]: http://makeapullrequest.com
-[Discord]: https://discord.gg/tBZqKpeF
+[Discord]: https://discord.gg/hdNuF3rupQ

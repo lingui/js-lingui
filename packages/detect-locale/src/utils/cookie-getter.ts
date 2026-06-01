@@ -1,6 +1,6 @@
-export function getCookie(key: string): string {
+export function getCookie(key: string): string | null {
   if (!key) {
-    return
+    return null
   }
 
   // To prevent the for loop in the first place assign an empty array
@@ -8,7 +8,7 @@ export function getCookie(key: string): string {
   const cookies = globalThis.document.cookie
     ? globalThis.document.cookie.split("; ")
     : []
-  const jar = {}
+  const jar: Record<string, string> = {}
   for (let i = 0; i < cookies.length; i++) {
     const parts = cookies[i].split("=")
     let value = parts.slice(1).join("=")
@@ -29,5 +29,5 @@ export function getCookie(key: string): string {
     }
   }
 
-  return key ? jar[key] : jar
+  return jar[key] ?? null
 }

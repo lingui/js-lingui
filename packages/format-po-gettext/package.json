@@ -49,6 +49,7 @@
   },
   "devDependencies": {
     "@lingui/test-utils": "workspace:*",
+    "typescript": "catalog:",
     "unbuild": "catalog:",
     "vitest": "catalog:"
   },

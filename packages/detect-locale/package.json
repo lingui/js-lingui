@@ -45,6 +45,7 @@
   ],
   "devDependencies": {
     "happy-dom": "^20.9.0",
+    "typescript": "catalog:",
     "unbuild": "catalog:",
     "vitest": "catalog:"
   },

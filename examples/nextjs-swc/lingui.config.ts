@@ -1,5 +1,6 @@
-/** @type {import('@lingui/conf').LinguiConfig} */
-module.exports = {
+import {defineConfig} from "@lingui/cli"
+
+export default defineConfig({
   locales: ['en', 'sr', 'es', 'pseudo'],
   pseudoLocale: 'pseudo',
   sourceLocale: 'en',
@@ -12,4 +13,4 @@ module.exports = {
       include: ['src/']
     }
   ]
-}
+})

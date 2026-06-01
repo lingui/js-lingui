@@ -83,6 +83,7 @@
     "eslint": "^9.39.3",
     "happy-dom": "^20.0.10",
     "solid-js": "^1.9.5",
+    "typescript": "catalog:",
     "unbuild": "3.6.1",
     "vite": "7.3.1",
     "vite-plugin-solid": "^2.11.12",

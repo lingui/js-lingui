@@ -83,6 +83,7 @@
     "happy-dom": "^20.9.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "typescript": "catalog:",
     "unbuild": "catalog:",
     "vitest": "catalog:"
   }
