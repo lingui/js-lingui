@@ -19,13 +19,13 @@ expect(i18n.t("welcome.body")).type.toBe<string>()
 expect(i18n.t).type.not.toBeCallableWith("invalid.id")
 
 // MessageDescriptor requires a valid ID
-expect<MessageDescriptor>().type.toBeAssignableWith({
+expect<MessageDescriptor>().type.toBeAssignableFrom({
   id: "welcome.title" as const,
   message: "Welcome!",
 })
 
 // MessageDescriptor rejects an invalid ID
-expect<MessageDescriptor>().type.not.toBeAssignableWith({
+expect<MessageDescriptor>().type.not.toBeAssignableFrom({
   id: "invalid.id",
   message: "Nope",
 })

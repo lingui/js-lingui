@@ -1,10 +1,4 @@
 {
-  "compilerOptions": {
-    "target": "ESNext",
-    "module": "Node16",
-    "moduleResolution": "Node16",
-    "skipLibCheck": true,
-    "esModuleInterop": true
-  },
-  "paths": {}
+  "extends": "../../../tsconfig.typetest.json",
+  "include": ["**/*"]
 }

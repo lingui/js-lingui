@@ -1,0 +1,5 @@
+{
+  "extends": "../../../tsconfig.typetest.json",
+  "include": ["**/*"],
+  "exclude": ["typed-ids/**/*"]
+}
