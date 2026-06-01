@@ -1,3 +1,4 @@
+import os from "node:os"
 import type { Bench } from "tinybench"
 import type { PresetConfig } from "../presets.js"
 
@@ -8,7 +9,7 @@ function formatTime(ms: number): string {
   return `${ms.toFixed(0)}ms`
 }
 
-function formatThroughput(value: number, unit: string): string {
+function formatUnits(value: number, unit: string): string {
   if (value >= 10000) return `${(value / 1000).toFixed(1)}k ${unit}`
   return `${Math.round(value)} ${unit}`
 }
@@ -25,14 +26,19 @@ function formatRme(rme: number): string {
 }
 
 export function printHeader(preset: PresetConfig) {
+  const cpus = os.cpus()
+  const cpuModel = cpus[0]?.model.trim() ?? "unknown"
+  const cpuCores = cpus.length
+
   const totalMsgs = preset.files * preset.messagesPerFile
   console.log("")
   console.log("══════════════════════════════════════════════════════════════")
   console.log(`  Lingui Benchmark — Preset: ${preset.name}`)
   console.log(
-    `  ${preset.files} files · ${totalMsgs} messages · ${preset.locales.length} locales`,
+    `  ${formatUnits(preset.files, "files")} · ${formatUnits(totalMsgs, "messages")} · ${preset.locales.length} locales`,
   )
   console.log(`  Node ${process.version} · ${process.platform} ${process.arch}`)
+  console.log(`  ${cpuModel} (${cpuCores} cores)`)
   console.log("══════════════════════════════════════════════════════════════")
 }
 
@@ -68,7 +74,7 @@ export function printScenario(title: string, bench: Bench, opts: ScenarioOpts) {
     const rme = formatRme(r.rme)
     const name = r.name.padEnd(nameWidth)
     const time = formatTime(r.mean).padStart(timeWidth)
-    const tp = formatThroughput(r.throughput, opts.throughputUnit)
+    const tp = formatUnits(r.throughput, opts.throughputUnit)
     console.log(`    ${name}  ${bar}  ${time}  ${tp}${rme}${marker}`)
   }
 
