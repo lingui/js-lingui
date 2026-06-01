@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.2.0](https://github.com/lingui/js-lingui/compare/v6.1.0...v6.2.0) (2026-06-01)
+
+### Bug Fixes
+
+* provide peer deps for workspace build tools ([#2557](https://github.com/lingui/js-lingui/issues/2557)) ([dd11c28](https://github.com/lingui/js-lingui/commit/dd11c284501fd1ee2b435945a8d8a9af5eeef7cc))
+
+### Features
+
+* integrate `pofile-ts` ([#2548](https://github.com/lingui/js-lingui/issues/2548)) ([ea5b2d3](https://github.com/lingui/js-lingui/commit/ea5b2d33426560990d3ce49a97a58bdedf775cb9))
+
 # [6.1.0](https://github.com/lingui/js-lingui/compare/v6.0.1...v6.1.0) (2026-05-21)
 
 **Note:** Version bump only for package @lingui/format-po-gettext
