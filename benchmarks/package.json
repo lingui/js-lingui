@@ -4,10 +4,10 @@
   "type": "module",
   "scripts": {
     "generate": "tsx src/generate-fixtures.ts",
-    "bench": "tsx src/run-benchmarks.ts",
-    "bench:small": "tsx src/run-benchmarks.ts --preset small",
-    "bench:medium": "tsx src/run-benchmarks.ts --preset medium",
-    "bench:large": "tsx src/run-benchmarks.ts --preset large"
+    "generate:small": "tsx src/generate-fixtures.ts --preset small",
+    "generate:medium": "tsx src/generate-fixtures.ts --preset medium",
+    "generate:large": "tsx src/generate-fixtures.ts --preset large",
+    "bench": "tsx src/run-benchmarks.ts"
   },
   "dependencies": {
     "@babel/core": "^7.20.12",

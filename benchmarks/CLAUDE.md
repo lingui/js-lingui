@@ -5,14 +5,14 @@
 ```
 benchmarks/
   src/
-    run-benchmarks.ts          ← Main entry: parses args, generates fixtures, runs scenarios, reports
-    generate-fixtures.ts       ← Standalone fixture generation (same logic as run-benchmarks)
+    generate-fixtures.ts       ← Generates source files + PO catalogs into .fixtures/{preset}/
+    run-benchmarks.ts          ← Runs benchmark scenarios against pre-generated fixtures
     presets.ts                 ← Preset definitions (small/medium/large)
     generators/
-      message-pool.ts          ← Pool of ~80 unique message templates (simple, interpolated, plural)
-      jsx-file-generator.ts    ← Generates .tsx React components using @lingui/react/macro
-      js-file-generator.ts     ← Generates .ts files using @lingui/core/macro
-      po-catalog-generator.ts  ← Generates pre-existing PO catalogs with translations
+      message-pool.ts          ← Pool of ~150 message templates + qualifier system for uniqueness
+      jsx-file-generator.ts    ← Generates .tsx components (Trans, Plural, useLingui hook)
+      js-file-generator.ts     ← Generates .ts files (t``, plural(), context directives)
+      po-catalog-generator.ts  ← Runs real extraction then populates translations
     scenarios/
       extract.bench.ts         ← Benchmarks the extract command (babel vs swc × 1/2 workers)
       extract-template.bench.ts← Benchmarks extract-template command
@@ -111,9 +111,14 @@ if (!selectedScenario || selectedScenario === "my-scenario") {
 
 ## Adding More Message Variety
 
-The message pool in `generators/message-pool.ts` has ~80 unique messages. For large presets (5000 files × 10 msgs = 50000) messages repeat. To increase variety:
+The message pool (`generators/message-pool.ts`) has ~150 base templates. Uniqueness is achieved by:
+- **Qualifiers**: 20 suffix phrases ("for this project", "in your workspace") appended to base messages, combined with a variant number derived from `fileIndex / QUALIFIERS.length`
+- **Context directives**: 20% of files get unique `lingui-set context="..."` which produces unique message IDs even for shared text
+
+To increase variety further:
 - Add entries to `SIMPLE_MESSAGES`, `INTERPOLATED_MESSAGES`, or `PLURAL_MESSAGES` arrays
-- Or use the `SeededRandom` class from `utils/deterministic-random.ts` to compose messages procedurally (e.g., combining template parts)
+- Add more entries to the `QUALIFIERS` array (more suffixes = more unique combinations)
+- Adjust the `shouldQualify`/`shouldExtend` modulo thresholds to control reuse rate
 
 ## Important Details
 
@@ -127,13 +132,18 @@ The message pool in `generators/message-pool.ts` has ~80 unique messages. For la
 ## CLI reference
 
 ```
-tsx src/run-benchmarks.ts [options]
+# Step 1: Generate fixtures (writes to .fixtures/ including preset.json)
+tsx src/generate-fixtures.ts [options]
 
 Options:
   --preset <name>          small | medium | large (default: medium)
   --files <n>              Override file count
   --messages-per-file <n>  Override messages per file
   --locales <list>         Comma-separated locale list
+
+# Step 2: Run benchmarks (reads preset.json from .fixtures/, no --preset needed)
+tsx src/run-benchmarks.ts [options]
+
+Options:
   --scenario <name>        Run only: extract | extract-template | compile | macro-transform
-  --skip-generate          Reuse existing fixtures (must have been generated before)
 ```

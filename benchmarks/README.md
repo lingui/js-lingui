@@ -8,28 +8,25 @@ Performance benchmarks for lingui CLI operations: message extraction, compilatio
 # Build workspace packages first (required once)
 yarn release:build
 
-# Run all benchmarks with medium preset (1000 files)
+# Step 1: Generate fixtures
+yarn workspace @lingui/benchmarks generate --preset small
+
+# Step 2: Run benchmarks
 yarn workspace @lingui/benchmarks bench
-
-# Smaller/faster run for development
-yarn workspace @lingui/benchmarks bench --preset small
-
-# Full-scale benchmark
-yarn workspace @lingui/benchmarks bench --preset large
 ```
 
 ## Presets
 
-| Preset | Files | Messages | Locales | Approx. Runtime |
-|--------|-------|----------|---------|-----------------|
-| small  | 100   | 1,000    | 3       | ~30s            |
-| medium | 1,000 | 10,000   | 5       | ~3min           |
-| large  | 5,000 | 50,000   | 5       | ~15min          |
+| Preset | Files | Messages | Locales |
+|--------|-------|----------|---------|
+| small  | 100   | 1,000    | 3       |
+| medium | 1,000 | 10,000   | 5       |
+| large  | 5,000 | 50,000   | 5       |
 
-Override individual parameters:
+Override individual parameters during generation:
 
 ```bash
-yarn workspace @lingui/benchmarks bench --files 500 --messages-per-file 20 --locales en,fr
+yarn workspace @lingui/benchmarks generate --preset medium --files 500 --messages-per-file 20 --locales en,fr
 ```
 
 ## Scenarios
@@ -62,33 +59,24 @@ Isolated benchmark of macro transformation speed (no file I/O, no catalog logic)
 
 ## Output
 
-- **Console**: Pretty tables printed to stdout
+- **Console**: Visual bar charts with throughput, timing, and comparison ratios
 - **JSON**: Machine-readable results at `.results/results.json`
-
-## Other Commands
-
-```bash
-# Generate fixtures without running benchmarks
-yarn workspace @lingui/benchmarks generate --preset medium
-
-# Reuse previously generated fixtures (skip regeneration)
-yarn workspace @lingui/benchmarks bench --skip-generate --preset medium
-```
 
 ## How Fixtures Work
 
 The benchmark generates a simulated project:
-- 50% `.tsx` files with `<Trans>` and `<Plural>` (JSX macros)
+- 50% `.tsx` files with `<Trans>`, `<Plural>`, and `useLingui()` hook (JSX macros)
 - 50% `.ts` files with `` t` ` `` and `plural()` (JS macros)
 - ~10% of messages are plurals
-- Pre-existing PO catalogs generated via real extraction (`lingui extract-template`), so they contain proper `#: file:line` origin references
+- ~30% of interpolated messages use complex expressions (`user.name`, `cart.getSubtotal()`)
+- ~20% of files use `// lingui-set context="..."` directives
+- 10-18% message reuse rate (realistic for a large project)
+- Pre-existing PO catalogs generated via real extraction (`lingui extract-template`), with proper `#: file:line` origins
 - 90% of messages have translations (simulates mature project with incremental new messages)
-- Translations are `[locale] Original message` to have realistic serialized content
 
 ## Dependencies
 
 - `tinybench` — benchmarking framework
 - `@swc/core` + `@lingui/swc-plugin` — SWC macro transformation
 - `lingui-swc` — Rust-based extractor for the CLI
-- `cli-table3` — console table formatting
 - Workspace packages: `@lingui/cli`, `@lingui/conf`, `@lingui/format-po`, etc.

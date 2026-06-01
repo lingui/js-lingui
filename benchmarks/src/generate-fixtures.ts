@@ -6,6 +6,12 @@ import { generateJsxFile } from "./generators/jsx-file-generator.js"
 import { generateJsFile } from "./generators/js-file-generator.js"
 import { generatePoCatalogs } from "./generators/po-catalog-generator.js"
 
+const FIXTURES_DIR = path.resolve(
+  path.dirname(new URL(import.meta.url).pathname),
+  "..",
+  ".fixtures",
+)
+
 const { values } = parseArgs({
   options: {
     preset: { type: "string", default: "medium" },
@@ -30,15 +36,12 @@ function resolvePreset(): PresetConfig {
 }
 
 async function generateFixtures(preset: PresetConfig) {
-  const benchDir = path.dirname(new URL(import.meta.url).pathname)
-  const fixturesDir = path.resolve(benchDir, "..", ".fixtures", preset.name)
-
-  if (fs.existsSync(fixturesDir)) {
-    fs.rmSync(fixturesDir, { recursive: true })
+  if (fs.existsSync(FIXTURES_DIR)) {
+    fs.rmSync(FIXTURES_DIR, { recursive: true })
   }
 
-  const componentsDir = path.join(fixturesDir, "src", "components")
-  const utilsDir = path.join(fixturesDir, "src", "utils")
+  const componentsDir = path.join(FIXTURES_DIR, "src", "components")
+  const utilsDir = path.join(FIXTURES_DIR, "src", "utils")
   fs.mkdirSync(componentsDir, { recursive: true })
   fs.mkdirSync(utilsDir, { recursive: true })
 
@@ -70,10 +73,16 @@ async function generateFixtures(preset: PresetConfig) {
   console.log(`  Source files generated in ${Date.now() - startTime}ms`)
 
   const catalogStart = Date.now()
-  await generatePoCatalogs(fixturesDir, preset)
+  await generatePoCatalogs(FIXTURES_DIR, preset)
   console.log(`  PO catalogs generated in ${Date.now() - catalogStart}ms`)
 
-  console.log(`  Fixtures directory: ${fixturesDir}`)
+  // Save preset config so bench can read it without needing --preset
+  fs.writeFileSync(
+    path.join(FIXTURES_DIR, "preset.json"),
+    JSON.stringify(preset, null, 2),
+  )
+
+  console.log(`  Fixtures directory: ${FIXTURES_DIR}`)
 }
 
 const preset = resolvePreset()
