@@ -27,7 +27,7 @@ export default {
     include: ["${absFixtures}/src"],
     exclude: [],
   }],
-  format: formatter({ origins: true }),
+  format: formatter(),
 }
 `
 
@@ -43,7 +43,7 @@ export default {
     include: ["${absFixtures}/src"],
     exclude: [],
   }],
-  format: formatter({ origins: true }),
+  format: formatter(),
   extractors: [createSwcExtractor()],
 }
 `
