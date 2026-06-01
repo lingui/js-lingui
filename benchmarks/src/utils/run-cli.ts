@@ -1,19 +1,13 @@
 import { execFileSync } from "node:child_process"
-import path from "path"
+import { fileURLToPath } from "node:url"
 
-const LINGUI_BIN = path.resolve(
-  path.dirname(new URL(import.meta.url).pathname),
-  "..",
-  "..",
-  "..",
-  "node_modules",
-  ".bin",
-  "lingui",
-)
+const cliEntry = fileURLToPath(import.meta.resolve("@lingui/cli"))
+// @lingui/cli exports "." -> "./dist/index.js", the binary is at "./dist/lingui.js"
+const cliBin = cliEntry.replace(/index\.js$/, "lingui.js")
 
 export function runLingui(args: string[], configPath: string): void {
   try {
-    execFileSync(LINGUI_BIN, args, {
+    execFileSync(process.execPath, [cliBin, ...args], {
       env: { ...process.env, LINGUI_CONFIG: configPath },
       stdio: ["ignore", "pipe", "pipe"],
     })
