@@ -1,13 +1,16 @@
 import { parse as parseIcu, Select, SelectCase } from "@messageformat/parser"
-import PO from "pofile"
-
+import {
+  parsePo,
+  stringifyPo,
+  createItem,
+  type PoItem,
+  type SerializeOptions,
+} from "pofile-ts"
 import type { CatalogFormatter, CatalogType, MessageType } from "@lingui/conf"
 import { generateMessageId } from "@lingui/message-utils/generateMessageId"
 import { formatter as poFormatter } from "@lingui/format-po"
 import type { PoFormatterOptions } from "@lingui/format-po"
 import { mapGettextPlurals2Icu } from "./utils/mapGettextPlurals2Icu"
-
-type POItem = InstanceType<typeof PO.Item>
 
 export type PoGettextFormatterOptions = PoFormatterOptions & {
   /**
@@ -61,13 +64,13 @@ const LINE_ENDINGS = /\r?\n/g
 const DEFAULT_CTX_PREFIX = "js-lingui:"
 
 function serializePlurals(
-  item: POItem,
+  item: PoItem,
   message: MessageType,
   id: string,
   isGeneratedId: boolean,
   options: PoGettextFormatterOptions,
   formatterCtx: { locale: string | undefined; sourceLocale: string },
-): POItem {
+): PoItem {
   // Depending on whether custom ids are used by the developer, the (potential plural) "original", untranslated ICU
   // message can be found in `message.message` or in the item's `key` itself.
   const icuMessage = message.message
@@ -164,7 +167,7 @@ function serializePlurals(
 }
 
 const convertPluralsToICU = (
-  item: POItem,
+  item: PoItem,
   pluralForms: string[] | undefined,
   lang: string,
   ctxPrefix: string = DEFAULT_CTX_PREFIX,
@@ -245,7 +248,7 @@ const convertPluralsToICU = (
 }
 
 const updateContextComment = (
-  item: POItem,
+  item: PoItem,
   contextComment: string,
   ctxPrefix: string,
 ) => {
@@ -299,11 +302,11 @@ function getContextFromComments(
  * This happens when plural calls have identical strings but different variables
  */
 function mergeDuplicatePluralEntries(
-  items: POItem[],
+  items: PoItem[],
   options: PoGettextFormatterOptions,
-): POItem[] {
+): PoItem[] {
   const ctxPrefix = options.customICUPrefix || DEFAULT_CTX_PREFIX
-  const itemMap = new Map<string, POItem[]>()
+  const itemMap = new Map<string, PoItem[]>()
 
   // Group items by msgid + msgid_plural combination
   for (const item of items) {
@@ -317,7 +320,7 @@ function mergeDuplicatePluralEntries(
     }
   }
 
-  const mergedItems: POItem[] = []
+  const mergedItems: PoItem[] = []
 
   for (const duplicateItems of itemMap.values()) {
     if (duplicateItems.length === 1) {
@@ -375,11 +378,11 @@ function replaceArgInIcu(icu: string, oldVar: string, newVar: string) {
  * This ensures all original message IDs are available in the compiled catalog
  */
 function expandMergedPluralEntries(
-  items: POItem[],
+  items: PoItem[],
   options: PoGettextFormatterOptions,
-): POItem[] {
+): PoItem[] {
   const ctxPrefix = options.customICUPrefix || DEFAULT_CTX_PREFIX
-  const expandedItems: POItem[] = []
+  const expandedItems: PoItem[] = []
 
   for (const item of items) {
     if (!item.msgid_plural) {
@@ -409,7 +412,7 @@ function expandMergedPluralEntries(
 
     // Create a new item for each variable after first
     for (const variable of variableList) {
-      const newItem = new PO.Item()
+      const newItem = createItem()
 
       // Set the msgid to the original ICU message
       newItem.msgid = item.msgid
@@ -450,12 +453,21 @@ export function formatter(
 
   const formatter = poFormatter(options)
 
+  // Build serialize options from the formatter options
+  const serializeOptions: SerializeOptions = {}
+  if (options.foldLength !== undefined) {
+    serializeOptions.foldLength = options.foldLength
+  }
+  if (options.compactMultiline !== undefined) {
+    serializeOptions.compactMultiline = options.compactMultiline
+  }
+
   return {
     catalogExtension: ".po",
     templateExtension: ".pot",
 
     parse(content, ctx): CatalogType {
-      const po = PO.parse(content)
+      const po = parsePo(content)
 
       if (options.mergePlurals) {
         // Expand merged entries back to individual catalog entries BEFORE ICU conversion
@@ -487,18 +499,21 @@ export function formatter(
         )
       })
 
-      return formatter.parse(po.toString(), ctx) as CatalogType
+      return formatter.parse(
+        stringifyPo(po, serializeOptions),
+        ctx,
+      ) as CatalogType
     },
 
     serialize(catalog, ctx): string {
-      const po = PO.parse(formatter.serialize(catalog, ctx) as string)
+      const po = parsePo(formatter.serialize(catalog, ctx) as string)
 
       po.items = po.items.map((item) => {
         const isGeneratedId = !item.extractedComments.includes(
           "js-lingui-explicit-id",
         )
         const id = isGeneratedId
-          ? generateMessageId(item.msgid, item.msgctxt)
+          ? generateMessageId(item.msgid, item.msgctxt as string)
           : item.msgid
         const message = catalog[id]
         return serializePlurals(item, message, id, isGeneratedId, options, ctx)
@@ -507,8 +522,8 @@ export function formatter(
       if (options.mergePlurals) {
         // Merge duplicate entries that have the same msgid and msgid_plural
         const mergedPlurals = mergeDuplicatePluralEntries(po.items, options)
-        const newItems: POItem[] = []
-        const processed = new Set<POItem>()
+        const newItems: PoItem[] = []
+        const processed = new Set<PoItem>()
 
         // adding it this way versus just adding all mergedPlurals preserves order of translations
 
@@ -531,7 +546,7 @@ export function formatter(
         po.items = newItems
       }
 
-      return po.toString()
+      return stringifyPo(po, serializeOptions)
     },
   }
 }

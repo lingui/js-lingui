@@ -454,28 +454,26 @@ exports[`Catalog > make > should collect and write catalogs 2`] = `
 exports[`Catalog > make > should merge with existing catalogs 1`] = `
 {
   cs: {
-    mY42CM: {
+    Hello World: {
       comments: [],
       context: undefined,
       extra: {
         flags: [],
         translatorComments: [],
       },
-      message: Hello World,
       obsolete: false,
       origin: [],
       translation: Ahoj Brno,
     },
   },
   en: {
-    mY42CM: {
+    Hello World: {
       comments: [],
       context: undefined,
       extra: {
         flags: [],
         translatorComments: [],
       },
-      message: Hello World,
       obsolete: false,
       origin: [],
       translation: Ahoj Brno,
@@ -593,7 +591,7 @@ exports[`Catalog > make > should merge with existing catalogs 2`] = `
           1,
         ],
       ],
-      translation: ,
+      translation: Ahoj Brno,
     },
     custom.id: {
       comments: [],
@@ -610,18 +608,6 @@ exports[`Catalog > make > should merge with existing catalogs 2`] = `
         ],
       ],
       translation: ,
-    },
-    mY42CM: {
-      comments: [],
-      context: undefined,
-      extra: {
-        flags: [],
-        translatorComments: [],
-      },
-      message: Hello World,
-      obsolete: true,
-      origin: [],
-      translation: Ahoj Brno,
     },
   },
   en: {
@@ -731,7 +717,7 @@ exports[`Catalog > make > should merge with existing catalogs 2`] = `
           1,
         ],
       ],
-      translation: ,
+      translation: Ahoj Brno,
     },
     custom.id: {
       comments: [],
@@ -748,18 +734,6 @@ exports[`Catalog > make > should merge with existing catalogs 2`] = `
         ],
       ],
       translation: Message with id,
-    },
-    mY42CM: {
-      comments: [],
-      context: undefined,
-      extra: {
-        flags: [],
-        translatorComments: [],
-      },
-      message: Hello World,
-      obsolete: true,
-      origin: [],
-      translation: Ahoj Brno,
     },
   },
 }
