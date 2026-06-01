@@ -11,9 +11,23 @@ export function mergeCatalog(
   const nextKeys = Object.keys(nextCatalog)
   const prevKeys = Object.keys(prevCatalog)
 
-  const newKeys = nextKeys.filter((key) => !prevKeys.includes(key))
-  const mergeKeys = nextKeys.filter((key) => prevKeys.includes(key))
-  const obsoleteKeys = prevKeys.filter((key) => !nextKeys.includes(key))
+  const hasKeysInBothCatalogs = prevKeys.length > 0 && nextKeys.length > 0
+  let newKeys: string[]
+  let mergeKeys: string[]
+  let obsoleteKeys: string[]
+
+  if (hasKeysInBothCatalogs) {
+    const prevKeySet = new Set(prevKeys)
+    const nextKeySet = new Set(nextKeys)
+
+    newKeys = nextKeys.filter((key) => !prevKeySet.has(key))
+    mergeKeys = nextKeys.filter((key) => prevKeySet.has(key))
+    obsoleteKeys = prevKeys.filter((key) => !nextKeySet.has(key))
+  } else {
+    newKeys = nextKeys
+    mergeKeys = []
+    obsoleteKeys = prevKeys
+  }
 
   // Initialize new catalog with new keys
   const newMessages: CatalogType = Object.fromEntries(
