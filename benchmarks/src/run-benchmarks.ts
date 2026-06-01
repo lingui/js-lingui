@@ -29,14 +29,15 @@ const { values } = parseArgs({
 })
 
 function resolvePreset(): PresetConfig {
-  const base = PRESETS[values.preset || "medium"]!
+  const presetName = String(values.preset || "medium")
+  const base = PRESETS[presetName]!
   return {
     ...base,
     files: values.files ? Number(values.files) : base.files,
     messagesPerFile: values["messages-per-file"]
       ? Number(values["messages-per-file"])
       : base.messagesPerFile,
-    locales: values.locales ? values.locales.split(",") : base.locales,
+    locales: values.locales ? String(values.locales).split(",") : base.locales,
   }
 }
 

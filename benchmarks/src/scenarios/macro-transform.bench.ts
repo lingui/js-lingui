@@ -35,7 +35,7 @@ export async function runMacroTransformBenchmark(
   const sourceFiles = loadSourceFiles(fixturesDir)
   const config = buildConfig(fixturesDir, preset, false)
 
-  const bench = new Bench({ warmup: 1, iterations: 3 })
+  const bench = new Bench({ warmupIterations: 1, iterations: 3 })
 
   bench.add("Babel", async () => {
     for (const { filename, code } of sourceFiles) {

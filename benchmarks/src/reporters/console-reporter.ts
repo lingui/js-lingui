@@ -11,11 +11,6 @@ function formatThroughput(value: number, unit: string): string {
   return `${Math.round(value)} ${unit}`
 }
 
-interface BenchmarkResult {
-  name: string
-  bench: Bench
-}
-
 export function printHeader(preset: PresetConfig) {
   const totalMsgs = preset.files * preset.messagesPerFile
   console.log("")

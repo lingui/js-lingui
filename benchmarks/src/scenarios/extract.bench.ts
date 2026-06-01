@@ -13,7 +13,7 @@ export async function runExtractBenchmark(
   const babelConfig = buildConfig(fixturesDir, preset, false)
   const swcConfig = buildConfig(fixturesDir, preset, true)
 
-  const bench = new Bench({ warmup: 1, iterations: 3 })
+  const bench = new Bench({ warmupIterations: 1, iterations: 3 })
 
   bench.add("Babel · 1 worker", async () => {
     const restore = silenceConsole()

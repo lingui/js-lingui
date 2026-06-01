@@ -12,7 +12,7 @@ export async function runCompileBenchmark(
 
   const config = buildConfig(fixturesDir, preset, false)
 
-  const bench = new Bench({ warmup: 1, iterations: 5 })
+  const bench = new Bench({ warmupIterations: 1, iterations: 5 })
 
   bench.add("1 worker", async () => {
     const restore = silenceConsole()
