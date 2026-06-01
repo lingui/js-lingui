@@ -54,14 +54,14 @@ export function printScenario(title: string, bench: Bench, opts: ScenarioOpts) {
     return { name: task.name, mean: r.mean, rme: r.rme, throughput }
   })
 
-  const maxThroughput = Math.max(...results.map((r) => r.throughput))
+  const maxMean = Math.max(...results.map((r) => r.mean))
   const fastest = results.reduce((a, b) => (a.mean < b.mean ? a : b))
 
   const nameWidth = Math.max(...results.map((r) => r.name.length))
   const timeWidth = Math.max(...results.map((r) => formatTime(r.mean).length))
 
   for (const r of results) {
-    const ratio = r.throughput / maxThroughput
+    const ratio = r.mean / maxMean
     const bar = makeBar(ratio)
     const isFastest = r === fastest
     const marker = isFastest ? " ⚡" : ""
