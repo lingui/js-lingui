@@ -342,6 +342,64 @@ msgstr[3] "# dní"
     `)
   })
 
+  describe("foldLength", () => {
+    it("should disable folding when foldLength is 0", () => {
+      const format = createFormat({ foldLength: 0 })
+
+      const catalog: CatalogType = {
+        veryLongString: {
+          translation:
+            "One morning, when Gregor Samsa woke from troubled dreams, he found himself transformed in his bed into a horrible vermin.",
+        },
+      }
+
+      const actual = format.serialize(catalog, defaultSerializeCtx)
+      expect(actual).toMatchSnapshot()
+    })
+
+    it("should fold at custom length", () => {
+      const format = createFormat({ foldLength: 40 })
+
+      const catalog: CatalogType = {
+        veryLongString: {
+          translation:
+            "One morning, when Gregor Samsa woke from troubled dreams, he found himself transformed in his bed into a horrible vermin.",
+        },
+      }
+
+      const actual = format.serialize(catalog, defaultSerializeCtx)
+      expect(actual).toMatchSnapshot()
+    })
+  })
+
+  describe("compactMultiline", () => {
+    it("should use non-compact format when compactMultiline is false", () => {
+      const format = createFormat({ compactMultiline: false })
+
+      const catalog: CatalogType = {
+        multiline: {
+          translation: "First line\nSecond line\nThird line",
+        },
+      }
+
+      const actual = format.serialize(catalog, defaultSerializeCtx)
+      expect(actual).toMatchSnapshot()
+    })
+
+    it("should use compact format when compactMultiline is true", () => {
+      const format = createFormat({ compactMultiline: true })
+
+      const catalog: CatalogType = {
+        multiline: {
+          translation: "First line\nSecond line\nThird line",
+        },
+      }
+
+      const actual = format.serialize(catalog, defaultSerializeCtx)
+      expect(actual).toMatchSnapshot()
+    })
+  })
+
   describe("using custom prefix", () => {
     it("parses plurals correctly", () => {
       const defaultProfile = fs
