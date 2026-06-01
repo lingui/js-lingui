@@ -47,6 +47,7 @@
     "pofile-ts": "^4.0.3"
   },
   "devDependencies": {
+    "typescript": "catalog:",
     "unbuild": "catalog:",
     "vitest": "catalog:"
   },
