@@ -61,6 +61,20 @@ export async function dynamicActivate(locale: string) {
 
 Remember that the file extension is mandatory.
 
+## Options
+
+### `failOnMissing`
+
+Fail the build when missing translations are detected.
+
+- `true` or `"resolved"`: fail only if a translation is still missing after `fallbackLocales` are applied.
+- `"catalog"`: fail if the target locale catalog itself has missing translations before `fallbackLocales` are applied.
+- `false` or omitted: do not fail the build on missing translations.
+
+### `failOnCompileError`
+
+Fail the build when message compilation produces errors.
+
 :::note
 Catalogs with the `.json` extension are treated differently by Webpack-compatible bundlers. They load as ES module with default export, so your import should look like this:
 

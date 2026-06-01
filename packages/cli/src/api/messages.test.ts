@@ -17,17 +17,16 @@ describe("createMissingErrorMessage", () => {
           source: "World",
         },
       ],
-      "bla bla",
+      "resolved",
     )
 
     expect(message).toMatchInlineSnapshot(`
       Failed to compile catalog for locale en!
 
-      Missing 2 translation(s):
+      Missing 2 translation(s) after applying fallbackLocales:
 
       1: Hello
       World: World
-
     `)
   })
 })

@@ -7,11 +7,13 @@ import {
   createMissingErrorMessage,
   createCompilationErrorMessage,
 } from "@lingui/cli/api"
+import type { MissingBehavior } from "@lingui/cli/api"
 import path from "path"
 import type { Plugin } from "vite"
 import { linguiTransformerBabelPreset } from "./linguiTransformerPreset"
 
 const fileRegex = /(\.po|\?lingui)$/
+type FailOnMissingOption = boolean | MissingBehavior
 
 export type LinguiPluginOpts = {
   cwd?: string
@@ -19,14 +21,31 @@ export type LinguiPluginOpts = {
   skipValidation?: boolean
 
   /**
-   * If true would fail compilation on missing translations
+   * If true would fail compilation on missing translations after fallbackLocales are applied
    **/
-  failOnMissing?: boolean
+  failOnMissing?: FailOnMissingOption
 
   /**
    * If true would fail compilation on message compilation errors
    **/
   failOnCompileError?: boolean
+}
+
+function isFailOnMissingEnabled(option: FailOnMissingOption | undefined) {
+  return option === true || option === "resolved" || option === "catalog"
+}
+
+function getFailOnMissingBehavior(
+  option: FailOnMissingOption | undefined,
+): MissingBehavior {
+  return option === "catalog" ? "catalog" : "resolved"
+}
+
+function formatFailOnMissingOption(option: FailOnMissingOption | undefined) {
+  if (option === true) return "true"
+  if (option === "resolved") return '"resolved"'
+  if (option === "catalog") return '"catalog"'
+  return "false"
 }
 
 export function lingui({
@@ -81,25 +100,27 @@ Please check that catalogs.path is filled properly.\n`,
 
           const dependency = await getCatalogDependentFiles(catalog, locale)
           dependency.forEach((file) => this.addWatchFile(file))
+          const missingBehavior = getFailOnMissingBehavior(failOnMissing)
 
           const { messages, missing: missingMessages } =
             await catalog.getTranslations(locale, {
               fallbackLocales: config.fallbackLocales,
               sourceLocale: config.sourceLocale,
+              missingBehavior,
             })
 
           if (
-            failOnMissing &&
+            isFailOnMissingEnabled(failOnMissing) &&
             locale !== config.pseudoLocale &&
             missingMessages.length > 0
           ) {
             const message = createMissingErrorMessage(
               locale,
               missingMessages,
-              "loader",
+              missingBehavior,
             )
             throw new Error(
-              `${message}\nYou see this error because \`failOnMissing=true\` in Vite Plugin configuration.`,
+              `${message}\nYou see this error because \`failOnMissing=${formatFailOnMissingOption(failOnMissing)}\` in Vite Plugin configuration.`,
             )
           }
 

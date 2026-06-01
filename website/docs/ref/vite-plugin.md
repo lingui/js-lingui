@@ -48,6 +48,20 @@ export async function dynamicActivate(locale: string) {
 
 Remember that the file extension is mandatory.
 
+## Options
+
+### `failOnMissing`
+
+Fail the build when missing translations are detected.
+
+- `true` or `"resolved"`: fail only if a translation is still missing after `fallbackLocales` are applied.
+- `"catalog"`: fail if the target locale catalog itself has missing translations before `fallbackLocales` are applied.
+- `false` or omitted: do not fail the build on missing translations.
+
+### `failOnCompileError`
+
+Fail the build when message compilation produces errors.
+
 :::tip
 If you are using a format that has a different extension than `*.po`, you need to specify the `?lingui` suffix:
 
