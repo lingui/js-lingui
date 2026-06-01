@@ -135,8 +135,7 @@ export type PoFormatterOptions = {
    * ```
    *
    * The compact format is recommended as it's compatible with translation
-   * platforms like Crowdin that may strip empty first lines, avoiding
-   * unnecessary diffs.
+   * platforms that may strip empty first lines, avoiding unnecessary diffs.
    *
    * @default true
    */
