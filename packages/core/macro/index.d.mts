@@ -1,4 +1,4 @@
-import type { I18n, MessageDescriptor } from "@lingui/core"
+import type { I18n, MessageDescriptor, MessageId } from "@lingui/core"
 
 export type ChoiceOptions = {
   /** Offset of value when calculating plural forms */
@@ -17,11 +17,11 @@ export type ChoiceOptions = {
 
 export type MacroMessageDescriptor = (
   | {
-      id: string
+      id: MessageId
       message?: string
     }
   | {
-      id?: string
+      id?: MessageId
       message: string
     }
 ) & {

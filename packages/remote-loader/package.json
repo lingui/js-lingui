@@ -51,6 +51,7 @@
     "@lingui/message-utils": "workspace:*"
   },
   "devDependencies": {
+    "typescript": "catalog:",
     "unbuild": "catalog:"
   },
   "unbuild": {

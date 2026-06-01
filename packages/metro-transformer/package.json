@@ -61,6 +61,7 @@
     "memoize-one": "^6.0.0"
   },
   "devDependencies": {
+    "typescript": "catalog:",
     "unbuild": "catalog:",
     "vitest": "catalog:"
   },
