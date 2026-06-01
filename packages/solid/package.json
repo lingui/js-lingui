@@ -85,8 +85,8 @@
     "solid-js": "^1.9.5",
     "typescript": "catalog:",
     "unbuild": "3.6.1",
-    "vite": "7.3.1",
+    "vite": "8.0.10",
     "vite-plugin-solid": "^2.11.12",
-    "vitest": "4.0.18"
+    "vitest": "catalog:"
   }
 }
