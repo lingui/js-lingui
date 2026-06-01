@@ -1552,7 +1552,6 @@ __metadata:
     "@lingui/message-utils": "workspace:*"
     "@lingui/swc-plugin": "npm:^6.3.0"
     "@swc/core": "npm:^1.11.0"
-    cli-table3: "npm:^0.6.5"
     lingui-swc: "npm:^0.5.2"
     tinybench: "npm:^2.6.0"
     tsx: "npm:^4.21.0"

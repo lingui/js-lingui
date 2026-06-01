@@ -9,11 +9,7 @@ import { runExtractBenchmark } from "./scenarios/extract.bench.js"
 import { runExtractTemplateBenchmark } from "./scenarios/extract-template.bench.js"
 import { runCompileBenchmark } from "./scenarios/compile.bench.js"
 import { runMacroTransformBenchmark } from "./scenarios/macro-transform.bench.js"
-import {
-  printHeader,
-  printScenario,
-  printMacroScenario,
-} from "./reporters/console-reporter.js"
+import { printHeader, printScenario } from "./reporters/console-reporter.js"
 import { writeJsonResults } from "./reporters/json-reporter.js"
 
 const { values } = parseArgs({
@@ -107,35 +103,21 @@ async function main() {
   if (!selectedScenario || selectedScenario === "extract") {
     console.log("\nRunning: Extract (full pipeline)...")
     const bench = await runExtractBenchmark(fixturesDir, preset)
-    printScenario(
-      "Extract (scan → extract → merge → write)",
-      bench,
-      "files/s",
-      preset.files,
-    )
-    scenarios.push({
-      name: "extract",
-      bench,
-      throughputDivisor: preset.files,
-      throughputUnit: "files/s",
-    })
+    const opts = { throughputUnit: "files/s", throughputDivisor: preset.files }
+    printScenario("Extract (scan → extract → merge → write)", bench, opts)
+    scenarios.push({ name: "extract", bench, ...opts })
   }
 
   if (!selectedScenario || selectedScenario === "extract-template") {
     console.log("\nRunning: Extract Template (no merge)...")
     const bench = await runExtractTemplateBenchmark(fixturesDir, preset)
+    const opts = { throughputUnit: "files/s", throughputDivisor: preset.files }
     printScenario(
       "Extract Template (scan → extract → write, no merge)",
       bench,
-      "files/s",
-      preset.files,
+      opts,
     )
-    scenarios.push({
-      name: "extract-template",
-      bench,
-      throughputDivisor: preset.files,
-      throughputUnit: "files/s",
-    })
+    scenarios.push({ name: "extract-template", bench, ...opts })
   }
 
   if (!selectedScenario || selectedScenario === "compile") {
@@ -143,34 +125,17 @@ async function main() {
     const bench = await runCompileBenchmark(fixturesDir, preset)
     const totalMsgs =
       preset.files * preset.messagesPerFile * preset.locales.length
-    printScenario(
-      "Compile (read PO → compile ICU → write JS)",
-      bench,
-      "msgs/s",
-      totalMsgs,
-    )
-    scenarios.push({
-      name: "compile",
-      bench,
-      throughputDivisor: totalMsgs,
-      throughputUnit: "msgs/s",
-    })
+    const opts = { throughputUnit: "msgs/s", throughputDivisor: totalMsgs }
+    printScenario("Compile (read PO → compile ICU → write JS)", bench, opts)
+    scenarios.push({ name: "compile", bench, ...opts })
   }
 
   if (!selectedScenario || selectedScenario === "macro-transform") {
     console.log("\nRunning: Pure Macro Transform...")
     const bench = await runMacroTransformBenchmark(fixturesDir, preset)
-    printMacroScenario(
-      "Pure Macro Transform (no I/O, no catalogs)",
-      bench,
-      preset.files,
-    )
-    scenarios.push({
-      name: "macro-transform",
-      bench,
-      throughputDivisor: preset.files,
-      throughputUnit: "files/s",
-    })
+    const opts = { throughputUnit: "files/s", throughputDivisor: preset.files }
+    printScenario("Pure Macro Transform (no I/O, no catalogs)", bench, opts)
+    scenarios.push({ name: "macro-transform", bench, ...opts })
   }
 
   writeJsonResults(resultsDir, preset, scenarios)
