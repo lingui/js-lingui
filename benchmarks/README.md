@@ -81,7 +81,8 @@ The benchmark generates a simulated project:
 - 50% `.tsx` files with `<Trans>` and `<Plural>` (JSX macros)
 - 50% `.ts` files with `` t` ` `` and `plural()` (JS macros)
 - ~10% of messages are plurals
-- Pre-existing PO catalogs with 90% of messages already translated (simulates mature project with incremental new messages)
+- Pre-existing PO catalogs generated via real extraction (`lingui extract-template`), so they contain proper `#: file:line` origin references
+- 90% of messages have translations (simulates mature project with incremental new messages)
 - Translations are `[locale] Original message` to have realistic serialized content
 
 ## Dependencies

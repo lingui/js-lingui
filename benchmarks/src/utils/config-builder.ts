@@ -26,7 +26,7 @@ export function buildConfig(
           exclude: [],
         },
       ],
-      format: formatter({ origins: false }),
+      format: formatter({ origins: true }),
       ...(useSwcExtractor ? { extractors: [createSwcExtractor()] } : {}),
     },
     { skipValidation: true, resolvedConfigPath: configPath },
@@ -61,7 +61,7 @@ export default {
     include: ["${fixturesDir}/src"],
     exclude: [],
   }],
-  format: formatter({ origins: false }),
+  format: formatter({ origins: true }),
 ${extractorConfig}}
 `
   fs.writeFileSync(configPath, content)

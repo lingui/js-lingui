@@ -29,7 +29,7 @@ function resolvePreset(): PresetConfig {
   }
 }
 
-function generateFixtures(preset: PresetConfig) {
+async function generateFixtures(preset: PresetConfig) {
   const benchDir = path.dirname(new URL(import.meta.url).pathname)
   const fixturesDir = path.resolve(benchDir, "..", ".fixtures", preset.name)
 
@@ -70,11 +70,11 @@ function generateFixtures(preset: PresetConfig) {
   console.log(`  Source files generated in ${Date.now() - startTime}ms`)
 
   const catalogStart = Date.now()
-  generatePoCatalogs(fixturesDir, preset)
+  await generatePoCatalogs(fixturesDir, preset)
   console.log(`  PO catalogs generated in ${Date.now() - catalogStart}ms`)
 
   console.log(`  Fixtures directory: ${fixturesDir}`)
 }
 
 const preset = resolvePreset()
-generateFixtures(preset)
+await generateFixtures(preset)

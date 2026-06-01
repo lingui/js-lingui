@@ -41,7 +41,7 @@ function resolvePreset(): PresetConfig {
   }
 }
 
-function generateFixtures(fixturesDir: string, preset: PresetConfig) {
+async function generateFixtures(fixturesDir: string, preset: PresetConfig) {
   if (fs.existsSync(fixturesDir)) {
     fs.rmSync(fixturesDir, { recursive: true })
   }
@@ -75,7 +75,7 @@ function generateFixtures(fixturesDir: string, preset: PresetConfig) {
     fs.writeFileSync(path.join(utilsDir, `util${padded}.ts`), content)
   }
 
-  generatePoCatalogs(fixturesDir, preset)
+  await generatePoCatalogs(fixturesDir, preset)
   console.log(`Fixtures generated in ${Date.now() - startTime}ms`)
 }
 
@@ -86,7 +86,7 @@ async function main() {
   const resultsDir = path.resolve(benchDir, "..", ".results")
 
   if (!values["skip-generate"]) {
-    generateFixtures(fixturesDir, preset)
+    await generateFixtures(fixturesDir, preset)
   } else if (!fs.existsSync(fixturesDir)) {
     console.error(
       `Fixtures not found at ${fixturesDir}. Run without --skip-generate first.`,

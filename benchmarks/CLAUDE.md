@@ -54,9 +54,11 @@ CLI commands print progress (spinners, stats). The `silenceConsole()` helper mon
 
 ### Fixture generation
 
-Messages are deterministic — same preset always produces identical fixtures. The `message-pool.ts` provides messages by index (no randomness). The PO catalogs are generated using `@lingui/format-po`'s `serialize()` method directly, ensuring they are in the exact format the parser expects.
+Messages are deterministic — same preset always produces identical fixtures. The `message-pool.ts` provides messages by index (no randomness).
 
-Catalog overlap: 90% of unique messages have pre-existing translations. The remaining 10% simulate newly added code not yet in catalogs.
+**PO catalog generation** uses real extraction: the generator runs `lingui extract-template` against the generated source files to produce a template with correct origins (`#: file:line` references). It then populates 90% of entries with translations and writes per-locale `.po` files using the `@lingui/format-po` formatter with `origins: true`. This means the PO files contain realistic `#:` reference lines pointing to actual source locations — the same format a real project would have.
+
+Catalog overlap: 90% of unique messages have pre-existing translations. The remaining 10% simulate newly added code not yet in catalogs (empty translation string).
 
 ## Adding a New Scenario
 
@@ -105,6 +107,8 @@ The message pool in `generators/message-pool.ts` has ~80 unique messages. For la
 - **Multi-worker requires config file on disk**: the CLI's worker pool re-loads config from `resolvedConfigPath` in each thread. That's why `config-builder.ts` writes a config file.
 - **SWC plugin WASM overhead**: the `@lingui/swc-plugin` has per-call WASM init cost when called via `@swc/core.transform()`. The `lingui-swc` extractor batches internally and amortizes this. So the `macro-transform` scenario (per-file transform) shows different perf characteristics than the `extract` scenario (batched extractor).
 - **Unique message count**: with the current pool size (~80 templates), PO catalogs contain ~64 unique entries regardless of file count. This is realistic (many files share messages) but means compile benchmarks process fewer catalog entries than total source messages.
+- **Fixture generation is async**: `generatePoCatalogs()` runs actual extraction via `lingui extract-template` command, so it must be awaited. This makes fixture generation slower (~400ms for small) but produces realistic PO files with proper origin references.
+- **PO origins**: the formatter uses `origins: true` — catalogs contain `#: src/components/Component0000.tsx:33` references. This adds serialization/parsing cost that a real project would have.
 
 ## CLI reference
 

@@ -1,75 +1,78 @@
 import path from "path"
 import fs from "fs"
+import { makeConfig } from "@lingui/conf"
 import { formatter } from "@lingui/format-po"
-import { generateMessageId } from "@lingui/message-utils/generateMessageId"
 import type { CatalogType } from "@lingui/conf"
-import { getMessageAtIndex } from "./message-pool.js"
 import type { PresetConfig } from "../presets.js"
-
-function getMessageText(
-  fileIndex: number,
-  msgIndex: number,
-  messagesPerFile: number,
-): string {
-  const globalIdx = fileIndex * messagesPerFile + msgIndex
-  const isPlural = msgIndex % 10 === 9
-  const msg = getMessageAtIndex(globalIdx, isPlural)
-
-  switch (msg.type) {
-    case "simple":
-      return msg.text
-    case "interpolated":
-      return msg.text
-    case "plural":
-      return msg.text
-  }
-}
+import { silenceConsole } from "../utils/silence.js"
 
 function generateTranslation(text: string, locale: string): string {
   return `[${locale}] ${text}`
 }
 
-export function generatePoCatalogs(
+export async function generatePoCatalogs(
   fixturesDir: string,
   preset: PresetConfig,
-): void {
-  const poFormatter = formatter({ origins: false })
-  const totalMessages = preset.files * preset.messagesPerFile
-  const existingCount = Math.floor(totalMessages * 0.9)
+): Promise<void> {
+  const { default: extractTemplateCommand } =
+    await import("@lingui/cli/commands/extract-template")
 
-  const allMessages: { id: string; message: string }[] = []
+  const poFormatter = formatter({ origins: true })
 
-  for (let fileIdx = 0; fileIdx < preset.files; fileIdx++) {
-    for (let msgIdx = 0; msgIdx < preset.messagesPerFile; msgIdx++) {
-      const text = getMessageText(fileIdx, msgIdx, preset.messagesPerFile)
-      const id = generateMessageId(text)
-      allMessages.push({ id, message: text })
-    }
-  }
-
-  const uniqueMessages = new Map<string, string>()
-  for (const { id, message } of allMessages) {
-    if (!uniqueMessages.has(id)) {
-      uniqueMessages.set(id, message)
-    }
-  }
-
-  const uniqueEntries = [...uniqueMessages.entries()]
-  const existingEntries = uniqueEntries.slice(
-    0,
-    Math.min(existingCount, uniqueEntries.length),
+  const config = makeConfig(
+    {
+      rootDir: fixturesDir,
+      locales: preset.locales,
+      sourceLocale: "en",
+      catalogs: [
+        {
+          path: path.join(fixturesDir, "locale/{locale}/messages"),
+          include: [path.join(fixturesDir, "src")],
+          exclude: [],
+        },
+      ],
+      format: poFormatter,
+    },
+    { skipValidation: true },
   )
 
+  // Run actual extraction to get a template with real origins
+  const revert = silenceConsole()
+
+  await extractTemplateCommand(config, {
+    verbose: false,
+    workersOptions: { poolSize: 0 },
+  })
+
+  revert()
+
+  // Read the generated template
+  const templatePath = path.join(fixturesDir, "locale", "messages.pot")
+  const templateContent = fs.readFileSync(templatePath, "utf-8")
+  const templateCatalog: CatalogType = poFormatter.parse(templateContent, {
+    locale: undefined,
+    sourceLocale: "en",
+    filename: templatePath,
+  }) as CatalogType
+
+  const entries = Object.entries(templateCatalog)
+  const existingCount = Math.floor(entries.length * 0.9)
+
+  // For each locale, write a catalog with 90% translated
   for (const locale of preset.locales) {
     const catalog: CatalogType = {}
 
-    for (const [id, message] of existingEntries) {
+    for (let i = 0; i < entries.length; i++) {
+      const [id, msg] = entries[i]!
+      const hasTranslation = i < existingCount
+
       catalog[id] = {
-        translation:
-          locale === "en" ? message : generateTranslation(message, locale),
-        message,
-        comments: [],
-        origin: [],
+        ...msg,
+        translation: hasTranslation
+          ? locale === "en"
+            ? msg.message || ""
+            : generateTranslation(msg.message || id, locale)
+          : "",
       }
     }
 
@@ -77,7 +80,7 @@ export function generatePoCatalogs(
     fs.mkdirSync(localeDir, { recursive: true })
 
     const filename = path.join(localeDir, "messages.po")
-    const content = poFormatter.serialize!(catalog, {
+    const content = poFormatter.serialize(catalog, {
       locale,
       sourceLocale: "en",
       filename,
