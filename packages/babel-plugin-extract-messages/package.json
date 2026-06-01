@@ -42,6 +42,9 @@
   "engines": {
     "node": ">=22.19.0"
   },
+  "dependencies": {
+    "@lingui/conf": "workspace:*"
+  },
   "devDependencies": {
     "@babel/core": "^7.29.0",
     "@babel/traverse": "^7.29.0",

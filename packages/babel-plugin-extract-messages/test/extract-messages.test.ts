@@ -6,56 +6,51 @@ import { mockConsole } from "@lingui/test-utils"
 import linguiMacroPlugin, {
   type LinguiPluginOpts,
 } from "@lingui/babel-plugin-lingui-macro"
+import { getConfig } from "@lingui/conf"
 
 const transform = (filename: string) => {
   const rootDir = path.join(__dirname, "fixtures")
-
   const filePath = path.join(rootDir, filename)
   const code = fs.readFileSync(filePath).toString()
 
-  return transformCode(code, filePath, rootDir)
+  return transformCode(code, filePath, rootDir, path.dirname(filePath))
 }
 
 const transformCode = (
   code: string,
   filename = "test-case.js",
   rootDir = ".",
+  configCwd = path.join(__dirname, "fixtures"),
 ) => {
-  process.env.LINGUI_CONFIG = path.join(
-    __dirname,
-    "fixtures",
-    "lingui.config.js",
-  )
   const messages: ExtractedMessage[] = []
+  const linguiConfig = getConfig({ cwd: configCwd })
 
-  try {
-    const pluginOpts: ExtractPluginOpts = {
-      onMessageExtracted(msg: ExtractedMessage) {
-        const filename = path.relative(rootDir, msg.origin![0])
-        messages.push({
-          ...msg,
-          origin: [filename, msg.origin![1]],
-        })
-      },
-    }
-
-    babelTransform(code, {
-      configFile: false,
-      filename,
-      plugins: [
-        "@babel/plugin-syntax-jsx",
-        [
-          linguiMacroPlugin,
-          {
-            descriptorFields: "all",
-          } satisfies LinguiPluginOpts,
-        ],
-        [plugin, pluginOpts],
-      ],
-    })
-  } finally {
-    process.env.LINGUI_CONFIG = undefined
+  const pluginOpts: ExtractPluginOpts = {
+    linguiConfig,
+    onMessageExtracted(msg: ExtractedMessage) {
+      const filename = path.relative(rootDir, msg.origin![0])
+      messages.push({
+        ...msg,
+        origin: [filename, msg.origin![1]],
+      })
+    },
   }
+
+  babelTransform(code, {
+    configFile: false,
+    filename,
+    plugins: [
+      "@babel/plugin-syntax-jsx",
+      [
+        linguiMacroPlugin,
+        {
+          descriptorFields: "all",
+          linguiConfig,
+        } satisfies LinguiPluginOpts,
+      ],
+      [plugin, pluginOpts],
+    ],
+  })
 
   return messages
 }
@@ -129,6 +124,69 @@ import { Trans } from "@lingui/react";
         )
       })
     })
+
+    it("Should respect runtimeConfigModule.Trans", () => {
+      expectNoConsole(() => {
+        const messages = transform("custom-runtime/jsx-with-macros.js")
+        expect(messages.length).toBe(1)
+        expect(messages[0]).toMatchObject({
+          id: "custom.runtime",
+          message: "Custom runtime",
+        })
+      })
+    })
+
+    it("Should load runtimeConfigModule.Trans fallback", () => {
+      const originalConfig = process.env.LINGUI_CONFIG
+
+      process.env.LINGUI_CONFIG = path.join(
+        __dirname,
+        "fixtures",
+        "custom-runtime",
+        "lingui.config.js",
+      )
+
+      try {
+        expectNoConsole(() => {
+          const messages: ExtractedMessage[] = []
+
+          babelTransform(
+            `
+import { MyTrans } from "@my/lingui"
+
+;<MyTrans id="custom.runtime" message="Custom runtime" />
+            `,
+            {
+              configFile: false,
+              filename: "test-case.js",
+              plugins: [
+                "@babel/plugin-syntax-jsx",
+                [
+                  plugin,
+                  {
+                    onMessageExtracted(msg: ExtractedMessage) {
+                      messages.push(msg)
+                    },
+                  } satisfies ExtractPluginOpts,
+                ],
+              ],
+            },
+          )
+
+          expect(messages.length).toBe(1)
+          expect(messages[0]).toMatchObject({
+            id: "custom.runtime",
+            message: "Custom runtime",
+          })
+        })
+      } finally {
+        if (originalConfig === undefined) {
+          process.env.LINGUI_CONFIG = undefined
+        } else {
+          process.env.LINGUI_CONFIG = originalConfig
+        }
+      }
+    })
   })
 
   describe("CallExpression i18n._()", () => {
@@ -143,7 +201,7 @@ import { Trans } from "@lingui/react";
       const code = `
       // member access
       ctx.i18n._("Message")
-      
+
       // member access any depth
       ctx.req.i18n._("Message")
       `
@@ -167,10 +225,10 @@ import { Trans } from "@lingui/react";
       const code = `
       /* lingui-extract-ignore */
       i18n._("Message")
-            
+
       /* lingui-extract-ignore */
       ctx.i18n._("Message")
-      
+
        /* lingui-extract-ignore */
       ctx.req.i18n._("Message")
       `
