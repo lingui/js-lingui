@@ -1,20 +1,10 @@
 import path from "path"
 import fs from "fs"
-import { execFileSync } from "node:child_process"
 import { formatter } from "@lingui/format-po"
 import type { CatalogType } from "@lingui/conf"
 import type { PresetConfig } from "../presets.js"
 import { writeConfigs } from "../utils/config-builder.js"
-
-const LINGUI_BIN = path.resolve(
-  path.dirname(new URL(import.meta.url).pathname),
-  "..",
-  "..",
-  "..",
-  "node_modules",
-  ".bin",
-  "lingui",
-)
+import { runLingui } from "../utils/run-cli.js"
 
 function generateTranslation(text: string, locale: string): string {
   return `[${locale}] ${text}`
@@ -27,10 +17,7 @@ export function generatePoCatalogs(
   const configs = writeConfigs(fixturesDir, preset)
 
   // Run actual extraction to get a template with real origins
-  execFileSync(LINGUI_BIN, ["extract-template", "--workers", "1"], {
-    env: { ...process.env, LINGUI_CONFIG: configs.babel },
-    stdio: "ignore",
-  })
+  runLingui(["extract-template", "--workers", "1"], configs.babel)
 
   const poFormatter = formatter({ origins: true })
 
