@@ -2,15 +2,7 @@ import path from "path"
 import fs from "fs"
 import type { PresetConfig } from "../presets.js"
 
-export interface ConfigPaths {
-  babel: string
-  swc: string
-}
-
-export function writeConfigs(
-  fixturesDir: string,
-  preset: PresetConfig,
-): ConfigPaths {
+export function writeConfigs(fixturesDir: string, preset: PresetConfig) {
   const absFixtures = path.resolve(fixturesDir)
 
   const babelConfigPath = path.join(absFixtures, "lingui.config.babel.mjs")
@@ -23,8 +15,8 @@ export default {
   locales: ${JSON.stringify(preset.locales)},
   sourceLocale: "en",
   catalogs: [{
-    path: ${JSON.stringify(path.join(absFixtures, "locale", "{locale}", "messages"))},
-    include: [${JSON.stringify(path.join(absFixtures, "src"))}],
+    path: "<rootDir>/locale/{locale}/messages",
+    include: ["<rootDir>/src"],
     exclude: [],
   }],
   format: formatter(),
@@ -39,17 +31,19 @@ export default {
   locales: ${JSON.stringify(preset.locales)},
   sourceLocale: "en",
   catalogs: [{
-    path: ${JSON.stringify(path.join(absFixtures, "locale", "{locale}", "messages"))},
-    include: [${JSON.stringify(path.join(absFixtures, "src"))}],
+    path: "<rootDir>/locale/{locale}/messages",
+    include: ["<rootDir>/src"],
     exclude: [],
   }],
   format: formatter(),
   extractors: [createSwcExtractor()],
 }
 `
-
   fs.writeFileSync(babelConfigPath, baseConfig)
   fs.writeFileSync(swcConfigPath, swcConfig)
 
-  return { babel: babelConfigPath, swc: swcConfigPath }
+  return {
+    babel: babelConfigPath,
+    swc: swcConfigPath,
+  }
 }
