@@ -26,6 +26,7 @@ export default async function extract(
   ]
 
   for (const ext of extractorsToExtract) {
+    if (!("match" in ext) || !("extract" in ext)) continue
     if (!ext.match(filename)) continue
 
     try {

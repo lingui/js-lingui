@@ -4,6 +4,8 @@ import { globSync } from "node:fs"
 import normalize from "normalize-path"
 
 import {
+  Experimental__BatchExtractorType,
+  ExtractedMessage,
   LinguiConfigNormalized,
   MessageType,
   OrderBy,
@@ -20,6 +22,7 @@ import { mergeCatalog } from "./catalog/mergeCatalog.js"
 import {
   extractFromFiles,
   extractFromFilesWithWorkerPool,
+  mergeExtractedMessage,
 } from "./catalog/extractFromFiles.js"
 import {
   isDirectory,
@@ -156,6 +159,15 @@ export class Catalog {
       paths = paths.filter((path: string) => regex.test(normalize(path)))
     }
 
+    const batchExtractor = this.config.extractors?.find(
+      (ext): ext is Experimental__BatchExtractorType =>
+        "extractFromFiles" in ext,
+    )
+
+    if (batchExtractor) {
+      return await this.collectWithBatchExtractor(batchExtractor, paths)
+    }
+
     if (options.workerPool) {
       return await extractFromFilesWithWorkerPool(
         options.workerPool,
@@ -165,6 +177,29 @@ export class Catalog {
     }
 
     return await extractFromFiles(paths, this.config)
+  }
+
+  private async collectWithBatchExtractor(
+    extractor: Experimental__BatchExtractorType,
+    paths: string[],
+  ): Promise<ExtractedCatalogType | undefined> {
+    const messages: ExtractedCatalogType = {}
+
+    try {
+      await extractor.extractFromFiles(
+        paths,
+        (next: ExtractedMessage) => {
+          mergeExtractedMessage(next, messages, this.config)
+        },
+        { linguiConfig: this.config },
+      )
+    } catch (e) {
+      console.error(`Batch extractor failed: ${(e as Error).message}`)
+      console.error((e as Error).stack)
+      return undefined
+    }
+
+    return messages
   }
 
   /*

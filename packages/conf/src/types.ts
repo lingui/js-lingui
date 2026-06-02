@@ -39,8 +39,18 @@ export type CatalogType<Extra = CatalogExtra> = {
   [msgId: string]: MessageType<Extra>
 }
 
-export type ExtractorType = {
+/**
+ * Per-file extractor that processes one file at a time.
+ * The CLI reads file contents and calls `extract` for each file that `match` returns true for.
+ */
+export type PerFileExtractorType = {
+  /**
+   * Determine whether this extractor should handle the given file.
+   */
   match(filename: string): boolean
+  /**
+   * Extract messages from a single file's source code.
+   */
   extract(
     filename: string,
     code: string,
@@ -48,6 +58,35 @@ export type ExtractorType = {
     ctx: ExtractorCtx,
   ): Promise<void> | void
 }
+
+/**
+ * Batch extractor that receives all file paths at once and handles
+ * file I/O and parallelism internally.
+ *
+ * When configured, it takes full responsibility for extraction —
+ * no other extractors are applied, no file reading or worker pool is used by the CLI.
+ *
+ * @experimental This type is experimental and may change in future versions.
+ */
+export type Experimental__BatchExtractorType = {
+  /**
+   * Extract messages from multiple files at once.
+   * The extractor is responsible for reading file contents and managing concurrency.
+   *
+   * @param filenames - All source file paths matched by the catalog's include/exclude patterns.
+   * @param onMessageExtracted - Callback to emit each extracted message.
+   * @param ctx - Extraction context containing the Lingui configuration.
+   */
+  extractFromFiles(
+    filenames: string[],
+    onMessageExtracted: (msg: ExtractedMessage) => void,
+    ctx: ExtractorCtx,
+  ): Promise<void>
+}
+
+export type ExtractorType =
+  | PerFileExtractorType
+  | Experimental__BatchExtractorType
 
 export type CatalogFormatter = {
   catalogExtension: string
@@ -218,7 +257,11 @@ export type LinguiConfig = {
   compilerBabelOptions?: any
   fallbackLocales?: FallbackLocales | false
   /**
-   * Specifies custom message extractor implementations
+   * Specifies custom message extractor implementations.
+   *
+   * Extractors can be either per-file (with `match` and `extract` methods)
+   * or batch (with `extractFromFiles` method that receives all paths at once
+   * and handles file I/O and parallelism internally).
    *
    * https://lingui.dev/guides/custom-extractor
    */
