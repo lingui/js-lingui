@@ -5,7 +5,7 @@
 ```
 benchmarks/
   src/
-    generate-fixtures.ts       ← Generates source files + PO catalogs into .fixtures/{preset}/
+    generate-fixtures.ts       ← Generates source files + PO catalogs into .fixtures/
     run-benchmarks.ts          ← Runs benchmark scenarios against pre-generated fixtures
     presets.ts                 ← Preset definitions (small/medium/large)
     generators/
@@ -19,7 +19,7 @@ benchmarks/
       compile.bench.ts         ← Benchmarks compile command
       macro-transform.bench.ts ← Pure Babel vs SWC plugin transform (no CLI, no I/O)
     reporters/
-      console-reporter.ts      ← Prints cli-table3 tables to stdout
+      console-reporter.ts      ← Prints a bar-chart style report to stdout
       json-reporter.ts         ← Writes .results/results.json
     utils/
       config-builder.ts        ← Builds LinguiConfigNormalized + writes a config file to disk
@@ -37,7 +37,7 @@ Scenarios spawn `lingui` as a subprocess via `utils/run-cli.ts`:
 runLingui(["extract", "--workers", "1"], configs.babel)
 ```
 
-This calls the `lingui` binary from `node_modules/.bin/` with `LINGUI_CONFIG` env var pointing to the config file. The subprocess approach:
+This runs the `@lingui/cli` JS entrypoint (bin `./dist/lingui.js`) in a subprocess with `LINGUI_CONFIG` env var pointing to the config file. The subprocess approach:
 - Uses the built `dist/` code (no transpilation cost in measurement)
 - Workers resolve modules correctly (no tsx needed)
 - Measures real-world performance including Node.js startup and config loading

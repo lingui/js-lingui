@@ -23,8 +23,8 @@ export default {
   locales: ${JSON.stringify(preset.locales)},
   sourceLocale: "en",
   catalogs: [{
-    path: "${absFixtures}/locale/{locale}/messages",
-    include: ["${absFixtures}/src"],
+    path: ${JSON.stringify(path.join(absFixtures, "locale", "{locale}", "messages"))},
+    include: [${JSON.stringify(path.join(absFixtures, "src"))}],
     exclude: [],
   }],
   format: formatter(),
@@ -39,8 +39,8 @@ export default {
   locales: ${JSON.stringify(preset.locales)},
   sourceLocale: "en",
   catalogs: [{
-    path: "${absFixtures}/locale/{locale}/messages",
-    include: ["${absFixtures}/src"],
+    path: ${JSON.stringify(path.join(absFixtures, "locale", "{locale}", "messages"))},
+    include: [${JSON.stringify(path.join(absFixtures, "src"))}],
     exclude: [],
   }],
   format: formatter(),

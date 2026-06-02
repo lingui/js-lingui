@@ -1,13 +1,14 @@
 import path from "path"
 import fs from "fs"
 import { parseArgs } from "node:util"
+import { fileURLToPath } from "node:url"
 import { PRESETS, type PresetConfig } from "./presets.js"
 import { generateJsxFile } from "./generators/jsx-file-generator.js"
 import { generateJsFile } from "./generators/js-file-generator.js"
 import { generatePoCatalogs } from "./generators/po-catalog-generator.js"
 
 const FIXTURES_DIR = path.resolve(
-  path.dirname(new URL(import.meta.url).pathname),
+  path.dirname(fileURLToPath(import.meta.url)),
   "..",
   ".fixtures",
 )

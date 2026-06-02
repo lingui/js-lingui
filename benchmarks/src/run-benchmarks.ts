@@ -1,6 +1,7 @@
 import path from "path"
 import fs from "fs"
 import { parseArgs } from "node:util"
+import { fileURLToPath } from "node:url"
 import type { PresetConfig } from "./presets.js"
 import { runExtractBenchmark } from "./scenarios/extract.bench.js"
 import { runExtractTemplateBenchmark } from "./scenarios/extract-template.bench.js"
@@ -10,7 +11,7 @@ import { printHeader, printScenario } from "./reporters/console-reporter.js"
 import { writeJsonResults } from "./reporters/json-reporter.js"
 
 const FIXTURES_DIR = path.resolve(
-  path.dirname(new URL(import.meta.url).pathname),
+  path.dirname(fileURLToPath(import.meta.url)),
   "..",
   ".fixtures",
 )
