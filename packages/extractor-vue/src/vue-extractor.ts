@@ -1,6 +1,6 @@
 import { compileTemplate, parse, type SFCBlock } from "@vue/compiler-sfc"
 import { extractor } from "@lingui/cli/api"
-import { type ExtractorCtx, type ExtractorType } from "@lingui/conf"
+import { type ExtractorCtx, type PerFileExtractorType } from "@lingui/conf"
 import { compileScriptSetup, type ScriptTarget } from "./compile-script-setup"
 
 export interface VueExtractorConfig {
@@ -9,7 +9,7 @@ export interface VueExtractorConfig {
 
 export const createVueExtractor = (
   config: VueExtractorConfig = {},
-): ExtractorType => ({
+): PerFileExtractorType => ({
   match(filename: string) {
     return filename.endsWith(".vue")
   },
@@ -64,7 +64,7 @@ export const createVueExtractor = (
             target != null && target.source !== "",
         )
         .map(({ source, map, isTs }) =>
-          extractor.extract(
+          (extractor as PerFileExtractorType).extract(
             filename + (isTs ? ".ts" : ""),
             source,
             onMessageExtracted,
