@@ -29,7 +29,7 @@ export default async function extract(
   linguiConfig: LinguiConfigNormalized,
 ): Promise<boolean> {
   const extractorsToExtract = getConfiguredExtractors(linguiConfig).filter(
-    (ext): ext is PerFileExtractorType => !("extract" in ext),
+    (ext): ext is PerFileExtractorType => "extract" in ext,
   )
 
   for (const ext of extractorsToExtract) {

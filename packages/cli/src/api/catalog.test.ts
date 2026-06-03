@@ -15,10 +15,27 @@ import {
   defaultMergeOptions,
   makeCatalog,
 } from "../tests.js"
-import { AllCatalogsType } from "./types.js"
-import { extractFromFiles } from "./catalog/extractFromFiles.js"
+import { AllCatalogsType, ExtractedCatalogType } from "./types.js"
+import {
+  extractFromFiles,
+  mergeExtractedMessage,
+} from "./catalog/extractFromFiles.js"
 import { FormatterWrapper, getFormat } from "./formats/index.js"
 import { createBabelExtractor } from "./extractors/babel.js"
+import type { ExtractedMessage, LinguiConfigNormalized } from "@lingui/conf"
+
+async function extractMessages(
+  paths: string[],
+  config: LinguiConfigNormalized,
+) {
+  const messages: ExtractedCatalogType = {}
+  const success = await extractFromFiles(
+    paths,
+    (msg: ExtractedMessage) => mergeExtractedMessage(msg, messages, config),
+    config,
+  )
+  return success ? messages : undefined
+}
 
 export const fixture = (...dirs: string[]) =>
   (
@@ -181,7 +198,7 @@ describe("Catalog", () => {
 
   describe("collect", () => {
     it("should support JSX and Typescript", async () => {
-      const messages = await extractFromFiles(
+      const messages = await extractMessages(
         [
           fixture("collect-typescript-jsx/jsx-in-js.js"),
           fixture("collect-typescript-jsx/jsx-syntax.jsx"),
@@ -195,7 +212,7 @@ describe("Catalog", () => {
     })
 
     it("should sort placeholders to keep them stable between runs", async () => {
-      const runA = await extractFromFiles(
+      const runA = await extractMessages(
         [
           fixture("collect-placeholders-sorting/a.ts"),
           fixture("collect-placeholders-sorting/b.ts"),
@@ -203,7 +220,7 @@ describe("Catalog", () => {
         mockConfig(),
       )
 
-      const runB = await extractFromFiles(
+      const runB = await extractMessages(
         [
           fixture("collect-placeholders-sorting/b.ts"),
           fixture("collect-placeholders-sorting/a.ts"),
@@ -226,7 +243,7 @@ describe("Catalog", () => {
     })
 
     it("should support experimental typescript decorators under a flag", async () => {
-      const messages = await extractFromFiles(
+      const messages = await extractMessages(
         [fixture("collect-typescript-jsx/tsx-experimental-decorators.tsx")],
         mockConfig({
           extractors: [
