@@ -4,6 +4,7 @@ import {
   ExtractedMessage,
   ExtractorType,
   LinguiConfigNormalized,
+  PerFileExtractorType,
 } from "@lingui/conf"
 
 let defaultExtractor: ExtractorType
@@ -16,17 +17,22 @@ function createDefaultExtractor(linguiConfig: LinguiConfigNormalized) {
   return defaultExtractor
 }
 
+export const getConfiguredExtractors = (
+  linguiConfig: LinguiConfigNormalized,
+) => {
+  return linguiConfig.extractors ?? [createDefaultExtractor(linguiConfig)]
+}
+
 export default async function extract(
   filename: string,
   onMessageExtracted: (msg: ExtractedMessage) => void,
   linguiConfig: LinguiConfigNormalized,
 ): Promise<boolean> {
-  const extractorsToExtract = linguiConfig.extractors ?? [
-    createDefaultExtractor(linguiConfig),
-  ]
+  const extractorsToExtract = getConfiguredExtractors(linguiConfig).filter(
+    (ext): ext is PerFileExtractorType => !("extract" in ext),
+  )
 
   for (const ext of extractorsToExtract) {
-    if (!("match" in ext) || !("extract" in ext)) continue
     if (!ext.match(filename)) continue
 
     try {

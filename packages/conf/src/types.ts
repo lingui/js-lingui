@@ -60,20 +60,24 @@ export type PerFileExtractorType = {
 }
 
 /**
- * Batch extractor that receives all file paths at once and handles
+ * Batch extractor that receives all matched file paths at once and handles
  * file I/O and parallelism internally.
  *
- * When configured, it takes full responsibility for extraction —
- * no other extractors are applied, no file reading or worker pool is used by the CLI.
+ * Files are matched using `match` and only those are passed to `extractFromFiles`.
+ * The CLI does not read file contents or use worker pools for batch extractors.
  *
  * @experimental This type is experimental and may change in future versions.
  */
 export type Experimental__BatchExtractorType = {
   /**
+   * Determine whether this extractor should handle the given file.
+   */
+  match(filename: string): boolean
+  /**
    * Extract messages from multiple files at once.
    * The extractor is responsible for reading file contents and managing concurrency.
    *
-   * @param filenames - All source file paths matched by the catalog's include/exclude patterns.
+   * @param filenames - File paths that passed the `match` filter.
    * @param onMessageExtracted - Callback to emit each extracted message.
    * @param ctx - Extraction context containing the Lingui configuration.
    */

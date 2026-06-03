@@ -6,6 +6,7 @@ import normalize from "normalize-path"
 import {
   Experimental__BatchExtractorType,
   ExtractedMessage,
+  ExtractorType,
   LinguiConfigNormalized,
   MessageType,
   OrderBy,
@@ -33,6 +34,13 @@ import {
 } from "./utils.js"
 import { AllCatalogsType, CatalogType, ExtractedCatalogType } from "./types.js"
 import { ExtractWorkerPool } from "./workerPools.js"
+import { getConfiguredExtractors } from "./extractors/index.js"
+
+function isBatchExtractor(
+  ext: ExtractorType,
+): ext is Experimental__BatchExtractorType {
+  return "extractFromFiles" in ext
+}
 
 const LOCALE = "{locale}"
 const LOCALE_SUFFIX_RE = /\{locale\}.*$/
@@ -159,46 +167,74 @@ export class Catalog {
       paths = paths.filter((path: string) => regex.test(normalize(path)))
     }
 
-    const batchExtractor = this.config.extractors?.find(
-      (ext): ext is Experimental__BatchExtractorType =>
-        "extractFromFiles" in ext,
-    )
+    const extractors = getConfiguredExtractors(this.config)
 
-    if (batchExtractor) {
-      return await this.collectWithBatchExtractor(batchExtractor, paths)
+    if (!extractors.some(isBatchExtractor)) {
+      if (options.workerPool) {
+        return await extractFromFilesWithWorkerPool(
+          options.workerPool,
+          paths,
+          this.config,
+        )
+      }
+
+      return await extractFromFiles(paths, this.config)
     }
 
-    if (options.workerPool) {
-      return await extractFromFilesWithWorkerPool(
-        options.workerPool,
-        paths,
-        this.config,
-      )
-    }
-
-    return await extractFromFiles(paths, this.config)
+    return await this.collectWithExtractors(extractors, paths, options)
   }
 
-  private async collectWithBatchExtractor(
-    extractor: Experimental__BatchExtractorType,
+  private async collectWithExtractors(
+    extractors: ExtractorType[],
     paths: string[],
+    options: { workerPool?: ExtractWorkerPool },
   ): Promise<ExtractedCatalogType | undefined> {
     const messages: ExtractedCatalogType = {}
+    let remaining = paths
+    let catalogSuccess = true
 
-    try {
-      await extractor.extractFromFiles(
-        paths,
-        (next: ExtractedMessage) => {
-          mergeExtractedMessage(next, messages, this.config)
-        },
-        { linguiConfig: this.config },
-      )
-    } catch (e) {
-      console.error(`Batch extractor failed: ${(e as Error).message}`)
-      console.error((e as Error).stack)
-      return undefined
+    for (const extractor of extractors) {
+      if (remaining.length === 0) break
+
+      const matched = remaining.filter((f) => extractor.match(f))
+      if (matched.length === 0) continue
+
+      remaining = remaining.filter((f) => !extractor.match(f))
+
+      if (isBatchExtractor(extractor)) {
+        try {
+          await extractor.extractFromFiles(
+            matched,
+            (next: ExtractedMessage) => {
+              mergeExtractedMessage(next, messages, this.config)
+            },
+            { linguiConfig: this.config },
+          )
+        } catch (e) {
+          console.error(`Batch extractor failed: ${(e as Error).message}`)
+          console.error((e as Error).stack)
+          catalogSuccess = false
+        }
+      } else {
+        const result = options.workerPool
+          ? await extractFromFilesWithWorkerPool(
+              options.workerPool,
+              matched,
+              this.config,
+            )
+          : await extractFromFiles(matched, this.config)
+
+        if (!result) {
+          catalogSuccess = false
+        } else {
+          // todo mergeExtractedMessage
+
+          Object.assign(messages, result)
+        }
+      }
     }
 
+    if (!catalogSuccess) return undefined
     return messages
   }
 
