@@ -50,6 +50,7 @@ Example:
 - **Avoiding duplicates:** duplicate messages are merged together automatically. Translators will not have to translate the same phrases again and again. This could lead to cost savings, especially if translators charge by word count.
 - **Smaller bundle:** Lingui generates short IDs such as `MbT6FE` which are typically shorter than manually crafted IDs like `index.header.title`. This results in a smaller bundle size, optimizing your application's performance.
 - **Preventing ID collisions:** as your application scales, explicit IDs can potentially lead to conflicts. Lingui's generated IDs help avoid such collisions.
+- **Readability is a non-issue:** even though generated IDs aren't human-readable, you would hardly see them. Translators work with the source string in the catalog, while the IDs remain behind the scenes.
 
 ### Benefits of Explicit IDs
 
@@ -63,17 +64,6 @@ If you use explicit IDs, you can opt in to [Typed Message IDs](/guides/typed-mes
 :::
 
 The choice between these two strategies depends on your project requirements and priorities. However, it's important to note that Lingui provides the full range of benefits, especially with generated IDs.
-
-:::note
-You don't have to worry about the readability of the IDs because you would hardly see them. When extracted into a PO file, translators would see the source string and its corresponding translation, while the IDs remain behind the scenes:
-
-```gettext
-#: src/App.tsx:1
-msgid "Lingui example"
-msgstr "Lingui przyklad"
-```
-
-:::
 
 ## Context
 
@@ -178,6 +168,10 @@ import { msg } from "@lingui/core/macro";
 
 msg`Hello World`;
 ```
+
+:::tip
+Enforce generated IDs with the Lingui [ESLint Plugin](/ref/eslint-plugin) rule [`require-implicit-id`](https://github.com/lingui/eslint-plugin/blob/main/docs/rules/require-implicit-id.md).
+:::
 
 ## Using Explicit IDs
 
