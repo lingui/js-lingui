@@ -114,7 +114,7 @@ export type PoFormatterOptions = {
    * When a string exceeds this length, it will be split across multiple lines.
    * Set to `0` to disable folding (strings will only break on actual newlines).
    *
-   * @default 80
+   * @default 0
    */
   foldLength?: number
 
@@ -312,6 +312,7 @@ export function formatter(options: PoFormatterOptions = {}): CatalogFormatter {
   options = {
     origins: true,
     lineNumbers: true,
+    foldLength: 0,
     ...options,
   }
 

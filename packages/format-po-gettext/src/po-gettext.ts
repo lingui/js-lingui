@@ -448,6 +448,7 @@ export function formatter(
   options = {
     origins: true,
     lineNumbers: true,
+    foldLength: 0,
     ...options,
   }
 

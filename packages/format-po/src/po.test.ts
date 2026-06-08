@@ -543,8 +543,8 @@ describe("pofile format", () => {
   })
 
   describe("foldLength", () => {
-    it("should disable folding when foldLength is 0", () => {
-      const format = createFormatter({ foldLength: 0 })
+    it("should not fold by default", () => {
+      const format = createFormatter()
 
       const catalog: CatalogType = {
         veryLongString: {
