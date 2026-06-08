@@ -4,7 +4,6 @@ import { globSync } from "node:fs"
 import normalize from "normalize-path"
 
 import {
-  Experimental__BatchExtractorType,
   ExtractedMessage,
   ExtractorType,
   LinguiConfigNormalized,
@@ -34,13 +33,10 @@ import {
 } from "./utils.js"
 import { AllCatalogsType, CatalogType, ExtractedCatalogType } from "./types.js"
 import { ExtractWorkerPool } from "./workerPools.js"
-import { getConfiguredExtractors } from "./extractors/index.js"
-
-function isBatchExtractor(
-  ext: ExtractorType,
-): ext is Experimental__BatchExtractorType {
-  return "extractFromFiles" in ext
-}
+import {
+  getConfiguredExtractors,
+  isBatchExtractor,
+} from "./extractors/index.js"
 
 const LOCALE = "{locale}"
 const LOCALE_SUFFIX_RE = /\{locale\}.*$/
