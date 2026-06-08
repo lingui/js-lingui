@@ -174,7 +174,7 @@ export class Catalog {
 
     const extractors = getConfiguredExtractors(this.config)
 
-    // optimized hot path, is there is not btach extractors defined, skip more complex logic
+    // Optimized hot path: if there are no batch extractors defined, skip the more complex logic.
     if (!extractors.some(isBatchExtractor)) {
       const success = options.workerPool
         ? await extractFromFilesWithWorkerPool(
@@ -210,10 +210,20 @@ export class Catalog {
     for (const extractor of extractors) {
       if (remaining.length === 0) break
 
-      const matched = remaining.filter((f) => extractor.match(f))
+      const matched: string[] = []
+      const unmatched: string[] = []
+
+      for (const f of remaining) {
+        if (extractor.match(f)) {
+          matched.push(f)
+        } else {
+          unmatched.push(f)
+        }
+      }
+
       if (matched.length === 0) continue
 
-      remaining = remaining.filter((f) => !extractor.match(f))
+      remaining = unmatched
 
       if (isBatchExtractor(extractor)) {
         try {
