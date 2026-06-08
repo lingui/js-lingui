@@ -343,8 +343,8 @@ msgstr[3] "# dní"
   })
 
   describe("foldLength", () => {
-    it("should disable folding when foldLength is 0", () => {
-      const format = createFormat({ foldLength: 0 })
+    it("should not fold by default", () => {
+      const format = createFormat()
 
       const catalog: CatalogType = {
         veryLongString: {
