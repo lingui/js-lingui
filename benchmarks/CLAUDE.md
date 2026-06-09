@@ -23,8 +23,6 @@ benchmarks/
       json-reporter.ts         ← Writes .results/results.json
     utils/
       config-builder.ts        ← Builds LinguiConfigNormalized + writes a config file to disk
-      silence.ts               ← Suppresses console/stdout during benchmark iterations
-      deterministic-random.ts  ← Seeded PRNG (unused currently, available for future use)
 ```
 
 ## Key Patterns
