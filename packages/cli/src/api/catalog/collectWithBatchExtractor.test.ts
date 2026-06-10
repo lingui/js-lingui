@@ -9,8 +9,9 @@ import { makeConfig } from "@lingui/conf"
 import { describe, expect, it, vi } from "vitest"
 import { Catalog } from "../catalog.js"
 import { getFormat } from "../formats/index.js"
+import { mockConsole } from "@lingui/test-utils"
 
-const fixturesDir = path.resolve(__dirname, "../fixtures")
+const fixturesDir = path.resolve(import.meta.dirname, "../fixtures")
 const collectDir = path.join(fixturesDir, "collect")
 
 const matchAll = () => true
@@ -86,6 +87,42 @@ describe("Catalog.collect with batch extractor", () => {
     expect(result!["msg.world"]?.message).toBe("World")
   })
 
+  it("should throw an error when duplicate identifier with different defaults found", async () => {
+    const extractor: Experimental__BatchExtractorType = {
+      match: matchAll,
+      extractFromFiles: async (
+        filenames: string[],
+        onMessageExtracted: (msg: ExtractedMessage) => void,
+      ) => {
+        onMessageExtracted({
+          id: "custom.id",
+          message: "Hello",
+          origin: [filenames[0]!, 1],
+        })
+        onMessageExtracted({
+          id: "custom.id",
+          message: "World",
+          origin: [filenames[0]!, 5],
+        })
+      },
+    }
+
+    const catalog = await makeCatalogWithExtractors([extractor])
+
+    expect.assertions(2)
+    await mockConsole(async (console) => {
+      const result = await catalog.collect()
+
+      expect(result).toBeUndefined()
+
+      expect(console.error).toHaveBeenCalledWith(
+        expect.stringContaining(
+          `Encountered different default translations for message`,
+        ),
+      )
+    })
+  })
+
   it("returns undefined on extractor error", async () => {
     const extractor: Experimental__BatchExtractorType = {
       match: matchAll,
@@ -95,11 +132,14 @@ describe("Catalog.collect with batch extractor", () => {
     }
 
     const catalog = await makeCatalogWithExtractors([extractor])
-    const consoleSpy = vi.spyOn(console, "error").mockImplementation(() => {})
-    const result = await catalog.collect()
-    consoleSpy.mockRestore()
+    await mockConsole(async (console) => {
+      const result = await catalog.collect()
 
-    expect(result).toBeUndefined()
+      expect(console.error).toHaveBeenCalledWith(
+        expect.stringContaining(`native crash`),
+      )
+      expect(result).toBeUndefined()
+    })
   })
 
   it("skips worker pool for batch extractor", async () => {
@@ -163,6 +203,42 @@ describe("Catalog.collect with batch extractor", () => {
 
     const batchFiles = vi.mocked(batchFn).mock.calls[0]![0]
     expect(batchFiles.every((f: string) => f.endsWith(".js"))).toBe(true)
+  })
+
+  it("merges messages with the same id from different files", async () => {
+    const extractor: Experimental__BatchExtractorType = {
+      match: matchAll,
+      extractFromFiles: async (filenames, onMessageExtracted) => {
+        onMessageExtracted({
+          id: "msg.shared",
+          message: "Hello",
+          origin: [filenames[0]!, 10],
+        })
+        onMessageExtracted({
+          id: "msg.shared",
+          message: "Hello",
+          origin: [filenames[1]!, 5],
+        })
+        onMessageExtracted({
+          id: "msg.shared",
+          message: "Hello",
+          origin: [filenames[2]!, 20],
+        })
+      },
+    }
+
+    const catalog = await makeCatalogWithExtractors([extractor])
+    const result = (await catalog.collect())!
+
+    expect(result).toBeDefined()
+    expect(Object.keys(result)).toHaveLength(1)
+    const msg = result["msg.shared"]!
+    expect(msg.message).toBe("Hello")
+    expect(msg.origin).toHaveLength(3)
+
+    // origins are sorted by file path
+    const filePaths = msg.origin.map(([file]) => file)
+    expect(filePaths).toEqual([...filePaths].sort())
   })
 
   it("handles two batch extractors and one per-file extractor with distinct file types", async () => {

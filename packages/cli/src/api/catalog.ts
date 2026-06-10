@@ -227,7 +227,7 @@ export class Catalog {
             linguiConfig: this.config,
           })
         } catch (e) {
-          console.error(`Batch extractor failed: ${(e as Error).message}`)
+          console.error(`Extractor failed: ${(e as Error).message}`)
           console.error((e as Error).stack)
           catalogSuccess = false
         }

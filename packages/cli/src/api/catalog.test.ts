@@ -39,7 +39,7 @@ async function extractMessages(
 
 export const fixture = (...dirs: string[]) =>
   (
-    path.resolve(__dirname, path.join("fixtures", ...dirs)) +
+    path.resolve(import.meta.dirname, path.join("fixtures", ...dirs)) +
     // preserve trailing slash
     (dirs.at(-1)!.endsWith("/") ? "/" : "")
   ).replace(/\\/g, "/")
@@ -47,7 +47,7 @@ export const fixture = (...dirs: string[]) =>
 function mockConfig(config: Partial<LinguiConfig> = {}) {
   return makeConfig(
     {
-      rootDir: path.join(__dirname, "fixtures"),
+      rootDir: path.join(import.meta.dirname, "fixtures"),
       locales: ["en", "pl"],
       ...config,
     },
@@ -173,7 +173,7 @@ describe("Catalog", () => {
         {
           name: "messages",
           path: path.resolve(
-            __dirname,
+            import.meta.dirname,
             path.join("fixtures", "pot-template", "{locale}"),
           ),
           include: [],
@@ -554,7 +554,7 @@ describe("Catalog", () => {
       mockFs({
         en: {
           "messages.po": fs.readFileSync(
-            path.resolve(__dirname, "fixtures/messages.po"),
+            path.resolve(import.meta.dirname, "fixtures/messages.po"),
           ),
         },
       })
@@ -581,7 +581,7 @@ describe("Catalog", () => {
         {
           name: "messages",
           path: path.resolve(
-            __dirname,
+            import.meta.dirname,
             path.join("fixtures", "readAll", "{locale}", "messages"),
           ),
           include: [],
