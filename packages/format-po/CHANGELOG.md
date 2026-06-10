@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.3.0](https://github.com/lingui/js-lingui/compare/v6.2.0...v6.3.0) (2026-06-10)
+
+### Bug Fixes
+
+* **po-format:** set default `foldLength` to 0 ([#2567](https://github.com/lingui/js-lingui/issues/2567)) ([087ff07](https://github.com/lingui/js-lingui/commit/087ff07f7df61b230303fe303189aebe5712d6d5))
+
 # [6.2.0](https://github.com/lingui/js-lingui/compare/v6.1.0...v6.2.0) (2026-06-01)
 
 ### Bug Fixes
