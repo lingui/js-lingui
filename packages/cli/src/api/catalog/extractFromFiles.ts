@@ -4,7 +4,7 @@ import path from "path"
 import extract from "../extractors/index.js"
 import { ExtractedCatalogType, MessageOrigin } from "../types.js"
 import { prettyOrigin } from "../utils.js"
-import { ExtractWorkerPool } from "../workerPools.js"
+import type { ExtractWorkerPool } from "../workerPools.js"
 
 function compareOrigins(a: MessageOrigin, b: MessageOrigin): number {
   const byPath = a[0].localeCompare(b[0])
@@ -50,26 +50,17 @@ function mergePlaceholders(
 
 export async function extractFromFiles(
   paths: string[],
+  onMessageExtracted: (msg: ExtractedMessage) => void,
   config: LinguiConfigNormalized,
-) {
-  const messages: ExtractedCatalogType = {}
-
+): Promise<boolean> {
   let catalogSuccess = true
 
   for (const filename of paths) {
-    const fileSuccess = await extract(
-      filename,
-      (next: ExtractedMessage) => {
-        mergeExtractedMessage(next, messages, config)
-      },
-      config,
-    )
+    const fileSuccess = await extract(filename, onMessageExtracted, config)
     catalogSuccess &&= fileSuccess
   }
 
-  if (!catalogSuccess) return undefined
-
-  return messages
+  return catalogSuccess
 }
 
 export function mergeExtractedMessage(
@@ -122,12 +113,9 @@ export function mergeExtractedMessage(
 export async function extractFromFilesWithWorkerPool(
   workerPool: ExtractWorkerPool,
   paths: string[],
+  onMessageExtracted: (msg: ExtractedMessage) => void,
   config: LinguiConfigNormalized,
-): Promise<ExtractedCatalogType | undefined> {
-  const messages: ExtractedCatalogType = {}
-
-  let catalogSuccess = true
-
+): Promise<boolean> {
   const resolvedConfigPath = config.resolvedConfigPath
 
   if (!resolvedConfigPath) {
@@ -135,6 +123,8 @@ export async function extractFromFilesWithWorkerPool(
       "Multithreading is only supported when lingui config loaded from file system, not passed by API",
     )
   }
+
+  let catalogSuccess = true
 
   const results = await Promise.all(
     paths.map((filename) => workerPool.run(filename, resolvedConfigPath)),
@@ -145,12 +135,10 @@ export async function extractFromFilesWithWorkerPool(
       catalogSuccess = false
     } else {
       result.messages.forEach((message) => {
-        mergeExtractedMessage(message, messages, config)
+        onMessageExtracted(message)
       })
     }
   })
 
-  if (!catalogSuccess) return undefined
-
-  return messages
+  return catalogSuccess
 }
