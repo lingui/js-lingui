@@ -182,6 +182,20 @@ const message =
 
 `;
 
+exports[`should throw when id is dynamic 1`] = `
+[SyntaxError: <cwd>/<filename>jsx: Unsupported macro usage. Please check the examples at https://lingui.dev/ref/macro#examples-of-js-macros.
+ If you think this is a bug, fill in an issue at https://github.com/lingui/js-lingui/issues
+
+ Error: Message id must be a static string literal
+  2 |         import { defineMessage } from '@lingui/core/macro';
+  3 |         const dynId = "dynamic"
+> 4 |         const message = defineMessage({
+    |                         ^
+  5 |           id: dynId,
+  6 |           message: "Message"
+  7 |         })]
+`;
+
 exports[`should transform template literals 1`] = `
 import { defineMessage } from "@lingui/core/macro";
 const message = defineMessage({

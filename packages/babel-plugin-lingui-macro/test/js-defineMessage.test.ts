@@ -67,6 +67,18 @@ macroTester({
     `,
     },
     {
+      name: "should throw when id is dynamic",
+      shouldThrow: true,
+      code: `
+        import { defineMessage } from '@lingui/core/macro';
+        const dynId = "dynamic"
+        const message = defineMessage({
+          id: dynId,
+          message: "Message"
+        })
+    `,
+    },
+    {
       name: "Production - only essential props are kept, without id",
       production: true,
       code: `

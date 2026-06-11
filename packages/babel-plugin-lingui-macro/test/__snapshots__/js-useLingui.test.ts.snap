@@ -358,6 +358,20 @@ function MyComponent() {
 
 `;
 
+exports[`throws when descriptor id is dynamic 1`] = `
+[SyntaxError: <cwd>/<filename>jsx: Unsupported macro usage. Please check the examples at https://lingui.dev/ref/macro#examples-of-js-macros.
+ If you think this is a bug, fill in an issue at https://github.com/lingui/js-lingui/issues
+
+ Error: Message id must be a static string literal
+  3 |
+  4 | function MyComponent() {
+> 5 |   const { t } = useLingui();
+    |                 ^^^^^^^^^^^
+  6 |   const dynId = "dynamic";
+  7 |   const a = t({ id: dynId, message: "Hello" });
+  8 | }]
+`;
+
 exports[`transform to standard useLingui statement 1`] = `
 import { useLingui } from "@lingui/react/macro";
 function MyComponent() {

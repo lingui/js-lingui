@@ -34,10 +34,35 @@ macroTester({
       `,
     },
     {
+      name: "Preserve custom ID (TypeScript literal assertion)",
+      useTypescriptPreset: true,
+      code: `
+        import { Trans } from '@lingui/react/macro';
+        <Trans id={"msg.hello" as const}>Hello World</Trans>;
+      `,
+    },
+    {
       name: "Preserve custom ID (template expression)",
       code: `
         import { Trans } from '@lingui/react/macro';
         <Trans id={\`msg.hello\`}>Hello World</Trans>;
+      `,
+    },
+    {
+      name: "Should throw when id is dynamic",
+      shouldThrow: true,
+      code: `
+        import { Trans } from '@lingui/react/macro';
+        const dynId = "dynamic";
+        <Trans id={dynId}>Hello World</Trans>;
+      `,
+    },
+    {
+      name: "Should throw when id template literal is dynamic",
+      shouldThrow: true,
+      code: `
+        import { Trans } from '@lingui/react/macro';
+        <Trans id={\`msg.\${name}\`}>Hello World</Trans>;
       `,
     },
     {

@@ -443,6 +443,25 @@ import { Trans as _Trans } from "@lingui/react";
 
 `;
 
+exports[`Preserve custom ID (TypeScript literal assertion) 1`] = `
+import { Trans } from "@lingui/react/macro";
+<Trans id={"msg.hello" as const}>Hello World</Trans>;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { Trans as _Trans } from "@lingui/react";
+<_Trans
+  {
+    /*i18n*/
+    ...{
+      id: "msg.hello",
+      message: "Hello World",
+    }
+  }
+/>;
+
+`;
+
 exports[`Preserve custom ID (literal expression) 1`] = `
 import { Trans } from "@lingui/react/macro";
 <Trans id={"msg.hello"}>Hello World</Trans>;
@@ -701,6 +720,30 @@ import { Trans as _Trans } from "@lingui/react";
   }
 />;
 
+`;
+
+exports[`Should throw when id is dynamic 1`] = `
+[SyntaxError: <cwd>/<filename>jsx: Unsupported macro usage. Please check the examples at https://lingui.dev/ref/macro#examples-of-js-macros.
+ If you think this is a bug, fill in an issue at https://github.com/lingui/js-lingui/issues
+
+ Error: Message id must be a static string literal
+  2 |         import { Trans } from '@lingui/react/macro';
+  3 |         const dynId = "dynamic";
+> 4 |         <Trans id={dynId}>Hello World</Trans>;
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 |       ]
+`;
+
+exports[`Should throw when id template literal is dynamic 1`] = `
+[SyntaxError: <cwd>/<filename>jsx: Unsupported macro usage. Please check the examples at https://lingui.dev/ref/macro#examples-of-js-macros.
+ If you think this is a bug, fill in an issue at https://github.com/lingui/js-lingui/issues
+
+ Error: Message id must be a static string literal
+  1 |
+  2 |         import { Trans } from '@lingui/react/macro';
+> 3 |         <Trans id={\`msg.\${name}\`}>Hello World</Trans>;
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  4 |       ]
 `;
 
 exports[`Strings as children are preserved 1`] = `

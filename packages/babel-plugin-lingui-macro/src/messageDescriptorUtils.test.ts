@@ -87,4 +87,17 @@ describe("createMessageDescriptor", () => {
 
     expect(descriptor.properties[0]).toBe(idProperty)
   })
+
+  it("throws when an explicit object-property id is dynamic", () => {
+    const idProperty = types.objectProperty(
+      types.identifier("id"),
+      types.identifier("dynamicId"),
+    )
+
+    expect(() =>
+      createMessageDescriptor({ message: "Hello" }, undefined, "all", {
+        id: idProperty,
+      }),
+    ).toThrow("Message id must be a static string literal")
+  })
 })
