@@ -159,6 +159,26 @@ type CatalogService = {
   apiKey: string
 }
 
+/**
+ * Result returned by a bundler after bundling entry points.
+ */
+export type BundleResult = {
+  outputFiles: Array<{ filePath: string; entryPoint: string }>
+}
+
+/**
+ * Pluggable bundler interface for the experimental extractor.
+ * Implementations bundle entry points and return a mapping
+ * from output files to their original entry points.
+ */
+export type ExperimentalExtractorBundler = {
+  bundle(
+    entryPoints: string[],
+    outDir: string,
+    linguiConfig: LinguiConfigNormalized,
+  ): Promise<BundleResult>
+}
+
 export type ExperimentalExtractorOptions = {
   /**
    * Entries to start extracting from.
@@ -188,6 +208,7 @@ export type ExperimentalExtractorOptions = {
    * because they look like package imports.
    *
    * Add here the packages you want to include.
+   * @deprecated Use `bundler: createEsbuildBundler({ includeDeps: ... })` instead.
    */
   includeDeps?: string[]
 
@@ -197,6 +218,8 @@ export type ExperimentalExtractorOptions = {
    * is missing in this list please fill an issue on GitHub
    *
    * NOTE: changing this param will override default list of extensions.
+   *
+   * @deprecated Use `bundler: createEsbuildBundler({ excludeExtensions: ... })` instead.
    */
   excludeExtensions?: string[]
 
@@ -217,6 +240,26 @@ export type ExperimentalExtractorOptions = {
    */
   output: string
 
+  /**
+   * Pluggable bundler for the experimental extractor.
+   * If not provided, defaults to the built-in esbuild bundler.
+   *
+   * @example
+   * ```ts
+   * import { createEsbuildBundler } from "@lingui/cli/bundlers/esbuild"
+   *
+   * experimental: {
+   *   extractor: {
+   *     bundler: createEsbuildBundler({ resolveEsbuildOptions: (opts) => opts })
+   *   }
+   * }
+   * ```
+   */
+  bundler?: ExperimentalExtractorBundler
+
+  /**
+   * @deprecated Use `bundler: createEsbuildBundler({ resolveEsbuildOptions: ... })` instead.
+   */
   resolveEsbuildOptions?: (options: any) => any
 }
 

@@ -118,6 +118,7 @@ export const exampleConfig = {
       excludeDeps: [],
       excludeExtensions: [],
       output: "",
+      bundler: multipleValidOptions({}, undefined),
       resolveEsbuildOptions: Function,
     },
   } as { extractor: ExperimentalExtractorOptions },

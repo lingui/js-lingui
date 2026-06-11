@@ -431,6 +431,39 @@ describe("E2E Extractor Test", () => {
     })
   })
 
+  describe("extractor-experimental (rolldown)", () => {
+    it("should extract to catalogs and merge with existing", async () => {
+      const { rootDir, actualPath, expectedPath } = await prepare(
+        "extractor-experimental",
+      )
+
+      await mockConsole(async (console) => {
+        const config = getConfig({
+          cwd: rootDir,
+          configPath: nodepath.join(rootDir, "lingui.config.rolldown.ts"),
+        })
+
+        const result = await extractExperimentalCommand(config, {
+          workersOptions: {
+            poolSize: 0,
+          },
+        })
+
+        await compileCommand(config, {
+          allowEmpty: true,
+          workersOptions: {
+            poolSize: 0,
+          },
+        })
+
+        expect(getConsoleMockCalls(console.error)).toBeFalsy()
+        expect(result).toBeTruthy()
+      })
+
+      compareFolders(actualPath, expectedPath)
+    })
+  })
+
   it("should extract consistently with files argument", async () => {
     const { rootDir, actualPath, expectedPath } = await prepare(
       "extract-partial-consistency",

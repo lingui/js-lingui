@@ -1,12 +1,16 @@
 import { program } from "commander"
 
-import { getConfig, LinguiConfigNormalized } from "@lingui/conf"
+import {
+  getConfig,
+  LinguiConfigNormalized,
+  ExperimentalBundler,
+} from "@lingui/conf"
 import nodepath from "path"
 import { getFormat } from "./api/formats/index.js"
 import fs from "fs/promises"
 import normalizePath from "normalize-path"
 
-import { bundleSource } from "./extract-experimental/bundleSource.js"
+import { createEsbuildBundler } from "./extract-experimental/bundlers/esbuild.js"
 import { globSync } from "node:fs"
 import { styleText } from "node:util"
 import {
@@ -63,12 +67,21 @@ export default async function command(
   const tempDir = await fs.mkdtemp(tmpPrefix)
   await fs.rm(tempDir, { recursive: true, force: true })
 
-  const bundleResult = await bundleSource(
-    linguiConfig,
-    extractorConfig,
+  let bundler: ExperimentalBundler
+  if (extractorConfig.bundler) {
+    bundler = extractorConfig.bundler
+  } else {
+    bundler = createEsbuildBundler({
+      includeDeps: extractorConfig.includeDeps,
+      excludeExtensions: extractorConfig.excludeExtensions,
+      resolveEsbuildOptions: extractorConfig.resolveEsbuildOptions,
+    })
+  }
+
+  const bundleResult = await bundler.bundle(
     globSync(extractorConfig.entries),
     tempDir,
-    linguiConfig.rootDir,
+    linguiConfig,
   )
   const stats: { entry: string; content: string }[] = []
 
@@ -91,13 +104,11 @@ export default async function command(
 
     try {
       await Promise.all(
-        Object.keys(bundleResult.outputs).map(async (outFile) => {
-          const { entryPoint } = bundleResult.outputs[outFile]!
-
+        bundleResult.outputFiles.map(async ({ filePath, entryPoint }) => {
           const result = await pool.run(
             resolvedConfigPath,
-            entryPoint!,
-            outFile,
+            entryPoint,
+            filePath,
             extractorConfig.output,
             options.template || false,
             options.locales || linguiConfig.locales,
@@ -110,7 +121,7 @@ export default async function command(
           if (result.success) {
             stats.push({
               entry: normalizePath(
-                nodepath.relative(linguiConfig.rootDir, entryPoint!),
+                nodepath.relative(linguiConfig.rootDir, entryPoint),
               ),
               content: result.stat,
             })
@@ -126,12 +137,10 @@ export default async function command(
       linguiConfig.sourceLocale,
     )
 
-    for (const outFile of Object.keys(bundleResult.outputs)) {
-      const { entryPoint } = bundleResult.outputs[outFile]!
-
+    for (const { filePath, entryPoint } of bundleResult.outputFiles) {
       const result = await extractFromBundleAndWrite({
-        entryPoint: entryPoint!,
-        bundleFile: outFile,
+        entryPoint,
+        bundleFile: filePath,
         outputPattern: extractorConfig.output,
         format,
         linguiConfig,
@@ -146,7 +155,7 @@ export default async function command(
       if (result.success) {
         stats.push({
           entry: normalizePath(
-            nodepath.relative(linguiConfig.rootDir, entryPoint!),
+            nodepath.relative(linguiConfig.rootDir, entryPoint),
           ),
           content: result.stat,
         })

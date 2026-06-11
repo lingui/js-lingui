@@ -7,6 +7,7 @@ import linguiMacroPlugin, {
   type LinguiPluginOpts,
 } from "@lingui/babel-plugin-lingui-macro"
 import { LinguiConfigNormalized } from "@lingui/conf"
+import { buildContentFilterRe } from "./buildContentFilter.js"
 
 export const pluginLinguiMacro = (options: {
   linguiConfig: LinguiConfigNormalized
@@ -18,7 +19,7 @@ export const pluginLinguiMacro = (options: {
 
       const contents = await fs.promises.readFile(args.path, "utf8")
 
-      const hasMacroRe = /from ["']@lingui(\/.+)?\/macro["']/g
+      const hasMacroRe = buildContentFilterRe(options.linguiConfig)
 
       if (!hasMacroRe.test(contents)) {
         // let esbuild process file as usual
