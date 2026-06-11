@@ -1,5 +1,5 @@
 import type { BuildOptions } from "esbuild"
-import type { ExperimentalBundler, BundleResult } from "@lingui/conf"
+import type { ExperimentalExtractorBundler, BundleResult } from "@lingui/conf"
 import { pluginLinguiMacro } from "../linguiEsbuildPlugin.js"
 import { buildIncludeDepsFilter } from "../buildIncludeDepsFilter.js"
 import { DEFAULT_EXCLUDE_EXTENSIONS } from "../constants.js"
@@ -38,7 +38,7 @@ function createExtRegExp(extensions: string[]) {
 
 export function createEsbuildBundler(
   options?: EsbuildBundlerOptions,
-): ExperimentalBundler {
+): ExperimentalExtractorBundler {
   return {
     async bundle(entryPoints, outDir, linguiConfig): Promise<BundleResult> {
       let esbuild: typeof import("esbuild")

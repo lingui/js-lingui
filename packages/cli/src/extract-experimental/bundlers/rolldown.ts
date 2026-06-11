@@ -1,5 +1,5 @@
 import type { BuildOptions, OutputChunk } from "rolldown"
-import type { ExperimentalBundler, BundleResult } from "@lingui/conf"
+import type { ExperimentalExtractorBundler, BundleResult } from "@lingui/conf"
 import path from "path"
 import { buildIncludeDepsFilter } from "../buildIncludeDepsFilter.js"
 import { DEFAULT_EXCLUDE_EXTENSIONS } from "../constants.js"
@@ -40,7 +40,7 @@ function createExtRegExp(extensions: string[]) {
 
 export function createRolldownBundler(
   options?: RolldownBundlerOptions,
-): ExperimentalBundler {
+): ExperimentalExtractorBundler {
   return {
     async bundle(entryPoints, outDir, linguiConfig): Promise<BundleResult> {
       let rolldown: typeof import("rolldown")

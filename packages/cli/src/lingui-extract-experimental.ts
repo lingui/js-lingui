@@ -3,7 +3,7 @@ import { program } from "commander"
 import {
   getConfig,
   LinguiConfigNormalized,
-  ExperimentalBundler,
+  ExperimentalExtractorBundler,
 } from "@lingui/conf"
 import nodepath from "path"
 import { getFormat } from "./api/formats/index.js"
@@ -67,7 +67,7 @@ export default async function command(
   const tempDir = await fs.mkdtemp(tmpPrefix)
   await fs.rm(tempDir, { recursive: true, force: true })
 
-  let bundler: ExperimentalBundler
+  let bundler: ExperimentalExtractorBundler
   if (extractorConfig.bundler) {
     bundler = extractorConfig.bundler
   } else {
