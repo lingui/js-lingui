@@ -1,10 +1,10 @@
-const msg = /*i18n*/ { id: "Message" }
+const msg = /**i18n*/ { id: "Message" }
 
-const withDescription = /*i18n*/ { id: "Description", comment: "description" }
+const withDescription = /**i18n*/ { id: "Description", comment: "description" }
 
-const withId = /*i18n*/ { id: "ID", message: "Message with id" }
+const withId = /**i18n*/ { id: "ID", message: "Message with id" }
 
-const withValues = /*i18n*/ {
+const withValues = /**i18n*/ {
   id: "Values {param} {0} {name} {value}",
   values: {
     param: param,
@@ -20,6 +20,6 @@ const withValues = /*i18n*/ {
  * With values passed as variable
  */
 const values = {}
-const withValues2 = /*i18n*/ { id: "Values {param} {0}", values }
+const withValues2 = /**i18n*/ { id: "Values {param} {0}", values }
 
-const withContext = /*i18n*/ { id: "Some id", context: "Context1" }
+const withContext = /**i18n*/ { id: "Some id", context: "Context1" }

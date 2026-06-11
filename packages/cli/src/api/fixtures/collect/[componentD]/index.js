@@ -1,1 +1,1 @@
-/*i18n*/ i18n._("Component D")
+/**i18n*/ i18n._("Component D")
