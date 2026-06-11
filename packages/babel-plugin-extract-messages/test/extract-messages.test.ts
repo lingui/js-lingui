@@ -388,6 +388,22 @@ import { Trans } from "@lingui/react";
         })
       })
     })
+
+    it("Should support both /*i18n*/ and /** i18n */ mark formats", () => {
+      expectNoConsole(() => {
+        const oldFormat = transformCode(
+          `const a = /*i18n*/ {id: "old.format", message: "Old"}`,
+        )
+        expect(oldFormat).toHaveLength(1)
+        expect(oldFormat[0]).toMatchObject({ id: "old.format", message: "Old" })
+
+        const newFormat = transformCode(
+          `const b = /** i18n */ {id: "new.format", message: "New"}`,
+        )
+        expect(newFormat).toHaveLength(1)
+        expect(newFormat[0]).toMatchObject({ id: "new.format", message: "New" })
+      })
+    })
   })
 
   it("should extract all messages from JSX files (macros)", () => {

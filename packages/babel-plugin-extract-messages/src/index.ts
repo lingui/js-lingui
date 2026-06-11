@@ -198,7 +198,9 @@ function hasIgnoreComment(node: Node): boolean {
 }
 
 function hasI18nComment(node: Node): boolean {
-  return hasComment(node, "i18n")
+  return !!node.leadingComments?.some(
+    (comm) => comm.value.trim() === "i18n" || comm.value.trim() === "* i18n",
+  )
 }
 
 export default function ({ types: t }: { types: BabelTypes }): PluginObj {

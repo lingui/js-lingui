@@ -11,7 +11,7 @@ const a = plural(count, {
 
 import { i18n as _i18n } from "@lingui/core";
 const a = _i18n._(
-  /*i18n*/
+  /** i18n */
   {
     id: "esnaQO",
     message: "{count, plural, one {# book} other {# books}}",
@@ -36,7 +36,7 @@ plural(users.length, {
 
 import { i18n as _i18n } from "@lingui/core";
 _i18n._(
-  /*i18n*/
+  /** i18n */
   {
     id: "0mcXIe",
     message:
@@ -64,7 +64,7 @@ const a = plural(
 
 import { i18n as _i18n } from "@lingui/core";
 const a = _i18n._(
-  /*i18n*/
+  /** i18n */
   {
     id: "esnaQO",
     message: "{count, plural, one {# book} other {# books}}",
@@ -87,7 +87,7 @@ const a = plural(ph({ count: getCount() }), {
 
 import { i18n as _i18n } from "@lingui/core";
 const a = _i18n._(
-  /*i18n*/
+  /** i18n */
   {
     id: "esnaQO",
     message: "{count, plural, one {# book} other {# books}}",
@@ -110,7 +110,7 @@ const a = plural({ count: getCount() } as any, {
 
 import { i18n as _i18n } from "@lingui/core";
 const a = _i18n._(
-  /*i18n*/
+  /** i18n */
   {
     id: "esnaQO",
     message: "{count, plural, one {# book} other {# books}}",
@@ -135,7 +135,7 @@ plural(users.length, {
 
 import { i18n as _i18n } from "@lingui/core";
 _i18n._(
-  /*i18n*/
+  /** i18n */
   {
     id: "CF5t-7",
     message: "{0, plural, offset:1 =0 {No books} =1 {1 book} other {# books}}",
@@ -158,7 +158,7 @@ const a = plural2(count, {
 
 import { i18n as _i18n } from "@lingui/core";
 const a = _i18n._(
-  /*i18n*/
+  /** i18n */
   {
     id: "esnaQO",
     message: "{count, plural, one {# book} other {# books}}",
