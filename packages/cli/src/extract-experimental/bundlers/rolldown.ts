@@ -117,7 +117,7 @@ export function createRolldownBundler(
           if (extRegExp.test(id)) {
             return true
           }
-          if (importer && /^[^.#/]/.test(id)) {
+          if (importer && !path.isAbsolute(id) && /^[^.#/]/.test(id)) {
             return !shouldInclude(id)
           }
           return false
