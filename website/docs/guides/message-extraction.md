@@ -179,6 +179,124 @@ Then run the following command in your terminal:
 lingui extract-experimental
 ```
 
+#### Configuring the Bundler
+
+The experimental extractor uses a bundler under the hood to resolve dependencies and apply tree-shaking. By default, it uses [esbuild](https://esbuild.github.io/), but you can configure it to use [rolldown](https://rolldown.rs/) or implement your own bundler integration.
+
+##### Rolldown
+
+If your project uses Vite-based tooling, rolldown is the recommended choice. Vite is powered by rolldown (or rollup), so the extraction results will more closely match what Vite produces in your actual builds. You can even reuse parts of your Vite configuration.
+
+Rolldown also has more powerful tree-shaking capabilities, which results in smaller and more accurate catalogs compared to esbuild. By default, the rolldown bundler uses the standard tree-shaking preset, but you can experiment with the `smallest` preset for even more aggressive dead code elimination. Since the bundler is only used for message extraction (not producing runtime code), the typical side-effect concerns around aggressive tree-shaking don't apply in most cases.
+
+```bash
+npm install --save-dev rolldown @rolldown/plugin-babel
+```
+
+```ts title="lingui.config.ts"
+import { defineConfig } from "@lingui/conf";
+import { createRolldownBundler } from "@lingui/cli/bundlers/rolldown";
+
+export default defineConfig({
+  locales: ["en", "fr"],
+  catalogs: [],
+  experimental: {
+    extractor: {
+      entries: ["<rootDir>/src/pages/**/*.tsx"],
+      output: "<rootDir>/{entryDir}/locales/{entryName}/{locale}",
+      bundler: createRolldownBundler(),
+    },
+  },
+});
+```
+
+To use the `smallest` tree-shaking preset:
+
+```ts title="lingui.config.ts"
+import { createRolldownBundler } from "@lingui/cli/bundlers/rolldown";
+
+createRolldownBundler({
+  resolveRolldownOptions: (options) => ({
+    ...options,
+    treeshake: "smallest",
+  }),
+});
+```
+
+##### esbuild
+
+esbuild is the default bundler and doesn't require any additional configuration. You can also configure it explicitly if you need to customize its behavior:
+
+```bash
+npm install --save-dev esbuild
+```
+
+```ts title="lingui.config.ts"
+import { defineConfig } from "@lingui/conf";
+import { createEsbuildBundler } from "@lingui/cli/bundlers/esbuild";
+
+export default defineConfig({
+  locales: ["en", "fr"],
+  catalogs: [],
+  experimental: {
+    extractor: {
+      entries: ["<rootDir>/src/pages/**/*.tsx"],
+      output: "<rootDir>/{entryDir}/locales/{entryName}/{locale}",
+      bundler: createEsbuildBundler({
+        includeDeps: ["@my-company/shared"],
+      }),
+    },
+  },
+});
+```
+
+##### Custom Bundler
+
+You can implement your own bundler by conforming to the `ExperimentalExtractorBundler` interface:
+
+:::caution
+Your bundler implementation must apply the Lingui macro transform to each file **during** bundling, not after. The macro transform is designed to work on authored source code — once files are bundled together, the transform will not work correctly.
+
+See the built-in esbuild and rolldown bundlers for reference on how to integrate the transform as a bundler plugin.
+:::
+
+```ts title="lingui.config.ts"
+import { defineConfig } from "@lingui/conf";
+import type { ExperimentalExtractorBundler } from "@lingui/conf";
+
+const myBundler: ExperimentalExtractorBundler = {
+  async bundle(entryPoints, outDir, linguiConfig) {
+    // Your bundling logic here.
+    // Must apply @lingui/babel-plugin-lingui-macro or @lingui/swc-plugin during the transform phase.
+    // Must return { outputFiles: Array<{ filePath: string; entryPoint: string }> }
+  },
+};
+
+export default defineConfig({
+  experimental: {
+    extractor: {
+      entries: ["<rootDir>/src/pages/**/*.tsx"],
+      output: "<rootDir>/{entryDir}/locales/{entryName}/{locale}",
+      bundler: myBundler,
+    },
+  },
+});
+```
+
+##### Bundler Options Reference
+
+Both `createEsbuildBundler` and `createRolldownBundler` accept the following common options:
+
+| Option               | Description                                                                                                   |
+|----------------------|---------------------------------------------------------------------------------------------------------------|
+| `includeDeps`        | Package names to bundle instead of marking as external. Use this for internal packages that contain messages. |
+| `excludeExtensions`  | File extensions to externalize (e.g., `.css`, `.svg`). Has sensible defaults.                                 |
+
+Additionally, each bundler accepts a resolver function for full control over bundler-specific options:
+
+- `createEsbuildBundler({ resolveEsbuildOptions: (opts) => opts })`
+- `createRolldownBundler({ resolveRolldownOptions: (opts) => opts })`
+
 #### Important Notes
 
 It's worth noting that the accuracy of the catalog depends heavily on tree-shaking, a technique used by modern bundlers to remove unused code from the final bundle.
