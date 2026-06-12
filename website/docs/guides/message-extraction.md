@@ -255,7 +255,10 @@ export default defineConfig({
 You can implement your own bundler by conforming to the `ExperimentalExtractorBundler` interface:
 
 :::caution
-Your bundler implementation must apply the Lingui macro transform to each file **during** bundling, not after. The macro transform is designed to work on authored source code — once files are bundled together, the transform will not work correctly.
+Your bundler implementation must:
+
+- Apply the Lingui macro transform to each file **during** bundling, not after. The macro transform is designed to work on authored source code — once files are bundled together, the transform will not work correctly.
+- Produce **inline sourcemaps** in the output files. The extractor uses sourcemaps to map messages back to their original file and line number — without them, catalog origins (`#:` references) will point to the bundled output instead of the source.
 
 See the built-in esbuild and rolldown bundlers for reference on how to integrate the transform as a bundler plugin.
 :::
@@ -287,10 +290,10 @@ export default defineConfig({
 
 Both `createEsbuildBundler` and `createRolldownBundler` accept the following common options:
 
-| Option               | Description                                                                                                   |
-|----------------------|---------------------------------------------------------------------------------------------------------------|
-| `includeDeps`        | Package names to bundle instead of marking as external. Use this for internal packages that contain messages. |
-| `excludeExtensions`  | File extensions to externalize (e.g., `.css`, `.svg`). Has sensible defaults.                                 |
+| Option              | Description                                                                                                   |
+| ------------------- | ------------------------------------------------------------------------------------------------------------- |
+| `includeDeps`       | Package names to bundle instead of marking as external. Use this for internal packages that contain messages. |
+| `excludeExtensions` | File extensions to externalize (e.g., `.css`, `.svg`). Has sensible defaults.                                 |
 
 Additionally, each bundler accepts a resolver function for full control over bundler-specific options:
 
