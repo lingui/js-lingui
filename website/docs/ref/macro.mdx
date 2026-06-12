@@ -29,7 +29,7 @@ t`Attachment ${name} saved`;
 
 import { i18n } from "@lingui/core";
 i18n._(
-  /*i18n*/ {
+  /** i18n */ {
     id: "nwR43V",
     message: "Attachment {name} saved",
     values: { name },
@@ -37,8 +37,8 @@ i18n._(
 );
 ```
 
-:::info `/*i18n*/` comment
-In the example above you may notice the `/*i18n*/` comment in the macro output. This comment tells the extract plugin that the following object should be collected into the message catalog.
+:::info `/** i18n */` comment
+In the example above you may notice the `/** i18n */` comment in the macro output. This comment tells the extract plugin that the following object should be collected into the message catalog.
 :::
 
 _Message Descriptor_ is an object with a message ID, default message and other parameters:
@@ -68,7 +68,7 @@ const message = t`Hello World`;
 
 import { i18n } from "@lingui/core";
 const message = i18n._(
-  /*i18n*/ {
+  /** i18n */ {
     id: "mY42CM",
     message: "Hello World",
   }
@@ -85,7 +85,7 @@ const message = t`My name is ${name}`;
 
 import { i18n } from "@lingui/core";
 const message = i18n._(
-  /*i18n*/ {
+  /** i18n */ {
     id: "mVmaLu",
     message: "My name is {name}",
     values: { name },
@@ -104,7 +104,7 @@ const message = t`Today is ${new Date()}`;
 import { i18n } from "@lingui/core";
 
 const message = i18n._(
-  /*i18n*/ {
+  /** i18n */ {
     id: "2aJT27",
     message: "Today is {0}",
     values: { 0: new Date() },
@@ -130,7 +130,7 @@ const message = t({
 
 import { i18n } from "@lingui/core";
 const message = i18n._(
-  /*i18n*/ {
+  /** i18n */ {
     id: "msg.hello",
     comment: "Greetings at the homepage",
     message: "Hello {name}",
@@ -152,7 +152,7 @@ const message = t({
 
 import { i18n } from "@lingui/core";
 const message = i18n._(
-  /*i18n*/ {
+  /** i18n */ {
     id: "msg.plural",
     message: "{value, plural, one {...} other {...}}",
     values: { value },
@@ -181,7 +181,7 @@ const message = plural(count, {
 
 import { i18n } from "@lingui/core";
 const message = i18n._(
-  /*i18n*/ {
+  /** i18n */ {
     id: "V/M0Vc",
     message: "{count, plural, one {# Book} other {# Books}}",
     values: { count },
@@ -206,7 +206,7 @@ const message = plural(count, {
 
 import { i18n } from "@lingui/core";
 const message = i18n._(
-  /*i18n*/ {
+  /** i18n */ {
     id: "CvuUwE",
     message: "{count, plural, one {{name} has # friend} other {{name} has # friends}}",
     values: { count, name },
@@ -234,7 +234,7 @@ const message = plural(numBooks, {
 
 import { i18n } from "@lingui/core";
 const message = i18n._(
-  /*i18n*/ {
+  /** i18n */ {
     id: "XnUh4j",
     message: `{numBooks, plural,
          one {{numArticles, plural,
@@ -292,7 +292,7 @@ const message = selectOrdinal(count, {
 
 import { i18n } from "@lingui/core";
 const message = i18n._(
-  /*i18n*/ {
+  /** i18n */ {
     id: "V8xI3w",
     message: "{count, selectOrdinal, one {#st} two {#nd} few {#rd} other {#th}}",
     values: { count },
@@ -341,7 +341,7 @@ const message = select(gender, {
 import { i18n } from "@lingui/core";
 
 const message = i18n._(
-  /*i18n*/ {
+  /** i18n */ {
     id: "VRptzI",
     message: "{gender, select, male {he} female {she} other {they}}",
     values: { gender },
@@ -386,7 +386,7 @@ i18n.t(message);
 
 import { i18n } from "@lingui/core";
 
-const message = /*i18n*/ {
+const message = /** i18n */ {
   id: "mY42CM",
   message: "Hello World",
 };
@@ -403,7 +403,7 @@ const message = msg`Hello World`;
 
 // ↓ ↓ ↓ ↓ ↓ ↓
 
-const message = /*i18n*/ {
+const message = /** i18n */ {
   id: "mY42CM",
   message: "Hello World",
 };
@@ -431,7 +431,7 @@ const message = defineMessage({
 
 // ↓ ↓ ↓ ↓ ↓ ↓
 
-const message = /*i18n*/ {
+const message = /** i18n */ {
   id: "Navigation / About",
   message: "About us",
 };
@@ -448,7 +448,7 @@ const message = defineMessage({
 
 // ↓ ↓ ↓ ↓ ↓ ↓
 
-const message = /*i18n*/ {
+const message = /** i18n */ {
   id: "dgJjNB",
   message: "Welcome, {name}",
   values: {
@@ -468,7 +468,7 @@ const message = defineMessage({
 
 // ↓ ↓ ↓ ↓ ↓ ↓
 
-const message = /*i18n*/ {
+const message = /** i18n */ {
   id: "+mNwru",
   comment: "Link in navigation pointing to About page",
   message: "About us",
@@ -490,7 +490,7 @@ const message = defineMessage({
 // process.env.NODE_ENV === "production"
 // ↓ ↓ ↓ ↓ ↓ ↓
 
-const message = /*i18n*/ {
+const message = /** i18n */ {
   id: "msg.navigation.about",
 };
 ```
@@ -525,7 +525,7 @@ const message = t`Hello ${ph({ name: getUserName() })}`;
 
 import { i18n } from "@lingui/core";
 const message = i18n._(
-  /*i18n*/ {
+  /** i18n */ {
     id: "OUzSsf",
     message: "Hello {name}",
     values: { name: getUserName() },
@@ -890,7 +890,7 @@ import { useLingui } from "@lingui/react";
 function MyComponent() {
   const { _ } = useLingui();
   const a = _(
-    /*i18n*/
+    /** i18n */
     {
       id: "xeiujy",
       message: "Text",
@@ -962,7 +962,7 @@ t`Refresh inbox`;
 // ↓ ↓ ↓ ↓ ↓ ↓
 
 i18n._(
-  /*i18n*/ {
+  /** i18n */ {
     id: "EsCV2T",
     message: "Refresh inbox",
   }
@@ -975,7 +975,7 @@ customI18n._(msg(`Refresh inbox`));
 // ↓ ↓ ↓ ↓ ↓ ↓
 
 customI18n._(
-  /*i18n*/ {
+  /** i18n */ {
     id: "EsCV2T",
     message: "Refresh inbox",
   }
@@ -988,7 +988,7 @@ t(customI18n)`Attachment ${name} saved`;
 // ↓ ↓ ↓ ↓ ↓ ↓
 
 customI18n._(
-  /*i18n*/ {
+  /** i18n */ {
     id: "nwR43V",
     message: "Attachment {name} saved",
     values: { name },
@@ -1005,7 +1005,7 @@ plural(count, {
 // ↓ ↓ ↓ ↓ ↓ ↓
 
 i18n._(
-  /*i18n*/ {
+  /** i18n */ {
     id: "4w2nim",
     message: "{count, plural, one {# Message} other {# Messages}}",
     values: { count },
@@ -1022,7 +1022,7 @@ t({
 // ↓ ↓ ↓ ↓ ↓ ↓
 
 i18n._(
-  /*i18n*/ {
+  /** i18n */ {
     id: "msg.refresh",
     message: "Refresh inbox",
   }
@@ -1034,7 +1034,7 @@ const msg = defineMessage`Refresh inbox`;
 
 // ↓ ↓ ↓ ↓ ↓ ↓
 
-const msg = /*i18n*/ {
+const msg = /** i18n */ {
   id: "EsCV2T",
   message: "Refresh inbox",
 };
@@ -1048,7 +1048,7 @@ const msg = defineMessage({
 
 // ↓ ↓ ↓ ↓ ↓ ↓
 
-const msg = /*i18n*/ {
+const msg = /** i18n */ {
   id: "msg.refresh",
   message: "Refresh inbox",
 };
@@ -1065,7 +1065,7 @@ const msg = defineMessage({
 
 // ↓ ↓ ↓ ↓ ↓ ↓
 
-const msg = /*i18n*/ {
+const msg = /** i18n */ {
   id: "msg.plural",
   message: "{count, plural, one {# Message} other {# Messages}}",
   values: { count },
