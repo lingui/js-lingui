@@ -111,13 +111,16 @@ export function createEsbuildBundler(
       const metafile = bundleResult.metafile!
 
       const outputFiles = Object.keys(metafile.outputs)
-        .filter((outFile) => metafile.outputs[outFile]?.entryPoint !== null)
-        .map((outFile) => ({
-          filePath: outFile,
-          entryPoint: metafile.outputs[outFile]?.entryPoint,
+        .map((filePath) => ({
+          filePath,
+          entryPoint: metafile.outputs[filePath]?.entryPoint,
         }))
+        .filter(
+          (item): item is BundleResult["outputFiles"][number] =>
+            !!item.entryPoint,
+        )
 
-      return { outputFiles } as BundleResult
+      return { outputFiles }
     },
   }
 }
