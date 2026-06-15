@@ -7,7 +7,7 @@
 **/locale/*
 **/fixtures/*
 **/expected/*
-**/expected-rolldown/*
+**/expected-*/*
 coverage/
 website/
 .github

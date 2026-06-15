@@ -10,6 +10,7 @@ export default defineConfig(
       "**/fixtures/**",
       "**/locale/**",
       "**/test/**/expected/**",
+      "**/test/**/expected-*/**",
       "**/test/**/actual/**",
       "**/loader/test/**",
       "website/src/**",
