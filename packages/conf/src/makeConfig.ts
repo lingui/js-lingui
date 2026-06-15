@@ -83,6 +83,7 @@ export const exampleConfig = {
   ...defaultConfig,
   macro: {
     ...defaultConfig.macro,
+    idPrefixLeader: ".",
     jsxPlaceholderAttribute: "_t",
     jsxPlaceholderDefaults: multipleValidOptions(
       {},

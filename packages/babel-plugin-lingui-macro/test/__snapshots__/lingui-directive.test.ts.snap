@@ -16,7 +16,7 @@ const msg = i18n.t({
   message: "Welcome",
 });
 const msg2 = _i18n._(
-  /*i18n*/
+  /** i18n */
   {
     id: "module.my.id",
     message: "Welcome",
@@ -37,7 +37,7 @@ const msg2 = t\`World\`;
 
 /* lingui-set context="first" */ import { i18n as _i18n } from "@lingui/core";
 const msg1 = _i18n._(
-  /*i18n*/
+  /** i18n */
   {
     id: "VUeJYD",
     message: "Hello",
@@ -46,7 +46,7 @@ const msg1 = _i18n._(
 );
 /* lingui-set context="second" */
 const msg2 = _i18n._(
-  /*i18n*/
+  /** i18n */
   {
     id: "ovKD_8",
     message: "World",
@@ -65,7 +65,7 @@ const msg = defineMessage\`Hello\`;
 
 /* lingui-set context="my context" comment="note" */
 const msg =
-  /*i18n*/
+  /** i18n */
   {
     id: "WMU_Op",
     message: "Hello",
@@ -84,7 +84,7 @@ const msg = defineMessage({ message: "Hello" });
 
 /* lingui-set context="my context" */
 const msg =
-  /*i18n*/
+  /** i18n */
   {
     id: "WMU_Op",
     message: "Hello",
@@ -103,7 +103,7 @@ const msg2 = t\`World\`;
 
 /* lingui-set context="shared" */ import { i18n as _i18n } from "@lingui/core";
 const msg1 = _i18n._(
-  /*i18n*/
+  /** i18n */
   {
     id: "YyfqC4",
     message: "Hello",
@@ -111,7 +111,7 @@ const msg1 = _i18n._(
   },
 );
 const msg2 = _i18n._(
-  /*i18n*/
+  /** i18n */
   {
     id: "b_h2Bm",
     message: "World",
@@ -132,7 +132,7 @@ const msg2 = t\`World\`;
 
 /* lingui-set context="ctx" comment="cmt" */ import { i18n as _i18n } from "@lingui/core";
 const msg1 = _i18n._(
-  /*i18n*/
+  /** i18n */
   {
     id: "3ZSjnQ",
     message: "Hello",
@@ -142,7 +142,7 @@ const msg1 = _i18n._(
 );
 /* lingui-set context="new ctx" */
 const msg2 = _i18n._(
-  /*i18n*/
+  /** i18n */
   {
     id: "Wrs89z",
     message: "World",
@@ -164,7 +164,7 @@ const msg2 = t\`World\`;
 
 /* lingui-set context="first" comment="second" */ import { i18n as _i18n } from "@lingui/core";
 const msg1 = _i18n._(
-  /*i18n*/
+  /** i18n */
   {
     id: "VUeJYD",
     message: "Hello",
@@ -174,7 +174,7 @@ const msg1 = _i18n._(
 );
 /* lingui-set context="" */
 const msg2 = _i18n._(
-  /*i18n*/
+  /** i18n */
   {
     id: "v-jdqd",
     message: "World",
@@ -193,7 +193,7 @@ const msg = t({ message: "Hello", comment: "explicit cmt" });
 
 /* lingui-set comment="directive cmt" */ import { i18n as _i18n } from "@lingui/core";
 const msg = _i18n._(
-  /*i18n*/
+  /** i18n */
   {
     id: "uzTaYi",
     message: "Hello",
@@ -212,7 +212,7 @@ const msg = defineMessage({ message: "Hello", context: "explicit ctx" });
 
 /* lingui-set context="directive ctx" comment="directive cmt" */
 const msg =
-  /*i18n*/
+  /** i18n */
   {
     id: "Mxe6B4",
     message: "Hello",
@@ -233,7 +233,7 @@ const msg = t({ id: dynId, message: "Welcome" });
 /* lingui-set idPrefix="module" */ import { i18n as _i18n } from "@lingui/core";
 const dynId = "dynamic";
 const msg = _i18n._(
-  /*i18n*/
+  /** i18n */
   {
     id: dynId,
     message: "Welcome",
@@ -251,7 +251,7 @@ const msg = t\`Hello\`;
 
 /* lingui-set idPrefix="module." */ import { i18n as _i18n } from "@lingui/core";
 const msg = _i18n._(
-  /*i18n*/
+  /** i18n */
   {
     id: "uzTaYi",
     message: "Hello",
@@ -269,7 +269,7 @@ const msg = defineMessage({ id: "greeting", message: "Hello" });
 
 /* lingui-set idPrefix="module." */
 const msg =
-  /*i18n*/
+  /** i18n */
   {
     id: "module.greeting",
     message: "Hello",
@@ -285,7 +285,7 @@ const msg = t\`Hello\`;
 
 import { i18n as _i18n } from "@lingui/core";
 const msg = _i18n._(
-  /*i18n*/
+  /** i18n */
   {
     id: "uzTaYi",
     message: "Hello",
@@ -303,7 +303,7 @@ const msg = plural(count, { one: "# book", other: "# books" });
 
 /* lingui-set context="my context" */ import { i18n as _i18n } from "@lingui/core";
 const msg = _i18n._(
-  /*i18n*/
+  /** i18n */
   {
     id: "SSborG",
     message: "{count, plural, one {# book} other {# books}}",
@@ -325,7 +325,7 @@ const msg = t\`Hello\`;
 
 /* lingui-set context="my context" */ import { i18n as _i18n } from "@lingui/core";
 const msg = _i18n._(
-  /*i18n*/
+  /** i18n */
   {
     id: "WMU_Op",
   },
@@ -344,7 +344,7 @@ const msg2 = t\`World\`;
 
 /* lingui-set context="first" comment="second" idPrefix="prefix." */ import { i18n as _i18n } from "@lingui/core";
 const msg1 = _i18n._(
-  /*i18n*/
+  /** i18n */
   {
     id: "VUeJYD",
     message: "Hello",
@@ -354,7 +354,7 @@ const msg1 = _i18n._(
 );
 /* lingui-reset */
 const msg2 = _i18n._(
-  /*i18n*/
+  /** i18n */
   {
     id: "v-jdqd",
     message: "World",
@@ -374,7 +374,7 @@ const msg2 = t\`World\`;
 
 /* lingui-set context="first" comment="second" */ import { i18n as _i18n } from "@lingui/core";
 const msg1 = _i18n._(
-  /*i18n*/
+  /** i18n */
   {
     id: "VUeJYD",
     message: "Hello",
@@ -384,7 +384,7 @@ const msg1 = _i18n._(
 );
 /* lingui-reset context="fresh" */
 const msg2 = _i18n._(
-  /*i18n*/
+  /** i18n */
   {
     id: "aENyP6",
     message: "World",
@@ -403,7 +403,7 @@ const msg = select(gender, { male: "he", female: "she", other: "they" });
 
 /* lingui-set context="my context" */ import { i18n as _i18n } from "@lingui/core";
 const msg = _i18n._(
-  /*i18n*/
+  /** i18n */
   {
     id: "-JBa2B",
     message: "{gender, select, male {he} female {she} other {they}}",
@@ -426,7 +426,7 @@ const msg = t\`Hello\`;
 // lingui-set comment="translator note"
 import { i18n as _i18n } from "@lingui/core";
 const msg = _i18n._(
-  /*i18n*/
+  /** i18n */
   {
     id: "uzTaYi",
     message: "Hello",
@@ -445,7 +445,7 @@ const msg = t\`Hello\`;
 
 /* lingui-set context="my context" */ import { i18n as _i18n } from "@lingui/core";
 const msg = _i18n._(
-  /*i18n*/
+  /** i18n */
   {
     id: "WMU_Op",
     message: "Hello",
@@ -464,7 +464,7 @@ const msg = t\`Hello\`;
 
 /* lingui-set context="ctx" comment="cmt" */ import { i18n as _i18n } from "@lingui/core";
 const msg = _i18n._(
-  /*i18n*/
+  /** i18n */
   {
     id: "3ZSjnQ",
     message: "Hello",
@@ -486,7 +486,7 @@ const el = <Plural value={count} one="# book" other="# books" />;
 const el = (
   <_Trans
     {
-      /*i18n*/
+      /** i18n */
       ...{
         id: "SSborG",
         message: "{count, plural, one {# book} other {# books}}",
@@ -514,7 +514,7 @@ const el = (
     male="he"
     female="she"
     {
-      /*i18n*/
+      /** i18n */
       ...{
         id: "vfcacx",
         message: "{gender, select, other {they}}",
@@ -541,7 +541,7 @@ import { Trans as _Trans } from "@lingui/react";
 const el = (
   <_Trans
     {
-      /*i18n*/
+      /** i18n */
       ...{
         id: "uzTaYi",
         message: "Hello",
@@ -564,7 +564,7 @@ const el = <Trans>Hello</Trans>;
 const el = (
   <_Trans
     {
-      /*i18n*/
+      /** i18n */
       ...{
         id: "WMU_Op",
         message: "Hello",
@@ -587,7 +587,7 @@ const el = <Trans id="greeting">Hello</Trans>;
 const el = (
   <_Trans
     {
-      /*i18n*/
+      /** i18n */
       ...{
         id: "module.greeting",
         message: "Hello",
@@ -609,7 +609,7 @@ const el = <Trans>Hello</Trans>;
 const el = (
   <_Trans
     {
-      /*i18n*/
+      /** i18n */
       ...{
         id: "uzTaYi",
         message: "Hello",
@@ -631,7 +631,7 @@ const el = <Trans id={dynId}>Hello</Trans>;
 const el = (
   <_Trans
     {
-      /*i18n*/
+      /** i18n */
       ...{
         id: "uzTaYi",
         message: "Hello",
@@ -654,7 +654,7 @@ const dynId = "dynamic";
 const el = (
   <_Trans
     {
-      /*i18n*/
+      /** i18n */
       ...{
         id: "uzTaYi",
         message: "Hello",
@@ -676,7 +676,7 @@ const el = <Trans context="explicit ctx">Hello</Trans>;
 const el = (
   <_Trans
     {
-      /*i18n*/
+      /** i18n */
       ...{
         id: "Mxe6B4",
         message: "Hello",
@@ -703,7 +703,7 @@ const el5 = <Trans id="test">Hello</Trans>;
 const el1 = (
   <_Trans
     {
-      /*i18n*/
+      /** i18n */
       ...{
         id: "checkout.usesPrefix",
         message: "Hello",
@@ -714,7 +714,7 @@ const el1 = (
 const el2 = (
   <_Trans
     {
-      /*i18n*/
+      /** i18n */
       ...{
         id: "checkout.usesPrefix.with.subpath",
         message: "Hello",
@@ -725,7 +725,7 @@ const el2 = (
 const el3 = (
   <_Trans
     {
-      /*i18n*/
+      /** i18n */
       ...{
         id: "unprefixed.key",
         message: "Hello",
@@ -736,7 +736,7 @@ const el3 = (
 const el4 = (
   <_Trans
     {
-      /*i18n*/
+      /** i18n */
       ...{
         id: "unprefixed",
         message: "Hello",
@@ -747,7 +747,7 @@ const el4 = (
 const el5 = (
   <_Trans
     {
-      /*i18n*/
+      /** i18n */
       ...{
         id: "test",
         message: "Hello",
@@ -771,7 +771,7 @@ const f = <Trans>Copyright</Trans>;
 const h = (
   <_Trans
     {
-      /*i18n*/
+      /** i18n */
       ...{
         id: "cxvq4E",
         message: "Title",
@@ -784,7 +784,7 @@ const h = (
 const f = (
   <_Trans
     {
-      /*i18n*/
+      /** i18n */
       ...{
         id: "wtNRmE",
         message: "Copyright",
@@ -814,7 +814,7 @@ function App() {
   const { _: _t } = _useLingui();
   /* lingui-set context="first" */
   const msg1 = _t(
-    /*i18n*/
+    /** i18n */
     {
       id: "VUeJYD",
       message: "Hello",
@@ -823,7 +823,7 @@ function App() {
   );
   /* lingui-set context="second" */
   const msg2 = _t(
-    /*i18n*/
+    /** i18n */
     {
       id: "ovKD_8",
       message: "World",
@@ -850,7 +850,7 @@ function App() {
   const { _: _t } = _useLingui();
   /* lingui-set context="my context" */
   return _t(
-    /*i18n*/
+    /** i18n */
     {
       id: "WMU_Op",
       message: "Hello",

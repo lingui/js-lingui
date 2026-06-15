@@ -203,7 +203,11 @@ function hasIgnoreComment(node: Node): boolean {
 }
 
 function hasI18nComment(node: Node): boolean {
-  return hasComment(node, "i18n")
+  return !!node.leadingComments?.some((comm) => {
+    const trimmed = comm.value.trim()
+
+    return trimmed === "i18n" || trimmed === "* i18n" || trimmed === "*i18n"
+  })
 }
 
 function getLinguiConfig(ctx: PluginPass): LinguiConfigNormalized {
@@ -342,7 +346,7 @@ export default function ({ types: t }: { types: BabelTypes }): PluginObj {
         }
 
         // call with explicit annotation
-        // i18n._(/*i18n*/ {descriptor})
+        // i18n._(/**i18n*/ {descriptor})
         // skipping this as it is processed
         // by ObjectExpression visitor
         if (hasI18nComment(firstArgument.node)) {

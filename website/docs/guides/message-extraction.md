@@ -94,11 +94,11 @@ See [`lingui-set` Comment Directive](/ref/macro#lingui-directive) in the Macros 
 
 In addition to call expressions, which are the most commonly used method, the extractor tool also supports simple string literals and message descriptors with explicit annotations.
 
-To do this, simply prefix your expression with the `/*i18n*/` comment, like so:
+To do this, simply prefix your expression with the `/** i18n */` or ( `/* i18n */`, both variants are supported) comment, like so:
 
 ```ts
-const messageDescriptor: MessageDescriptor = /*i18n*/ { id: "Description", comment: "description" };
-const stringLiteral = /*i18n*/ "Message";
+const messageDescriptor: MessageDescriptor = /** i18n */ { id: "Description", comment: "description" };
+const stringLiteral = /** i18n */ "Message";
 ```
 
 ## Unsupported Patterns

@@ -138,7 +138,7 @@ export function Code(): React.ReactElement {
     <section>
       <div className="mx-auto max-w-6xl px-4">
         <h2 className="text-heading mb-12 text-center text-3xl font-medium tracking-tight sm:text-4xl">
-          Integrating Lingui into Your Project is Easy!
+          Integrating Lingui into your project is easy!
         </h2>
 
         <div className="grid gap-4 lg:grid-cols-[18rem_minmax(0,1fr)] lg:items-start">

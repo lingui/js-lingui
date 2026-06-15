@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.3.0](https://github.com/lingui/js-lingui/compare/v6.2.0...v6.3.0) (2026-06-10)
+
+### Bug Fixes
+
+* don't warn about idPrefixLeader in config ([#2561](https://github.com/lingui/js-lingui/issues/2561)) ([b2f5dc8](https://github.com/lingui/js-lingui/commit/b2f5dc8a02b54cb9da7730003f89eb0220463c47))
+
+### Features
+
+* **cli:** add support for `BatchExtractor` ([#2562](https://github.com/lingui/js-lingui/issues/2562)) ([3d0bf56](https://github.com/lingui/js-lingui/commit/3d0bf56dd8da217485ed40e7f4d7c127213d66cb))
+
 # [6.2.0](https://github.com/lingui/js-lingui/compare/v6.1.0...v6.2.0) (2026-06-01)
 
 ### Bug Fixes
