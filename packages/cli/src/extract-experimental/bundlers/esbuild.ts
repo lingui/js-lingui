@@ -41,6 +41,15 @@ function createExtRegExp(extensions: string[]) {
   return new RegExp("\\.(?:" + extensions.join("|") + ")(?:\\?.*)?$")
 }
 
+// With absPaths: ["metafile"], esbuild reports absolute paths in metafile.
+// Filter to only user-specified entries (dynamic imports also get entryPoint set).
+function filterToUserEntry(
+  metaEntryPoint: string,
+  entryPointSet: Set<string>,
+): string | undefined {
+  return entryPointSet.has(metaEntryPoint) ? metaEntryPoint : undefined
+}
+
 export function createEsbuildBundler(
   options?: EsbuildBundlerOptions,
 ): ExperimentalExtractorBundler {
@@ -77,7 +86,7 @@ export function createEsbuildBundler(
         sourceRoot: outDir,
         sourcesContent: false,
         metafile: true,
-
+        absPaths: ["metafile"],
         plugins: [
           pluginLinguiMacro({ linguiConfig }),
           {
@@ -115,11 +124,7 @@ export function createEsbuildBundler(
       const bundleResult = await esbuild.build(esbuildOptions)
       const metafile = bundleResult.metafile!
 
-      const entryPointSet = new Set(
-        entryPoints.map((ep) =>
-          path.relative(process.cwd(), ep).replace(/\\/g, "/"),
-        ),
-      )
+      const entryPointSet = new Set(entryPoints.map((ep) => path.resolve(ep)))
 
       const allOutputPaths = new Set(Object.keys(metafile.outputs))
 
@@ -127,10 +132,9 @@ export function createEsbuildBundler(
         ([outputPath, meta]) => ({
           id: outputPath,
           filePath: outputPath,
-          entryPoint:
-            meta.entryPoint && entryPointSet.has(meta.entryPoint)
-              ? meta.entryPoint
-              : undefined,
+          entryPoint: meta.entryPoint
+            ? filterToUserEntry(meta.entryPoint, entryPointSet)
+            : undefined,
           imports: meta.imports
             .filter((imp) => allOutputPaths.has(imp.path))
             .map((imp) => imp.path),

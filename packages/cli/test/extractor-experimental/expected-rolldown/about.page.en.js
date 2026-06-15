@@ -1,5 +1,1 @@
-  module.exports = {
-  messages: JSON.parse(
-    '{"LGGfGX":["header message"],"RNRWaX":["shared message"],"VmkjGB":["Green"],"u5PTM8":["about page message"]}',
-  ),
-}
+ module.exports={messages:JSON.parse("{\"LGGfGX\":[\"header message\"],\"RNRWaX\":[\"shared message\"],\"VmkjGB\":[\"Green\"],\"u5PTM8\":[\"about page message\"]}")};

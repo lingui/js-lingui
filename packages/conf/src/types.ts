@@ -168,7 +168,7 @@ export type BundleChunk = {
   /** Absolute or relative file path to the chunk on disk. */
   filePath: string
   /**
-   * If this chunk is an entry chunk, the source entry point file path (relative to cwd).
+   * If this chunk is an entry chunk, the absolute file path of the source entry point.
    * Omit for shared/common chunks.
    */
   entryPoint?: string

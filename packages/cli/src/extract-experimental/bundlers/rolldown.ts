@@ -143,16 +143,16 @@ export function createRolldownBundler(
         (item): item is OutputChunk => item.type === "chunk",
       )
 
+      const outputFileNames = new Set(outputChunks.map((c) => c.fileName))
+
       const chunks: BundleChunk[] = outputChunks.map((chunk) => ({
         id: chunk.fileName,
         filePath: `${outDir}/${chunk.fileName}`,
         entryPoint:
           chunk.isEntry && chunk.facadeModuleId
-            ? chunk.facadeModuleId
+            ? chunk.facadeModuleId.replace(/\\/g, "/")
             : undefined,
-        imports: chunk.imports.filter((imp) =>
-          outputChunks.some((c) => c.fileName === imp),
-        ),
+        imports: chunk.imports.filter((imp) => outputFileNames.has(imp)),
       }))
 
       return { chunks }
