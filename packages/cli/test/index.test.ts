@@ -265,28 +265,28 @@ describe("E2E Extractor Test", () => {
         expect(result).toBeTruthy()
         expect(replaceDuration(getConsoleMockCalls(console.log)))
           .toMatchInlineSnapshot(`
-          You have using an experimental feature
-          Experimental features are not covered by semver, and may cause unexpected or broken application behavior. Use at your own risk.
+            You have using an experimental feature
+            Experimental features are not covered by semver, and may cause unexpected or broken application behavior. Use at your own risk.
 
-          Catalog statistics for fixtures/pages/about.page.ts:
-          ┌─────────────┬─────────────┬─────────┐
-          │ Language    │ Total count │ Missing │
-          ├─────────────┼─────────────┼─────────┤
-          │ en (source) │      3      │    -    │
-          │ pl          │      4      │    3    │
-          └─────────────┴─────────────┴─────────┘
+            Catalog statistics for fixtures/pages/about.page.ts:
+            ┌─────────────┬─────────────┬─────────┐
+            │ Language    │ Total count │ Missing │
+            ├─────────────┼─────────────┼─────────┤
+            │ en (source) │      3      │    -    │
+            │ pl          │      4      │    3    │
+            └─────────────┴─────────────┴─────────┘
 
-          Catalog statistics for fixtures/pages/index.page.ts:
-          ┌─────────────┬─────────────┬─────────┐
-          │ Language    │ Total count │ Missing │
-          ├─────────────┼─────────────┼─────────┤
-          │ en (source) │      2      │    -    │
-          │ pl          │      2      │    2    │
-          └─────────────┴─────────────┴─────────┘
+            Catalog statistics for fixtures/pages/index.page.ts:
+            ┌─────────────┬─────────────┬─────────┐
+            │ Language    │ Total count │ Missing │
+            ├─────────────┼─────────────┼─────────┤
+            │ en (source) │      3      │    -    │
+            │ pl          │      3      │    3    │
+            └─────────────┴─────────────┴─────────┘
 
-          Compiling message catalogs…
-          Done in <n>ms
-        `)
+            Compiling message catalogs…
+            Done in <n>ms
+          `)
       })
 
       compareFolders(actualPath, expectedPath)
