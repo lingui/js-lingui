@@ -160,10 +160,30 @@ type CatalogService = {
 }
 
 /**
+ * Describes a single output chunk produced by the bundler.
+ */
+export type BundleChunk = {
+  /** Unique identifier for this chunk within the bundle (e.g. relative output path or fileName). */
+  id: string
+  /** Absolute or relative file path to the chunk on disk. */
+  filePath: string
+  /**
+   * If this chunk is an entry chunk, the source entry point file path (relative to cwd).
+   * Omit for shared/common chunks.
+   */
+  entryPoint?: string
+  /** IDs of other chunks that this chunk imports (references to other chunks' `id` fields). */
+  imports: string[]
+}
+
+/**
  * Result returned by a bundler after bundling entry points.
+ *
+ * Bundlers describe the chunk graph — the CLI handles traversal
+ * to determine which entry points each shared chunk belongs to.
  */
 export type BundleResult = {
-  outputFiles: Array<{ filePath: string; entryPoint: string }>
+  chunks: BundleChunk[]
 }
 
 /**

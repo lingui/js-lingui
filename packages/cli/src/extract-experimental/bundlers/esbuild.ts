@@ -1,5 +1,10 @@
 import type { BuildOptions } from "esbuild"
-import type { ExperimentalExtractorBundler, BundleResult } from "@lingui/conf"
+import type {
+  ExperimentalExtractorBundler,
+  BundleResult,
+  BundleChunk,
+} from "@lingui/conf"
+import path from "path"
 import { pluginLinguiMacro } from "../linguiEsbuildPlugin.js"
 import { buildIncludeDepsFilter } from "../buildIncludeDepsFilter.js"
 import { DEFAULT_EXCLUDE_EXTENSIONS } from "../constants.js"
@@ -65,7 +70,7 @@ export function createEsbuildBundler(
         platform: "node",
         target: ["esnext"],
         format: "esm",
-        splitting: false,
+        splitting: true,
         treeShaking: true,
         outdir: outDir,
         sourcemap: "inline",
@@ -110,17 +115,29 @@ export function createEsbuildBundler(
       const bundleResult = await esbuild.build(esbuildOptions)
       const metafile = bundleResult.metafile!
 
-      const outputFiles = Object.keys(metafile.outputs)
-        .map((filePath) => ({
-          filePath,
-          entryPoint: metafile.outputs[filePath]?.entryPoint,
-        }))
-        .filter(
-          (item): item is BundleResult["outputFiles"][number] =>
-            !!item.entryPoint,
-        )
+      const entryPointSet = new Set(
+        entryPoints.map((ep) =>
+          path.relative(process.cwd(), ep).replace(/\\/g, "/"),
+        ),
+      )
 
-      return { outputFiles }
+      const allOutputPaths = new Set(Object.keys(metafile.outputs))
+
+      const chunks: BundleChunk[] = Object.entries(metafile.outputs).map(
+        ([outputPath, meta]) => ({
+          id: outputPath,
+          filePath: outputPath,
+          entryPoint:
+            meta.entryPoint && entryPointSet.has(meta.entryPoint)
+              ? meta.entryPoint
+              : undefined,
+          imports: meta.imports
+            .filter((imp) => allOutputPaths.has(imp.path))
+            .map((imp) => imp.path),
+        }),
+      )
+
+      return { chunks }
     },
   }
 }

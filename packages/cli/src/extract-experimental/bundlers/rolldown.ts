@@ -1,5 +1,9 @@
 import type { BuildOptions, OutputChunk } from "rolldown"
-import type { ExperimentalExtractorBundler, BundleResult } from "@lingui/conf"
+import type {
+  ExperimentalExtractorBundler,
+  BundleResult,
+  BundleChunk,
+} from "@lingui/conf"
 import path from "path"
 import { buildIncludeDepsFilter } from "../buildIncludeDepsFilter.js"
 import { DEFAULT_EXCLUDE_EXTENSIONS } from "../constants.js"
@@ -135,19 +139,23 @@ export function createRolldownBundler(
 
       const result = await rolldown.build(rolldownOptions)
 
-      const outputFiles = result.output
-        .filter(
-          (item): item is OutputChunk =>
-            item.type === "chunk" &&
-            item.isEntry &&
-            item.facadeModuleId != null,
-        )
-        .map((chunk) => ({
-          filePath: `${outDir}/${chunk.fileName}`,
-          entryPoint: path.relative(process.cwd(), chunk.facadeModuleId!),
-        }))
+      const outputChunks = result.output.filter(
+        (item): item is OutputChunk => item.type === "chunk",
+      )
 
-      return { outputFiles }
+      const chunks: BundleChunk[] = outputChunks.map((chunk) => ({
+        id: chunk.fileName,
+        filePath: `${outDir}/${chunk.fileName}`,
+        entryPoint:
+          chunk.isEntry && chunk.facadeModuleId
+            ? chunk.facadeModuleId
+            : undefined,
+        imports: chunk.imports.filter((imp) =>
+          outputChunks.some((c) => c.fileName === imp),
+        ),
+      }))
+
+      return { chunks }
     },
   }
 }

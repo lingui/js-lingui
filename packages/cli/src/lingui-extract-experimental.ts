@@ -3,6 +3,7 @@ import { program } from "commander"
 import {
   getConfig,
   LinguiConfigNormalized,
+  ExtractedCatalogType,
   ExperimentalExtractorBundler,
 } from "@lingui/conf"
 import nodepath from "path"
@@ -17,8 +18,14 @@ import {
   resolveWorkersOptions,
   WorkersOptions,
 } from "./api/resolveWorkersOptions.js"
-import { extractFromBundleAndWrite } from "./extract-experimental/extractFromBundleAndWrite.js"
+import { extractFromChunk } from "./extract-experimental/extractFromChunk.js"
+import {
+  writeCatalogs,
+  writeTemplate,
+} from "./extract-experimental/writeCatalogs.js"
 import { createExtractExperimentalWorkerPool } from "./api/workerPools.js"
+import { buildChunkGraph } from "./extract-experimental/buildChunkGraph.js"
+import { mergeExtractedMessage } from "./api/catalog/extractFromFiles.js"
 
 type CliExtractTemplateOptions = {
   verbose?: boolean
@@ -83,9 +90,15 @@ export default async function command(
     tempDir,
     linguiConfig,
   )
+
+  const resolvedChunks = buildChunkGraph(bundleResult.chunks)
+
   const stats: { entry: string; content: string }[] = []
 
   let commandSuccess = true
+
+  // Phase 1: Extract messages from each chunk
+  const messagesByEntry = new Map<string, ExtractedCatalogType>()
 
   if (options.workersOptions.poolSize) {
     const resolvedConfigPath = linguiConfig.resolvedConfigPath
@@ -104,26 +117,27 @@ export default async function command(
 
     try {
       await Promise.all(
-        bundleResult.outputFiles.map(async ({ filePath, entryPoint }) => {
-          const result = await pool.run(
+        resolvedChunks.map(async ({ filePath, entryPoints }) => {
+          const { messages, success } = await pool.run(
             resolvedConfigPath,
-            entryPoint,
             filePath,
-            extractorConfig.output,
-            options.template || false,
-            options.locales || linguiConfig.locales,
-            options.clean || false,
-            options.overwrite || false,
           )
 
-          commandSuccess &&= result.success
+          if (!success) {
+            commandSuccess = false
+          }
 
-          if (result.success) {
-            stats.push({
-              entry: normalizePath(
-                nodepath.relative(linguiConfig.rootDir, entryPoint),
-              ),
-              content: result.stat,
+          for (const entryPoint of entryPoints) {
+            if (!messagesByEntry.has(entryPoint)) {
+              messagesByEntry.set(entryPoint, {})
+            }
+
+            messages.forEach((message) => {
+              mergeExtractedMessage(
+                message,
+                messagesByEntry.get(entryPoint)!,
+                linguiConfig,
+              )
             })
           }
         }),
@@ -132,35 +146,71 @@ export default async function command(
       await pool.destroy()
     }
   } else {
-    const format = await getFormat(
-      linguiConfig.format,
-      linguiConfig.sourceLocale,
+    await Promise.all(
+      resolvedChunks.map(async ({ filePath, entryPoints }) => {
+        const { messages, success } = await extractFromChunk(
+          filePath,
+          linguiConfig,
+        )
+
+        if (!success) {
+          commandSuccess = false
+        }
+
+        for (const entryPoint of entryPoints) {
+          if (!messagesByEntry.has(entryPoint)) {
+            messagesByEntry.set(entryPoint, {})
+          }
+
+          messages.forEach((message) => {
+            mergeExtractedMessage(
+              message,
+              messagesByEntry.get(entryPoint)!,
+              linguiConfig,
+            )
+          })
+        }
+      }),
     )
+  }
 
-    for (const { filePath, entryPoint } of bundleResult.outputFiles) {
-      const result = await extractFromBundleAndWrite({
-        entryPoint,
-        bundleFile: filePath,
-        outputPattern: extractorConfig.output,
-        format,
-        linguiConfig,
-        locales: options.locales || linguiConfig.locales,
-        overwrite: options.overwrite || false,
-        clean: options.clean || false,
-        template: options.template || false,
-      })
+  // Phase 2: Write catalogs per entry point
+  const format = await getFormat(linguiConfig.format, linguiConfig.sourceLocale)
+  const locales = options.locales || linguiConfig.locales
 
-      commandSuccess &&= result.success
+  for (const [entryPoint, messages] of messagesByEntry) {
+    let stat: string
 
-      if (result.success) {
-        stats.push({
-          entry: normalizePath(
-            nodepath.relative(linguiConfig.rootDir, entryPoint),
-          ),
-          content: result.stat,
+    if (options.template) {
+      stat = (
+        await writeTemplate({
+          linguiConfig,
+          clean: options.clean || false,
+          format,
+          messages,
+          entryPoint,
+          outputPattern: extractorConfig.output,
         })
-      }
+      ).statMessage
+    } else {
+      stat = (
+        await writeCatalogs({
+          locales,
+          linguiConfig,
+          clean: options.clean || false,
+          format,
+          messages,
+          entryPoint,
+          overwrite: options.overwrite || false,
+          outputPattern: extractorConfig.output,
+        })
+      ).statMessage
     }
+
+    stats.push({
+      entry: normalizePath(nodepath.relative(linguiConfig.rootDir, entryPoint)),
+      content: stat,
+    })
   }
 
   // cleanup temp directory
