@@ -80,7 +80,7 @@ const FEATURES: FeatureDetails[] = [
     image: "clean-and-readable.png",
   },
   {
-    title: "Built for AI-assisted Workflows",
+    title: "Built for AI-Assisted Workflows",
     description: (
       <>
         <p>
@@ -101,7 +101,7 @@ const FEATURES: FeatureDetails[] = [
     className: "md:col-span-2",
   },
   {
-    title: "Battle-Proven & Future Proof",
+    title: "Battle-Proven & Future-Proof",
     description: (
       <>
         <p>
@@ -131,12 +131,7 @@ const FEATURES: FeatureDetails[] = [
   },
   {
     title: "Verified by Thousands of Developers",
-    description: (
-      <p>
-        Lingui has been used and tested by thousands of satisfied developers and has been proven to provide accurate and
-        efficient i18n and l10n results. Join the community.
-      </p>
-    ),
+    description: <p>Lingui is used and tested by thousands of developers in production. Join the community.</p>,
     image: "verified.svg",
   },
   {
@@ -145,8 +140,8 @@ const FEATURES: FeatureDetails[] = [
       <>
         <p>
           Lingui is a general-purpose framework with bindings for <span className="font-medium">React</span> (including
-          RSC), <span className="font-medium">Vue</span>, <span className="font-medium">Astro</span>, and{" "}
-          <span className="font-medium">Svelte</span>. It can be used on a server with{" "}
+          RSC and React Native), <span className="font-medium">Vue</span>, <span className="font-medium">Astro</span>,
+          and <span className="font-medium">Svelte</span>. It can be used on a server with{" "}
           <span className="font-medium">Node.js</span> or in <span className="font-medium">Vanilla JavaScript</span>.
         </p>
         <p>
@@ -204,7 +199,7 @@ export function Features(): React.ReactElement {
     <section className="overflow-x-hidden">
       <div className="mx-auto max-w-6xl px-4">
         <h2 className="mx-auto mb-12 max-w-3xl text-center text-3xl font-medium tracking-tight text-heading sm:text-4xl">
-          Why Choose Lingui for Your Localization Projects?
+          Why choose Lingui for your localization projects?
         </h2>
 
         <div className="grid grid-cols-1 gap-x-6 sm:grid-cols-2 lg:grid-cols-3">
