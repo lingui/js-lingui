@@ -290,10 +290,10 @@ export default defineConfig({
 
 Both `createEsbuildBundler` and `createRolldownBundler` accept the following common options:
 
-| Option              | Description                                                                                                   |
-|---------------------|---------------------------------------------------------------------------------------------------------------|
-| `includeDeps`       | Package names to bundle instead of marking as external. Use this for internal packages that contain messages. |
-| `excludeExtensions` | File extensions to externalize (e.g., `.css`, `.svg`). Has sensible defaults.|
+| Option              | Description                                                                                                  |
+| ------------------- | ------------------------------------------------------------------------------------------------------------ |
+| `includeDeps`       | Package names to bundle instead of marking as external. Use this for internal packages that contain messages |
+| `excludeExtensions` | File extensions to externalize (e.g., `.css`, `.svg`). Has sensible defaults                                 |
 
 Additionally, each bundler accepts a resolver function for full control over bundler-specific options:
 
