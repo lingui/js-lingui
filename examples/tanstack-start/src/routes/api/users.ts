@@ -15,7 +15,7 @@ export const Route = createFileRoute("/api/users")({
 
         const list = res.data.slice(0, 10)
 
-        return json(
+        return Response.json(
           list.map((u) => ({ id: u.id, name: u.name, email: u.email }))
         )
       },

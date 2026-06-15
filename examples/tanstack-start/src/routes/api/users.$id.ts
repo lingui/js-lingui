@@ -16,14 +16,14 @@ export const Route = createFileRoute("/api/users/$id")({
             "https://jsonplaceholder.typicode.com/users/" + params.id
           )
 
-          return json({
+          return Response.json({
             id: res.data.id,
             name: res.data.name,
             email: res.data.email,
           })
         } catch (e) {
           console.error(e)
-          return json(
+          return Response.json(
             { error: context.i18n._(msg`User not found`) },
             { status: 404 }
           )
