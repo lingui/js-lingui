@@ -41,13 +41,15 @@ function createExtRegExp(extensions: string[]) {
   return new RegExp("\\.(?:" + extensions.join("|") + ")(?:\\?.*)?$")
 }
 
-// With absPaths: ["metafile"], esbuild reports absolute paths in metafile.
-// Filter to only user-specified entries (dynamic imports also get entryPoint set).
-function filterToUserEntry(
+// esbuild metafile reports entryPoint as cwd-relative with forward slashes.
+// Resolve to absolute and filter to only user-specified entries
+// (dynamic imports also get entryPoint set in metafile).
+function resolveIfUserEntry(
   metaEntryPoint: string,
   entryPointSet: Set<string>,
 ): string | undefined {
-  return entryPointSet.has(metaEntryPoint) ? metaEntryPoint : undefined
+  const resolved = path.resolve(metaEntryPoint)
+  return entryPointSet.has(resolved) ? resolved : undefined
 }
 
 export function createEsbuildBundler(
@@ -86,7 +88,6 @@ export function createEsbuildBundler(
         sourceRoot: outDir,
         sourcesContent: false,
         metafile: true,
-        absPaths: ["metafile"],
         plugins: [
           pluginLinguiMacro({ linguiConfig }),
           {
@@ -133,7 +134,7 @@ export function createEsbuildBundler(
           id: outputPath,
           filePath: outputPath,
           entryPoint: meta.entryPoint
-            ? filterToUserEntry(meta.entryPoint, entryPointSet)
+            ? resolveIfUserEntry(meta.entryPoint, entryPointSet)
             : undefined,
           imports: meta.imports
             .filter((imp) => allOutputPaths.has(imp.path))
