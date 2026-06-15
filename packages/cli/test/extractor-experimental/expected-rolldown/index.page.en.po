@@ -13,17 +13,9 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: fixtures/constants/green.ts:3
-msgid "Green"
-msgstr "Green"
-
 #: fixtures/pages/index.page.ts:5
 msgid "index page message"
 msgstr "index page message"
-
-#: fixtures/components/dynamic.ts:4
-msgid "message from a dynamic imported module"
-msgstr "message from a dynamic imported module"
 
 #: fixtures/constants/red.ts:3
 msgid "Red"

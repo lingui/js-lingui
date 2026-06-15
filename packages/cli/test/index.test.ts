@@ -272,16 +272,16 @@ describe("E2E Extractor Test", () => {
             ┌─────────────┬─────────────┬─────────┐
             │ Language    │ Total count │ Missing │
             ├─────────────┼─────────────┼─────────┤
-            │ en (source) │      3      │    -    │
-            │ pl          │      4      │    3    │
+            │ en (source) │      5      │    -    │
+            │ pl          │      6      │    5    │
             └─────────────┴─────────────┴─────────┘
 
             Catalog statistics for fixtures/pages/index.page.ts:
             ┌─────────────┬─────────────┬─────────┐
             │ Language    │ Total count │ Missing │
             ├─────────────┼─────────────┼─────────┤
-            │ en (source) │      3      │    -    │
-            │ pl          │      3      │    3    │
+            │ en (source) │      5      │    -    │
+            │ pl          │      5      │    5    │
             └─────────────┴─────────────┴─────────┘
 
             Compiling message catalogs…
@@ -318,30 +318,30 @@ describe("E2E Extractor Test", () => {
         expect(result).toBeTruthy()
         expect(replaceDuration(getConsoleMockCalls(console.log)))
           .toMatchInlineSnapshot(`
-          Extracting messages from source files…
-          You have using an experimental feature
-          Experimental features are not covered by semver, and may cause unexpected or broken application behavior. Use at your own risk.
+            Extracting messages from source files…
+            You have using an experimental feature
+            Experimental features are not covered by semver, and may cause unexpected or broken application behavior. Use at your own risk.
 
-          Use worker pool of size 2
-          Catalog statistics for fixtures/pages/about.page.ts:
-          ┌─────────────┬─────────────┬─────────┐
-          │ Language    │ Total count │ Missing │
-          ├─────────────┼─────────────┼─────────┤
-          │ en (source) │      3      │    -    │
-          │ pl          │      4      │    3    │
-          └─────────────┴─────────────┴─────────┘
+            Use worker pool of size 2
+            Catalog statistics for fixtures/pages/about.page.ts:
+            ┌─────────────┬─────────────┬─────────┐
+            │ Language    │ Total count │ Missing │
+            ├─────────────┼─────────────┼─────────┤
+            │ en (source) │      5      │    -    │
+            │ pl          │      6      │    5    │
+            └─────────────┴─────────────┴─────────┘
 
-          Catalog statistics for fixtures/pages/index.page.ts:
-          ┌─────────────┬─────────────┬─────────┐
-          │ Language    │ Total count │ Missing │
-          ├─────────────┼─────────────┼─────────┤
-          │ en (source) │      2      │    -    │
-          │ pl          │      2      │    2    │
-          └─────────────┴─────────────┴─────────┘
+            Catalog statistics for fixtures/pages/index.page.ts:
+            ┌─────────────┬─────────────┬─────────┐
+            │ Language    │ Total count │ Missing │
+            ├─────────────┼─────────────┼─────────┤
+            │ en (source) │      5      │    -    │
+            │ pl          │      5      │    5    │
+            └─────────────┴─────────────┴─────────┘
 
-          Compiling message catalogs…
-          Done in <n>ms
-        `)
+            Compiling message catalogs…
+            Done in <n>ms
+          `)
       })
 
       compareFolders(actualPath, expectedPath)
@@ -433,9 +433,8 @@ describe("E2E Extractor Test", () => {
 
   describe("extractor-experimental (rolldown)", () => {
     it("should extract to catalogs and merge with existing", async () => {
-      const { rootDir, actualPath, expectedPath } = await prepare(
-        "extractor-experimental",
-      )
+      const { rootDir, actualPath } = await prepare("extractor-experimental")
+      const expectedPath = nodepath.join(rootDir, "expected-rolldown")
 
       await mockConsole(async (console) => {
         const config = getConfig({

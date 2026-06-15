@@ -5,7 +5,7 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: @lingui/cli\n"
-"Language: en\n"
+"Language: pl\n"
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "PO-Revision-Date: \n"
@@ -13,22 +13,14 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: fixtures/constants/green.ts:3
-msgid "Green"
-msgstr "Green"
-
 #: fixtures/pages/index.page.ts:5
 msgid "index page message"
-msgstr "index page message"
-
-#: fixtures/components/dynamic.ts:4
-msgid "message from a dynamic imported module"
-msgstr "message from a dynamic imported module"
+msgstr ""
 
 #: fixtures/constants/red.ts:3
 msgid "Red"
-msgstr "Red"
+msgstr ""
 
 #: fixtures/components/shared.ts:3
 msgid "shared message"
-msgstr "shared message"
+msgstr ""

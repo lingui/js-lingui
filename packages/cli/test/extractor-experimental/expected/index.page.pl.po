@@ -13,7 +13,11 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: fixtures/pages/index.page.ts:4
+#: fixtures/constants/green.ts:3
+msgid "Green"
+msgstr ""
+
+#: fixtures/pages/index.page.ts:5
 msgid "index page message"
 msgstr ""
 
@@ -23,4 +27,8 @@ msgstr ""
 
 #: fixtures/constants/red.ts:3
 msgid "Red"
+msgstr ""
+
+#: fixtures/components/shared.ts:3
+msgid "shared message"
 msgstr ""
