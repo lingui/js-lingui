@@ -111,6 +111,20 @@ export function createEsbuildBundler(
                   external: true,
                 }),
               )
+
+              // for some dynamic imports, for example
+              // await import(`../locales/${locale}.po`)
+              // esbuild skips resolve, because files crawled from the disk
+              // to exclude those files from build, load an empty object instead
+              build.onLoad(
+                { filter: createExtRegExp(excludeExtensions) },
+                () => {
+                  return {
+                    contents: JSON.stringify({}),
+                    loader: "json",
+                  }
+                },
+              )
             },
           },
         ],
