@@ -1,0 +1,22 @@
+name: reindex-docs
+
+on:
+  workflow_dispatch:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  reindex:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Update Algolia index
+        uses: darrenjennings/algolia-docsearch-action@e3b8c5540e90a964b655be6ca73c1ee1aeba2719 # v0.2.0
+        with:
+          algolia_application_id: ${{ vars.ALGOLIA_APP_ID }}
+          algolia_api_key: ${{ secrets.ALGOLIA_WRITE_API_KEY }}
+          file: 'website/tools/algolia/config.json'
