@@ -210,6 +210,20 @@ export default defineConfig({
 });
 ```
 
+If your project uses path aliases (e.g. `@/` mapped in `tsconfig.json`), you need to include the alias prefix in `includeDeps` and enable `tsconfig` resolution. This is necessary because the extractor's external-module filter runs before rolldown resolves tsconfig path mappings:
+
+```ts title="lingui.config.ts"
+import { createRolldownBundler } from "@lingui/cli/bundlers/rolldown";
+
+createRolldownBundler({
+  includeDeps: ["@/"],
+  resolveRolldownOptions: (options) => {
+    options.tsconfig = true;
+    return options;
+  },
+});
+```
+
 To use the `smallest` tree-shaking preset:
 
 ```ts title="lingui.config.ts"
