@@ -20,6 +20,10 @@ export type TextWithLoc = {
   loc?: SourceLocation
 }
 
+type MessageDescriptorElementTransforms = {
+  transformElement?: (value: Expression) => Expression
+}
+
 function isObjectProperty(
   node: TextWithLoc | ObjectProperty,
 ): node is ObjectProperty {
@@ -41,13 +45,20 @@ export function createMessageDescriptorFromTokens(
     id?: TextWithLoc | ObjectProperty
     idPrefixLeader?: string
   } = {},
+  transforms: MessageDescriptorElementTransforms = {},
 ) {
-  return createMessageDescriptor(
-    buildICUFromTokens(tokens),
-    oldLoc,
-    descriptorFields,
-    defaults,
-  )
+  const result = buildICUFromTokens(tokens)
+
+  if (result.elements && transforms.transformElement) {
+    result.elements = Object.fromEntries(
+      Object.entries(result.elements).map(([key, value]) => [
+        key,
+        transforms.transformElement(value),
+      ]),
+    )
+  }
+
+  return createMessageDescriptor(result, oldLoc, descriptorFields, defaults)
 }
 
 export function createMessageDescriptor(

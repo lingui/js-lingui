@@ -458,6 +458,12 @@ export type LinguiConfig = {
      * start with this leader string. The leader string is kept in the final ID.
      */
     idPrefixLeader?: string
+    /**
+     * Controls which JSX runtime semantics the Lingui JSX macro emit.
+     *
+     * @default undefined
+     */
+    jsxRuntime?: "react" | "solid"
   }
   experimental?: {
     extractor?: ExperimentalExtractorOptions

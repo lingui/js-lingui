@@ -42,10 +42,13 @@
   "engines": {
     "node": ">=22.19.0"
   },
+  "dependencies": {
+    "@lingui/conf": "workspace:*"
+  },
   "devDependencies": {
-    "@babel/core": "^7.21.0",
-    "@babel/traverse": "^7.20.12",
-    "@babel/types": "^7.20.7",
+    "@babel/core": "^7.29.0",
+    "@babel/traverse": "^7.29.0",
+    "@babel/types": "^7.29.0",
     "@lingui/babel-plugin-lingui-macro": "workspace:*",
     "@lingui/test-utils": "workspace:*",
     "typescript": "catalog:",

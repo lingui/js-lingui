@@ -653,3 +653,18 @@ import { Trans } from "@lingui/react/macro"
 <Trans id=".withPrefix">With prefix</Trans> // id="myPrefix.withPrefix"
 <Trans id="unprefixed">Unprefixed</Trans> // id="unprefixed"
 ```
+
+## macro.jsxRuntime
+
+Default value: `undefined`
+
+Controls which JSX runtime semantics the Lingui JSX macro emit.
+
+```ts
+// lingui.config
+{
+  macro: {
+    jsxRuntime: "solid";
+  }
+}
+```
