@@ -31,7 +31,7 @@ Use it everywhere. [`@lingui/core`](/ref/core) is the framework-agnostic layer: 
 
 If you are not using a UI framework, the [JavaScript tutorial](/tutorials/javascript) shows how to wire up core macros and catalogs from scratch.
 
-For React apps, [`@lingui/react`](/ref/react) adds components and hooks that follow the renderer's lifecycle, including [React Server Components](/tutorials/react-rsc). For React Native, the [React Native tutorial](/tutorials/react-native) uses the same extract-and-compile workflow. Lingui is also compatible with Astro and Svelte via community-supported packages.
+For React apps, [`@lingui/react`](/ref/react) adds components and hooks that follow the renderer's lifecycle, including [React Server Components](/tutorials/react-rsc). For React Native, the [React Native tutorial](/tutorials/react-native) uses the same extract-and-compile workflow. For SolidJS apps, [`@lingui/solid`](/ref/solid) provides native bindings with reactive `Trans` components and a `useLingui` hook - follow the [SolidJS tutorial](/tutorials/solid) to get started. Lingui is also compatible with Astro and Svelte via community-supported packages.
 
 ### Full Rich-text Support
 

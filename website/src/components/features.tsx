@@ -140,9 +140,10 @@ const FEATURES: FeatureDetails[] = [
       <>
         <p>
           Lingui is a general-purpose framework with bindings for <span className="font-medium">React</span> (including
-          RSC and React Native), <span className="font-medium">Vue</span>, <span className="font-medium">Astro</span>,
-          and <span className="font-medium">Svelte</span>. It can be used on a server with{" "}
-          <span className="font-medium">Node.js</span> or in <span className="font-medium">Vanilla JavaScript</span>.
+          RSC and React Native), <span className="font-medium">Vue</span>, <span className="font-medium">SolidJS</span>,{" "}
+          <span className="font-medium">Astro</span>, and <span className="font-medium">Svelte</span>. It can be used on
+          a server with <span className="font-medium">Node.js</span> or in{" "}
+          <span className="font-medium">Vanilla JavaScript</span>.
         </p>
         <p>
           Extend its capabilities with optional modules offering features such as lazy loading of language packs,

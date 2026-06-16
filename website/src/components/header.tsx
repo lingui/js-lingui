@@ -50,7 +50,7 @@ export function Header(): React.ReactElement {
           <h1 className="mb-4 text-3xl font-bold sm:text-5xl">{siteConfig.tagline}</h1>
           <p className="mb-8 text-base leading-relaxed text-body-fg">
             Internationalization (i18n) for JavaScript apps. Supports React (including RSC and React Native), Vue,
-            Astro, Svelte, Node.js, and more.
+            SolidJS, Astro, Svelte, Node.js, and more.
           </p>
 
           <div className="my-6 flex flex-wrap items-center justify-center gap-4">
