@@ -1,0 +1,29 @@
+{
+  "name": "@lingui/benchmarks",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "generate": "tsx src/generate-fixtures.ts",
+    "generate:small": "tsx src/generate-fixtures.ts --preset small",
+    "generate:medium": "tsx src/generate-fixtures.ts --preset medium",
+    "generate:large": "tsx src/generate-fixtures.ts --preset large",
+    "bench": "tsx src/run-benchmarks.ts"
+  },
+  "dependencies": {
+    "@babel/core": "^7.20.12",
+    "@lingui/babel-plugin-extract-messages": "workspace:*",
+    "@lingui/babel-plugin-lingui-macro": "workspace:*",
+    "@lingui/cli": "workspace:*",
+    "@lingui/conf": "workspace:*",
+    "@lingui/format-po": "workspace:*",
+    "@lingui/message-utils": "workspace:*",
+    "@lingui/swc-plugin": "^6.3.0",
+    "@swc/core": "^1.11.0",
+    "lingui-swc": "^0.5.2",
+    "tinybench": "^2.6.0"
+  },
+  "devDependencies": {
+    "tsx": "^4.21.0",
+    "typescript": "catalog:"
+  }
+}

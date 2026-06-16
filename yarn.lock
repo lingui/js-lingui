@@ -1539,6 +1539,26 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@lingui/benchmarks@workspace:benchmarks":
+  version: 0.0.0-use.local
+  resolution: "@lingui/benchmarks@workspace:benchmarks"
+  dependencies:
+    "@babel/core": "npm:^7.20.12"
+    "@lingui/babel-plugin-extract-messages": "workspace:*"
+    "@lingui/babel-plugin-lingui-macro": "workspace:*"
+    "@lingui/cli": "workspace:*"
+    "@lingui/conf": "workspace:*"
+    "@lingui/format-po": "workspace:*"
+    "@lingui/message-utils": "workspace:*"
+    "@lingui/swc-plugin": "npm:^6.3.0"
+    "@swc/core": "npm:^1.11.0"
+    lingui-swc: "npm:^0.5.2"
+    tinybench: "npm:^2.6.0"
+    tsx: "npm:^4.21.0"
+    typescript: "catalog:"
+  languageName: unknown
+  linkType: soft
+
 "@lingui/cli@workspace:*, @lingui/cli@workspace:packages/cli":
   version: 0.0.0-use.local
   resolution: "@lingui/cli@workspace:packages/cli"
@@ -1578,7 +1598,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lingui/conf@workspace:*, @lingui/conf@workspace:packages/conf":
+"@lingui/conf@npm:5 || 6, @lingui/conf@npm:^6.0.1, @lingui/conf@workspace:*, @lingui/conf@workspace:packages/conf":
   version: 0.0.0-use.local
   resolution: "@lingui/conf@workspace:packages/conf"
   dependencies:
@@ -1786,6 +1806,22 @@ __metadata:
     unbuild: "catalog:"
   languageName: unknown
   linkType: soft
+
+"@lingui/swc-plugin@npm:^6.3.0":
+  version: 6.3.0
+  resolution: "@lingui/swc-plugin@npm:6.3.0"
+  dependencies:
+    "@lingui/conf": "npm:5 || 6"
+  peerDependencies:
+    "@lingui/core": 5 || 6
+  peerDependenciesMeta:
+    "@swc/core":
+      optional: true
+    next:
+      optional: true
+  checksum: 10/3ffc772a73a88687b2ea97bf172072a6a1896f6985c56ef1b2a0051f3fcbc716060c4ed0adc9563092ebb33bf5a0ee61d521a67b0497f99602178df89cebce52
+  languageName: node
+  linkType: hard
 
 "@lingui/test-utils@workspace:*, @lingui/test-utils@workspace:packages/test-utils":
   version: 0.0.0-use.local
@@ -3015,6 +3051,158 @@ __metadata:
   version: 1.1.0
   resolution: "@standard-schema/spec@npm:1.1.0"
   checksum: 10/a209615c9e8b2ea535d7db0a5f6aa0f962fd4ab73ee86a46c100fb78116964af1f55a27c1794d4801e534a196794223daa25ff5135021e03c7828aa3d95e1763
+  languageName: node
+  linkType: hard
+
+"@swc/core-darwin-arm64@npm:1.15.40":
+  version: 1.15.40
+  resolution: "@swc/core-darwin-arm64@npm:1.15.40"
+  conditions: os=darwin & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"@swc/core-darwin-x64@npm:1.15.40":
+  version: 1.15.40
+  resolution: "@swc/core-darwin-x64@npm:1.15.40"
+  conditions: os=darwin & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@swc/core-linux-arm-gnueabihf@npm:1.15.40":
+  version: 1.15.40
+  resolution: "@swc/core-linux-arm-gnueabihf@npm:1.15.40"
+  conditions: os=linux & cpu=arm
+  languageName: node
+  linkType: hard
+
+"@swc/core-linux-arm64-gnu@npm:1.15.40":
+  version: 1.15.40
+  resolution: "@swc/core-linux-arm64-gnu@npm:1.15.40"
+  conditions: os=linux & cpu=arm64 & libc=glibc
+  languageName: node
+  linkType: hard
+
+"@swc/core-linux-arm64-musl@npm:1.15.40":
+  version: 1.15.40
+  resolution: "@swc/core-linux-arm64-musl@npm:1.15.40"
+  conditions: os=linux & cpu=arm64 & libc=musl
+  languageName: node
+  linkType: hard
+
+"@swc/core-linux-ppc64-gnu@npm:1.15.40":
+  version: 1.15.40
+  resolution: "@swc/core-linux-ppc64-gnu@npm:1.15.40"
+  conditions: os=linux & cpu=ppc64 & libc=glibc
+  languageName: node
+  linkType: hard
+
+"@swc/core-linux-s390x-gnu@npm:1.15.40":
+  version: 1.15.40
+  resolution: "@swc/core-linux-s390x-gnu@npm:1.15.40"
+  conditions: os=linux & cpu=s390x & libc=glibc
+  languageName: node
+  linkType: hard
+
+"@swc/core-linux-x64-gnu@npm:1.15.40":
+  version: 1.15.40
+  resolution: "@swc/core-linux-x64-gnu@npm:1.15.40"
+  conditions: os=linux & cpu=x64 & libc=glibc
+  languageName: node
+  linkType: hard
+
+"@swc/core-linux-x64-musl@npm:1.15.40":
+  version: 1.15.40
+  resolution: "@swc/core-linux-x64-musl@npm:1.15.40"
+  conditions: os=linux & cpu=x64 & libc=musl
+  languageName: node
+  linkType: hard
+
+"@swc/core-win32-arm64-msvc@npm:1.15.40":
+  version: 1.15.40
+  resolution: "@swc/core-win32-arm64-msvc@npm:1.15.40"
+  conditions: os=win32 & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"@swc/core-win32-ia32-msvc@npm:1.15.40":
+  version: 1.15.40
+  resolution: "@swc/core-win32-ia32-msvc@npm:1.15.40"
+  conditions: os=win32 & cpu=ia32
+  languageName: node
+  linkType: hard
+
+"@swc/core-win32-x64-msvc@npm:1.15.40":
+  version: 1.15.40
+  resolution: "@swc/core-win32-x64-msvc@npm:1.15.40"
+  conditions: os=win32 & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@swc/core@npm:^1.11.0":
+  version: 1.15.40
+  resolution: "@swc/core@npm:1.15.40"
+  dependencies:
+    "@swc/core-darwin-arm64": "npm:1.15.40"
+    "@swc/core-darwin-x64": "npm:1.15.40"
+    "@swc/core-linux-arm-gnueabihf": "npm:1.15.40"
+    "@swc/core-linux-arm64-gnu": "npm:1.15.40"
+    "@swc/core-linux-arm64-musl": "npm:1.15.40"
+    "@swc/core-linux-ppc64-gnu": "npm:1.15.40"
+    "@swc/core-linux-s390x-gnu": "npm:1.15.40"
+    "@swc/core-linux-x64-gnu": "npm:1.15.40"
+    "@swc/core-linux-x64-musl": "npm:1.15.40"
+    "@swc/core-win32-arm64-msvc": "npm:1.15.40"
+    "@swc/core-win32-ia32-msvc": "npm:1.15.40"
+    "@swc/core-win32-x64-msvc": "npm:1.15.40"
+    "@swc/counter": "npm:^0.1.3"
+    "@swc/types": "npm:^0.1.26"
+  peerDependencies:
+    "@swc/helpers": ">=0.5.17"
+  dependenciesMeta:
+    "@swc/core-darwin-arm64":
+      optional: true
+    "@swc/core-darwin-x64":
+      optional: true
+    "@swc/core-linux-arm-gnueabihf":
+      optional: true
+    "@swc/core-linux-arm64-gnu":
+      optional: true
+    "@swc/core-linux-arm64-musl":
+      optional: true
+    "@swc/core-linux-ppc64-gnu":
+      optional: true
+    "@swc/core-linux-s390x-gnu":
+      optional: true
+    "@swc/core-linux-x64-gnu":
+      optional: true
+    "@swc/core-linux-x64-musl":
+      optional: true
+    "@swc/core-win32-arm64-msvc":
+      optional: true
+    "@swc/core-win32-ia32-msvc":
+      optional: true
+    "@swc/core-win32-x64-msvc":
+      optional: true
+  peerDependenciesMeta:
+    "@swc/helpers":
+      optional: true
+  checksum: 10/8e915694f387898f4330896970c5261bfb801c7fc21324d2a8da19f37f42f7ed15eefdbe71968164d5c41637b9566da80f7912ecc9f2120435608dbd9578a99e
+  languageName: node
+  linkType: hard
+
+"@swc/counter@npm:^0.1.3":
+  version: 0.1.3
+  resolution: "@swc/counter@npm:0.1.3"
+  checksum: 10/df8f9cfba9904d3d60f511664c70d23bb323b3a0803ec9890f60133954173047ba9bdeabce28cd70ba89ccd3fd6c71c7b0bd58be85f611e1ffbe5d5c18616598
+  languageName: node
+  linkType: hard
+
+"@swc/types@npm:^0.1.25, @swc/types@npm:^0.1.26":
+  version: 0.1.26
+  resolution: "@swc/types@npm:0.1.26"
+  dependencies:
+    "@swc/counter": "npm:^0.1.3"
+  checksum: 10/07de03b9da3928cdf69bda70bf2c809dd86f16ef23e357759e577bbd975529cb20218c2e54e72b00585abae2b5e04e39b8947cea7a6f4de2d40a7633be441919
   languageName: node
   linkType: hard
 
@@ -9134,6 +9322,107 @@ __metadata:
   languageName: node
   linkType: hard
 
+"lingui-swc-android-arm64@npm:0.5.2":
+  version: 0.5.2
+  resolution: "lingui-swc-android-arm64@npm:0.5.2"
+  conditions: os=android & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"lingui-swc-darwin-arm64@npm:0.5.2":
+  version: 0.5.2
+  resolution: "lingui-swc-darwin-arm64@npm:0.5.2"
+  conditions: os=darwin & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"lingui-swc-darwin-x64@npm:0.5.2":
+  version: 0.5.2
+  resolution: "lingui-swc-darwin-x64@npm:0.5.2"
+  conditions: os=darwin & cpu=x64
+  languageName: node
+  linkType: hard
+
+"lingui-swc-linux-arm64-gnu@npm:0.5.2":
+  version: 0.5.2
+  resolution: "lingui-swc-linux-arm64-gnu@npm:0.5.2"
+  conditions: os=linux & cpu=arm64 & libc=glibc
+  languageName: node
+  linkType: hard
+
+"lingui-swc-linux-arm64-musl@npm:0.5.2":
+  version: 0.5.2
+  resolution: "lingui-swc-linux-arm64-musl@npm:0.5.2"
+  conditions: os=linux & cpu=arm64 & libc=musl
+  languageName: node
+  linkType: hard
+
+"lingui-swc-linux-x64-gnu@npm:0.5.2":
+  version: 0.5.2
+  resolution: "lingui-swc-linux-x64-gnu@npm:0.5.2"
+  conditions: os=linux & cpu=x64 & libc=glibc
+  languageName: node
+  linkType: hard
+
+"lingui-swc-linux-x64-musl@npm:0.5.2":
+  version: 0.5.2
+  resolution: "lingui-swc-linux-x64-musl@npm:0.5.2"
+  conditions: os=linux & cpu=x64 & libc=musl
+  languageName: node
+  linkType: hard
+
+"lingui-swc-win32-arm64-msvc@npm:0.5.2":
+  version: 0.5.2
+  resolution: "lingui-swc-win32-arm64-msvc@npm:0.5.2"
+  conditions: os=win32 & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"lingui-swc-win32-x64-msvc@npm:0.5.2":
+  version: 0.5.2
+  resolution: "lingui-swc-win32-x64-msvc@npm:0.5.2"
+  conditions: os=win32 & cpu=x64
+  languageName: node
+  linkType: hard
+
+"lingui-swc@npm:^0.5.2":
+  version: 0.5.2
+  resolution: "lingui-swc@npm:0.5.2"
+  dependencies:
+    "@lingui/conf": "npm:^6.0.1"
+    "@swc/types": "npm:^0.1.25"
+    lingui-swc-android-arm64: "npm:0.5.2"
+    lingui-swc-darwin-arm64: "npm:0.5.2"
+    lingui-swc-darwin-x64: "npm:0.5.2"
+    lingui-swc-linux-arm64-gnu: "npm:0.5.2"
+    lingui-swc-linux-arm64-musl: "npm:0.5.2"
+    lingui-swc-linux-x64-gnu: "npm:0.5.2"
+    lingui-swc-linux-x64-musl: "npm:0.5.2"
+    lingui-swc-win32-arm64-msvc: "npm:0.5.2"
+    lingui-swc-win32-x64-msvc: "npm:0.5.2"
+  dependenciesMeta:
+    lingui-swc-android-arm64:
+      optional: true
+    lingui-swc-darwin-arm64:
+      optional: true
+    lingui-swc-darwin-x64:
+      optional: true
+    lingui-swc-linux-arm64-gnu:
+      optional: true
+    lingui-swc-linux-arm64-musl:
+      optional: true
+    lingui-swc-linux-x64-gnu:
+      optional: true
+    lingui-swc-linux-x64-musl:
+      optional: true
+    lingui-swc-win32-arm64-msvc:
+      optional: true
+    lingui-swc-win32-x64-msvc:
+      optional: true
+  checksum: 10/d71b323c441f135b7312dd873e7abaa54c9b373225bb38303733cf05dda0590ea77ff7fec3070d299c5e5f0f8fdc3c9beda433783053ebf0d585a5329d440874
+  languageName: node
+  linkType: hard
+
 "lint-staged@npm:^13.1.0":
   version: 13.1.0
   resolution: "lint-staged@npm:13.1.0"
@@ -13265,7 +13554,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tinybench@npm:^2.9.0":
+"tinybench@npm:^2.6.0, tinybench@npm:^2.9.0":
   version: 2.9.0
   resolution: "tinybench@npm:2.9.0"
   checksum: 10/cfa1e1418e91289219501703c4693c70708c91ffb7f040fd318d24aef419fb5a43e0c0160df9471499191968b2451d8da7f8087b08c3133c251c40d24aced06c
