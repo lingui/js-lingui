@@ -17,6 +17,10 @@ msgstr ""
 msgid "index page message"
 msgstr "index page message"
 
+#: fixtures/components/dynamic.ts:4
+msgid "message from a dynamic imported module"
+msgstr "message from a dynamic imported module"
+
 #: fixtures/constants/red.ts:3
 msgid "Red"
 msgstr "Red"

@@ -1,9 +1,9 @@
 import type { BundleChunk } from "@lingui/conf"
 
 /**
- * Traverse the chunk import graph (BFS from each entry chunk) to determine
- * which entry points depend on each chunk. This lets us extract messages from
- * shared/common chunks once and attribute them to all consuming entry catalogs.
+ * Traverse the chunk import graph to determine which entry points depend on each chunk.
+ * This lets us extract messages from shared/common chunks once and attribute them to all
+ * consuming entry catalogs.
  */
 export function buildChunkGraph(
   rawChunks: BundleChunk[],

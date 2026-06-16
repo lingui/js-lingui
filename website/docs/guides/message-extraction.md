@@ -265,13 +265,31 @@ See the built-in esbuild and rolldown bundlers for reference on how to integrate
 
 ```ts title="lingui.config.ts"
 import { defineConfig } from "@lingui/conf";
-import type { ExperimentalExtractorBundler } from "@lingui/conf";
+import type { ExperimentalExtractorBundler, BundleChunk } from "@lingui/conf";
 
 const myBundler: ExperimentalExtractorBundler = {
   async bundle(entryPoints, outDir, linguiConfig) {
     // Your bundling logic here.
     // Must apply @lingui/babel-plugin-lingui-macro or @lingui/swc-plugin during the transform phase.
-    // Must return { outputFiles: Array<{ filePath: string; entryPoint: string }> }
+
+    // Return a chunk graph — the CLI traverses it to determine
+    // which entry points depend on each shared chunk.
+    const chunks: BundleChunk[] = [
+      {
+        id: "about.page.jsx",
+        filePath: `${outDir}/about.page.jsx`,
+        entryPoint: "/abs/path/to/src/pages/about.page.tsx",
+        imports: ["shared-chunk.jsx"],
+      },
+      {
+        id: "shared-chunk.jsx",
+        filePath: `${outDir}/shared-chunk.jsx`,
+        // no entryPoint — this is a shared chunk
+        imports: [],
+      },
+    ];
+
+    return { chunks };
   },
 };
 

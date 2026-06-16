@@ -188,8 +188,7 @@ export type BundleResult = {
 
 /**
  * Pluggable bundler interface for the experimental extractor.
- * Implementations bundle entry points and return a mapping
- * from output files to their original entry points.
+ * Implementations bundle entry points and return a chunk graph.
  */
 export type ExperimentalExtractorBundler = {
   bundle(

@@ -147,12 +147,14 @@ export function createRolldownBundler(
 
       const chunks: BundleChunk[] = outputChunks.map((chunk) => ({
         id: chunk.fileName,
-        filePath: `${outDir}/${chunk.fileName}`,
+        filePath: path.join(outDir, chunk.fileName),
         entryPoint:
           chunk.isEntry && chunk.facadeModuleId
             ? chunk.facadeModuleId.replace(/\\/g, "/")
             : undefined,
-        imports: chunk.imports.filter((imp) => outputFileNames.has(imp)),
+        imports: [...chunk.imports, ...chunk.dynamicImports].filter((imp) =>
+          outputFileNames.has(imp),
+        ),
       }))
 
       return { chunks }
