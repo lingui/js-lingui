@@ -10,6 +10,10 @@ import type {
 } from "@babel/types"
 import type { PluginObj, PluginPass, NodePath } from "@babel/core"
 import type { Hub } from "@babel/traverse"
+import {
+  getConfig as loadConfig,
+  type LinguiConfigNormalized,
+} from "@lingui/conf"
 
 type BabelTypes = typeof BabelTypesNamespace
 
@@ -26,6 +30,7 @@ export type ExtractedMessage = {
 
 export type ExtractPluginOpts = {
   onMessageExtracted(msg: ExtractedMessage): void
+  linguiConfig?: LinguiConfigNormalized
 }
 
 type RawMessage = {
@@ -205,14 +210,30 @@ function hasI18nComment(node: Node): boolean {
   })
 }
 
+function getLinguiConfig(ctx: PluginPass): LinguiConfigNormalized {
+  const { linguiConfig } = ctx.opts as ExtractPluginOpts
+  if (linguiConfig) return linguiConfig
+
+  const loadedConfig = ctx.get("linguiConfig") as
+    | LinguiConfigNormalized
+    | undefined
+  if (loadedConfig) return loadedConfig
+
+  const config = loadConfig()
+  ctx.set("linguiConfig", config)
+  return config
+}
+
 export default function ({ types: t }: { types: BabelTypes }): PluginObj {
-  function isTransComponent(path: NodePath) {
+  function isTransComponent(path: NodePath, config: LinguiConfigNormalized) {
+    const [moduleName, importName] = config.runtimeConfigModule.Trans
+
     return (
       path.isJSXElement() &&
       path
         .get("openingElement")
         .get("name")
-        .referencesImport("@lingui/react", "Trans")
+        .referencesImport(moduleName, importName)
     )
   }
 
@@ -245,7 +266,8 @@ export default function ({ types: t }: { types: BabelTypes }): PluginObj {
       // Extract translation from <Trans /> component.
       JSXElement(path, ctx) {
         const { node } = path
-        if (!isTransComponent(path)) return
+        const linguiConfig = getLinguiConfig(ctx)
+        if (!isTransComponent(path, linguiConfig)) return
 
         const attrs = node.openingElement.attributes || []
 

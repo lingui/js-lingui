@@ -48,3 +48,9 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: yarn release:${{github.event.inputs.versionType}}
+
+  reindex-docs:
+    needs: publish
+    if: github.event.inputs.versionType == 'latest'
+    uses: ./.github/workflows/reindex-docs.yml
+    secrets: inherit
