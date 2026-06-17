@@ -23,6 +23,9 @@ vi.mock("ora", () => {
         fail(...args: any) {
           console.log(args)
         },
+        warn(...args: any) {
+          console.log(args)
+        },
       }
     },
   }
@@ -30,7 +33,11 @@ vi.mock("ora", () => {
 
 function replaceDuration(snapshot: string | undefined) {
   if (!snapshot) return ""
-  return snapshot.replace(/Done in .+ms/g, "Done in <n>ms")
+  return snapshot
+    .replace(/Done in .+/g, "Done in <T>")
+    .replace(/\(\d+ms\)/g, "(<T>)")
+    .replace(/in \d+ms/g, "in <T>")
+    .replace(/in \d+s/g, "in <T>")
 }
 async function prepare(caseFolderName: string) {
   const rootDir = nodepath.join(__dirname, caseFolderName)
@@ -88,19 +95,18 @@ describe("E2E Extractor Test", () => {
       expect(getConsoleMockCalls(console.error)).toBeFalsy()
       expect(replaceDuration(getConsoleMockCalls(console.log)))
         .toMatchInlineSnapshot(`
+          Done in <T>
+          Catalog statistics for actual/{locale}: 
+          ┌─────────────┬─────────────┬─────────┐
+          │ Language    │ Total count │ Missing │
+          ├─────────────┼─────────────┼─────────┤
+          │ en (source) │     10      │    -    │
+          │ pl          │     10      │   10    │
+          └─────────────┴─────────────┴─────────┘
 
-                Done in <n>ms
-                Catalog statistics for actual/{locale}: 
-                ┌─────────────┬─────────────┬─────────┐
-                │ Language    │ Total count │ Missing │
-                ├─────────────┼─────────────┼─────────┤
-                │ en (source) │     10      │    -    │
-                │ pl          │     10      │   10    │
-                └─────────────┴─────────────┴─────────┘
-
-                (Use "yarn extract" to update catalogs with new messages.)
-                (Use "yarn compile" to compile catalogs for production. Alternatively, use bundler plugins: https://lingui.dev/ref/cli#compiling-catalogs-in-ci)
-            `)
+          (Use "yarn extract" to update catalogs with new messages.)
+          (Use "yarn compile" to compile catalogs for production. Alternatively, use bundler plugins: https://lingui.dev/ref/cli#compiling-catalogs-in-ci)
+        `)
     })
 
     compareFolders(actualPath, expectedPath)
@@ -176,21 +182,21 @@ describe("E2E Extractor Test", () => {
       expect(getConsoleMockCalls(console.error)).toBeFalsy()
       expect(replaceDuration(getConsoleMockCalls(console.log)))
         .toMatchInlineSnapshot(`
-        Extracting messages from source files…
-        Use worker pool of size 2
+          Extracting messages from source files…
+          Use worker pool of size 2
 
-        Done in <n>ms
-        Catalog statistics for actual/{locale}: 
-        ┌─────────────┬─────────────┬─────────┐
-        │ Language    │ Total count │ Missing │
-        ├─────────────┼─────────────┼─────────┤
-        │ en (source) │     10      │    -    │
-        │ pl          │     10      │   10    │
-        └─────────────┴─────────────┴─────────┘
+          Done in <T>
+          Catalog statistics for actual/{locale}: 
+          ┌─────────────┬─────────────┬─────────┐
+          │ Language    │ Total count │ Missing │
+          ├─────────────┼─────────────┼─────────┤
+          │ en (source) │     10      │    -    │
+          │ pl          │     10      │   10    │
+          └─────────────┴─────────────┴─────────┘
 
-        (Use "yarn extract" to update catalogs with new messages.)
-        (Use "yarn compile" to compile catalogs for production. Alternatively, use bundler plugins: https://lingui.dev/ref/cli#compiling-catalogs-in-ci)
-      `)
+          (Use "yarn extract" to update catalogs with new messages.)
+          (Use "yarn compile" to compile catalogs for production. Alternatively, use bundler plugins: https://lingui.dev/ref/cli#compiling-catalogs-in-ci)
+        `)
     })
 
     compareFolders(actualPath, expectedPath)
@@ -223,18 +229,27 @@ describe("E2E Extractor Test", () => {
         expect(result).toBeTruthy()
         expect(replaceDuration(getConsoleMockCalls(console.log)))
           .toMatchInlineSnapshot(`
-          You have using an experimental feature
-          Experimental features are not covered by semver, and may cause unexpected or broken application behavior. Use at your own risk.
+            You have using an experimental feature
+            Experimental features are not covered by semver, and may cause unexpected or broken application behavior. Use at your own risk.
 
-          Catalog statistics for fixtures/pages/about.page.tsx:
-          5 message(s) extracted
+            Resolving entry points...
+            Found 2 entry point(s) (<T>): fixtures/pages/index.page.ts, fixtures/pages/about.page.tsx
+            Bundling...
+            Bundling done (<T>)
+            Extracting messages...
+            Extracting done (<T>)
+            Writing catalogs...
+            Writing catalogs done (<T>)
+            Catalog statistics for fixtures/pages/about.page.tsx:
+            5 message(s) extracted
 
-          Catalog statistics for fixtures/pages/index.page.ts:
-          1 message(s) extracted
+            Catalog statistics for fixtures/pages/index.page.ts:
+            1 message(s) extracted
 
-          Compiling message catalogs…
-          Done in <n>ms
-        `)
+            Extraction completed successfully in <T>
+            Compiling message catalogs…
+            Done in <T>
+          `)
       })
 
       compareFolders(actualPath, expectedPath)
@@ -268,6 +283,14 @@ describe("E2E Extractor Test", () => {
             You have using an experimental feature
             Experimental features are not covered by semver, and may cause unexpected or broken application behavior. Use at your own risk.
 
+            Resolving entry points...
+            Found 2 entry point(s) (<T>): fixtures/pages/about.page.ts, fixtures/pages/index.page.ts
+            Bundling...
+            Bundling done (<T>)
+            Extracting messages...
+            Extracting done (<T>)
+            Writing catalogs...
+            Writing catalogs done (<T>)
             Catalog statistics for fixtures/pages/about.page.ts:
             ┌─────────────┬─────────────┬─────────┐
             │ Language    │ Total count │ Missing │
@@ -284,8 +307,9 @@ describe("E2E Extractor Test", () => {
             │ pl          │      5      │    5    │
             └─────────────┴─────────────┴─────────┘
 
+            Extraction completed successfully in <T>
             Compiling message catalogs…
-            Done in <n>ms
+            Done in <T>
           `)
       })
 
@@ -318,11 +342,18 @@ describe("E2E Extractor Test", () => {
         expect(result).toBeTruthy()
         expect(replaceDuration(getConsoleMockCalls(console.log)))
           .toMatchInlineSnapshot(`
-            Extracting messages from source files…
             You have using an experimental feature
             Experimental features are not covered by semver, and may cause unexpected or broken application behavior. Use at your own risk.
 
+            Resolving entry points...
+            Found 2 entry point(s) (<T>): fixtures/pages/about.page.ts, fixtures/pages/index.page.ts
+            Bundling...
+            Bundling done (<T>)
+            Extracting messages...
             Use worker pool of size 2
+            Extracting done (<T>)
+            Writing catalogs...
+            Writing catalogs done (<T>)
             Catalog statistics for fixtures/pages/about.page.ts:
             ┌─────────────┬─────────────┬─────────┐
             │ Language    │ Total count │ Missing │
@@ -339,8 +370,9 @@ describe("E2E Extractor Test", () => {
             │ pl          │      5      │    5    │
             └─────────────┴─────────────┴─────────┘
 
+            Extraction completed successfully in <T>
             Compiling message catalogs…
-            Done in <n>ms
+            Done in <T>
           `)
       })
 
@@ -367,6 +399,8 @@ describe("E2E Extractor Test", () => {
           You have using an experimental feature
           Experimental features are not covered by semver, and may cause unexpected or broken application behavior. Use at your own risk.
 
+          Resolving entry points...
+          No entry points found (0ms)
         `)
       })
 
@@ -405,26 +439,35 @@ describe("E2E Extractor Test", () => {
         expect(result).toBeTruthy()
         expect(replaceDuration(getConsoleMockCalls(console.log)))
           .toMatchInlineSnapshot(`
-          You have using an experimental feature
-          Experimental features are not covered by semver, and may cause unexpected or broken application behavior. Use at your own risk.
+            You have using an experimental feature
+            Experimental features are not covered by semver, and may cause unexpected or broken application behavior. Use at your own risk.
 
-          Catalog statistics for fixtures/pages/about.page.ts:
-          ┌─────────────┬─────────────┬─────────┐
-          │ Language    │ Total count │ Missing │
-          ├─────────────┼─────────────┼─────────┤
-          │ en (source) │      2      │    -    │
-          │ pl          │      3      │    2    │
-          └─────────────┴─────────────┴─────────┘
+            Resolving entry points...
+            Found 2 entry point(s) (<T>): fixtures/pages/about.page.ts, fixtures/pages/index.page.ts
+            Bundling...
+            Bundling done (<T>)
+            Extracting messages...
+            Extracting done (<T>)
+            Writing catalogs...
+            Writing catalogs done (<T>)
+            Catalog statistics for fixtures/pages/about.page.ts:
+            ┌─────────────┬─────────────┬─────────┐
+            │ Language    │ Total count │ Missing │
+            ├─────────────┼─────────────┼─────────┤
+            │ en (source) │      2      │    -    │
+            │ pl          │      3      │    2    │
+            └─────────────┴─────────────┴─────────┘
 
-          Catalog statistics for fixtures/pages/index.page.ts:
-          ┌─────────────┬─────────────┬─────────┐
-          │ Language    │ Total count │ Missing │
-          ├─────────────┼─────────────┼─────────┤
-          │ en (source) │      1      │    -    │
-          │ pl          │      1      │    1    │
-          └─────────────┴─────────────┴─────────┘
+            Catalog statistics for fixtures/pages/index.page.ts:
+            ┌─────────────┬─────────────┬─────────┐
+            │ Language    │ Total count │ Missing │
+            ├─────────────┼─────────────┼─────────┤
+            │ en (source) │      1      │    -    │
+            │ pl          │      1      │    1    │
+            └─────────────┴─────────────┴─────────┘
 
-        `)
+            Extraction completed successfully in <T>
+          `)
       })
 
       compareFolders(actualPath, expectedPath)
@@ -517,19 +560,18 @@ describe("E2E Extractor Test", () => {
       expect(getConsoleMockCalls(console.error)).toBeFalsy()
       expect(replaceDuration(getConsoleMockCalls(console.log)))
         .toMatchInlineSnapshot(`
+          Done in <T>
+          Catalog statistics for actual/{locale}: 
+          ┌─────────────┬─────────────┬─────────┐
+          │ Language    │ Total count │ Missing │
+          ├─────────────┼─────────────┼─────────┤
+          │ en (source) │     10      │    -    │
+          │ pl          │     10      │   10    │
+          └─────────────┴─────────────┴─────────┘
 
-                        Done in <n>ms
-                        Catalog statistics for actual/{locale}: 
-                        ┌─────────────┬─────────────┬─────────┐
-                        │ Language    │ Total count │ Missing │
-                        ├─────────────┼─────────────┼─────────┤
-                        │ en (source) │     10      │    -    │
-                        │ pl          │     10      │   10    │
-                        └─────────────┴─────────────┴─────────┘
-
-                        (Use "yarn extract" to update catalogs with new messages.)
-                        (Use "yarn compile" to compile catalogs for production. Alternatively, use bundler plugins: https://lingui.dev/ref/cli#compiling-catalogs-in-ci)
-                  `)
+          (Use "yarn extract" to update catalogs with new messages.)
+          (Use "yarn compile" to compile catalogs for production. Alternatively, use bundler plugins: https://lingui.dev/ref/cli#compiling-catalogs-in-ci)
+        `)
     })
   })
 })

@@ -26,6 +26,8 @@ import {
 import { createExtractExperimentalWorkerPool } from "./api/workerPools.js"
 import { buildChunkGraph } from "./extract-experimental/buildChunkGraph.js"
 import { mergeExtractedMessage } from "./api/catalog/extractFromFiles.js"
+import ora from "ora"
+import ms from "ms"
 
 type CliExtractTemplateOptions = {
   verbose?: boolean
@@ -41,7 +43,7 @@ export default async function command(
   linguiConfig: LinguiConfigNormalized,
   options: CliExtractTemplateOptions,
 ): Promise<boolean> {
-  options.verbose && console.log("Extracting messages from source files…")
+  const startTime = Date.now()
 
   const extractorConfig = linguiConfig.experimental?.extractor
 
@@ -61,6 +63,30 @@ export default async function command(
         "",
       ].join("\n"),
     ),
+  )
+
+  // important to initialize ora before worker pool, otherwise it causes
+  // MaxListenersExceededWarning when workers >= 10
+  const spinner = ora()
+
+  // Phase: Resolve entry points
+  spinner.start("Resolving entry points...")
+  let phaseStart = Date.now()
+  const entryPoints = globSync(extractorConfig.entries)
+
+  if (entryPoints.length === 0) {
+    spinner.warn(`No entry points found (${ms(Date.now() - phaseStart)})`)
+    return true
+  }
+
+  const displayEntries = entryPoints
+    .map((e) => normalizePath(nodepath.relative(linguiConfig.rootDir, e)))
+    .slice(0, 10)
+  const moreCount = entryPoints.length - displayEntries.length
+  const entrySummary =
+    displayEntries.join(", ") + (moreCount > 0 ? ` and ${moreCount} more` : "")
+  spinner.succeed(
+    `Found ${entryPoints.length} entry point(s) (${ms(Date.now() - phaseStart)}): ${entrySummary}`,
   )
 
   // unfortunately we can't use os.tmpdir() in this case
@@ -85,11 +111,11 @@ export default async function command(
     })
   }
 
-  const bundleResult = await bundler.bundle(
-    globSync(extractorConfig.entries),
-    tempDir,
-    linguiConfig,
-  )
+  // Phase: Bundling
+  spinner.start("Bundling...")
+  phaseStart = Date.now()
+  const bundleResult = await bundler.bundle(entryPoints, tempDir, linguiConfig)
+  spinner.succeed(`Bundling done (${ms(Date.now() - phaseStart)})`)
 
   const resolvedChunks = buildChunkGraph(bundleResult.chunks)
 
@@ -97,7 +123,9 @@ export default async function command(
 
   let commandSuccess = true
 
-  // Phase 1: Extract messages from each chunk
+  // Phase: Extract messages from each chunk
+  spinner.start("Extracting messages...")
+  phaseStart = Date.now()
   const messagesByEntry = new Map<string, ExtractedCatalogType>()
 
   if (options.workersOptions.poolSize) {
@@ -173,8 +201,11 @@ export default async function command(
       }),
     )
   }
+  spinner.succeed(`Extracting done (${ms(Date.now() - phaseStart)})`)
 
-  // Phase 2: Write catalogs per entry point
+  // Phase: Write catalogs per entry point
+  spinner.start("Writing catalogs...")
+  phaseStart = Date.now()
   const format = await getFormat(linguiConfig.format, linguiConfig.sourceLocale)
   const locales = options.locales || linguiConfig.locales
 
@@ -212,6 +243,7 @@ export default async function command(
       content: stat,
     })
   }
+  spinner.succeed(`Writing catalogs done (${ms(Date.now() - phaseStart)})`)
 
   // cleanup temp directory
   await fs.rm(tempDir, { recursive: true, force: true })
@@ -221,6 +253,20 @@ export default async function command(
     .forEach(({ entry, content }) => {
       console.log([`Catalog statistics for ${entry}:`, content, ""].join("\n"))
     })
+
+  const totalTime = Date.now() - startTime
+  if (commandSuccess) {
+    console.log(
+      styleText(
+        "green",
+        `Extraction completed successfully in ${ms(totalTime)}`,
+      ),
+    )
+  } else {
+    console.log(
+      styleText("red", `Extraction completed with errors in ${ms(totalTime)}`),
+    )
+  }
 
   return commandSuccess
 }
