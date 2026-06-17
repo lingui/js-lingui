@@ -5,6 +5,7 @@ export const DEFAULT_EXCLUDE_EXTENSIONS = [
   "ico",
   "pot",
   "po",
+  "webp",
   "xliff",
   "woff2",
   "woff",
