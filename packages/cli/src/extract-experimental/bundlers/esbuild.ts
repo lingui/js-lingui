@@ -5,9 +5,17 @@ import type {
   BundleChunk,
 } from "@lingui/conf"
 import path from "path"
-import { pluginLinguiMacro } from "../linguiEsbuildPlugin.js"
 import { buildIncludeDepsFilter } from "../buildIncludeDepsFilter.js"
 import { DEFAULT_EXCLUDE_EXTENSIONS } from "../constants.js"
+import { transformAsync } from "@babel/core"
+import fs from "fs"
+import { Plugin } from "esbuild"
+import { babelRe, getBabelParserOptions } from "../../api/extractors/babel.js"
+import linguiMacroPlugin, {
+  type LinguiPluginOpts,
+} from "@lingui/babel-plugin-lingui-macro"
+import { LinguiConfigNormalized } from "@lingui/conf"
+import { buildContentFilterRe } from "../buildContentFilter.js"
 
 export type EsbuildBundlerOptions = {
   /**
@@ -160,3 +168,47 @@ export function createEsbuildBundler(
     },
   }
 }
+
+const pluginLinguiMacro = (options: {
+  linguiConfig: LinguiConfigNormalized
+}): Plugin => ({
+  name: "linguiMacro",
+  setup(build) {
+    build.onLoad({ filter: babelRe, namespace: "" }, async (args) => {
+      const filename = path.relative(process.cwd(), args.path)
+
+      const contents = await fs.promises.readFile(args.path, "utf8")
+
+      const hasMacroRe = buildContentFilterRe(options.linguiConfig)
+
+      if (!hasMacroRe.test(contents)) {
+        // let esbuild process file as usual
+        return undefined
+      }
+
+      const result = await transformAsync(contents, {
+        babelrc: false,
+        configFile: false,
+
+        filename,
+
+        sourceMaps: "inline",
+        parserOpts: {
+          plugins: getBabelParserOptions(filename, {}),
+        },
+
+        plugins: [
+          [
+            linguiMacroPlugin,
+            {
+              descriptorFields: "all",
+              linguiConfig: options.linguiConfig,
+            } satisfies LinguiPluginOpts,
+          ],
+        ],
+      })
+
+      return { contents: result!.code!, loader: "tsx" }
+    })
+  },
+})
