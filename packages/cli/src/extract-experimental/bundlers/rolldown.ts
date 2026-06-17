@@ -1,4 +1,4 @@
-import type { BuildOptions, OutputChunk } from "rolldown"
+import type { BuildOptions, OutputChunk, Plugin } from "rolldown"
 import type {
   ExperimentalExtractorBundler,
   BundleResult,
@@ -8,7 +8,11 @@ import path from "path"
 import { buildIncludeDepsFilter } from "../buildIncludeDepsFilter.js"
 import { DEFAULT_EXCLUDE_EXTENSIONS } from "../constants.js"
 import { buildContentFilterRe } from "../buildContentFilter.js"
-import type { LinguiPluginOpts } from "@lingui/babel-plugin-lingui-macro"
+import linguiMacroPlugin, {
+  LinguiPluginOpts,
+} from "@lingui/babel-plugin-lingui-macro"
+import { transformAsync } from "@babel/core"
+import { getBabelParserOptions } from "../../api/extractors/babel.js"
 
 export type RolldownBundlerOptions = {
   /**
@@ -57,16 +61,6 @@ export function createRolldownBundler(
         )
       }
 
-      let babelPlugin: typeof import("@rolldown/plugin-babel")
-      try {
-        babelPlugin = await import("@rolldown/plugin-babel")
-      } catch {
-        throw new Error(
-          `"@rolldown/plugin-babel" is required for createRolldownBundler but is not installed. ` +
-            `Install it with: npm install @rolldown/plugin-babel`,
-        )
-      }
-
       const includeDeps = options?.includeDeps || []
       const excludeExtensions =
         options?.excludeExtensions || DEFAULT_EXCLUDE_EXTENSIONS
@@ -76,24 +70,40 @@ export function createRolldownBundler(
 
       const hasMacroRe = buildContentFilterRe(linguiConfig)
 
-      const linguiBabelPreset = babelPlugin.defineRolldownBabelPreset({
-        preset: {
-          plugins: [
-            [
-              "@lingui/babel-plugin-lingui-macro",
-              {
-                descriptorFields: "all",
-                linguiConfig,
-              } satisfies LinguiPluginOpts,
-            ],
-          ],
-        },
-        rolldown: {
+      const macroPlugin: Plugin = {
+        name: "lingui:macro-transform",
+        transform: {
           filter: {
+            id: /\.(?:[jt]sx?|[cm][jt]s)(?:$|\?)/,
             code: hasMacroRe,
           },
+          handler: async (code, filename, meta) => {
+            const result = await transformAsync(code, {
+              babelrc: false,
+              configFile: false,
+
+              filename,
+
+              sourceMaps: true,
+              parserOpts: {
+                plugins: getBabelParserOptions(filename, {}),
+              },
+
+              plugins: [
+                [
+                  linguiMacroPlugin,
+                  {
+                    descriptorFields: "all",
+                    linguiConfig,
+                  } satisfies LinguiPluginOpts,
+                ],
+              ],
+            })
+
+            return { code: result?.code ?? undefined, map: result?.map }
+          },
         },
-      })
+      }
 
       let rolldownOptions: BuildOptions = {
         input: entryPoints,
@@ -126,11 +136,7 @@ export function createRolldownBundler(
           }
           return false
         },
-        plugins: [
-          babelPlugin.default({
-            presets: [linguiBabelPreset],
-          }),
-        ],
+        plugins: [macroPlugin],
       }
 
       if (options?.resolveRolldownOptions) {

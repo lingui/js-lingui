@@ -189,8 +189,8 @@ If your project uses Vite-based tooling, rolldown is the recommended choice. Vit
 
 Rolldown also has more powerful tree-shaking capabilities, which results in smaller and more accurate catalogs compared to esbuild. By default, the rolldown bundler uses the standard tree-shaking preset, but you can experiment with the `smallest` preset for even more aggressive dead code elimination. Since the bundler is only used for message extraction (not producing runtime code), the typical side-effect concerns around aggressive tree-shaking don't apply in most cases.
 
-```bash
-npm install --save-dev rolldown @rolldown/plugin-babel
+```bash npm2yarn
+npm install --save-dev rolldown
 ```
 
 ```ts title="lingui.config.ts"
@@ -241,7 +241,7 @@ createRolldownBundler({
 
 esbuild is the default bundler and doesn't require any additional configuration. You can also configure it explicitly if you need to customize its behavior:
 
-```bash
+```bash npm2yarn
 npm install --save-dev esbuild
 ```
 

@@ -73,14 +73,10 @@
     "tinypool": "^2.1.0"
   },
   "peerDependencies": {
-    "@rolldown/plugin-babel": ">=0.1.0",
     "esbuild": "^0.28.0",
-    "rolldown": "^1.1.0"
+    "rolldown": "^1.0.0"
   },
   "peerDependenciesMeta": {
-    "@rolldown/plugin-babel": {
-      "optional": true
-    },
     "esbuild": {
       "optional": true
     },
