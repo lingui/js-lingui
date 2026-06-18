@@ -48,9 +48,9 @@ export function Header(): React.ReactElement {
             alt="Lingui"
           />
           <h1 className="mb-4 text-3xl font-bold sm:text-5xl">{siteConfig.tagline}</h1>
-          <p className="mb-8 text-base leading-relaxed text-body-fg">
-            Internationalization (i18n) for JavaScript apps. Supports React (including RSC and React Native), Vue,
-            SolidJS, Astro, Svelte, Node.js, and more.
+          <p className="mb-8 text-balance text-base leading-relaxed text-body-fg">
+            A lightweight i18n library for JavaScript and TypeScript. Supports React, React Native, Vue, SolidJS, Astro,
+            Svelte, Node.js, and more.
           </p>
 
           <div className="my-6 flex flex-wrap items-center justify-center gap-4">
