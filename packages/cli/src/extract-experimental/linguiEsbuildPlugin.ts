@@ -10,44 +10,57 @@ import { LinguiConfigNormalized } from "@lingui/conf"
 
 export const pluginLinguiMacro = (options: {
   linguiConfig: LinguiConfigNormalized
-}): Plugin => ({
-  name: "linguiMacro",
-  setup(build) {
-    build.onLoad({ filter: babelRe, namespace: "" }, async (args) => {
-      const filename = path.relative(process.cwd(), args.path)
+}): Plugin => {
+  const configuredPackages = [
+    ...new Set([
+      "@lingui/macro",
+      "@lingui/core/macro",
+      "@lingui/react/macro",
+      ...options.linguiConfig.macro.corePackage,
+      ...options.linguiConfig.macro.jsxPackage,
+    ]),
+  ].map((str) => str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"))
+  const hasMacroRe = new RegExp(
+    `from\\s*(["'])(?:${configuredPackages.join("|")})\\1`,
+  )
 
-      const contents = await fs.promises.readFile(args.path, "utf8")
+  return {
+    name: "linguiMacro",
+    setup(build) {
+      build.onLoad({ filter: babelRe, namespace: "" }, async (args) => {
+        const filename = path.relative(process.cwd(), args.path)
 
-      const hasMacroRe = /from ["']@lingui(\/.+)?\/macro["']/g
+        const contents = await fs.promises.readFile(args.path, "utf8")
 
-      if (!hasMacroRe.test(contents)) {
-        // let esbuild process file as usual
-        return undefined
-      }
+        if (!hasMacroRe.test(contents)) {
+          // let esbuild process file as usual
+          return undefined
+        }
 
-      const result = await transformAsync(contents, {
-        babelrc: false,
-        configFile: false,
+        const result = await transformAsync(contents, {
+          babelrc: false,
+          configFile: false,
 
-        filename: filename,
+          filename: filename,
 
-        sourceMaps: "inline",
-        parserOpts: {
-          plugins: getBabelParserOptions(filename, {}),
-        },
+          sourceMaps: "inline",
+          parserOpts: {
+            plugins: getBabelParserOptions(filename, {}),
+          },
 
-        plugins: [
-          [
-            linguiMacroPlugin,
-            {
-              descriptorFields: "all",
-              linguiConfig: options.linguiConfig,
-            } satisfies LinguiPluginOpts,
+          plugins: [
+            [
+              linguiMacroPlugin,
+              {
+                descriptorFields: "all",
+                linguiConfig: options.linguiConfig,
+              } satisfies LinguiPluginOpts,
+            ],
           ],
-        ],
-      })
+        })
 
-      return { contents: result!.code!, loader: "tsx" }
-    })
-  },
-})
+        return { contents: result!.code!, loader: "tsx" }
+      })
+    },
+  }
+}

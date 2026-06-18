@@ -1,0 +1,14 @@
+{
+  "name": "extractor-experimental-custom-macro",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "imports": {
+    "#macros": "./macros.ts"
+  },
+  "dependencies": {
+    "@lingui/core": "*",
+    "@lingui/react": "*",
+    "@lingui/conf": "*"
+  }
+}

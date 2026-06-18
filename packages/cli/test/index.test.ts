@@ -429,6 +429,39 @@ describe("E2E Extractor Test", () => {
 
       compareFolders(actualPath, expectedPath)
     })
+
+    it("should extract messages imported from a configured custom macro package", async () => {
+      const { rootDir, actualPath, expectedPath } = await prepare(
+        "extractor-experimental-custom-macro",
+      )
+
+      await mockConsole(async (console) => {
+        const config = getConfig({ cwd: rootDir })
+
+        const result = await extractExperimentalCommand(config, {
+          workersOptions: {
+            poolSize: 0,
+          },
+        })
+
+        expect(getConsoleMockCalls(console.error)).toBeFalsy()
+        expect(result).toBeTruthy()
+        expect(replaceDuration(getConsoleMockCalls(console.log)))
+          .toMatchInlineSnapshot(`
+            You have using an experimental feature
+            Experimental features are not covered by semver, and may cause unexpected or broken application behavior. Use at your own risk.
+
+            Catalog statistics for fixtures/pages/index.page.tsx:
+            ┌─────────────┬─────────────┬─────────┐
+            │ Language    │ Total count │ Missing │
+            ├─────────────┼─────────────┼─────────┤
+            │ en (source) │      3      │    -    │
+            └─────────────┴─────────────┴─────────┘
+          `)
+      })
+
+      compareFolders(actualPath, expectedPath)
+    })
   })
 
   it("should extract consistently with files argument", async () => {
