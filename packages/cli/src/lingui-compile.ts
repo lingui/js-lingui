@@ -13,9 +13,10 @@ import {
 } from "./api/resolveWorkersOptions.js"
 import ms from "ms"
 import { getPathsForCompileWatcher } from "./api/getPathsForCompileWatcher.js"
+import { initLogger, LOG_LEVELS, LogLevel } from "./api/logger.js"
 
 export type CliCompileOptions = {
-  verbose?: boolean
+  logLevel: LogLevel
   allowEmpty?: boolean
   failOnCompileError?: boolean
   typescript?: boolean
@@ -30,11 +31,12 @@ export async function command(
   options: CliCompileOptions,
 ) {
   const startTime = Date.now()
+  const logger = initLogger(options.logLevel)
 
   // Check config.compile.merge if catalogs for current locale are to be merged into a single compiled file
   const doMerge = !!config.catalogsMergePath
 
-  console.log("Compiling message catalogs…")
+  logger.info("Compiling message catalogs…")
 
   let errored = false
 
@@ -44,7 +46,7 @@ export async function command(
 
     for (const locale of config.locales) {
       try {
-        await compileLocale(catalogs, locale, options, config, doMerge, console)
+        await compileLocale(catalogs, locale, options, config, doMerge, logger)
       } catch (err) {
         if ((err as Error).name === "ProgramExit") {
           errored = true
@@ -61,8 +63,7 @@ export async function command(
       )
     }
 
-    options.verbose &&
-      console.log(`Use worker pool of size ${options.workersOptions.poolSize}`)
+    logger.verbose(`Use worker pool of size ${options.workersOptions.poolSize}`)
 
     const pool = createCompileWorkerPool({
       poolSize: options.workersOptions.poolSize,
@@ -79,7 +80,7 @@ export async function command(
           )
 
           if (logs.errors) {
-            console.error(logs.errors)
+            logger.error(logs.errors)
           }
 
           if (exitProgram) {
@@ -97,12 +98,13 @@ export async function command(
     }
   }
 
-  console.log(`Done in ${ms(Date.now() - startTime)}`)
+  logger.info(`Done in ${ms(Date.now() - startTime)}`)
 
   return !errored
 }
 
 type CliArgs = {
+  logLevel?: LogLevel
   verbose?: boolean
   allowEmpty?: boolean
   typescript?: boolean
@@ -120,7 +122,8 @@ if (import.meta.main) {
     .description("Compile message catalogs to compiled bundle.")
     .option("--config <path>", "Path to the config file")
     .option("--strict", "Disable defaults for missing translations")
-    .option("--verbose", "Verbose output")
+    .option("--log-level <level>", `Set log level (${LOG_LEVELS.join("|")})`)
+    .option("--verbose", "Verbose output (alias for --log-level=verbose)")
     .option("--typescript", "Create Typescript definition for compiled bundle")
     .option(
       "--workers <n>",
@@ -155,6 +158,24 @@ if (import.meta.main) {
 
   const options = program.opts<CliArgs>()
 
+  if (options.logLevel && !LOG_LEVELS.includes(options.logLevel)) {
+    console.error(
+      `Invalid --log-level "${options.logLevel}". Valid levels: ${LOG_LEVELS.join(", ")}`,
+    )
+    process.exit(1)
+  }
+
+  let logLevel: LogLevel = options.logLevel ?? "info"
+
+  if (options.verbose) {
+    if (options.logLevel && options.logLevel !== "verbose") {
+      console.warn(
+        `Warning: --verbose conflicts with --log-level=${options.logLevel}. Using --log-level=verbose.`,
+      )
+    }
+    logLevel = "verbose"
+  }
+
   const config = getConfig({ configPath: options.config })
 
   let previousRun = Promise.resolve(true)
@@ -162,7 +183,7 @@ if (import.meta.main) {
   const compile = () => {
     previousRun = previousRun.then(() =>
       command(config, {
-        verbose: options.watch || options.verbose || false,
+        logLevel,
         allowEmpty: !options.strict,
         failOnCompileError: !!options.strict,
         workersOptions: resolveWorkersOptions(options),
@@ -187,9 +208,11 @@ if (import.meta.main) {
     debounceTimer = setTimeout(() => compile(), options.debounce)
   }
 
+  const logger = initLogger(logLevel)
+
   // Check if Watch Mode is enabled
   if (options.watch) {
-    console.info(styleText("bold", "Initializing Watch Mode..."))
+    logger.info(styleText("bold", "Initializing Watch Mode..."))
     ;(async function initWatch() {
       const { paths } = await getPathsForCompileWatcher(config)
 
@@ -198,7 +221,7 @@ if (import.meta.main) {
       })
 
       const onReady = () => {
-        console.info(styleText(["green", "bold"], "Watcher is ready!"))
+        logger.info(styleText(["green", "bold"], "Watcher is ready!"))
         watcher
           .on("add", () => dispatchCompile())
           .on("change", () => dispatchCompile())

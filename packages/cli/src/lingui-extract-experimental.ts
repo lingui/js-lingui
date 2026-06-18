@@ -15,9 +15,10 @@ import {
 } from "./api/resolveWorkersOptions.js"
 import { extractFromBundleAndWrite } from "./extract-experimental/extractFromBundleAndWrite.js"
 import { createExtractExperimentalWorkerPool } from "./api/workerPools.js"
+import { initLogger, LOG_LEVELS, LogLevel } from "./api/logger.js"
 
-type CliExtractTemplateOptions = {
-  verbose?: boolean
+type CliExtractExperimentalOptions = {
+  logLevel: LogLevel
   files?: string[]
   template?: boolean
   locales?: string[]
@@ -28,9 +29,11 @@ type CliExtractTemplateOptions = {
 
 export default async function command(
   linguiConfig: LinguiConfigNormalized,
-  options: CliExtractTemplateOptions,
+  options: CliExtractExperimentalOptions,
 ): Promise<boolean> {
-  options.verbose && console.log("Extracting messages from source files…")
+  const logger = initLogger(options.logLevel)
+
+  logger.verbose("Extracting messages from source files…")
 
   const extractorConfig = linguiConfig.experimental?.extractor
 
@@ -40,7 +43,7 @@ export default async function command(
     )
   }
 
-  console.log(
+  logger.warn(
     styleText(
       "yellow",
       [
@@ -82,8 +85,7 @@ export default async function command(
       )
     }
 
-    options.verbose &&
-      console.log(`Use worker pool of size ${options.workersOptions.poolSize}`)
+    logger.verbose(`Use worker pool of size ${options.workersOptions.poolSize}`)
 
     const pool = createExtractExperimentalWorkerPool({
       poolSize: options.workersOptions.poolSize,
@@ -160,7 +162,7 @@ export default async function command(
   stats
     .sort((a, b) => a.entry.localeCompare(b.entry))
     .forEach(({ entry, content }) => {
-      console.log([`Catalog statistics for ${entry}:`, content, ""].join("\n"))
+      logger.info([`Catalog statistics for ${entry}:`, content, ""].join("\n"))
     })
 
   return commandSuccess
@@ -168,6 +170,7 @@ export default async function command(
 
 type CliArgs = {
   config?: string
+  logLevel?: LogLevel
   verbose?: boolean
   template?: boolean
   locale?: string
@@ -183,7 +186,8 @@ if (import.meta.main) {
     .option("--overwrite", "Overwrite translations for source locale")
     .option("--clean", "Remove obsolete translations")
     .option("--locale <locale, [...]>", "Only extract the specified locales")
-    .option("--verbose", "Verbose output")
+    .option("--log-level <level>", `Set log level (${LOG_LEVELS.join("|")})`)
+    .option("--verbose", "Verbose output (alias for --log-level=verbose)")
     .option(
       "--workers <n>",
       "Number of worker threads to use (default: CPU count - 1, capped at 8). Pass `--workers 1` to disable worker threads and run everything in a single process",
@@ -192,12 +196,30 @@ if (import.meta.main) {
 
   const options = program.opts<CliArgs>()
 
+  if (options.logLevel && !LOG_LEVELS.includes(options.logLevel)) {
+    console.error(
+      `Invalid --log-level "${options.logLevel}". Valid levels: ${LOG_LEVELS.join(", ")}`,
+    )
+    process.exit(1)
+  }
+
+  let logLevel: LogLevel = options.logLevel ?? "info"
+
+  if (options.verbose) {
+    if (options.logLevel && options.logLevel !== "verbose") {
+      console.warn(
+        `Warning: --verbose conflicts with --log-level=${options.logLevel}. Using --log-level=verbose.`,
+      )
+    }
+    logLevel = "verbose"
+  }
+
   const config = getConfig({
     configPath: options.config,
   })
 
   const result = command(config, {
-    verbose: options.verbose || false,
+    logLevel,
     template: options.template,
     locales: options.locale?.split(","),
     overwrite: options.overwrite,

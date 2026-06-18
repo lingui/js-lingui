@@ -56,6 +56,7 @@ lingui extract [files...]
         [--format <format>]
         [--locale <locale, [...]>]
         [--convert-from <format>]
+        [--log-level <level>]
         [--verbose]
         [--watch [--debounce <delay>]]
         [--workers]
@@ -118,9 +119,21 @@ Extract data for the specified locales only.
 
 Convert message catalogs from the previous format (see the [`format`](/ref/conf#format) option for more details).
 
+#### `--log-level <level>` {#extract-log-level}
+
+Control output verbosity. Accepted values:
+
+| Level     | Output                                                 |
+| --------- | ------------------------------------------------------ |
+| `silent`  | No output                                              |
+| `error`   | Errors only                                            |
+| `warning` | Errors and warnings                                    |
+| `info`    | Errors, warnings, and informational messages (default) |
+| `verbose` | All output including debug details                     |
+
 #### `--verbose` {#extract-verbose}
 
-Print additional information.
+Alias for `--log-level=verbose`. If passed alongside `--log-level=<other>`, `--verbose` takes precedence with a warning.
 
 #### `--watch` {#extract-watch}
 
@@ -141,7 +154,7 @@ By default, the tool uses a simple heuristic:
 - On machines with more than 2 cores → `cpu.count - 1` workers
 - On 2-core machines → all cores
 
-Use the `--verbose` flag to see the actual pool size.
+Use `--log-level=verbose` to see the actual pool size.
 
 Worker threads can significantly improve performance on large projects. However, on small projects they may provide little benefit or even be slightly slower due to thread startup overhead.
 
@@ -150,16 +163,20 @@ A larger worker pool also increases memory usage. Adjust this value for your pro
 ### `extract-template`
 
 ```shell
-lingui extract-template [--verbose]
+lingui extract-template [--log-level <level>] [--verbose]
 ```
 
 This command extracts messages from your source files and generates a `.pot` template file. Any artifacts created by this command can be safely ignored in version control.
 
 If your message catalogs are not synchronized with the source and some messages are missing, the application will fallback to the template file. Running this command before building the application is recommended to ensure all messages are accounted for.
 
+#### `--log-level <level>` {#extract-template-log-level}
+
+Control output verbosity. See [`extract --log-level`](#extract-log-level) for accepted values.
+
 #### `--verbose` {#extract-template-verbose}
 
-Print additional information.
+Alias for `--log-level=verbose`.
 
 ### `compile`
 
@@ -167,6 +184,7 @@ Print additional information.
 lingui compile
     [--strict]
     [--format <format>]
+    [--log-level <level>]
     [--verbose]
     [--typescript]
     [--namespace <namespace>]
@@ -215,9 +233,13 @@ Fail if a catalog has missing translations.
 
 Format of message catalogs (see the [`format`](/ref/conf#format) option for more details).
 
+#### `--log-level <level>` {#compile-log-level}
+
+Control output verbosity. See [`extract --log-level`](#extract-log-level) for accepted values.
+
 #### `--verbose` {#compile-verbose}
 
-Print additional information.
+Alias for `--log-level=verbose`. If passed alongside `--log-level=<other>`, `--verbose` takes precedence with a warning.
 
 #### `--namespace` {#compile-namespace}
 
@@ -245,7 +267,7 @@ By default, the tool uses a simple heuristic:
 - On machines with more than 2 cores → `cpu.count - 1` workers
 - On 2-core machines → all cores
 
-Use the `--verbose` flag to see the actual pool size.
+Use `--log-level=verbose` to see the actual pool size.
 
 Worker threads can significantly improve performance on large projects. However, on small projects they may provide little benefit or even be slightly slower due to thread startup overhead.
 
