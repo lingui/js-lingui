@@ -27,7 +27,7 @@ Lingui is an easy yet powerful internationalization (i18n) framework for global 
 
 - **Clean and readable** - Keep your code clean and readable, while the library uses battle-tested and powerful **ICU MessageFormat** under the hood.
 
-- **Universal** - Use it everywhere. `@lingui/core` provides the essential intl functionality which works in any JavaScript project while `@lingui/react` offers components to leverage React rendering, including React Server Components (RSC) support. The same extract-and-compile workflow applies to React Native. Astro and Svelte work through community-supported packages.
+- **Universal** - Use it everywhere. `@lingui/core` provides the essential intl functionality which works in any JavaScript project, while `@lingui/react` offers components to leverage React rendering, including React Server Components (RSC) support, and `@lingui/solid` brings native SolidJS bindings. The same extract-and-compile workflow applies to React Native. Astro and Svelte work through community-supported packages.
 
 - **Full rich-text support** - Use React components inside localized messages without any limitation. Writing rich-text messages is as easy as writing JSX. That helps keep message catalogs in sync with your source code.
 
