@@ -58,7 +58,7 @@ export function routerWithLingui<TRouter extends AnyRouter>(
     }
   } else {
     router.options.hydrate = async (dehydrated) => {
-      ogOptions.hydrate?.(dehydrated)
+      await ogOptions.hydrate?.(dehydrated)
 
       // On the client, hydrate the i18n catalog with the dehydrated data
       i18n.loadAndActivate({

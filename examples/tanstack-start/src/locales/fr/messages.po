@@ -53,11 +53,11 @@ msgstr "Différé"
 
 #: src/routes/users.$userId.tsx:20
 msgid "Failed to fetch user"
-msgstr "Échec du chargement des utilisateurs"
+msgstr "Échec du chargement de l'utilisateur"
 
 #: src/routes/users.route.tsx:19
 msgid "Failed to fetch users"
-msgstr "Échec du chargement de l'utilisateur"
+msgstr "Échec du chargement des utilisateurs"
 
 #: src/components/NotFound.tsx:19
 msgid "Go back"

@@ -160,8 +160,6 @@ function RootDocument({ children }: { children: React.ReactNode }) {
               key={locale}
               className={locale === i18n.locale ? "font-bold" : ""}
               onClick={() => {
-                console.log("clicked", locale)
-
                 Promise.resolve().then(async () => {
                   await updateLocale({ data: locale })
 
@@ -179,7 +177,6 @@ function RootDocument({ children }: { children: React.ReactNode }) {
               {label}
             </button>
           ))}
-          (loader: {loaderLocale})
         </div>
         <hr />
         {children}

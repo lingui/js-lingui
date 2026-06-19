@@ -26,6 +26,8 @@ function UsersLayoutComponent() {
   const { t } = useLingui()
   const users = Route.useLoaderData()
 
+  console.log('users', users)
+
   return (
     <div className="p-2 flex gap-2">
       <ul className="list-disc pl-4">
