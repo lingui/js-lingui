@@ -217,10 +217,10 @@ import { createRolldownBundler } from "@lingui/cli/bundlers/rolldown";
 
 createRolldownBundler({
   includeDeps: ["@/"],
-  resolveRolldownOptions: (options) => {
-    options.tsconfig = true;
-    return options;
-  },
+  resolveRolldownOptions: (options) => ({
+    ...options,
+    tsconfig: true,
+  }),
 });
 ```
 
