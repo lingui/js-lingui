@@ -324,6 +324,20 @@ import { MyTrans } from "@my/lingui"
         expect(messages[0]).toMatchObject({ id: "x", message: "translation" })
       })
     })
+
+    it("Should not warn when id could be provided via spread", () => {
+      const code = `
+      const lookup = { x: {}, generic: {} };
+      i18n._({
+        ...(lookup.x ?? lookup.generic),
+        values: { val: "test" },
+      });
+      `
+      expectNoConsole(() => {
+        const messages = transformCode(code)
+        expect(messages).toHaveLength(0)
+      })
+    })
   })
 
   describe("StringLiteral", () => {
