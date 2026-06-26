@@ -13,6 +13,18 @@ expect({
   locales: ["en", "pl"],
 }).type.toBeAssignableTo<LinguiConfig>()
 
+// pseudoLocale as a string
+expect({
+  locales: ["en", "pseudo"],
+  pseudoLocale: "pseudo",
+}).type.toBeAssignableTo<LinguiConfig>()
+
+// pseudoLocale as an object with pseudolocale options
+expect({
+  locales: ["en", "pseudo"],
+  pseudoLocale: { locale: "pseudo", prepend: "⟦ ", append: " ⟧", extend: 0.4 },
+}).type.toBeAssignableTo<LinguiConfig>()
+
 // all props
 expect({
   catalogs: [

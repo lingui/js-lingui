@@ -1,4 +1,9 @@
-import { getConfig, LinguiConfigNormalized } from "@lingui/conf"
+import {
+  getConfig,
+  getPseudoLocale,
+  getPseudoLocaleOptions,
+  LinguiConfigNormalized,
+} from "@lingui/conf"
 import {
   createCompiledCatalog,
   getCatalogs,
@@ -90,7 +95,7 @@ Please check that catalogs.path is filled properly.\n`,
 
           if (
             failOnMissing &&
-            locale !== config.pseudoLocale &&
+            locale !== getPseudoLocale(config.pseudoLocale) &&
             missingMessages.length > 0
           ) {
             const message = createMissingErrorMessage(
@@ -108,7 +113,8 @@ Please check that catalogs.path is filled properly.\n`,
             messages,
             {
               namespace: "es",
-              pseudoLocale: config.pseudoLocale,
+              pseudoLocale: getPseudoLocale(config.pseudoLocale),
+              pseudoLocaleOptions: getPseudoLocaleOptions(config.pseudoLocale),
             },
           )
 

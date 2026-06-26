@@ -1,5 +1,9 @@
 import path from "path"
-import { getConfig } from "@lingui/conf"
+import {
+  getConfig,
+  getPseudoLocale,
+  getPseudoLocaleOptions,
+} from "@lingui/conf"
 import {
   createCompiledCatalog,
   getCatalogs,
@@ -71,7 +75,7 @@ Please check that \`catalogs.path\` is filled properly.\n`,
 
   if (
     options.failOnMissing &&
-    locale !== config.pseudoLocale &&
+    locale !== getPseudoLocale(config.pseudoLocale) &&
     missingMessages.length > 0
   ) {
     const message = createMissingErrorMessage(locale, missingMessages, "loader")
@@ -89,7 +93,8 @@ Please check that \`catalogs.path\` is filled properly.\n`,
   const { source: code, errors } = createCompiledCatalog(locale, messages, {
     strict,
     namespace: this._module!.type === "json" ? "json" : "es",
-    pseudoLocale: config.pseudoLocale,
+    pseudoLocale: getPseudoLocale(config.pseudoLocale),
+    pseudoLocaleOptions: getPseudoLocaleOptions(config.pseudoLocale),
   })
 
   if (errors.length) {

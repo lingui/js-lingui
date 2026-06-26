@@ -9,7 +9,7 @@ import { multipleValidOptions, validate } from "jest-validate"
 import { setCldrParentLocales } from "./migrations/setCldrParentLocales"
 import { pathJoinPosix } from "./utils/pathJoinPosix"
 import { normalizeRuntimeConfigModule } from "./migrations/normalizeRuntimeConfigModule"
-import { ExperimentalExtractorOptions } from "./types"
+import { ExperimentalExtractorOptions, PseudoLocaleConfig } from "./types"
 
 export function makeConfig(
   userConfig: Partial<LinguiConfig>,
@@ -69,7 +69,7 @@ export const defaultConfig = {
   fallbackLocales: {} as FallbackLocales,
   locales: [],
   orderBy: "message",
-  pseudoLocale: "",
+  pseudoLocale: "" as string | PseudoLocaleConfig,
   rootDir: ".",
   runtimeConfigModule: ["@lingui/core", "i18n"],
   macro: {
@@ -92,6 +92,13 @@ export const exampleConfig = {
     jsxRuntime: multipleValidOptions("react", "solid"),
   },
   format: multipleValidOptions({}, {}),
+  pseudoLocale: multipleValidOptions("", {
+    locale: "",
+    prepend: "",
+    append: "",
+    extend: 0,
+    override: "",
+  }),
   extractors: multipleValidOptions([], ["babel"], [Object]),
   runtimeConfigModule: multipleValidOptions(
     { i18n: ["@lingui/core", "i18n"], Trans: ["@lingui/react", "Trans"] },
