@@ -1,1 +1,1 @@
-/*eslint-disable*/module.exports={messages:JSON.parse("{\"D-XV65\":[\"index page message\"],\"wRTiSD\":[\"Red\"]}")};
+/*eslint-disable*/module.exports={messages:JSON.parse("{\"D-XV65\":[\"index page message\"],\"OMdhNj\":[\"message from a dynamic imported module\"],\"RNRWaX\":[\"shared message\"],\"VmkjGB\":[\"Green\"],\"wRTiSD\":[\"Red\"]}")};

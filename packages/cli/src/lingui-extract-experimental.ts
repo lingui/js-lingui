@@ -1,20 +1,33 @@
 import { program } from "commander"
 
-import { getConfig, LinguiConfigNormalized } from "@lingui/conf"
+import {
+  getConfig,
+  LinguiConfigNormalized,
+  ExtractedCatalogType,
+  ExperimentalExtractorBundler,
+} from "@lingui/conf"
 import nodepath from "path"
 import { getFormat } from "./api/formats/index.js"
 import fs from "fs/promises"
 import normalizePath from "normalize-path"
 
-import { bundleSource } from "./extract-experimental/bundleSource.js"
+import { createEsbuildBundler } from "./extract-experimental/bundlers/esbuild.js"
 import { globSync } from "node:fs"
 import { styleText } from "node:util"
 import {
   resolveWorkersOptions,
   WorkersOptions,
 } from "./api/resolveWorkersOptions.js"
-import { extractFromBundleAndWrite } from "./extract-experimental/extractFromBundleAndWrite.js"
+import { extractFromChunk } from "./extract-experimental/extractFromChunk.js"
+import {
+  writeCatalogs,
+  writeTemplate,
+} from "./extract-experimental/writeCatalogs.js"
 import { createExtractExperimentalWorkerPool } from "./api/workerPools.js"
+import { buildChunkGraph } from "./extract-experimental/buildChunkGraph.js"
+import { mergeExtractedMessage } from "./api/catalog/extractFromFiles.js"
+import ora from "ora"
+import ms from "ms"
 
 type CliExtractTemplateOptions = {
   verbose?: boolean
@@ -30,7 +43,7 @@ export default async function command(
   linguiConfig: LinguiConfigNormalized,
   options: CliExtractTemplateOptions,
 ): Promise<boolean> {
-  options.verbose && console.log("Extracting messages from source files…")
+  const startTime = Date.now()
 
   const extractorConfig = linguiConfig.experimental?.extractor
 
@@ -52,6 +65,30 @@ export default async function command(
     ),
   )
 
+  // important to initialize ora before worker pool, otherwise it causes
+  // MaxListenersExceededWarning when workers >= 10
+  const spinner = ora()
+
+  // Phase: Resolve entry points
+  spinner.start("Resolving entry points...")
+  let phaseStart = Date.now()
+  const entryPoints = globSync(extractorConfig.entries)
+
+  if (entryPoints.length === 0) {
+    spinner.warn(`No entry points found (${ms(Date.now() - phaseStart)})`)
+    return true
+  }
+
+  const displayEntries = entryPoints
+    .map((e) => normalizePath(nodepath.relative(linguiConfig.rootDir, e)))
+    .slice(0, 10)
+  const moreCount = entryPoints.length - displayEntries.length
+  const entrySummary =
+    displayEntries.join(", ") + (moreCount > 0 ? ` and ${moreCount} more` : "")
+  spinner.succeed(
+    `Found ${entryPoints.length} entry point(s) (${ms(Date.now() - phaseStart)}): ${entrySummary}`,
+  )
+
   // unfortunately we can't use os.tmpdir() in this case
   // on windows it might create a folder on a different disk then source code is stored
   // (tmpdir would be always on C: but code could be stored on D:)
@@ -63,16 +100,33 @@ export default async function command(
   const tempDir = await fs.mkdtemp(tmpPrefix)
   await fs.rm(tempDir, { recursive: true, force: true })
 
-  const bundleResult = await bundleSource(
-    linguiConfig,
-    extractorConfig,
-    globSync(extractorConfig.entries),
-    tempDir,
-    linguiConfig.rootDir,
-  )
+  let bundler: ExperimentalExtractorBundler
+  if (extractorConfig.bundler) {
+    bundler = extractorConfig.bundler
+  } else {
+    bundler = createEsbuildBundler({
+      includeDeps: extractorConfig.includeDeps,
+      excludeExtensions: extractorConfig.excludeExtensions,
+      resolveEsbuildOptions: extractorConfig.resolveEsbuildOptions,
+    })
+  }
+
+  // Phase: Bundling
+  spinner.start("Bundling...")
+  phaseStart = Date.now()
+  const bundleResult = await bundler.bundle(entryPoints, tempDir, linguiConfig)
+  spinner.succeed(`Bundling done (${ms(Date.now() - phaseStart)})`)
+
+  const resolvedChunks = buildChunkGraph(bundleResult.chunks)
+
   const stats: { entry: string; content: string }[] = []
 
   let commandSuccess = true
+
+  // Phase: Extract messages from each chunk
+  spinner.start("Extracting messages...")
+  phaseStart = Date.now()
+  const messagesByEntry = new Map<string, ExtractedCatalogType>()
 
   if (options.workersOptions.poolSize) {
     const resolvedConfigPath = linguiConfig.resolvedConfigPath
@@ -91,28 +145,27 @@ export default async function command(
 
     try {
       await Promise.all(
-        Object.keys(bundleResult.outputs).map(async (outFile) => {
-          const { entryPoint } = bundleResult.outputs[outFile]!
-
-          const result = await pool.run(
+        resolvedChunks.map(async ({ filePath, entryPoints }) => {
+          const { messages, success } = await pool.run(
             resolvedConfigPath,
-            entryPoint!,
-            outFile,
-            extractorConfig.output,
-            options.template || false,
-            options.locales || linguiConfig.locales,
-            options.clean || false,
-            options.overwrite || false,
+            filePath,
           )
 
-          commandSuccess &&= result.success
+          if (!success) {
+            commandSuccess = false
+          }
 
-          if (result.success) {
-            stats.push({
-              entry: normalizePath(
-                nodepath.relative(linguiConfig.rootDir, entryPoint!),
-              ),
-              content: result.stat,
+          for (const entryPoint of entryPoints) {
+            if (!messagesByEntry.has(entryPoint)) {
+              messagesByEntry.set(entryPoint, {})
+            }
+
+            messages.forEach((message) => {
+              mergeExtractedMessage(
+                message,
+                messagesByEntry.get(entryPoint)!,
+                linguiConfig,
+              )
             })
           }
         }),
@@ -121,38 +174,76 @@ export default async function command(
       await pool.destroy()
     }
   } else {
-    const format = await getFormat(
-      linguiConfig.format,
-      linguiConfig.sourceLocale,
+    await Promise.all(
+      resolvedChunks.map(async ({ filePath, entryPoints }) => {
+        const { messages, success } = await extractFromChunk(
+          filePath,
+          linguiConfig,
+        )
+
+        if (!success) {
+          commandSuccess = false
+        }
+
+        for (const entryPoint of entryPoints) {
+          if (!messagesByEntry.has(entryPoint)) {
+            messagesByEntry.set(entryPoint, {})
+          }
+
+          messages.forEach((message) => {
+            mergeExtractedMessage(
+              message,
+              messagesByEntry.get(entryPoint)!,
+              linguiConfig,
+            )
+          })
+        }
+      }),
     )
-
-    for (const outFile of Object.keys(bundleResult.outputs)) {
-      const { entryPoint } = bundleResult.outputs[outFile]!
-
-      const result = await extractFromBundleAndWrite({
-        entryPoint: entryPoint!,
-        bundleFile: outFile,
-        outputPattern: extractorConfig.output,
-        format,
-        linguiConfig,
-        locales: options.locales || linguiConfig.locales,
-        overwrite: options.overwrite || false,
-        clean: options.clean || false,
-        template: options.template || false,
-      })
-
-      commandSuccess &&= result.success
-
-      if (result.success) {
-        stats.push({
-          entry: normalizePath(
-            nodepath.relative(linguiConfig.rootDir, entryPoint!),
-          ),
-          content: result.stat,
-        })
-      }
-    }
   }
+  spinner.succeed(`Extracting done (${ms(Date.now() - phaseStart)})`)
+
+  // Phase: Write catalogs per entry point
+  spinner.start("Writing catalogs...")
+  phaseStart = Date.now()
+  const format = await getFormat(linguiConfig.format, linguiConfig.sourceLocale)
+  const locales = options.locales || linguiConfig.locales
+
+  for (const [entryPoint, messages] of messagesByEntry) {
+    let stat: string
+
+    if (options.template) {
+      stat = (
+        await writeTemplate({
+          linguiConfig,
+          clean: options.clean || false,
+          format,
+          messages,
+          entryPoint,
+          outputPattern: extractorConfig.output,
+        })
+      ).statMessage
+    } else {
+      stat = (
+        await writeCatalogs({
+          locales,
+          linguiConfig,
+          clean: options.clean || false,
+          format,
+          messages,
+          entryPoint,
+          overwrite: options.overwrite || false,
+          outputPattern: extractorConfig.output,
+        })
+      ).statMessage
+    }
+
+    stats.push({
+      entry: normalizePath(nodepath.relative(linguiConfig.rootDir, entryPoint)),
+      content: stat,
+    })
+  }
+  spinner.succeed(`Writing catalogs done (${ms(Date.now() - phaseStart)})`)
 
   // cleanup temp directory
   await fs.rm(tempDir, { recursive: true, force: true })
@@ -162,6 +253,20 @@ export default async function command(
     .forEach(({ entry, content }) => {
       console.log([`Catalog statistics for ${entry}:`, content, ""].join("\n"))
     })
+
+  const totalTime = Date.now() - startTime
+  if (commandSuccess) {
+    console.log(
+      styleText(
+        "green",
+        `Extraction completed successfully in ${ms(totalTime)}`,
+      ),
+    )
+  } else {
+    console.log(
+      styleText("red", `Extraction completed with errors in ${ms(totalTime)}`),
+    )
+  }
 
   return commandSuccess
 }
