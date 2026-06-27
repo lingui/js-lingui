@@ -1,6 +1,6 @@
 import { styleText } from "node:util"
 import { watch } from "chokidar"
-import { program } from "commander"
+import { Option, program } from "commander"
 
 import { getConfig, LinguiConfigNormalized } from "@lingui/conf"
 import { helpRun } from "./api/help.js"
@@ -13,10 +13,15 @@ import {
 } from "./api/resolveWorkersOptions.js"
 import ms from "ms"
 import { getPathsForCompileWatcher } from "./api/getPathsForCompileWatcher.js"
+import { ProgramExit } from "./api/ProgramExit.js"
+import type { MissingBehavior } from "./api/index.js"
+
+const failOnMissingModes: MissingBehavior[] = ["resolved", "catalog"]
 
 export type CliCompileOptions = {
   verbose?: boolean
   allowEmpty?: boolean
+  missingBehavior?: MissingBehavior
   failOnCompileError?: boolean
   typescript?: boolean
   watch?: boolean
@@ -46,7 +51,7 @@ export async function command(
       try {
         await compileLocale(catalogs, locale, options, config, doMerge, console)
       } catch (err) {
-        if ((err as Error).name === "ProgramExit") {
+        if (err instanceof ProgramExit) {
           errored = true
         } else {
           throw err
@@ -108,7 +113,8 @@ type CliArgs = {
   typescript?: boolean
   watch?: boolean
   namespace?: string
-  strict?: string
+  strict?: boolean
+  failOnMissing?: MissingBehavior
   config?: string
   debounce?: number
   workers?: number
@@ -119,7 +125,16 @@ if (import.meta.main) {
   program
     .description("Compile message catalogs to compiled bundle.")
     .option("--config <path>", "Path to the config file")
-    .option("--strict", "Disable defaults for missing translations")
+    .option(
+      "--strict",
+      "Fail if translations are missing after applying fallbackLocales, or if compilation errors occur",
+    )
+    .addOption(
+      new Option(
+        "--fail-on-missing <mode>",
+        "Fail if translations are missing; modes: resolved (after fallbackLocales) or catalog (before fallbackLocales)",
+      ).choices(failOnMissingModes),
+    )
     .option("--verbose", "Verbose output")
     .option("--typescript", "Create Typescript definition for compiled bundle")
     .option(
@@ -146,10 +161,13 @@ if (import.meta.main) {
       )
       console.log(`    $ ${helpRun("compile")}`)
       console.log("")
-      console.log("    # Compile translations but fail when there are missing")
-      console.log("    # translations (don't replace missing translations with")
-      console.log("    # default messages or message IDs)")
+      console.log("    # Compile translations but fail when resolved output")
+      console.log("    # still has missing translations or compilation errors")
       console.log(`    $ ${helpRun("compile --strict")}`)
+      console.log("")
+      console.log("    # Compile translations but fail when target catalogs")
+      console.log("    # have missing translations before fallbackLocales")
+      console.log(`    $ ${helpRun("compile --fail-on-missing catalog")}`)
     })
     .parse(process.argv)
 
@@ -160,10 +178,13 @@ if (import.meta.main) {
   let previousRun = Promise.resolve(true)
 
   const compile = () => {
+    const shouldFailOnMissing = Boolean(options.strict || options.failOnMissing)
+
     previousRun = previousRun.then(() =>
       command(config, {
         verbose: options.watch || options.verbose || false,
-        allowEmpty: !options.strict,
+        allowEmpty: !shouldFailOnMissing,
+        missingBehavior: options.failOnMissing ?? "resolved",
         failOnCompileError: !!options.strict,
         workersOptions: resolveWorkersOptions(options),
         typescript:
