@@ -1925,6 +1925,7 @@ __metadata:
     "@babel/types": "npm:^7.29.0"
     "@lingui/babel-plugin-lingui-macro": "workspace:*"
     "@lingui/conf": "workspace:*"
+    "@lingui/message-utils": "workspace:*"
     "@lingui/test-utils": "workspace:*"
     typescript: "catalog:"
     unbuild: "catalog:"

@@ -14,6 +14,7 @@ import {
   getConfig as loadConfig,
   type LinguiConfigNormalized,
 } from "@lingui/conf"
+import { generateMessageId } from "@lingui/message-utils/generateMessageId"
 
 type BabelTypes = typeof BabelTypesNamespace
 
@@ -202,12 +203,21 @@ function hasIgnoreComment(node: Node): boolean {
   return hasComment(node, "lingui-extract-ignore")
 }
 
-function hasI18nComment(node: Node): boolean {
-  return !!node.leadingComments?.some((comm) => {
-    const trimmed = comm.value.trim()
+const I18N_COMMENT_MARKS = ["i18n", "* i18n", "*i18n"] as const
+const I18N_STRING_COMMENT_MARKS = ["i18n-s", "* i18n-s", "*i18n-s"] as const
 
-    return trimmed === "i18n" || trimmed === "* i18n" || trimmed === "*i18n"
-  })
+function hasMarkComment(node: Node, marks: readonly string[]): boolean {
+  return !!node.leadingComments?.some((comm) =>
+    marks.includes(comm.value.trim()),
+  )
+}
+
+function hasI18nComment(node: Node): boolean {
+  return hasMarkComment(node, I18N_COMMENT_MARKS)
+}
+
+function hasI18nStringComment(node: Node): boolean {
+  return hasMarkComment(node, I18N_STRING_COMMENT_MARKS)
 }
 
 function getLinguiConfig(ctx: PluginPass): LinguiConfigNormalized {
@@ -349,7 +359,10 @@ export default function ({ types: t }: { types: BabelTypes }): PluginObj {
         // i18n._(/**i18n*/ {descriptor})
         // skipping this as it is processed
         // by ObjectExpression visitor
-        if (hasI18nComment(firstArgument.node)) {
+        if (
+          hasI18nComment(firstArgument.node) ||
+          hasI18nStringComment(firstArgument.node)
+        ) {
           return
         }
 
@@ -395,20 +408,25 @@ export default function ({ types: t }: { types: BabelTypes }): PluginObj {
       },
 
       StringLiteral(path, ctx) {
-        if (!hasI18nComment(path.node)) {
+        const isExplicitId = hasI18nComment(path.node)
+        const isStringMessage = hasI18nStringComment(path.node)
+
+        if (!isExplicitId && !isStringMessage) {
           return
         }
 
-        const props = {
-          id: path.node.value,
-        }
+        const message = path.node.value
 
-        if (!props.id) {
+        if (!message) {
           console.warn(
             path.buildCodeFrameError("Empty StringLiteral, skipping.").message,
           )
           return
         }
+
+        const props = isStringMessage
+          ? { id: generateMessageId(message), message }
+          : { id: message }
 
         collectMessage(path, props, ctx)
       },
