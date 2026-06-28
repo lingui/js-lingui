@@ -9,6 +9,10 @@ A collection of community-built addons, tools, and services that extend Lingui.
 
 ## Framework Integrations
 
+### lingui-rr (React Router v8)
+
+[`lingui-rr`](https://github.com/ws-rush/lingui-rr) is a community-maintained integration for React Router v8 (framework mode) and LinguiJS. It handles URL-prefix & cookie locale detection, syncs SSR translation state with the client effortlessly, and provides strictly-typed loaders (`loader` and `clientLoader`) without manual type casting.
+
 ### lingui-for (Svelte & Astro)
 
 [lingui-for](https://lingui-for.roundtrip.dev/) is a community-maintained project that brings Lingui macro support to frameworks with their own authoring syntax. It lets you write `t`, `msg`, `Trans`, `Plural`, and friends directly in Svelte and Astro files, while keeping behavior aligned with official Lingui Core and React semantics - including the same extraction and compile workflows you already know.
