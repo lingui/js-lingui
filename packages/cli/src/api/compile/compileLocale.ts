@@ -1,9 +1,5 @@
 import { Catalog, writeCompiled } from "../catalog.js"
-import {
-  getPseudoLocale,
-  getPseudoLocaleOptions,
-  LinguiConfigNormalized,
-} from "@lingui/conf"
+import { LinguiConfigNormalized } from "@lingui/conf"
 import { styleText } from "node:util"
 import { getMergedCatalogPath } from "../catalog/getCatalogs.js"
 import { CliCompileOptions } from "../../lingui-compile.js"
@@ -35,7 +31,7 @@ export async function compileLocale(
 
     if (
       !options.allowEmpty &&
-      locale !== getPseudoLocale(config.pseudoLocale) &&
+      locale !== config.pseudoLocale.locale &&
       missingMessages.length > 0
     ) {
       logger.error(
@@ -116,8 +112,8 @@ async function compileAndWrite(
       strict: false,
       namespace,
       outputPrefix: options.outputPrefix,
-      pseudoLocale: getPseudoLocale(config.pseudoLocale),
-      pseudoLocaleOptions: getPseudoLocaleOptions(config.pseudoLocale),
+      pseudoLocale: config.pseudoLocale.locale,
+      pseudoLocaleOptions: config.pseudoLocale.options,
       compilerBabelOptions: config.compilerBabelOptions,
     },
   )

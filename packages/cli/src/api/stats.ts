@@ -1,7 +1,7 @@
 import Table from "cli-table3"
 import { styleText } from "node:util"
 
-import { getPseudoLocale, LinguiConfigNormalized } from "@lingui/conf"
+import { LinguiConfigNormalized } from "@lingui/conf"
 
 import { AllCatalogsType, CatalogType } from "./types.js"
 
@@ -35,7 +35,7 @@ export function printStats(
       return a.localeCompare(b)
     })
     .forEach((locale) => {
-      if (locale === getPseudoLocale(config.pseudoLocale)) return // skip pseudo locale
+      if (locale === config.pseudoLocale.locale) return // skip pseudo locale
 
       const catalog = catalogs[locale]
       // catalog is null if no catalog exists on disk and the locale

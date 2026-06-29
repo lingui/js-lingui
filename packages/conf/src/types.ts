@@ -531,13 +531,24 @@ export type PseudoLocaleConfig = {
   locale: string
 } & PseudoLocaleOptions
 
+/**
+ * Normalized form of {@link LinguiConfig.pseudoLocale}. `makeConfig` expands both
+ * the string and object forms into this shape so consumers always receive the
+ * locale and its {@link PseudoLocaleOptions} separately.
+ */
+export type PseudoLocaleConfigNormalized = {
+  locale: string
+  options: PseudoLocaleOptions
+}
+
 type ModuleSourceNormalized = readonly [module: string, specifier: string]
 
 export type LinguiConfigNormalized = Omit<
   LinguiConfig & typeof defaultConfig,
-  "runtimeConfigModule"
+  "runtimeConfigModule" | "pseudoLocale"
 > & {
   resolvedConfigPath?: string
+  pseudoLocale: PseudoLocaleConfigNormalized
   runtimeConfigModule: {
     i18n: ModuleSourceNormalized
     useLingui: ModuleSourceNormalized

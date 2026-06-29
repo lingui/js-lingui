@@ -1,5 +1,4 @@
 export { makeConfig } from "./makeConfig"
 export { defineConfig } from "./defineConfig"
 export { getConfig } from "./getConfig"
-export { getPseudoLocale, getPseudoLocaleOptions } from "./getPseudoLocale"
 export * from "./types"

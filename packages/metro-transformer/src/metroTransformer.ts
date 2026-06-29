@@ -1,8 +1,4 @@
-import {
-  getConfig,
-  getPseudoLocale,
-  getPseudoLocaleOptions,
-} from "@lingui/conf"
+import { getConfig } from "@lingui/conf"
 import {
   createCompiledCatalog,
   getCatalogForFile,
@@ -82,8 +78,8 @@ Please check that \`catalogs.path\` is filled properly and restart the Metro ser
   const { source } = createCompiledCatalog(locale, messages, {
     strict,
     namespace: "es",
-    pseudoLocale: getPseudoLocale(config.pseudoLocale),
-    pseudoLocaleOptions: getPseudoLocaleOptions(config.pseudoLocale),
+    pseudoLocale: config.pseudoLocale.locale,
+    pseudoLocaleOptions: config.pseudoLocale.options,
   })
 
   return source
