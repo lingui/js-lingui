@@ -4,6 +4,8 @@ This is a [Tanstack Start](https://tanstack.com/start/latest) project that demon
 
 ## Development
 
+Requires Node.js 22.19 or newer.
+
 From your terminal:
 
 ```sh
