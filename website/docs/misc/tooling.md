@@ -22,6 +22,10 @@ Svelte support takes advantage of the framework's reactivity model for reactive 
 
 [`svelte-i18n-lingui`](https://www.npmjs.com/package/svelte-i18n-lingui) adds i18n to Svelte/SvelteKit projects using a gettext-style approach, where the base-language text itself serves as the catalog ID. It ships with a custom extractor for both `.svelte` and `.ts`/`.js` files, Svelte store-based reactivity so the UI responds to locale changes in real time, and a shortened message hash for compiled catalogs to keep bundle sizes small. The syntax closely mirrors Lingui macros - tagged template literals for simple strings, `msg` for deferred extraction, and a `<T>` component for rich inline elements.
 
+### lingui-rr (React Router v8)
+
+[`lingui-rr`](https://github.com/ws-rush/lingui-rr) is a community-maintained integration for React Router v8 (framework mode) and LinguiJS. It handles URL-prefix & cookie locale detection, syncs SSR translation state with the client effortlessly, and provides strictly-typed loaders (`loader` and `clientLoader`) without manual type casting.
+
 ### GraphCommerce (Next.js)
 
 [`@graphcommerce/lingui-next`](https://github.com/graphcommerce-org/graphcommerce/tree/main/packages/lingui-next) adds Lingui to [GraphCommerce](https://graphcommerce.org/) projects built on Next.js. It wires up Lingui's i18n instance with Next.js routing and locale detection so translations are loaded per-page with minimal configuration.
