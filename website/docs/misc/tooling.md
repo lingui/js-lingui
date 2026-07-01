@@ -9,10 +9,6 @@ A collection of community-built addons, tools, and services that extend Lingui.
 
 ## Framework Integrations
 
-### lingui-rr (React Router v8)
-
-[`lingui-rr`](https://github.com/ws-rush/lingui-rr) is a community-maintained integration for React Router v8 (framework mode) and LinguiJS. It handles URL-prefix & cookie locale detection, syncs SSR translation state with the client effortlessly, and provides strictly-typed loaders (`loader` and `clientLoader`) without manual type casting.
-
 ### lingui-for (Svelte & Astro)
 
 [lingui-for](https://lingui-for.roundtrip.dev/) is a community-maintained project that brings Lingui macro support to frameworks with their own authoring syntax. It lets you write `t`, `msg`, `Trans`, `Plural`, and friends directly in Svelte and Astro files, while keeping behavior aligned with official Lingui Core and React semantics - including the same extraction and compile workflows you already know.
@@ -25,6 +21,10 @@ Svelte support takes advantage of the framework's reactivity model for reactive 
 ### svelte-i18n-lingui
 
 [`svelte-i18n-lingui`](https://www.npmjs.com/package/svelte-i18n-lingui) adds i18n to Svelte/SvelteKit projects using a gettext-style approach, where the base-language text itself serves as the catalog ID. It ships with a custom extractor for both `.svelte` and `.ts`/`.js` files, Svelte store-based reactivity so the UI responds to locale changes in real time, and a shortened message hash for compiled catalogs to keep bundle sizes small. The syntax closely mirrors Lingui macros - tagged template literals for simple strings, `msg` for deferred extraction, and a `<T>` component for rich inline elements.
+
+### lingui-rr (React Router v8)
+
+[`lingui-rr`](https://github.com/ws-rush/lingui-rr) is a community-maintained integration for React Router v8 (framework mode) and LinguiJS. It handles URL-prefix & cookie locale detection, syncs SSR translation state with the client effortlessly, and provides strictly-typed loaders (`loader` and `clientLoader`) without manual type casting.
 
 ### GraphCommerce (Next.js)
 
