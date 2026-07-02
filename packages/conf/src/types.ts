@@ -331,10 +331,13 @@ export type LinguiConfig = {
    * configure the underlying [`pseudolocale`](https://github.com/MartinCerny-awin/pseudolocale)
    * library (e.g. to customize the prepended/appended markers or extend the string length).
    *
+   * The string form is deprecated and will be removed in a future major release.
+   * Use the object form (`{ locale: "pseudo" }`) instead.
+   *
    * @example
    *
    * ```ts
-   * // Simple form
+   * // Simple form (deprecated)
    * pseudoLocale: "pseudo"
    *
    * // Extended form
@@ -343,7 +346,7 @@ export type LinguiConfig = {
    *
    * https://lingui.dev/guides/pseudolocalization
    */
-  pseudoLocale?: string | PseudoLocaleConfig
+  pseudoLocale?: DeprecatedPseudoLocaleString | PseudoLocaleConfig
   /**
    * This is the directory where the Lingui CLI scans for messages in your source files during the extraction process.
    *
@@ -519,6 +522,15 @@ export type PseudoLocaleOptions = {
    */
   override?: string
 }
+
+/**
+ * Legacy string form of {@link LinguiConfig.pseudoLocale}, where the value is
+ * the pseudolocalization locale itself.
+ *
+ * @deprecated Use the object form ({@link PseudoLocaleConfig}, e.g. `{ locale: "pseudo" }`) instead.
+ * The string form will be removed in a future major release.
+ */
+export type DeprecatedPseudoLocaleString = string
 
 /**
  * Extended form of {@link LinguiConfig.pseudoLocale}, allowing the

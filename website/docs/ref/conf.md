@@ -217,6 +217,10 @@ Locale used for pseudolocalization. For example, when you set `pseudoLocale: "en
 
 It can be provided either as a string, or as an object to additionally configure the underlying [`pseudolocale`](https://github.com/MartinCerny-awin/pseudolocale) library. The token delimiter is managed internally by Lingui (to keep HTML tags, ICU macros and variables intact) and therefore cannot be configured.
 
+:::caution
+The string form (`pseudoLocale: "pseudo"`) is deprecated and will be removed in a future major release. Use the object form (`pseudoLocale: { locale: "pseudo" }`) instead.
+:::
+
 | Option     | Type     | Default     | Description                                                                                         |
 | ---------- | -------- | ----------- | --------------------------------------------------------------------------------------------------- |
 | `locale`   | `string` | —           | Locale used for pseudolocalization (required in the object form)                                    |
@@ -226,7 +230,7 @@ It can be provided either as a string, or as an object to additionally configure
 | `override` | `string` | `undefined` | Replaces every (non-token) character with the given one. Handy to quickly spot untranslated strings |
 
 ```ts title="lingui.config.{js,ts}"
-import { defineConfig } from "@lingui/cli"
+import { defineConfig } from "@lingui/cli";
 
 // Simple form
 export default defineConfig({
@@ -234,7 +238,7 @@ export default defineConfig({
   sourceLocale: "en",
   pseudoLocale: "pseudo",
   catalogs: [],
-})
+});
 
 // Extended form
 export default defineConfig({
@@ -242,7 +246,7 @@ export default defineConfig({
   sourceLocale: "en",
   pseudoLocale: { locale: "pseudo", prepend: "⟦ ", append: " ⟧", extend: 0.4 },
   catalogs: [],
-})
+});
 ```
 
 Read more about [Pseudolocalization](/guides/pseudolocalization).
