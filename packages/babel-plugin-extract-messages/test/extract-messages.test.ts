@@ -7,6 +7,7 @@ import linguiMacroPlugin, {
   type LinguiPluginOpts,
 } from "@lingui/babel-plugin-lingui-macro"
 import { getConfig } from "@lingui/conf"
+import { generateMessageId } from "@lingui/message-utils/generateMessageId"
 
 const transform = (filename: string) => {
   const rootDir = path.join(__dirname, "fixtures")
@@ -350,6 +351,48 @@ import { MyTrans } from "@my/lingui"
         expect(console.warn).toBeCalledWith(
           expect.stringContaining(`Empty StringLiteral`),
         )
+      })
+    })
+
+    it("Should extract from marked StringLiteral with generated id (i18n-s)", () => {
+      const code = `const t = /* i18n-s */'Message'`
+
+      expectNoConsole(() => {
+        const messages = transformCode(code)
+
+        expect(messages[0]).toMatchObject({
+          id: generateMessageId("Message"),
+          message: "Message",
+        })
+      })
+    })
+
+    it("Should support /*i18n-s*/ and /** i18n-s */ and /**i18n-s*/ mark formats", () => {
+      expectNoConsole(() => {
+        const blockFormat = transformCode(
+          `const a = /*i18n-s*/ 'Old format'`,
+        )
+        expect(blockFormat).toHaveLength(1)
+        expect(blockFormat[0]).toMatchObject({
+          id: generateMessageId("Old format"),
+          message: "Old format",
+        })
+
+        const jsdocFormat = transformCode(
+          `const b = /** i18n-s */ 'New format'`,
+        )
+        expect(jsdocFormat).toHaveLength(1)
+        expect(jsdocFormat[0]).toMatchObject({
+          id: generateMessageId("New format"),
+          message: "New format",
+        })
+
+        const noSpaces = transformCode(`const c = /**i18n-s*/ 'No spaces'`)
+        expect(noSpaces).toHaveLength(1)
+        expect(noSpaces[0]).toMatchObject({
+          id: generateMessageId("No spaces"),
+          message: "No spaces",
+        })
       })
     })
   })

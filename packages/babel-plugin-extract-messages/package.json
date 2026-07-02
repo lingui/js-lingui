@@ -43,7 +43,8 @@
     "node": ">=22.19.0"
   },
   "dependencies": {
-    "@lingui/conf": "workspace:*"
+    "@lingui/conf": "workspace:*",
+    "@lingui/message-utils": "workspace:*"
   },
   "devDependencies": {
     "@babel/core": "^7.29.0",
