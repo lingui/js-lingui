@@ -389,9 +389,26 @@ export type LinguiConfig = {
    * Locale used for pseudolocalization. For example, when you set `pseudoLocale: "en"`, all messages in the en catalog will be pseudo-localized.
    * The locale must be included in the locales config.
    *
+   * You can either pass the locale as a string, or an object to additionally
+   * configure the underlying [`pseudolocale`](https://github.com/MartinCerny-awin/pseudolocale)
+   * library (e.g. to customize the prepended/appended markers or extend the string length).
+   *
+   * The string form is deprecated and will be removed in a future major release.
+   * Use the object form (`{ locale: "pseudo" }`) instead.
+   *
+   * @example
+   *
+   * ```ts
+   * // Simple form (deprecated)
+   * pseudoLocale: "pseudo"
+   *
+   * // Extended form
+   * pseudoLocale: { locale: "pseudo", prepend: "⟦ ", append: " ⟧", extend: 0.4 }
+   * ```
+   *
    * https://lingui.dev/guides/pseudolocalization
    */
-  pseudoLocale?: string
+  pseudoLocale?: DeprecatedPseudoLocaleString | PseudoLocaleConfig
   /**
    * This is the directory where the Lingui CLI scans for messages in your source files during the extraction process.
    *
@@ -532,13 +549,80 @@ export type LinguiConfig = {
   }
 }
 
+/**
+ * Subset of options accepted by the [`pseudolocale`](https://github.com/MartinCerny-awin/pseudolocale)
+ * library that Lingui exposes through the {@link LinguiConfig.pseudoLocale} config.
+ *
+ * The delimiter related options are intentionally omitted because Lingui relies
+ * on its own internal delimiter to protect HTML tags, ICU macros and variables.
+ */
+export type PseudoLocaleOptions = {
+  /**
+   * String prepended to the beginning of every pseudo-localized message.
+   *
+   * @default ""
+   */
+  prepend?: string
+  /**
+   * String appended to the end of every pseudo-localized message.
+   *
+   * @default ""
+   */
+  append?: string
+  /**
+   * Extends the width of the string by the given percentage (e.g. `0.3` adds 30%).
+   * Useful to emulate languages that are longer than the source, such as German.
+   *
+   * @default 0
+   */
+  extend?: number
+  /**
+   * Replaces every (non-token) character with the given one. Handy to quickly
+   * spot strings that were not extracted/translated.
+   *
+   * @default undefined
+   */
+  override?: string
+}
+
+/**
+ * Legacy string form of {@link LinguiConfig.pseudoLocale}, where the value is
+ * the pseudolocalization locale itself.
+ *
+ * @deprecated Use the object form ({@link PseudoLocaleConfig}, e.g. `{ locale: "pseudo" }`) instead.
+ * The string form will be removed in a future major release.
+ */
+export type DeprecatedPseudoLocaleString = string
+
+/**
+ * Extended form of {@link LinguiConfig.pseudoLocale}, allowing the
+ * pseudolocalization {@link PseudoLocaleOptions} to be configured alongside the locale.
+ */
+export type PseudoLocaleConfig = {
+  /**
+   * Locale used for pseudolocalization. The locale must be included in the `locales` config.
+   */
+  locale: string
+} & PseudoLocaleOptions
+
+/**
+ * Normalized form of {@link LinguiConfig.pseudoLocale}. `makeConfig` expands both
+ * the string and object forms into this shape so consumers always receive the
+ * locale and its {@link PseudoLocaleOptions} separately.
+ */
+export type PseudoLocaleConfigNormalized = {
+  locale: string
+  options: PseudoLocaleOptions
+}
+
 type ModuleSourceNormalized = readonly [module: string, specifier: string]
 
 export type LinguiConfigNormalized = Omit<
   LinguiConfig & typeof defaultConfig,
-  "runtimeConfigModule"
+  "runtimeConfigModule" | "pseudoLocale"
 > & {
   resolvedConfigPath?: string
+  pseudoLocale: PseudoLocaleConfigNormalized
   runtimeConfigModule: {
     i18n: ModuleSourceNormalized
     useLingui: ModuleSourceNormalized

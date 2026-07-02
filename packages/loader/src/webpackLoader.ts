@@ -71,7 +71,7 @@ Please check that \`catalogs.path\` is filled properly.\n`,
 
   if (
     options.failOnMissing &&
-    locale !== config.pseudoLocale &&
+    locale !== config.pseudoLocale.locale &&
     missingMessages.length > 0
   ) {
     const message = createMissingErrorMessage(locale, missingMessages, "loader")
@@ -89,7 +89,8 @@ Please check that \`catalogs.path\` is filled properly.\n`,
   const { source: code, errors } = createCompiledCatalog(locale, messages, {
     strict,
     namespace: this._module!.type === "json" ? "json" : "es",
-    pseudoLocale: config.pseudoLocale,
+    pseudoLocale: config.pseudoLocale.locale,
+    pseudoLocaleOptions: config.pseudoLocale.options,
   })
 
   if (errors.length) {
