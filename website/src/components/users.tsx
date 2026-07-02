@@ -16,11 +16,6 @@ const USERS: UserDetails[] = [
     background: "#ffffff",
   },
   {
-    logo: "brave.png",
-    name: "Brave",
-    link: "https://github.com/brave/ads-ui",
-  },
-  {
     logo: "bluesky.png",
     name: "Bluesky",
     link: "https://github.com/bluesky-social/social-app",
