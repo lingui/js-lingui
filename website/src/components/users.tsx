@@ -5,9 +5,16 @@ interface UserDetails {
   logo: string;
   name: string;
   link: string;
+  background?: string;
 }
 
 const USERS: UserDetails[] = [
+  {
+    logo: "elevenlabs.png",
+    name: "ElevenLabs",
+    link: "https://elevenlabs.io",
+    background: "#ffffff",
+  },
   {
     logo: "brave.png",
     name: "Brave",
@@ -93,6 +100,7 @@ export function Users(): React.ReactElement {
                 className="mb-1.5 h-auto w-14 rounded-lg transition duration-200 group-hover:scale-110"
                 alt={user.name}
                 src={withBaseUrl(`/img/users/${user.logo}`)}
+                style={user.background ? { backgroundColor: user.background } : undefined}
                 width={64}
                 height={64}
               />
