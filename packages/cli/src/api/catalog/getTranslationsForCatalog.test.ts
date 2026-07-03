@@ -99,6 +99,43 @@ describe("getTranslationsForCatalog", () => {
     `)
   })
 
+  it("Should report raw missing catalog entries even when fallbackLocales.default resolves them", async () => {
+    // prettier-ignore
+    const catalogStub = getCatalogStub({
+      ...lang("pl", [
+        message("hashid1", "Lorem"),
+        message("hashid2", "Ipsum")
+      ]),
+      ...lang("ru", [
+        message("hashid1", "Lorem"),
+        message("hashid2", "Ipsum", true)
+      ])
+    })
+
+    const actual = await getTranslationsForCatalog(catalogStub, "ru", {
+      sourceLocale: "en",
+      fallbackLocales: {
+        default: "pl",
+      },
+      missingBehavior: "catalog",
+    })
+
+    expect(actual).toMatchInlineSnapshot(`
+      {
+        messages: {
+          hashid1: ru: translation: Lorem,
+          hashid2: pl: translation: Ipsum,
+        },
+        missing: [
+          {
+            id: hashid2,
+            source: Ipsum,
+          },
+        ],
+      }
+    `)
+  })
+
   it("Should fallback to single fallbackLocales", async () => {
     // prettier-ignore
     const catalogStub = getCatalogStub({

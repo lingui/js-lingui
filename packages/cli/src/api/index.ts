@@ -12,4 +12,5 @@ export {
   createMissingErrorMessage,
   createCompilationErrorMessage,
 } from "./messages.js"
+export type { MissingBehavior } from "./catalog/getTranslationsForCatalog.js"
 export * from "./types.js"
