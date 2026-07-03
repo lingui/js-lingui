@@ -73,7 +73,7 @@
     "tinypool": "^2.1.0"
   },
   "peerDependencies": {
-    "esbuild": "^0.28.0",
+    "esbuild": "^0.28.1",
     "rolldown": "^1.0.0"
   },
   "peerDependenciesMeta": {
@@ -91,7 +91,7 @@
     "@types/micromatch": "^4.0.1",
     "@types/ms": "^2.1.0",
     "@types/normalize-path": "^3.0.0",
-    "esbuild": "^0.28.0",
+    "esbuild": "^0.28.1",
     "mock-fs": "^5.2.0",
     "msw": "^2.12.7",
     "rolldown": "^1.1.1",
