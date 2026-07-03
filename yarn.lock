@@ -2141,7 +2141,7 @@ __metadata:
     "@lingui/test-utils": "workspace:*"
     "@messageformat/date-skeleton": "npm:^1.1.0"
     "@messageformat/parser": "npm:^5.0.0"
-    js-sha256: "npm:^0.10.1"
+    js-sha256: "npm:^0.11.1"
     typescript: "catalog:"
     unbuild: "catalog:"
     vitest: "catalog:"
@@ -9402,10 +9402,10 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"js-sha256@npm:^0.10.1":
-  version: 0.10.1
-  resolution: "js-sha256@npm:0.10.1"
-  checksum: 10/6bae235dd458744e573876cc0875e21ea18a84e3aec4ba82d0efdb28537366e225304d93072789883500ca995fcc7c4500528c66d02da88cc5d6ab4554ce2b8c
+"js-sha256@npm:^0.11.1":
+  version: 0.11.1
+  resolution: "js-sha256@npm:0.11.1"
+  checksum: 10/0f8eca6d8703f4a7252cce951617a5363676f81c62043b32ed8624f9c9ae49a269294dd8d31b2292bb616afdc46b4c0000b95fdc369768330a7887a36673a5c3
   languageName: node
   linkType: hard
 
