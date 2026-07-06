@@ -1,6 +1,6 @@
 {
   "name": "@lingui/conf",
-  "version": "6.4.0",
+  "version": "6.5.0",
   "sideEffects": false,
   "description": "Resolve and validate Lingui configuration",
   "keywords": [

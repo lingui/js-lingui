@@ -1,6 +1,6 @@
 {
   "name": "@lingui/message-utils",
-  "version": "6.4.0",
+  "version": "6.5.0",
   "description": "Low-level Lingui utilities to compile ICU MessageFormat messages and generate stable message IDs",
   "license": "MIT",
   "keywords": [

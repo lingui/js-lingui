@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.5.0](https://github.com/lingui/js-lingui/compare/v6.4.0...v6.5.0) (2026-07-06)
+
+### Bug Fixes
+
+* don't warn about missing id when a spread is present ([#2581](https://github.com/lingui/js-lingui/issues/2581)) ([b1b9480](https://github.com/lingui/js-lingui/commit/b1b9480f7eb327e07819bd35c75d4e03a52e70ed))
+
 # [6.4.0](https://github.com/lingui/js-lingui/compare/v6.3.0...v6.4.0) (2026-06-16)
 
 ### Features

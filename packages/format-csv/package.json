@@ -1,6 +1,6 @@
 {
   "name": "@lingui/format-csv",
-  "version": "6.4.0",
+  "version": "6.5.0",
   "description": "CSV formatter for Lingui message catalogs",
   "type": "module",
   "exports": {

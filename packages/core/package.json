@@ -1,6 +1,6 @@
 {
   "name": "@lingui/core",
-  "version": "6.4.0",
+  "version": "6.5.0",
   "sideEffects": false,
   "description": "Internationalization (i18n) tools for JavaScript",
   "type": "module",

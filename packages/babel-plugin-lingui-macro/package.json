@@ -1,6 +1,6 @@
 {
   "name": "@lingui/babel-plugin-lingui-macro",
-  "version": "6.4.0",
+  "version": "6.5.0",
   "type": "module",
   "description": "Babel plugin that transforms Lingui compile-time macros into optimized runtime calls",
   "contributors": [
