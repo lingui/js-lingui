@@ -67,13 +67,13 @@
     }
   },
   "devDependencies": {
-    "@babel/core": "7.29.0",
+    "@babel/core": "7.29.7",
     "@lingui/babel-plugin-lingui-macro": "workspace:^",
     "@lingui/core": "workspace:^",
     "@lingui/format-json": "workspace:^",
     "@lingui/react": "workspace:^",
     "@rolldown/plugin-babel": "^0.2.2",
-    "rolldown": "1.0.0-rc.17",
+    "rolldown": "1.1.4",
     "typescript": "catalog:",
     "unbuild": "catalog:",
     "vite": "^8.0.3",
