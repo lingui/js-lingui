@@ -89,8 +89,7 @@ export type Experimental__BatchExtractorType = {
 }
 
 export type ExtractorType =
-  | PerFileExtractorType
-  | Experimental__BatchExtractorType
+  PerFileExtractorType | Experimental__BatchExtractorType
 
 export type CatalogFormatter = {
   catalogExtension: string
@@ -433,8 +432,7 @@ export type LinguiConfig = {
    * ```
    */
   runtimeConfigModule?:
-    | ModuleSource
-    | Partial<Record<"useLingui" | "Trans" | "i18n", ModuleSource>>
+    ModuleSource | Partial<Record<"useLingui" | "Trans" | "i18n", ModuleSource>>
   /**
    * Specifies the default language of message IDs in your source files.
    *

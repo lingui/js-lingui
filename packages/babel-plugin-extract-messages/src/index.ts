@@ -215,8 +215,7 @@ function getLinguiConfig(ctx: PluginPass): LinguiConfigNormalized {
   if (linguiConfig) return linguiConfig
 
   const loadedConfig = ctx.get("linguiConfig") as
-    | LinguiConfigNormalized
-    | undefined
+    LinguiConfigNormalized | undefined
   if (loadedConfig) return loadedConfig
 
   const config = loadConfig()

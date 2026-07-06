@@ -319,8 +319,7 @@ export class MacroJSX {
 
       const name = attr.node.name.name
       const value = attr.get("value") as
-        | NodePath<Literal>
-        | NodePath<JSXExpressionContainer>
+        NodePath<Literal> | NodePath<JSXExpressionContainer>
 
       if (name === "value") {
         token = {

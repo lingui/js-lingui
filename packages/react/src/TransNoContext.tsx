@@ -12,8 +12,7 @@ export type TransRenderCallbackOrComponent =
   | {
       component?: never
       render?:
-        | ((props: TransRenderProps) => React.ReactElement<any, any>)
-        | null
+        ((props: TransRenderProps) => React.ReactElement<any, any>) | null
     }
   | {
       component?: React.ComponentType<TransRenderProps> | null

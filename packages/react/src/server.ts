@@ -24,11 +24,9 @@ const getLinguiCache = () => {
   // make lazy initialization of React.cache
   // so it will not execute when module just imported
   if (!cache) {
-    cache = React.cache(
-      (): CtxValueRef => ({
-        current: null,
-      }),
-    )
+    cache = React.cache((): CtxValueRef => ({
+      current: null,
+    }))
   }
 
   return cache()
