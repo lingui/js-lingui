@@ -262,4 +262,54 @@ describe("I18nProvider", () => {
 
     expect(getByTestId("locale").textContent).toBe("cs")
   })
+
+  it("works on engines without Proxy support (fallback to Object.create)", () => {
+    // Simulate an engine without Proxy (embedded WebViews, older smart-TV
+    // browsers). Proxy cannot be polyfilled, so the provider must not
+    // depend on it unconditionally. Assertions observe values through a
+    // probe component rather than DOM queries, because the test DOM
+    // implementation itself needs Proxy for querySelectorAll.
+    const OriginalProxy = globalThis.Proxy
+    const observedLocales: string[] = []
+
+    delete (globalThis as any).Proxy
+    try {
+      const i18n = setupI18n({
+        locale: "en",
+        messages: {
+          en: {},
+          cs: {},
+        },
+      })
+
+      const ComponentWithMemoizedI18n = () => {
+        const { i18n } = useLingui()
+
+        const getLocale = useCallback(
+          (i18nInstance: I18n) => i18nInstance.locale,
+          [],
+        )
+        const currentLocale = useMemo(() => getLocale(i18n), [getLocale, i18n])
+
+        observedLocales.push(currentLocale)
+        return null
+      }
+
+      render(
+        <I18nProvider i18n={i18n}>
+          <ComponentWithMemoizedI18n />
+        </I18nProvider>,
+      )
+
+      act(() => {
+        i18n.activate("cs")
+      })
+    } finally {
+      globalThis.Proxy = OriginalProxy
+    }
+
+    // the context still exposes a fresh i18n reference on each update, so
+    // memoized values keyed on `i18n` are correctly invalidated
+    expect(observedLocales).toEqual(["en", "cs"])
+  })
 })

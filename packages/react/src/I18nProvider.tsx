@@ -57,10 +57,15 @@ export const I18nProvider = ({
    *
    * We wrap `i18n` in a Proxy to create a new reference on each context update.
    * This ensures React correctly invalidates memoized values that depend on `i18n`.
+   * On engines without Proxy support (e.g. embedded WebViews, older smart-TV
+   * browsers), we fallback to `Object.create` — reads still delegate to the
+   * i18n instance and the reference is fresh; Proxy cannot be polyfilled, so
+   * without the fallback the provider would crash on mount.
    */
   const makeContext = useCallback(
     () => ({
-      i18n: new Proxy(i18n, {}),
+      i18n:
+        typeof Proxy === "function" ? new Proxy(i18n, {}) : Object.create(i18n),
       defaultComponent,
       _: i18n.t.bind(i18n),
     }),
