@@ -10,7 +10,20 @@ interface MacroParams {
   config?: { [key: string]: any } | undefined
 }
 
+let deprecationWarningShown = false
+
 export function macro({ state, babel, config }: MacroParams) {
+  if (!deprecationWarningShown) {
+    deprecationWarningShown = true
+    console.warn(
+      `[@lingui/macro] Using Lingui macros via "babel-plugin-macros" is deprecated ` +
+        `since v6 and will be removed in the next major version. ` +
+        `Please migrate to the dedicated babel plugin "@lingui/babel-plugin-lingui-macro" ` +
+        `or "@lingui/swc-plugin". ` +
+        `See https://lingui.dev/installation?transpiler=babel#choosing-a-transpiler for installation instructions.`,
+    )
+  }
+
   if (!state.get("linguiProcessed")) {
     state.opts = config
     const plugin = linguiPlugin(babel)
