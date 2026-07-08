@@ -226,7 +226,9 @@ The easiest approach is to use a preset exported from `@lingui/vite-plugin`:
       plugins: [
         react(),
         lingui(),
-        babel({ presets: [linguiTransformerBabelPreset()] }),
+        babel({
+          presets: [linguiTransformerBabelPreset()],
+        }),
       ],
     });
     ```
