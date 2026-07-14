@@ -17,19 +17,6 @@ describe("runtime macro", () => {
     `)
     })
 
-    it("positional argument", () => {
-      const value = "World"
-      expect(msg`Hello ${value}`).toMatchInlineSnapshot(`
-      {
-        "id": "Y7riaK",
-        "message": "Hello {0}",
-        "values": {
-          "0": "World",
-        },
-      }
-    `)
-    })
-
     it("named argument via labeled expression", () => {
       const value = "World"
       expect(msg`Hello ${{ name: value }}`).toMatchInlineSnapshot(`
@@ -43,34 +30,19 @@ describe("runtime macro", () => {
     `)
     })
 
-    it("multiple positional arguments", () => {
-      const a = "foo"
-      const b = "bar"
-      expect(msg`${a} and ${b}`).toMatchInlineSnapshot(`
-      {
-        "id": "1N_Dz7",
-        "message": "{0} and {1}",
-        "values": {
-          "0": "foo",
-          "1": "bar",
-        },
-      }
-    `)
-    })
-
-    it("mixed named and positional arguments", () => {
-      const name = "Alice"
-      const count = 5
-      expect(msg`${{ name }} has ${count} items`).toMatchInlineSnapshot(`
-      {
-        "id": "Ikoq-P",
-        "message": "{name} has {0} items",
-        "values": {
-          "0": 5,
-          "name": "Alice",
-        },
-      }
-    `)
+    it("multiple named arguments", () => {
+      const first = "foo"
+      const second = "bar"
+      expect(msg`${{ first }} and ${{ second }}`).toMatchInlineSnapshot(`
+        {
+          "id": "6-yL__",
+          "message": "{first} and {second}",
+          "values": {
+            "first": "foo",
+            "second": "bar",
+          },
+        }
+      `)
     })
 
     it("duplicate named values are deduplicated", () => {
@@ -81,21 +53,6 @@ describe("runtime macro", () => {
         "message": "{name} and {name}",
         "values": {
           "name": "Alice",
-        },
-      }
-    `)
-    })
-
-    it("complex expressions become positional", () => {
-      const props = { name: "test" }
-      expect(msg`Property ${props.name}, constant ${42}`)
-        .toMatchInlineSnapshot(`
-      {
-        "id": "fox1Gd",
-        "message": "Property {0}, constant {1}",
-        "values": {
-          "0": "test",
-          "1": 42,
         },
       }
     `)
@@ -154,6 +111,73 @@ describe("runtime macro", () => {
       }
     `)
     })
+
+    it("expands msg tagged template in message property", () => {
+      const username = "Alice"
+      expect(
+        msg({
+          context: "some context",
+          message: msg`Welcome back ${{ username }}`,
+        }),
+      ).toMatchInlineSnapshot(`
+        {
+          "context": "some context",
+          "id": "9mX_7A",
+          "message": "Welcome back {username}",
+          "values": {
+            "username": "Alice",
+          },
+        }
+      `)
+    })
+
+    it("expands plural marker in message property", () => {
+      const count = 5
+      expect(
+        msg({
+          id: "items.count",
+          message: plural({ count }, { one: "# item", other: "# items" }),
+        }),
+      ).toMatchInlineSnapshot(`
+      {
+        "id": "items.count",
+        "message": "{count, plural, one {# item} other {# items}}",
+        "values": {
+          "count": 5,
+        },
+      }
+    `)
+    })
+
+    it("expands msg with nested plural in message property", () => {
+      const count = 3
+      expect(
+        msg({
+          id: "shelf.items",
+          comment: "shelf item count",
+          message: msg`There are ${plural({ count }, { one: "# item", other: "# items" })} on the shelf`,
+        }),
+      ).toMatchInlineSnapshot(`
+      {
+        "comment": "shelf item count",
+        "id": "shelf.items",
+        "message": "There are {count, plural, one {# item} other {# items}} on the shelf",
+        "values": {
+          "count": 3,
+        },
+      }
+    `)
+    })
+
+    it("plain string message still works", () => {
+      expect(msg({ id: "simple", message: "Hello World" }))
+        .toMatchInlineSnapshot(`
+      {
+        "id": "simple",
+        "message": "Hello World",
+      }
+    `)
+    })
   })
 
   describe("plural", () => {
@@ -174,25 +198,6 @@ describe("runtime macro", () => {
         Symbol(lingui.runtime.marker): true,
       }
     `)
-    })
-
-    it("standalone with positional (unlabeled)", () => {
-      expect(plural(5, { one: "# book", other: "# books" }))
-        .toMatchInlineSnapshot(`
-          {
-            "format": "plural",
-            "formattedOptions": "one {# book} other {# books}",
-            "id": "NzciCK",
-            "labeledName": undefined,
-            "message": "{0, plural, one {# book} other {# books}}",
-            "nestedValues": {},
-            "value": 5,
-            "values": {
-              "0": 5,
-            },
-            Symbol(lingui.runtime.marker): true,
-          }
-        `)
     })
 
     it("with offset", () => {
@@ -248,19 +253,6 @@ describe("runtime macro", () => {
         "message": "There are {count, plural, one {# item} other {# items}}",
         "values": {
           "count": 5,
-        },
-      }
-    `)
-    })
-
-    it("nested in msg with positional", () => {
-      expect(msg`There are ${plural(5, { one: "# item", other: "# items" })}`)
-        .toMatchInlineSnapshot(`
-      {
-        "id": "UMhHEP",
-        "message": "There are {0, plural, one {# item} other {# items}}",
-        "values": {
-          "0": 5,
         },
       }
     `)
@@ -364,64 +356,7 @@ describe("runtime macro", () => {
     })
   })
 
-  describe("error handling", () => {
-    it("throws on object with multiple properties in msg template", () => {
-      expect(() => msg`Hello ${{ first: "a", second: "b" }}`).toThrow(
-        "Invalid placeholder at position 0: object has 2 properties (first, second)",
-      )
-    })
-
-    it("throws on empty object in msg template", () => {
-      expect(() => msg`Hello ${{}}`).toThrow(
-        "Invalid placeholder at position 0: empty object",
-      )
-    })
-
-    it("throws on undefined in msg template", () => {
-      expect(() => msg`Hello ${undefined}`).toThrow(
-        "Invalid placeholder at position 0: value is undefined",
-      )
-    })
-
-    it("throws on function in msg template", () => {
-      expect(() => msg`Hello ${() => "world"}`).toThrow(
-        "Invalid placeholder at position 0: value is a function",
-      )
-    })
-
-    it("reports correct position for errors", () => {
-      const name = "Alice"
-      expect(() => msg`${{ name }} has ${undefined} items`).toThrow(
-        "Invalid placeholder at position 1: value is undefined",
-      )
-    })
-
-    it("plural throws on undefined first arg", () => {
-      expect(() => {
-        plural(undefined, { one: "# book", other: "# books" })
-      }).toThrow("plural(): first argument is undefined")
-    })
-
-    it("plural throws on empty object first arg", () => {
-      expect(() => {
-        plural({}, { one: "# book", other: "# books" })
-      }).toThrow("plural(): first argument is an empty object")
-    })
-
-    it("plural throws on multi-property object first arg", () => {
-      expect(() => {
-        plural({ a: 1, b: 2 }, { one: "# book", other: "# books" })
-      }).toThrow("plural(): first argument has 2 properties (a, b)")
-    })
-
-    it("select throws on multi-property object first arg", () => {
-      expect(() => {
-        select({ a: "x", b: "y" }, { male: "he", other: "they" })
-      }).toThrow("select(): first argument has 2 properties (a, b)")
-    })
-  })
-
-  describe("deep nesting", () => {
+  describe("nesting and composition", () => {
     it("select containing plural", () => {
       const gender = "male"
       const numOfGuests = 3
@@ -476,93 +411,7 @@ describe("runtime macro", () => {
       }
     `)
     })
-  })
 
-  describe("defineMessage alias", () => {
-    it("is the same function as msg", () => {
-      expect(defineMessage).toBe(msg)
-    })
-
-    it("works as tagged template", () => {
-      expect(defineMessage`Hello`).toMatchInlineSnapshot(`
-      {
-        "id": "uzTaYi",
-        "message": "Hello",
-      }
-    `)
-    })
-  })
-
-  describe("msg call expression with message expansion", () => {
-    it("expands msg tagged template in message property", () => {
-      const username = "Alice"
-      expect(
-        msg({
-          context: "some context",
-          message: msg`Welcome back ${{ username }}`,
-        }),
-      ).toMatchInlineSnapshot(`
-        {
-          "context": "some context",
-          "id": "9mX_7A",
-          "message": "Welcome back {username}",
-          "values": {
-            "username": "Alice",
-          },
-        }
-      `)
-    })
-
-    it("expands plural marker in message property", () => {
-      const count = 5
-      expect(
-        msg({
-          id: "items.count",
-          message: plural({ count }, { one: "# item", other: "# items" }),
-        }),
-      ).toMatchInlineSnapshot(`
-      {
-        "id": "items.count",
-        "message": "{count, plural, one {# item} other {# items}}",
-        "values": {
-          "count": 5,
-        },
-      }
-    `)
-    })
-
-    it("expands msg with nested plural in message property", () => {
-      const count = 3
-      expect(
-        msg({
-          id: "shelf.items",
-          comment: "shelf item count",
-          message: msg`There are ${plural({ count }, { one: "# item", other: "# items" })} on the shelf`,
-        }),
-      ).toMatchInlineSnapshot(`
-      {
-        "comment": "shelf item count",
-        "id": "shelf.items",
-        "message": "There are {count, plural, one {# item} other {# items}} on the shelf",
-        "values": {
-          "count": 3,
-        },
-      }
-    `)
-    })
-
-    it("plain string message still works", () => {
-      expect(msg({ id: "simple", message: "Hello World" }))
-        .toMatchInlineSnapshot(`
-      {
-        "id": "simple",
-        "message": "Hello World",
-      }
-    `)
-    })
-  })
-
-  describe("msg inside plural/select options", () => {
     it("msg tagged template as plural option value", () => {
       const count = 5
       const name = "Alice"
@@ -625,34 +474,117 @@ describe("runtime macro", () => {
       }
     `)
     })
+  })
 
-    it("msg with positional args as select option value", () => {
-      const gender = "male"
+  describe("error handling", () => {
+    it("throws on raw string value", () => {
+      expect(() => msg`Hello ${"world"}`).toThrowErrorMatchingInlineSnapshot(
+        `[Error: msg: A raw value (string) was passed at position 0. Passing values directly is not supported because variable names cannot be inferred at runtime. Use a labeled placeholder syntax: \${{ label: value }}.]`,
+      )
+    })
+
+    it("throws on raw number value", () => {
+      expect(() => msg`Count: ${42}`).toThrowErrorMatchingInlineSnapshot(
+        `[Error: msg: A raw value (number) was passed at position 0. Passing values directly is not supported because variable names cannot be inferred at runtime. Use a labeled placeholder syntax: \${{ label: value }}.]`,
+      )
+    })
+
+    it("throws on undefined", () => {
+      expect(() => msg`Hello ${undefined}`).toThrowErrorMatchingInlineSnapshot(
+        `[Error: msg: A raw value (undefined) was passed at position 0. Passing values directly is not supported because variable names cannot be inferred at runtime. Use a labeled placeholder syntax: \${{ label: value }}.]`,
+      )
+    })
+
+    it("throws on function", () => {
       expect(
-        select(
-          { gender },
-          {
-            male: msg`He has ${5} friends`,
-            female: msg`She has ${3} friends`,
-            other: "They have friends",
-          },
-        ),
-      ).toMatchInlineSnapshot(`
+        () => msg`Hello ${() => "world"}`,
+      ).toThrowErrorMatchingInlineSnapshot(
+        `[Error: msg: A function was passed at position 0. Did you forget to call it? Use a labeled placeholder syntax: \${{ label: myFn() }}.]`,
+      )
+    })
+
+    it("throws on empty object", () => {
+      expect(() => msg`Hello ${{}}`).toThrowErrorMatchingInlineSnapshot(
+        `[Error: msg: Unexpected empty object at position 0. Use a labeled placeholder syntax: \${{ label: value }}.]`,
+      )
+    })
+
+    it("throws on object with multiple keys", () => {
+      expect(
+        () => msg`Hello ${{ first: "a", second: "b" }}`,
+      ).toThrowErrorMatchingInlineSnapshot(
+        `[Error: msg: Object with multiple keys (first, second) at position 0. You probably put a value directly into the message. This is not supported. Use a labeled placeholder syntax: \${{ label: value }}.]`,
+      )
+    })
+
+    it("reports correct position for errors", () => {
+      const name = "Alice"
+      expect(
+        () => msg`${{ name }} has ${undefined} items`,
+      ).toThrowErrorMatchingInlineSnapshot(
+        `[Error: msg: A raw value (undefined) was passed at position 1. Passing values directly is not supported because variable names cannot be inferred at runtime. Use a labeled placeholder syntax: \${{ label: value }}.]`,
+      )
+    })
+
+    it("plural throws on raw value", () => {
+      expect(() => {
+        plural(5, { one: "# book", other: "# books" })
+      }).toThrowErrorMatchingInlineSnapshot(
+        `[Error: plural(): A raw value (number) was passed as first argument. Passing values directly is not supported because variable names cannot be inferred at runtime. Use a labeled placeholder syntax: plural({ label: value }, { ... }).]`,
+      )
+    })
+
+    it("plural throws on undefined", () => {
+      expect(() => {
+        plural(undefined, { one: "# book", other: "# books" })
+      }).toThrowErrorMatchingInlineSnapshot(
+        `[Error: plural(): First argument is undefined. Use a labeled placeholder syntax: plural({ label: value }, { ... }).]`,
+      )
+    })
+
+    it("plural throws on empty object", () => {
+      expect(() => {
+        plural({}, { one: "# book", other: "# books" })
+      }).toThrowErrorMatchingInlineSnapshot(
+        `[Error: plural(): Unexpected empty object as first argument. Use a labeled placeholder syntax: plural({ label: value }, { ... }).]`,
+      )
+    })
+
+    it("plural throws on multi-property object", () => {
+      expect(() => {
+        plural({ a: 1, b: 2 }, { one: "# book", other: "# books" })
+      }).toThrowErrorMatchingInlineSnapshot(
+        `[Error: plural(): Object with multiple keys (a, b) as first argument. You probably put a value directly. This is not supported. Use a labeled placeholder syntax: plural({ label: value }, { ... }).]`,
+      )
+    })
+
+    it("select throws on multi-property object", () => {
+      expect(() => {
+        select({ a: "x", b: "y" }, { male: "he", other: "they" })
+      }).toThrowErrorMatchingInlineSnapshot(
+        `[Error: select(): Object with multiple keys (a, b) as first argument. You probably put a value directly. This is not supported. Use a labeled placeholder syntax: select({ label: value }, { ... }).]`,
+      )
+    })
+
+    it("select throws on raw string value", () => {
+      expect(() => {
+        select("male", { male: "he", other: "they" })
+      }).toThrowErrorMatchingInlineSnapshot(
+        `[Error: select(): A raw value (string) was passed as first argument. Passing values directly is not supported because variable names cannot be inferred at runtime. Use a labeled placeholder syntax: select({ label: value }, { ... }).]`,
+      )
+    })
+  })
+
+  describe("defineMessage alias", () => {
+    it("is the same function as msg", () => {
+      expect(defineMessage).toBe(msg)
+    })
+
+    it("works as tagged template", () => {
+      expect(defineMessage`Hello`).toMatchInlineSnapshot(`
       {
-        "format": "select",
-        "formattedOptions": "male {He has {0} friends} female {She has {0} friends} other {They have friends}",
-        "id": "yXCcP8",
-        "labeledName": "gender",
-        "message": "{gender, select, male {He has {0} friends} female {She has {0} friends} other {They have friends}}",
-        "nestedValues": {
-          "0": 3,
-        },
-        "value": "male",
-        "values": {
-          "0": 3,
-          "gender": "male",
-        },
-        Symbol(lingui.runtime.marker): true,
+        "id": "uzTaYi",
+        "message": "Hello",
       }
     `)
     })

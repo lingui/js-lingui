@@ -6,7 +6,7 @@ const RUNTIME_MACRO_BRAND = Symbol.for("lingui.runtime.marker")
 interface MacroMarker {
   readonly [RUNTIME_MACRO_BRAND]: true
   readonly format: "plural" | "select" | "selectordinal"
-  readonly labeledName: string | undefined
+  readonly labeledName: string
   readonly value: unknown
   readonly formattedOptions: string
   readonly nestedValues: Record<string, unknown>
@@ -34,35 +34,38 @@ function isLabeledExpression(x: unknown): x is Record<string, unknown> {
 
 function validateExpression(expr: unknown, position: number): void {
   if (isMacroMarker(expr)) return
-  if (typeof expr === "string" || typeof expr === "number") return
+  if (isLabeledExpression(expr)) return
+
   if (isPlainObject(expr)) {
     const keys = Object.keys(expr)
     if (keys.length === 0) {
       throw new Error(
-        `Invalid placeholder at position ${position}: empty object. ` +
-          `Use {name: value} with exactly one property to create a named placeholder.`,
+        `msg: Unexpected empty object at position ${position}. ` +
+          `Use a labeled placeholder syntax: \${{ label: value }}.`,
       )
     }
-    if (keys.length > 1) {
-      throw new Error(
-        `Invalid placeholder at position ${position}: object has ${keys.length} properties (${keys.join(", ")}). ` +
-          `Use {name: value} with exactly one property to create a named placeholder.`,
-      )
-    }
-    return
-  }
-  if (typeof expr === "undefined") {
     throw new Error(
-      `Invalid placeholder at position ${position}: value is undefined. ` +
-        `Only strings, numbers, labeled placeholders {name: value}, or macro markers (plural/select) are allowed.`,
+      `msg: Object with multiple keys (${keys.join(", ")}) at position ${position}. ` +
+        `You probably put a value directly into the message. This is not supported. ` +
+        `Use a labeled placeholder syntax: \${{ label: value }}.`,
     )
   }
+
   if (typeof expr === "function") {
     throw new Error(
-      `Invalid placeholder at position ${position}: value is a function. ` +
-        `Did you forget to call it? Only strings, numbers, labeled placeholders {name: value}, or macro markers (plural/select) are allowed.`,
+      `msg: A function was passed at position ${position}. ` +
+        `Did you forget to call it? ` +
+        `Use a labeled placeholder syntax: \${{ label: myFn() }}.`,
     )
   }
+
+  const type = expr === undefined ? "undefined" : typeof expr
+  throw new Error(
+    `msg: A raw value (${type}) was passed at position ${position}. ` +
+      `Passing values directly is not supported because variable names ` +
+      `cannot be inferred at runtime. ` +
+      `Use a labeled placeholder syntax: \${{ label: value }}.`,
+  )
 }
 
 function isMessageDescriptor(x: unknown): x is MessageDescriptor {
@@ -80,27 +83,37 @@ function buildICUFragment(marker: MacroMarker, name: string): string {
 }
 
 function validateChoiceValue(format: string, valueOrLabeled: unknown): void {
-  if (valueOrLabeled === undefined) {
-    throw new Error(
-      `${format}(): first argument is undefined. ` +
-        `Pass a value or a labeled placeholder {name: value}.`,
-    )
-  }
+  if (isLabeledExpression(valueOrLabeled)) return
+
   if (isPlainObject(valueOrLabeled)) {
     const keys = Object.keys(valueOrLabeled)
     if (keys.length === 0) {
       throw new Error(
-        `${format}(): first argument is an empty object. ` +
-          `Use {name: value} with exactly one property to create a named placeholder.`,
+        `${format}(): Unexpected empty object as first argument. ` +
+          `Use a labeled placeholder syntax: ${format}({ label: value }, { ... }).`,
       )
     }
-    if (keys.length > 1) {
-      throw new Error(
-        `${format}(): first argument has ${keys.length} properties (${keys.join(", ")}). ` +
-          `Use {name: value} with exactly one property to create a named placeholder.`,
-      )
-    }
+    throw new Error(
+      `${format}(): Object with multiple keys (${keys.join(", ")}) as first argument. ` +
+        `You probably put a value directly. This is not supported. ` +
+        `Use a labeled placeholder syntax: ${format}({ label: value }, { ... }).`,
+    )
   }
+
+  if (valueOrLabeled === undefined) {
+    throw new Error(
+      `${format}(): First argument is undefined. ` +
+        `Use a labeled placeholder syntax: ${format}({ label: value }, { ... }).`,
+    )
+  }
+
+  const type = typeof valueOrLabeled
+  throw new Error(
+    `${format}(): A raw value (${type}) was passed as first argument. ` +
+      `Passing values directly is not supported because variable names ` +
+      `cannot be inferred at runtime. ` +
+      `Use a labeled placeholder syntax: ${format}({ label: value }, { ... }).`,
+  )
 }
 
 function buildChoiceMarker(
@@ -110,15 +123,10 @@ function buildChoiceMarker(
 ): MacroMarker & MessageDescriptor {
   validateChoiceValue(format, valueOrLabeled)
 
-  let labeledName: string | undefined
-  let value: unknown
-
-  if (isLabeledExpression(valueOrLabeled)) {
-    labeledName = Object.keys(valueOrLabeled)[0] as string
-    value = (valueOrLabeled as Record<string, unknown>)[labeledName]
-  } else {
-    value = valueOrLabeled
-  }
+  const labeledName = Object.keys(
+    valueOrLabeled as Record<string, unknown>,
+  )[0] as string
+  const value = (valueOrLabeled as Record<string, unknown>)[labeledName]
 
   const nestedValues: Record<string, unknown> = {}
   let optCounter = 0
@@ -133,7 +141,7 @@ function buildChoiceMarker(
     const formatKey = /^\d+$/.test(key) ? `=${key}` : key
 
     if (isMacroMarker(optValue)) {
-      const nestedName = optValue.labeledName ?? `_nested${optCounter++}`
+      const nestedName = optValue.labeledName
       const fragment = buildICUFragment(optValue, nestedName)
       nestedValues[nestedName] = optValue.value
       Object.assign(nestedValues, optValue.nestedValues)
@@ -164,10 +172,9 @@ function buildChoiceMarker(
     nestedValues,
   }
 
-  const standaloneName = labeledName ?? "0"
-  const message = buildICUFragment(marker, standaloneName)
+  const message = buildICUFragment(marker, labeledName)
   const allValues: Record<string, unknown> = {
-    [standaloneName]: value,
+    [labeledName]: value,
     ...nestedValues,
   }
 
@@ -196,9 +203,11 @@ export function msg(
 
     const rawMessage = desc.message
     if (isMacroMarker(rawMessage)) {
-      const name = rawMessage.labeledName ?? "0"
-      message = buildICUFragment(rawMessage, name)
-      values = { [name]: rawMessage.value, ...rawMessage.nestedValues }
+      message = buildICUFragment(rawMessage, rawMessage.labeledName)
+      values = {
+        [rawMessage.labeledName]: rawMessage.value,
+        ...rawMessage.nestedValues,
+      }
     } else if (
       typeof rawMessage === "object" &&
       rawMessage !== null &&
@@ -223,7 +232,6 @@ export function msg(
   const literals = literalsOrDescriptor
   let message = ""
   const values: Record<string, unknown> = {}
-  let positionalIndex = 0
 
   for (let i = 0; i < literals.length; i++) {
     message += literals[i]
@@ -233,18 +241,20 @@ export function msg(
       validateExpression(expr, i)
 
       if (isMacroMarker(expr)) {
-        const name = expr.labeledName ?? String(positionalIndex++)
-        message += buildICUFragment(expr, name)
-        values[name] = expr.value
+        if (!expr.labeledName) {
+          throw new Error(
+            `msg: A macro marker (${expr.format}) without a labeled name at position ${i}. ` +
+              `Use a labeled placeholder syntax: ${expr.format}({ label: value }, { ... }).`,
+          )
+        }
+        message += buildICUFragment(expr, expr.labeledName)
+        values[expr.labeledName] = expr.value
         Object.assign(values, expr.nestedValues)
-      } else if (isLabeledExpression(expr)) {
-        const key = Object.keys(expr)[0] as string
-        values[key] = expr[key]
-        message += `{${key}}`
       } else {
-        const name = String(positionalIndex++)
-        values[name] = expr
-        message += `{${name}}`
+        const labeled = expr as Record<string, unknown>
+        const key = Object.keys(labeled)[0] as string
+        values[key] = labeled[key]
+        message += `{${key}}`
       }
     }
   }
