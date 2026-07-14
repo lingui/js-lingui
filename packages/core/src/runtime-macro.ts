@@ -65,6 +65,12 @@ function validateExpression(expr: unknown, position: number): void {
   }
 }
 
+function isMessageDescriptor(x: unknown): x is MessageDescriptor {
+  if (typeof x !== "object" || x === null) return false
+  if (isMacroMarker(x)) return false
+  return "id" in x && "message" in x
+}
+
 function isTemplateStringsArray(x: unknown): x is TemplateStringsArray {
   return Array.isArray(x) && "raw" in x && Array.isArray((x as any).raw)
 }
@@ -132,6 +138,12 @@ function buildChoiceMarker(
       nestedValues[nestedName] = optValue.value
       Object.assign(nestedValues, optValue.nestedValues)
       optionParts.push(`${formatKey} {${fragment}}`)
+    } else if (isMessageDescriptor(optValue)) {
+      const nested = optValue as MessageDescriptor
+      optionParts.push(`${formatKey} {${nested.message ?? ""}}`)
+      if (nested.values) {
+        Object.assign(nestedValues, nested.values)
+      }
     } else if (typeof optValue === "string") {
       optionParts.push(`${formatKey} {${optValue}}`)
     } else {
@@ -173,17 +185,38 @@ export function msg(
   if (!isTemplateStringsArray(literalsOrDescriptor)) {
     const desc = literalsOrDescriptor as {
       id?: string
-      message?: string
+      message?: unknown
       comment?: string
       context?: string
     }
-    const message = desc.message ?? ""
     const context = desc.context
+
+    let message: string
+    let values: Record<string, unknown> | undefined
+
+    const rawMessage = desc.message
+    if (isMacroMarker(rawMessage)) {
+      const name = rawMessage.labeledName ?? "0"
+      message = buildICUFragment(rawMessage, name)
+      values = { [name]: rawMessage.value, ...rawMessage.nestedValues }
+    } else if (
+      typeof rawMessage === "object" &&
+      rawMessage !== null &&
+      "message" in rawMessage
+    ) {
+      const nested = rawMessage as MessageDescriptor
+      message = nested.message ?? ""
+      values = nested.values
+    } else {
+      message = (rawMessage as string) ?? ""
+    }
+
     const id = desc.id ?? generateMessageId(message, context)
     const result: MessageDescriptor = { id }
     if (message) result.message = message
     if (desc.comment) result.comment = desc.comment
     if (context) (result as any).context = context
+    if (values && Object.keys(values).length > 0) result.values = values
     return result
   }
 

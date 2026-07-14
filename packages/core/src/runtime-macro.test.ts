@@ -492,4 +492,169 @@ describe("runtime macro", () => {
     `)
     })
   })
+
+  describe("msg call expression with message expansion", () => {
+    it("expands msg tagged template in message property", () => {
+      const username = "Alice"
+      expect(
+        msg({
+          context: "some context",
+          message: msg`Welcome back ${{ username }}`,
+        }),
+      ).toMatchInlineSnapshot(`
+        {
+          "context": "some context",
+          "id": "9mX_7A",
+          "message": "Welcome back {username}",
+          "values": {
+            "username": "Alice",
+          },
+        }
+      `)
+    })
+
+    it("expands plural marker in message property", () => {
+      const count = 5
+      expect(
+        msg({
+          id: "items.count",
+          message: plural({ count }, { one: "# item", other: "# items" }),
+        }),
+      ).toMatchInlineSnapshot(`
+      {
+        "id": "items.count",
+        "message": "{count, plural, one {# item} other {# items}}",
+        "values": {
+          "count": 5,
+        },
+      }
+    `)
+    })
+
+    it("expands msg with nested plural in message property", () => {
+      const count = 3
+      expect(
+        msg({
+          id: "shelf.items",
+          comment: "shelf item count",
+          message: msg`There are ${plural({ count }, { one: "# item", other: "# items" })} on the shelf`,
+        }),
+      ).toMatchInlineSnapshot(`
+      {
+        "comment": "shelf item count",
+        "id": "shelf.items",
+        "message": "There are {count, plural, one {# item} other {# items}} on the shelf",
+        "values": {
+          "count": 3,
+        },
+      }
+    `)
+    })
+
+    it("plain string message still works", () => {
+      expect(msg({ id: "simple", message: "Hello World" }))
+        .toMatchInlineSnapshot(`
+      {
+        "id": "simple",
+        "message": "Hello World",
+      }
+    `)
+    })
+  })
+
+  describe("msg inside plural/select options", () => {
+    it("msg tagged template as plural option value", () => {
+      const count = 5
+      const name = "Alice"
+      expect(
+        plural(
+          { count },
+          {
+            one: msg`# item for ${{ name }}`,
+            other: msg`# items for ${{ name }}`,
+          },
+        ),
+      ).toMatchInlineSnapshot(`
+      {
+        "format": "plural",
+        "formattedOptions": "one {# item for {name}} other {# items for {name}}",
+        "id": "vW9lXK",
+        "labeledName": "count",
+        "message": "{count, plural, one {# item for {name}} other {# items for {name}}}",
+        "nestedValues": {
+          "name": "Alice",
+        },
+        "value": 5,
+        "values": {
+          "count": 5,
+          "name": "Alice",
+        },
+        Symbol(lingui.runtime.marker): true,
+      }
+    `)
+    })
+
+    it("msg tagged template as select option value", () => {
+      const gender = "male"
+      const name = "Alex"
+      expect(
+        select(
+          { gender },
+          {
+            male: msg`He is ${{ name }}`,
+            female: msg`She is ${{ name }}`,
+            other: msg`They are ${{ name }}`,
+          },
+        ),
+      ).toMatchInlineSnapshot(`
+      {
+        "format": "select",
+        "formattedOptions": "male {He is {name}} female {She is {name}} other {They are {name}}",
+        "id": "Zk1d1X",
+        "labeledName": "gender",
+        "message": "{gender, select, male {He is {name}} female {She is {name}} other {They are {name}}}",
+        "nestedValues": {
+          "name": "Alex",
+        },
+        "value": "male",
+        "values": {
+          "gender": "male",
+          "name": "Alex",
+        },
+        Symbol(lingui.runtime.marker): true,
+      }
+    `)
+    })
+
+    it("msg with positional args as select option value", () => {
+      const gender = "male"
+      expect(
+        select(
+          { gender },
+          {
+            male: msg`He has ${5} friends`,
+            female: msg`She has ${3} friends`,
+            other: "They have friends",
+          },
+        ),
+      ).toMatchInlineSnapshot(`
+      {
+        "format": "select",
+        "formattedOptions": "male {He has {0} friends} female {She has {0} friends} other {They have friends}",
+        "id": "yXCcP8",
+        "labeledName": "gender",
+        "message": "{gender, select, male {He has {0} friends} female {She has {0} friends} other {They have friends}}",
+        "nestedValues": {
+          "0": 3,
+        },
+        "value": "male",
+        "values": {
+          "0": 3,
+          "gender": "male",
+        },
+        Symbol(lingui.runtime.marker): true,
+      }
+    `)
+    })
+  })
 })
