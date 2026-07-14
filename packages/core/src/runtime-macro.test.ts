@@ -349,6 +349,69 @@ describe("runtime macro - selectOrdinal", () => {
   })
 })
 
+describe("runtime macro - error handling", () => {
+  it("throws on object with multiple properties in t template", () => {
+    expect(() => {
+      t`Hello ${{ first: "a", second: "b" }}`
+    }).toThrow(
+      "Invalid placeholder at position 0: object has 2 properties (first, second)"
+    )
+  })
+
+  it("throws on empty object in t template", () => {
+    expect(() => {
+      t`Hello ${{}}`
+    }).toThrow("Invalid placeholder at position 0: empty object")
+  })
+
+  it("throws on undefined in t template", () => {
+    expect(() => {
+      t`Hello ${undefined}`
+    }).toThrow("Invalid placeholder at position 0: value is undefined")
+  })
+
+  it("throws on function in t template", () => {
+    expect(() => {
+      t`Hello ${() => "world"}`
+    }).toThrow("Invalid placeholder at position 0: value is a function")
+  })
+
+  it("reports correct position for errors", () => {
+    const name = "Alice"
+    expect(() => {
+      t`${{ name }} has ${undefined} items`
+    }).toThrow("Invalid placeholder at position 1: value is undefined")
+  })
+
+  it("plural throws on undefined first arg", () => {
+    expect(() => {
+      plural(undefined, { one: "# book", other: "# books" })
+    }).toThrow("plural(): first argument is undefined")
+  })
+
+  it("plural throws on empty object first arg", () => {
+    expect(() => {
+      plural({}, { one: "# book", other: "# books" })
+    }).toThrow("plural(): first argument is an empty object")
+  })
+
+  it("plural throws on multi-property object first arg", () => {
+    expect(() => {
+      plural({ a: 1, b: 2 }, { one: "# book", other: "# books" })
+    }).toThrow(
+      "plural(): first argument has 2 properties (a, b)"
+    )
+  })
+
+  it("select throws on multi-property object first arg", () => {
+    expect(() => {
+      select({ a: "x", b: "y" }, { male: "he", other: "they" })
+    }).toThrow(
+      "select(): first argument has 2 properties (a, b)"
+    )
+  })
+})
+
 describe("runtime macro - deep nesting", () => {
   it("select containing plural", () => {
     const gender = "male"

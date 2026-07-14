@@ -20,13 +20,49 @@ function isMacroMarker(x: unknown): x is MacroMarker {
   )
 }
 
-function isLabeledExpression(x: unknown): x is Record<string, unknown> {
+function isPlainObject(x: unknown): x is Record<string, unknown> {
   if (typeof x !== "object" || x === null || Array.isArray(x)) return false
   if (isMacroMarker(x)) return false
   const proto = Object.getPrototypeOf(x)
-  if (proto !== Object.prototype && proto !== null) return false
-  const keys = Object.keys(x)
-  return keys.length === 1
+  return proto === Object.prototype || proto === null
+}
+
+function isLabeledExpression(x: unknown): x is Record<string, unknown> {
+  if (!isPlainObject(x)) return false
+  return Object.keys(x).length === 1
+}
+
+function validateExpression(expr: unknown, position: number): void {
+  if (isMacroMarker(expr)) return
+  if (typeof expr === "string" || typeof expr === "number") return
+  if (isPlainObject(expr)) {
+    const keys = Object.keys(expr)
+    if (keys.length === 0) {
+      throw new Error(
+        `Invalid placeholder at position ${position}: empty object. ` +
+          `Use {name: value} with exactly one property to create a named placeholder.`
+      )
+    }
+    if (keys.length > 1) {
+      throw new Error(
+        `Invalid placeholder at position ${position}: object has ${keys.length} properties (${keys.join(", ")}). ` +
+          `Use {name: value} with exactly one property to create a named placeholder.`
+      )
+    }
+    return
+  }
+  if (typeof expr === "undefined") {
+    throw new Error(
+      `Invalid placeholder at position ${position}: value is undefined. ` +
+        `Only strings, numbers, labeled placeholders {name: value}, or macro markers (plural/select) are allowed.`
+    )
+  }
+  if (typeof expr === "function") {
+    throw new Error(
+      `Invalid placeholder at position ${position}: value is a function. ` +
+        `Did you forget to call it? Only strings, numbers, labeled placeholders {name: value}, or macro markers (plural/select) are allowed.`
+    )
+  }
 }
 
 function isTemplateStringsArray(x: unknown): x is TemplateStringsArray {
@@ -37,11 +73,40 @@ function buildICUFragment(marker: MacroMarker, name: string): string {
   return `{${name}, ${marker.format}, ${marker.formattedOptions}}`
 }
 
+function validateChoiceValue(
+  format: string,
+  valueOrLabeled: unknown,
+): void {
+  if (valueOrLabeled === undefined) {
+    throw new Error(
+      `${format}(): first argument is undefined. ` +
+        `Pass a value or a labeled placeholder {name: value}.`
+    )
+  }
+  if (isPlainObject(valueOrLabeled)) {
+    const keys = Object.keys(valueOrLabeled)
+    if (keys.length === 0) {
+      throw new Error(
+        `${format}(): first argument is an empty object. ` +
+          `Use {name: value} with exactly one property to create a named placeholder.`
+      )
+    }
+    if (keys.length > 1) {
+      throw new Error(
+        `${format}(): first argument has ${keys.length} properties (${keys.join(", ")}). ` +
+          `Use {name: value} with exactly one property to create a named placeholder.`
+      )
+    }
+  }
+}
+
 function buildChoiceMarker(
   format: "plural" | "select" | "selectordinal",
   valueOrLabeled: unknown,
   options: Record<string, unknown>,
 ): MacroMarker & MessageDescriptor {
+  validateChoiceValue(format, valueOrLabeled)
+
   let labeledName: string | null = null
   let value: unknown
 
@@ -135,6 +200,7 @@ export function t(
 
     if (i < expressions.length) {
       const expr = expressions[i]
+      validateExpression(expr, i)
 
       if (isMacroMarker(expr)) {
         const name = expr.labeledName ?? String(positionalIndex++)
