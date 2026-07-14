@@ -1,8 +1,14 @@
-import { t, plural, select, selectOrdinal } from "./runtime-macro"
+import {
+  msg,
+  defineMessage,
+  plural,
+  select,
+  selectOrdinal,
+} from "./runtime-macro"
 
-describe("runtime macro - t tagged template", () => {
+describe("runtime macro - msg tagged template", () => {
   it("static text", () => {
-    expect(t`Message`).toMatchInlineSnapshot(`
+    expect(msg`Message`).toMatchInlineSnapshot(`
       {
         "id": "xDAtGP",
         "message": "Message",
@@ -12,7 +18,7 @@ describe("runtime macro - t tagged template", () => {
 
   it("positional argument", () => {
     const value = "World"
-    expect(t`Hello ${value}`).toMatchInlineSnapshot(`
+    expect(msg`Hello ${value}`).toMatchInlineSnapshot(`
       {
         "id": "Y7riaK",
         "message": "Hello {0}",
@@ -25,7 +31,7 @@ describe("runtime macro - t tagged template", () => {
 
   it("named argument via labeled expression", () => {
     const value = "World"
-    expect(t`Hello ${{ name: value }}`).toMatchInlineSnapshot(`
+    expect(msg`Hello ${{ name: value }}`).toMatchInlineSnapshot(`
       {
         "id": "OVaF9k",
         "message": "Hello {name}",
@@ -39,7 +45,7 @@ describe("runtime macro - t tagged template", () => {
   it("multiple positional arguments", () => {
     const a = "foo"
     const b = "bar"
-    expect(t`${a} and ${b}`).toMatchInlineSnapshot(`
+    expect(msg`${a} and ${b}`).toMatchInlineSnapshot(`
       {
         "id": "1N_Dz7",
         "message": "{0} and {1}",
@@ -54,7 +60,7 @@ describe("runtime macro - t tagged template", () => {
   it("mixed named and positional arguments", () => {
     const name = "Alice"
     const count = 5
-    expect(t`${{ name }} has ${count} items`).toMatchInlineSnapshot(`
+    expect(msg`${{ name }} has ${count} items`).toMatchInlineSnapshot(`
       {
         "id": "Ikoq-P",
         "message": "{name} has {0} items",
@@ -68,7 +74,7 @@ describe("runtime macro - t tagged template", () => {
 
   it("duplicate named values are deduplicated", () => {
     const name = "Alice"
-    expect(t`${{ name }} and ${{ name }}`).toMatchInlineSnapshot(`
+    expect(msg`${{ name }} and ${{ name }}`).toMatchInlineSnapshot(`
       {
         "id": "8cTJuM",
         "message": "{name} and {name}",
@@ -81,7 +87,7 @@ describe("runtime macro - t tagged template", () => {
 
   it("complex expressions become positional", () => {
     const props = { name: "test" }
-    expect(t`Property ${props.name}, constant ${42}`).toMatchInlineSnapshot(`
+    expect(msg`Property ${props.name}, constant ${42}`).toMatchInlineSnapshot(`
       {
         "id": "fox1Gd",
         "message": "Property {0}, constant {1}",
@@ -94,14 +100,14 @@ describe("runtime macro - t tagged template", () => {
   })
 
   it("no values when only static text", () => {
-    const result = t`Just text`
+    const result = msg`Just text`
     expect(result.values).toBeUndefined()
   })
 })
 
-describe("runtime macro - t call expression", () => {
+describe("runtime macro - msg call expression", () => {
   it("with message only", () => {
-    expect(t({ message: "Hello" })).toMatchInlineSnapshot(`
+    expect(msg({ message: "Hello" })).toMatchInlineSnapshot(`
       {
         "id": "uzTaYi",
         "message": "Hello",
@@ -110,7 +116,7 @@ describe("runtime macro - t call expression", () => {
   })
 
   it("with custom id", () => {
-    expect(t({ id: "custom.id", message: "Hello" })).toMatchInlineSnapshot(`
+    expect(msg({ id: "custom.id", message: "Hello" })).toMatchInlineSnapshot(`
       {
         "id": "custom.id",
         "message": "Hello",
@@ -119,8 +125,8 @@ describe("runtime macro - t call expression", () => {
   })
 
   it("with context generates different id", () => {
-    const withoutCtx = t({ message: "Hello" })
-    const withCtx = t({ message: "Hello", context: "my custom" })
+    const withoutCtx = msg({ message: "Hello" })
+    const withCtx = msg({ message: "Hello", context: "my custom" })
     expect(withoutCtx.id).not.toBe(withCtx.id)
     expect(withCtx).toMatchInlineSnapshot(`
       {
@@ -133,7 +139,7 @@ describe("runtime macro - t call expression", () => {
 
   it("with comment", () => {
     expect(
-      t({
+      msg({
         id: "msgId",
         message: "Hello",
         comment: "description for translators",
@@ -226,10 +232,10 @@ describe("runtime macro - plural", () => {
     `)
   })
 
-  it("nested in t with labeled name", () => {
+  it("nested in msg with labeled name", () => {
     const count = 5
     expect(
-      t`There are ${plural({ count }, { one: "# item", other: "# items" })}`,
+      msg`There are ${plural({ count }, { one: "# item", other: "# items" })}`,
     ).toMatchInlineSnapshot(`
       {
         "id": "M3GBhI",
@@ -241,8 +247,8 @@ describe("runtime macro - plural", () => {
     `)
   })
 
-  it("nested in t with positional", () => {
-    expect(t`There are ${plural(5, { one: "# item", other: "# items" })}`)
+  it("nested in msg with positional", () => {
+    expect(msg`There are ${plural(5, { one: "# item", other: "# items" })}`)
       .toMatchInlineSnapshot(`
       {
         "id": "UMhHEP",
@@ -254,11 +260,11 @@ describe("runtime macro - plural", () => {
     `)
   })
 
-  it("nested in t alongside other expressions", () => {
+  it("nested in msg alongside other expressions", () => {
     const name = "shelf"
     const count = 3
     expect(
-      t`${{ name }} has ${plural({ count }, { one: "# item", other: "# items" })}`,
+      msg`${{ name }} has ${plural({ count }, { one: "# item", other: "# items" })}`,
     ).toMatchInlineSnapshot(`
       {
         "id": "TvDp_S",
@@ -293,10 +299,10 @@ describe("runtime macro - select", () => {
     `)
   })
 
-  it("nested in t", () => {
+  it("nested in msg", () => {
     const gender = "female"
     expect(
-      t`User is ${select({ gender }, { male: "he", female: "she", other: "they" })}`,
+      msg`User is ${select({ gender }, { male: "he", female: "she", other: "they" })}`,
     ).toMatchInlineSnapshot(`
       {
         "id": "BZT5Wi",
@@ -333,10 +339,10 @@ describe("runtime macro - selectOrdinal", () => {
     `)
   })
 
-  it("nested in t", () => {
+  it("nested in msg", () => {
     const count = 3
     expect(
-      t`This is my ${selectOrdinal({ count }, { one: "#st", two: "#nd", other: "#th" })} cat`,
+      msg`This is my ${selectOrdinal({ count }, { one: "#st", two: "#nd", other: "#th" })} cat`,
     ).toMatchInlineSnapshot(`
       {
         "id": "4DU88f",
@@ -350,37 +356,35 @@ describe("runtime macro - selectOrdinal", () => {
 })
 
 describe("runtime macro - error handling", () => {
-  it("throws on object with multiple properties in t template", () => {
-    expect(() => {
-      t`Hello ${{ first: "a", second: "b" }}`
-    }).toThrow(
-      "Invalid placeholder at position 0: object has 2 properties (first, second)"
+  it("throws on object with multiple properties in msg template", () => {
+    expect(() => msg`Hello ${{ first: "a", second: "b" }}`).toThrow(
+      "Invalid placeholder at position 0: object has 2 properties (first, second)",
     )
   })
 
-  it("throws on empty object in t template", () => {
-    expect(() => {
-      t`Hello ${{}}`
-    }).toThrow("Invalid placeholder at position 0: empty object")
+  it("throws on empty object in msg template", () => {
+    expect(() => msg`Hello ${{}}`).toThrow(
+      "Invalid placeholder at position 0: empty object",
+    )
   })
 
-  it("throws on undefined in t template", () => {
-    expect(() => {
-      t`Hello ${undefined}`
-    }).toThrow("Invalid placeholder at position 0: value is undefined")
+  it("throws on undefined in msg template", () => {
+    expect(() => msg`Hello ${undefined}`).toThrow(
+      "Invalid placeholder at position 0: value is undefined",
+    )
   })
 
-  it("throws on function in t template", () => {
-    expect(() => {
-      t`Hello ${() => "world"}`
-    }).toThrow("Invalid placeholder at position 0: value is a function")
+  it("throws on function in msg template", () => {
+    expect(() => msg`Hello ${() => "world"}`).toThrow(
+      "Invalid placeholder at position 0: value is a function",
+    )
   })
 
   it("reports correct position for errors", () => {
     const name = "Alice"
-    expect(() => {
-      t`${{ name }} has ${undefined} items`
-    }).toThrow("Invalid placeholder at position 1: value is undefined")
+    expect(() => msg`${{ name }} has ${undefined} items`).toThrow(
+      "Invalid placeholder at position 1: value is undefined",
+    )
   })
 
   it("plural throws on undefined first arg", () => {
@@ -398,17 +402,13 @@ describe("runtime macro - error handling", () => {
   it("plural throws on multi-property object first arg", () => {
     expect(() => {
       plural({ a: 1, b: 2 }, { one: "# book", other: "# books" })
-    }).toThrow(
-      "plural(): first argument has 2 properties (a, b)"
-    )
+    }).toThrow("plural(): first argument has 2 properties (a, b)")
   })
 
   it("select throws on multi-property object first arg", () => {
     expect(() => {
       select({ a: "x", b: "y" }, { male: "he", other: "they" })
-    }).toThrow(
-      "select(): first argument has 2 properties (a, b)"
-    )
+    }).toThrow("select(): first argument has 2 properties (a, b)")
   })
 })
 
@@ -451,11 +451,11 @@ describe("runtime macro - deep nesting", () => {
     `)
   })
 
-  it("t with multiple nested macros", () => {
+  it("msg with multiple nested macros", () => {
     const count = 5
     const gender = "female"
     expect(
-      t`${plural({ count }, { one: "# item", other: "# items" })} for ${select({ gender }, { male: "him", female: "her", other: "them" })}`,
+      msg`${plural({ count }, { one: "# item", other: "# items" })} for ${select({ gender }, { male: "him", female: "her", other: "them" })}`,
     ).toMatchInlineSnapshot(`
       {
         "id": "gn87Kc",
@@ -464,6 +464,21 @@ describe("runtime macro - deep nesting", () => {
           "count": 5,
           "gender": "female",
         },
+      }
+    `)
+  })
+})
+
+describe("runtime macro - defineMessage alias", () => {
+  it("is the same function as msg", () => {
+    expect(defineMessage).toBe(msg)
+  })
+
+  it("works as tagged template", () => {
+    expect(defineMessage`Hello`).toMatchInlineSnapshot(`
+      {
+        "id": "uzTaYi",
+        "message": "Hello",
       }
     `)
   })

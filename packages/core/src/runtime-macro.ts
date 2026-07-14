@@ -6,7 +6,7 @@ const RUNTIME_MACRO_BRAND = Symbol.for("lingui.runtime.marker")
 interface MacroMarker {
   readonly [RUNTIME_MACRO_BRAND]: true
   readonly format: "plural" | "select" | "selectordinal"
-  readonly labeledName: string | null
+  readonly labeledName: string | undefined
   readonly value: unknown
   readonly formattedOptions: string
   readonly nestedValues: Record<string, unknown>
@@ -40,13 +40,13 @@ function validateExpression(expr: unknown, position: number): void {
     if (keys.length === 0) {
       throw new Error(
         `Invalid placeholder at position ${position}: empty object. ` +
-          `Use {name: value} with exactly one property to create a named placeholder.`
+          `Use {name: value} with exactly one property to create a named placeholder.`,
       )
     }
     if (keys.length > 1) {
       throw new Error(
         `Invalid placeholder at position ${position}: object has ${keys.length} properties (${keys.join(", ")}). ` +
-          `Use {name: value} with exactly one property to create a named placeholder.`
+          `Use {name: value} with exactly one property to create a named placeholder.`,
       )
     }
     return
@@ -54,13 +54,13 @@ function validateExpression(expr: unknown, position: number): void {
   if (typeof expr === "undefined") {
     throw new Error(
       `Invalid placeholder at position ${position}: value is undefined. ` +
-        `Only strings, numbers, labeled placeholders {name: value}, or macro markers (plural/select) are allowed.`
+        `Only strings, numbers, labeled placeholders {name: value}, or macro markers (plural/select) are allowed.`,
     )
   }
   if (typeof expr === "function") {
     throw new Error(
       `Invalid placeholder at position ${position}: value is a function. ` +
-        `Did you forget to call it? Only strings, numbers, labeled placeholders {name: value}, or macro markers (plural/select) are allowed.`
+        `Did you forget to call it? Only strings, numbers, labeled placeholders {name: value}, or macro markers (plural/select) are allowed.`,
     )
   }
 }
@@ -73,14 +73,11 @@ function buildICUFragment(marker: MacroMarker, name: string): string {
   return `{${name}, ${marker.format}, ${marker.formattedOptions}}`
 }
 
-function validateChoiceValue(
-  format: string,
-  valueOrLabeled: unknown,
-): void {
+function validateChoiceValue(format: string, valueOrLabeled: unknown): void {
   if (valueOrLabeled === undefined) {
     throw new Error(
       `${format}(): first argument is undefined. ` +
-        `Pass a value or a labeled placeholder {name: value}.`
+        `Pass a value or a labeled placeholder {name: value}.`,
     )
   }
   if (isPlainObject(valueOrLabeled)) {
@@ -88,13 +85,13 @@ function validateChoiceValue(
     if (keys.length === 0) {
       throw new Error(
         `${format}(): first argument is an empty object. ` +
-          `Use {name: value} with exactly one property to create a named placeholder.`
+          `Use {name: value} with exactly one property to create a named placeholder.`,
       )
     }
     if (keys.length > 1) {
       throw new Error(
         `${format}(): first argument has ${keys.length} properties (${keys.join(", ")}). ` +
-          `Use {name: value} with exactly one property to create a named placeholder.`
+          `Use {name: value} with exactly one property to create a named placeholder.`,
       )
     }
   }
@@ -107,11 +104,11 @@ function buildChoiceMarker(
 ): MacroMarker & MessageDescriptor {
   validateChoiceValue(format, valueOrLabeled)
 
-  let labeledName: string | null = null
+  let labeledName: string | undefined
   let value: unknown
 
   if (isLabeledExpression(valueOrLabeled)) {
-    labeledName = Object.keys(valueOrLabeled)[0]
+    labeledName = Object.keys(valueOrLabeled)[0] as string
     value = (valueOrLabeled as Record<string, unknown>)[labeledName]
   } else {
     value = valueOrLabeled
@@ -169,7 +166,7 @@ function buildChoiceMarker(
   }) as MacroMarker & MessageDescriptor
 }
 
-export function t(
+export function msg(
   literalsOrDescriptor: TemplateStringsArray | Record<string, unknown>,
   ...expressions: unknown[]
 ): MessageDescriptor {
@@ -208,8 +205,8 @@ export function t(
         values[name] = expr.value
         Object.assign(values, expr.nestedValues)
       } else if (isLabeledExpression(expr)) {
-        const key = Object.keys(expr)[0]
-        values[key] = (expr as Record<string, unknown>)[key]
+        const key = Object.keys(expr)[0] as string
+        values[key] = expr[key]
         message += `{${key}}`
       } else {
         const name = String(positionalIndex++)
@@ -245,3 +242,5 @@ export function selectOrdinal(
 ): MacroMarker & MessageDescriptor {
   return buildChoiceMarker("selectordinal", value, options)
 }
+
+export const defineMessage = msg
