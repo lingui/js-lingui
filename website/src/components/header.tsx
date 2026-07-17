@@ -1,30 +1,13 @@
 import React from "react";
 import useBaseUrl from "@docusaurus/useBaseUrl";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
-import Head from "@docusaurus/Head";
 import { Button } from "./ui/button";
 
 export function Header(): React.ReactElement {
   const { siteConfig = { url: "", title: "", tagline: "" } } = useDocusaurusContext();
-  const ogImage = `${siteConfig.url}/img/og-image.png`;
 
   return (
     <header className="relative px-4 text-center sm:px-8">
-      <Head>
-        <title>{siteConfig.title}</title>
-        <meta property="og:image" content={ogImage} />
-        <meta property="og:title" content={siteConfig.title} />
-        <meta property="og:description" content={siteConfig.tagline} />
-        <meta property="og:image:width" content="1200" />
-        <meta property="og:image:height" content="630" />
-
-        <meta name="description" content={siteConfig.tagline} />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={siteConfig.title} />
-        <meta name="twitter:description" content={siteConfig.tagline} />
-        <meta name="twitter:image" content={ogImage} />
-      </Head>
-
       <div className="relative bottom-0 flex overflow-hidden rounded-b-3xl bg-gradient-to-b from-transparent to-red-500/5 p-0">
         <img
           src="/img/header/left-bg.svg"
