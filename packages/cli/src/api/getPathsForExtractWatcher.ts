@@ -12,8 +12,9 @@ export async function getPathsForExtractWatcher(
   const ignored: string[] = []
 
   catalogs.forEach((catalog) => {
-    paths.push(...catalog.include)
-    ignored.push(...catalog.exclude)
+    const sourcePatterns = catalog.sourcePatterns
+    paths.push(...sourcePatterns.include)
+    ignored.push(...sourcePatterns.exclude)
   })
 
   return { paths, ignored }
