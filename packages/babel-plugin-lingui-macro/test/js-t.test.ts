@@ -105,8 +105,17 @@ macroTester({
       name: "Variables with `as` type casting",
       code: `
         import { t } from '@lingui/core/macro';
-     
+
         t\`Variable \${{name} as any}\`;
+    `,
+    },
+    {
+      useTypescriptPreset: true,
+      name: "Variables with non-null assertion get a named placeholder (parity with `as`)",
+      code: `
+        import { t } from '@lingui/core/macro';
+
+        t\`Variable \${name!}\`;
     `,
     },
     {
