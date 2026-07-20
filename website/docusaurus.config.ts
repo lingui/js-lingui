@@ -30,20 +30,12 @@ const config: Config = {
       textColor: "#ffffff",
       isCloseable: true,
     },
+    image: "img/og-image.png",
     metadata: [
-      {
-        name: "title",
-        content: "Lingui - Internationalization Framework for Global Products",
-      },
       {
         name: "description",
         content:
           "Lingui is a modern internationalization framework for global products. It provides the best developer experience for managing translations and supports all major frameworks.",
-      },
-      {
-        name: "keywords",
-        content:
-          "internationalization, localization, multilingual, translation, i18n, l10n, react, react native, vue, next.js, ICU, javascript, typescript, pseudolocalization, internationalization framework",
       },
     ],
     navbar: {

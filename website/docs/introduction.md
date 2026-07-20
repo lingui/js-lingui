@@ -1,5 +1,5 @@
 ---
-title: Internationalization Framework for Global Products
+title: JavaScript i18n Introduction & Core Concepts
 description: Lingui is a universal, clean and readable, lightweight and powerful internationalization (i18n) framework for global projects
 ---
 
