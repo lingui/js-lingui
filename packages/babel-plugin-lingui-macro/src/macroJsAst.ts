@@ -262,7 +262,13 @@ export function tokenizeExpression(
   node: Node | Expression,
   ctx: MacroJsContext,
 ): ArgToken {
-  if (t.isTSAsExpression(node)) {
+  if (
+    t.isTSAsExpression(node) ||
+    t.isTSNonNullExpression(node) ||
+    t.isTSSatisfiesExpression(node)
+  ) {
+    // Unwrap TS-only expression wrappers (`x as T`, `x!`, `x satisfies T`) so the
+    // inner expression drives placeholder naming (e.g. `${x!}` → `{x}`, not `{0}`).
     return tokenizeExpression(node.expression, ctx)
   }
   if (t.isObjectExpression(node)) {
