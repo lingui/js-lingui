@@ -6,10 +6,10 @@ import {
 } from "./getCatalogs.js"
 import { Catalog } from "../catalog.js"
 import { LinguiConfig, makeConfig } from "@lingui/conf"
-import fs from "fs"
-import os from "os"
 import path from "path"
 import { FormatterWrapper, getFormat } from "../formats/index.js"
+import { createFixtures } from "../../tests.js"
+import normalizePath from "normalize-path"
 
 function mockConfig(config: Partial<LinguiConfig> = {}) {
   return makeConfig(
@@ -138,65 +138,56 @@ describe("getCatalogs", () => {
   it.each(["componentA", "[slug]", "[...params]", "[[...params]]"])(
     "should extract from the named catalog directory %s",
     async (name) => {
-      const fixtureRoot = fs.mkdtempSync(
-        path.join(os.tmpdir(), "lingui-named-catalog-"),
-      )
-      const previousCwd = process.cwd()
-
-      try {
-        const routeDir = path.join(fixtureRoot, "src", "pages", name)
-        fs.mkdirSync(path.join(routeDir, "ignored"), { recursive: true })
-        fs.writeFileSync(
-          path.join(routeDir, "index.tsx"),
-          `
+      const rootDir = await createFixtures({
+        [`/src/pages/${name}/index.tsx`]: `
             import { Trans } from "@lingui/react/macro"
 
             export default function Page() {
               return <Trans>Hello World</Trans>
             }
           `,
-        )
-        fs.writeFileSync(
-          path.join(routeDir, "ignored", "index.tsx"),
-          `
+        [`/src/pages/${name}/ignored/index.tsx`]: `
             import { Trans } from "@lingui/react/macro"
 
             export default function IgnoredPage() {
               return <Trans>Ignored message</Trans>
             }
           `,
-        )
-        process.chdir(fixtureRoot)
+      })
 
-        const config = mockConfig({
-          rootDir: fixtureRoot,
-          catalogs: [
-            {
-              path: "src/locales/{name}/{locale}/messages",
-              include: ["src/pages/{name}"],
-              exclude: ["src/pages/{name}/ignored/**"],
-            },
-          ],
-        })
+      const config = mockConfig({
+        rootDir,
+        catalogs: [
+          {
+            path: "<rootDir>/src/locales/{name}/{locale}/messages",
+            include: ["<rootDir>/src/pages/{name}"],
+            exclude: ["<rootDir>/src/pages/{name}/ignored/**"],
+          },
+        ],
+      })
 
-        const [catalog] = await getCatalogs(config)
+      const [catalog] = await getCatalogs(config)
 
-        expect(catalog!.name).toBe(name)
-        expect(catalog!.path).toBe(`src/locales/${name}/{locale}/messages`)
-        expect(catalog!.include).toEqual([`src/pages/${name}/`])
-        expect(catalog!.exclude).toContain(`src/pages/${name}/ignored/**`)
-        expect(catalog!.sourcePaths.map((file) => path.basename(file))).toEqual(
-          ["index.tsx"],
-        )
+      expect(catalog!.name).toBe(name)
+      expect(catalog!.path).toBe(
+        normalizePath(
+          path.join(rootDir, "src", "locales", name, "{locale}", "messages"),
+        ),
+      )
+      expect(catalog!.include).toEqual([
+        normalizePath(path.join(rootDir, "src", "pages", name)),
+      ])
+      expect(catalog!.exclude).toContain(
+        normalizePath(path.join(rootDir, "src", "pages", name, "ignored/**")),
+      )
+      expect(catalog!.sourcePaths.map((file) => path.basename(file))).toEqual([
+        "index.tsx",
+      ])
 
-        const messages = await catalog!.collect()
-        expect(Object.values(messages!)).toEqual([
-          expect.objectContaining({ message: "Hello World" }),
-        ])
-      } finally {
-        process.chdir(previousCwd)
-        fs.rmSync(fixtureRoot, { recursive: true, force: true })
-      }
+      const messages = await catalog!.collect()
+      expect(Object.values(messages!)).toEqual([
+        expect.objectContaining({ message: "Hello World" }),
+      ])
     },
   )
 
