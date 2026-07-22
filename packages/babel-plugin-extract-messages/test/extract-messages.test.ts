@@ -1,6 +1,6 @@
 import path from "path"
 import fs from "fs"
-import { transform as babelTransform } from "@babel/core"
+import { transformSync as babelTransform } from "@babel/core"
 import plugin, { ExtractedMessage, ExtractPluginOpts } from "../src/index"
 import { mockConsole } from "@lingui/test-utils"
 import linguiMacroPlugin, {
