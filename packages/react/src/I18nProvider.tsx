@@ -23,7 +23,12 @@ export const useLinguiInternal = (devErrorMessage?: string): I18nContext => {
   if (process.env.NODE_ENV !== "production") {
     if (context == null) {
       throw new Error(
-        devErrorMessage ?? "useLingui hook was used without I18nProvider.",
+        devErrorMessage ??
+          "useLingui hook was used without I18nProvider." +
+            "\n\nThis often happens when multiple instances of @lingui/react are installed " +
+            "(e.g. due to a version mismatch or misconfiguration in a monorepo). " +
+            "Verify you have only one version installed by running: " +
+            "npm ls @lingui/react (or pnpm why @lingui/react / yarn why @lingui/react).",
       )
     }
   }
