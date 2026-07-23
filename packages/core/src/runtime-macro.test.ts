@@ -5,21 +5,51 @@ import {
   select,
   selectOrdinal,
 } from "./runtime-macro"
+import { transformSync } from "@babel/core"
+import linguiMacroPlugin from "@lingui/babel-plugin-lingui-macro"
+import { makeConfig } from "@lingui/conf"
+
+const linguiConfig = makeConfig({ rootDir: __dirname, locales: ["en"] })
+
+function compileTimeMacro(
+  code: string,
+  vars: Record<string, unknown> = {},
+): { id: string; message?: string; values?: Record<string, unknown> } {
+  const transformed = transformSync(code, {
+    filename: "<test>.js",
+    configFile: false,
+    babelrc: false,
+    plugins: [[linguiMacroPlugin, { linguiConfig }]],
+  })!.code!
+
+  const varNames = Object.keys(vars)
+  const fn = new Function(...varNames, "return " + transformed)
+  return fn(...varNames.map((k) => vars[k]))
+}
 
 describe("runtime macro", () => {
   describe("msg tagged template", () => {
     it("static text", () => {
-      expect(msg`Message`).toMatchInlineSnapshot(`
+      const result = msg`Message`
+      expect(result).toMatchInlineSnapshot(`
       {
         "id": "xDAtGP",
         "message": "Message",
       }
     `)
+
+      const compiled = compileTimeMacro(
+        `import { msg } from '@lingui/core/macro';
+         msg\`Message\``,
+      )
+      expect(result.id).toBe(compiled.id)
+      expect(result.message).toBe(compiled.message)
     })
 
     it("named argument via labeled expression", () => {
       const value = "World"
-      expect(msg`Hello ${{ name: value }}`).toMatchInlineSnapshot(`
+      const result = msg`Hello ${{ name: value }}`
+      expect(result).toMatchInlineSnapshot(`
       {
         "id": "OVaF9k",
         "message": "Hello {name}",
@@ -28,12 +58,21 @@ describe("runtime macro", () => {
         },
       }
     `)
+
+      const compiled = compileTimeMacro(
+        `import { msg } from '@lingui/core/macro';
+         msg\`Hello \${name}\``,
+        { name: value },
+      )
+      expect(result.id).toBe(compiled.id)
+      expect(result.message).toBe(compiled.message)
     })
 
     it("multiple named arguments", () => {
       const first = "foo"
       const second = "bar"
-      expect(msg`${{ first }} and ${{ second }}`).toMatchInlineSnapshot(`
+      const result = msg`${{ first }} and ${{ second }}`
+      expect(result).toMatchInlineSnapshot(`
         {
           "id": "6-yL__",
           "message": "{first} and {second}",
@@ -43,11 +82,20 @@ describe("runtime macro", () => {
           },
         }
       `)
+
+      const compiled = compileTimeMacro(
+        `import { msg } from '@lingui/core/macro';
+         msg\`\${{ first }} and \${{ second }}\``,
+        { first, second },
+      )
+      expect(result.id).toBe(compiled.id)
+      expect(result.message).toBe(compiled.message)
     })
 
     it("duplicate named values are deduplicated", () => {
       const name = "Alice"
-      expect(msg`${{ name }} and ${{ name }}`).toMatchInlineSnapshot(`
+      const result = msg`${{ name }} and ${{ name }}`
+      expect(result).toMatchInlineSnapshot(`
       {
         "id": "8cTJuM",
         "message": "{name} and {name}",
@@ -56,6 +104,14 @@ describe("runtime macro", () => {
         },
       }
     `)
+
+      const compiled = compileTimeMacro(
+        `import { msg } from '@lingui/core/macro';
+         msg\`\${{name}} and \${{name}}\``,
+        { name },
+      )
+      expect(result.id).toBe(compiled.id)
+      expect(result.message).toBe(compiled.message)
     })
 
     it("no values when only static text", () => {
@@ -66,21 +122,37 @@ describe("runtime macro", () => {
 
   describe("msg call expression", () => {
     it("with message only", () => {
-      expect(msg({ message: "Hello" })).toMatchInlineSnapshot(`
+      const result = msg({ message: "Hello" })
+      expect(result).toMatchInlineSnapshot(`
       {
         "id": "uzTaYi",
         "message": "Hello",
       }
     `)
+
+      const compiled = compileTimeMacro(
+        `import { msg } from '@lingui/core/macro';
+         msg({ message: "Hello" })`,
+      )
+      expect(result.id).toBe(compiled.id)
+      expect(result.message).toBe(compiled.message)
     })
 
     it("with custom id", () => {
-      expect(msg({ id: "custom.id", message: "Hello" })).toMatchInlineSnapshot(`
+      const result = msg({ id: "custom.id", message: "Hello" })
+      expect(result).toMatchInlineSnapshot(`
       {
         "id": "custom.id",
         "message": "Hello",
       }
     `)
+
+      const compiled = compileTimeMacro(
+        `import { msg } from '@lingui/core/macro';
+         msg({ id: "custom.id", message: "Hello" })`,
+      )
+      expect(result.id).toBe(compiled.id)
+      expect(result.message).toBe(compiled.message)
     })
 
     it("with context generates different id", () => {
@@ -94,32 +166,51 @@ describe("runtime macro", () => {
         "message": "Hello",
       }
     `)
+
+      const compiledWithCtx = compileTimeMacro(
+        `import { msg } from '@lingui/core/macro';
+         msg({ message: "Hello", context: "my custom" })`,
+      )
+      expect(withCtx.id).toBe(compiledWithCtx.id)
+      expect(withCtx.message).toBe(compiledWithCtx.message)
+
+      const compiledWithoutCtx = compileTimeMacro(
+        `import { msg } from '@lingui/core/macro';
+         msg({ message: "Hello" })`,
+      )
+      expect(withoutCtx.id).toBe(compiledWithoutCtx.id)
+      expect(withoutCtx.message).toBe(compiledWithoutCtx.message)
     })
 
     it("with comment", () => {
-      expect(
-        msg({
-          id: "msgId",
-          message: "Hello",
-          comment: "description for translators",
-        }),
-      ).toMatchInlineSnapshot(`
+      const result = msg({
+        id: "msgId",
+        message: "Hello",
+        comment: "description for translators",
+      })
+      expect(result).toMatchInlineSnapshot(`
       {
         "comment": "description for translators",
         "id": "msgId",
         "message": "Hello",
       }
     `)
+
+      const compiled = compileTimeMacro(
+        `import { msg } from '@lingui/core/macro';
+         msg({ id: "msgId", message: "Hello", comment: "description for translators" })`,
+      )
+      expect(result.id).toBe(compiled.id)
+      expect(result.message).toBe(compiled.message)
     })
 
     it("expands msg tagged template in message property", () => {
       const username = "Alice"
-      expect(
-        msg({
-          context: "some context",
-          message: msg`Welcome back ${{ username }}`,
-        }),
-      ).toMatchInlineSnapshot(`
+      const result = msg({
+        context: "some context",
+        message: msg`Welcome back ${{ username }}`,
+      })
+      expect(result).toMatchInlineSnapshot(`
         {
           "context": "some context",
           "id": "9mX_7A",
@@ -129,16 +220,23 @@ describe("runtime macro", () => {
           },
         }
       `)
+
+      const compiled = compileTimeMacro(
+        `import { msg } from '@lingui/core/macro';
+         msg({ context: "some context", message: \`Welcome back \${{username}}\` })`,
+        { username },
+      )
+      expect(result.id).toBe(compiled.id)
+      expect(result.message).toBe(compiled.message)
     })
 
     it("expands plural marker in message property", () => {
       const count = 5
-      expect(
-        msg({
-          id: "items.count",
-          message: plural({ count }, { one: "# item", other: "# items" }),
-        }),
-      ).toMatchInlineSnapshot(`
+      const result = msg({
+        id: "items.count",
+        message: plural({ count }, { one: "# item", other: "# items" }),
+      })
+      expect(result).toMatchInlineSnapshot(`
       {
         "id": "items.count",
         "message": "{count, plural, one {# item} other {# items}}",
@@ -147,17 +245,24 @@ describe("runtime macro", () => {
         },
       }
     `)
+
+      const compiled = compileTimeMacro(
+        `import { msg, plural } from '@lingui/core/macro';
+         msg({ id: "items.count", message: plural({ count }, { one: "# item", other: "# items" }) })`,
+        { count },
+      )
+      expect(result.id).toBe(compiled.id)
+      expect(result.message).toBe(compiled.message)
     })
 
     it("expands msg with nested plural in message property", () => {
       const count = 3
-      expect(
-        msg({
-          id: "shelf.items",
-          comment: "shelf item count",
-          message: msg`There are ${plural({ count }, { one: "# item", other: "# items" })} on the shelf`,
-        }),
-      ).toMatchInlineSnapshot(`
+      const result = msg({
+        id: "shelf.items",
+        comment: "shelf item count",
+        message: msg`There are ${plural({ count }, { one: "# item", other: "# items" })} on the shelf`,
+      })
+      expect(result).toMatchInlineSnapshot(`
       {
         "comment": "shelf item count",
         "id": "shelf.items",
@@ -167,23 +272,38 @@ describe("runtime macro", () => {
         },
       }
     `)
+
+      const compiled = compileTimeMacro(
+        `import { msg, plural } from '@lingui/core/macro';
+         msg({ id: "shelf.items", comment: "shelf item count", message: \`There are \${plural(count, { one: "# item", other: "# items" })} on the shelf\` })`,
+        { count },
+      )
+      expect(result.id).toBe(compiled.id)
+      expect(result.message).toBe(compiled.message)
     })
 
     it("plain string message still works", () => {
-      expect(msg({ id: "simple", message: "Hello World" }))
-        .toMatchInlineSnapshot(`
+      const result = msg({ id: "simple", message: "Hello World" })
+      expect(result).toMatchInlineSnapshot(`
       {
         "id": "simple",
         "message": "Hello World",
       }
     `)
+
+      const compiled = compileTimeMacro(
+        `import { msg } from '@lingui/core/macro';
+         msg({ id: "simple", message: "Hello World" })`,
+      )
+      expect(result.id).toBe(compiled.id)
+      expect(result.message).toBe(compiled.message)
     })
   })
 
   describe("plural", () => {
     it("standalone with labeled name", () => {
-      expect(plural({ count: 5 }, { one: "# book", other: "# books" }))
-        .toMatchInlineSnapshot(`
+      const result = plural({ count: 5 }, { one: "# book", other: "# books" })
+      expect(result).toMatchInlineSnapshot(`
       {
         "format": "plural",
         "formattedOptions": "one {# book} other {# books}",
@@ -198,12 +318,22 @@ describe("runtime macro", () => {
         Symbol(lingui.runtime.marker): true,
       }
     `)
+
+      const compiled = compileTimeMacro(
+        `import { plural, msg } from '@lingui/core/macro';
+         msg\`\${plural(count, { one: "# book", other: "# books" })}\``,
+        { count: 5 },
+      )
+      expect(result.id).toBe(compiled.id)
+      expect(result.message).toBe(compiled.message)
     })
 
     it("with offset", () => {
-      expect(
-        plural({ count: 5 }, { offset: 1, one: "# book", other: "# books" }),
-      ).toMatchInlineSnapshot(`
+      const result = plural(
+        { count: 5 },
+        { offset: 1, one: "# book", other: "# books" },
+      )
+      expect(result).toMatchInlineSnapshot(`
       {
         "format": "plural",
         "formattedOptions": "offset:1 one {# book} other {# books}",
@@ -218,15 +348,22 @@ describe("runtime macro", () => {
         Symbol(lingui.runtime.marker): true,
       }
     `)
+
+      const compiled = compileTimeMacro(
+        `import { plural, msg } from '@lingui/core/macro';
+         msg\`\${plural(count, { offset: 1, one: "# book", other: "# books" })}\``,
+        { count: 5 },
+      )
+      expect(result.id).toBe(compiled.id)
+      expect(result.message).toBe(compiled.message)
     })
 
     it("with exact numeric matches", () => {
-      expect(
-        plural(
-          { count: 5 },
-          { 0: "No books", 1: "One book", other: "# books" },
-        ),
-      ).toMatchInlineSnapshot(`
+      const result = plural(
+        { count: 5 },
+        { 0: "No books", 1: "One book", other: "# books" },
+      )
+      expect(result).toMatchInlineSnapshot(`
       {
         "format": "plural",
         "formattedOptions": "=0 {No books} =1 {One book} other {# books}",
@@ -241,13 +378,20 @@ describe("runtime macro", () => {
         Symbol(lingui.runtime.marker): true,
       }
     `)
+
+      const compiled = compileTimeMacro(
+        `import { plural, msg } from '@lingui/core/macro';
+         msg\`\${plural(count, { 0: "No books", 1: "One book", other: "# books" })}\``,
+        { count: 5 },
+      )
+      expect(result.id).toBe(compiled.id)
+      expect(result.message).toBe(compiled.message)
     })
 
     it("nested in msg with labeled name", () => {
       const count = 5
-      expect(
-        msg`There are ${plural({ count }, { one: "# item", other: "# items" })}`,
-      ).toMatchInlineSnapshot(`
+      const result = msg`There are ${plural({ count }, { one: "# item", other: "# items" })}`
+      expect(result).toMatchInlineSnapshot(`
       {
         "id": "M3GBhI",
         "message": "There are {count, plural, one {# item} other {# items}}",
@@ -256,14 +400,21 @@ describe("runtime macro", () => {
         },
       }
     `)
+
+      const compiled = compileTimeMacro(
+        `import { msg, plural } from '@lingui/core/macro';
+         msg\`There are \${plural(count, { one: "# item", other: "# items" })}\``,
+        { count },
+      )
+      expect(result.id).toBe(compiled.id)
+      expect(result.message).toBe(compiled.message)
     })
 
     it("nested in msg alongside other expressions", () => {
       const name = "shelf"
       const count = 3
-      expect(
-        msg`${{ name }} has ${plural({ count }, { one: "# item", other: "# items" })}`,
-      ).toMatchInlineSnapshot(`
+      const result = msg`${{ name }} has ${plural({ count }, { one: "# item", other: "# items" })}`
+      expect(result).toMatchInlineSnapshot(`
       {
         "id": "TvDp_S",
         "message": "{name} has {count, plural, one {# item} other {# items}}",
@@ -273,17 +424,24 @@ describe("runtime macro", () => {
         },
       }
     `)
+
+      const compiled = compileTimeMacro(
+        `import { msg, plural } from '@lingui/core/macro';
+         msg\`\${name} has \${plural(count, { one: "# item", other: "# items" })}\``,
+        { name, count },
+      )
+      expect(result.id).toBe(compiled.id)
+      expect(result.message).toBe(compiled.message)
     })
   })
 
   describe("select", () => {
     it("standalone with labeled name", () => {
-      expect(
-        select(
-          { gender: "male" },
-          { male: "he", female: "she", other: "they" },
-        ),
-      ).toMatchInlineSnapshot(`
+      const result = select(
+        { gender: "male" },
+        { male: "he", female: "she", other: "they" },
+      )
+      expect(result).toMatchInlineSnapshot(`
       {
         "format": "select",
         "formattedOptions": "male {he} female {she} other {they}",
@@ -298,13 +456,20 @@ describe("runtime macro", () => {
         Symbol(lingui.runtime.marker): true,
       }
     `)
+
+      const compiled = compileTimeMacro(
+        `import { select, msg } from '@lingui/core/macro';
+         msg\`\${select(gender, { male: "he", female: "she", other: "they" })}\``,
+        { gender: "male" },
+      )
+      expect(result.id).toBe(compiled.id)
+      expect(result.message).toBe(compiled.message)
     })
 
     it("nested in msg", () => {
       const gender = "female"
-      expect(
-        msg`User is ${select({ gender }, { male: "he", female: "she", other: "they" })}`,
-      ).toMatchInlineSnapshot(`
+      const result = msg`User is ${select({ gender }, { male: "he", female: "she", other: "they" })}`
+      expect(result).toMatchInlineSnapshot(`
       {
         "id": "BZT5Wi",
         "message": "User is {gender, select, male {he} female {she} other {they}}",
@@ -313,17 +478,24 @@ describe("runtime macro", () => {
         },
       }
     `)
+
+      const compiled = compileTimeMacro(
+        `import { msg, select } from '@lingui/core/macro';
+         msg\`User is \${select(gender, { male: "he", female: "she", other: "they" })}\``,
+        { gender },
+      )
+      expect(result.id).toBe(compiled.id)
+      expect(result.message).toBe(compiled.message)
     })
   })
 
   describe("selectOrdinal", () => {
     it("standalone with labeled name", () => {
-      expect(
-        selectOrdinal(
-          { count: 3 },
-          { one: "#st", two: "#nd", few: "#rd", other: "#th" },
-        ),
-      ).toMatchInlineSnapshot(`
+      const result = selectOrdinal(
+        { count: 3 },
+        { one: "#st", two: "#nd", few: "#rd", other: "#th" },
+      )
+      expect(result).toMatchInlineSnapshot(`
       {
         "format": "selectordinal",
         "formattedOptions": "one {#st} two {#nd} few {#rd} other {#th}",
@@ -338,13 +510,20 @@ describe("runtime macro", () => {
         Symbol(lingui.runtime.marker): true,
       }
     `)
+
+      const compiled = compileTimeMacro(
+        `import { selectOrdinal, msg } from '@lingui/core/macro';
+         msg\`\${selectOrdinal(count, { one: "#st", two: "#nd", few: "#rd", other: "#th" })}\``,
+        { count: 3 },
+      )
+      expect(result.id).toBe(compiled.id)
+      expect(result.message).toBe(compiled.message)
     })
 
     it("nested in msg", () => {
       const count = 3
-      expect(
-        msg`This is my ${selectOrdinal({ count }, { one: "#st", two: "#nd", other: "#th" })} cat`,
-      ).toMatchInlineSnapshot(`
+      const result = msg`This is my ${selectOrdinal({ count }, { one: "#st", two: "#nd", other: "#th" })} cat`
+      expect(result).toMatchInlineSnapshot(`
       {
         "id": "4DU88f",
         "message": "This is my {count, selectordinal, one {#st} two {#nd} other {#th}} cat",
@@ -353,6 +532,14 @@ describe("runtime macro", () => {
         },
       }
     `)
+
+      const compiled = compileTimeMacro(
+        `import { msg, selectOrdinal } from '@lingui/core/macro';
+         msg\`This is my \${selectOrdinal(count, { one: "#st", two: "#nd", other: "#th" })} cat\``,
+        { count },
+      )
+      expect(result.id).toBe(compiled.id)
+      expect(result.message).toBe(compiled.message)
     })
   })
 
@@ -360,22 +547,21 @@ describe("runtime macro", () => {
     it("select containing plural", () => {
       const gender = "male"
       const numOfGuests = 3
-      expect(
-        select(
-          { gender },
-          {
-            male: plural(
-              { numOfGuests },
-              {
-                one: "He invites one guest",
-                other: "He invites # guests",
-              },
-            ),
-            female: "She is {gender}",
-            other: "They are {gender}",
-          },
-        ),
-      ).toMatchInlineSnapshot(`
+      const result = select(
+        { gender },
+        {
+          male: plural(
+            { numOfGuests },
+            {
+              one: "He invites one guest",
+              other: "He invites # guests",
+            },
+          ),
+          female: "She is {gender}",
+          other: "They are {gender}",
+        },
+      )
+      expect(result).toMatchInlineSnapshot(`
       {
         "format": "select",
         "formattedOptions": "male {{numOfGuests, plural, one {He invites one guest} other {He invites # guests}}} female {She is {gender}} other {They are {gender}}",
@@ -393,14 +579,25 @@ describe("runtime macro", () => {
         Symbol(lingui.runtime.marker): true,
       }
     `)
+
+      const compiled = compileTimeMacro(
+        `import { select, plural, msg } from '@lingui/core/macro';
+         msg\`\${select(gender, {
+           male: plural(numOfGuests, { one: "He invites one guest", other: "He invites # guests" }),
+           female: "She is {gender}",
+           other: "They are {gender}",
+         })}\``,
+        { gender, numOfGuests },
+      )
+      expect(result.id).toBe(compiled.id)
+      expect(result.message).toBe(compiled.message)
     })
 
     it("msg with multiple nested macros", () => {
       const count = 5
       const gender = "female"
-      expect(
-        msg`${plural({ count }, { one: "# item", other: "# items" })} for ${select({ gender }, { male: "him", female: "her", other: "them" })}`,
-      ).toMatchInlineSnapshot(`
+      const result = msg`${plural({ count }, { one: "# item", other: "# items" })} for ${select({ gender }, { male: "him", female: "her", other: "them" })}`
+      expect(result).toMatchInlineSnapshot(`
       {
         "id": "gn87Kc",
         "message": "{count, plural, one {# item} other {# items}} for {gender, select, male {him} female {her} other {them}}",
@@ -410,20 +607,27 @@ describe("runtime macro", () => {
         },
       }
     `)
+
+      const compiled = compileTimeMacro(
+        `import { msg, plural, select } from '@lingui/core/macro';
+         msg\`\${plural(count, { one: "# item", other: "# items" })} for \${select(gender, { male: "him", female: "her", other: "them" })}\``,
+        { count, gender },
+      )
+      expect(result.id).toBe(compiled.id)
+      expect(result.message).toBe(compiled.message)
     })
 
     it("msg tagged template as plural option value", () => {
       const count = 5
       const name = "Alice"
-      expect(
-        plural(
-          { count },
-          {
-            one: msg`# item for ${{ name }}`,
-            other: msg`# items for ${{ name }}`,
-          },
-        ),
-      ).toMatchInlineSnapshot(`
+      const result = plural(
+        { count },
+        {
+          one: msg`# item for ${{ name }}`,
+          other: msg`# items for ${{ name }}`,
+        },
+      )
+      expect(result).toMatchInlineSnapshot(`
       {
         "format": "plural",
         "formattedOptions": "one {# item for {name}} other {# items for {name}}",
@@ -441,21 +645,28 @@ describe("runtime macro", () => {
         Symbol(lingui.runtime.marker): true,
       }
     `)
+
+      const compiled = compileTimeMacro(
+        `import { plural, msg } from '@lingui/core/macro';
+         msg\`\${plural(count, { one: \`# item for \${name}\`, other: \`# items for \${name}\` })}\``,
+        { count, name },
+      )
+      expect(result.id).toBe(compiled.id)
+      expect(result.message).toBe(compiled.message)
     })
 
     it("msg tagged template as select option value", () => {
       const gender = "male"
       const name = "Alex"
-      expect(
-        select(
-          { gender },
-          {
-            male: msg`He is ${{ name }}`,
-            female: msg`She is ${{ name }}`,
-            other: msg`They are ${{ name }}`,
-          },
-        ),
-      ).toMatchInlineSnapshot(`
+      const result = select(
+        { gender },
+        {
+          male: msg`He is ${{ name }}`,
+          female: msg`She is ${{ name }}`,
+          other: msg`They are ${{ name }}`,
+        },
+      )
+      expect(result).toMatchInlineSnapshot(`
       {
         "format": "select",
         "formattedOptions": "male {He is {name}} female {She is {name}} other {They are {name}}",
@@ -473,6 +684,18 @@ describe("runtime macro", () => {
         Symbol(lingui.runtime.marker): true,
       }
     `)
+
+      const compiled = compileTimeMacro(
+        `import { select, msg } from '@lingui/core/macro';
+         msg\`\${select(gender, {
+           male: \`He is \${name}\`,
+           female: \`She is \${name}\`,
+           other: \`They are \${name}\`,
+         })}\``,
+        { gender, name },
+      )
+      expect(result.id).toBe(compiled.id)
+      expect(result.message).toBe(compiled.message)
     })
   })
 
