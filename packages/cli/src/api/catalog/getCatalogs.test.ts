@@ -135,7 +135,7 @@ describe("getCatalogs", () => {
     ])
   })
 
-  it.each(["componentA", "[slug]", "[...params]", "[[...params]]"])(
+  it.each(["componentA", "(group)", "[slug]", "[...params]", "[[...params]]"])(
     "should extract from the named catalog directory %s",
     async (name) => {
       const rootDir = await createFixtures({

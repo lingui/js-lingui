@@ -69,7 +69,7 @@ export async function getCatalogs(
 
     candidates.forEach((catalogDir) => {
       const name = path.basename(catalogDir)
-      const globName = escapeGlobBrackets(name)
+      const globName = escapeCatalogNameForGlob(name)
       catalogs.push(
         new Catalog(
           {
@@ -112,8 +112,8 @@ export async function getCatalogs(
   return catalogs
 }
 
-function escapeGlobBrackets(value: string) {
-  return value.replace(/[[\]]/g, "[$&]")
+function escapeCatalogNameForGlob(value: string) {
+  return value.replace(/[[\]()]/g, "[$&]")
 }
 
 /**
