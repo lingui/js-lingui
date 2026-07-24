@@ -365,23 +365,6 @@ const msg = _i18n._(
 
 `;
 
-exports[`Support msg in t 1`] = `
-import { t, msg } from "@lingui/core/macro";
-t\`Field \${msg\`First Name\`} is required\`;
-
-↓ ↓ ↓ ↓ ↓ ↓
-
-import { i18n as _i18n } from "@lingui/core";
-_i18n._(
-  /** i18n */
-  {
-    id: "-nmgWY",
-    message: "Field First Name is required",
-  },
-);
-
-`;
-
 exports[`Support nested msg in t 1`] = `
 import { t, msg } from "@lingui/core/macro";
 t\`Field \${msg\`First Name\`} is required\`;
@@ -458,43 +441,6 @@ _i18n._(
     values: {
       name: name,
     },
-  },
-);
-
-`;
-
-exports[`Support nested t with expressions 1`] = `
-import { t } from "@lingui/core/macro";
-t\`Outer \${t\`Inner \${name}\`} end\`;
-
-↓ ↓ ↓ ↓ ↓ ↓
-
-import { i18n as _i18n } from "@lingui/core";
-_i18n._(
-  /** i18n */
-  {
-    id: "JWugZU",
-    message: "Outer Inner {name} end",
-    values: {
-      name: name,
-    },
-  },
-);
-
-`;
-
-exports[`Support t in t 1`] = `
-import { t } from "@lingui/core/macro";
-t\`Field \${t\`First Name\`} is required\`;
-
-↓ ↓ ↓ ↓ ↓ ↓
-
-import { i18n as _i18n } from "@lingui/core";
-_i18n._(
-  /** i18n */
-  {
-    id: "-nmgWY",
-    message: "Field First Name is required",
   },
 );
 
