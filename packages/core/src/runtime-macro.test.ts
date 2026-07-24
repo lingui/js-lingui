@@ -59,9 +59,7 @@ describe("runtime macro", () => {
       }
     `)
 
-      const compiled = compileTimeMacro(code)
-      expect(result.id).toBe(compiled.id)
-      expect(result.message).toBe(compiled.message)
+      expect(result).toStrictEqual(compileTimeMacro(code))
     })
 
     it("named argument via labeled expression", () => {
@@ -134,9 +132,7 @@ describe("runtime macro", () => {
       }
     `)
 
-      const compiled = compileTimeMacro(code)
-      expect(result.id).toBe(compiled.id)
-      expect(result.message).toBe(compiled.message)
+      expect(result).toStrictEqual(compileTimeMacro(code))
     })
 
     it("with custom id", () => {
@@ -149,9 +145,7 @@ describe("runtime macro", () => {
       }
     `)
 
-      const compiled = compileTimeMacro(code)
-      expect(result.id).toBe(compiled.id)
-      expect(result.message).toBe(compiled.message)
+      expect(result).toStrictEqual(compileTimeMacro(code))
     })
 
     it("with context generates different id", () => {
@@ -190,9 +184,7 @@ describe("runtime macro", () => {
       }
     `)
 
-      const compiled = compileTimeMacro(code)
-      expect(result.id).toBe(compiled.id)
-      expect(result.message).toBe(compiled.message)
+      expect(result).toStrictEqual(compileTimeMacro(code))
     })
 
     it("expands plural in message property", () => {
@@ -243,9 +235,7 @@ describe("runtime macro", () => {
       }
     `)
 
-      const compiled = compileTimeMacro(code)
-      expect(result.id).toBe(compiled.id)
-      expect(result.message).toBe(compiled.message)
+      expect(result).toStrictEqual(compileTimeMacro(code))
     })
   })
 
