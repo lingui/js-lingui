@@ -58,3 +58,56 @@ _i18n._(
 );
 
 `;
+
+exports[`Support msg tagged template as option value in select 1`] = `
+import { select, msg } from "@lingui/core/macro";
+select(gender, {
+  male: msg\`He\`,
+  female: msg\`She\`,
+  other: msg\`They\`,
+});
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { i18n as _i18n } from "@lingui/core";
+_i18n._(
+  /** i18n */
+  {
+    id: "3pNdua",
+    message: "{gender, select, male {He} female {She} other {They}}",
+    values: {
+      gender: gender,
+    },
+  },
+);
+
+`;
+
+exports[`Support plural with nested msg in options 1`] = `
+import { select, plural, msg } from "@lingui/core/macro";
+select(gender, {
+  male: plural(numOfGuests, {
+    one: msg\`He invites one guest\`,
+    other: msg\`He invites # guests\`,
+  }),
+  female: msg\`She\`,
+  other: msg\`They\`,
+});
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { i18n as _i18n } from "@lingui/core";
+_i18n._(
+  /** i18n */
+  {
+    id: "ybw1EB",
+    message:
+      "{gender, select, male {{numOfGuests, plural, one {He invites one guest} other {He invites # guests}}} female {She} other {They}}",
+    values: {
+      gender: gender,
+      numOfGuests: numOfGuests,
+    },
+  },
+);
+
+`;

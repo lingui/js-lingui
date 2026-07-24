@@ -115,6 +115,11 @@ export function tokenizeNode(
     return tokenizeTemplateLiteral(node as Expression, ctx)
   }
 
+  // msg`...` / defineMessage`...`
+  if (t.isTaggedTemplateExpression(node) && isDefineMessage(node.tag, ctx)) {
+    return tokenizeTemplateLiteral(node as Expression, ctx)
+  }
+
   if (t.isCallExpression(node) && isArgDecorator(node, ctx)) {
     return [tokenizeArg(node, ctx)]
   }
@@ -164,9 +169,10 @@ export function tokenizeTemplateLiteral(
     const currExp = expressions[i]
 
     if (currExp) {
-      argTokens = t.isCallExpression(currExp)
-        ? tokenizeNode(currExp, false, ctx)
-        : [tokenizeExpression(currExp, ctx)]
+      argTokens =
+        t.isCallExpression(currExp) || t.isTaggedTemplateExpression(currExp)
+          ? tokenizeNode(currExp, false, ctx)
+          : [tokenizeExpression(currExp, ctx)]
     }
     const textToken: TextToken = {
       type: "text",
@@ -217,6 +223,8 @@ export function tokenizeChoiceComponent(
       if (t.isTemplateLiteral(attrValue)) {
         value = tokenizeTemplateLiteral(attrValue, ctx)
       } else if (t.isCallExpression(attrValue)) {
+        value = tokenizeNode(attrValue, false, ctx)
+      } else if (t.isTaggedTemplateExpression(attrValue)) {
         value = tokenizeNode(attrValue, false, ctx)
       } else if (t.isStringLiteral(attrValue)) {
         value = attrValue.value

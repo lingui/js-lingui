@@ -304,6 +304,20 @@ macroTester({
       `,
     },
     {
+      name: "Support msg in t",
+      code: `
+        import { t, msg } from '@lingui/core/macro'
+        t\`Field \${msg\`First Name\`} is required\`
+      `,
+    },
+    {
+      name: "Support nested t with expressions",
+      code: `
+        import { t } from '@lingui/core/macro'
+        t\`Outer \${t\`Inner \${name}\`} end\`
+      `,
+    },
+    {
       name: "should correctly process nested macro when referenced from different imports",
       code: `
         import { t } from '@lingui/core/macro'

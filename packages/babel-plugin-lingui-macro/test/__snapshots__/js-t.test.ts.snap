@@ -365,6 +365,43 @@ const msg = _i18n._(
 
 `;
 
+exports[`Support msg in t 1`] = `
+import { t, msg } from "@lingui/core/macro";
+t\`Field \${msg\`First Name\`} is required\`;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { i18n as _i18n } from "@lingui/core";
+_i18n._(
+  /** i18n */
+  {
+    id: "-nmgWY",
+    message: "Field First Name is required",
+  },
+);
+
+`;
+
+exports[`Support nested t with expressions 1`] = `
+import { t } from "@lingui/core/macro";
+t\`Outer \${t\`Inner \${name}\`} end\`;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { i18n as _i18n } from "@lingui/core";
+_i18n._(
+  /** i18n */
+  {
+    id: "JWugZU",
+    message: "Outer Inner {name} end",
+    values: {
+      name: name,
+    },
+  },
+);
+
+`;
+
 exports[`Support t in t 1`] = `
 import { t } from "@lingui/core/macro";
 t\`Field \${t\`First Name\`} is required\`;
@@ -375,17 +412,8 @@ import { i18n as _i18n } from "@lingui/core";
 _i18n._(
   /** i18n */
   {
-    id: "O8dJMg",
-    message: "Field {0} is required",
-    values: {
-      0: _i18n._(
-        /** i18n */
-        {
-          id: "kODvZJ",
-          message: "First Name",
-        },
-      ),
-    },
+    id: "-nmgWY",
+    message: "Field First Name is required",
   },
 );
 
@@ -511,26 +539,6 @@ _i18n._(
 
 `;
 
-exports[`Variables with non-null assertion get a named placeholder (parity with \`as\`) 1`] = `
-import { t } from "@lingui/core/macro";
-t\`Variable \${name!}\`;
-
-↓ ↓ ↓ ↓ ↓ ↓
-
-import { i18n as _i18n } from "@lingui/core";
-_i18n._(
-  /** i18n */
-  {
-    id: "xRRkAE",
-    message: "Variable {name}",
-    values: {
-      name: name,
-    },
-  },
-);
-
-`;
-
 exports[`Variables with escaped double quotes are correctly formatted 1`] = `
 import { t } from "@lingui/core/macro";
 t\`Variable "name"\`;
@@ -622,6 +630,26 @@ _i18n._(
     message: "Variable {name}",
     values: {
       name: random(),
+    },
+  },
+);
+
+`;
+
+exports[`Variables with non-null assertion get a named placeholder (parity with \`as\`) 1`] = `
+import { t } from "@lingui/core/macro";
+t\`Variable \${name!}\`;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { i18n as _i18n } from "@lingui/core";
+_i18n._(
+  /** i18n */
+  {
+    id: "xRRkAE",
+    message: "Variable {name}",
+    values: {
+      name: name,
     },
   },
 );
