@@ -66,6 +66,34 @@ describe("Catalog", () => {
     mockFs.restore()
   })
 
+  describe("sourcePaths", () => {
+    it("should use current include and exclude patterns", () => {
+      const catalog = new Catalog(
+        {
+          name: "messages",
+          path: "locales/{locale}",
+          include: [fixture("collect/componentA/")],
+          exclude: [],
+          format,
+        },
+        mockConfig(),
+      )
+
+      expect(
+        catalog.sourcePaths.map((file) => path.basename(file)).sort(),
+      ).toEqual(["componentA.js", "index.js"])
+
+      const replacement = fixture("collect/componentB.js")
+      catalog.include = [replacement]
+      expect(catalog.sourcePaths.map((file) => path.basename(file))).toEqual([
+        "componentB.js",
+      ])
+
+      catalog.exclude.push(replacement)
+      expect(catalog.sourcePaths).toEqual([])
+    })
+  })
+
   describe("make", () => {
     it("should collect and write catalogs", async () => {
       const localeDir = await copyFixture(fixture("locales", "initial"))
