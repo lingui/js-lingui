@@ -427,7 +427,7 @@ _i18n._(
 exports[`Support nested t in t message description 1`] = `
 import { t, msg } from "@lingui/core/macro";
 t({
-  message: msg\`Hello \${name}\`,
+  message: t\`Hello \${name}\`,
 });
 
 ↓ ↓ ↓ ↓ ↓ ↓

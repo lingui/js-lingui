@@ -326,7 +326,7 @@ macroTester({
         import { t, msg } from '@lingui/core/macro';
         
         t({
-            message: msg\`Hello \${name}\`,
+            message: t\`Hello \${name}\`,
         })
     `,
     },
