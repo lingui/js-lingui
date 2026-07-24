@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.6.0](https://github.com/lingui/js-lingui/compare/v6.5.0...v6.6.0) (2026-07-24)
+
+### Bug Fixes
+
+* improved error message for "useLingui hook was used without I18nProvider" ([#2624](https://github.com/lingui/js-lingui/issues/2624)) ([bcee1df](https://github.com/lingui/js-lingui/commit/bcee1dfbb777be91ed5a8e47839d93dcde654abc))
+* **react:** use sync external store for i18n provider ([#2612](https://github.com/lingui/js-lingui/issues/2612)) ([b4be90d](https://github.com/lingui/js-lingui/commit/b4be90d31d40b2eb37552f3c1cea7b7345d734d7))
+
 # [6.5.0](https://github.com/lingui/js-lingui/compare/v6.4.0...v6.5.0) (2026-07-06)
 
 **Note:** Version bump only for package @lingui/react

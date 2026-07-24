@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.6.0](https://github.com/lingui/js-lingui/compare/v6.5.0...v6.6.0) (2026-07-24)
+
+### Bug Fixes
+
+* **cli:** preserve bracketed names in catalog globs ([#2621](https://github.com/lingui/js-lingui/issues/2621)) ([3c2f987](https://github.com/lingui/js-lingui/commit/3c2f9875c6bcd0d449a84946567c115d6b65e57a))
+
 # [6.5.0](https://github.com/lingui/js-lingui/compare/v6.4.0...v6.5.0) (2026-07-06)
 
 ### Features
