@@ -365,9 +365,9 @@ const msg = _i18n._(
 
 `;
 
-exports[`Support t in t 1`] = `
-import { t } from "@lingui/core/macro";
-t\`Field \${t\`First Name\`} is required\`;
+exports[`Support nested msg in t 1`] = `
+import { t, msg } from "@lingui/core/macro";
+t\`Field \${msg\`First Name\`} is required\`;
 
 ↓ ↓ ↓ ↓ ↓ ↓
 
@@ -375,16 +375,71 @@ import { i18n as _i18n } from "@lingui/core";
 _i18n._(
   /** i18n */
   {
-    id: "O8dJMg",
-    message: "Field {0} is required",
+    id: "-nmgWY",
+    message: "Field First Name is required",
+  },
+);
+
+`;
+
+exports[`Support nested msg in t message description 1`] = `
+import { t, msg } from "@lingui/core/macro";
+t({
+  message: msg\`Hello \${name}\`,
+});
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { i18n as _i18n } from "@lingui/core";
+_i18n._(
+  /** i18n */
+  {
+    id: "OVaF9k",
+    message: "Hello {name}",
     values: {
-      0: _i18n._(
-        /** i18n */
-        {
-          id: "kODvZJ",
-          message: "First Name",
-        },
-      ),
+      name: name,
+    },
+  },
+);
+
+`;
+
+exports[`Support nested t in t 1`] = `
+import { t } from "@lingui/core/macro";
+t\`Outer \${t\`Inner \${name}\`} end\`;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { i18n as _i18n } from "@lingui/core";
+_i18n._(
+  /** i18n */
+  {
+    id: "JWugZU",
+    message: "Outer Inner {name} end",
+    values: {
+      name: name,
+    },
+  },
+);
+
+`;
+
+exports[`Support nested t in t message description 1`] = `
+import { t, msg } from "@lingui/core/macro";
+t({
+  message: t\`Hello \${name}\`,
+});
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { i18n as _i18n } from "@lingui/core";
+_i18n._(
+  /** i18n */
+  {
+    id: "OVaF9k",
+    message: "Hello {name}",
+    values: {
+      name: name,
     },
   },
 );
@@ -511,26 +566,6 @@ _i18n._(
 
 `;
 
-exports[`Variables with non-null assertion get a named placeholder (parity with \`as\`) 1`] = `
-import { t } from "@lingui/core/macro";
-t\`Variable \${name!}\`;
-
-↓ ↓ ↓ ↓ ↓ ↓
-
-import { i18n as _i18n } from "@lingui/core";
-_i18n._(
-  /** i18n */
-  {
-    id: "xRRkAE",
-    message: "Variable {name}",
-    values: {
-      name: name,
-    },
-  },
-);
-
-`;
-
 exports[`Variables with escaped double quotes are correctly formatted 1`] = `
 import { t } from "@lingui/core/macro";
 t\`Variable "name"\`;
@@ -622,6 +657,26 @@ _i18n._(
     message: "Variable {name}",
     values: {
       name: random(),
+    },
+  },
+);
+
+`;
+
+exports[`Variables with non-null assertion get a named placeholder (parity with \`as\`) 1`] = `
+import { t } from "@lingui/core/macro";
+t\`Variable \${name!}\`;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { i18n as _i18n } from "@lingui/core";
+_i18n._(
+  /** i18n */
+  {
+    id: "xRRkAE",
+    message: "Variable {name}",
+    values: {
+      name: name,
     },
   },
 );

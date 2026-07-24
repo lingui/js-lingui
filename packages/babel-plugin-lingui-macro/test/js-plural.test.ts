@@ -80,5 +80,25 @@ macroTester({
         });
       `,
     },
+    {
+      name: "Support msg tagged template as option value",
+      code: `
+        import { plural, msg } from '@lingui/core/macro'
+        const a = plural(count, {
+          one: msg\`# book\`,
+          other: msg\`# books\`
+        });
+      `,
+    },
+    {
+      name: "Support t tagged template as option value",
+      code: `
+        import { plural, t } from '@lingui/core/macro'
+        const a = plural(count, {
+          one: t\`# book\`,
+          other: t\`# books\`
+        });
+      `,
+    },
   ],
 })
