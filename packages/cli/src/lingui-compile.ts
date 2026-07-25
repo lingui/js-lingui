@@ -1,6 +1,6 @@
 import { styleText } from "node:util"
 import { watch } from "chokidar"
-import { Option, program } from "commander"
+import { program } from "commander"
 
 import { getConfig, LinguiConfigNormalized } from "@lingui/conf"
 import { helpRun } from "./api/help.js"
@@ -14,14 +14,10 @@ import {
 import ms from "ms"
 import { getPathsForCompileWatcher } from "./api/getPathsForCompileWatcher.js"
 import { ProgramExit } from "./api/ProgramExit.js"
-import type { MissingBehavior } from "./api/index.js"
-
-const failOnMissingModes: MissingBehavior[] = ["resolved", "catalog"]
 
 export type CliCompileOptions = {
   verbose?: boolean
   allowEmpty?: boolean
-  missingBehavior?: MissingBehavior
   failOnCompileError?: boolean
   typescript?: boolean
   watch?: boolean
@@ -114,7 +110,6 @@ type CliArgs = {
   watch?: boolean
   namespace?: string
   strict?: boolean
-  failOnMissing?: MissingBehavior
   config?: string
   debounce?: number
   workers?: number
@@ -128,12 +123,6 @@ if (import.meta.main) {
     .option(
       "--strict",
       "Fail if translations are missing after applying fallbackLocales, or if compilation errors occur",
-    )
-    .addOption(
-      new Option(
-        "--fail-on-missing <mode>",
-        "Fail if translations are missing; modes: resolved (after fallbackLocales) or catalog (before fallbackLocales)",
-      ).choices(failOnMissingModes),
     )
     .option("--verbose", "Verbose output")
     .option("--typescript", "Create Typescript definition for compiled bundle")
@@ -164,10 +153,6 @@ if (import.meta.main) {
       console.log("    # Compile translations but fail when resolved output")
       console.log("    # still has missing translations or compilation errors")
       console.log(`    $ ${helpRun("compile --strict")}`)
-      console.log("")
-      console.log("    # Compile translations but fail when target catalogs")
-      console.log("    # have missing translations before fallbackLocales")
-      console.log(`    $ ${helpRun("compile --fail-on-missing catalog")}`)
     })
     .parse(process.argv)
 
@@ -178,13 +163,10 @@ if (import.meta.main) {
   let previousRun = Promise.resolve(true)
 
   const compile = () => {
-    const shouldFailOnMissing = Boolean(options.strict || options.failOnMissing)
-
     previousRun = previousRun.then(() =>
       command(config, {
         verbose: options.watch || options.verbose || false,
-        allowEmpty: !shouldFailOnMissing,
-        missingBehavior: options.failOnMissing ?? "resolved",
+        allowEmpty: !options.strict,
         failOnCompileError: !!options.strict,
         workersOptions: resolveWorkersOptions(options),
         typescript:

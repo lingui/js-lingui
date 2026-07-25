@@ -166,7 +166,6 @@ Print additional information.
 ```shell
 lingui compile
     [--strict]
-    [--fail-on-missing <resolved|catalog>]
     [--format <format>]
     [--verbose]
     [--typescript]
@@ -213,15 +212,6 @@ Overwrite source locale translations from source.
 Fail if the compiled catalog still has missing translations after `fallbackLocales` are applied, or if message compilation produces errors.
 
 This preserves the default validation behavior used by Lingui 6. The compiled output uses the normal fallback resolution behavior regardless of strict mode, although catalogs for locales that fail strict validation may not be emitted.
-
-#### `--fail-on-missing <resolved|catalog>` {#compile-fail-on-missing}
-
-Fail compilation when missing translations are detected in the selected mode:
-
-- `resolved`: fail only if a translation is still missing after `fallbackLocales` are applied.
-- `catalog`: fail if the target locale catalog itself has missing translations before `fallbackLocales` are applied.
-
-Use `--strict --fail-on-missing catalog` to fail on catalog-level missing translations and message compilation errors at the same time.
 
 #### `--format <format>` {#compile-format}
 
@@ -327,7 +317,7 @@ lingui check missing
 
 Checks whether locale catalogs have missing translations. By default, this validation uses `resolved` mode, which matches `lingui compile --strict`: translations are considered missing only if they are still missing after `fallbackLocales` are applied.
 
-Use `--mode catalog` to fail when the target locale catalog itself has missing translations before `fallbackLocales` are applied. This matches `lingui compile --fail-on-missing catalog`, but does not compile catalogs.
+Use `--mode catalog` to fail when the target locale catalog itself has missing translations before `fallbackLocales` are applied. This command performs validation without compiling catalogs.
 
 #### `sync --locale <locale, [...]>` {#check-sync-locale}
 

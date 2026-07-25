@@ -31,7 +31,6 @@ export async function compileLocale(
       await getTranslationsForCatalog(catalog, locale, {
         fallbackLocales: config.fallbackLocales,
         sourceLocale: config.sourceLocale,
-        missingBehavior: options.missingBehavior,
       })
 
     if (
@@ -50,7 +49,7 @@ export async function compileLocale(
         logger.error(
           styleText(
             "red",
-            `Missing translations ${getMissingBehaviorDescription(options.missingBehavior ?? "resolved")}:`,
+            `Missing translations ${getMissingBehaviorDescription("resolved")}:`,
           ),
         )
         missingMessages.forEach((missing) => {
@@ -65,7 +64,7 @@ export async function compileLocale(
         logger.error(
           styleText(
             "red",
-            `Missing ${missingMessages.length} translation(s) ${getMissingBehaviorDescription(options.missingBehavior ?? "resolved")}`,
+            `Missing ${missingMessages.length} translation(s) ${getMissingBehaviorDescription("resolved")}`,
           ),
         )
       }
