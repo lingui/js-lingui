@@ -8,6 +8,8 @@ import { Catalog } from "../catalog.js"
 import { LinguiConfig, makeConfig } from "@lingui/conf"
 import path from "path"
 import { FormatterWrapper, getFormat } from "../formats/index.js"
+import { createFixtures } from "../../tests.js"
+import normalizePath from "normalize-path"
 
 function mockConfig(config: Partial<LinguiConfig> = {}) {
   return makeConfig(
@@ -132,6 +134,62 @@ describe("getCatalogs", () => {
       ),
     ])
   })
+
+  it.each(["componentA", "(group)", "[slug]", "[...params]", "[[...params]]"])(
+    "should extract from the named catalog directory %s",
+    async (name) => {
+      const rootDir = await createFixtures({
+        [`/src/pages/${name}/index.tsx`]: `
+            import { Trans } from "@lingui/react/macro"
+
+            export default function Page() {
+              return <Trans>Hello World</Trans>
+            }
+          `,
+        [`/src/pages/${name}/ignored/index.tsx`]: `
+            import { Trans } from "@lingui/react/macro"
+
+            export default function IgnoredPage() {
+              return <Trans>Ignored message</Trans>
+            }
+          `,
+      })
+
+      const config = mockConfig({
+        rootDir,
+        catalogs: [
+          {
+            path: "<rootDir>/src/locales/{name}/{locale}/messages",
+            include: ["<rootDir>/src/pages/{name}"],
+            exclude: ["<rootDir>/src/pages/{name}/ignored/**"],
+          },
+        ],
+      })
+
+      const [catalog] = await getCatalogs(config)
+
+      expect(catalog!.name).toBe(name)
+      expect(catalog!.path).toBe(
+        normalizePath(
+          path.join(rootDir, "src", "locales", name, "{locale}", "messages"),
+        ),
+      )
+      expect(catalog!.include).toEqual([
+        normalizePath(path.join(rootDir, "src", "pages", name)),
+      ])
+      expect(catalog!.exclude).toContain(
+        normalizePath(path.join(rootDir, "src", "pages", name, "ignored/**")),
+      )
+      expect(catalog!.sourcePaths.map((file) => path.basename(file))).toEqual([
+        "index.tsx",
+      ])
+
+      const messages = await catalog!.collect()
+      expect(Object.values(messages!)).toEqual([
+        expect.objectContaining({ message: "Hello World" }),
+      ])
+    },
+  )
 
   it("should expand {name} multiple times in path", async () => {
     mockFs({

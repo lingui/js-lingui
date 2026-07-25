@@ -185,9 +185,14 @@ function createIdProperty(message: string, context?: string) {
 function createValuesProperty(key: string, values: Record<string, Expression>) {
   const valuesObject = Object.keys(values).map((key) =>
     types.objectProperty(
-      types.isValidIdentifier(key) || /^\d+$/.test(key)
+      types.isValidIdentifier(key)
         ? types.identifier(key)
-        : types.stringLiteral(key),
+        : // Numeric placeholder keys (e.g. plural/select indices) must be built
+          // as numeric literals. Babel 8's @babel/types validates identifier
+          // names, so types.identifier("0") throws "not a valid identifier name".
+          /^\d+$/.test(key)
+          ? types.numericLiteral(Number(key))
+          : types.stringLiteral(key),
       values[key],
     ),
   )

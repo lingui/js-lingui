@@ -69,6 +69,7 @@ export async function getCatalogs(
 
     candidates.forEach((catalogDir) => {
       const name = path.basename(catalogDir)
+      const globName = escapeCatalogNameForGlob(name)
       catalogs.push(
         new Catalog(
           {
@@ -81,6 +82,15 @@ export async function getCatalogs(
             format,
           },
           config,
+          {
+            path: replacePlaceholders(catalog.path, { name: globName }),
+            include: include.map((path) =>
+              replacePlaceholders(path, { name: globName }),
+            ),
+            exclude: exclude.map((path) =>
+              replacePlaceholders(path, { name: globName }),
+            ),
+          },
         ),
       )
     })
@@ -100,6 +110,10 @@ export async function getCatalogs(
   }
 
   return catalogs
+}
+
+function escapeCatalogNameForGlob(value: string) {
+  return value.replace(/[[\]()]/g, "[$&]")
 }
 
 /**

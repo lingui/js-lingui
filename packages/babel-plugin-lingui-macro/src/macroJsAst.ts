@@ -115,6 +115,11 @@ export function tokenizeNode(
     return tokenizeTemplateLiteral(node as Expression, ctx)
   }
 
+  // msg`...` / defineMessage`...`
+  if (t.isTaggedTemplateExpression(node) && isDefineMessage(node.tag, ctx)) {
+    return tokenizeTemplateLiteral(node as Expression, ctx)
+  }
+
   if (t.isCallExpression(node) && isArgDecorator(node, ctx)) {
     return [tokenizeArg(node, ctx)]
   }
@@ -164,9 +169,10 @@ export function tokenizeTemplateLiteral(
     const currExp = expressions[i]
 
     if (currExp) {
-      argTokens = t.isCallExpression(currExp)
-        ? tokenizeNode(currExp, false, ctx)
-        : [tokenizeExpression(currExp, ctx)]
+      argTokens =
+        t.isCallExpression(currExp) || t.isTaggedTemplateExpression(currExp)
+          ? tokenizeNode(currExp, false, ctx)
+          : [tokenizeExpression(currExp, ctx)]
     }
     const textToken: TextToken = {
       type: "text",
@@ -218,6 +224,8 @@ export function tokenizeChoiceComponent(
         value = tokenizeTemplateLiteral(attrValue, ctx)
       } else if (t.isCallExpression(attrValue)) {
         value = tokenizeNode(attrValue, false, ctx)
+      } else if (t.isTaggedTemplateExpression(attrValue)) {
+        value = tokenizeNode(attrValue, false, ctx)
       } else if (t.isStringLiteral(attrValue)) {
         value = attrValue.value
       } else if (t.isExpression(attrValue)) {
@@ -262,7 +270,13 @@ export function tokenizeExpression(
   node: Node | Expression,
   ctx: MacroJsContext,
 ): ArgToken {
-  if (t.isTSAsExpression(node)) {
+  if (
+    t.isTSAsExpression(node) ||
+    t.isTSNonNullExpression(node) ||
+    t.isTSSatisfiesExpression(node)
+  ) {
+    // Unwrap TS-only expression wrappers (`x as T`, `x!`, `x satisfies T`) so the
+    // inner expression drives placeholder naming (e.g. `${x!}` → `{x}`, not `{0}`).
     return tokenizeExpression(node.expression, ctx)
   }
   if (t.isObjectExpression(node)) {
