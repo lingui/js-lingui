@@ -1,49 +1,48 @@
-import {
-  getHeaders,
-  getWebRequest,
-  setHeader,
-} from "@tanstack/react-start/server"
 import { parse, serialize } from "cookie-es"
+import { defaultLocale, isLocaleValid } from "~/modules/lingui/i18n"
 
-import { defaultLocale, dynamicActivate, isLocaleValid } from "./i18n"
+export function getLocaleFromRequest(request: Request) {
+  const headers = request.headers
 
-function getLocaleFromRequest() {
-  const request = getWebRequest()
-  const headers = getHeaders()
-  const cookie = parse(headers.cookie ?? "")
+  const url = new URL(request.url)
+  const queryLocale = url.searchParams.get("locale") ?? ""
 
-  if (request) {
-    const url = new URL(request.url)
-    const queryLocale = url.searchParams.get("locale") ?? ""
-
-    if (isLocaleValid(queryLocale)) {
-      setHeader(
-        "Set-Cookie",
-        serialize("locale", queryLocale, {
-          maxAge: 30 * 24 * 60 * 60,
-          path: "/",
-        })
-      )
-
-      return queryLocale
+  if (isLocaleValid(queryLocale)) {
+    return {
+      locale: queryLocale,
+      headers: [
+        {
+          key: "Set-Cookie",
+          value: serialize("locale", queryLocale, {
+            maxAge: 30 * 24 * 60 * 60,
+            path: "/",
+          }),
+        },
+      ],
     }
   }
 
+  const cookie = parse(headers.get("cookie") ?? "")
   if (cookie.locale && isLocaleValid(cookie.locale)) {
-    return cookie.locale
+    return { locale: cookie.locale }
   }
 
-  setHeader(
-    "Set-Cookie",
-    serialize("locale", defaultLocale, {
-      maxAge: 30 * 24 * 60 * 60,
-      path: "/",
-    })
-  )
+  // Mostly used for API requests
+  const acceptedLanguage = headers.get("accept-language") ?? ""
+  if (acceptedLanguage && isLocaleValid(acceptedLanguage)) {
+    return { locale: acceptedLanguage }
+  }
 
-  return defaultLocale
-}
-
-export async function setupLocaleFromRequest() {
-  await dynamicActivate(getLocaleFromRequest())
+  return {
+    locale: defaultLocale,
+    headers: [
+      {
+        key: "Set-Cookie",
+        value: serialize("locale", defaultLocale, {
+          maxAge: 30 * 24 * 60 * 60,
+          path: "/",
+        }),
+      },
+    ],
+  }
 }

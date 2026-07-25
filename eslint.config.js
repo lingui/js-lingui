@@ -1,6 +1,6 @@
 import { defineConfig } from "eslint/config"
 import pluginJs from "@eslint/js"
-import tseslint from "typescript-eslint"
+import { configs as typescriptEslintConfigs } from "typescript-eslint"
 import importPlugin from "eslint-plugin-import"
 
 export default defineConfig(
@@ -10,6 +10,7 @@ export default defineConfig(
       "**/fixtures/**",
       "**/locale/**",
       "**/test/**/expected/**",
+      "**/test/**/expected-*/**",
       "**/test/**/actual/**",
       "**/loader/test/**",
       "website/src/**",
@@ -19,13 +20,21 @@ export default defineConfig(
     files: ["**/*.{ts,tsx,js,jsx}"],
     extends: [
       pluginJs.configs.recommended,
-      ...tseslint.configs.recommended,
+      ...typescriptEslintConfigs.recommended,
       importPlugin.flatConfigs.recommended,
       importPlugin.flatConfigs.typescript,
     ],
     settings: {
       "import/resolver": {
-        typescript: true,
+        typescript: {
+          noWarnOnMultipleProjects: true,
+          project: [
+            "./tsconfig.json",
+            "./packages/*/tsconfig.json",
+            "./examples/*/tsconfig.json",
+            "./website/tsconfig.json",
+          ],
+        },
         node: true,
       },
     },
@@ -65,6 +74,12 @@ export default defineConfig(
     files: ["**/*.test.{ts,tsx}", "**/*.tst.{ts,tsx}", "**/test/**/*.{ts,tsx}"],
     rules: {
       "import/no-extraneous-dependencies": "off",
+    },
+  },
+  {
+    files: ["**/next-env.d.ts"],
+    rules: {
+      "import/no-unresolved": "off",
     },
   },
 )

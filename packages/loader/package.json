@@ -1,6 +1,6 @@
 {
   "name": "@lingui/loader",
-  "version": "6.0.0",
+  "version": "6.5.0",
   "type": "module",
   "description": "A webpack-compatible loader to load and compile Lingui message catalogs at build time",
   "exports": {
@@ -53,8 +53,9 @@
   "devDependencies": {
     "@lingui/format-json": "workspace:*",
     "jiti": "^2.6.1",
-    "unbuild": "3.6.1",
-    "vitest": "4.0.18",
+    "typescript": "catalog:",
+    "unbuild": "catalog:",
+    "vitest": "catalog:",
     "webpack": "^5.76.1"
   },
   "peerDependencies": {

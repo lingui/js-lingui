@@ -15,7 +15,7 @@ import { Plural } from "@lingui/react/macro";
 import { Trans as _Trans } from "@lingui/react";
 <_Trans
   {
-    /*i18n*/
+    /** i18n */
     ...{
       id: "tYX0sm",
       message:
@@ -53,7 +53,7 @@ import { Trans, Plural } from "@lingui/react/macro";
 import { Trans as _Trans } from "@lingui/react";
 <_Trans
   {
-    /*i18n*/
+    /** i18n */
     ...{
       id: "X8eyr1",
       message:
@@ -89,7 +89,7 @@ import { Trans as _Trans } from "@lingui/react";
 <_Trans
   render="strong"
   {
-    /*i18n*/
+    /** i18n */
     ...{
       id: "msg.plural",
       message:
@@ -124,7 +124,7 @@ import { Trans, Plural } from "@lingui/react/macro";
 import { Trans as _Trans } from "@lingui/react";
 <_Trans
   {
-    /*i18n*/
+    /** i18n */
     ...{
       id: "inner-id-removed",
       message:
@@ -157,7 +157,7 @@ import { Plural } from "@lingui/react/macro";
 import { Trans as _Trans } from "@lingui/react";
 <_Trans
   {
-    /*i18n*/
+    /** i18n */
     ...{
       id: "EQvNfC",
       message:
@@ -184,7 +184,7 @@ import { Plural as Plural2 } from "@lingui/react/macro";
 import { Trans as _Trans } from "@lingui/react";
 <_Trans
   {
-    /*i18n*/
+    /** i18n */
     ...{
       id: "EMgKyP",
       message: "{count, plural, one {...} other {...}}",
@@ -219,7 +219,7 @@ import { Trans as _Trans } from "@lingui/react";
   render={() => {}}
   data-sentry-source-file="file.tsx"
   {
-    /*i18n*/
+    /** i18n */
     ...{
       id: "custom.id",
       message:
@@ -255,7 +255,7 @@ import { Trans as _Trans } from "@lingui/react";
 <_Trans
   render={() => {}}
   {
-    /*i18n*/
+    /** i18n */
     ...{
       id: "custom.id",
       message:
@@ -287,7 +287,7 @@ import { Trans, Plural } from "@lingui/react/macro";
 import { Trans as _Trans } from "@lingui/react";
 <_Trans
   {
-    /*i18n*/
+    /** i18n */
     ...{
       id: "oukcm6",
       message: "{count, plural, one {One hello} other {Other hello}}",
@@ -313,7 +313,7 @@ import { Plural } from "@lingui/react/macro";
 import { Trans as _Trans } from "@lingui/react";
 <_Trans
   {
-    /*i18n*/
+    /** i18n */
     ...{
       id: "blU5AK",
       message: "{count, plural, one {oneText} other {<0>A lot of them</0>}}",
@@ -343,7 +343,7 @@ import { ph } from "@lingui/core/macro";
 import { Trans as _Trans } from "@lingui/react";
 <_Trans
   {
-    /*i18n*/
+    /** i18n */
     ...{
       id: "blU5AK",
       message: "{count, plural, one {oneText} other {<0>A lot of them</0>}}",

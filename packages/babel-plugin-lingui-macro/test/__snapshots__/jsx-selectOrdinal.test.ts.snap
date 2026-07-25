@@ -18,7 +18,7 @@ import { Trans, SelectOrdinal } from "@lingui/react/macro";
 import { Trans as _Trans } from "@lingui/react";
 <_Trans
   {
-    /*i18n*/
+    /** i18n */
     ...{
       id: "3YEV8L",
       message:
@@ -53,7 +53,7 @@ import { Trans, SelectOrdinal } from "@lingui/react/macro";
 import { Trans as _Trans } from "@lingui/react";
 <_Trans
   {
-    /*i18n*/
+    /** i18n */
     ...{
       id: "Dz3XK1",
       message:
@@ -88,7 +88,7 @@ import { Trans, SelectOrdinal } from "@lingui/react/macro";
 import { Trans as _Trans } from "@lingui/react";
 <_Trans
   {
-    /*i18n*/
+    /** i18n */
     ...{
       id: "CDpzE-",
       message:

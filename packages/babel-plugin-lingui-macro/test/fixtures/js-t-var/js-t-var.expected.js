@@ -3,7 +3,7 @@ function scoped(foo) {
   if (foo) {
     const bar = 50
     _i18n._(
-      /*i18n*/
+      /** i18n */
       {
         id: "EvVtyn",
         message: "This is bar {bar}",
@@ -15,7 +15,7 @@ function scoped(foo) {
   } else {
     const bar = 10
     _i18n._(
-      /*i18n*/
+      /** i18n */
       {
         id: "e6QGtZ",
         message: "This is a different bar {bar}",

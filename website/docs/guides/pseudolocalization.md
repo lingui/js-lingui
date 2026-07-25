@@ -20,14 +20,20 @@ import { defineConfig } from "@lingui/cli";
 
 export default defineConfig({
   locales: ["en", "pseudo-LOCALE"],
-  pseudoLocale: "pseudo-LOCALE",
+  pseudoLocale: { locale: "pseudo-LOCALE" },
   fallbackLocales: {
     "pseudo-LOCALE": "en",
   },
 });
 ```
 
-The `pseudoLocale` option must be set to any string that matches a value in the [`locales`](/ref/conf#locales) configuration. If this is not set correctly, no folder or pseudolocalization will be created.
+The `pseudoLocale.locale` option must be set to any string that matches a value in the [`locales`](/ref/conf#locales) configuration. If this is not set correctly, no folder or pseudolocalization will be created.
+
+:::caution
+`pseudoLocale` also accepts a plain string (e.g. `pseudoLocale: "pseudo-LOCALE"`), but this form is deprecated and will be removed in a future major release. Use the object form instead.
+:::
+
+The object form also lets you configure the underlying pseudolocalization library (markers, string length, and more). See the [`pseudoLocale`](/ref/conf#pseudolocale) reference for all available options.
 
 If the `fallbackLocales` is configured, the pseudolocalization will be generated from the translated fallback locale instead.
 

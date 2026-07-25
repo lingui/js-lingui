@@ -17,13 +17,13 @@ import {
   createMessageDescriptorFromTokens,
   ResolvedDescriptorFields,
 } from "./messageDescriptorUtils"
+import { makeCounter } from "./utils"
 import {
   isLinguiIdentifier,
   isDefineMessage,
   tokenizeTemplateLiteral,
   tokenizeNode,
   processDescriptor,
-  createMacroJsContext,
   MacroJsContext,
 } from "./macroJsAst"
 
@@ -33,6 +33,8 @@ export type MacroJsOpts = {
 
   descriptorFields: ResolvedDescriptorFields
   isLinguiIdentifier: (node: Identifier, macro: JsMacroName) => boolean
+  getDirective?: MacroJsContext["getDirective"]
+  idPrefixLeader?: string
 }
 
 export class MacroJs {
@@ -49,10 +51,11 @@ export class MacroJs {
     this.i18nImportName = opts.i18nImportName
     this.useLinguiImportName = opts.useLinguiImportName
 
-    this._ctx = createMacroJsContext(
-      opts.isLinguiIdentifier,
-      opts.descriptorFields,
-    )
+    this._ctx = {
+      getDirective: () => undefined,
+      ...opts,
+      getExpressionIndex: makeCounter(),
+    }
   }
 
   private replacePathWithMessage = (
@@ -65,6 +68,10 @@ export class MacroJs {
         tokens,
         path.node.loc,
         this._ctx.descriptorFields,
+        {
+          ...this._ctx.getDirective(path.node.loc?.start.line),
+          idPrefixLeader: this._ctx.idPrefixLeader,
+        },
       ),
       linguiInstance,
     )
@@ -95,6 +102,10 @@ export class MacroJs {
         tokens,
         path.node.loc,
         ctx.descriptorFields,
+        {
+          ...this._ctx.getDirective(path.node.loc?.start.line),
+          idPrefixLeader: ctx.idPrefixLeader,
+        },
       )
     }
 
@@ -257,10 +268,10 @@ export class MacroJs {
         // parent would be an Expression with this identifier which we are interesting in
         const currentPath = refPath.parentPath
 
-        const _ctx = createMacroJsContext(
-          ctx.isLinguiIdentifier,
-          ctx.descriptorFields,
-        )
+        const _ctx: MacroJsContext = {
+          ...ctx,
+          getExpressionIndex: makeCounter(),
+        }
 
         // { t } = useLingui()
         // t`Hello!`
@@ -271,6 +282,10 @@ export class MacroJs {
             tokens,
             currentPath.node.loc,
             _ctx.descriptorFields,
+            {
+              ..._ctx.getDirective(currentPath.node.loc?.start.line),
+              idPrefixLeader: _ctx.idPrefixLeader,
+            },
           )
 
           const callExpr = t.callExpression(

@@ -13,40 +13,39 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: src/pages/examples.tsx:36
-#: src/pages/examples.tsx:48
+#: src/pages/examples.tsx:37
 msgid "{value, plural, one {There's one book} other {There are # books}}"
 msgstr "{value, plural, one {Je tam jedna kniha} few {Jsou tam # knihy} other {Je tam # knih}}"
 
-#: src/pages/examples.tsx:18
+#: src/pages/examples.tsx:19
 msgid "Black"
 msgstr "Černý"
 
-#: src/pages/index.tsx:50
+#: src/pages/index.tsx:55
 msgid "Checkout LinguiJS examples and usecases."
 msgstr "Podívej se na ukázky a příklady LinguiJS"
 
-#: src/pages/examples.tsx:18
+#: src/pages/examples.tsx:19
 msgid "Cyan"
 msgstr "Azurový"
 
-#: src/pages/index.tsx:36
+#: src/pages/index.tsx:41
 msgid "Documentation →"
 msgstr "Dokumentace →"
 
-#: src/components/Layout.tsx:23
+#: src/components/Layout.tsx:26
 msgid "Example project using LinguiJS"
 msgstr "Ukázkový projekt s LinguiJS"
 
-#: src/pages/examples.tsx:26
+#: src/pages/examples.tsx:27
 msgid "Examples"
 msgstr "Ukázky"
 
-#: src/pages/index.tsx:47
+#: src/pages/index.tsx:52
 msgid "Examples →"
 msgstr "Ukázky →"
 
-#: src/pages/index.tsx:39
+#: src/pages/index.tsx:44
 msgid "Find in-depth information about LinguiJS features and API."
 msgstr "Vyhledej podrobné informace o funkcích LinguiJS"
 
@@ -54,30 +53,30 @@ msgstr "Vyhledej podrobné informace o funkcích LinguiJS"
 #~ msgid "Get started by editing <0>locale/en/messages.po</0>"
 #~ msgstr "Začni úpravou <0>locale/cs/messages.po</0>"
 
-#: src/pages/index.tsx:28
+#: src/pages/index.tsx:33
 msgid "Get started by editing <0>locales/en.po</0>"
 msgstr ""
 
-#: src/pages/examples.tsx:18
+#: src/pages/examples.tsx:19
 msgid "Magenta"
 msgstr "Fialová"
 
-#: src/pages/examples.tsx:30
+#: src/pages/examples.tsx:31
 msgid "Plurals"
 msgstr "Množné číslo"
 
-#: src/components/Layout.tsx:41
+#: src/components/Layout.tsx:38
 msgid "Powered by <0/>"
 msgstr "Používá <0/>"
 
-#: src/pages/examples.tsx:57
+#: src/pages/examples.tsx:47
 msgid "Translation outside of React components"
 msgstr "Překlad mimo komponenty React"
 
-#: src/pages/index.tsx:23
+#: src/pages/index.tsx:28
 msgid "Welcome to <0>LinguiJS!</0>"
 msgstr "Vítá tě <0>LinguiJS!</0>"
 
-#: src/pages/examples.tsx:18
+#: src/pages/examples.tsx:19
 msgid "Yellow"
 msgstr "Žlutý"

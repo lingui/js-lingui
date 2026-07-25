@@ -17,6 +17,8 @@ const msgDescriptor = defineMessage({
   message: "Message in descriptor",
 })
 
+t`Message with unlabeled placeholder ${Date.now()}`
+
 i18n._(msgDescriptor)
 
 i18n._("addToCart")

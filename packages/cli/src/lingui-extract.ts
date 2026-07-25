@@ -188,6 +188,10 @@ if (import.meta.main) {
     )
     .option("--verbose", "Verbose output")
     .option("--watch", "Enables Watch Mode")
+    .argument(
+      "[files...]",
+      "Filter source paths to extract messages only from specific files",
+    )
     .parse(process.argv)
 
   const options = program.opts<CliArgs>()

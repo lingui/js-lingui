@@ -10,6 +10,10 @@ import type {
 } from "@babel/types"
 import type { PluginObj, PluginPass, NodePath } from "@babel/core"
 import type { Hub } from "@babel/traverse"
+import {
+  getConfig as loadConfig,
+  type LinguiConfigNormalized,
+} from "@lingui/conf"
 
 type BabelTypes = typeof BabelTypesNamespace
 
@@ -26,6 +30,7 @@ export type ExtractedMessage = {
 
 export type ExtractPluginOpts = {
   onMessageExtracted(msg: ExtractedMessage): void
+  linguiConfig?: LinguiConfigNormalized
 }
 
 type RawMessage = {
@@ -163,7 +168,10 @@ function extractFromObjectExpression(
 
   const textKeys = ["id", "message", "comment", "context"] as const
 
-  ;(exp.properties as ObjectProperty[]).forEach(({ key, value }, i) => {
+  exp.properties.forEach((prop, i) => {
+    if (prop.type !== "ObjectProperty") return
+    const { key, value } = prop
+
     const name = (key as Identifier).name
 
     if (name === "values" && t.isObjectExpression(value)) {
@@ -195,17 +203,36 @@ function hasIgnoreComment(node: Node): boolean {
 }
 
 function hasI18nComment(node: Node): boolean {
-  return hasComment(node, "i18n")
+  return !!node.leadingComments?.some((comm) => {
+    const trimmed = comm.value.trim()
+
+    return trimmed === "i18n" || trimmed === "* i18n" || trimmed === "*i18n"
+  })
+}
+
+function getLinguiConfig(ctx: PluginPass): LinguiConfigNormalized {
+  const { linguiConfig } = ctx.opts as ExtractPluginOpts
+  if (linguiConfig) return linguiConfig
+
+  const loadedConfig = ctx.get("linguiConfig") as
+    LinguiConfigNormalized | undefined
+  if (loadedConfig) return loadedConfig
+
+  const config = loadConfig()
+  ctx.set("linguiConfig", config)
+  return config
 }
 
 export default function ({ types: t }: { types: BabelTypes }): PluginObj {
-  function isTransComponent(path: NodePath) {
+  function isTransComponent(path: NodePath, config: LinguiConfigNormalized) {
+    const [moduleName, importName] = config.runtimeConfigModule.Trans
+
     return (
       path.isJSXElement() &&
       path
         .get("openingElement")
         .get("name")
-        .referencesImport("@lingui/react", "Trans")
+        .referencesImport(moduleName, importName)
     )
   }
 
@@ -224,6 +251,15 @@ export default function ({ types: t }: { types: BabelTypes }): PluginObj {
     const props = extractFromObjectExpression(t, path.node, ctx.file.hub)
 
     if (!props.id) {
+      // The id may be provided by a spread element (e.g. `i18n._({ ...msg })`),
+      // which can't be resolved statically. Skip silently instead of warning.
+      const hasSpread = path.node.properties.some((prop) =>
+        t.isSpreadElement(prop),
+      )
+      if (hasSpread) {
+        return
+      }
+
       console.warn(
         path.buildCodeFrameError("Missing message ID, skipping.").message,
       )
@@ -238,7 +274,8 @@ export default function ({ types: t }: { types: BabelTypes }): PluginObj {
       // Extract translation from <Trans /> component.
       JSXElement(path, ctx) {
         const { node } = path
-        if (!isTransComponent(path)) return
+        const linguiConfig = getLinguiConfig(ctx)
+        if (!isTransComponent(path, linguiConfig)) return
 
         const attrs = node.openingElement.attributes || []
 
@@ -317,7 +354,7 @@ export default function ({ types: t }: { types: BabelTypes }): PluginObj {
         }
 
         // call with explicit annotation
-        // i18n._(/*i18n*/ {descriptor})
+        // i18n._(/**i18n*/ {descriptor})
         // skipping this as it is processed
         // by ObjectExpression visitor
         if (hasI18nComment(firstArgument.node)) {

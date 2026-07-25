@@ -110,6 +110,34 @@ describe("@lingui/conf", () => {
     })
   })
 
+  describe("normalize pseudoLocale", () => {
+    it("defaults to an empty locale with no options", () => {
+      const config = makeConfig({ locales: ["en"] })
+      expect(config.pseudoLocale).toEqual({ locale: "", options: {} })
+    })
+
+    it("expands the string form into locale + empty options", () => {
+      const config = makeConfig({ locales: ["en"], pseudoLocale: "pseudo" })
+      expect(config.pseudoLocale).toEqual({ locale: "pseudo", options: {} })
+    })
+
+    it("splits the object form into locale + options", () => {
+      const config = makeConfig({
+        locales: ["en"],
+        pseudoLocale: {
+          locale: "pseudo",
+          prepend: "⟦ ",
+          append: " ⟧",
+          extend: 0.4,
+        },
+      })
+      expect(config.pseudoLocale).toEqual({
+        locale: "pseudo",
+        options: { prepend: "⟦ ", append: " ⟧", extend: 0.4 },
+      })
+    })
+  })
+
   describe("Build parent cldr fallbackLocales", () => {
     it("if fallbackLocales.default is defined, we dont build the cldr", () => {
       const config = makeConfig({

@@ -4,6 +4,7 @@ import {
   CompiledMessage,
   compileMessageOrThrow,
 } from "@lingui/message-utils/compileMessage"
+import type { PseudoLocaleOptions } from "@lingui/conf"
 import pseudoLocalize from "./pseudoLocalize.js"
 
 export type CompiledCatalogNamespace = "cjs" | "es" | "ts" | "json" | string
@@ -16,6 +17,7 @@ export type CreateCompileCatalogOptions = {
   strict?: boolean
   namespace?: CompiledCatalogNamespace
   pseudoLocale?: string
+  pseudoLocaleOptions?: PseudoLocaleOptions
   compilerBabelOptions?: GeneratorOptions
   outputPrefix?: string
 }
@@ -44,6 +46,7 @@ export function createCompiledCatalog(
     strict = false,
     namespace = "cjs",
     pseudoLocale,
+    pseudoLocaleOptions,
     compilerBabelOptions = {},
     outputPrefix = "/*eslint-disable*/",
   } = options
@@ -60,7 +63,11 @@ export function createCompiledCatalog(
       const translation = (messages[key] || (!strict ? key : "")) as string
 
       try {
-        obj[key] = compile(translation, shouldPseudolocalize)
+        obj[key] = compile(
+          translation,
+          shouldPseudolocalize,
+          pseudoLocaleOptions,
+        )
       } catch (e) {
         errors.push({
           id: key,
@@ -167,8 +174,9 @@ function buildExportStatement(
 export function compile(
   message: string,
   shouldPseudolocalize: boolean = false,
+  pseudoLocaleOptions?: PseudoLocaleOptions,
 ) {
   return compileMessageOrThrow(message, (value) =>
-    shouldPseudolocalize ? pseudoLocalize(value) : value,
+    shouldPseudolocalize ? pseudoLocalize(value, pseudoLocaleOptions) : value,
   )
 }

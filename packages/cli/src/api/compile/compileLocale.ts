@@ -36,7 +36,7 @@ export async function compileLocale(
 
     if (
       !options.allowEmpty &&
-      locale !== config.pseudoLocale &&
+      locale !== config.pseudoLocale.locale &&
       missingMessages.length > 0
     ) {
       logger.error(
@@ -125,7 +125,8 @@ async function compileAndWrite(
       strict: false,
       namespace,
       outputPrefix: options.outputPrefix,
-      pseudoLocale: config.pseudoLocale,
+      pseudoLocale: config.pseudoLocale.locale,
+      pseudoLocaleOptions: config.pseudoLocale.options,
       compilerBabelOptions: config.compilerBabelOptions,
     },
   )

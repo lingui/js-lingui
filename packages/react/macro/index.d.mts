@@ -4,9 +4,10 @@ import type {
   MacroMessageDescriptor,
   LabeledExpression,
 } from "@lingui/core/macro"
+import type { MessageId } from "@lingui/core"
 
 type CommonProps = TransRenderCallbackOrComponent & {
-  id?: string
+  id?: MessageId
   comment?: string
   context?: string
 }

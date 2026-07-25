@@ -13,7 +13,7 @@ import { Trans } from "@lingui/react/macro";
 import { Trans as _Trans } from "@lingui/react";
 <_Trans
   {
-    /*i18n*/
+    /** i18n */
     ...{
       id: "_0hJpt",
       message: "<ns.link>click</ns.link>",
@@ -39,7 +39,7 @@ import { Trans } from "@lingui/react/macro";
 import { Trans as _Trans } from "@lingui/react";
 <_Trans
   {
-    /*i18n*/
+    /** i18n */
     ...{
       id: "IeIam7",
       message: "<foo-bar>click</foo-bar>",
@@ -97,7 +97,7 @@ import { Trans } from "@lingui/react/macro";
 import { Trans as _Trans } from "@lingui/react";
 <_Trans
   {
-    /*i18n*/
+    /** i18n */
     ...{
       id: "idxihm",
       message: "Hello <em>emphasis</em>, normal, <em>more emphasis</em>.",
@@ -129,7 +129,7 @@ import { Trans } from "@lingui/react/macro";
 import { Trans as _Trans } from "@lingui/react";
 <_Trans
   {
-    /*i18n*/
+    /** i18n */
     ...{
       id: "9en3MH",
       message: "Hello <link>link 1</link>, normal, <link>link 1 copy</link>.",
@@ -163,7 +163,7 @@ const props = {
 };
 <_Trans
   {
-    /*i18n*/
+    /** i18n */
     ...{
       id: "OdVP6t",
       message: "<link>A</link> and <link>B</link>",
@@ -212,7 +212,7 @@ import { Trans } from "@lingui/react/macro";
 import { Trans as _Trans } from "@lingui/react";
 <_Trans
   {
-    /*i18n*/
+    /** i18n */
     ...{
       id: "9en3MH",
       message: "Hello <link>link 1</link>, normal, <link>link 1 copy</link>.",
@@ -274,7 +274,7 @@ import { Trans } from "@lingui/react/macro";
 import { Trans as _Trans } from "@lingui/react";
 <_Trans
   {
-    /*i18n*/
+    /** i18n */
     ...{
       id: "yU9TUm",
       message: "Hello <link>link 1</link>, normal, <link2>link 2</link2>.",
@@ -301,7 +301,7 @@ import { Trans } from "@lingui/react/macro";
 import { Trans as _Trans } from "@lingui/react";
 <_Trans
   {
-    /*i18n*/
+    /** i18n */
     ...{
       id: "Ym2S6K",
       message: "<link>About</link>",
@@ -325,7 +325,7 @@ import { Trans } from "@lingui/react/macro";
 import { Trans as _Trans } from "@lingui/react";
 <_Trans
   {
-    /*i18n*/
+    /** i18n */
     ...{
       id: "Jg_WOt",
       message: "Here's a <link>link</link> and <em>emphasis</em>.",

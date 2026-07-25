@@ -365,6 +365,27 @@ macroTester({
       `,
     },
     {
+      name: "should generate Solid components",
+      macroOpts: {
+        linguiConfig: makeConfig(
+          {
+            macro: {
+              jsxPackage: ["@lingui/solid/macro"],
+              jsxRuntime: "solid",
+            },
+            runtimeConfigModule: {
+              Trans: ["@lingui/solid", "Trans"],
+            },
+          },
+          { skipValidation: true },
+        ),
+      },
+      code: `
+        import { Trans } from '@lingui/solid/macro';
+        <Trans>Hello <a href="/docs">docs</a>.</Trans>;
+      `,
+    },
+    {
       name: "should detects macro imported from config.macro.jsxPackage",
       macroOpts: {
         linguiConfig: makeConfig(

@@ -24,11 +24,13 @@ After configuring the middleware, make sure your page and route files are moved 
 Secondly, add the `swc-plugin` to the `next.config.js`, so that you can use [Lingui Macros](/ref/macro).
 
 ```js title="next.config.js"
+import { linguiMacroSwcPlugin } from "@lingui/swc-plugin/options";
+
 /** @type {import('next').NextConfig} */
 module.exports = {
   // to use Lingui macros
   experimental: {
-    swcPlugins: [["@lingui/swc-plugin", {}]],
+    swcPlugins: [linguiMacroSwcPlugin()],
   },
 };
 ```

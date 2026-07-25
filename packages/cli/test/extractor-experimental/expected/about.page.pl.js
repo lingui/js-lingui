@@ -1,1 +1,1 @@
-/*eslint-disable*/module.exports={messages:JSON.parse("{\"LGGfGX\":[\"translation: header message\"],\"VmkjGB\":[\"Green\"],\"u5PTM8\":[\"about page message\"]}")};
+/*eslint-disable*/module.exports={messages:JSON.parse("{\"LGGfGX\":[\"translation: header message\"],\"RNRWaX\":[\"shared message\"],\"VmkjGB\":[\"Green\"],\"u5PTM8\":[\"about page message\"],\"wRTiSD\":[\"Red\"]}")};

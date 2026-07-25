@@ -1,6 +1,6 @@
 {
   "name": "@lingui/conf",
-  "version": "6.0.0",
+  "version": "6.5.0",
   "sideEffects": false,
   "description": "Resolve and validate Lingui configuration",
   "keywords": [
@@ -48,8 +48,9 @@
   "devDependencies": {
     "@lingui/test-utils": "workspace:*",
     "@types/normalize-path": "^3.0.0",
-    "unbuild": "3.6.1",
-    "vitest": "4.0.18"
+    "typescript": "catalog:",
+    "unbuild": "catalog:",
+    "vitest": "catalog:"
   },
   "unbuild": {
     "declaration": "node16"

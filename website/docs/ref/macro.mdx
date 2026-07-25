@@ -29,7 +29,7 @@ t`Attachment ${name} saved`;
 
 import { i18n } from "@lingui/core";
 i18n._(
-  /*i18n*/ {
+  /** i18n */ {
     id: "nwR43V",
     message: "Attachment {name} saved",
     values: { name },
@@ -37,8 +37,8 @@ i18n._(
 );
 ```
 
-:::info `/*i18n*/` comment
-In the example above you may notice the `/*i18n*/` comment in the macro output. This comment tells the extract plugin that the following object should be collected into the message catalog.
+:::info `/** i18n */` comment
+In the example above you may notice the `/** i18n */` comment in the macro output. This comment tells the extract plugin that the following object should be collected into the message catalog.
 :::
 
 _Message Descriptor_ is an object with a message ID, default message and other parameters:
@@ -68,7 +68,7 @@ const message = t`Hello World`;
 
 import { i18n } from "@lingui/core";
 const message = i18n._(
-  /*i18n*/ {
+  /** i18n */ {
     id: "mY42CM",
     message: "Hello World",
   }
@@ -85,7 +85,7 @@ const message = t`My name is ${name}`;
 
 import { i18n } from "@lingui/core";
 const message = i18n._(
-  /*i18n*/ {
+  /** i18n */ {
     id: "mVmaLu",
     message: "My name is {name}",
     values: { name },
@@ -104,7 +104,7 @@ const message = t`Today is ${new Date()}`;
 import { i18n } from "@lingui/core";
 
 const message = i18n._(
-  /*i18n*/ {
+  /** i18n */ {
     id: "2aJT27",
     message: "Today is {0}",
     values: { 0: new Date() },
@@ -130,7 +130,7 @@ const message = t({
 
 import { i18n } from "@lingui/core";
 const message = i18n._(
-  /*i18n*/ {
+  /** i18n */ {
     id: "msg.hello",
     comment: "Greetings at the homepage",
     message: "Hello {name}",
@@ -152,7 +152,7 @@ const message = t({
 
 import { i18n } from "@lingui/core";
 const message = i18n._(
-  /*i18n*/ {
+  /** i18n */ {
     id: "msg.plural",
     message: "{value, plural, one {...} other {...}}",
     values: { value },
@@ -181,7 +181,7 @@ const message = plural(count, {
 
 import { i18n } from "@lingui/core";
 const message = i18n._(
-  /*i18n*/ {
+  /** i18n */ {
     id: "V/M0Vc",
     message: "{count, plural, one {# Book} other {# Books}}",
     values: { count },
@@ -206,7 +206,7 @@ const message = plural(count, {
 
 import { i18n } from "@lingui/core";
 const message = i18n._(
-  /*i18n*/ {
+  /** i18n */ {
     id: "CvuUwE",
     message: "{count, plural, one {{name} has # friend} other {{name} has # friends}}",
     values: { count, name },
@@ -234,7 +234,7 @@ const message = plural(numBooks, {
 
 import { i18n } from "@lingui/core";
 const message = i18n._(
-  /*i18n*/ {
+  /** i18n */ {
     id: "XnUh4j",
     message: `{numBooks, plural,
          one {{numArticles, plural,
@@ -292,7 +292,7 @@ const message = selectOrdinal(count, {
 
 import { i18n } from "@lingui/core";
 const message = i18n._(
-  /*i18n*/ {
+  /** i18n */ {
     id: "V8xI3w",
     message: "{count, selectOrdinal, one {#st} two {#nd} few {#rd} other {#th}}",
     values: { count },
@@ -341,7 +341,7 @@ const message = select(gender, {
 import { i18n } from "@lingui/core";
 
 const message = i18n._(
-  /*i18n*/ {
+  /** i18n */ {
     id: "VRptzI",
     message: "{gender, select, male {he} female {she} other {they}}",
     values: { gender },
@@ -386,7 +386,7 @@ i18n.t(message);
 
 import { i18n } from "@lingui/core";
 
-const message = /*i18n*/ {
+const message = /** i18n */ {
   id: "mY42CM",
   message: "Hello World",
 };
@@ -403,7 +403,7 @@ const message = msg`Hello World`;
 
 // ↓ ↓ ↓ ↓ ↓ ↓
 
-const message = /*i18n*/ {
+const message = /** i18n */ {
   id: "mY42CM",
   message: "Hello World",
 };
@@ -431,7 +431,7 @@ const message = defineMessage({
 
 // ↓ ↓ ↓ ↓ ↓ ↓
 
-const message = /*i18n*/ {
+const message = /** i18n */ {
   id: "Navigation / About",
   message: "About us",
 };
@@ -448,7 +448,7 @@ const message = defineMessage({
 
 // ↓ ↓ ↓ ↓ ↓ ↓
 
-const message = /*i18n*/ {
+const message = /** i18n */ {
   id: "dgJjNB",
   message: "Welcome, {name}",
   values: {
@@ -468,7 +468,7 @@ const message = defineMessage({
 
 // ↓ ↓ ↓ ↓ ↓ ↓
 
-const message = /*i18n*/ {
+const message = /** i18n */ {
   id: "+mNwru",
   comment: "Link in navigation pointing to About page",
   message: "About us",
@@ -490,7 +490,7 @@ const message = defineMessage({
 // process.env.NODE_ENV === "production"
 // ↓ ↓ ↓ ↓ ↓ ↓
 
-const message = /*i18n*/ {
+const message = /** i18n */ {
   id: "msg.navigation.about",
 };
 ```
@@ -525,7 +525,7 @@ const message = t`Hello ${ph({ name: getUserName() })}`;
 
 import { i18n } from "@lingui/core";
 const message = i18n._(
-  /*i18n*/ {
+  /** i18n */ {
     id: "OUzSsf",
     message: "Hello {name}",
     values: { name: getUserName() },
@@ -545,6 +545,115 @@ import { ph } from "@lingui/core/macro";
 
 import { Trans } from "@lingui/react";
 <Trans id={"Z5GF+g"} message="Welcome back, {username}!" values={{ username: getUser().name }} />;
+```
+
+### `lingui-set` / `lingui-reset` Comment Directives {#lingui-directive}
+
+Instead of passing `context` and/or `comment` to every macro call, you can use the `lingui-set` and `lingui-reset` comment directives to set these values for all subsequent macros in the same file (or until the next directive resets/overrides them).
+
+- **`lingui-set`**: Sets the specified parameters for all subsequent macros. Requires at least one parameter.
+- **`lingui-reset`**: Clears all previously set parameters. Also accepts new parameters to set like `lingui-set`.
+
+The directive is placed in a comment directly above (or anywhere before) the macro calls it should affect:
+
+```js
+import { t } from "@lingui/core/macro";
+
+// lingui-set context="homepage"
+const msg1 = t`Welcome`;
+const msg2 = t`Sign up`;
+```
+
+Both `msg1` and `msg2` will have `context` set to `"homepage"`.
+
+#### Supported Params
+
+| Param      | Example                     | Description                                                                                                                                                                 |
+| ---------- | --------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `context`  | `context="homepage"`        | Sets the [context](/guides/explicit-vs-generated-ids#context) for ID generation                                                                                             |
+| `comment`  | `comment="translator note"` | Sets the [comment](#comment) for translators                                                                                                                                |
+| `idPrefix` | `idPrefix="module."`        | Prefixes explicit `id` values (does not affect generated IDs). If `macro.idPrefixLeader` is specified in the lingui config, only IDs starting with the leader are prefixed. |
+
+#### Syntax
+
+Both line comments and block comments are supported:
+
+```js
+// lingui-set context="homepage"
+/* lingui-set context="homepage" comment="note" */
+// lingui-reset
+/* lingui-reset context="new context" */
+```
+
+Params use the `key="value"` syntax. Values must be wrapped in double quotes.
+
+#### Merging and Scoping
+
+Directives are **file-scoped**. Each directive merges its values with values from previous directives. This allows you to set a base context at the top of a file and add or override specific values later:
+
+```js
+import { t } from "@lingui/core/macro";
+
+// lingui-set context="settings" comment="Settings page"
+const msg1 = t`Save`;
+
+// lingui-set comment="Updated note"
+const msg2 = t`Cancel`; // context="settings", comment="Updated note"
+```
+
+#### Unsetting a Value
+
+Setting a param to an empty string unsets that specific value, without affecting other inherited values:
+
+```js
+import { t } from "@lingui/core/macro";
+
+// lingui-set context="settings" comment="note"
+const msg1 = t`Save`; // context="settings", comment="note"
+
+// lingui-set context=""
+const msg2 = t`Cancel`; // comment="note" (context is removed)
+```
+
+#### Resetting Prior Values
+
+The `lingui-reset` directive clears **all** inherited values. You can combine it with new values to immediately set a new context:
+
+```js
+import { t } from "@lingui/core/macro";
+
+// lingui-set context="settings" comment="note"
+const msg1 = t`Save`;
+
+// lingui-reset
+const msg2 = t`Cancel`; // no context & no comment
+
+// lingui-reset context="new section"
+const msg3 = t`Delete`; // context="new section"
+```
+
+#### Explicit Values Override Directives
+
+Values passed directly to a macro always take precedence over directive values:
+
+```js
+import { t } from "@lingui/core/macro";
+
+// lingui-set context="directive ctx"
+const msg = t({ message: "Hello", context: "explicit ctx" });
+// → context will be "explicit ctx"
+```
+
+#### Usage with React (JSX) Macros
+
+The directive works with React macros too:
+
+```jsx
+import { Trans } from "@lingui/react/macro";
+
+{/* lingui-set idPrefix="homepage." context="homepage" */}
+<Trans>Welcome</Trans>
+<Trans id="copyright">Copyright</Trans>
 ```
 
 ## React Macros
@@ -781,7 +890,7 @@ import { useLingui } from "@lingui/react";
 function MyComponent() {
   const { _ } = useLingui();
   const a = _(
-    /*i18n*/
+    /** i18n */
     {
       id: "xeiujy",
       message: "Text",
@@ -853,7 +962,7 @@ t`Refresh inbox`;
 // ↓ ↓ ↓ ↓ ↓ ↓
 
 i18n._(
-  /*i18n*/ {
+  /** i18n */ {
     id: "EsCV2T",
     message: "Refresh inbox",
   }
@@ -866,7 +975,7 @@ customI18n._(msg(`Refresh inbox`));
 // ↓ ↓ ↓ ↓ ↓ ↓
 
 customI18n._(
-  /*i18n*/ {
+  /** i18n */ {
     id: "EsCV2T",
     message: "Refresh inbox",
   }
@@ -879,7 +988,7 @@ t(customI18n)`Attachment ${name} saved`;
 // ↓ ↓ ↓ ↓ ↓ ↓
 
 customI18n._(
-  /*i18n*/ {
+  /** i18n */ {
     id: "nwR43V",
     message: "Attachment {name} saved",
     values: { name },
@@ -896,7 +1005,7 @@ plural(count, {
 // ↓ ↓ ↓ ↓ ↓ ↓
 
 i18n._(
-  /*i18n*/ {
+  /** i18n */ {
     id: "4w2nim",
     message: "{count, plural, one {# Message} other {# Messages}}",
     values: { count },
@@ -913,7 +1022,7 @@ t({
 // ↓ ↓ ↓ ↓ ↓ ↓
 
 i18n._(
-  /*i18n*/ {
+  /** i18n */ {
     id: "msg.refresh",
     message: "Refresh inbox",
   }
@@ -925,7 +1034,7 @@ const msg = defineMessage`Refresh inbox`;
 
 // ↓ ↓ ↓ ↓ ↓ ↓
 
-const msg = /*i18n*/ {
+const msg = /** i18n */ {
   id: "EsCV2T",
   message: "Refresh inbox",
 };
@@ -939,7 +1048,7 @@ const msg = defineMessage({
 
 // ↓ ↓ ↓ ↓ ↓ ↓
 
-const msg = /*i18n*/ {
+const msg = /** i18n */ {
   id: "msg.refresh",
   message: "Refresh inbox",
 };
@@ -956,7 +1065,7 @@ const msg = defineMessage({
 
 // ↓ ↓ ↓ ↓ ↓ ↓
 
-const msg = /*i18n*/ {
+const msg = /** i18n */ {
   id: "msg.plural",
   message: "{count, plural, one {# Message} other {# Messages}}",
   values: { count },

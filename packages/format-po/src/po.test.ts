@@ -109,6 +109,29 @@ describe("pofile format", () => {
     expect(actual).toMatchSnapshot()
   })
 
+  it("should read an obsolete message following an active message", () => {
+    const format = createFormatter()
+    const actual = format.parse(
+      `msgid ""
+msgstr ""
+"Language: en\\n"
+
+msgid "Active message"
+msgstr ""
+
+#~ msgid "Obsolete message"
+#~ msgstr ""
+`,
+      defaultParseCtx,
+    )
+
+    const obsoleteMessage = Object.values(actual).find(
+      (message) => message.message === "Obsolete message",
+    )
+
+    expect(obsoleteMessage?.obsolete).toBe(true)
+  })
+
   it("should serialize and deserialize messages with generated id", () => {
     const format = createFormatter({ origins: true })
 
@@ -688,6 +711,64 @@ msgstr ""
     expect(actual).not.toContain(`#: src/App.js:4`)
   })
 
+  describe("foldLength", () => {
+    it("should not fold by default", () => {
+      const format = createFormatter()
+
+      const catalog: CatalogType = {
+        veryLongString: {
+          translation:
+            "One morning, when Gregor Samsa woke from troubled dreams, he found himself transformed in his bed into a horrible vermin.",
+        },
+      }
+
+      const actual = format.serialize(catalog, defaultSerializeCtx)
+      expect(actual).toMatchSnapshot()
+    })
+
+    it("should fold at custom length", () => {
+      const format = createFormatter({ foldLength: 40 })
+
+      const catalog: CatalogType = {
+        veryLongString: {
+          translation:
+            "One morning, when Gregor Samsa woke from troubled dreams, he found himself transformed in his bed into a horrible vermin.",
+        },
+      }
+
+      const actual = format.serialize(catalog, defaultSerializeCtx)
+      expect(actual).toMatchSnapshot()
+    })
+  })
+
+  describe("compactMultiline", () => {
+    it("should use non-compact format when compactMultiline is false", () => {
+      const format = createFormatter({ compactMultiline: false })
+
+      const catalog: CatalogType = {
+        multiline: {
+          translation: "First line\nSecond line\nThird line",
+        },
+      }
+
+      const actual = format.serialize(catalog, defaultSerializeCtx)
+      expect(actual).toMatchSnapshot()
+    })
+
+    it("should use compact format when compactMultiline is true", () => {
+      const format = createFormatter({ compactMultiline: true })
+
+      const catalog: CatalogType = {
+        multiline: {
+          translation: "First line\nSecond line\nThird line",
+        },
+      }
+
+      const actual = format.serialize(catalog, defaultSerializeCtx)
+      expect(actual).toMatchSnapshot()
+    })
+  })
+
   describe("printPlaceholdersInComments", () => {
     it("should print unnamed placeholders as comments", () => {
       const format = createFormatter()
@@ -727,6 +808,14 @@ msgstr ""
           placeholders: {
             0: ["userName", "user.name", "profile.name", "authorName"],
           },
+        },
+
+        // Should not erase existing comments if message does not have placeholder
+        // https://github.com/lingui/js-lingui/issues/2542
+        static5: {
+          message: "Static message {0}",
+          comments: ["placeholder: {0} = getValue()"],
+          translation: "Static message {0}",
         },
       }
 

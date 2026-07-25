@@ -1,7 +1,7 @@
 import { Trans as _Trans } from "@lingui/react"
 ;<_Trans
   {
-    /*i18n*/
+    /** i18n */
     ...{
       id: "n0a_bN",
       message:

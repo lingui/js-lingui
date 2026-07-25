@@ -1,4 +1,4 @@
-import { plural, msg } from "@lingui/core/macro"
+import { msg } from "@lingui/core/macro"
 import { Trans, Plural } from "@lingui/react/macro"
 
 import { Layout } from "../components/Layout"
@@ -39,17 +39,6 @@ export default function Home() {
               one="There's one book"
               other="There are # books"
             />
-          </p>
-        )}
-      />
-
-      <PluralExample
-        render={({ value }) => (
-          <p>
-            {plural(value, {
-              one: "There's one book",
-              other: "There are # books",
-            })}
           </p>
         )}
       />

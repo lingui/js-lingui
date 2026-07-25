@@ -1,0 +1,24 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2023-03-15 10:00+0000\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: @lingui/cli\n"
+"Language: en\n"
+
+#: fixtures/pages/about.page.ts:6
+msgid "about page message"
+msgstr "about page message"
+
+#: fixtures/constants/green.ts:3
+msgid "Green"
+msgstr "Green"
+
+#: fixtures/components/header.ts:3
+msgid "header message"
+msgstr "header message"
+
+#: fixtures/components/shared.ts:3
+msgid "shared message"
+msgstr "shared message"

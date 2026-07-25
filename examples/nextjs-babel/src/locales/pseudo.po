@@ -6,68 +6,73 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: @lingui/cli\n"
 "Language: pseudo\n"
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Plural-Forms: \n"
 
-#: src/pages/examples.tsx:36
-#: src/pages/examples.tsx:48
+#: src/pages/examples.tsx:37
 msgid "{value, plural, one {There's one book} other {There are # books}}"
 msgstr ""
 
-#: src/pages/examples.tsx:18
+#: src/pages/examples.tsx:19
 msgid "Black"
 msgstr ""
 
-#: src/pages/index.tsx:50
+#: src/pages/index.tsx:55
 msgid "Checkout LinguiJS examples and usecases."
 msgstr ""
 
-#: src/pages/examples.tsx:18
+#: src/pages/examples.tsx:19
 msgid "Cyan"
 msgstr ""
 
-#: src/pages/index.tsx:36
+#: src/pages/index.tsx:41
 msgid "Documentation →"
 msgstr ""
 
-#: src/components/Layout.tsx:23
+#: src/components/Layout.tsx:26
 msgid "Example project using LinguiJS"
 msgstr ""
 
-#: src/pages/examples.tsx:26
+#: src/pages/examples.tsx:27
 msgid "Examples"
 msgstr ""
 
-#: src/pages/index.tsx:47
+#: src/pages/index.tsx:52
 msgid "Examples →"
 msgstr ""
 
-#: src/pages/index.tsx:39
+#: src/pages/index.tsx:44
 msgid "Find in-depth information about LinguiJS features and API."
 msgstr ""
 
-#: src/pages/index.tsx:28
+#: src/pages/index.tsx:33
 msgid "Get started by editing <0>locales/en.po</0>"
 msgstr ""
 
-#: src/pages/examples.tsx:18
+#: src/pages/examples.tsx:19
 msgid "Magenta"
 msgstr ""
 
-#: src/pages/examples.tsx:30
+#: src/pages/examples.tsx:31
 msgid "Plurals"
 msgstr ""
 
-#: src/components/Layout.tsx:41
+#: src/components/Layout.tsx:38
 msgid "Powered by <0/>"
 msgstr ""
 
-#: src/pages/examples.tsx:57
+#: src/pages/examples.tsx:47
 msgid "Translation outside of React components"
 msgstr ""
 
-#: src/pages/index.tsx:23
+#: src/pages/index.tsx:28
 msgid "Welcome to <0>LinguiJS!</0>"
 msgstr ""
 
-#: src/pages/examples.tsx:18
+#: src/pages/examples.tsx:19
 msgid "Yellow"
 msgstr ""

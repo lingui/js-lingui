@@ -12,7 +12,7 @@ const msg = defineMessage({
 ↓ ↓ ↓ ↓ ↓ ↓
 
 const msg =
-  /*i18n*/
+  /** i18n */
   {
     id: "msgId",
     values: {
@@ -33,7 +33,7 @@ const msg = defineMessage({
 ↓ ↓ ↓ ↓ ↓ ↓
 
 const msg =
-  /*i18n*/
+  /** i18n */
   {
     id: "oT92lS",
     values: {
@@ -51,13 +51,13 @@ const message2 = msg({ message: "Message" });
 ↓ ↓ ↓ ↓ ↓ ↓
 
 const message1 =
-  /*i18n*/
+  /** i18n */
   {
     id: "xDAtGP",
     message: "Message",
   };
 const message2 =
-  /*i18n*/
+  /** i18n */
   {
     id: "xDAtGP",
     message: "Message",
@@ -78,7 +78,7 @@ const message = defineMessage2({
 ↓ ↓ ↓ ↓ ↓ ↓
 
 const message =
-  /*i18n*/
+  /** i18n */
   {
     id: "SlmyxX",
     message: "{value, plural, one {book} other {books}}",
@@ -97,7 +97,7 @@ const message = defineMessage\`Message\`;
 ↓ ↓ ↓ ↓ ↓ ↓
 
 const message =
-  /*i18n*/
+  /** i18n */
   {
     id: "xDAtGP",
     message: "Message",
@@ -115,7 +115,7 @@ const message = defineMessage({
 ↓ ↓ ↓ ↓ ↓ ↓
 
 const message =
-  /*i18n*/
+  /** i18n */
   {
     id: "SlmyxX",
     message: "{value, plural, one {book} other {books}}",
@@ -136,7 +136,7 @@ const message = defineMessage({
 ↓ ↓ ↓ ↓ ↓ ↓
 
 const message =
-  /*i18n*/
+  /** i18n */
   {
     id: "xDAtGP",
     message: "Message",
@@ -154,7 +154,7 @@ const message = defineMessage({
 ↓ ↓ ↓ ↓ ↓ ↓
 
 const message =
-  /*i18n*/
+  /** i18n */
   {
     id: "msg.id",
     message: "Message",
@@ -171,7 +171,7 @@ const message = defineMessage({
 ↓ ↓ ↓ ↓ ↓ ↓
 
 const message =
-  /*i18n*/
+  /** i18n */
   {
     id: "OVaF9k",
     message: "Hello {name}",
@@ -191,7 +191,7 @@ const message = defineMessage({
 ↓ ↓ ↓ ↓ ↓ ↓
 
 const message =
-  /*i18n*/
+  /** i18n */
   {
     id: "A2aVLF",
     message: "Message {name}",

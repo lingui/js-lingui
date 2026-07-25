@@ -5,7 +5,7 @@
  * RSC uses static analysis to find any non-valid function calls in the import graph.
  * That means this entry point and its children must not have any Provider/Context calls.
  */
-import type { I18nContext } from "./I18nProvider"
+import type { I18nContext, I18nDefaultComponent } from "./I18nProvider"
 
 export { TransNoContext } from "./TransNoContext"
 export type {
@@ -24,11 +24,9 @@ const getLinguiCache = () => {
   // make lazy initialization of React.cache
   // so it will not execute when module just imported
   if (!cache) {
-    cache = React.cache(
-      (): CtxValueRef => ({
-        current: null,
-      }),
-    )
+    cache = React.cache((): CtxValueRef => ({
+      current: null,
+    }))
   }
 
   return cache()
@@ -50,10 +48,7 @@ const getLinguiCache = () => {
  * setI18n(i18n);
  * ```
  */
-export function setI18n(
-  i18n: I18n,
-  defaultComponent?: I18nContext["defaultComponent"],
-) {
+export function setI18n(i18n: I18n, defaultComponent?: I18nDefaultComponent) {
   getLinguiCache().current = {
     i18n,
     _: i18n._.bind(i18n),

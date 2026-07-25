@@ -1,4 +1,4 @@
-export const EXTRACT_MARK = "i18n"
+export const EXTRACT_MARK = "* i18n "
 
 export enum MsgDescriptorPropKey {
   id = "id",

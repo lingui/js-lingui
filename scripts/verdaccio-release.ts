@@ -52,7 +52,7 @@ function exec(
         resolve({ stdout, stderr })
       } else {
         reject({ error, stdout, stderr })
-        console.error(stderr)
+        console.error(stdout, stderr)
         process.exit(1)
       }
     })

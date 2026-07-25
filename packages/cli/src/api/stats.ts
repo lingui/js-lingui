@@ -35,7 +35,7 @@ export function printStats(
       return a.localeCompare(b)
     })
     .forEach((locale) => {
-      if (locale === config.pseudoLocale) return // skip pseudo locale
+      if (locale === config.pseudoLocale.locale) return // skip pseudo locale
 
       const catalog = catalogs[locale]
       // catalog is null if no catalog exists on disk and the locale

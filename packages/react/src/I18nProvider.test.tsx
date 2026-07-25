@@ -4,6 +4,7 @@ import { act, render } from "@testing-library/react"
 import { I18nProvider, useLingui } from "./I18nProvider"
 import { I18n, setupI18n } from "@lingui/core"
 import { useMemo, useCallback } from "react"
+import type { TransRenderProps } from "./TransNoContext"
 
 describe("I18nProvider", () => {
   it(
@@ -133,7 +134,7 @@ describe("I18nProvider", () => {
   })
 
   it(
-    "given 'en' locale, if activate('cs') call happens before i18n.on-change subscription in useEffect(), " +
+    "given 'en' locale, if activate('cs') call happens before i18n.on-change subscription is established, " +
       "I18nProvider detects that it's stale and re-renders with the 'cs' locale value",
     () => {
       const i18n = setupI18n({
@@ -152,7 +153,7 @@ describe("I18nProvider", () => {
        * Note that we're doing exactly what the description says:
        * but to simulate the equivalent situation, we pass our own mock subscriber
        * to i18n.on("change", ...) and in it we call i18n.activate("cs") ourselves
-       * so that the condition in useEffect() is met and the component re-renders
+       * so that the stale snapshot condition is met and the component re-renders
        * */
       const mockSubscriber = vi.fn(() => {
         i18n.load("cs", {})
@@ -225,6 +226,79 @@ describe("I18nProvider", () => {
     })
 
     expect(getByText("Ahoj světe")).toBeTruthy()
+  })
+
+  it("updates translations when active locale messages change", () => {
+    const greetingId = "greeting"
+    const i18n = setupI18n({
+      locale: "en",
+      messages: {
+        en: {
+          [greetingId]: "Hello World",
+        },
+      },
+    })
+
+    const Component = () => {
+      const { _ } = useLingui()
+      return <div>{_(greetingId)}</div>
+    }
+
+    const { getByText } = render(
+      <I18nProvider i18n={i18n}>
+        <Component />
+      </I18nProvider>,
+    )
+
+    expect(getByText("Hello World")).toBeTruthy()
+
+    act(() => {
+      i18n.load("en", {
+        [greetingId]: "Hi World",
+      })
+    })
+
+    expect(getByText("Hi World")).toBeTruthy()
+  })
+
+  it("exposes defaultComponent through context and updates it when the prop changes", () => {
+    const i18n = setupI18n({
+      locale: "en",
+      messages: { en: {} },
+    })
+
+    const DefaultA: React.ComponentType<TransRenderProps> = () => (
+      <span>default-A</span>
+    )
+    const DefaultB: React.ComponentType<TransRenderProps> = () => (
+      <span>default-B</span>
+    )
+
+    const Consumer = () => {
+      const { defaultComponent: DefaultComponent } = useLingui()
+      return DefaultComponent ? (
+        <DefaultComponent id="x" translation="x">
+          x
+        </DefaultComponent>
+      ) : null
+    }
+
+    const { getByText, rerender } = render(
+      <I18nProvider i18n={i18n} defaultComponent={DefaultA}>
+        <Consumer />
+      </I18nProvider>,
+    )
+
+    expect(getByText("default-A")).toBeTruthy()
+
+    // Changing only `defaultComponent` (same i18n) must propagate to consumers.
+    rerender(
+      <I18nProvider i18n={i18n} defaultComponent={DefaultB}>
+        <Consumer />
+      </I18nProvider>,
+    )
+
+    expect(getByText("default-B")).toBeTruthy()
   })
 
   it("keeps memoized useLingui().i18n locale in sync on locale change", () => {

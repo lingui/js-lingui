@@ -23,7 +23,7 @@ Keep your code clean and readable, while the library uses battle-tested and powe
 
 ### Lightweight and Optimized
 
-Core library is less than [2 kB gzipped](https://bundlephobia.com/result?p=@lingui/core), React components are additional [1.3 kB gzipped](https://bundlephobia.com/result?p=@lingui/react).
+Core library [![@lingui/core](https://deno.bundlejs.com/?q=%40lingui%2Fcore&treeshake=%5B%7Bi18n%7D%5D&badge=)](https://bundlejs.com/?q=%40lingui%2Fcore), React components [![@lingui/react](https://deno.bundlejs.com/?q=%40lingui%2Freact&config=%7B%22esbuild%22%3A%7B%22external%22%3A%5B%22react%22%2C%22%40lingui%2Fcore%22%5D%7D%7D&badge=)](https://bundlejs.com/?q=%40lingui%2Freact&config=%7B%22esbuild%22%3A%7B%22external%22%3A%5B%22react%22%2C%22%40lingui%2Fcore%22%5D%7D%7D).
 
 ### Universal
 
@@ -31,7 +31,7 @@ Use it everywhere. [`@lingui/core`](/ref/core) is the framework-agnostic layer: 
 
 If you are not using a UI framework, the [JavaScript tutorial](/tutorials/javascript) shows how to wire up core macros and catalogs from scratch.
 
-For React apps, [`@lingui/react`](/ref/react) adds components and hooks that follow the renderer's lifecycle, including [React Server Components](/tutorials/react-rsc). For React Native, the [React Native tutorial](/tutorials/react-native) uses the same extract-and-compile workflow. Lingui is also compatible with Astro and Svelte via community-supported packages.
+For React apps, [`@lingui/react`](/ref/react) adds components and hooks that follow the renderer's lifecycle, including [React Server Components](/tutorials/react-rsc). For React Native, the [React Native tutorial](/tutorials/react-native) uses the same extract-and-compile workflow. For SolidJS apps, [`@lingui/solid`](/ref/solid) provides native bindings with reactive `Trans` components and a `useLingui` hook - follow the [SolidJS tutorial](/tutorials/solid) to get started. Lingui is also compatible with Astro and Svelte via community-supported packages.
 
 ### Full Rich-text Support
 

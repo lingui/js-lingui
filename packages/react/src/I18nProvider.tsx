@@ -1,18 +1,14 @@
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from "react"
+import { createContext, useContext, useMemo } from "react"
+import { useSyncExternalStore } from "use-sync-external-store/shim"
 import type { I18n } from "@lingui/core"
 import type { TransRenderProps } from "./TransNoContext"
+
+export type I18nDefaultComponent = React.ComponentType<TransRenderProps>
 
 export type I18nContext = {
   i18n: I18n
   _: I18n["_"]
-  defaultComponent?: React.ComponentType<TransRenderProps>
+  defaultComponent?: I18nDefaultComponent
 }
 
 export type I18nProviderProps = Omit<I18nContext, "_"> & {
@@ -38,36 +34,65 @@ export function useLingui(): I18nContext {
   return useLinguiInternal()
 }
 
+/**
+ * We can't pass the `i18n` object directly through context, because even when
+ * locale or messages change, the i18n object keeps the same reference. Context
+ * providers compare reference identity, so we create a fresh wrapper object for
+ * each context update. See https://reactjs.org/docs/context.html#caveats.
+ *
+ * We wrap `i18n` in a Proxy to create a new reference on each context update.
+ * This ensures React correctly invalidates memoized values that depend on `i18n`.
+ */
+const getI18nContext = (
+  i18n: I18n,
+  defaultComponent?: I18nDefaultComponent,
+): I18nContext => ({
+  i18n: new Proxy(i18n, {}),
+  defaultComponent,
+  _: i18n.t.bind(i18n),
+})
+
+const createI18nStore = (
+  i18n: I18n,
+  defaultComponent?: I18nDefaultComponent,
+) => {
+  let latestLocale = i18n.locale
+  let context = getI18nContext(i18n, defaultComponent)
+
+  const updateContext = () => {
+    latestLocale = i18n.locale
+    context = getI18nContext(i18n, defaultComponent)
+  }
+
+  const getSnapshot = () => {
+    if (latestLocale !== i18n.locale) {
+      updateContext()
+    }
+
+    return context
+  }
+
+  const subscribe = (onStoreChange: () => void) =>
+    i18n.on("change", () => {
+      updateContext()
+      onStoreChange()
+    })
+
+  return {
+    getSnapshot,
+    subscribe,
+  }
+}
+
 export const I18nProvider = ({
   i18n,
   defaultComponent,
   children,
 }: I18nProviderProps) => {
-  const latestKnownLocale = useRef<string | null>(i18n.locale || null)
-  /**
-   * We can't pass `i18n` object directly through context, because even when locale
-   * or messages are changed, i18n object is still the same. Context provider compares
-   * reference identity and suggested workaround is to create a wrapper object every time
-   * we need to trigger re-render. See https://reactjs.org/docs/context.html#caveats.
-   *
-   * Due to this effect we also pass `defaultComponent` in the same context, instead
-   * of creating a separate Provider/Consumer pair.
-   *
-   * We can't use useMemo hook either, because we want to recalculate value manually.
-   *
-   * We wrap `i18n` in a Proxy to create a new reference on each context update.
-   * This ensures React correctly invalidates memoized values that depend on `i18n`.
-   */
-  const makeContext = useCallback(
-    () => ({
-      i18n: new Proxy(i18n, {}),
-      defaultComponent,
-      _: i18n.t.bind(i18n),
-    }),
+  const store = useMemo(
+    () => createI18nStore(i18n, defaultComponent),
     [i18n, defaultComponent],
   )
-
-  const [context, setContext] = useState<I18nContext>(makeContext)
 
   /**
    * Subscribe for locale/message changes
@@ -76,24 +101,13 @@ export const I18nProvider = ({
    * data (active locale, catalogs). When new messages are loaded or locale is changed
    * we need to trigger re-rendering of LinguiContext.Consumers.
    */
-  useEffect(() => {
-    const updateContext = () => {
-      latestKnownLocale.current = i18n.locale || null
-      setContext(makeContext())
-    }
-    const unsubscribe = i18n.on("change", updateContext)
+  const context = useSyncExternalStore(
+    store.subscribe,
+    store.getSnapshot,
+    store.getSnapshot,
+  )
 
-    /**
-     * unlikely, but if the locale changes before the onChange listener
-     * was added, we need to trigger a rerender
-     * */
-    if (latestKnownLocale.current !== i18n.locale) {
-      updateContext()
-    }
-    return unsubscribe
-  }, [i18n, makeContext])
-
-  if (latestKnownLocale.current === null) {
+  if (!context.i18n.locale) {
     process.env.NODE_ENV === "development" &&
       console.log(
         "I18nProvider rendered `null`. A call to `i18n.activate` needs to happen in order for translations to be activated and for the I18nProvider to render." +

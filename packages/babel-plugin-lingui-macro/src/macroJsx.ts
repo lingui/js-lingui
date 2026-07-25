@@ -24,11 +24,7 @@ import {
   createMessageDescriptorFromTokens,
   ResolvedDescriptorFields,
 } from "./messageDescriptorUtils"
-import {
-  createMacroJsContext,
-  MacroJsContext,
-  tokenizeExpression,
-} from "./macroJsAst"
+import { MacroJsContext, tokenizeExpression } from "./macroJsAst"
 import { LinguiConfigNormalized } from "@lingui/conf"
 import { PluginPass } from "@babel/core"
 
@@ -60,9 +56,12 @@ export type MacroJsxContext = MacroJsContext & {
 export type MacroJsxOpts = {
   descriptorFields: ResolvedDescriptorFields
   transImportName: string
+  transformElement?: (value: Expression) => Expression
   isLinguiIdentifier: (node: Identifier, macro: JsMacroName) => boolean
+  getDirective?: MacroJsContext["getDirective"]
   jsxPlaceholderAttribute?: string
   jsxPlaceholderDefaults?: Record<string, string>
+  idPrefixLeader?: string
 }
 
 const choiceComponentAttributesWhitelist = [
@@ -81,17 +80,18 @@ const choiceComponentAttributesWhitelist = [
 export class MacroJSX {
   types: typeof babelTypes
   ctx: MacroJsxContext
+  transformElement?: (value: Expression) => Expression
 
   constructor({ types }: { types: typeof babelTypes }, opts: MacroJsxOpts) {
     this.types = types
+    this.transformElement = opts.transformElement
 
     this.ctx = {
-      ...createMacroJsContext(opts.isLinguiIdentifier, opts.descriptorFields),
-      transImportName: opts.transImportName,
+      getDirective: () => undefined,
+      ...opts,
+      getExpressionIndex: makeCounter(),
       elementIndex: makeCounter(),
       elementsTracking: new Map(),
-      jsxPlaceholderAttribute: opts.jsxPlaceholderAttribute,
-      jsxPlaceholderDefaults: opts.jsxPlaceholderDefaults,
     }
   }
 
@@ -106,22 +106,29 @@ export class MacroJSX {
       return false
     }
 
-    const { attributes, id, comment, context } = this.stripMacroAttributes(
-      path as NodePath<JSXElement>,
-    )
-
     if (!tokens.length) {
       throw new Error("Incorrect usage of Trans")
     }
+
+    const directive = this.ctx.getDirective(path.node.loc?.start.line)
+
+    const { attributes, id, comment, context } = this.stripMacroAttributes(
+      path as NodePath<JSXElement>,
+    )
 
     const messageDescriptor = createMessageDescriptorFromTokens(
       tokens,
       path.node.loc,
       this.ctx.descriptorFields,
       {
+        ...directive,
         id,
-        context,
-        comment,
+        idPrefixLeader: this.ctx.idPrefixLeader,
+        context: context ?? directive?.context,
+        comment: comment ?? directive?.comment,
+      },
+      {
+        transformElement: this.transformElement,
       },
     )
 
@@ -312,8 +319,7 @@ export class MacroJSX {
 
       const name = attr.node.name.name
       const value = attr.get("value") as
-        | NodePath<Literal>
-        | NodePath<JSXExpressionContainer>
+        NodePath<Literal> | NodePath<JSXExpressionContainer>
 
       if (name === "value") {
         token = {

@@ -1,8 +1,9 @@
 import type { NextConfig } from 'next'
+import { linguiMacroSwcPlugin } from '@lingui/swc-plugin/options'
 
 const nextConfig: NextConfig = {
   experimental: {
-    swcPlugins: [['@lingui/swc-plugin', {}]],
+    swcPlugins: [linguiMacroSwcPlugin()],
     turbo: {
       rules: {
         '*.po': {

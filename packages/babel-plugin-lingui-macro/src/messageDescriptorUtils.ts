@@ -8,15 +8,20 @@ import {
 } from "@babel/types"
 import { EXTRACT_MARK, MsgDescriptorPropKey } from "./constants"
 import { generateMessageId } from "@lingui/message-utils/generateMessageId"
+import type { DirectiveValues } from "./linguiDirective"
 
 function buildICUFromTokens(tokens: Tokens) {
   const messageFormat = new ICUMessageFormat()
   return messageFormat.fromTokens(tokens)
 }
 
-type TextWithLoc = {
+export type TextWithLoc = {
   text: string
   loc?: SourceLocation
+}
+
+type MessageDescriptorElementTransforms = {
+  transformElement?: (value: Expression) => Expression
 }
 
 function isObjectProperty(
@@ -36,28 +41,33 @@ export function createMessageDescriptorFromTokens(
   tokens: Tokens,
   oldLoc: SourceLocation,
   descriptorFields: ResolvedDescriptorFields,
-  defaults: {
+  defaults: DirectiveValues & {
     id?: TextWithLoc | ObjectProperty
-    context?: TextWithLoc | ObjectProperty
-    comment?: TextWithLoc | ObjectProperty
+    idPrefixLeader?: string
   } = {},
+  transforms: MessageDescriptorElementTransforms = {},
 ) {
-  return createMessageDescriptor(
-    buildICUFromTokens(tokens),
-    oldLoc,
-    descriptorFields,
-    defaults,
-  )
+  const result = buildICUFromTokens(tokens)
+
+  if (result.elements && transforms.transformElement) {
+    result.elements = Object.fromEntries(
+      Object.entries(result.elements).map(([key, value]) => [
+        key,
+        transforms.transformElement(value),
+      ]),
+    )
+  }
+
+  return createMessageDescriptor(result, oldLoc, descriptorFields, defaults)
 }
 
 export function createMessageDescriptor(
   result: Partial<ParsedResult>,
   oldLoc: SourceLocation,
   descriptorFields: ResolvedDescriptorFields,
-  defaults: {
+  defaults: DirectiveValues & {
     id?: TextWithLoc | ObjectProperty
-    context?: TextWithLoc | ObjectProperty
-    comment?: TextWithLoc | ObjectProperty
+    idPrefixLeader?: string
   } = {},
 ) {
   const { message, values, elements } = result
@@ -71,16 +81,11 @@ export function createMessageDescriptor(
   const keepComment = descriptorFields === "all"
 
   const properties: ObjectProperty[] = []
+  const explicitIdProperty = createExplicitIdProperty(defaults)
 
   properties.push(
-    defaults.id
-      ? isObjectProperty(defaults.id)
-        ? defaults.id
-        : createStringObjectProperty(
-            MsgDescriptorPropKey.id,
-            defaults.id.text,
-            defaults.id.loc,
-          )
+    explicitIdProperty
+      ? explicitIdProperty
       : createIdProperty(
           message,
           defaults.context
@@ -135,6 +140,38 @@ export function createMessageDescriptor(
     properties,
     // preserve line numbers for extractor
     oldLoc,
+  )
+}
+
+function createExplicitIdProperty(
+  defaults: DirectiveValues & {
+    id?: TextWithLoc | ObjectProperty
+    idPrefixLeader?: string
+  },
+) {
+  if (!defaults.id) {
+    return
+  }
+
+  const explicitId = isObjectProperty(defaults.id)
+    ? getTextFromExpression(defaults.id.value as Expression)
+    : defaults.id.text
+
+  const resolvedId =
+    explicitId !== undefined &&
+    defaults.idPrefix &&
+    (!defaults.idPrefixLeader || explicitId.startsWith(defaults.idPrefixLeader))
+      ? defaults.idPrefix + explicitId
+      : explicitId
+
+  if (isObjectProperty(defaults.id) && resolvedId === explicitId) {
+    return defaults.id
+  }
+
+  return createStringObjectProperty(
+    MsgDescriptorPropKey.id,
+    resolvedId,
+    defaults.id.loc,
   )
 }
 

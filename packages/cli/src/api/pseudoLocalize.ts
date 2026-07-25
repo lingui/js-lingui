@@ -1,4 +1,5 @@
 import pseudolocale from "pseudolocale"
+import type { PseudoLocaleOptions } from "@lingui/conf"
 
 const delimiter = "%&&&%"
 
@@ -48,14 +49,15 @@ function removeDelimiters(message: string) {
   return message.replace(new RegExp(delimiter, "g"), "")
 }
 
-export default function (message: string) {
+export default function (message: string, options: PseudoLocaleOptions = {}) {
   message = addDelimitersHTMLTags(message)
   message = addDelimitersMacro(message)
   message = addDelimitersVariables(message)
   message = pseudolocale(message, {
-    delimiter,
     prepend: "",
     append: "",
+    ...options,
+    delimiter,
   })
 
   return removeDelimiters(message)

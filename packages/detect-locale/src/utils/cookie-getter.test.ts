@@ -9,4 +9,13 @@ describe("getCookie", () => {
     expect(getCookie("CONSENT")).toEqual("YES+ES.es+V11")
     expect(getCookie("SEARCH_SAMESITE")).toEqual("CgQI3JAB")
   })
+
+  it("should return null when the cookie is missing", () => {
+    Object.defineProperty(window.document, "cookie", {
+      writable: true,
+      value: "CONSENT=YES+ES.es+V11",
+    })
+
+    expect(getCookie("SEARCH_SAMESITE")).toBeNull()
+  })
 })

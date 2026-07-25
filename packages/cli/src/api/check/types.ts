@@ -35,9 +35,7 @@ export type ExtractFailedFinding = CheckFindingBase & {
 }
 
 export type CheckFinding =
-  | MissingTranslationFinding
-  | CatalogOutOfSyncFinding
-  | ExtractFailedFinding
+  MissingTranslationFinding | CatalogOutOfSyncFinding | ExtractFailedFinding
 
 export type CheckResult = {
   name: CheckName

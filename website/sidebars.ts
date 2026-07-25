@@ -41,6 +41,11 @@ const sidebar = [
       },
       {
         type: "doc",
+        label: "Solid",
+        id: "tutorials/solid",
+      },
+      {
+        type: "doc",
         label: "JavaScript",
         id: "tutorials/javascript",
       },
@@ -128,6 +133,11 @@ const sidebar = [
       },
       {
         type: "doc",
+        label: "@lingui/solid",
+        id: "ref/solid",
+      },
+      {
+        type: "doc",
         label: "@lingui/cli",
         id: "ref/cli",
       },
@@ -160,6 +170,11 @@ const sidebar = [
         type: "category",
         label: "Advanced",
         items: [
+          {
+            type: "doc",
+            label: "Typed Message IDs",
+            id: "guides/typed-message-ids",
+          },
           {
             type: "doc",
             label: "Custom Extractor",
