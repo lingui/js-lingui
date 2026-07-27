@@ -120,8 +120,10 @@ describe("runtime macro", () => {
     })
 
     it("no values when only static text", () => {
-      const result = msg`Just text`
+      const code = "msg`Just text`"
+      const result = runtimeMacro(code)
       expect(result.values).toBeUndefined()
+      expect(result).toStrictEqual(compileTimeMacro(code))
     })
   })
 
@@ -177,8 +179,11 @@ describe("runtime macro", () => {
     })
 
     it("with comment", () => {
-      const code =
-        'msg({ id: "msgId", message: "Hello", comment: "description for translators" })'
+      const code = `msg({
+        id: "msgId",
+        message: "Hello",
+        comment: "description for translators"
+      })`
       const result = runtimeMacro(code)
       expect(result).toMatchInlineSnapshot(`
       {
@@ -192,13 +197,13 @@ describe("runtime macro", () => {
     })
 
     it("expands plural in message property", () => {
-      const count = 5
-      expect(
-        msg({
-          id: "items.count",
-          message: msg`${plural({ count }, { one: "# item", other: "# items" })}`,
-        }),
-      ).toMatchInlineSnapshot(`
+      const vars = { count: 5 }
+      const code = `msg({
+        id: "items.count",
+        message: msg\`\${plural({ count }, { one: "# item", other: "# items" })}\`
+      })`
+      const result = runtimeMacro(code, vars)
+      expect(result).toMatchInlineSnapshot(`
       {
         "id": "items.count",
         "message": "{count, plural, one {# item} other {# items}}",
@@ -207,17 +212,19 @@ describe("runtime macro", () => {
         },
       }
     `)
+
+      expect(result).toStrictEqual(compileTimeMacro(code, vars))
     })
 
     it("expands msg with nested plural in message property", () => {
-      const count = 3
-      expect(
-        msg({
-          id: "shelf.items",
-          comment: "shelf item count",
-          message: msg`There are ${plural({ count }, { one: "# item", other: "# items" })} on the shelf`,
-        }),
-      ).toMatchInlineSnapshot(`
+      const vars = { count: 3 }
+      const code = `msg({
+        id: "shelf.items",
+        comment: "shelf item count",
+        message: msg\`There are \${plural({ count }, { one: "# item", other: "# items" })} on the shelf\`
+      })`
+      const result = runtimeMacro(code, vars)
+      expect(result).toMatchInlineSnapshot(`
       {
         "comment": "shelf item count",
         "id": "shelf.items",
@@ -227,6 +234,8 @@ describe("runtime macro", () => {
         },
       }
     `)
+
+      expect(result).toStrictEqual(compileTimeMacro(code, vars))
     })
 
     it("plain string message still works", () => {
@@ -431,21 +440,14 @@ describe("runtime macro", () => {
 
   describe("nesting and composition", () => {
     it("select containing plural", () => {
-      const gender = "male"
-      const numOfGuests = 3
-      expect(
-        select(
-          { gender },
-          {
-            male: plural(
-              { numOfGuests },
-              { one: "He invites one guest", other: "He invites # guests" },
-            ),
-            female: "She is {gender}",
-            other: "They are {gender}",
-          },
-        ),
-      ).toMatchInlineSnapshot(`
+      const vars = { gender: "male", numOfGuests: 3 }
+      const code = `select({ gender }, {
+        male: plural({ numOfGuests }, { one: "He invites one guest", other: "He invites # guests" }),
+        female: "She is {gender}",
+        other: "They are {gender}"
+      })`
+      const result = runtimeMacro(code, vars)
+      expect(result).toMatchInlineSnapshot(`
       {
         "id": "kqJ8fi",
         "message": "{gender, select, male {{numOfGuests, plural, one {He invites one guest} other {He invites # guests}}} female {She is {gender}} other {They are {gender}}}",
@@ -455,6 +457,10 @@ describe("runtime macro", () => {
         },
       }
     `)
+
+      const compiled = compileTimeMacro(code, vars)
+      expect(result.id).toBe(compiled.id)
+      expect(result.message).toBe(compiled.message)
     })
 
     it("msg with multiple nested macros", () => {
@@ -481,14 +487,13 @@ describe("runtime macro", () => {
     it("msg tagged template as plural option value", () => {
       const vars = { count: 5, name: "Alice" }
 
-      const code =
-        "plural(\n" +
-        "          { count },\n" +
-        "          {\n" +
-        "            one: msg`# item for ${{ name }}`,\n" +
-        "            other: msg`# items for ${{ name }}`,\n" +
-        "          },\n" +
-        "        )"
+      const code = `plural(
+        { count },
+        {
+          one: msg\`# item for \${{ name }}\`,
+          other: msg\`# items for \${{ name }}\`,
+        },
+      )`
 
       const result = runtimeMacro(code, vars)
 
@@ -509,18 +514,14 @@ describe("runtime macro", () => {
     })
 
     it("msg tagged template as select option value", () => {
-      const gender = "male"
-      const name = "Alex"
-      expect(
-        select(
-          { gender },
-          {
-            male: msg`He is ${{ name }}`,
-            female: msg`She is ${{ name }}`,
-            other: msg`They are ${{ name }}`,
-          },
-        ),
-      ).toMatchInlineSnapshot(`
+      const vars = { gender: "male", name: "Alex" }
+      const code = `select({ gender }, {
+        male: msg\`He is \${{ name }}\`,
+        female: msg\`She is \${{ name }}\`,
+        other: msg\`They are \${{ name }}\`
+      })`
+      const result = runtimeMacro(code, vars)
+      expect(result).toMatchInlineSnapshot(`
       {
         "id": "Zk1d1X",
         "message": "{gender, select, male {He is {name}} female {She is {name}} other {They are {name}}}",
@@ -530,6 +531,10 @@ describe("runtime macro", () => {
         },
       }
     `)
+
+      const compiled = compileTimeMacro(code, vars)
+      expect(result.id).toBe(compiled.id)
+      expect(result.message).toBe(compiled.message)
     })
   })
 
