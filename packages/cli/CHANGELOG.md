@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.6.0](https://github.com/lingui/js-lingui/compare/v6.5.0...v6.6.0) (2026-07-24)
+
+### Bug Fixes
+
+* **cli:** preserve bracketed names in catalog globs ([#2621](https://github.com/lingui/js-lingui/issues/2621)) ([3c2f987](https://github.com/lingui/js-lingui/commit/3c2f9875c6bcd0d449a84946567c115d6b65e57a))
+
+# [6.5.0](https://github.com/lingui/js-lingui/compare/v6.4.0...v6.5.0) (2026-07-06)
+
+### Features
+
+* add pseudolocalize options ([#2583](https://github.com/lingui/js-lingui/issues/2583)) ([3547688](https://github.com/lingui/js-lingui/commit/35476887e8601b9a3dd0361c8c1a04ed2e8669a3))
+* **experimental-extractor:** pluggable bundler interface + rolldown support ([#2572](https://github.com/lingui/js-lingui/issues/2572)) ([06940ed](https://github.com/lingui/js-lingui/commit/06940ed09f5c2a70c96a5981121c77a4cd305b6c))
+
 # [6.4.0](https://github.com/lingui/js-lingui/compare/v6.3.0...v6.4.0) (2026-06-16)
 
 ### Features

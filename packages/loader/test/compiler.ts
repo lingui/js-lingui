@@ -74,7 +74,7 @@ export function watch(
         stats,
       }
     },
-    stop: () => new Promise((resolve) => watching.close(resolve)),
+    stop: () => new Promise((resolve) => watching!.close(resolve)),
   }
 }
 

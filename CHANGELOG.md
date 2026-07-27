@@ -3,6 +3,32 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.6.0](https://github.com/lingui/js-lingui/compare/v6.5.0...v6.6.0) (2026-07-24)
+
+### Bug Fixes
+
+* **babel-plugin-lingui-macro:** unwrap non-null assertion (`x!`) and `satisfies` in placeholders ([#2622](https://github.com/lingui/js-lingui/issues/2622)) ([d0479ad](https://github.com/lingui/js-lingui/commit/d0479adcc8cd1a5d4c00ae26633031002f400867))
+* **cli:** preserve bracketed names in catalog globs ([#2621](https://github.com/lingui/js-lingui/issues/2621)) ([3c2f987](https://github.com/lingui/js-lingui/commit/3c2f9875c6bcd0d449a84946567c115d6b65e57a))
+* improved error message for "useLingui hook was used without I18nProvider" ([#2624](https://github.com/lingui/js-lingui/issues/2624)) ([bcee1df](https://github.com/lingui/js-lingui/commit/bcee1dfbb777be91ed5a8e47839d93dcde654abc))
+* **react:** use sync external store for i18n provider ([#2612](https://github.com/lingui/js-lingui/issues/2612)) ([b4be90d](https://github.com/lingui/js-lingui/commit/b4be90d31d40b2eb37552f3c1cea7b7345d734d7))
+
+### Features
+
+* **babel-plugin-lingui-macro:** add nested `msg` and `t` support ([#2625](https://github.com/lingui/js-lingui/issues/2625)) ([eb1fbec](https://github.com/lingui/js-lingui/commit/eb1fbec3a5ddd80f1c37f459bd2bf30e1891e820))
+* **babel-plugin:** support Babel 8 via peer dependencies ([#2623](https://github.com/lingui/js-lingui/issues/2623)) ([c979f86](https://github.com/lingui/js-lingui/commit/c979f86d75c1bc1c221c40679162be260f65ed89))
+
+
+# [6.5.0](https://github.com/lingui/js-lingui/compare/v6.4.0...v6.5.0) (2026-07-06)
+
+### Bug Fixes
+
+* don't warn about missing id when a spread is present ([#2581](https://github.com/lingui/js-lingui/issues/2581)) ([b1b9480](https://github.com/lingui/js-lingui/commit/b1b9480f7eb327e07819bd35c75d4e03a52e70ed))
+
+### Features
+
+* add pseudolocalize options ([#2583](https://github.com/lingui/js-lingui/issues/2583)) ([3547688](https://github.com/lingui/js-lingui/commit/35476887e8601b9a3dd0361c8c1a04ed2e8669a3))
+* **experimental-extractor:** pluggable bundler interface + rolldown support ([#2572](https://github.com/lingui/js-lingui/issues/2572)) ([06940ed](https://github.com/lingui/js-lingui/commit/06940ed09f5c2a70c96a5981121c77a4cd305b6c))
+
 # [6.4.0](https://github.com/lingui/js-lingui/compare/v6.3.0...v6.4.0) (2026-06-16)
 
 ### Features

@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.6.0](https://github.com/lingui/js-lingui/compare/v6.5.0...v6.6.0) (2026-07-24)
+
+### Bug Fixes
+
+* **babel-plugin-lingui-macro:** unwrap non-null assertion (`x!`) and `satisfies` in placeholders ([#2622](https://github.com/lingui/js-lingui/issues/2622)) ([d0479ad](https://github.com/lingui/js-lingui/commit/d0479adcc8cd1a5d4c00ae26633031002f400867))
+
+
+### Features
+
+* **babel-plugin-lingui-macro:** add nested `msg` and `t` support ([#2625](https://github.com/lingui/js-lingui/issues/2625)) ([eb1fbec](https://github.com/lingui/js-lingui/commit/eb1fbec3a5ddd80f1c37f459bd2bf30e1891e820))
+* **babel-plugin:** support Babel 8 via peer dependencies ([#2623](https://github.com/lingui/js-lingui/issues/2623)) ([c979f86](https://github.com/lingui/js-lingui/commit/c979f86d75c1bc1c221c40679162be260f65ed89))
+
+# [6.5.0](https://github.com/lingui/js-lingui/compare/v6.4.0...v6.5.0) (2026-07-06)
+
+**Note:** Version bump only for package @lingui/babel-plugin-lingui-macro
+
 # [6.4.0](https://github.com/lingui/js-lingui/compare/v6.3.0...v6.4.0) (2026-06-16)
 
 ### Features

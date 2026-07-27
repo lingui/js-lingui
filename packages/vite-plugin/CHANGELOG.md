@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.6.0](https://github.com/lingui/js-lingui/compare/v6.5.0...v6.6.0) (2026-07-24)
+
+### Features
+
+* **babel-plugin:** support Babel 8 via peer dependencies ([#2623](https://github.com/lingui/js-lingui/issues/2623)) ([c979f86](https://github.com/lingui/js-lingui/commit/c979f86d75c1bc1c221c40679162be260f65ed89))
+
+# [6.5.0](https://github.com/lingui/js-lingui/compare/v6.4.0...v6.5.0) (2026-07-06)
+
+### Features
+
+* add pseudolocalize options ([#2583](https://github.com/lingui/js-lingui/issues/2583)) ([3547688](https://github.com/lingui/js-lingui/commit/35476887e8601b9a3dd0361c8c1a04ed2e8669a3))
+
 # [6.4.0](https://github.com/lingui/js-lingui/compare/v6.3.0...v6.4.0) (2026-06-16)
 
 **Note:** Version bump only for package @lingui/vite-plugin

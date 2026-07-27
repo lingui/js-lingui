@@ -89,8 +89,7 @@ export type Experimental__BatchExtractorType = {
 }
 
 export type ExtractorType =
-  | PerFileExtractorType
-  | Experimental__BatchExtractorType
+  PerFileExtractorType | Experimental__BatchExtractorType
 
 export type CatalogFormatter = {
   catalogExtension: string
@@ -159,6 +158,45 @@ type CatalogService = {
   apiKey: string
 }
 
+/**
+ * Describes a single output chunk produced by the bundler.
+ */
+export type BundleChunk = {
+  /** Unique identifier for this chunk within the bundle (e.g. relative output path or fileName). */
+  id: string
+  /** Absolute or relative file path to the chunk on disk. */
+  filePath: string
+  /**
+   * If this chunk is an entry chunk, the absolute file path of the source entry point.
+   * Omit for shared/common chunks.
+   */
+  entryPoint?: string
+  /** IDs of other chunks that this chunk imports (references to other chunks' `id` fields). */
+  imports: string[]
+}
+
+/**
+ * Result returned by a bundler after bundling entry points.
+ *
+ * Bundlers describe the chunk graph — the CLI handles traversal
+ * to determine which entry points each shared chunk belongs to.
+ */
+export type BundleResult = {
+  chunks: BundleChunk[]
+}
+
+/**
+ * Pluggable bundler interface for the experimental extractor.
+ * Implementations bundle entry points and return a chunk graph.
+ */
+export type ExperimentalExtractorBundler = {
+  bundle(
+    entryPoints: string[],
+    outDir: string,
+    linguiConfig: LinguiConfigNormalized,
+  ): Promise<BundleResult>
+}
+
 export type ExperimentalExtractorOptions = {
   /**
    * Entries to start extracting from.
@@ -188,6 +226,7 @@ export type ExperimentalExtractorOptions = {
    * because they look like package imports.
    *
    * Add here the packages you want to include.
+   * @deprecated Use `bundler: createEsbuildBundler({ includeDeps: ... })` instead.
    */
   includeDeps?: string[]
 
@@ -197,6 +236,8 @@ export type ExperimentalExtractorOptions = {
    * is missing in this list please fill an issue on GitHub
    *
    * NOTE: changing this param will override default list of extensions.
+   *
+   * @deprecated Use `bundler: createEsbuildBundler({ excludeExtensions: ... })` instead.
    */
   excludeExtensions?: string[]
 
@@ -217,6 +258,26 @@ export type ExperimentalExtractorOptions = {
    */
   output: string
 
+  /**
+   * Pluggable bundler for the experimental extractor.
+   * If not provided, defaults to the built-in esbuild bundler.
+   *
+   * @example
+   * ```ts
+   * import { createEsbuildBundler } from "@lingui/cli/bundlers/esbuild"
+   *
+   * experimental: {
+   *   extractor: {
+   *     bundler: createEsbuildBundler({ resolveEsbuildOptions: (opts) => opts })
+   *   }
+   * }
+   * ```
+   */
+  bundler?: ExperimentalExtractorBundler
+
+  /**
+   * @deprecated Use `bundler: createEsbuildBundler({ resolveEsbuildOptions: ... })` instead.
+   */
   resolveEsbuildOptions?: (options: any) => any
 }
 
@@ -327,9 +388,26 @@ export type LinguiConfig = {
    * Locale used for pseudolocalization. For example, when you set `pseudoLocale: "en"`, all messages in the en catalog will be pseudo-localized.
    * The locale must be included in the locales config.
    *
+   * You can either pass the locale as a string, or an object to additionally
+   * configure the underlying [`pseudolocale`](https://github.com/MartinCerny-awin/pseudolocale)
+   * library (e.g. to customize the prepended/appended markers or extend the string length).
+   *
+   * The string form is deprecated and will be removed in a future major release.
+   * Use the object form (`{ locale: "pseudo" }`) instead.
+   *
+   * @example
+   *
+   * ```ts
+   * // Simple form (deprecated)
+   * pseudoLocale: "pseudo"
+   *
+   * // Extended form
+   * pseudoLocale: { locale: "pseudo", prepend: "⟦ ", append: " ⟧", extend: 0.4 }
+   * ```
+   *
    * https://lingui.dev/guides/pseudolocalization
    */
-  pseudoLocale?: string
+  pseudoLocale?: DeprecatedPseudoLocaleString | PseudoLocaleConfig
   /**
    * This is the directory where the Lingui CLI scans for messages in your source files during the extraction process.
    *
@@ -354,8 +432,7 @@ export type LinguiConfig = {
    * ```
    */
   runtimeConfigModule?:
-    | ModuleSource
-    | Partial<Record<"useLingui" | "Trans" | "i18n", ModuleSource>>
+    ModuleSource | Partial<Record<"useLingui" | "Trans" | "i18n", ModuleSource>>
   /**
    * Specifies the default language of message IDs in your source files.
    *
@@ -470,13 +547,80 @@ export type LinguiConfig = {
   }
 }
 
+/**
+ * Subset of options accepted by the [`pseudolocale`](https://github.com/MartinCerny-awin/pseudolocale)
+ * library that Lingui exposes through the {@link LinguiConfig.pseudoLocale} config.
+ *
+ * The delimiter related options are intentionally omitted because Lingui relies
+ * on its own internal delimiter to protect HTML tags, ICU macros and variables.
+ */
+export type PseudoLocaleOptions = {
+  /**
+   * String prepended to the beginning of every pseudo-localized message.
+   *
+   * @default ""
+   */
+  prepend?: string
+  /**
+   * String appended to the end of every pseudo-localized message.
+   *
+   * @default ""
+   */
+  append?: string
+  /**
+   * Extends the width of the string by the given percentage (e.g. `0.3` adds 30%).
+   * Useful to emulate languages that are longer than the source, such as German.
+   *
+   * @default 0
+   */
+  extend?: number
+  /**
+   * Replaces every (non-token) character with the given one. Handy to quickly
+   * spot strings that were not extracted/translated.
+   *
+   * @default undefined
+   */
+  override?: string
+}
+
+/**
+ * Legacy string form of {@link LinguiConfig.pseudoLocale}, where the value is
+ * the pseudolocalization locale itself.
+ *
+ * @deprecated Use the object form ({@link PseudoLocaleConfig}, e.g. `{ locale: "pseudo" }`) instead.
+ * The string form will be removed in a future major release.
+ */
+export type DeprecatedPseudoLocaleString = string
+
+/**
+ * Extended form of {@link LinguiConfig.pseudoLocale}, allowing the
+ * pseudolocalization {@link PseudoLocaleOptions} to be configured alongside the locale.
+ */
+export type PseudoLocaleConfig = {
+  /**
+   * Locale used for pseudolocalization. The locale must be included in the `locales` config.
+   */
+  locale: string
+} & PseudoLocaleOptions
+
+/**
+ * Normalized form of {@link LinguiConfig.pseudoLocale}. `makeConfig` expands both
+ * the string and object forms into this shape so consumers always receive the
+ * locale and its {@link PseudoLocaleOptions} separately.
+ */
+export type PseudoLocaleConfigNormalized = {
+  locale: string
+  options: PseudoLocaleOptions
+}
+
 type ModuleSourceNormalized = readonly [module: string, specifier: string]
 
 export type LinguiConfigNormalized = Omit<
   LinguiConfig & typeof defaultConfig,
-  "runtimeConfigModule"
+  "runtimeConfigModule" | "pseudoLocale"
 > & {
   resolvedConfigPath?: string
+  pseudoLocale: PseudoLocaleConfigNormalized
   runtimeConfigModule: {
     i18n: ModuleSourceNormalized
     useLingui: ModuleSourceNormalized

@@ -261,6 +261,26 @@ describe("createCompiledCatalog", () => {
     })
   })
 
+  describe("options.pseudoLocaleOptions", () => {
+    it("should forward options to the pseudolocale library", () => {
+      const { source } = createCompiledCatalog(
+        "ps",
+        {
+          Hello: "Ahoj",
+        },
+        {
+          pseudoLocale: "ps",
+          pseudoLocaleOptions: {
+            prepend: "[!!",
+            append: "!!]",
+          },
+        },
+      )
+
+      expect(source).toMatchSnapshot()
+    })
+  })
+
   describe("options.compilerBabelOptions", () => {
     const getCompiledCatalog = (opts = {}) =>
       createCompiledCatalog(

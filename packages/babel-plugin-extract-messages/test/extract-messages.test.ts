@@ -1,6 +1,6 @@
 import path from "path"
 import fs from "fs"
-import { transform as babelTransform } from "@babel/core"
+import { transformSync as babelTransform } from "@babel/core"
 import plugin, { ExtractedMessage, ExtractPluginOpts } from "../src/index"
 import { mockConsole } from "@lingui/test-utils"
 import linguiMacroPlugin, {
@@ -322,6 +322,20 @@ import { MyTrans } from "@my/lingui"
         const messages = transformCode(code)
         expect(messages).toHaveLength(1)
         expect(messages[0]).toMatchObject({ id: "x", message: "translation" })
+      })
+    })
+
+    it("Should not warn when id could be provided via spread", () => {
+      const code = `
+      const lookup = { x: {}, generic: {} };
+      i18n._({
+        ...(lookup.x ?? lookup.generic),
+        values: { val: "test" },
+      });
+      `
+      expectNoConsole(() => {
+        const messages = transformCode(code)
+        expect(messages).toHaveLength(0)
       })
     })
   })

@@ -111,14 +111,16 @@ describe("Trans component", () => {
       mockConsole(() => {
         expect(() => render(() => <Trans id="unknown" />))
           .toThrowErrorMatchingInlineSnapshot(`
-          [Error: Trans component was rendered without I18nProvider.
-          Attempted to render message: undefined id: unknown. Make sure this component is rendered inside a I18nProvider.]
-        `)
+            [Error: Trans component was rendered without I18nProvider. Attempted to render message: undefined id: unknown. Make sure this component is rendered inside a I18nProvider.
+
+            This often happens when multiple instances of @lingui/solid are installed (e.g. due to a version mismatch or misconfiguration in a monorepo). Verify you have only one version installed by running: npm ls @lingui/solid (or pnpm why @lingui/solid / yarn why @lingui/solid).]
+          `)
         expect(() =>
           render(() => <Trans id="unknown" message={"some valid message"} />),
         ).toThrowErrorMatchingInlineSnapshot(`
-          [Error: Trans component was rendered without I18nProvider.
-          Attempted to render message: some valid message id: unknown. Make sure this component is rendered inside a I18nProvider.]
+          [Error: Trans component was rendered without I18nProvider. Attempted to render message: some valid message id: unknown. Make sure this component is rendered inside a I18nProvider.
+
+          This often happens when multiple instances of @lingui/solid are installed (e.g. due to a version mismatch or misconfiguration in a monorepo). Verify you have only one version installed by running: npm ls @lingui/solid (or pnpm why @lingui/solid / yarn why @lingui/solid).]
         `)
       })
     })

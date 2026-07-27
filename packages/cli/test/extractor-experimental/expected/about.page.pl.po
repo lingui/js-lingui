@@ -13,7 +13,7 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: fixtures/pages/about.page.ts:5
+#: fixtures/pages/about.page.ts:6
 msgid "about page message"
 msgstr ""
 
@@ -24,6 +24,14 @@ msgstr ""
 #: fixtures/components/header.ts:3
 msgid "header message"
 msgstr "translation: header message"
+
+#: fixtures/constants/red.ts:3
+msgid "Red"
+msgstr ""
+
+#: fixtures/components/shared.ts:3
+msgid "shared message"
+msgstr ""
 
 #~ msgid "this should be marked as obsolete"
 #~ msgstr ""

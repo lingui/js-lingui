@@ -32,7 +32,7 @@ Lingui needs a transpiler to work. It's responsible for transforming Lingui's JS
 
 > Babel is a JavaScript transpiler that converts modern code into backward-compatible versions and allows custom syntax transformations.
 
-Lingui requires `@lingui/babel-plugin-lingui-macro` (recommended) or [`babel-plugin-macros`](https://github.com/kentcdodds/babel-plugin-macros) to perform the transformation.
+Lingui requires `@lingui/babel-plugin-lingui-macro` (recommended) or [`babel-plugin-macros`](https://github.com/kentcdodds/babel-plugin-macros) (deprecated as of V6) to perform the transformation.
 
 If you are using a framework that doesn't allow you to change the Babel configuration (e.g. Create React App > 2.0), these frameworks may support `babel-plugin-macros` out of the box.
 
@@ -127,7 +127,7 @@ The PO format is the default and recommended format for message catalogs. See th
 
 > Vite is a blazing fast frontend build tool powering the next generation of web applications.
 
-Lingui supports Vite with a dedicated plugin [`@lingui/vite-plugin`](/ref/vite-plugin). This plugin is responsible for extracting messages from your source code and compiling message catalogs.
+Lingui supports Vite with a dedicated plugin [`@lingui/vite-plugin`](/ref/vite-plugin). This plugin is responsible for compiling message catalogs and some fine-tuning for Vite.
 
 There are two ways to set up Lingui with Vite by using the [`@vitejs/plugin-react`](https://www.npmjs.com/package/@vitejs/plugin-react) or [`@vitejs/plugin-react-swc`](https://www.npmjs.com/package/@vitejs/plugin-react-swc). You need to choose the one that fits your project setup.
 
@@ -201,6 +201,53 @@ The `@vitejs/plugin-react-swc` plugin uses SWC to transform your code, which is 
     ```
 
 </TabItem>
+<TabItem value="vite-rolldown" label="Vite 8+ with Rolldown" default>
+
+Vite 8+ uses Rolldown to transpile and bundle your code. By default, it doesn't require Babel or SWC. However, Rolldown doesn't support native plugins yet, so you still need Babel or SWC to transform Lingui macros.
+
+The easiest approach is to use a preset exported from `@lingui/vite-plugin`:
+
+1.  Install `@lingui/vite-plugin` and `@rolldown/plugin-babel` as development dependencies and `@lingui/react` as a runtime dependency:
+
+    ```bash npm2yarn
+    npm install --save-dev @lingui/vite-plugin @rolldown/plugin-babel
+    npm install --save @lingui/react
+    ```
+
+2.  Setup Lingui in `vite.config.ts`:
+
+    ```ts title="vite.config.ts"
+    import { defineConfig } from "vite";
+    import react from "@vitejs/plugin-react";
+    import { lingui, linguiTransformerBabelPreset } from "@lingui/vite-plugin";
+    import babel from "@rolldown/plugin-babel";
+
+    export default defineConfig({
+      plugins: [
+        react(),
+        lingui(),
+        babel({
+          presets: [linguiTransformerBabelPreset()],
+        }),
+      ],
+    });
+    ```
+
+:::info
+If you want to use React Compiler together with Lingui, place the React Compiler preset **before** the Lingui preset. Presets are applied in reverse order, so Lingui will be applied first.
+
+```js
+plugins: [
+  react(),
+  lingui(),
+  babel({ presets: [reactCompilerPreset(), linguiTransformerBabelPreset()] }),
+],
+```
+
+:::
+
+</TabItem>
+
 </Tabs>
 
 ## See Also

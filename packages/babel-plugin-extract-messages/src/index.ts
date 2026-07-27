@@ -215,8 +215,7 @@ function getLinguiConfig(ctx: PluginPass): LinguiConfigNormalized {
   if (linguiConfig) return linguiConfig
 
   const loadedConfig = ctx.get("linguiConfig") as
-    | LinguiConfigNormalized
-    | undefined
+    LinguiConfigNormalized | undefined
   if (loadedConfig) return loadedConfig
 
   const config = loadConfig()
@@ -252,6 +251,15 @@ export default function ({ types: t }: { types: BabelTypes }): PluginObj {
     const props = extractFromObjectExpression(t, path.node, ctx.file.hub)
 
     if (!props.id) {
+      // The id may be provided by a spread element (e.g. `i18n._({ ...msg })`),
+      // which can't be resolved statically. Skip silently instead of warning.
+      const hasSpread = path.node.properties.some((prop) =>
+        t.isSpreadElement(prop),
+      )
+      if (hasSpread) {
+        return
+      }
+
       console.warn(
         path.buildCodeFrameError("Missing message ID, skipping.").message,
       )

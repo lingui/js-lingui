@@ -31,5 +31,30 @@ macroTester({
         });
       `,
     },
+    {
+      name: "Support msg tagged template as option value in select",
+      code: `
+        import { select, msg } from '@lingui/core/macro'
+        select(gender, {
+          male: msg\`He\`,
+          female: msg\`She\`,
+          other: msg\`They\`
+        });
+      `,
+    },
+    {
+      name: "Support plural with nested msg in options",
+      code: `
+        import { select, plural, msg } from '@lingui/core/macro'
+        select(gender, {
+          male: plural(numOfGuests, {
+            one: msg\`He invites one guest\`,
+            other: msg\`He invites # guests\`
+          }),
+          female: msg\`She\`,
+          other: msg\`They\`
+        });
+      `,
+    },
   ],
 })

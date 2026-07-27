@@ -13,6 +13,7 @@ Here are some of them:
 - [Bluesky](https://bsky.app/) [![Repo stars](https://img.shields.io/github/stars/bluesky-social/social-app?cacheSeconds=86400)](https://github.com/bluesky-social/social-app)
 - [AntD Admin](https://github.com/zuiidea/antd-admin#readme) [![Repo stars](https://img.shields.io/github/stars/zuiidea/antd-admin?cacheSeconds=86400)](https://github.com/zuiidea/antd-admin)
 - [Documenso](https://documenso.com/) [![Repo stars](https://img.shields.io/github/stars/documenso/documenso?cacheSeconds=86400)](https://github.com/documenso/documenso)
+- [Fluxer](https://fluxer.app/) [![Repo stars](https://img.shields.io/github/stars/fluxerapp/fluxer?cacheSeconds=86400)](https://github.com/fluxerapp/fluxer)
 - [InvenTree](https://docs.inventree.org/en/stable/) [![Repo stars](https://img.shields.io/github/stars/inventree/InvenTree?cacheSeconds=86400)](https://github.com/inventree/InvenTree)
 - [flowchart.fun](https://flowchart.fun/) [![Repo stars](https://img.shields.io/github/stars/tone-row/flowchart-fun?cacheSeconds=86400)](https://github.com/tone-row/flowchart-fun)
 - [Fider](https://fider.io/) [![Repo stars](https://img.shields.io/github/stars/getfider/fider?cacheSeconds=86400)](https://github.com/getfider/fider)

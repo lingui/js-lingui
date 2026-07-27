@@ -78,7 +78,8 @@ Please check that \`catalogs.path\` is filled properly and restart the Metro ser
   const { source } = createCompiledCatalog(locale, messages, {
     strict,
     namespace: "es",
-    pseudoLocale: config.pseudoLocale,
+    pseudoLocale: config.pseudoLocale.locale,
+    pseudoLocaleOptions: config.pseudoLocale.options,
   })
 
   return source

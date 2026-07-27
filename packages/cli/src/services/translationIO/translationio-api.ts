@@ -33,8 +33,7 @@ export type FetchResult<T> =
   | { error: { response: Response; message: string }; data: undefined }
 
 export type TranslationIoResponse =
-  | TranslationIoErrorResponse
-  | TranslationProjectResponse
+  TranslationIoErrorResponse | TranslationProjectResponse
 
 type TranslationIoErrorResponse = {
   errors: string[]
