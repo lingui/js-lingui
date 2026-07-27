@@ -11,20 +11,24 @@ import { makeConfig } from "@lingui/conf"
 
 const linguiConfig = makeConfig({ rootDir: __dirname, locales: ["en"] })
 
+function wrapInMsg(code: string) {
+  return code.startsWith("msg") ? code : "msg`${" + code + "}`"
+}
+
 function compileTimeMacro(
   code: string,
   vars: Record<string, unknown> = {},
 ): { id: string; message?: string; values?: Record<string, unknown> } {
-  const transformed = transformSync(
+  const input =
     "import { msg, plural, select, selectOrdinal } from '@lingui/core/macro';\n" +
-      code,
-    {
-      filename: "<test>.js",
-      configFile: false,
-      babelrc: false,
-      plugins: [[linguiMacroPlugin, { linguiConfig }]],
-    },
-  )!.code!
+    wrapInMsg(code)
+
+  const transformed = transformSync(input, {
+    filename: "<test>.js",
+    configFile: false,
+    babelrc: false,
+    plugins: [[linguiMacroPlugin, { linguiConfig }]],
+  })!.code!
 
   const varNames = Object.keys(vars)
   const fn = new Function(...varNames, "return " + transformed)
@@ -43,7 +47,7 @@ function runtimeMacro(
     ...vars,
   }
   const varNames = Object.keys(allVars)
-  const fn = new Function(...varNames, "return " + code)
+  const fn = new Function(...varNames, "return " + wrapInMsg(code))
   return fn(...varNames.map((k) => allVars[k]))
 }
 
@@ -242,8 +246,7 @@ describe("runtime macro", () => {
   describe("plural", () => {
     it("standalone with labeled name", () => {
       const vars = { count: 5 }
-      const code =
-        'msg`${plural({ count }, { one: "# book", other: "# books" })}`'
+      const code = 'plural({ count }, { one: "# book", other: "# books" })'
       const result = runtimeMacro(code, vars)
       expect(result).toMatchInlineSnapshot(`
       {
@@ -263,7 +266,7 @@ describe("runtime macro", () => {
     it("with offset", () => {
       const vars = { count: 5 }
       const code =
-        'msg`${plural({ count }, { offset: 1, one: "# book", other: "# books" })}`'
+        'plural({ count }, { offset: 1, one: "# book", other: "# books" })'
       const result = runtimeMacro(code, vars)
       expect(result).toMatchInlineSnapshot(`
       {
@@ -283,7 +286,7 @@ describe("runtime macro", () => {
     it("with exact numeric matches", () => {
       const vars = { count: 5 }
       const code =
-        'msg`${plural({ count }, { 0: "No books", 1: "One book", other: "# books" })}`'
+        'plural({ count }, { 0: "No books", 1: "One book", other: "# books" })'
       const result = runtimeMacro(code, vars)
       expect(result).toMatchInlineSnapshot(`
       {
@@ -346,7 +349,7 @@ describe("runtime macro", () => {
     it("standalone with labeled name", () => {
       const vars = { gender: "male" }
       const code =
-        'msg`${select({ gender }, { male: "he", female: "she", other: "they" })}`'
+        'select({ gender }, { male: "he", female: "she", other: "they" })'
       const result = runtimeMacro(code, vars)
       expect(result).toMatchInlineSnapshot(`
       {
@@ -388,7 +391,7 @@ describe("runtime macro", () => {
     it("standalone with labeled name", () => {
       const vars = { count: 3 }
       const code =
-        'msg`${selectOrdinal({ count }, { one: "#st", two: "#nd", few: "#rd", other: "#th" })}`'
+        'selectOrdinal({ count }, { one: "#st", two: "#nd", few: "#rd", other: "#th" })'
       const result = runtimeMacro(code, vars)
       expect(result).toMatchInlineSnapshot(`
       {
@@ -431,14 +434,17 @@ describe("runtime macro", () => {
       const gender = "male"
       const numOfGuests = 3
       expect(
-        msg`${select(
+        select(
           { gender },
           {
-            male: msg`${plural({ numOfGuests }, { one: "He invites one guest", other: "He invites # guests" })}`,
+            male: plural(
+              { numOfGuests },
+              { one: "He invites one guest", other: "He invites # guests" },
+            ),
             female: "She is {gender}",
             other: "They are {gender}",
           },
-        )}`,
+        ),
       ).toMatchInlineSnapshot(`
       {
         "id": "kqJ8fi",
@@ -473,17 +479,20 @@ describe("runtime macro", () => {
     })
 
     it("msg tagged template as plural option value", () => {
-      const count = 5
-      const name = "Alice"
-      expect(
-        msg`${plural(
-          { count },
-          {
-            one: msg`# item for ${{ name }}`,
-            other: msg`# items for ${{ name }}`,
-          },
-        )}`,
-      ).toMatchInlineSnapshot(`
+      const vars = { count: 5, name: "Alice" }
+
+      const code =
+        "plural(\n" +
+        "          { count },\n" +
+        "          {\n" +
+        "            one: msg`# item for ${{ name }}`,\n" +
+        "            other: msg`# items for ${{ name }}`,\n" +
+        "          },\n" +
+        "        )"
+
+      const result = runtimeMacro(code, vars)
+
+      expect(result).toMatchInlineSnapshot(`
       {
         "id": "vW9lXK",
         "message": "{count, plural, one {# item for {name}} other {# items for {name}}}",
@@ -493,20 +502,24 @@ describe("runtime macro", () => {
         },
       }
     `)
+
+      const compiled = compileTimeMacro(code, vars)
+      expect(result.message).toBe(compiled.message)
+      expect(result.id).toBe(compiled.id)
     })
 
     it("msg tagged template as select option value", () => {
       const gender = "male"
       const name = "Alex"
       expect(
-        msg`${select(
+        select(
           { gender },
           {
             male: msg`He is ${{ name }}`,
             female: msg`She is ${{ name }}`,
             other: msg`They are ${{ name }}`,
           },
-        )}`,
+        ),
       ).toMatchInlineSnapshot(`
       {
         "id": "Zk1d1X",
