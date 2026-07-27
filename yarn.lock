@@ -1515,7 +1515,7 @@ __metadata:
     msw: "npm:^2.12.7"
     normalize-path: "npm:^3.0.0"
     ora: "npm:^9.1.0"
-    pseudolocale: "npm:^2.2.0"
+    pseudolocale: "npm:^2.3.0"
     rolldown: "npm:^1.1.1"
     source-map: "npm:^0.7.6"
     tinypool: "npm:^2.1.0"
@@ -11976,14 +11976,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pseudolocale@npm:^2.2.0":
-  version: 2.2.0
-  resolution: "pseudolocale@npm:2.2.0"
+"pseudolocale@npm:^2.3.0":
+  version: 2.3.0
+  resolution: "pseudolocale@npm:2.3.0"
   dependencies:
     commander: "npm:^10.0.0"
   bin:
     pseudolocale: dist/cli.mjs
-  checksum: 10/a153dc83b5c77a5925072eba62f61d2574a6f0df1fbd07205e00aebf56834f201d828e1b727a915664b618145ebd54cb41f7cdebd517f761593f9394325e5839
+  checksum: 10/72049611bd9f81e6e5e64c5ce9216479a1a136c2c70d52d711642ba3f19994da349d060bc56ef7293b427cc468a25b848bdb01971848bc958e76d32de8ed083f
   languageName: node
   linkType: hard
 

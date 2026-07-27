@@ -297,11 +297,38 @@ macroTester({
       filename: "js-t-var/js-t-var.js",
     },
     {
-      name: "Support t in t",
+      name: "Support nested msg in t",
+      code: `
+        import { t, msg } from '@lingui/core/macro'
+        t\`Field \${msg\`First Name\`} is required\`
+      `,
+    },
+    {
+      name: "Support nested t in t",
       code: `
         import { t } from '@lingui/core/macro'
-        t\`Field \${t\`First Name\`} is required\`
+        t\`Outer \${t\`Inner \${name}\`} end\`
       `,
+    },
+    {
+      name: "Support nested msg in t message description",
+      code: `
+        import { t, msg } from '@lingui/core/macro';
+        
+        t({
+            message: msg\`Hello \${name}\`,
+        })
+    `,
+    },
+    {
+      name: "Support nested t in t message description",
+      code: `
+        import { t, msg } from '@lingui/core/macro';
+        
+        t({
+            message: t\`Hello \${name}\`,
+        })
+    `,
     },
     {
       name: "should correctly process nested macro when referenced from different imports",
