@@ -36,6 +36,11 @@ const USERS: UserDetails[] = [
     link: "https://github.com/twentyhq/twenty",
   },
   {
+    logo: "inkeep.png",
+    name: "Inkeep",
+    link: "https://github.com/inkeep/open-knowledge",
+  },
+  {
     logo: "documenso.png",
     name: "Documenso",
     link: "https://github.com/documenso/documenso",
@@ -92,7 +97,7 @@ export function Users(): React.ReactElement {
               className="group flex w-1/2 flex-col items-center text-secondary no-underline hover:no-underline sm:w-auto"
             >
               <img
-                className="mb-1.5 h-auto w-14 rounded-lg transition duration-200 group-hover:scale-110"
+                className="mb-1.5 h-14 w-14 rounded-lg object-contain transition duration-200 group-hover:scale-110"
                 alt={user.name}
                 src={withBaseUrl(`/img/users/${user.logo}`)}
                 style={user.background ? { backgroundColor: user.background } : undefined}
