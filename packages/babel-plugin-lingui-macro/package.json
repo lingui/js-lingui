@@ -55,18 +55,15 @@
     "node": ">=22.19.0"
   },
   "dependencies": {
+    "@babel/types": "^7.20.7",
     "@lingui/conf": "workspace:*",
     "@lingui/message-utils": "workspace:*"
   },
   "peerDependencies": {
-    "@babel/core": "^7.20.12 || ^8.0.0",
-    "@babel/types": "^7.20.7 || ^8.0.0"
+    "@babel/core": "^7.20.12 || ^8.0.0"
   },
   "peerDependenciesMeta": {
     "@babel/core": {
-      "optional": true
-    },
-    "@babel/types": {
       "optional": true
     }
   },
@@ -76,7 +73,6 @@
     "@babel/plugin-syntax-jsx": "^7.28.6",
     "@babel/preset-typescript": "^7.18.6",
     "@babel/traverse": "^7.20.12",
-    "@babel/types": "^7.29.0",
     "babel-plugin-macros": "^3.1.0",
     "babel-plugin-react-compiler": "^1.0.0",
     "prettier": "3.9.4",
