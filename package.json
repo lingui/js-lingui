@@ -45,7 +45,7 @@
     "eslint-import-resolver-typescript": "^4.4.4",
     "eslint-plugin-import": "^2.32.0",
     "husky": "^8.0.3",
-    "lerna": "^9.0.0",
+    "lerna": "^10.0.1",
     "lint-staged": "^13.1.0",
     "mock-fs": "^5.2.0",
     "npm-cli-login": "^0.1.1",
