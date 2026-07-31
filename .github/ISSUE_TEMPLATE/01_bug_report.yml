@@ -76,20 +76,17 @@ body:
       description: E.g. `6.6.0`. Run `lingui --version`, or check the `@lingui/*` versions in your `package.json`.
     validations:
       required: true
-  - type: textarea
+  - type: input
     attributes:
-      label: Environment
+      label: Babel / SWC Version
       description: |
-        Paste the output of the command below. It captures your OS, Node version and the relevant package
-        versions - mismatched `@lingui/*` versions are a common cause of unexpected behavior.
-
-        ```sh
-        npx envinfo --system --binaries --npmPackages '{@lingui/*,@babel/core,@swc/core,vite,next,typescript}'
-        ```
-      render: shell
-    validations:
-      required: true
+        Resolved version, from `npm ls @babel/core` or `npm ls @swc/core`. It is often an indirect
+        dependency (Next.js bundles its own SWC), so it may not be listed in your `package.json`.
+  - type: input
+    attributes:
+      label: Node Version
+      description: Output of `node --version`
   - type: input
     attributes:
       label: Framework
-      description: E.g. Next.js, Vite
+      description: E.g. Next.js 15, Vite 8
