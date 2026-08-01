@@ -1,14 +1,13 @@
-import nodepath from "path"
-import normalizePath from "normalize-path"
 import { Catalog, cleanObsolete, order } from "../catalog.js"
 import { runBounded } from "../runBounded.js"
 import { createExtractWorkerPool, ExtractWorkerPool } from "../workerPools.js"
-import { readFile } from "../utils.js"
+import { readFile, toRootRelativePath } from "../utils.js"
 import {
   CatalogOutOfSyncFinding,
   ExtractFailedFinding,
   CheckDefinition,
   CheckContext,
+  finalizeCheckResult,
 } from "./types.js"
 
 async function getCatalogSyncFindings(
@@ -16,22 +15,22 @@ async function getCatalogSyncFindings(
   ctx: CheckContext,
   workerPool?: ExtractWorkerPool,
 ): Promise<Array<CatalogOutOfSyncFinding | ExtractFailedFinding>> {
-  const nextCatalog = await catalog.collect({ workerPool })
+  const [nextCatalog, prevCatalogs] = await Promise.all([
+    catalog.collect({ workerPool }),
+    catalog.readAll(ctx.locales),
+  ])
 
   if (!nextCatalog) {
     return [
       {
         code: "extract_failed",
         message: `Failed to extract messages for catalog ${catalog.path}`,
-        catalogPath: normalizePath(
-          nodepath.relative(ctx.config.rootDir, catalog.path),
-        ),
+        catalogPath: toRootRelativePath(ctx.config.rootDir, catalog.path),
         severity: "error",
       },
     ]
   }
 
-  const prevCatalogs = await catalog.readAll(ctx.locales)
   const mergedCatalogs = catalog.merge(prevCatalogs, nextCatalog, {
     overwrite: ctx.overwrite,
   })
@@ -40,9 +39,7 @@ async function getCatalogSyncFindings(
     ctx.workersOptions.poolSize,
     async (locale): Promise<CatalogOutOfSyncFinding | undefined> => {
       const filename = catalog.getFilename(locale)
-      const catalogPath = normalizePath(
-        nodepath.relative(ctx.config.rootDir, filename),
-      )
+      const catalogPath = toRootRelativePath(ctx.config.rootDir, filename)
       let nextLocaleCatalog = mergedCatalogs[locale]!
 
       if (ctx.clean) {
@@ -105,32 +102,30 @@ export const syncCheck: CheckDefinition = {
   },
   async run(ctx: CheckContext) {
     let workerPool: ExtractWorkerPool | undefined
-    const findings: Array<CatalogOutOfSyncFinding | ExtractFailedFinding> = []
 
     if (ctx.workersOptions.poolSize) {
       workerPool = createExtractWorkerPool(ctx.workersOptions)
     }
 
+    let findings: Array<CatalogOutOfSyncFinding | ExtractFailedFinding>
+
     try {
-      for (const catalog of ctx.catalogs) {
-        findings.push(
-          ...(await getCatalogSyncFindings(catalog, ctx, workerPool)),
+      findings = (
+        await runBounded(ctx.catalogs, ctx.workersOptions.poolSize, (catalog) =>
+          getCatalogSyncFindings(catalog, ctx, workerPool),
         )
-      }
+      ).flat()
     } finally {
       if (workerPool) {
         await workerPool.destroy()
       }
     }
 
-    return {
-      name: "sync",
-      passed: findings.length === 0,
+    return finalizeCheckResult(
+      "sync",
       findings,
-      summary:
-        findings.length === 0
-          ? "Catalogs are in sync with extract output."
-          : `Found ${findings.length} out-of-sync catalog file(s).`,
-    }
+      "Catalogs are in sync with extract output.",
+      (count) => `Found ${count} out-of-sync catalog file(s).`,
+    )
   },
 }

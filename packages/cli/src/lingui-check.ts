@@ -152,9 +152,9 @@ async function runCliCommand(
   const result = await runCheck(config, check, {
     locale: options.locale,
     workersOptions: resolveWorkersOptions(options),
-    clean: options.clean ?? false,
-    overwrite: options.overwrite ?? false,
-    missingBehavior: options.mode ?? "resolved",
+    clean: options.clean,
+    overwrite: options.overwrite,
+    missingBehavior: options.mode,
   })
 
   const output = result.passed ? console.log : console.error

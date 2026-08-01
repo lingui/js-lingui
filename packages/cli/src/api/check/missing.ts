@@ -5,7 +5,7 @@ import {
 } from "../catalog/translations.js"
 import { Catalog } from "../catalog.js"
 import { runBounded } from "../runBounded.js"
-import { CheckContext, CheckDefinition } from "./types.js"
+import { CheckContext, CheckDefinition, finalizeCheckResult } from "./types.js"
 import type { MissingBehavior } from "../catalog/getTranslationsForCatalog.js"
 import { getMissingBehaviorDescription } from "../messages.js"
 
@@ -73,14 +73,12 @@ export const missingCheck: CheckDefinition = {
       ctx.missingBehavior,
     )
 
-    return {
-      name: "missing",
-      passed: findings.length === 0,
+    return finalizeCheckResult(
+      "missing",
       findings,
-      summary:
-        findings.length === 0
-          ? `No missing translations found ${missingBehaviorDescription}.`
-          : `Found ${findings.length} missing translation(s) ${missingBehaviorDescription}.`,
-    }
+      `No missing translations found ${missingBehaviorDescription}.`,
+      (count) =>
+        `Found ${count} missing translation(s) ${missingBehaviorDescription}.`,
+    )
   },
 }

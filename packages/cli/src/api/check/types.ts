@@ -6,12 +6,12 @@ import { WorkersOptions } from "../resolveWorkersOptions.js"
 import type { MissingBehavior } from "../catalog/getTranslationsForCatalog.js"
 
 export type CheckName = "sync" | "missing"
-export type CheckSpecificOption = "clean" | "overwrite" | "missingBehavior"
-export const checkSpecificOptions: readonly CheckSpecificOption[] = [
+export const checkSpecificOptions = [
   "clean",
   "overwrite",
   "missingBehavior",
-]
+] as const
+export type CheckSpecificOption = (typeof checkSpecificOptions)[number]
 export type CheckCliOptionName = "clean" | "overwrite" | "mode"
 
 export type CheckCliExample = {
@@ -70,4 +70,18 @@ export type CheckDefinition = {
     examples: readonly CheckCliExample[]
   }
   run: (ctx: CheckContext) => Promise<CheckResult>
+}
+
+export function finalizeCheckResult(
+  name: CheckName,
+  findings: CheckFinding[],
+  passMessage: string,
+  failMessage: (count: number) => string,
+): CheckResult {
+  return {
+    name,
+    passed: findings.length === 0,
+    findings,
+    summary: findings.length === 0 ? passMessage : failMessage(findings.length),
+  }
 }

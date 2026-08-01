@@ -1,6 +1,7 @@
 import { missingCheck } from "./missing.js"
 import { syncCheck } from "./sync.js"
 import {
+  CheckCliOptionName,
   CheckDefinition,
   CheckName,
   CheckRunOptions,
@@ -25,31 +26,20 @@ function getSupportedOptions(check: CheckDefinition) {
   return check.cli.options.map((option) => option.runOption)
 }
 
-function getCliOptionName(option: CheckSpecificOption) {
-  for (const check of registeredChecks) {
-    const cliOption = check.cli.options.find(
-      (currentOption) => currentOption.runOption === option,
-    )
+type OptionOwner = { checkName: CheckName; cliOptionName: CheckCliOptionName }
 
-    if (cliOption) {
-      return cliOption.name
-    }
-  }
-
-  return option
-}
-
-function findSupportedCheck(option: CheckSpecificOption): CheckName {
-  const supportedCheck = registeredChecks.find((check) =>
-    getSupportedOptions(check).includes(option),
-  )?.name
-
-  if (!supportedCheck) {
-    throw new Error(`Unsupported check option \`${option}\`.`)
-  }
-
-  return supportedCheck
-}
+const optionOwnerByOption: ReadonlyMap<CheckSpecificOption, OptionOwner> =
+  new Map(
+    registeredChecks.flatMap((check) =>
+      check.cli.options.map(
+        (option) =>
+          [
+            option.runOption,
+            { checkName: check.name, cliOptionName: option.name },
+          ] as const,
+      ),
+    ),
+  )
 
 export function validateSupportedOptions(
   check: CheckDefinition,
@@ -60,11 +50,14 @@ export function validateSupportedOptions(
       return
     }
 
-    const supportedCheck = findSupportedCheck(option)
-    const cliOptionName = getCliOptionName(option)
+    const owner = optionOwnerByOption.get(option)
+
+    if (!owner) {
+      throw new Error(`Unsupported check option \`${option}\`.`)
+    }
 
     throw new Error(
-      `Option \`--${cliOptionName}\` can only be used with the \`${supportedCheck}\` check.`,
+      `Option \`--${owner.cliOptionName}\` can only be used with the \`${owner.checkName}\` check.`,
     )
   })
 }

@@ -110,6 +110,14 @@ export function normalizeRelativePath(sourcePath: string): string {
 }
 
 /**
+ * Normalize a path relative to the project rootDir, for display purposes
+ * (e.g. finding.catalogPath).
+ */
+export function toRootRelativePath(rootDir: string, filePath: string): string {
+  return normalizePath(path.relative(rootDir, filePath))
+}
+
+/**
  * Escape special regex characters used in file-based routing systems
  */
 export function makePathRegexSafe(path: string) {

@@ -6,14 +6,16 @@ import {
   getCatalogDependentFiles,
   createMissingErrorMessage,
   createCompilationErrorMessage,
+  isFailOnMissingEnabled,
+  getFailOnMissingBehavior,
+  formatFailOnMissingOption,
 } from "@lingui/cli/api"
-import type { MissingBehavior } from "@lingui/cli/api"
+import type { FailOnMissingOption } from "@lingui/cli/api"
 import path from "path"
 import type { Plugin } from "vite"
 import { linguiTransformerBabelPreset } from "./linguiTransformerPreset"
 
 const fileRegex = /(\.po|\?lingui)$/
-type FailOnMissingOption = boolean | MissingBehavior
 
 export type LinguiPluginOpts = {
   cwd?: string
@@ -29,23 +31,6 @@ export type LinguiPluginOpts = {
    * If true would fail compilation on message compilation errors
    **/
   failOnCompileError?: boolean
-}
-
-function isFailOnMissingEnabled(option: FailOnMissingOption | undefined) {
-  return option === true || option === "resolved" || option === "catalog"
-}
-
-function getFailOnMissingBehavior(
-  option: FailOnMissingOption | undefined,
-): MissingBehavior {
-  return option === "catalog" ? "catalog" : "resolved"
-}
-
-function formatFailOnMissingOption(option: FailOnMissingOption | undefined) {
-  if (option === true) return "true"
-  if (option === "resolved") return '"resolved"'
-  if (option === "catalog") return '"catalog"'
-  return "false"
 }
 
 export function lingui({

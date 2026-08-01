@@ -7,11 +7,12 @@ import {
   getCatalogDependentFiles,
   createMissingErrorMessage,
   createCompilationErrorMessage,
+  isFailOnMissingEnabled,
+  getFailOnMissingBehavior,
+  formatFailOnMissingOption,
 } from "@lingui/cli/api"
-import type { MissingBehavior } from "@lingui/cli/api"
+import type { FailOnMissingOption } from "@lingui/cli/api"
 import type { LoaderDefinitionFunction } from "webpack"
-
-type FailOnMissingOption = boolean | MissingBehavior
 
 export type LinguiLoaderOptions = {
   config?: string
@@ -25,23 +26,6 @@ export type LinguiLoaderOptions = {
    * If true would fail compilation on message compilation errors
    **/
   failOnCompileError?: boolean
-}
-
-function isFailOnMissingEnabled(option: FailOnMissingOption | undefined) {
-  return option === true || option === "resolved" || option === "catalog"
-}
-
-function getFailOnMissingBehavior(
-  option: FailOnMissingOption | undefined,
-): MissingBehavior {
-  return option === "catalog" ? "catalog" : "resolved"
-}
-
-function formatFailOnMissingOption(option: FailOnMissingOption | undefined) {
-  if (option === true) return "true"
-  if (option === "resolved") return '"resolved"'
-  if (option === "catalog") return '"catalog"'
-  return "false"
 }
 
 const loader: LoaderDefinitionFunction<LinguiLoaderOptions> = async function (

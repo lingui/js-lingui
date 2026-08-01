@@ -30,11 +30,8 @@ export async function getTranslationsForCatalog(
   locale: string,
   options: GetTranslationsOptions,
 ) {
-  const locales = new Set([
-    locale,
-    options.sourceLocale,
-    ...getFallbackListForLocale(options.fallbackLocales, locale),
-  ])
+  const fallbackList = getFallbackListForLocale(options.fallbackLocales, locale)
+  const locales = new Set([locale, options.sourceLocale, ...fallbackList])
 
   const [rawCatalogs, rawTemplate] = await Promise.all([
     catalog.readAll(Array.from(locales)),
@@ -49,6 +46,7 @@ export async function getTranslationsForCatalog(
   const input = { ...template, ...sourceLocaleCatalog, ...catalogs[locale] }
 
   const missing: TranslationMissingEvent[] = []
+  const missingBehavior = options.missingBehavior ?? "resolved"
 
   const messages = Object.entries(input).reduce<{ [id: string]: string }>(
     (acc, [key, msg]) => {
@@ -57,10 +55,13 @@ export async function getTranslationsForCatalog(
         msg,
         locale,
         key,
+        options.sourceLocale,
+        fallbackList,
+        ignoreObsolete,
+        missingBehavior,
         (event) => {
           missing.push(event)
         },
-        options,
       )
       return acc
     },
@@ -126,12 +127,12 @@ function getTranslation(
   msg: MessageType,
   locale: string,
   key: string,
+  sourceLocale: string,
+  fallbackList: string[],
+  ignoreObsolete: boolean,
+  missingBehavior: MissingBehavior,
   onMissing: (message: TranslationMissingEvent) => void,
-  options: GetTranslationsOptions,
 ) {
-  const { fallbackLocales, sourceLocale } = options
-  const ignoreObsolete = options.ignoreObsolete ?? false
-
   const getCatalogTranslation = (_locale: string) => {
     const localeCatalog = catalogs[_locale]
     const message = localeCatalog?.[key]
@@ -143,12 +144,10 @@ function getTranslation(
     return message.translation
   }
 
-  const getMultipleFallbacks = (_locale: string) => {
-    const fL = getFallbackListForLocale(fallbackLocales, _locale)
+  const getMultipleFallbacks = () => {
+    if (!fallbackList.length) return null
 
-    if (!fL.length) return null
-
-    for (const fallbackLocale of fL) {
+    for (const fallbackLocale of fallbackList) {
       const fallbackTranslation = getCatalogTranslation(fallbackLocale)
 
       if (catalogs[fallbackLocale] && fallbackTranslation) {
@@ -169,12 +168,11 @@ function getTranslation(
     // Get translation in target locale
     catalogTranslation ||
     // We search in fallbackLocales as dependent of each locale
-    getMultipleFallbacks(locale) ||
+    getMultipleFallbacks() ||
     (sourceLocale &&
       sourceLocale === locale &&
       sourceLocaleFallback(catalogs[sourceLocale], key, ignoreObsolete))
 
-  const missingBehavior = options.missingBehavior ?? "resolved"
   const isMissingTranslation =
     missingBehavior === "catalog"
       ? locale !== sourceLocale && !catalogTranslation

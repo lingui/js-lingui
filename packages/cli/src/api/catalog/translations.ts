@@ -1,7 +1,6 @@
-import normalizePath from "normalize-path"
-import nodepath from "path"
 import { Catalog } from "../catalog.js"
 import { CheckFindingBase } from "../findings.js"
+import { toRootRelativePath } from "../utils.js"
 import {
   getTranslationsForCatalog,
   TranslationMissingEvent,
@@ -46,8 +45,9 @@ export function createMissingTranslationFinding(
   locale: string,
   missing: TranslationMissingEvent,
 ): MissingTranslationFinding {
-  const catalogPath = normalizePath(
-    nodepath.relative(catalog.config.rootDir, catalog.getFilename(locale)),
+  const catalogPath = toRootRelativePath(
+    catalog.config.rootDir,
+    catalog.getFilename(locale),
   )
 
   return {
