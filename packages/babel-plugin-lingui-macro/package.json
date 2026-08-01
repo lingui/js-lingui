@@ -79,7 +79,7 @@
     "@babel/types": "^7.29.0",
     "babel-plugin-macros": "^3.1.0",
     "babel-plugin-react-compiler": "^1.0.0",
-    "prettier": "3.9.4",
+    "prettier": "3.9.6",
     "typescript": "catalog:",
     "unbuild": "catalog:",
     "vitest": "catalog:"
