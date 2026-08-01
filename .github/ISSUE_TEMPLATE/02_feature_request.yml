@@ -24,9 +24,7 @@ body:
   - type: textarea
     attributes:
       label: Alternatives Considered
-      description: What alternative solutions have you considered?
-    validations:
-      required: true
+      description: What alternative solutions or workarounds have you considered?
   - type: textarea
     attributes:
       label: Additional Context
