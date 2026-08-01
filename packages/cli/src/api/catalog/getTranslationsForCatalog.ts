@@ -17,6 +17,7 @@ export type GetTranslationsOptions = {
   sourceLocale: string
   fallbackLocales: FallbackLocales
   missingBehavior?: MissingBehavior
+  ignoreObsolete?: boolean
 }
 
 type CatalogTranslationsReader = {
@@ -40,8 +41,9 @@ export async function getTranslationsForCatalog(
     catalog.readTemplate(),
   ])
 
-  const catalogs = withoutObsolete(rawCatalogs)
-  const template = withoutObsoleteCatalog(rawTemplate)
+  const ignoreObsolete = options.ignoreObsolete ?? false
+  const catalogs = withoutObsolete(rawCatalogs, ignoreObsolete)
+  const template = withoutObsoleteCatalog(rawTemplate, ignoreObsolete)
   const sourceLocaleCatalog = catalogs[options.sourceLocale] || {}
 
   const input = { ...template, ...sourceLocaleCatalog, ...catalogs[locale] }
@@ -73,24 +75,31 @@ export async function getTranslationsForCatalog(
 
 function isActiveMessage(
   message: MessageType | undefined,
+  ignoreObsolete: boolean,
 ): message is MessageType {
-  return Boolean(message && !message.obsolete)
+  return Boolean(message && (!ignoreObsolete || !message.obsolete))
 }
 
-function withoutObsolete(catalogs: AllCatalogsType): AllCatalogsType {
+function withoutObsolete(
+  catalogs: AllCatalogsType,
+  ignoreObsolete: boolean,
+): AllCatalogsType {
   return Object.fromEntries(
     Object.entries(catalogs).map(([locale, catalog]) => [
       locale,
-      withoutObsoleteCatalog(catalog),
+      withoutObsoleteCatalog(catalog, ignoreObsolete),
     ]),
   )
 }
 
-function withoutObsoleteCatalog(catalog: CatalogType | undefined): CatalogType {
+function withoutObsoleteCatalog(
+  catalog: CatalogType | undefined,
+  ignoreObsolete: boolean,
+): CatalogType {
   const activeCatalog: CatalogType = {}
 
   Object.entries(catalog ?? {}).forEach(([id, message]) => {
-    if (isActiveMessage(message)) {
+    if (isActiveMessage(message, ignoreObsolete)) {
       activeCatalog[id] = message
     }
   })
@@ -98,10 +107,14 @@ function withoutObsoleteCatalog(catalog: CatalogType | undefined): CatalogType {
   return activeCatalog
 }
 
-function sourceLocaleFallback(catalog: CatalogType | undefined, key: string) {
+function sourceLocaleFallback(
+  catalog: CatalogType | undefined,
+  key: string,
+  ignoreObsolete: boolean,
+) {
   const message = catalog?.[key]
 
-  if (!isActiveMessage(message)) {
+  if (!isActiveMessage(message, ignoreObsolete)) {
     return undefined
   }
 
@@ -117,12 +130,13 @@ function getTranslation(
   options: GetTranslationsOptions,
 ) {
   const { fallbackLocales, sourceLocale } = options
+  const ignoreObsolete = options.ignoreObsolete ?? false
 
   const getCatalogTranslation = (_locale: string) => {
     const localeCatalog = catalogs[_locale]
     const message = localeCatalog?.[key]
 
-    if (!isActiveMessage(message)) {
+    if (!isActiveMessage(message, ignoreObsolete)) {
       return undefined
     }
 
@@ -158,7 +172,7 @@ function getTranslation(
     getMultipleFallbacks(locale) ||
     (sourceLocale &&
       sourceLocale === locale &&
-      sourceLocaleFallback(catalogs[sourceLocale], key))
+      sourceLocaleFallback(catalogs[sourceLocale], key, ignoreObsolete))
 
   const missingBehavior = options.missingBehavior ?? "resolved"
   const isMissingTranslation =
@@ -170,13 +184,16 @@ function getTranslation(
     onMissing({
       id: key,
       source:
-        msg.message || sourceLocaleFallback(catalogs[sourceLocale], key) || "",
+        msg.message ||
+        sourceLocaleFallback(catalogs[sourceLocale], key, ignoreObsolete) ||
+        "",
     })
   }
 
   return (
     translation ||
-    (sourceLocale && sourceLocaleFallback(catalogs[sourceLocale], key)) ||
+    (sourceLocale &&
+      sourceLocaleFallback(catalogs[sourceLocale], key, ignoreObsolete)) ||
     // take from template
     msg.message ||
     key

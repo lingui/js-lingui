@@ -155,18 +155,8 @@ const MANAGED_HEADERS = [
   "Language",
 ] as const
 
-const EMPTY_DEFAULT_HEADERS = [
-  "Project-Id-Version",
-  "Report-Msgid-Bugs-To",
-  "PO-Revision-Date",
-  "Last-Translator",
-  "Language-Team",
-  "Plural-Forms",
-] as const
-
 function shouldKeepExistingHeader(
   key: string,
-  value: string | undefined,
   customHeaderAttributes: PoFormatterOptions["customHeaderAttributes"],
 ) {
   if (MANAGED_HEADERS.includes(key as (typeof MANAGED_HEADERS)[number])) {
@@ -177,15 +167,6 @@ function shouldKeepExistingHeader(
     return false
   }
 
-  if (
-    EMPTY_DEFAULT_HEADERS.includes(
-      key as (typeof EMPTY_DEFAULT_HEADERS)[number],
-    ) &&
-    !value
-  ) {
-    return false
-  }
-
   return true
 }
 
@@ -193,12 +174,23 @@ function getNormalizedHeaders(
   language: string | undefined,
   customHeaderAttributes: PoFormatterOptions["customHeaderAttributes"],
   existingHeaders: Partial<POHeaders> | undefined,
+  existingHeaderOrder: string[] | undefined,
 ): Partial<POHeaders> {
   const nextHeaders: Partial<POHeaders> = {}
 
+  // pofile-ts pre-fills `headers` with its own default template (all
+  // standard gettext keys set to ""), even for keys the source file never
+  // wrote. `headerOrder` only records keys actually found in the text, so
+  // it's the only reliable way to tell a real (if empty) header from one
+  // the parser invented.
+  const presentInSource = new Set(existingHeaderOrder ?? [])
+
   if (existingHeaders) {
     Object.entries(existingHeaders).forEach(([key, value]) => {
-      if (shouldKeepExistingHeader(key, value, customHeaderAttributes)) {
+      if (
+        presentInSource.has(key) &&
+        shouldKeepExistingHeader(key, customHeaderAttributes)
+      ) {
         nextHeaders[key] = value
       }
     })
@@ -206,7 +198,9 @@ function getNormalizedHeaders(
 
   nextHeaders["POT-Creation-Date"] =
     customHeaderAttributes?.["POT-Creation-Date"] ??
-    existingHeaders?.["POT-Creation-Date"] ??
+    (presentInSource.has("POT-Creation-Date")
+      ? existingHeaders?.["POT-Creation-Date"]
+      : undefined) ??
     formatPotCreationDate(new Date())
   nextHeaders["MIME-Version"] = "1.0"
   nextHeaders["Content-Type"] = "text/plain; charset=utf-8"
@@ -460,6 +454,7 @@ export function formatter(options: PoFormatterOptions = {}): CatalogFormatter {
         ctx.locale,
         options.customHeaderAttributes,
         existingPo?.headers,
+        existingPo?.headerOrder,
       )
       po.headerOrder = getHeaderOrder(
         po.headers,

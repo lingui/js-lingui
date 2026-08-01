@@ -665,7 +665,7 @@ msgstr ""
     expect(actual).toContain(`"X-Custom-Attribute: custom-value\\n"`)
   })
 
-  it("should drop empty default headers when serializing over an existing file", () => {
+  it("should preserve empty default headers when serializing over an existing file", () => {
     const format = createFormatter()
     const catalog: CatalogType = {}
 
@@ -688,8 +688,8 @@ msgstr ""
 `,
     })
 
-    expect(actual).not.toContain(`"Project-Id-Version: \\n"`)
-    expect(actual).not.toContain(`"Plural-Forms: \\n"`)
+    expect(actual).toContain(`"Project-Id-Version: \\n"`)
+    expect(actual).toContain(`"Plural-Forms: \\n"`)
   })
 
   it("should keep lineNumbers disabled when serializing over an existing file", async () => {

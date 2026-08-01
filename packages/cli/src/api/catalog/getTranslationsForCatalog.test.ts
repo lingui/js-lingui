@@ -437,6 +437,7 @@ describe("getTranslationsForCatalog", () => {
     const actual = await getTranslationsForCatalog(catalogStub, "pl", {
       sourceLocale: "en",
       fallbackLocales: {},
+      ignoreObsolete: true,
     })
 
     expect(actual).toMatchInlineSnapshot(`
@@ -462,6 +463,7 @@ describe("getTranslationsForCatalog", () => {
     const actual = await getTranslationsForCatalog(catalogStub, "pl", {
       sourceLocale: "en",
       fallbackLocales: {},
+      ignoreObsolete: true,
     })
 
     expect(actual).toMatchInlineSnapshot(`
@@ -497,6 +499,7 @@ describe("getTranslationsForCatalog", () => {
       fallbackLocales: {
         default: "pl",
       },
+      ignoreObsolete: true,
     })
 
     expect(actual).toMatchInlineSnapshot(`

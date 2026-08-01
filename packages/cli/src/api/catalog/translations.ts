@@ -31,6 +31,7 @@ export async function getCatalogTranslationsWithMissing(
       fallbackLocales: catalog.config.fallbackLocales,
       sourceLocale: catalog.config.sourceLocale,
       missingBehavior,
+      ignoreObsolete: true,
     },
   )
 
