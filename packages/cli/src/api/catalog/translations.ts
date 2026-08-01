@@ -54,5 +54,6 @@ export function createMissingTranslationFinding(
     locale,
     catalogPath,
     message: createMissingTranslationMessage(missing.id, missing.source),
+    severity: "error",
   }
 }

@@ -13,10 +13,9 @@ export const checkDefinitionsByName = {
   missing: missingCheck,
 } satisfies Record<CheckName, CheckDefinition>
 
-const registeredChecks: readonly CheckDefinition[] = [
-  checkDefinitionsByName.sync,
-  checkDefinitionsByName.missing,
-]
+const registeredChecks: readonly CheckDefinition[] = Object.values(
+  checkDefinitionsByName,
+)
 
 export function getRegisteredChecks(): readonly CheckDefinition[] {
   return registeredChecks
@@ -71,7 +70,7 @@ export function validateSupportedOptions(
 }
 
 function isCheckName(inputCheck: string): inputCheck is CheckName {
-  return inputCheck === "sync" || inputCheck === "missing"
+  return inputCheck in checkDefinitionsByName
 }
 
 export function getCheck(inputCheck: string): CheckDefinition {

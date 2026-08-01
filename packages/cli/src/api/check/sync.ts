@@ -26,6 +26,7 @@ async function getCatalogSyncFindings(
         catalogPath: normalizePath(
           nodepath.relative(ctx.config.rootDir, catalog.path),
         ),
+        severity: "error",
       },
     ]
   }
@@ -67,6 +68,7 @@ async function getCatalogSyncFindings(
           : "Catalog is missing and would be created by extract",
         locale,
         catalogPath,
+        severity: "error",
       }
     },
   )
