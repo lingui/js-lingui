@@ -75,7 +75,7 @@
     "@lingui/core": "workspace:*"
   },
   "devDependencies": {
-    "@babel/core": "7.29.7",
+    "@babel/core": "8.0.1",
     "@lingui/test-utils": "workspace:*",
     "@rollup/plugin-babel": "7.1.0",
     "@solidjs/testing-library": "^0.8.10",

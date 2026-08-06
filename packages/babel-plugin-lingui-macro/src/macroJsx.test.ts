@@ -17,17 +17,19 @@ const parseExpression = (expression: string) => {
     presets: [],
     plugins: [
       "@babel/plugin-syntax-jsx",
-      {
+      // Babel 8 narrows PluginTarget to a string or a plugin factory, so an
+      // inline plugin is expressed as a function returning the visitor.
+      () => ({
         visitor: {
           JSXElement: (d, state) => {
             state.set("linguiConfig", makeConfig({}, { skipValidation: true }))
 
-            path = d
+            path = d as NodePath<JSXElement>
             path.context.state = state
             d.stop()
           },
         },
-      },
+      }),
     ],
   })
 

@@ -1,4 +1,8 @@
-import { DEFAULT_EXTENSIONS, transformAsync, ParserOptions } from "@babel/core"
+import {
+  DEFAULT_EXTENSIONS,
+  transformAsync,
+  type PluginItem,
+} from "@babel/core"
 
 import type {
   ExtractPluginOpts,
@@ -7,7 +11,7 @@ import type {
 import linguiExtractMessages from "@lingui/babel-plugin-extract-messages"
 
 import { ExtractorType, ExtractedMessage, ExtractorCtx } from "@lingui/conf"
-import { ParserPlugin } from "@babel/parser"
+import { ParserOptions, ParserPlugin } from "@babel/parser"
 
 import linguiMacroPlugin, {
   type LinguiPluginOpts,
@@ -143,7 +147,7 @@ export async function extractFromFileWithBabel(
                 descriptorFields: "all",
                 linguiConfig: ctx.linguiConfig,
               } satisfies LinguiPluginOpts,
-            ],
+            ] as PluginItem,
           ]
         : []),
       [
@@ -170,8 +174,8 @@ export function getBabelParserOptions(
 ) {
   // https://babeljs.io/docs/en/babel-parser#latest-ecmascript-features
   const parserPlugins: ParserPlugin[] = [
-    "importAttributes", // stage3
-    "explicitResourceManagement", // stage3,
+    // importAttributes and explicitResourceManagement are enabled by default
+    // in Babel 8 and are no longer accepted as plugin names.
     "decoratorAutoAccessors", // stage3,
     "deferredImportEvaluation", // stage3
   ]

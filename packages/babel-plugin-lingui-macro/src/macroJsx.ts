@@ -142,7 +142,6 @@ export class MacroJSX {
       ),
       null,
       [],
-      true,
     )
     newNode.loc = path.node.loc
 
@@ -206,7 +205,7 @@ export class MacroJSX {
       // plural, select and selectOrdinal
       return [
         this.tokenizeChoiceComponent(
-          path as NodePath<JSXElement>,
+          path as unknown as NodePath<JSXElement>,
           componentName,
         ),
       ]

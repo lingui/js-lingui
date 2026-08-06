@@ -1,5 +1,14 @@
-import type { VisitNodeObject } from "@babel/traverse"
-import { Program } from "@babel/types"
+import type { NodePath } from "@babel/core"
+
+/**
+ * `@babel/traverse` 8 stopped exporting `VisitNodeObject`. Declare the same
+ * shape locally so this resolves against either major.
+ */
+type VisitNodeObject<S, P extends Node> = {
+  enter?: (path: NodePath<P>, state: S) => void
+  exit?: (path: NodePath<P>, state: S) => void
+}
+import { Node, Program } from "@babel/types"
 
 import linguiPlugin from "./index"
 import * as Babel from "@babel/core"
