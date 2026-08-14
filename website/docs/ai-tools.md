@@ -9,16 +9,45 @@ AI coding agents and chat tools have become an essential part of the development
 
 [Agent Skills](https://github.com/lingui/skills) are reusable, procedural knowledge packages for AI coding agents. They provide best practices, common patterns, and troubleshooting guides that agents can follow when working with Lingui - reducing hallucinations and incorrect API usage.
 
-:::info
-The Lingui skills library is in an early stage. The number of available skills will grow over time. Feedback and contributions are very welcome!
-:::
-
 ### Installation
 
-Install all Lingui skills with a single command:
+The skills follow the [Agent Skills](https://agentskills.io) format and work with Claude Code, Cursor, Codex, Gemini CLI, GitHub Copilot, and other compatible agents. Use whichever installer matches your tool - each one installs the whole set.
+
+**Skills CLI:**
 
 ```shell
 npx skills add lingui/skills
+```
+
+**Claude Code plugin** - all skills load automatically and stay up to date via `/plugin marketplace update`:
+
+```text
+/plugin marketplace add lingui/skills
+/plugin install lingui@lingui-skills
+```
+
+**Plugins CLI** - auto-detects your installed agent tools and installs through each one's native plugin system:
+
+```shell
+npx plugins add lingui/skills
+```
+
+**Gemini CLI extension:**
+
+```shell
+gemini extensions install https://github.com/lingui/skills
+```
+
+**GitHub CLI** (v2.90+) - installs for GitHub Copilot or any other supported agent. Use `--agent <name>` to target a specific tool, and `gh skill update` to pull newer versions:
+
+```shell
+gh skill install lingui/skills --all
+```
+
+To install a single skill instead of the full set, pass `--skill`:
+
+```shell
+npx skills add lingui/skills --skill lingui-best-practices
 ```
 
 See the [Lingui Skills](https://github.com/lingui/skills) repository for more details about the available skills and their usage.
