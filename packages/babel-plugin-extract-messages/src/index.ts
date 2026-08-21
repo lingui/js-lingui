@@ -8,14 +8,24 @@ import type {
   ObjectProperty,
   // eslint-disable-next-line import/no-duplicates
 } from "@babel/types"
-import type { PluginObj, PluginPass, NodePath } from "@babel/core"
-import type { Hub } from "@babel/traverse"
+import type { PluginPass, NodePath, Visitor } from "@babel/core"
+import type { HubInterface } from "@babel/traverse"
 import {
   getConfig as loadConfig,
   type LinguiConfigNormalized,
 } from "@lingui/conf"
 
 type BabelTypes = typeof BabelTypesNamespace
+
+/**
+ * `@babel/core` exports this shape as `PluginObj` in Babel 7 and `PluginObject`
+ * in Babel 8. Declaring it structurally keeps the plugin type-checking against
+ * either major, matching the `^7 || ^8` peer range.
+ */
+type PluginObj = {
+  name?: string
+  visitor: Visitor<PluginPass>
+}
 
 export type ExtractedMessage = {
   id: string
@@ -71,7 +81,7 @@ function collectMessage(
 function getTextFromExpression(
   t: BabelTypes,
   exp: Expression,
-  hub: Hub,
+  hub: HubInterface,
   emitErrorOnVariable = true,
 ): string {
   if (t.isStringLiteral(exp)) {
@@ -130,7 +140,7 @@ function getNodeSource(fileContents: string, node: Node) {
 function valuesObjectExpressionToPlaceholdersRecord(
   t: BabelTypes,
   exp: ObjectExpression,
-  hub: Hub,
+  hub: HubInterface,
 ) {
   const props: Record<string, string> = {}
 
@@ -162,7 +172,7 @@ function valuesObjectExpressionToPlaceholdersRecord(
 function extractFromObjectExpression(
   t: BabelTypes,
   exp: ObjectExpression,
-  hub: Hub,
+  hub: HubInterface,
 ) {
   const props: RawMessage = {}
 

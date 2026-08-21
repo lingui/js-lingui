@@ -1,4 +1,15 @@
-import type { PluginObj, PluginPass, Visitor } from "@babel/core"
+import type { PluginPass, Visitor } from "@babel/core"
+
+/**
+ * `@babel/core` exports this shape as `PluginObj` in Babel 7 and `PluginObject`
+ * in Babel 8. Declaring it structurally keeps the plugin type-checking against
+ * either major, matching the `^7 || ^8` peer range.
+ */
+type PluginObj = {
+  name?: string
+  visitor: Visitor<PluginPass>
+}
+
 import type * as babelTypes from "@babel/types"
 import { Expression, Identifier, Program } from "@babel/types"
 import { MacroJSX } from "./macroJsx"
@@ -397,7 +408,6 @@ function wrapJsxElementAsComponent(
       ),
       null,
       [],
-      true,
     ),
   )
 }

@@ -100,7 +100,23 @@ export function createRolldownBundler(
               ],
             })
 
-            return { code: result?.code ?? undefined, map: result?.map }
+            // Babel 8 types the source map's array fields as readonly, while
+            // rolldown's ExistingRawSourceMap requires mutable arrays.
+            const map = result?.map
+              ? {
+                  ...result.map,
+                  names: [...result.map.names],
+                  sources: [...result.map.sources],
+                  sourcesContent: result.map.sourcesContent
+                    ? [...result.map.sourcesContent]
+                    : undefined,
+                  ignoreList: result.map.ignoreList
+                    ? [...result.map.ignoreList]
+                    : undefined,
+                }
+              : undefined
+
+            return { code: result?.code ?? undefined, map }
           },
         },
       }

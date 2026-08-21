@@ -58,9 +58,12 @@ export const linguiTransformerBabelPreset = (
     .join("|")
 
   return {
+    // Babel 8 narrows PresetItem so a bare preset object no longer satisfies
+    // it, though Babel still accepts one at runtime. Cast rather than reshape
+    // so the emitted preset is unchanged on both majors.
     preset: {
       plugins: [["@lingui/babel-plugin-lingui-macro", options]],
-    },
+    } as unknown as RolldownBabelPreset["preset"],
     rolldown: {
       filter: {
         code: new RegExp(`from ['"](?:${macroPattern})['"]`),

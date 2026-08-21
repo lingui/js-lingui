@@ -5,7 +5,7 @@ import {
   createMacroJsContext,
 } from "./macroJsAst"
 import type { NodePath } from "@babel/traverse"
-import { transformSync } from "@babel/core"
+import { transformSync, type PluginItem } from "@babel/core"
 import { JsMacroName } from "./constants"
 
 const parseExpression = (expression: string) => {
@@ -18,7 +18,9 @@ const parseExpression = (expression: string) => {
     presets: [],
     plugins: [
       "@babel/plugin-syntax-jsx",
-      {
+      // Babel 8 narrows PluginTarget to a string or a plugin factory, so an
+      // inline plugin is expressed as a function returning the visitor.
+      (() => ({
         visitor: {
           "CallExpression|TaggedTemplateExpression": (
             d: NodePath<Expression>,
@@ -27,7 +29,7 @@ const parseExpression = (expression: string) => {
             d.stop()
           },
         },
-      },
+      })) as PluginItem,
     ],
   })
 

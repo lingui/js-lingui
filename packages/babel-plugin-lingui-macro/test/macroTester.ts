@@ -1,5 +1,9 @@
 import linguiMacroPlugin, { LinguiPluginOpts } from "../src"
-import { transformFileSync, transformSync, TransformOptions } from "@babel/core"
+import { transformFileSync, transformSync, type PluginItem } from "@babel/core"
+
+// `TransformOptions` in Babel 7 is `InputOptions` in Babel 8; derive it from
+// the function signature so either major resolves.
+type TransformOptions = NonNullable<Parameters<typeof transformSync>[1]>
 import { format } from "prettier"
 import path from "path"
 import fs from "fs"
@@ -234,7 +238,7 @@ export const getDefaultBabelOptions = (
               {
                 panicThreshold: "critical_errors",
               },
-            ],
+            ] as PluginItem,
           ]
         : []),
     ],
