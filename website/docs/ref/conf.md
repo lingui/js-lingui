@@ -663,6 +663,11 @@ A mapping of JSX element tag names to default placeholder names. When a JSX elem
 ```
 
 Explicit attributes (via `jsxPlaceholderAttribute`) take priority over defaults.
+> **Important:** Default placeholder names are used as-is and are not automatically made unique.
+>
+> If multiple JSX elements use the same default placeholder name, Lingui reports a placeholder collision instead of generating unique names such as `<link1>`, `<link2>`, etc.
+>
+> To use different placeholder names for multiple elements, assign them explicitly with `jsxPlaceholderAttribute`.
 
 ## macro.idPrefixLeader
 
