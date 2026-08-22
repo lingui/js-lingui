@@ -664,6 +664,24 @@ A mapping of JSX element tag names to default placeholder names. When a JSX elem
 
 Explicit attributes (via `jsxPlaceholderAttribute`) take priority over defaults.
 
+Default placeholder names are not automatically numbered. If more than one JSX
+element resolves to the same default name, extraction reports a placeholder
+collision. Give each element a unique explicit name instead:
+
+```jsx
+<Trans>
+  Read the{" "}
+  <a _t="termsLink" href="/terms">
+    terms
+  </a>{" "}
+  and
+  <a _t="privacyLink" href="/privacy">
+    privacy policy
+  </a>
+  .
+</Trans>
+```
+
 ## macro.idPrefixLeader
 
 Default value: `undefined`
