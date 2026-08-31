@@ -22,7 +22,13 @@ expect({
 // pseudoLocale as an object with pseudolocale options
 expect({
   locales: ["en", "pseudo"],
-  pseudoLocale: { locale: "pseudo", prepend: "⟦ ", append: " ⟧", extend: 0.4 },
+  pseudoLocale: {
+    locale: "pseudo",
+    prepend: "⟦ ",
+    append: " ⟧",
+    extend: 0.4,
+    extendCharacter: ".",
+  },
 }).type.toBeAssignableTo<LinguiConfig>()
 
 // all props

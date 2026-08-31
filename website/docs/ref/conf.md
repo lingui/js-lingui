@@ -227,6 +227,7 @@ The string form (`pseudoLocale: "pseudo"`) is deprecated and will be removed in 
 | `prepend`  | `string` | `""`        | String prepended to the beginning of every pseudo-localized message                                 |
 | `append`   | `string` | `""`        | String appended to the end of every pseudo-localized message                                        |
 | `extend`   | `number` | `0`         | Extends the width of the string by the given percentage (e.g. `0.3` adds 30%)                       |
+| `extendCharacter` | `string` | `" "` | Character used to pad messages when `extend` is set                                                  |
 | `override` | `string` | `undefined` | Replaces every (non-token) character with the given one. Handy to quickly spot untranslated strings |
 
 ```ts title="lingui.config.{js,ts}"
@@ -244,7 +245,13 @@ export default defineConfig({
 export default defineConfig({
   locales: ["en", "pseudo"],
   sourceLocale: "en",
-  pseudoLocale: { locale: "pseudo", prepend: "⟦ ", append: " ⟧", extend: 0.4 },
+  pseudoLocale: {
+    locale: "pseudo",
+    prepend: "⟦ ",
+    append: " ⟧",
+    extend: 0.4,
+    extendCharacter: ".",
+  },
   catalogs: [],
 });
 ```
