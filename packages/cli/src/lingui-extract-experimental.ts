@@ -127,6 +127,9 @@ export default async function command(
   spinner.start("Extracting messages...")
   phaseStart = Date.now()
   const messagesByEntry = new Map<string, ExtractedCatalogType>()
+  // entry points fed by a chunk that failed to extract; their catalogs would be
+  // incomplete, so they must not be written back to disk
+  const failedEntries = new Set<string>()
 
   if (options.workersOptions.poolSize) {
     const resolvedConfigPath = linguiConfig.resolvedConfigPath
@@ -153,6 +156,7 @@ export default async function command(
 
           if (!success) {
             commandSuccess = false
+            entryPoints.forEach((entryPoint) => failedEntries.add(entryPoint))
           }
 
           for (const entryPoint of entryPoints) {
@@ -183,6 +187,7 @@ export default async function command(
 
         if (!success) {
           commandSuccess = false
+          entryPoints.forEach((entryPoint) => failedEntries.add(entryPoint))
         }
 
         for (const entryPoint of entryPoints) {
@@ -210,6 +215,15 @@ export default async function command(
   const locales = options.locales || linguiConfig.locales
 
   for (const [entryPoint, messages] of messagesByEntry) {
+    if (failedEntries.has(entryPoint)) {
+      console.error(
+        `Skipped writing catalogs for ${normalizePath(
+          nodepath.relative(linguiConfig.rootDir, entryPoint),
+        )} because extraction failed, existing catalogs are left untouched`,
+      )
+      continue
+    }
+
     let stat: string
 
     if (options.template) {
