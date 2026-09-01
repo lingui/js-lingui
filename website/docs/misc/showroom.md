@@ -29,6 +29,7 @@ Here are some of them:
 - [KlimaDAO](https://www.klimadao.finance/) [![Repo stars](https://img.shields.io/github/stars/KlimaDAO/klimadao?cacheSeconds=86400)](https://github.com/KlimaDAO/klimadao)
 - [Ansible Hub UI](https://www.redhat.com/en/technologies/management/ansible/automation-hub) [![Repo stars](https://img.shields.io/github/stars/ansible/ansible-hub-ui?cacheSeconds=86400)](https://github.com/ansible/ansible-hub-ui)
 - [MetaMask Snaps Directory](https://snaps.metamask.io/) [![Repo stars](https://img.shields.io/github/stars/MetaMask/snaps-directory?cacheSeconds=86400)](https://github.com/MetaMask/snaps-directory)
+- [Authier](https://www.authier.pm/) [![Repo stars](https://img.shields.io/github/stars/authier-pm/authier?cacheSeconds=86400)](https://github.com/authier-pm/authier)
 - [Palgakalkulaator](https://www.palgakalkulaator.ee/)
 - [ledgy.com](https://www.ledgy.com/)
 - [MyMusicTaste](https://www.mymusictaste.com/)
