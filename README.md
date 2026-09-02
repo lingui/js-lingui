@@ -1,9 +1,9 @@
 <div align="center">
 <h1>Lingui<sub>js</sub></h1>
 
-🌍📖 A readable, automated, and optimized (2 kb) internationalization for JavaScript
+Lingui is a lightweight, open-source internationalization (i18n) library for JavaScript and TypeScript. Your source text stays in the code: compile-time macros turn it into ICU MessageFormat, and a CLI extracts and compiles the message catalogs. It works with React (including React Server Components and React Native), SolidJS, Vue, Node.js, and vanilla JS.
 
-🎉 **Lingui v6 is now available!** [Read the release announcement →](https://lingui.dev/blog/2026/04/22/announcing-lingui-6.0)
+About 2 kB gzipped core · 6M+ npm downloads a month · MIT licensed
 
 <hr />
 
@@ -13,64 +13,103 @@
 [![PRs Welcome][Badge-PRWelcome]][PRWelcome]
 [![Join the community on Discord][Badge-Discord]][Discord]
 
-[**Documentation**][Documentation] · [**Example**](#example) · [**Support**](#support) · [**Contribute**](#contribute) · [**License**](#license)
+[**Documentation**][Documentation] · [**Quick Start**](#quick-start) · [**Why Lingui**](#why-lingui) · [**Support**](#support) · [**Contribute**](#contribute) · [**License**](#license)
 
 </div>
 
-> Internationalization is the design and development of a product, application or document content that enables easy localization for target audiences that vary in culture, region, or language.
->
-> --- [ W3C Web Internationalization FAQ](https://www.w3.org/International/questions/qa-i18n)
+## Quick Start
 
-Lingui is an easy yet powerful internationalization (i18n) framework for global projects.
+```bash
+npm install @lingui/core @lingui/react
+npm install --save-dev @lingui/cli
+```
 
-## Key Features
+Lingui macros run at build time, so add the macro plugin for your transpiler and create a `lingui.config.js`. The [installation guide](https://lingui.dev/installation) covers both in a few minutes.
 
-- **Clean and readable** - Keep your code clean and readable, while the library uses battle-tested and powerful **ICU MessageFormat** under the hood.
+Then wrap the text you want to translate in the `Trans` macro. There are no message IDs to invent and no separate JSON file to keep in sync:
 
-- **Universal** - Use it everywhere. `@lingui/core` provides the essential intl functionality which works in any JavaScript project, while `@lingui/react` offers components to leverage React rendering, including React Server Components (RSC) support, and `@lingui/solid` brings native SolidJS bindings. The same extract-and-compile workflow applies to React Native. Astro and Svelte work through community-supported packages.
-
-- **Full rich-text support** - Use React components inside localized messages without any limitation. Writing rich-text messages is as easy as writing JSX. That helps keep message catalogs in sync with your source code.
-
-- **Powerful tooling** - Manage your intl workflow with the Lingui [CLI](https://lingui.dev/ref/cli), [Vite Plugin](https://lingui.dev/ref/vite-plugin), and [ESLint Plugin](https://lingui.dev/ref/eslint-plugin). The CLI extracts, compiles and validates messages, while the Vite plugin compiles catalogs on the fly, and the ESLint plugin helps catch common usage errors.
-
-- **Unopinionated** - Integrate Lingui into your existing workflow. It supports explicit message keys as well as auto-generated ones. Translations are stored in a standard PO file, which is supported in almost all translation tools. You can also use CSV or JSON, or add a custom formatter of your own.
-
-- **Lightweight and optimized** - Core library [![@lingui/core](https://deno.bundlejs.com/?q=%40lingui%2Fcore&treeshake=%5B%7Bi18n%7D%5D&badge=)](https://bundlejs.com/?q=%40lingui%2Fcore), React components [![@lingui/react](https://deno.bundlejs.com/?q=%40lingui%2Freact&config=%7B%22esbuild%22%3A%7B%22external%22%3A%5B%22react%22%2C%22%40lingui%2Fcore%22%5D%7D%7D&badge=)](https://bundlejs.com/?q=%40lingui%2Freact&config=%7B%22esbuild%22%3A%7B%22external%22%3A%5B%22react%22%2C%22%40lingui%2Fcore%22%5D%7D%7D).
-
-- **Built for AI-assisted workflows** - Good translations need context, especially for short UI strings. Lingui's localization formats let you describe where and how keys are used. Install [`lingui/skills`](https://github.com/lingui/skills) to help your AI assistant apply Lingui patterns consistently, and see [i18n with AI](https://lingui.dev/ai-tools) for MCP setup and more.
-
-- **Active community** - Join the growing [community of developers](https://lingui.dev/community) who are using Lingui to build global products.
-
-- **Compatible with react-intl** - Low-level React API is very similar to react-intl and the message format is the same. It's easy to migrate an existing project.
-
-## Example
-
-Short example how i18n looks with JSX:
-
-```js
+```jsx
+import { i18n } from "@lingui/core"
+import { I18nProvider } from "@lingui/react"
 import { Trans } from "@lingui/react/macro"
+import { messages } from "./locales/en/messages"
 
-function App() {
+i18n.load("en", messages)
+i18n.activate("en")
+
+export function App() {
   return (
-    <Trans
-      id="msg.docs" // Optional message id
-      comment="Docs link on the website" // Comment for translators, optional
-    >
-      Read the <a href="https://lingui.dev">documentation</a>
-      for more info.
-    </Trans>
+    <I18nProvider i18n={i18n}>
+      <Trans>
+        Read the <a href="https://lingui.dev">documentation</a> for more info.
+      </Trans>
+    </I18nProvider>
   )
 }
 ```
 
-Message from this component will be extracted in following format:
+Extract the messages into PO catalogs, translate them, then compile the catalogs into optimized runtime output:
 
-```po
-msgid "msg.docs"
-msgstr "Read the <0>documentation</0> for more info."
+```bash
+npx lingui extract
+npx lingui compile
 ```
 
-For more example see the [Examples](https://github.com/lingui/js-lingui/tree/main/examples) directory.
+After translation, the Czech catalog in `src/locales/cs/messages.po` looks like this. The `<0>` tag stands for the `<a>` element, so translators never touch your markup:
+
+```po
+#: src/App.jsx:12
+msgid "Read the <0>documentation</0> for more info."
+msgstr "Přečtěte si <0>dokumentaci</0> pro více informací."
+```
+
+Continue with the [React tutorial](https://lingui.dev/tutorials/react), or jump to [React Server Components](https://lingui.dev/tutorials/react-rsc), [React Native](https://lingui.dev/tutorials/react-native), [SolidJS](https://lingui.dev/tutorials/solid), or [plain JavaScript](https://lingui.dev/tutorials/javascript). Working projects for Vite, Next.js, Remix, TanStack Start, React Native and more live in the [examples](https://github.com/lingui/js-lingui/tree/main/examples) directory.
+
+## Why Lingui
+
+In key-based i18n libraries you invent a key, put the text in a JSON file, and reference the key from the code. With Lingui, the text stays where it is read:
+
+```jsx
+// Key-based i18n: the code holds a key, the text lives somewhere else
+<h1>{t("dashboard.welcome.title")}</h1>
+
+// Lingui: the text is the source of truth, the catalog is generated from it
+<h1>
+  <Trans>Welcome back, {name}</Trans>
+</h1>
+```
+
+The code reads like the UI it renders, and reviewers see the actual copy in the diff. Nobody has to name keys or look up what a key means. Running `lingui extract` regenerates the catalog from the source, so new messages are added and removed ones are marked obsolete without any manual bookkeeping. Translators get the real sentence with named placeholders, plus any comments and context you add. Message IDs are stable hashes generated at build time, and [explicit IDs](https://lingui.dev/guides/explicit-vs-generated-ids) are available when you need them.
+
+On top of that:
+
+- **Rich text without workarounds.** React components inside a message are as easy as writing JSX. Translators see numbered tags, and the catalog stays in sync with your components.
+
+- **Compiled, not parsed at runtime.** Catalogs are compiled ahead of time, so the runtime ships without a MessageFormat parser. Core [![@lingui/core](https://deno.bundlejs.com/?q=%40lingui%2Fcore&treeshake=%5B%7Bi18n%7D%5D&badge=)](https://bundlejs.com/?q=%40lingui%2Fcore), React bindings [![@lingui/react](https://deno.bundlejs.com/?q=%40lingui%2Freact&config=%7B%22esbuild%22%3A%7B%22external%22%3A%5B%22react%22%2C%22%40lingui%2Fcore%22%5D%7D%7D&badge=)](https://bundlejs.com/?q=%40lingui%2Freact&config=%7B%22esbuild%22%3A%7B%22external%22%3A%5B%22react%22%2C%22%40lingui%2Fcore%22%5D%7D%7D).
+
+- **One library for the whole stack.** `@lingui/core` works in any JavaScript project. `@lingui/react` adds components and hooks, including React Server Components support, and `@lingui/solid` brings native SolidJS bindings. React Native uses the same extract-and-compile workflow, Vue single-file components are supported through `@lingui/extractor-vue`, and Astro and Svelte work through community packages.
+
+- **Standard formats and real tooling.** Translations live in PO files by default, which every translation tool understands, or in JSON, CSV, or a custom format. Messages carry comments and context for translators and machine translation. The [CLI](https://lingui.dev/ref/cli) extracts, compiles and validates, the [Vite plugin](https://lingui.dev/ref/vite-plugin) compiles catalogs on the fly, the [SWC plugin](https://lingui.dev/ref/swc-plugin) replaces Babel, and the [ESLint plugin](https://lingui.dev/ref/eslint-plugin) catches common mistakes.
+
+## Who Uses Lingui
+
+Lingui runs in production at Bluesky, ElevenLabs, Linkerd, GDevelop, Documenso, Gamma, Twenty, Superset, Notesnook, Inkeep and many more. See the [showroom](https://lingui.dev/misc/showroom) for the full list, and add your project if it is missing.
+
+## Requirements
+
+- Node.js 22.19 or newer.
+- Lingui 6 packages are ESM-only. Modern bundlers and Node.js versions with `require(esm)` handle this transparently. See the [migration guide](https://lingui.dev/releases/migration-6).
+- Macros need Babel with `@lingui/babel-plugin-lingui-macro` or SWC with `@lingui/swc-plugin`.
+- `@lingui/react` supports React 16.14 and newer, including React 19.
+
+## Docs for AI Agents
+
+- Every documentation page is available as Markdown by appending `.md` to its URL, for example [lingui.dev/installation.md](https://lingui.dev/installation.md).
+- [lingui.dev/llms.txt](https://lingui.dev/llms.txt) indexes the docs and [lingui.dev/llms-full.txt](https://lingui.dev/llms-full.txt) contains them in full.
+- [Context7](https://context7.com/lingui/js-lingui) serves the latest docs over MCP. Add `use context7` to a prompt.
+- [`lingui/skills`](https://github.com/lingui/skills) packages Lingui best practices as Agent Skills for Claude Code, Cursor, Codex, Gemini CLI, GitHub Copilot and other compatible agents. Install with `npx skills add lingui/skills`.
+
+See [i18n with AI](https://lingui.dev/ai-tools) for the details.
 
 ## Support
 
