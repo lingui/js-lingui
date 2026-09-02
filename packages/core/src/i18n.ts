@@ -151,7 +151,14 @@ export class I18n extends EventEmitter<Events> {
     return this
   }
   private _load(locale: Locale, messages: Messages) {
-    const maybeMessages = this._messages[locale]
+    // Own-property check so a "__proto__" locale key can't resolve to
+    // Object.prototype and get merged into (prototype pollution).
+    const maybeMessages = Object.prototype.hasOwnProperty.call(
+      this._messages,
+      locale,
+    )
+      ? this._messages[locale]
+      : undefined
     if (!maybeMessages) {
       this._messages[locale] = messages
     } else {
