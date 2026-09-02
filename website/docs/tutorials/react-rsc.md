@@ -21,18 +21,20 @@ After configuring the middleware, make sure your page and route files are moved 
 
 ### Next.js Config
 
-Secondly, add the `swc-plugin` to the `next.config.js`, so that you can use [Lingui Macros](/ref/macro).
+Secondly, add the `swc-plugin` to the `next.config.mjs` (or `next.config.js`), so that you can use [Lingui Macros](/ref/macro).
 
-```js title="next.config.js"
+```js title="next.config.mjs"
 import { linguiMacroSwcPlugin } from "@lingui/swc-plugin/options";
 
 /** @type {import('next').NextConfig} */
-module.exports = {
+const nextConfig = {
   // to use Lingui macros
   experimental: {
     swcPlugins: [linguiMacroSwcPlugin()],
   },
 };
+
+export default nextConfig;
 ```
 
 ### Setup with Server Components
@@ -56,13 +58,14 @@ import { getI18nInstance } from "./appRouterI18n";
 import { LinguiClientProvider } from "./LinguiClientProvider";
 
 type Props = {
-  params: {
+  params: Promise<{
     lang: string;
-  };
+  }>;
   children: React.ReactNode;
 };
 
-export default function RootLayout({ params: { lang }, children }: Props) {
+export default async function RootLayout({ params, children }: Props) {
+  const { lang } = await params; // Next.js 15+ passes params as a Promise
   const i18n = getI18nInstance(lang); // get a ready-made i18n instance for the given locale
   setI18n(i18n); // make it available server-side for the current request
 
@@ -136,7 +139,54 @@ export function SomeComponent() {
 
 As you may recall, hooks are not supported in RSC, so you might be surprised that this works. Under RSC, `useLingui` is actually not a hook but a simple function call which reads from the React `cache` mentioned above.
 
-The [RSC implementation](https://github.com/lingui/js-lingui/blob/ec49d0cc53dbc4f9e0f92f0edcdf59f3e5c1de1f/packages/react/src/index-rsc.ts#L12) of `useLingui` uses `getI18n`, which is another way to obtain the I18n instance on the server.
+The [RSC implementation](https://github.com/lingui/js-lingui/blob/main/packages/react/src/index-rsc.ts) of `useLingui` uses `getI18nOrThrow` to obtain the current Lingui context, which contains the I18n instance.
+
+### Using Lingui in Server Functions
+
+Server Functions are available in React 19 and later. Next.js commonly exposes them as _Server Actions_. Choose the API based on where the translation happens:
+
+| Situation                                                          | API                                            |
+| ------------------------------------------------------------------ | ---------------------------------------------- |
+| The function already has an `i18n` instance                        | Call `i18n.t(...)` directly                    |
+| Server Component render                                            | Call `setI18n(i18n)`                           |
+| React 19+ Server Function or Server Action with downstream helpers | Wrap the work in `runWithI18n(i18n, callback)` |
+
+Server Functions run outside the Server Component render that initialized Lingui. Unlike the RSC-only `setI18n`, `runWithI18n` scopes the instance to its callback and the asynchronous operations created inside it:
+
+```tsx title="app/actions.ts"
+"use server";
+
+import { setupI18n } from "@lingui/core";
+import { msg } from "@lingui/core/macro";
+import { getI18nOrThrow, runWithI18n } from "@lingui/react/server";
+import { getCurrentUser } from "./auth";
+
+async function translateGreeting() {
+  const user = await getCurrentUser();
+  const { i18n } = getI18nOrThrow();
+
+  return i18n.t(msg`Hello, ${user.name}!`);
+}
+
+export async function getGreeting(locale: string) {
+  const i18n = setupI18n({
+    locale,
+    messages: { [locale]: await loadMessages(locale) }, // your compiled catalog loader
+  });
+
+  return runWithI18n(i18n, translateGreeting);
+}
+```
+
+`i18n` is local to `getGreeting`, so `translateGreeting` cannot access it directly. You could pass the instance as an argument, but `runWithI18n` and `getI18nOrThrow` avoid threading it through every helper in a deeper call chain. The `await` in `translateGreeting` also shows that the context remains available throughout asynchronous work created inside the callback. Nested and concurrent callbacks keep their contexts isolated.
+
+`AsyncLocalStorage` stores a reference to the instance; it does not clone or serialize it. Create a separate `i18n` instance for each Server Function invocation instead of changing one shared global instance from concurrent requests.
+
+An active Server Component render always uses its own React cache. It does not inherit the Server Function context, so call `setI18n` when entering a nested RSC render.
+
+`runWithI18n` works in any runtime that provides `AsyncLocalStorage` from `node:async_hooks`: Node.js, the Vercel Edge Runtime, and Cloudflare Workers. On Cloudflare Workers, enable the [`nodejs_compat`](https://developers.cloudflare.com/workers/runtime-apis/nodejs/) (or `nodejs_als`) compatibility flag. Keep the asynchronous work inside the callback on native promises — on edge runtimes, context can be lost across custom thenables.
+
+If the translation happens directly inside `getGreeting`, use ``i18n.t(msg`Hello, world!`)`` instead. Use `getI18nOrThrow` in helpers that require the context, or nullable `getI18n` when the context is optional.
 
 ### Pages, Layouts and Lingui
 
@@ -163,10 +213,10 @@ It's important that you do not create any locale-dependent strings at a place in
 
 ```tsx
 import { i18n } from "@lingui/core";
-import { t } from "@lingui/core/macro";
+import { msg } from "@lingui/core/macro";
 // 😰 if this code runs at build time, it'll always be in the locale
 // which the imported global i18n object had at that time
-const immutableGreeting = t(i18n)`Hello World`;
+const immutableGreeting = i18n.t(msg`Hello World`);
 
 // ✅ this component will be statically rendered for each locale
 // (specified with `generateStaticParams`)

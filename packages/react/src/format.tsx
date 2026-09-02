@@ -33,7 +33,9 @@ const voidElementTags = {
  */
 function formatElements(
   value: string,
-  elements: { [key: string]: React.ReactElement } = {},
+  elements: {
+    [key: string]: React.ReactElement<{ children?: React.ReactNode }>
+  } = {},
 ): string | React.ReactElement | Array<React.ReactElement | string> {
   const parts = value.split(tagRe)
   // no inline elements, return

@@ -2,6 +2,7 @@ node_modules/
 .yalc/
 yalc.lock
 dist
+.swc/
 
 npm-debug.log
 yarn-error.log

@@ -172,6 +172,77 @@ const CurrentLocale = () => {
 You also can safely use the returned `t` function in a dependency array of React hooks.
 :::
 
+## Server APIs
+
+Import these APIs from `@lingui/react/server`. Use `setI18n` during a Server Component render. React 19+ Server Functions (also called Server Actions when used for mutations) can use `runWithI18n` when downstream helpers need ambient access to the current instance.
+
+If the function doing the translation already has an `i18n` instance, call `i18n.t(...)` directly.
+
+### `I18nContext`
+
+`I18nContext` is exported as a type from `@lingui/react/server`. It is the value returned by `getI18n` and `getI18nOrThrow`:
+
+```ts
+import type { I18nContext } from "@lingui/react/server";
+
+type I18nContext = {
+  i18n: I18n;
+  _: I18n["_"];
+  defaultComponent?: React.ComponentType<TransRenderProps>;
+};
+```
+
+### `setI18n`
+
+Stores an `I18n` instance in the current Server Component render cache:
+
+```ts
+setI18n(i18n, defaultComponent?);
+```
+
+Call it in every page or layout that starts an RSC render. A nested RSC render does not inherit a `runWithI18n` context and needs its own `setI18n` call.
+
+`setI18n` only works during a Server Component render. Called elsewhere (for example, inside a Server Function) it warns in development and does nothing — use `runWithI18n` there instead.
+
+### `runWithI18n`
+
+Makes an `I18n` instance available to a callback and the asynchronous work created inside it:
+
+```ts
+const result = await runWithI18n(i18n, async () => {
+  await loadData();
+  return getI18nOrThrow().i18n.t(message);
+});
+```
+
+The callback result is returned unchanged. Nested and concurrent scopes are isolated, and the previous scope is restored when the callback finishes or throws.
+
+The optional third `defaultComponent` argument has the same meaning as in `setI18n`.
+
+`runWithI18n` works in any runtime that provides `AsyncLocalStorage` from `node:async_hooks`: Node.js, the Vercel Edge Runtime, and Cloudflare Workers (enable the `nodejs_compat` or `nodejs_als` compatibility flag). Keep the asynchronous work inside the callback on native promises, as edge runtimes can lose context across custom thenables.
+
+`AsyncLocalStorage` keeps a reference to `i18n`; it does not clone the instance. Create a separate instance for each Server Function invocation instead of mutating one global instance from concurrent requests.
+
+### `getI18n`
+
+Returns the current `I18nContext`, or `null` outside an initialized Server Component render or `runWithI18n` scope:
+
+```ts
+const lingui = getI18n();
+```
+
+Use this nullable form when the context is optional.
+
+### `getI18nOrThrow`
+
+Returns the current `I18nContext`. It throws with setup guidance when no context is active:
+
+```ts
+const { i18n } = getI18nOrThrow();
+```
+
+Use this form in helpers that require Lingui to be initialized.
+
 ## Components
 
 The `@lingui/react` package provides the `Trans` component for rendering translations in your application. It is a low-level component that allows you to render translations with dynamic values and components.
