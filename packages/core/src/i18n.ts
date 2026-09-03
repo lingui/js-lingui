@@ -236,7 +236,13 @@ export class I18n extends EventEmitter<Events> {
       id = id.id
     }
 
-    const messageForId = this.messages[id]
+    // Own-property check so an id like "constructor" or "toString" is
+    // reported as missing instead of resolving to a member inherited from
+    // Object.prototype.
+    const messages = this.messages
+    const messageForId = Object.prototype.hasOwnProperty.call(messages, id)
+      ? messages[id]
+      : undefined
     const messageMissing = messageForId === undefined
 
     // replace missing messages with custom message for debugging

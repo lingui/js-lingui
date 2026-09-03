@@ -427,6 +427,19 @@ describe("I18n", () => {
     expect(handler).toHaveBeenCalledTimes(2)
   })
 
+  it("._ should treat an id inherited from Object.prototype as missing", () => {
+    const i18n = setupI18n({
+      locale: "en",
+      messages: { en: { exists: "exists" } },
+    })
+
+    const handler = vi.fn()
+    i18n.on("missing", handler)
+    expect(i18n._("constructor")).toEqual("constructor")
+    expect(i18n._("toString")).toEqual("toString")
+    expect(handler).toHaveBeenCalledTimes(2)
+  })
+
   it("._ should emit missing event for undefined id", () => {
     const i18n = setupI18n({
       locale: "en",
