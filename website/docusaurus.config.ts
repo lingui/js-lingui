@@ -35,7 +35,7 @@ const config: Config = {
       {
         name: "description",
         content:
-          "Lingui is a modern internationalization framework for global products. It provides the best developer experience for managing translations and supports all major frameworks.",
+          "Lingui is a lightweight, open-source i18n library for JavaScript and TypeScript: compile-time macros and a CLI for React, React Native, Vue, SolidJS, Astro, Svelte and Node.js.",
       },
     ],
     navbar: {
