@@ -1,7 +1,7 @@
 {
   "name": "@lingui/format-po",
   "version": "6.6.0",
-  "description": "Gettext PO formatter for Lingui message catalogs",
+  "description": "Reads and writes Lingui message catalogs as gettext PO files with ICU plurals, the default catalog format",
   "type": "module",
   "sideEffects": false,
   "license": "MIT",

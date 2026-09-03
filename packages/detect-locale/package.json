@@ -3,7 +3,7 @@
   "version": "6.6.0",
   "type": "module",
   "sideEffects": false,
-  "description": "Locale detection utilities for Lingui apps across browser, server, and common runtimes",
+  "description": "Detects the user's locale from the URL, a cookie, storage, the browser settings or the HTML lang attribute",
   "license": "MIT",
   "keywords": [
     "lingui",

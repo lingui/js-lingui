@@ -2,7 +2,7 @@
   "name": "@lingui/loader",
   "version": "6.6.0",
   "type": "module",
-  "description": "A webpack-compatible loader to load and compile Lingui message catalogs at build time",
+  "description": "Webpack-compatible loader that compiles Lingui message catalogs on the fly, so .po files can be imported directly",
   "exports": {
     ".": "./dist/index.cjs"
   },

@@ -4,27 +4,21 @@
 
 # @lingui/format-po-gettext
 
-> Read and write message catalogs in Gettext PO format with gettext-style plurals
->
-> Converts ICU Plural expressions into native gettext plurals
+> Reads and writes Lingui message catalogs as gettext PO files with native gettext plurals instead of ICU plurals
 
-`@lingui/format-po-gettext` is part of [LinguiJS][linguijs]. See the [documentation][documentation] for all information, tutorials and examples.
+`@lingui/format-po-gettext` is part of [Lingui][documentation]. Lingui is a lightweight, open-source internationalization (i18n) library for JavaScript and TypeScript. It brings compile-time macros and a CLI for message extraction to React, React Native, Vue, SolidJS, Astro, Svelte, and Node.js.
 
-## Installation & Usage
+Use this formatter when your translation platform does not understand ICU plural syntax in PO files. It converts ICU plurals to `msgid_plural` and `msgstr[n]` entries and back. Because gettext plurals are less expressive than ICU, nested plurals are not supported and `select` stays in ICU syntax, so prefer the default `@lingui/format-po` whenever your tools accept it.
 
-See the [reference][reference] documentation.
+## Usage
 
-> **Warning**
-> This formatter is made for compatibility with translation management systems, which do not support ICU expressions in PO files.
->
-> It does not support all features of LinguiJS and should be carefully considered over other formats.
+See the [catalog formats reference][reference].
 
 ## License
 
-This package is licensed under [MIT][license] license.
+This package is licensed under the [MIT][license] license.
 
 [license]: https://github.com/lingui/js-lingui/blob/main/LICENSE
-[linguijs]: https://github.com/lingui/js-lingui
 [documentation]: https://lingui.dev
 [reference]: https://lingui.dev/ref/catalog-formats#po-gettext
 [package]: https://www.npmjs.com/package/@lingui/format-po-gettext

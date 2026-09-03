@@ -1,7 +1,7 @@
 {
   "name": "@lingui/format-csv",
   "version": "6.6.0",
-  "description": "CSV formatter for Lingui message catalogs",
+  "description": "Reads and writes Lingui message catalogs as two-column CSV files for spreadsheets and other CSV tools",
   "type": "module",
   "exports": {
     ".": "./dist/csv.mjs"

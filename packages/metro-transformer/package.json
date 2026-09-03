@@ -2,7 +2,7 @@
   "name": "@lingui/metro-transformer",
   "version": "6.6.0",
   "type": "commonjs",
-  "description": "Metro transformer for Lingui catalogs in React Native and Expo projects",
+  "description": "Metro transformer that compiles Lingui message catalogs on the fly in React Native and Expo apps",
   "exports": {
     "./expo": {
       "require": "./dist/expo/index.cjs",

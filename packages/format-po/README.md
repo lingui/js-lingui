@@ -4,20 +4,21 @@
 
 # @lingui/format-po
 
-> Read and write message catalogs in Gettext PO format with ICU plurals
+> Reads and writes Lingui message catalogs as gettext PO files with ICU plurals, the default catalog format
 
-`@lingui/format-po` is part of [LinguiJS][linguijs]. See the [documentation][documentation] for all information, tutorials and examples.
+`@lingui/format-po` is part of [Lingui][documentation]. Lingui is a lightweight, open-source internationalization (i18n) library for JavaScript and TypeScript. It brings compile-time macros and a CLI for message extraction to React, React Native, Vue, SolidJS, Astro, Svelte, and Node.js.
 
-## Installation & Usage
+PO is the default and recommended catalog format: readable, supported by almost every translation tool, and it carries comments, source locations and context for translators. The formatter ships with `@lingui/cli`, so install this package only to pass options.
 
-See the [reference][reference] documentation.
+## Usage
+
+See the [catalog formats reference][reference].
 
 ## License
 
-This package is licensed under [MIT][license] license.
+This package is licensed under the [MIT][license] license.
 
 [license]: https://github.com/lingui/js-lingui/blob/main/LICENSE
-[linguijs]: https://github.com/lingui/js-lingui
 [documentation]: https://lingui.dev
 [reference]: https://lingui.dev/ref/catalog-formats#po
 [package]: https://www.npmjs.com/package/@lingui/format-po
