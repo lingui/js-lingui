@@ -197,4 +197,49 @@ describe("interpolate", () => {
       "Hey Joeª!",
     )
   })
+
+  describe("default variables", () => {
+    it("should interpolate default variables when values are not provided", () => {
+      const cache = compile("Hello {name} from {appName}!")
+      expect(
+        interpolate(cache, "en", [])({}, undefined, {
+          name: "World",
+          appName: "Lingui",
+        }),
+      ).toEqual("Hello World from Lingui!")
+    })
+
+    it("should prioritize caller-provided values over default variables", () => {
+      const cache = compile("Hello {name}!")
+      expect(
+        interpolate(cache, "en", [])({ name: "Alice" }, undefined, {
+          name: "Bob",
+        }),
+      ).toEqual("Hello Alice!")
+
+      expect(
+        interpolate(cache, "en", [])({ name: undefined }, undefined, {
+          name: "Bob",
+        }),
+      ).toEqual("Hello Bob!")
+    })
+
+    it("should evaluate function/getter variables on demand", () => {
+      let callCount = 0
+      const cache = compile("Hello {name}!")
+      const format = interpolate(cache, "en", [])
+      const variables = {
+        name: () => {
+          callCount++
+          return "Dynamic"
+        },
+        get unused() {
+          throw new Error("should not be called")
+        },
+      }
+
+      expect(format({}, undefined, variables)).toEqual("Hello Dynamic!")
+      expect(callCount).toEqual(1)
+    })
+  })
 })
