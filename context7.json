@@ -8,10 +8,11 @@
   "rules": [
     "Import macros from @lingui/core/macro (t, plural, select, msg) and @lingui/react/macro (Trans, Plural, Select, useLingui). The i18n object comes from @lingui/core and I18nProvider from @lingui/react.",
     "Do not import from the deprecated @lingui/macro package and do not rely on babel-plugin-macros; use the per-package macro entry points.",
-    "Macros are expanded at build time: register @lingui/babel-plugin-lingui-macro in the Babel config or @lingui/swc-plugin in the SWC config (for example in next.config.js). Macros cannot be called at module level.",
+    "Macros are expanded at build time: register @lingui/babel-plugin-lingui-macro in the Babel config or @lingui/swc-plugin in the SWC config (for example in next.config.js).",
+    "Do not call t, plural or select at module level, they return a fixed string once. Use msg or defineMessage for module-level constants and translate them with i18n._ where rendered.",
     "Wrap the React tree in I18nProvider with an i18n instance that has a catalog loaded and a locale activated (i18n.load then i18n.activate, or i18n.loadAndActivate).",
     "In React components, use Trans for text with markup and the t returned by the useLingui macro for strings outside JSX such as attributes, so the component re-renders when the locale changes.",
-    "Message IDs are generated from the source text by default; do not invent keys. Use explicit ids only for strings whose text changes often.",
+    "Message IDs are generated from the source text by default; do not invent keys. If the project uses explicit ids, follow its convention.",
     "After adding or changing messages run lingui extract to update the PO catalogs, then lingui compile to produce the runtime catalogs before building. Configuration lives in lingui.config.js or lingui.config.ts.",
     "In React Server Components, call setI18n from @lingui/react/server in every page and layout; Trans and useLingui from @lingui/react/macro then work in both server and client components.",
     "Catalogs are PO files by default. Translators edit the .po files; the compiled catalogs are build output and should not be edited by hand.",

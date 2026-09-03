@@ -8,7 +8,7 @@
 
 `@lingui/core` is part of [Lingui][documentation]. Lingui is a lightweight, open-source internationalization (i18n) library for JavaScript and TypeScript. It brings compile-time macros and a CLI for message extraction to React, React Native, Vue, SolidJS, Astro, Svelte, and Node.js.
 
-The package is framework-agnostic and behaves the same in the browser, in Node.js and inside any UI framework. `@lingui/core` exports the `i18n` instance, which loads catalogs, activates a locale and translates messages. `@lingui/core/macro` exports the `t`, `plural`, `select` and related macros, which turn template literals into ICU messages at build time and need the [Babel][babel-plugin] or [SWC][swc-plugin] plugin.
+The package is framework-agnostic and behaves the same in the browser, in Node.js and inside any UI framework. `@lingui/core` exports the `i18n` instance, which loads catalogs, activates a locale and translates messages. `@lingui/core/macro` exports the `t`, `plural`, `select` and related macros, which are compiled into ICU messages at build time and need the [Babel][babel-plugin] or [SWC][swc-plugin] plugin.
 
 ## Usage
 

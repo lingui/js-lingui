@@ -8,7 +8,7 @@
 
 `@lingui/format-po` is part of [Lingui][documentation]. Lingui is a lightweight, open-source internationalization (i18n) library for JavaScript and TypeScript. It brings compile-time macros and a CLI for message extraction to React, React Native, Vue, SolidJS, Astro, Svelte, and Node.js.
 
-PO is the default and recommended catalog format: readable, supported by almost every translation tool, and it carries comments, source locations and context for translators. The formatter ships with `@lingui/cli`, so install this package only to pass options.
+PO is the default and recommended catalog format: it is readable, almost every translation tool supports it, and it carries comments, source locations and context for translators. The formatter ships with `@lingui/cli`, so install this package only to pass options.
 
 ## Usage
 

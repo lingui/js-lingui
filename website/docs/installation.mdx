@@ -252,17 +252,19 @@ plugins: [
 
 ### Next.js
 
-Next.js compiles with SWC by default, so Lingui macros need the [`@lingui/swc-plugin`](/ref/swc-plugin) registered in `next.config.js`. If your project has a Babel config, Next.js uses Babel instead and the Babel setup above applies. The Lingui configuration from the [Basic Configuration](#basic-configuration) section works unchanged.
+Next.js compiles with SWC by default, so Lingui macros need the [`@lingui/swc-plugin`](/ref/swc-plugin) registered in the Next.js config file. If your project has a Babel config, Next.js uses Babel instead and the Babel setup above applies. The Lingui configuration from the [Basic Configuration](#basic-configuration) section works unchanged.
 
-```js title="next.config.js"
+```js title="next.config.mjs"
 import { linguiMacroSwcPlugin } from "@lingui/swc-plugin/options";
 
 /** @type {import('next').NextConfig} */
-module.exports = {
+const nextConfig = {
   experimental: {
     swcPlugins: [linguiMacroSwcPlugin()],
   },
 };
+
+export default nextConfig;
 ```
 
 Routing by locale, loading catalogs in server and client components and switching the language are covered in the [Next.js App Router i18n tutorial](/tutorials/react-rsc). The [examples](https://github.com/lingui/js-lingui/tree/main/examples) directory has working Next.js projects for both the SWC and the Babel setup.

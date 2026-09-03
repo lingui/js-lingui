@@ -1,6 +1,6 @@
 ---
 title: Lingui vs react-intl
-description: How Lingui compares with react-intl from FormatJS. Both use ICU MessageFormat, the differences are in rich text, macros, extraction tooling, compiled catalogs and bundle size
+description: How Lingui compares with react-intl from FormatJS. Both use ICU MessageFormat, so the differences are in rich text, macros, extraction tooling and bundle size
 ---
 
 # Lingui vs react-intl
@@ -9,17 +9,17 @@ description: How Lingui compares with react-intl from FormatJS. Both use ICU Mes
 
 ## At a Glance
 
-|                   | Lingui                                                                                                                        | react-intl (FormatJS)                                                                                                                                                   |
-| ----------------- | ----------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Writing messages  | Macros generate the ICU message from JSX or a template literal: `<Trans>Hello {name}</Trans>`                                 | You write the ICU string yourself: `<FormattedMessage defaultMessage="Hello {name}" values={{ name }} />`                                                               |
-| Rich text         | Components inside a message are plain JSX. The translator sees `Read the <0>documentation</0>`                                | Each tag maps to a render function in `values`: `link: (chunks) => <a href="/docs">{chunks}</a>`                                                                        |
-| Message IDs       | Generated from the source text by the macro, explicit IDs optional                                                            | Explicit `id`, or a generated hash with the Babel or SWC plugin or the TypeScript transformer                                                                           |
-| Extraction        | `lingui extract` merges new messages into every locale's catalog, keeps existing translations and marks removed ones obsolete | `formatjs extract` writes the source messages to one JSON file. Translated files are handled separately, with formatters for Crowdin, Lokalise, Smartling and Transifex |
-| Catalog format    | PO by default, which every translation tool opens. JSON, CSV and custom formatters available                                  | JSON, in the FormatJS layout or a translation platform's layout                                                                                                         |
-| Runtime           | Catalogs are compiled at build time and no parser ships. Core and React bindings about 4 kB gzipped                           | Messages parsed at runtime unless pre-compiled with `formatjs compile --ast`. About 15 kB gzipped                                                                       |
-| Server Components | `@lingui/react/server`. `Trans` works in server and client components alike                                                   | `react-intl/server` with `createIntl`. `FormattedMessage` and `useIntl` are client-only                                                                                 |
-| Beyond React      | `@lingui/core` for Node.js and plain JS, bindings for React Native, Vue, SolidJS, Astro and Svelte                            | `@formatjs/intl` for plain JS, `vue-intl` for Vue                                                                                                                       |
-| TypeScript        | Written in TypeScript. Opt-in typed message IDs via module augmentation                                                       | Written in TypeScript. Typed message IDs via the `FormatjsIntl` global namespace                                                                                        |
+|                   | Lingui                                                                                                                                | react-intl (FormatJS)                                                                                                                                                   |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Writing messages  | Macros generate the ICU message from JSX or a template literal: `<Trans>Hello {name}</Trans>`                                         | You write the ICU string yourself: `<FormattedMessage defaultMessage="Hello {name}" values={{ name }} />`                                                               |
+| Rich text         | Components inside a message are plain JSX. The translator sees `Read the <0>documentation</0>`                                        | Each tag maps to a render function in `values`: `link: (chunks) => <a href="/docs">{chunks}</a>`                                                                        |
+| Message IDs       | Generated from the source text by the macro, explicit IDs optional                                                                    | Explicit `id`, or a generated hash with the Babel or SWC plugin or the TypeScript transformer                                                                           |
+| Extraction        | `lingui extract` merges new messages into every locale's catalog, keeps existing translations and marks removed ones obsolete         | `formatjs extract` writes the source messages to one JSON file. Translated files are handled separately, with formatters for Crowdin, Lokalise, Smartling and Transifex |
+| Catalog format    | PO by default, which every translation tool opens. JSON, CSV and custom formatters available                                          | JSON, in the FormatJS layout or a translation platform's layout                                                                                                         |
+| Runtime           | Catalogs are compiled at build time and no parser ships. Core and React bindings about 4 kB gzipped                                   | Messages parsed at runtime unless pre-compiled with `formatjs compile --ast`. About 15 kB gzipped                                                                       |
+| Server Components | `@lingui/react/server`. `Trans` works in server and client components alike                                                           | `react-intl/server` with `createIntl`. `FormattedMessage` and `useIntl` are client-only                                                                                 |
+| Beyond React      | `@lingui/core` for Node.js and plain JS, `@lingui/solid` for SolidJS. The same core and CLI serve React Native, Vue, Astro and Svelte | `@formatjs/intl` for plain JS, `vue-intl` for Vue                                                                                                                       |
+| TypeScript        | Written in TypeScript. Opt-in typed message IDs via module augmentation                                                               | Written in TypeScript. Typed message IDs via the `FormatjsIntl` global namespace                                                                                        |
 
 Bundle sizes were measured with [bundlejs](https://bundlejs.com/) in September 2026 for `@lingui/core` and `@lingui/react` 6.6 and `react-intl` 10.1, with `react` excluded.
 
@@ -68,7 +68,7 @@ In react-intl, this would be translated as:
   id="msg.docs"
   defaultMessage="Read the <link>documentation</link>."
   values={{
-    link: (...chunks) => <a href="/docs">{chunks}</a>,
+    link: (chunks) => <a href="/docs">{chunks}</a>,
   }}
 />
 ```
@@ -113,7 +113,7 @@ Let's compare it to the react-intl solution to see the difference:
     id="msg.docs"
     defaultMessage="Read the <link>documentation</link>."
     values={{
-      link: (...chunks) => <a href="/docs">{chunks}</a>,
+      link: (chunks) => <a href="/docs">{chunks}</a>,
     }}
   />
 </p>

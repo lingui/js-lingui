@@ -8,7 +8,7 @@
 
 `@lingui/react` is part of [Lingui][documentation]. Lingui is a lightweight, open-source internationalization (i18n) library for JavaScript and TypeScript. It brings compile-time macros and a CLI for message extraction to React, React Native, Vue, SolidJS, Astro, Svelte, and Node.js.
 
-The package has three entry points:
+The package has the following entry points:
 
 - `@lingui/react` exports `I18nProvider`, the `Trans` component and the `useLingui` hook. The provider puts an `i18n` instance from `@lingui/core` into React context.
 - `@lingui/react/macro` exports the `Trans`, `Plural`, `Select` and related macros, which generate the ICU message and its ID from JSX at build time, and a `useLingui` macro whose `t` translates strings outside JSX. Macros need the [Babel][babel-plugin] or [SWC][swc-plugin] plugin.
@@ -54,7 +54,7 @@ export function App() {
 }
 ```
 
-The translator receives one message, `Welcome back, {name}. Read the <0>documentation</0>.`, where `<0>` stands for the link. `lingui extract` from [`@lingui/cli`][cli] writes the messages into the catalogs and `lingui compile` produces the `messages` module imported above.
+The `Trans` block becomes a single message, `Welcome back, {name}. Read the <0>documentation</0>.`, where `<0>` stands for the link. `lingui extract` from [`@lingui/cli`][cli] writes the messages into the catalogs and `lingui compile` produces the `messages` module imported above.
 
 Continue with the [React tutorial][tutorial], the [Next.js App Router tutorial][tutorial-rsc] for Server Components or the [React Native tutorial][tutorial-rn]. See the [React reference][reference] and the [macro reference][macro] for the full API.
 

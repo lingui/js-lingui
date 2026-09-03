@@ -1,6 +1,6 @@
 ---
 title: Lingui vs i18next
-description: How Lingui compares with i18next and react-i18next. Message syntax, plurals, extraction tooling, catalog formats, bundle size and React Server Components side by side
+description: How Lingui compares with i18next and react-i18next. Message syntax, plurals, extraction tooling, catalog formats, bundle size and React Server Components
 ---
 
 # Lingui vs i18next
@@ -11,18 +11,18 @@ That difference runs through everything else on this page: how messages are writ
 
 ## At a Glance
 
-|                    | Lingui                                                                                                                         | i18next                                                                                                                |
-| ------------------ | ------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------- |
-| Writing messages   | The text stays in the code: `` t`Hello ${name}` ``. The catalog is generated from it                                           | You choose a key, add the text to a JSON file and reference the key: `t("greeting", { name })`                         |
-| Message IDs        | Generated from the source text, so there is nothing to name and duplicates merge on their own. Explicit IDs when you want them | Keys you define and keep unique yourself. Natural-language keys are possible with `keySeparator: false`                |
-| Message syntax     | ICU MessageFormat. Placeholders, plurals and selects stay inside one message                                                   | Own `{{name}}` syntax. Each plural form is a separate key (`key_one`, `key_other`). ICU needs the `i18next-icu` plugin |
-| Extraction         | Built in. `lingui extract` finds every message, merges it into all catalogs and marks removed ones obsolete                    | Separate tools: `i18next-cli` (the successor of `i18next-parser`) or `i18next-scanner`                                 |
-| Translator context | Source locations, comments and context travel with each message in the PO file                                                 | JSON has no comments. Key locations need an `i18next-cli` metadata plugin                                              |
-| Catalog format     | PO by default, which every translation tool opens. JSON, CSV and custom formatters available                                   | JSON, loaded through backend plugins. YAML and JSON5 via `i18next-cli`                                                 |
-| Runtime            | Catalogs are compiled at build time and no message parser ships. Core about 2 kB gzipped                                       | Messages interpolated at runtime. Core about 14 kB gzipped                                                             |
-| React              | `@lingui/react` with macros. React Server Components through `@lingui/react/server`                                            | `react-i18next`. React Server Components need `next-i18next` v16 (`getT` and `useT`)                                   |
-| Other frameworks   | React Native, Vue, SolidJS, Astro, Svelte, Node.js                                                                             | Vue, Angular, Svelte, SolidJS, Astro, Remix, Node.js and more                                                          |
-| TypeScript         | Written in TypeScript. Opt-in typed message IDs via module augmentation                                                        | Ships type definitions. Typed keys and interpolation values via `CustomTypeOptions`                                    |
+|                    | Lingui                                                                                                                         | i18next                                                                                                                                |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------- |
+| Writing messages   | The text stays in the code: `` t`Hello ${name}` ``. The catalog is generated from it                                           | You choose a key, add the text to a JSON file and reference the key: `t("greeting", { name })`                                         |
+| Message IDs        | Generated from the source text, so there is nothing to name and duplicates merge on their own. Explicit IDs when you want them | Keys you define and keep unique yourself. Natural-language keys are possible with `keySeparator: false`                                |
+| Message syntax     | ICU MessageFormat. Placeholders, plurals and selects stay inside one message                                                   | Own `{{name}}` syntax. Each plural form is a separate key (`key_one`, `key_other`). ICU needs the `i18next-icu` plugin                 |
+| Extraction         | Built in. `lingui extract` finds every message, merges it into all catalogs and marks removed ones obsolete                    | Separate tools: `i18next-cli` (the successor of `i18next-parser`) or `i18next-scanner`                                                 |
+| Translator context | Source locations, comments and context travel with each message in the PO file                                                 | JSON has no comments. Key locations need a custom `i18next-cli` metadata plugin                                                        |
+| Catalog format     | PO by default, which every translation tool opens. JSON, CSV and custom formatters available                                   | JSON, bundled inline or loaded through backend plugins. YAML and JSON5 via `i18next-cli`                                               |
+| Runtime            | Catalogs are compiled at build time and no message parser ships. Core about 2 kB gzipped                                       | Messages interpolated at runtime. Core about 14 kB gzipped                                                                             |
+| React              | `@lingui/react` with macros. React Server Components through `@lingui/react/server`                                            | `react-i18next`. For React Server Components, `next-i18next` v16 adds `getT` and `useT`, or you create an i18next instance per request |
+| Other frameworks   | React Native, Vue, SolidJS, Astro, Svelte, Node.js                                                                             | Vue, Angular, Svelte, SolidJS, Astro, Remix, Node.js and more                                                                          |
+| TypeScript         | Written in TypeScript. Opt-in typed message IDs via module augmentation                                                        | Ships type definitions. Typed keys and interpolation values via `CustomTypeOptions`                                                    |
 
 Bundle sizes were measured with [bundlejs](https://bundlejs.com/) in September 2026 for `@lingui/core` 6.6 and `i18next` 26.4.
 
@@ -280,7 +280,7 @@ msgid "Right"
 msgstr "Right"
 ```
 
-JSON has no comment syntax, so this information is not part of i18next catalogs by default. `i18next-cli` can record key locations through a metadata plugin.
+JSON has no comment syntax, so this information is not part of i18next catalogs by default. `i18next-cli` can record key locations through a custom metadata plugin.
 :::
 
 ## React Integration
@@ -321,7 +321,7 @@ Both libraries build on the same foundations: the `Intl` API for formatting, CLD
 - Plurals, selects and rich text stay inside one message, and React elements inside a message stay in one translatable string.
 - Catalogs are PO files by default, which every translation tool opens and which carry source locations and comments for translators. JSON, CSV and [custom formatters](/guides/custom-formatter) are available. See [Catalog Formats](/ref/catalog-formats).
 - Catalogs are compiled ahead of time, so the runtime ships without a message parser and stays around 2 kB gzipped.
-- Works with vanilla JS, React (including RSC), React Native, Next.js, Vue, SolidJS, Astro, Svelte and Node.js.
+- Works with vanilla JS, React (including React Server Components), React Native, Next.js, Vue, SolidJS, Astro, Svelte and Node.js.
 
 **i18next:**
 

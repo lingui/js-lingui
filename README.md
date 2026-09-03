@@ -93,12 +93,12 @@ On top of that:
 
 ## Who Uses Lingui
 
-Lingui runs in production at Bluesky, ElevenLabs, Linkerd, GDevelop, Documenso, Gamma, Twenty, Superset, Notesnook, Inkeep and many more. See the [showroom](https://lingui.dev/misc/showroom) for the full list, and add your project if it is missing.
+Lingui runs in production at Bluesky, ElevenLabs, Linkerd, GDevelop, Documenso, Gamma, Twenty, Superset, Notesnook, Inkeep and many more. See the [showroom](https://lingui.dev/misc/showroom) for more, and add your project if it is missing.
 
 ## Requirements
 
 - Node.js 22.19 or newer.
-- Lingui 6 packages are ESM-only. Modern bundlers and Node.js versions with `require(esm)` handle this transparently. See the [migration guide](https://lingui.dev/releases/migration-6).
+- Lingui 6 packages are ESM-only, except `@lingui/metro-transformer`, which stays CommonJS. Modern bundlers and Node.js versions with `require(esm)` handle this transparently. See the [migration guide](https://lingui.dev/releases/migration-6).
 - Macros need Babel with `@lingui/babel-plugin-lingui-macro` or SWC with `@lingui/swc-plugin`.
 - `@lingui/react` supports React 16.14 and newer, including React 19.
 

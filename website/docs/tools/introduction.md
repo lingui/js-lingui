@@ -1,6 +1,6 @@
 ---
 title: Sync & Collaboration Tools
-description: How to manage translations for a Lingui project with translators. Manual catalog editing versus translation management systems, and the tools that integrate with Lingui
+description: How to manage translations for a Lingui project. Manual catalog editing versus translation management systems, and the tools that integrate with Lingui
 ---
 
 # Sync & Collaboration Tools

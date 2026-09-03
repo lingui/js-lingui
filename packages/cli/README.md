@@ -8,7 +8,7 @@
 
 `@lingui/cli` is part of [Lingui][documentation]. Lingui is a lightweight, open-source internationalization (i18n) library for JavaScript and TypeScript. It brings compile-time macros and a CLI for message extraction to React, React Native, Vue, SolidJS, Astro, Svelte, and Node.js.
 
-The `lingui` command reads `lingui.config.js` (or `.ts`) from the project root: the source locale, the target locales and where the catalogs live. The [installation guide][installation] shows the minimal file, the [configuration reference][conf] every option.
+The `lingui` command reads `lingui.config.js` (or `.ts`) from the project root: the source locale, the target locales and where the catalogs live. The [installation guide][installation] shows the minimal file and the [configuration reference][conf] lists every option.
 
 ## Installation
 

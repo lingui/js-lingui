@@ -35,9 +35,9 @@ const FAQ: FaqItem[] = [
       <p>
         Development keeps the source messages and the message compiler in the bundle; production strips both and relies
         on compiled catalogs, so anything not extracted before the build renders as its ID. Run{" "}
-        <code>lingui extract</code> before building, or let <code>@lingui/vite-plugin</code>,{" "}
-        <code>@lingui/loader</code> or <code>@lingui/metro-transformer</code> compile catalogs for you. Details in{" "}
-        <a href="/guides/optimizing-bundle-size">Keeping Your Bundle Small</a>.
+        <code>lingui extract</code> and <code>lingui compile</code> before building. <code>@lingui/vite-plugin</code>,{" "}
+        <code>@lingui/loader</code> and <code>@lingui/metro-transformer</code> can take over the compile step, but
+        extraction still has to run. Details in <a href="/guides/optimizing-bundle-size">Keeping Your Bundle Small</a>.
       </p>
     ),
   },

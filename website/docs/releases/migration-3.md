@@ -1,6 +1,6 @@
 ---
 title: Migration guide from 2.x to 3.x
-description: Upgrade Lingui from 2.x to 3.x. Backward incompatible changes across the core, React and CLI packages, new features, and the codemods that automate the migration
+description: Upgrade Lingui from 2.x to 3.x. Breaking changes across the core, React and CLI packages, new features, and the codemods that automate the migration
 ---
 
 # Migration guide from 2.x to 3.x

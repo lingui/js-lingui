@@ -8,7 +8,7 @@
 
 `@lingui/babel-plugin-lingui-macro` is part of [Lingui][documentation]. Lingui is a lightweight, open-source internationalization (i18n) library for JavaScript and TypeScript. It brings compile-time macros and a CLI for message extraction to React, React Native, Vue, SolidJS, Astro, Svelte, and Node.js.
 
-The plugin expands the macros from `@lingui/core/macro` and `@lingui/react/macro` at build time into ICU messages and calls to the Lingui runtime. Projects that compile with SWC use [`@lingui/swc-plugin`][swc-plugin] instead.
+The plugin expands the macros from `@lingui/core/macro`, `@lingui/react/macro` and `@lingui/solid/macro` at build time into ICU messages and calls to the Lingui runtime. Projects that compile with SWC use [`@lingui/swc-plugin`][swc-plugin] instead.
 
 ## Installation
 

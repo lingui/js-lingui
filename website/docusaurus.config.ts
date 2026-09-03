@@ -187,6 +187,12 @@ const config: Config = {
             description: "Source code, issues and discussions",
           },
           {
+            title: "npm: @lingui/core",
+            url: "https://www.npmjs.com/package/@lingui/core",
+            description:
+              "The runtime package; @lingui/react adds the React bindings and @lingui/cli the command line tool",
+          },
+          {
             title: "Agent Skills",
             url: "https://github.com/lingui/skills",
             description: "Lingui best practices packaged as Agent Skills for coding agents",

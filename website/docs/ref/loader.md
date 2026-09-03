@@ -1,5 +1,5 @@
 ---
-title: Webpack-compatible Loader
+title: Webpack-compatible loader
 description: Import PO catalogs directly and compile them on the fly with @lingui/loader in Webpack, Rspack and Rsbuild, instead of running lingui compile
 ---
 
