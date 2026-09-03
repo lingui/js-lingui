@@ -1,13 +1,30 @@
 ---
 title: Lingui vs i18next
-description: Comparison of Lingui and i18next internationalization libraries
+description: How Lingui compares with i18next and react-i18next. Message syntax, plurals, extraction tooling, catalog formats, bundle size and React Server Components side by side
 ---
 
-# Comparison with i18next
+# Lingui vs i18next
 
-[i18next](https://www.i18next.com/) is a widely used internationalization framework designed specifically for JavaScript applications. Both i18next and Lingui are popular libraries for translating and localizing JavaScript-based projects, each offering unique strengths and features.
+[i18next](https://www.i18next.com/) is one of the most widely used internationalization frameworks for JavaScript, with bindings for React, Vue, Angular, Svelte and many other frameworks and platforms. Both libraries solve the same problem, but they start from different ideas. With i18next you invent a key for each string, put the text in a JSON file and look the key up at runtime. With Lingui you write the text where it is displayed, the IDs are generated from it and the catalogs are compiled at build time.
 
-The choice between them ultimately depends on the specific needs of your project.
+That difference runs through everything else on this page: how messages are written, what translators receive and what ships to the browser.
+
+## At a Glance
+
+|                    | Lingui                                                                                                                         | i18next                                                                                                                |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------- |
+| Writing messages   | The text stays in the code: `` t`Hello ${name}` ``. The catalog is generated from it                                           | You choose a key, add the text to a JSON file and reference the key: `t("greeting", { name })`                         |
+| Message IDs        | Generated from the source text, so there is nothing to name and duplicates merge on their own. Explicit IDs when you want them | Keys you define and keep unique yourself. Natural-language keys are possible with `keySeparator: false`                |
+| Message syntax     | ICU MessageFormat. Placeholders, plurals and selects stay inside one message                                                   | Own `{{name}}` syntax. Each plural form is a separate key (`key_one`, `key_other`). ICU needs the `i18next-icu` plugin |
+| Extraction         | Built in. `lingui extract` finds every message, merges it into all catalogs and marks removed ones obsolete                    | Separate tools: `i18next-cli` (the successor of `i18next-parser`) or `i18next-scanner`                                 |
+| Translator context | Source locations, comments and context travel with each message in the PO file                                                 | JSON has no comments. Key locations need an `i18next-cli` metadata plugin                                              |
+| Catalog format     | PO by default, which every translation tool opens. JSON, CSV and custom formatters available                                   | JSON, loaded through backend plugins. YAML and JSON5 via `i18next-cli`                                                 |
+| Runtime            | Catalogs are compiled at build time and no message parser ships. Core about 2 kB gzipped                                       | Messages interpolated at runtime. Core about 14 kB gzipped                                                             |
+| React              | `@lingui/react` with macros. React Server Components through `@lingui/react/server`                                            | `react-i18next`. React Server Components need `next-i18next` v16 (`getT` and `useT`)                                   |
+| Other frameworks   | React Native, Vue, SolidJS, Astro, Svelte, Node.js                                                                             | Vue, Angular, Svelte, SolidJS, Astro, Remix, Node.js and more                                                          |
+| TypeScript         | Written in TypeScript. Opt-in typed message IDs via module augmentation                                                        | Ships type definitions. Typed keys and interpolation values via `CustomTypeOptions`                                    |
+
+Bundle sizes were measured with [bundlejs](https://bundlejs.com/) in September 2026 for `@lingui/core` 6.6 and `i18next` 26.4.
 
 ## Basic Comparison
 
@@ -34,7 +51,7 @@ import i18next from "i18next";
 document.getElementById("output").innerHTML = i18next.t("key");
 ```
 
-The equivalent example with Lingui looks like this:
+To know what this line renders, you open the JSON file and look up `key`. The equivalent example with Lingui keeps the text in the code, and the CLI generates the catalog from it:
 
 ```js title="lingui.config.{js,ts}"
 import { defineConfig } from "@lingui/cli";
@@ -80,7 +97,7 @@ i18next sample:
 ```js
 import i18next from "i18next";
 
-i18next.t("My name is {name}", { name: "Tom" });
+i18next.t("My name is {{name}}", { name: "Tom" });
 i18next.t("msg.name", { name: "Tom" });
 ```
 
@@ -94,6 +111,8 @@ const name = "Tom";
 t`My name is ${name}`;
 t({ id: "msg.name", message: `My name is ${name}` });
 ```
+
+Lingui names the placeholder after the variable, so the message and the code cannot drift apart. With i18next, the `{{name}}` in the JSON file and the `{ name }` in the call are matched by hand.
 
 ## Formatting
 
@@ -181,7 +200,7 @@ new Intl.DateTimeFormat(i18n.locale, { dateStyle: "medium", timeStyle: "medium" 
 
 ## Plurals
 
-Lingui uses the [ICU MessageFormat](/guides/message-format) syntax to handle plurals. It provides a simple and translator-friendly approach to plurals localization.
+Lingui uses the [ICU MessageFormat](/guides/message-format) syntax to handle plurals. All forms of a message stay together in one string that the translator sees as a whole.
 
 For example:
 
@@ -209,7 +228,7 @@ When we extract messages from the source code using the [Lingui CLI](/ref/cli), 
 {numBooks, plural, one {# book} other {# books}}
 ```
 
-i18next handles plurals differently. It requires a separate key to be defined for each plural form. This is not translator-friendly, lacks context, and is prone to errors:
+i18next stores each plural form under its own key. The suffixes follow the CLDR plural categories returned by `Intl.PluralRules`, so English uses `_one` and `_other`, while Arabic adds `_zero`, `_two`, `_few` and `_many`:
 
 ```json
 {
@@ -225,6 +244,8 @@ i18next.t("key", { count: 0 }); // -> "items"
 i18next.t("key", { count: 1 }); // -> "item"
 i18next.t("key", { count: 5 }); // -> "items"
 ```
+
+In the catalog, `item` and `items` are two separate entries. Nothing ties them together or shows the translator the sentence they appear in. If you prefer ICU plurals with i18next, the [`i18next-icu`](https://github.com/i18next/i18next-icu) plugin switches the message syntax to ICU MessageFormat, at which point i18next's own interpolation and plural keys no longer apply.
 
 ## Context
 
@@ -250,7 +271,7 @@ msg({
 ```
 
 :::tip
-Lingui automatically provides additional context by including in the `.po` file the locations where each message is used, and `msgctxt` if the context is specified. This is useful for translators to understand the context of the message:
+Lingui also writes the source locations of each message into the `.po` file, together with `msgctxt` when a context is given, so translators can see where a message is used:
 
 ```gettext title="en.po"
 #: src/App.js:5
@@ -259,7 +280,7 @@ msgid "Right"
 msgstr "Right"
 ```
 
-i18next can't do this from its plain JSON files.
+JSON has no comment syntax, so this information is not part of i18next catalogs by default. `i18next-cli` can record key locations through a metadata plugin.
 :::
 
 ## React Integration
@@ -276,6 +297,8 @@ const HelloWorld = () => {
 };
 ```
 
+The translation lives under `welcome` in the JSON file. The children are the fallback when the key is missing.
+
 Lingui sample:
 
 ```jsx
@@ -286,25 +309,25 @@ const HelloWorld = () => {
 };
 ```
 
+Here the children are the message. The ID is derived from them, and `lingui extract` writes the entry to the catalog.
+
 ## Summary
 
-This is a rather brief comparison. Both libraries have quite different concepts, but at the same time the core internationalization approaches are similar and use the same background.
+Both libraries build on the same foundations: the `Intl` API for formatting, CLDR plural rules and one catalog per locale. They differ in how much of the bookkeeping is yours.
 
-**On top of that, Lingui:**
+**Lingui:**
 
-- Supports rich-text messages.
-- Provides macros to simplify writing messages directly in your code.
-- Provides a CLI tool for extracting and compiling messages.
-- Supports a number of [Catalog Formats](/ref/catalog-formats), including [Custom Formatters](/guides/custom-formatter).
-- Is small, fast and flexible. It also has a small bundle footprint by stripping unused messages and loading only necessary catalogs.
-- Works with vanilla JS, React (including RSC), Next.js, Node.js, Vue.js etc.
-- Is actively maintained.
+- Messages are written in the source with macros. There are no keys to invent and no JSON file to keep in sync, because `lingui extract` generates the catalog from the code.
+- Plurals, selects and rich text stay inside one message, and React elements inside a message stay in one translatable string.
+- Catalogs are PO files by default, which every translation tool opens and which carry source locations and comments for translators. JSON, CSV and [custom formatters](/guides/custom-formatter) are available. See [Catalog Formats](/ref/catalog-formats).
+- Catalogs are compiled ahead of time, so the runtime ships without a message parser and stays around 2 kB gzipped.
+- Works with vanilla JS, React (including RSC), React Native, Next.js, Vue, SolidJS, Astro, Svelte and Node.js.
 
-**On the other hand, i18next:**
+**i18next:**
 
-- Uses a key-based approach for translation management.
-- Is mature. Based on how long i18next has been open source, there is no real i18n case that cannot be solved with i18next.
-- Is extensible, with many plugins and tools developed by other contributors, including extractors, locale identifiers, etc.
-- Has a big ecosystem.
+- Messages are looked up by key. Resources are plain JSON and can be loaded from the filesystem, over HTTP or from a translation platform through backend plugins.
+- Has been around for more than a decade and covers nearly every i18n scenario, with an official CLI for extraction, type generation and linting.
+- Has a large plugin ecosystem: language detectors, backends, post processors and alternative message formats such as ICU and Fluent.
+- Has bindings or ports for many frameworks and platforms, including Vue, Angular, Svelte, .NET, Go, iOS and Android.
 
-In conclusion, Lingui is an excellent option for projects that need modern and efficient translation methods, support for popular frameworks, and effective translation management tools. However, the choice between Lingui and i18next ultimately depends on the specific requirements of your project.
+i18next's breadth is real, and if your organization already runs it across several stacks, that continuity counts. For a JavaScript or TypeScript codebase, Lingui covers the same ground with less to maintain by hand: no keys to name, no JSON to keep in sync, and catalogs that open in any translation tool.

@@ -145,7 +145,16 @@ const config: Config = {
       {
         content: {
           enableLlmsFullTxt: true,
-          excludeRoutes: ["/", "/search", "/community", "/misc/*", "/releases/*"],
+          excludeRoutes: [
+            "/",
+            "/search",
+            "/community",
+            "/misc/resources",
+            "/misc/showroom",
+            "/misc/tooling",
+            "/releases/*",
+          ],
+          routeRules: [{ route: "/misc/**", categoryName: "Comparisons" }],
         },
         includeOrder: ["/installation", "/tutorials/**", "/guides/**", "/ref/**", "/examples/**"],
       },
