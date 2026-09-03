@@ -70,7 +70,7 @@ function Home() {
         <meta property="og:description" content={DESCRIPTION} />
         <meta name="twitter:title" content={TITLE} />
         <meta name="twitter:description" content={DESCRIPTION} />
-        <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
+        <script type="application/ld+json">{JSON.stringify(jsonLd).replace(/</g, "\\u003c")}</script>
       </Head>
       <main className="space-y-24">
         <Header />

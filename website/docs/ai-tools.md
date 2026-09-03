@@ -58,6 +58,8 @@ Lingui provides [`llms.txt`](https://lingui.dev/llms.txt) and [`llms-full.txt`](
 
 While these files provide a minimal, easy-to-parse version of the documentation, they are large files that will use a lot of tokens if used directly in context and will need to be updated regularly to stay current. They are best used as a fallback when the AI tool does not have access to the latest documentation in other ways. The Context7 MCP server provides more efficient access to the full documentation with real-time search capabilities, making it the preferred option when available.
 
+Every documentation page is also available as plain Markdown: append `.md` to its URL, for example [`https://lingui.dev/ref/macro.md`](https://lingui.dev/ref/macro.md) for the Macros reference. A single page costs a fraction of the tokens of `llms-full.txt`, so when you know which part of the docs the agent needs, give it that URL instead. The links in `llms.txt` already point to these Markdown versions.
+
 Read more about the specification at [llmstxt.org](https://llmstxt.org/).
 
 ## Context7 MCP
