@@ -1,3 +1,8 @@
+---
+title: Webpack-compatible Loader
+description: Import PO catalogs directly and compile them on the fly with @lingui/loader in Webpack, Rspack and Rsbuild, instead of running lingui compile
+---
+
 # Webpack-compatible loader
 
 The `@lingui/loader` is a Webpack-compatible loader for Lingui message catalogs. It can be used with Webpack, Rspack, and Rsbuild. It offers an alternative to the [`lingui compile`](/ref/cli#compile) and compiles catalogs on the fly.

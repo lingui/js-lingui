@@ -1,3 +1,8 @@
+---
+title: Projects Using Lingui
+description: Open-source and commercial projects that use Lingui for internationalization, including Bluesky, Twenty, GDevelop, Linkerd and Superset
+---
+
 # Projects Using Lingui
 
 Lingui is used by many projects, from small hobby projects to large enterprise applications.

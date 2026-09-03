@@ -1,3 +1,8 @@
+---
+title: ICU MessageFormat
+description: The ICU MessageFormat syntax Lingui uses for messages. Variables, plurals, select and ordinals explained with examples
+---
+
 # ICU MessageFormat
 
 ICU MessageFormat is a flexible and powerful syntax designed to express the grammatical nuances of different languages. Its flexibility ensures that your application can handle grammatical variations, making it essential for effective internationalization.
