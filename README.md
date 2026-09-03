@@ -1,7 +1,7 @@
 <div align="center">
 <h1>Lingui<sub>js</sub></h1>
 
-Lingui is a lightweight, open-source internationalization (i18n) library for JavaScript and TypeScript. Your source text stays in the code: compile-time macros turn it into ICU MessageFormat, and a CLI extracts and compiles the message catalogs. It works with React (including React Server Components and React Native), SolidJS, Vue, Node.js, and vanilla JS.
+Lingui is a lightweight, open-source internationalization (i18n) library for JavaScript and TypeScript. It brings compile-time macros and a CLI for message extraction to React, React Native, Vue, SolidJS, Astro, Svelte, and Node.js.
 
 About 2 kB gzipped core · 6M+ npm downloads a month · MIT licensed
 
@@ -89,7 +89,7 @@ On top of that:
 
 - **One library for the whole stack.** `@lingui/core` works in any JavaScript project. `@lingui/react` adds components and hooks, including React Server Components support, and `@lingui/solid` brings native SolidJS bindings. React Native uses the same extract-and-compile workflow, Vue single-file components are supported through `@lingui/extractor-vue`, and Astro and Svelte work through community packages.
 
-- **Standard formats and real tooling.** Translations live in PO files by default, which every translation tool understands, or in JSON, CSV, or a custom format. Messages carry comments and context for translators and machine translation. The [CLI](https://lingui.dev/ref/cli) extracts, compiles and validates, the [Vite plugin](https://lingui.dev/ref/vite-plugin) compiles catalogs on the fly, the [SWC plugin](https://lingui.dev/ref/swc-plugin) replaces Babel, and the [ESLint plugin](https://lingui.dev/ref/eslint-plugin) catches common mistakes.
+- **Standard formats and real tooling.** Translations live in PO files by default, which almost every translation tool understands, or in JSON, CSV, or a custom format. Messages carry comments and context for translators and machine translation. The [CLI](https://lingui.dev/ref/cli) extracts, compiles and validates, the [Vite plugin](https://lingui.dev/ref/vite-plugin) compiles catalogs on the fly, the [SWC plugin](https://lingui.dev/ref/swc-plugin) replaces Babel, and the [ESLint plugin](https://lingui.dev/ref/eslint-plugin) catches common mistakes.
 
 ## Who Uses Lingui
 
