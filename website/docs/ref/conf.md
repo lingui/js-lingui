@@ -221,13 +221,13 @@ It can be provided either as a string, or as an object to additionally configure
 The string form (`pseudoLocale: "pseudo"`) is deprecated and will be removed in a future major release. Use the object form (`pseudoLocale: { locale: "pseudo" }`) instead.
 :::
 
-| Option             | Type     | Default     | Description                                                                                         |
-| ------------------ | -------- | ----------- | --------------------------------------------------------------------------------------------------- |
-| `locale`           | `string` | —           | Locale used for pseudolocalization (required in the object form)                                    |
+| Option            | Type     | Default     | Description                                                                                         |
+| ----------------- | -------- | ----------- | --------------------------------------------------------------------------------------------------- |
+| `locale`          | `string` | —           | Locale used for pseudolocalization (required in the object form)                                    |
 | `prepend`         | `string` | `""`        | String prepended to the beginning of every pseudo-localized message                                 |
 | `append`          | `string` | `""`        | String appended to the end of every pseudo-localized message                                        |
 | `extend`          | `number` | `0`         | Extends the width of the string by the given percentage (e.g. `0.3` adds 30%)                       |
-| `extendCharacter` | `string` | `" "`       | Character used to pad messages when `extend` is set                                                  |
+| `extendCharacter` | `string` | `" "`       | Character used to pad messages when `extend` is set                                                 |
 | `override`        | `string` | `undefined` | Replaces every (non-token) character with the given one. Handy to quickly spot untranslated strings |
 
 ```ts title="lingui.config.{js,ts}"
