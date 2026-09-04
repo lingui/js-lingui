@@ -215,20 +215,21 @@ Default value: `""`
 
 Locale used for pseudolocalization. For example, when you set `pseudoLocale: "en"`, all messages in the `en` catalog will be pseudo-localized. The locale must be included in the `locales` config.
 
-It can be provided either as a string, or as an object to additionally configure the underlying [`pseudolocale`](https://github.com/MartinCerny-awin/pseudolocale) library. The token delimiter is managed internally by Lingui (to keep HTML tags, ICU macros and variables intact) and therefore cannot be configured.
+It can be provided as a string (deprecated), an object to additionally configure the underlying [`pseudolocale`](https://github.com/MartinCerny-awin/pseudolocale) library, or an array of objects to define multiple pseudolocales with different parameters. The token delimiter is managed internally by Lingui (to keep HTML tags, ICU macros and variables intact) and therefore cannot be configured.
 
 :::caution
-The string form (`pseudoLocale: "pseudo"`) is deprecated and will be removed in a future major release. Use the object form (`pseudoLocale: { locale: "pseudo" }`) instead.
+The string form (`pseudoLocale: "pseudo"`) is deprecated and will be removed in a future major release. Use the object form (`pseudoLocale: { locale: "pseudo" }`) or an array of objects instead.
 :::
 
-| Option            | Type     | Default     | Description                                                                                         |
-| ----------------- | -------- | ----------- | --------------------------------------------------------------------------------------------------- |
-| `locale`          | `string` | —           | Locale used for pseudolocalization (required in the object form)                                    |
-| `prepend`         | `string` | `""`        | String prepended to the beginning of every pseudo-localized message                                 |
-| `append`          | `string` | `""`        | String appended to the end of every pseudo-localized message                                        |
-| `extend`          | `number` | `0`         | Extends the width of the string by the given percentage (e.g. `0.3` adds 30%)                       |
-| `extendCharacter` | `string` | `" "`       | Character used to pad messages when `extend` is set                                                 |
-| `override`        | `string` | `undefined` | Replaces every (non-token) character with the given one. Handy to quickly spot untranslated strings |
+| Option            | Type      | Default     | Description                                                                                         |
+| ------------------| --------- | ----------- | --------------------------------------------------------------------------------------------------- |
+| `locale`          | `string`  | —           | Locale used for pseudolocalization (required in the object form)                                    |
+| `prepend`         | `string`  | `""`        | String prepended to the beginning of every pseudo-localized message                                 |
+| `append`          | `string`  | `""`        | String appended to the end of every pseudo-localized message                                        |
+| `extend`          | `number`  | `0`         | Extends the width of the string by the given percentage (e.g. `0.3` adds 30%)                       |
+| `extendCharacter` | `string`  | `" "`       | Character used to pad messages when `extend` is set                                                 |
+| `override`        | `string`  | `undefined` | Replaces every (non-token) character with the given one. Handy to quickly spot untranslated strings |
+| `rightToLeft`     | `boolean` | `false`     | Emulates right-to-left languages by inserting Unicode RTL override marks                            |
 
 ```ts title="lingui.config.{js,ts}"
 import { defineConfig } from "@lingui/cli";
@@ -252,6 +253,17 @@ export default defineConfig({
     extend: 0.4,
     extendCharacter: ".",
   },
+  catalogs: [],
+});
+
+// Multiple pseudolocales
+export default defineConfig({
+  locales: ["en", "pseudo-en", "pseudo-ar"],
+  sourceLocale: "en",
+  pseudoLocale: [
+    { locale: "pseudo-en", prepend: "⟦ ", append: " ⟧", extend: 0.4 },
+    { locale: "pseudo-ar", rightToLeft: true },
+  ],
   catalogs: [],
 });
 ```
