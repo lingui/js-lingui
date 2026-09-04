@@ -101,7 +101,8 @@ In the rules section, configure the rules you want to use:
     "lingui/no-single-variables-to-translate": 2,
     "lingui/no-expression-in-message": 2,
     "lingui/no-single-tag-to-translate": 2,
-    "lingui/no-trans-inside-trans": 2
+    "lingui/no-trans-inside-trans": 2,
+    "lingui/no-unnamed-tag-placeholders": 2
   }
 }
 ```

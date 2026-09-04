@@ -447,6 +447,8 @@ Any expressions are allowed, not just simple variables. The only difference is, 
 
 :::caution
 Try to keep your messages simple and avoid complex expressions. During extraction, these expressions will be replaced by placeholders, resulting in a lack of context for translators. There is also a special rule in Lingui [ESLint Plugin](/ref/eslint-plugin) to catch these cases: [`no-expression-in-message`](https://github.com/lingui/eslint-plugin/blob/main/docs/rules/no-expression-in-message.md).
+
+Similarly, to prevent numbered tag placeholders like `<0>` from depriving translators of context, use [named tag placeholders](/ref/conf#macrojsxplaceholderattribute) and enforce them with [`no-unnamed-tag-placeholders`](https://github.com/lingui/eslint-plugin/blob/main/docs/rules/no-unnamed-tag-placeholders.md).
 :::
 
 ### Dates and Numbers
