@@ -109,6 +109,29 @@ describe("pofile format", () => {
     expect(actual).toMatchSnapshot()
   })
 
+  it("should read an obsolete message following an active message", () => {
+    const format = createFormatter()
+    const actual = format.parse(
+      `msgid ""
+msgstr ""
+"Language: en\\n"
+
+msgid "Active message"
+msgstr ""
+
+#~ msgid "Obsolete message"
+#~ msgstr ""
+`,
+      defaultParseCtx,
+    )
+
+    const obsoleteMessage = Object.values(actual).find(
+      (message) => message.message === "Obsolete message",
+    )
+
+    expect(obsoleteMessage?.obsolete).toBe(true)
+  })
+
   it("should serialize and deserialize messages with generated id", () => {
     const format = createFormatter({ origins: true })
 
@@ -540,6 +563,152 @@ describe("pofile format", () => {
       "X-Custom-Attribute: custom-value\\n"
       "
     `)
+  })
+
+  it("should be idempotent after serializing over an existing file", async () => {
+    const format = createFormatter()
+    const catalog: CatalogType = {}
+
+    const first = await format.serialize(catalog, defaultSerializeCtx)
+    const second = await format.serialize(catalog, {
+      ...defaultSerializeCtx,
+      existing: first,
+    })
+
+    expect(second).toBe(first)
+  })
+
+  it("should preserve existing POT-Creation-Date by default", () => {
+    const format = createFormatter()
+    const catalog: CatalogType = {}
+
+    const actual = format.serialize(catalog, {
+      ...defaultSerializeCtx,
+      existing: `msgid ""
+msgstr ""
+"POT-Creation-Date: 2000-01-01 00:00+0000\\n"
+"MIME-Version: 1.0\\n"
+"Content-Type: text/plain; charset=utf-8\\n"
+"Content-Transfer-Encoding: 8bit\\n"
+"X-Generator: @lingui/cli\\n"
+"Language: en\\n"
+`,
+    })
+
+    expect(actual).toContain(`"POT-Creation-Date: 2000-01-01 00:00+0000\\n"`)
+  })
+
+  it("should preserve header comments when serializing over an existing file", () => {
+    const format = createFormatter()
+    const catalog: CatalogType = {}
+
+    const actual = format.serialize(catalog, {
+      ...defaultSerializeCtx,
+      existing: `# Translator header comment
+#. Extracted header comment
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2000-01-01 00:00+0000\\n"
+"MIME-Version: 1.0\\n"
+"Content-Type: text/plain; charset=utf-8\\n"
+"Content-Transfer-Encoding: 8bit\\n"
+"X-Generator: @lingui/cli\\n"
+"Language: en\\n"
+`,
+    })
+
+    expect(actual).toContain("# Translator header comment")
+    expect(actual).toContain("#. Extracted header comment")
+  })
+
+  it("should override POT-Creation-Date when provided in custom header attributes", () => {
+    const format = createFormatter({
+      customHeaderAttributes: { "POT-Creation-Date": "" },
+    })
+    const catalog: CatalogType = {}
+
+    const actual = format.serialize(catalog, {
+      ...defaultSerializeCtx,
+      existing: `msgid ""
+msgstr ""
+"POT-Creation-Date: 2000-01-01 00:00+0000\\n"
+"MIME-Version: 1.0\\n"
+"Content-Type: text/plain; charset=utf-8\\n"
+"Content-Transfer-Encoding: 8bit\\n"
+"X-Generator: @lingui/cli\\n"
+"Language: en\\n"
+`,
+    })
+
+    expect(actual).toContain(`"POT-Creation-Date: \\n"`)
+  })
+
+  it("should apply custom header attributes when serializing over an existing file", () => {
+    const format = createFormatter({
+      customHeaderAttributes: { "X-Custom-Attribute": "custom-value" },
+    })
+    const catalog: CatalogType = {}
+
+    const actual = format.serialize(catalog, {
+      ...defaultSerializeCtx,
+      existing: `msgid ""
+msgstr ""
+"POT-Creation-Date: 2000-01-01 00:00+0000\\n"
+"MIME-Version: 1.0\\n"
+"Content-Type: text/plain; charset=utf-8\\n"
+"Content-Transfer-Encoding: 8bit\\n"
+"X-Generator: @lingui/cli\\n"
+"Language: en\\n"
+`,
+    })
+
+    expect(actual).toContain(`"X-Custom-Attribute: custom-value\\n"`)
+  })
+
+  it("should preserve empty default headers when serializing over an existing file", () => {
+    const format = createFormatter()
+    const catalog: CatalogType = {}
+
+    const actual = format.serialize(catalog, {
+      ...defaultSerializeCtx,
+      existing: `msgid ""
+msgstr ""
+"POT-Creation-Date: 2000-01-01 00:00+0000\\n"
+"MIME-Version: 1.0\\n"
+"Content-Type: text/plain; charset=utf-8\\n"
+"Content-Transfer-Encoding: 8bit\\n"
+"X-Generator: @lingui/cli\\n"
+"Language: en\\n"
+"Project-Id-Version: \\n"
+"Report-Msgid-Bugs-To: \\n"
+"PO-Revision-Date: \\n"
+"Last-Translator: \\n"
+"Language-Team: \\n"
+"Plural-Forms: \\n"
+`,
+    })
+
+    expect(actual).toContain(`"Project-Id-Version: \\n"`)
+    expect(actual).toContain(`"Plural-Forms: \\n"`)
+  })
+
+  it("should keep lineNumbers disabled when serializing over an existing file", async () => {
+    const format = createFormatter({ origins: true, lineNumbers: false })
+    const catalog: CatalogType = {
+      withOrigin: {
+        translation: "Message with origin",
+        origin: [["src/App.js", 4]],
+      },
+    }
+
+    const existing = await format.serialize(catalog, defaultSerializeCtx)
+    const actual = await format.serialize(catalog, {
+      ...defaultSerializeCtx,
+      existing,
+    })
+
+    expect(actual).toContain(`#: src/App.js`)
+    expect(actual).not.toContain(`#: src/App.js:4`)
   })
 
   describe("foldLength", () => {

@@ -6,7 +6,11 @@ import {
   getCatalogDependentFiles,
   createMissingErrorMessage,
   createCompilationErrorMessage,
+  isFailOnMissingEnabled,
+  getFailOnMissingBehavior,
+  formatFailOnMissingOption,
 } from "@lingui/cli/api"
+import type { FailOnMissingOption } from "@lingui/cli/api"
 import path from "path"
 import type { Plugin } from "vite"
 import { linguiTransformerBabelPreset } from "./linguiTransformerPreset"
@@ -19,9 +23,9 @@ export type LinguiPluginOpts = {
   skipValidation?: boolean
 
   /**
-   * If true would fail compilation on missing translations
+   * If true would fail compilation on missing translations after fallbackLocales are applied
    **/
-  failOnMissing?: boolean
+  failOnMissing?: FailOnMissingOption
 
   /**
    * If true would fail compilation on message compilation errors
@@ -81,25 +85,27 @@ Please check that catalogs.path is filled properly.\n`,
 
           const dependency = await getCatalogDependentFiles(catalog, locale)
           dependency.forEach((file) => this.addWatchFile(file))
+          const missingBehavior = getFailOnMissingBehavior(failOnMissing)
 
           const { messages, missing: missingMessages } =
             await catalog.getTranslations(locale, {
               fallbackLocales: config.fallbackLocales,
               sourceLocale: config.sourceLocale,
+              missingBehavior,
             })
 
           if (
-            failOnMissing &&
+            isFailOnMissingEnabled(failOnMissing) &&
             locale !== config.pseudoLocale.locale &&
             missingMessages.length > 0
           ) {
             const message = createMissingErrorMessage(
               locale,
               missingMessages,
-              "loader",
+              missingBehavior,
             )
             throw new Error(
-              `${message}\nYou see this error because \`failOnMissing=true\` in Vite Plugin configuration.`,
+              `${message}\nYou see this error because \`failOnMissing=${formatFailOnMissingOption(failOnMissing)}\` in Vite Plugin configuration.`,
             )
           }
 

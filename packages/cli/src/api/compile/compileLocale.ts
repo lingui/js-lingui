@@ -8,9 +8,13 @@ import { createCompiledCatalog } from "../compile.js"
 
 import normalizePath from "normalize-path"
 import nodepath from "path"
-import { createCompilationErrorMessage } from "../messages.js"
+import {
+  createCompilationErrorMessage,
+  getMissingBehaviorDescription,
+} from "../messages.js"
 import { getTranslationsForCatalog } from "../catalog/getTranslationsForCatalog.js"
 import { Logger } from "../logger.js"
+import { createMissingTranslationFinding } from "../catalog/translations.js"
 
 export async function compileLocale(
   catalogs: Catalog[],
@@ -42,18 +46,26 @@ export async function compileLocale(
       )
 
       if (options.verbose) {
-        logger.error(styleText("red", "Missing translations:"))
+        logger.error(
+          styleText(
+            "red",
+            `Missing translations ${getMissingBehaviorDescription("resolved")}:`,
+          ),
+        )
         missingMessages.forEach((missing) => {
-          const source =
-            missing.source || missing.source === missing.id
-              ? `: (${missing.source})`
-              : ""
-
-          logger.error(`${missing.id}${source}`)
+          const finding = createMissingTranslationFinding(
+            catalog,
+            locale,
+            missing,
+          )
+          logger.error(`${finding.catalogPath}: ${finding.message}`)
         })
       } else {
         logger.error(
-          styleText("red", `Missing ${missingMessages.length} translation(s)`),
+          styleText(
+            "red",
+            `Missing ${missingMessages.length} translation(s) ${getMissingBehaviorDescription("resolved")}`,
+          ),
         )
       }
       logger.error("")

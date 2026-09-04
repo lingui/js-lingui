@@ -13,6 +13,7 @@ import {
 } from "./api/resolveWorkersOptions.js"
 import ms from "ms"
 import { getPathsForCompileWatcher } from "./api/getPathsForCompileWatcher.js"
+import { ProgramExit } from "./api/ProgramExit.js"
 
 export type CliCompileOptions = {
   verbose?: boolean
@@ -46,7 +47,7 @@ export async function command(
       try {
         await compileLocale(catalogs, locale, options, config, doMerge, console)
       } catch (err) {
-        if ((err as Error).name === "ProgramExit") {
+        if (err instanceof ProgramExit) {
           errored = true
         } else {
           throw err
@@ -108,7 +109,7 @@ type CliArgs = {
   typescript?: boolean
   watch?: boolean
   namespace?: string
-  strict?: string
+  strict?: boolean
   config?: string
   debounce?: number
   workers?: number
@@ -119,12 +120,15 @@ if (import.meta.main) {
   program
     .description("Compile message catalogs to compiled bundle.")
     .option("--config <path>", "Path to the config file")
-    .option("--strict", "Disable defaults for missing translations")
+    .option(
+      "--strict",
+      "Fail if translations are missing after applying fallbackLocales, or if compilation errors occur",
+    )
     .option("--verbose", "Verbose output")
     .option("--typescript", "Create Typescript definition for compiled bundle")
     .option(
       "--workers <n>",
-      "Number of worker threads to use (default: CPU count - 1, capped at 8). Pass `--workers 1` to disable worker threads and run everything in a single process",
+      "Number of worker threads to use (default: based on CPU count, capped at 8, with special handling for small machines). Pass `--workers 1` to disable worker threads and run everything in a single process",
     )
     .option(
       "--namespace <namespace>",
@@ -146,9 +150,8 @@ if (import.meta.main) {
       )
       console.log(`    $ ${helpRun("compile")}`)
       console.log("")
-      console.log("    # Compile translations but fail when there are missing")
-      console.log("    # translations (don't replace missing translations with")
-      console.log("    # default messages or message IDs)")
+      console.log("    # Compile translations but fail when resolved output")
+      console.log("    # still has missing translations or compilation errors")
       console.log(`    $ ${helpRun("compile --strict")}`)
     })
     .parse(process.argv)

@@ -20,6 +20,13 @@ describe("resolveWorkerOptions", () => {
     })
   })
 
+  test("reject non-numeric workers values", () => {
+    setCores(8)
+    expect(() => resolveWorkersOptions({ workers: "foo" })).toThrow(
+      "The `--workers` option must be an integer.",
+    )
+  })
+
   test("workers=1 forces single-threaded", () => {
     setCores(8)
     expect(resolveWorkersOptions({ workers: 1 })).toEqual({

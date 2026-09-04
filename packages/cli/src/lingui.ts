@@ -19,5 +19,6 @@ program
     "extract-template",
     "Extracts messages from source files to a .pot template",
   )
+  .command("check", "Checks message catalogs")
   .command("compile", "Compile message catalogs")
   .parse(process.argv)
