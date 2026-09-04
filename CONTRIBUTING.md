@@ -35,8 +35,8 @@ The documentation is based on [Docusaurus](https://docusaurus.io/) framework. So
 - Please lint and validate the documentation before submitting any changes:
 
   ```sh
-  yarn lint
-  yarn checkFormat
+  yarn lint:all
+  yarn prettier
   ```
 
 ## Contributing the code
