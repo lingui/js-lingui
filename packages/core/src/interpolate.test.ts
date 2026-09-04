@@ -142,6 +142,13 @@ describe("interpolate", () => {
     expect(cache2({ value: "n/a" })).toEqual("They")
   })
 
+  it("should use the other choice for a value inherited from Object.prototype", () => {
+    const cache = prepare("{value, select, female {She} other {They}}")
+    expect(cache({ value: "constructor" })).toEqual("They")
+    expect(cache({ value: "toString" })).toEqual("They")
+    expect(cache({ value: "hasOwnProperty" })).toEqual("They")
+  })
+
   describe("Custom format", () => {
     const testVector = [
       ["en", undefined, "0.1", "10%", "20%", "€0.10", "€1.00"],

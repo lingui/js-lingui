@@ -73,7 +73,12 @@ const getDefaultFormats = (
 }
 
 const selectFormatter = (value: string, rules: Record<string, any>) =>
-  rules[value] ?? rules.other
+  // Own-property check so a runtime value like "constructor" or "toString"
+  // falls back to the `other` branch instead of resolving to a member
+  // inherited from Object.prototype.
+  (Object.prototype.hasOwnProperty.call(rules, value)
+    ? rules[value]
+    : undefined) ?? rules.other
 
 /**
  * @param translation compiled message
