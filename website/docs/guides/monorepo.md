@@ -1,3 +1,8 @@
+---
+title: Monorepo Setup
+description: How to use Lingui in a monorepo with one root Babel and Lingui configuration that each package extends or overrides
+---
+
 # Monorepo
 
 If you're using lingui within a monorepo you need:

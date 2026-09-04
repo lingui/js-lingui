@@ -1,7 +1,7 @@
 {
   "name": "@lingui/vite-plugin",
   "version": "6.6.0",
-  "description": "Vite plugin to integrate Lingui message catalogs with the CLI and bundler pipeline",
+  "description": "Vite plugin that compiles Lingui message catalogs on the fly, so .po files can be imported directly",
   "type": "module",
   "exports": {
     ".": "./dist/index.mjs"

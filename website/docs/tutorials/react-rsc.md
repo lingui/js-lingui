@@ -1,6 +1,6 @@
 ---
-title: Lingui with React Server Components
-description: Learn how to setup and use Lingui with RSC & Next.js
+title: Next.js App Router i18n with React Server Components
+description: Add internationalization to a Next.js App Router app with Lingui. Set up the SWC plugin, load catalogs in server and client components and switch languages
 ---
 
 Lingui provides support for React Server Components (RSC) as of v4.10.0. In this tutorial, we'll learn how to add internationalization to an application with the Next.js [App Router](https://nextjs.org/docs/app). However, the same principles are applicable to any RSC-based solution.
@@ -21,18 +21,20 @@ After configuring the middleware, make sure your page and route files are moved 
 
 ### Next.js Config
 
-Secondly, add the `swc-plugin` to the `next.config.js`, so that you can use [Lingui Macros](/ref/macro).
+Secondly, add the `swc-plugin` to the Next.js config, so that you can use [Lingui Macros](/ref/macro).
 
-```js title="next.config.js"
+```js title="next.config.mjs"
 import { linguiMacroSwcPlugin } from "@lingui/swc-plugin/options";
 
 /** @type {import('next').NextConfig} */
-module.exports = {
+const nextConfig = {
   // to use Lingui macros
   experimental: {
     swcPlugins: [linguiMacroSwcPlugin()],
   },
 };
+
+export default nextConfig;
 ```
 
 ### Setup with Server Components

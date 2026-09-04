@@ -2,7 +2,7 @@
   "name": "@lingui/format-json",
   "version": "6.6.0",
   "type": "module",
-  "description": "JSON formatter for Lingui message catalogs",
+  "description": "Reads and writes Lingui message catalogs as JSON, either minimal key-value files or files with full message metadata",
   "exports": {
     ".": "./dist/json.mjs"
   },

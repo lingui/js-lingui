@@ -10,11 +10,11 @@ import TabItem from "@theme/TabItem";
 
 Lingui is more than just a package; it's a comprehensive suite of tools designed to simplify internationalization. You have the flexibility to choose the specific tools that best fit your project's needs.
 
-Learn how to install Lingui in your project, whether you use JavaScript, React (including RSC) or React Native. Lingui also supports various transpilers and build tools, such as Babel, SWC, and Vite.
+Learn how to install Lingui in your project, whether you use JavaScript, React (including Next.js and React Server Components) or React Native. Lingui also supports various transpilers and build tools, such as Babel, SWC, and Vite.
 
 ## Prerequisites
 
-- Make sure you have [Node.js](https://nodejs.org/) installed (v20 or higher).
+- Make sure you have [Node.js](https://nodejs.org/) installed (v22.19 or higher).
 - Install [Lingui CLI](/ref/cli) to manage your translations and catalogs.
 
 :::tip
@@ -250,9 +250,28 @@ plugins: [
 
 </Tabs>
 
+### Next.js
+
+Next.js compiles with SWC by default, so Lingui macros need the [`@lingui/swc-plugin`](/ref/swc-plugin) registered in the Next.js config file. If your project has a Babel config, Next.js uses Babel instead and the Babel setup above applies. The Lingui configuration from the [Basic Configuration](#basic-configuration) section works unchanged.
+
+```js title="next.config.mjs"
+import { linguiMacroSwcPlugin } from "@lingui/swc-plugin/options";
+
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  experimental: {
+    swcPlugins: [linguiMacroSwcPlugin()],
+  },
+};
+
+export default nextConfig;
+```
+
+Routing by locale, loading catalogs in server and client components and switching the language are covered in the [Next.js App Router i18n tutorial](/tutorials/react-rsc). The [examples](https://github.com/lingui/js-lingui/tree/main/examples) directory has working Next.js projects for both the SWC and the Babel setup.
+
 ## See Also
 
 - [React i18n Tutorial](/tutorials/react)
-- [React Server Components Tutorial](/tutorials/react-rsc)
+- [Next.js App Router i18n Tutorial](/tutorials/react-rsc)
 - [React Native i18n Tutorial](/tutorials/react-native)
 - [JavaScript i18n Tutorial](/tutorials/javascript)

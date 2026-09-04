@@ -1,3 +1,8 @@
+---
+title: Optimizing Bundle Size
+description: How Lingui keeps your bundle small by compiling messages to compact IDs and dropping the message compiler in production, and how to configure that behavior
+---
+
 # Keeping Your Bundle Small: How Lingui Optimizes for Performance
 
 When you're building a modern app with internationalization (i18n), it's easy to end up with a bloated bundle. The more languages and messages you have, the more it can grow — fast.

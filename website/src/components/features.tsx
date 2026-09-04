@@ -131,7 +131,12 @@ const FEATURES: FeatureDetails[] = [
   },
   {
     title: "Verified by Thousands of Developers",
-    description: <p>Lingui is used and tested by thousands of developers in production. Join the community.</p>,
+    description: (
+      <p>
+        Lingui is used and tested by thousands of developers in production, with more than 6 million npm downloads a
+        month. Join the community.
+      </p>
+    ),
     image: "verified.svg",
   },
   {

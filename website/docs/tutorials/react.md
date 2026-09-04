@@ -704,6 +704,6 @@ That's it for this tutorial! For more details, see the reference documentation o
 
 ## See Also
 
-- [React Server Components Tutorial](/tutorials/react-rsc)
+- [Next.js App Router i18n Tutorial](/tutorials/react-rsc)
 - [React Native i18n Tutorial](/tutorials/react-native)
 - [`@lingui/react` Reference](/ref/react)

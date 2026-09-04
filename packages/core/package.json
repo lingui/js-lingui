@@ -2,7 +2,7 @@
   "name": "@lingui/core",
   "version": "6.6.0",
   "sideEffects": false,
-  "description": "Internationalization (i18n) tools for JavaScript",
+  "description": "The Lingui i18n runtime: loads compiled message catalogs, tracks the active locale and formats ICU MessageFormat messages",
   "type": "module",
   "author": {
     "name": "Tomáš Ehrlich",
