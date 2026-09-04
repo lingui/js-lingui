@@ -575,6 +575,12 @@ export type PseudoLocaleOptions = {
    */
   extend?: number
   /**
+   * Character used to pad pseudo-localized messages when `extend` is set.
+   *
+   * @default " "
+   */
+  extendCharacter?: string
+  /**
    * Replaces every (non-token) character with the given one. Handy to quickly
    * spot strings that were not extracted/translated.
    *

@@ -122,6 +122,12 @@ describe("PseudoLocalization", () => {
       )
     })
 
+    it("should use the configured character when extending a message", () => {
+      expect(
+        pseudoLocalize("Hello", { extend: 1, extendCharacter: "." }),
+      ).toEqual("..Ĥēĺĺō..")
+    })
+
     it("should ignore an attempt to override the internal delimiter", () => {
       expect(
         pseudoLocalize("Martin <span>Černý</span>", {
