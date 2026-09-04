@@ -61,10 +61,14 @@ describe("@lingui/conf", () => {
   })
 
   it("should accept a custom `orderBy` function", () => {
-    const orderBy = () => 0
-    const config = makeConfig({ locales: ["en"], orderBy })
+    mockConsole((console) => {
+      const orderBy = () => 0
+      const config = makeConfig({ locales: ["en"], orderBy })
 
-    expect(config.orderBy).toBe(orderBy)
+      expect(config.orderBy).toBe(orderBy)
+      expect(console.warn).not.toBeCalled()
+      expect(console.error).not.toBeCalled()
+    })
   })
 
   it("should validate `format` and throw error if old string format passed (remove in v7)", () => {

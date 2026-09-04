@@ -458,14 +458,14 @@ export function order<T extends CatalogType>(by: OrderBy, catalog: T): T {
       return acc
     }, {} as T)
 }
-/**
- * Object keys are in the same order as they were created
- * https://stackoverflow.com/a/31102605/1535540
- */
 // hardcoded en-US locale to have consistent sorting
 // @see https://github.com/lingui/js-lingui/pull/1808
 const collator = new Intl.Collator("en-US")
 
+/**
+ * Object keys are in the same order as they were created
+ * https://stackoverflow.com/a/31102605/1535540
+ */
 const orderByMessageId: OrderByFn = (a, b) => {
   return collator.compare(a.messageId, b.messageId)
 }
