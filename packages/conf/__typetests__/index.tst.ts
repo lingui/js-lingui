@@ -28,6 +28,8 @@ expect({
     append: " ⟧",
     extend: 0.4,
     extendCharacter: ".",
+    override: "_",
+    rightToLeft: true,
   },
 }).type.toBeAssignableTo<LinguiConfig>()
 

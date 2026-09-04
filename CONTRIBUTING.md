@@ -58,7 +58,13 @@ This project uses [yarn][yarninstall] package manager. Please follow [official][
    yarn
    ```
 
-3. Run tests
+3. Build packages. Several integration tests and packages depend on compiled distribution files (`dist/`) of workspace packages, so you must build them before running tests.
+
+   ```sh
+   yarn release:build
+   ```
+
+4. Run tests
 
    ```sh
    # Watch mode
@@ -141,9 +147,10 @@ The process is described in the [React Native example](./examples/react-native) 
 
 Please make sure that all tests pass and linter doesn't report any error before submitting a PR (Don't worry though! If you can't figure out the problem, create a PR anyway, and we'll help you).
 
+- `yarn release:build` - Build all packages (required before running `yarn test`)
 - `yarn lint:all` - Linting & Type testing
 - `yarn test` - Quick test suite (sufficient)
-- `yarn release:test` - Full test suite (recommended)
+- `yarn release:test` - Full test suite: builds packages, runs unit tests, e2e tests, and type tests (recommended)
 
 `yarn release:test` builds all packages, simulates creating packages for NPM, runs unit tests and finally runs integration tests using production build.
 

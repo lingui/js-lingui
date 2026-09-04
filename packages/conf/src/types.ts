@@ -587,6 +587,12 @@ export type PseudoLocaleOptions = {
    * @default undefined
    */
   override?: string
+  /**
+   * Emulates right-to-left languages by inserting Unicode RTL override marks.
+   *
+   * @default false
+   */
+  rightToLeft?: boolean
 }
 
 /**
