@@ -1,5 +1,5 @@
-import { i18n } from "@lingui/core"
-import type { MessageId } from "@lingui/core"
+import { i18n, setupI18n } from "@lingui/core"
+import type { I18n, MessageId, Values } from "@lingui/core"
 import { expect } from "tstyche"
 
 // MessageId resolves to string when Register is not augmented
@@ -58,3 +58,15 @@ expect(i18n.t).type.not.toBeCallableWith(
 expect(i18n.load).type.toBeCallableWith("cs", {})
 expect(i18n.load).type.toBeCallableWith({ cs: {} })
 expect(i18n.load).type.not.toBeCallableWith({ cs: {} }, {})
+
+expect(i18n.variables).type.toBe<Values>()
+expect(setupI18n({ variables: { gender: "female" } })).type.toBe<I18n>()
+expect(i18n.setVariable("gender", "male")).type.toBe<I18n>()
+expect(i18n.setVariable("gender", () => "male")).type.toBe<I18n>()
+expect(i18n.setVariables({ gender: "male" })).type.toBe<I18n>()
+expect(
+  i18n.setVariables((prev) => ({
+    ...prev,
+    gender: "female",
+  })),
+).type.toBe<I18n>()
