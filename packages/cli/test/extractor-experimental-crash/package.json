@@ -1,0 +1,10 @@
+{
+  "name": "extractor-experimental-crash",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@lingui/core": "*",
+    "@lingui/conf": "*"
+  }
+}

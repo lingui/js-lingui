@@ -472,6 +472,50 @@ describe("E2E Extractor Test", () => {
 
       compareFolders(actualPath, expectedPath)
     })
+
+    it("should not wipe translations in the locale files when the extractor crashes", async () => {
+      const { rootDir, actualPath, expectedPath } = await prepare(
+        "extractor-experimental-crash",
+      )
+
+      await mockConsole(async () => {
+        const result = await extractExperimentalCommand(
+          makeConfig({
+            rootDir: rootDir,
+            locales: ["en", "pl"],
+            sourceLocale: "en",
+
+            catalogs: [],
+            extractors: [
+              {
+                match: () => true,
+                extract: () => {
+                  throw new Error("Extractor crashed")
+                },
+              },
+            ],
+            experimental: {
+              extractor: {
+                entries: ["<rootDir>/fixtures/pages/**/*.page.{ts,tsx}"],
+                output: "<rootDir>/actual/{entryName}.{locale}",
+              },
+            },
+          }),
+          {
+            workersOptions: {
+              poolSize: 0,
+            },
+            clean: true,
+          },
+        )
+
+        // the failed run must be reported as unsuccessful...
+        expect(result).toBeFalsy()
+      })
+
+      // ...and must leave the existing catalogs on disk untouched
+      compareFolders(actualPath, expectedPath)
+    })
   })
 
   describe("extractor-experimental (rolldown)", () => {

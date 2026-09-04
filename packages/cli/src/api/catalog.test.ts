@@ -9,6 +9,7 @@ import { createCompiledCatalog } from "./compile.js"
 
 import {
   copyFixture,
+  createFixtures,
   defaultMakeOptions,
   defaultMakeTemplateOptions,
   makeNextMessage,
@@ -22,7 +23,11 @@ import {
 } from "./catalog/extractFromFiles.js"
 import { FormatterWrapper, getFormat } from "./formats/index.js"
 import { createBabelExtractor } from "./extractors/babel.js"
-import type { ExtractedMessage, LinguiConfigNormalized } from "@lingui/conf"
+import type {
+  ExtractedMessage,
+  ExtractorType,
+  LinguiConfigNormalized,
+} from "@lingui/conf"
 
 async function extractMessages(
   paths: string[],
@@ -165,6 +170,52 @@ describe("Catalog", () => {
 
       await catalog.make(defaultMakeOptions)
       expect(await catalog.readAll()).toMatchSnapshot()
+    })
+
+    it("should not wipe translations in the locale file when the extractor crashes", async () => {
+      const existingPo = ['msgid "Hello World"', 'msgstr "Ahoj světe"', ""].join(
+        "\n",
+      )
+
+      const dir = (
+        await createFixtures({
+          "src/index.ts": "t`Hello World`",
+          "locales/en.po": existingPo,
+        })
+      ).replace(/\\/g, "/")
+
+      const crashingExtractor: ExtractorType = {
+        match: (filename) => filename.endsWith(".ts"),
+        extract: () => {
+          throw new Error("Extractor crashed")
+        },
+      }
+
+      const catalog = new Catalog(
+        {
+          name: "messages",
+          path: `${dir}/locales/{locale}`,
+          include: [`${dir}/src/`],
+          exclude: [],
+          format,
+        },
+        mockConfig({
+          locales: ["en"],
+          extractors: [crashingExtractor],
+        }),
+      )
+
+      let result: Awaited<ReturnType<typeof catalog.make>>
+      await mockConsole(async () => {
+        result = await catalog.make({ ...defaultMakeOptions, clean: true })
+      })
+
+      // the failed run must be reported as unsuccessful...
+      expect(result!).toBe(false)
+      // ...and must leave the existing translations on disk untouched
+      expect(fs.readFileSync(`${dir}/locales/en.po`, "utf8")).toContain(
+        'msgstr "Ahoj světe"',
+      )
     })
   })
 
