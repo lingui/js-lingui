@@ -671,6 +671,10 @@ A mapping of JSX element tag names to default placeholder names. When a JSX elem
 
 Explicit attributes (via `jsxPlaceholderAttribute`) take priority over defaults.
 
+:::tip Enforce Named Placeholders with ESLint
+You can enforce that all JSX tags in `<Trans>` have named placeholders across your codebase using the Lingui [ESLint Plugin](/ref/eslint-plugin) rule [`no-unnamed-tag-placeholders`](https://github.com/lingui/eslint-plugin/blob/main/docs/rules/no-unnamed-tag-placeholders.md).
+:::
+
 ## macro.idPrefixLeader
 
 Default value: `undefined`
