@@ -25,6 +25,8 @@ import {
 } from "./extract-experimental/writeCatalogs.js"
 import { createExtractExperimentalWorkerPool } from "./api/workerPools.js"
 import { buildChunkGraph } from "./extract-experimental/buildChunkGraph.js"
+import { resolveCatalogPath } from "./extract-experimental/resolveCatalogPath.js"
+import { resolveTemplatePath } from "./extract-experimental/resolveTemplatePath.js"
 import { mergeExtractedMessage } from "./api/catalog/extractFromFiles.js"
 import ora from "ora"
 import ms from "ms"
@@ -214,12 +216,41 @@ export default async function command(
   const format = await getFormat(linguiConfig.format, linguiConfig.sourceLocale)
   const locales = options.locales || linguiConfig.locales
 
+  const resolveOutputKey = (entryPoint: string) =>
+    options.template
+      ? resolveTemplatePath(
+          entryPoint,
+          extractorConfig.output,
+          linguiConfig.rootDir,
+          format.getTemplateExtension(),
+        )
+      : resolveCatalogPath(
+          extractorConfig.output,
+          entryPoint,
+          linguiConfig.rootDir,
+          undefined,
+          format.getCatalogExtension(),
+        )
+
+  const failedOutputs = new Set(
+    [...failedEntries].map((entryPoint) => resolveOutputKey(entryPoint)),
+  )
+
   for (const [entryPoint, messages] of messagesByEntry) {
     if (failedEntries.has(entryPoint)) {
       console.error(
         `Skipped writing catalogs for ${normalizePath(
           nodepath.relative(linguiConfig.rootDir, entryPoint),
         )} because extraction failed, existing catalogs are left untouched`,
+      )
+      continue
+    }
+
+    if (failedOutputs.has(resolveOutputKey(entryPoint))) {
+      console.error(
+        `Skipped writing catalogs for ${normalizePath(
+          nodepath.relative(linguiConfig.rootDir, entryPoint),
+        )} because its output file is shared with an entry that failed to extract, existing catalogs are left untouched`,
       )
       continue
     }
