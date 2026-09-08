@@ -170,9 +170,11 @@ describe("Catalog", () => {
     })
 
     it("should not wipe translations in the locale file when the extractor crashes", async () => {
-      const existingPo = ['msgid "Hello World"', 'msgstr "Ahoj světe"', ""].join(
-        "\n",
-      )
+      const existingPo = [
+        'msgid "Hello World"',
+        'msgstr "Ahoj světe"',
+        "",
+      ].join("\n")
 
       const dir = (
         await createFixtures({
