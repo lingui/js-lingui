@@ -237,20 +237,11 @@ export default async function command(
   )
 
   for (const [entryPoint, messages] of messagesByEntry) {
-    if (failedEntries.has(entryPoint)) {
-      console.error(
-        `Skipped writing catalogs for ${normalizePath(
-          nodepath.relative(linguiConfig.rootDir, entryPoint),
-        )} because extraction failed, existing catalogs are left untouched`,
-      )
-      continue
-    }
-
     if (failedOutputs.has(resolveOutputKey(entryPoint))) {
       console.error(
         `Skipped writing catalogs for ${normalizePath(
           nodepath.relative(linguiConfig.rootDir, entryPoint),
-        )} because its output file is shared with an entry that failed to extract, existing catalogs are left untouched`,
+        )} because extraction failed for an entry writing to the same output. Existing catalogs are left untouched.`,
       )
       continue
     }
