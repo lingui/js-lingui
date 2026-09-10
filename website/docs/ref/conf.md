@@ -222,7 +222,7 @@ The string form (`pseudoLocale: "pseudo"`) is deprecated and will be removed in 
 :::
 
 | Option            | Type      | Default     | Description                                                                                         |
-| ------------------| --------- | ----------- | --------------------------------------------------------------------------------------------------- |
+| ----------------- | --------- | ----------- | --------------------------------------------------------------------------------------------------- |
 | `locale`          | `string`  | —           | Locale used for pseudolocalization (required in the object form)                                    |
 | `prepend`         | `string`  | `""`        | String prepended to the beginning of every pseudo-localized message                                 |
 | `append`          | `string`  | `""`        | String appended to the end of every pseudo-localized message                                        |

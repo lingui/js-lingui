@@ -22,10 +22,7 @@ export default defineConfig({
   locales: ["en", "pseudo-LOCALE"],
   pseudoLocale: { locale: "pseudo-LOCALE" },
   locales: ["en", "pseudo-LOCALE", "pseudo-RTL"],
-  pseudoLocale: [
-    { locale: "pseudo-LOCALE" },
-    { locale: "pseudo-RTL", rightToLeft: true },
-  ],
+  pseudoLocale: [{ locale: "pseudo-LOCALE" }, { locale: "pseudo-RTL", rightToLeft: true }],
   fallbackLocales: {
     "pseudo-LOCALE": "en",
     "pseudo-RTL": "en",

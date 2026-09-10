@@ -100,9 +100,7 @@ export const defaultConfig = {
   locales: [],
   orderBy: "message",
   pseudoLocale: "" as
-    | DeprecatedPseudoLocaleString
-    | PseudoLocaleConfig
-    | PseudoLocaleConfig[],
+    DeprecatedPseudoLocaleString | PseudoLocaleConfig | PseudoLocaleConfig[],
   rootDir: ".",
   runtimeConfigModule: ["@lingui/core", "i18n"],
   macro: {
