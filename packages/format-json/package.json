@@ -1,6 +1,6 @@
 {
   "name": "@lingui/format-json",
-  "version": "6.6.0",
+  "version": "6.7.0",
   "type": "module",
   "description": "Reads and writes Lingui message catalogs as JSON, either minimal key-value files or files with full message metadata",
   "exports": {

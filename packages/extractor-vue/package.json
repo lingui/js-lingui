@@ -1,6 +1,6 @@
 {
   "name": "@lingui/extractor-vue",
-  "version": "6.6.0",
+  "version": "6.7.0",
   "type": "module",
   "description": "Extractor for the Lingui CLI that finds i18n messages in Vue single-file components",
   "keywords": [

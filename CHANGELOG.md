@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.7.0](https://github.com/lingui/js-lingui/compare/v6.6.0...v6.7.0) (2026-09-11)
+
+### Bug Fixes
+
+* **core:** look up select choices and message ids as own properties ([#2664](https://github.com/lingui/js-lingui/issues/2664)) ([6dfa30d](https://github.com/lingui/js-lingui/commit/6dfa30d6888398b7de4ed5c46893d243045f497b))
+* **core:** prevent prototype pollution via __proto__ locale key in i18n.load ([#2658](https://github.com/lingui/js-lingui/issues/2658)) ([9b7986c](https://github.com/lingui/js-lingui/commit/9b7986c79b339b6127bb6fbdd3d132fadbbce89f))
+* make orderBy handling consistent ([#2665](https://github.com/lingui/js-lingui/issues/2665)) ([8cff1f0](https://github.com/lingui/js-lingui/commit/8cff1f0a820aad3d24f2c96780bb21e907b4f56a))
+
+### Features
+
+* **cli,conf:** add RTL pseudolocale and allow multiple pseudolocales ([#2652](https://github.com/lingui/js-lingui/issues/2652)) ([4c00dec](https://github.com/lingui/js-lingui/commit/4c00decb3dddbd9539725d093a5e68080c376668))
+* **conf:** support pseudolocale extend character ([#2651](https://github.com/lingui/js-lingui/issues/2651)) ([3f7f03d](https://github.com/lingui/js-lingui/commit/3f7f03d98445ed912ffeb9794b7bf9acc1d8d73d))
+
+
 # [6.6.0](https://github.com/lingui/js-lingui/compare/v6.5.0...v6.6.0) (2026-07-24)
 
 ### Bug Fixes
