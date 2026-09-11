@@ -146,19 +146,138 @@ function isGeneratedId(id: string, message: MessageType): boolean {
   return id === generateMessageId(message.message!, message.context)
 }
 
-function getCreateHeaders(
+const MANAGED_HEADERS = [
+  "POT-Creation-Date",
+  "MIME-Version",
+  "Content-Type",
+  "Content-Transfer-Encoding",
+  "X-Generator",
+  "Language",
+] as const
+
+function shouldKeepExistingHeader(
+  key: string,
+  customHeaderAttributes: PoFormatterOptions["customHeaderAttributes"],
+) {
+  if (MANAGED_HEADERS.includes(key as (typeof MANAGED_HEADERS)[number])) {
+    return false
+  }
+
+  if (customHeaderAttributes && key in customHeaderAttributes) {
+    return false
+  }
+
+  return true
+}
+
+function getNormalizedHeaders(
   language: string | undefined,
   customHeaderAttributes: PoFormatterOptions["customHeaderAttributes"],
+  existingHeaders: Partial<POHeaders> | undefined,
+  existingHeaderOrder: string[] | undefined,
 ): Partial<POHeaders> {
-  return {
-    "POT-Creation-Date": formatPotCreationDate(new Date()),
-    "MIME-Version": "1.0",
-    "Content-Type": "text/plain; charset=utf-8",
-    "Content-Transfer-Encoding": "8bit",
-    "X-Generator": "@lingui/cli",
-    ...(language ? { Language: language } : {}),
-    ...(customHeaderAttributes ?? {}),
+  const nextHeaders: Partial<POHeaders> = {}
+
+  // pofile-ts pre-fills `headers` with its own default template (all
+  // standard gettext keys set to ""), even for keys the source file never
+  // wrote. `headerOrder` only records keys actually found in the text, so
+  // it's the only reliable way to tell a real (if empty) header from one
+  // the parser invented.
+  const presentInSource = new Set(existingHeaderOrder ?? [])
+
+  if (existingHeaders) {
+    Object.entries(existingHeaders).forEach(([key, value]) => {
+      if (
+        presentInSource.has(key) &&
+        shouldKeepExistingHeader(key, customHeaderAttributes)
+      ) {
+        nextHeaders[key] = value
+      }
+    })
   }
+
+  nextHeaders["POT-Creation-Date"] =
+    customHeaderAttributes?.["POT-Creation-Date"] ??
+    (presentInSource.has("POT-Creation-Date")
+      ? existingHeaders?.["POT-Creation-Date"]
+      : undefined) ??
+    formatPotCreationDate(new Date())
+  nextHeaders["MIME-Version"] = "1.0"
+  nextHeaders["Content-Type"] = "text/plain; charset=utf-8"
+  nextHeaders["Content-Transfer-Encoding"] = "8bit"
+  nextHeaders["X-Generator"] = "@lingui/cli"
+
+  if (language) {
+    nextHeaders.Language = language
+  }
+
+  Object.entries(customHeaderAttributes ?? {}).forEach(([key, value]) => {
+    nextHeaders[key] = value
+  })
+
+  return nextHeaders
+}
+
+function getHeaderOrder(
+  headers: Partial<POHeaders>,
+  language: string | undefined,
+  customHeaderAttributes: PoFormatterOptions["customHeaderAttributes"],
+  existingHeaderOrder: string[] | undefined,
+) {
+  const managedOrder = [
+    "POT-Creation-Date",
+    "MIME-Version",
+    "Content-Type",
+    "Content-Transfer-Encoding",
+    "X-Generator",
+    ...(language ? ["Language"] : []),
+    ...Object.keys(customHeaderAttributes ?? {}).filter(
+      (key) =>
+        !MANAGED_HEADERS.includes(key as (typeof MANAGED_HEADERS)[number]),
+    ),
+  ]
+
+  const order = new Set(managedOrder)
+
+  existingHeaderOrder?.forEach((key) => {
+    if (key in headers) {
+      order.add(key)
+    }
+  })
+
+  Object.keys(headers).forEach((key) => {
+    order.add(key)
+  })
+
+  return [...order]
+}
+
+function parsePoFile(content: string): PoFile {
+  const po = parsePo(content)
+
+  // pofile-ts 4.0.3 can lose the obsolete marker when an obsolete item
+  // immediately follows an active item without an intervening comment.
+  const obsoleteItems = content
+    .split(/\r?\n\r?\n/)
+    .filter((section) => /^#~\s+(?:msgctxt|msgid)\b/m.test(section))
+    .flatMap((section) => parsePo(section).items)
+    .filter((item) => item.obsolete)
+
+  obsoleteItems.forEach((obsoleteItem) => {
+    for (let index = po.items.length - 1; index >= 0; index--) {
+      const item = po.items[index]
+
+      if (
+        item.msgid === obsoleteItem.msgid &&
+        item.msgctxt === obsoleteItem.msgctxt
+      ) {
+        item.obsolete = true
+        break
+      }
+    }
+  })
+
+  return po
 }
 
 const EXPLICIT_ID_FLAG = "js-lingui-explicit-id"
@@ -321,23 +440,28 @@ export function formatter(options: PoFormatterOptions = {}): CatalogFormatter {
     templateExtension: ".pot",
 
     parse(content): CatalogType {
-      const po = parsePo(content)
+      const po = parsePoFile(content)
       return deserialize(po.items, options)
     },
 
     serialize(catalog, ctx): string {
-      let po: PoFile
+      const existingPo = ctx.existing ? parsePoFile(ctx.existing) : undefined
+      const po: PoFile = createPoFile()
 
-      if (ctx.existing) {
-        po = parsePo(ctx.existing)
-      } else {
-        po = createPoFile()
-        po.headers = getCreateHeaders(
-          ctx.locale,
-          options.customHeaderAttributes,
-        )
-        po.headerOrder = Object.keys(po.headers)
-      }
+      po.comments = [...(existingPo?.comments ?? [])]
+      po.extractedComments = [...(existingPo?.extractedComments ?? [])]
+      po.headers = getNormalizedHeaders(
+        ctx.locale,
+        options.customHeaderAttributes,
+        existingPo?.headers,
+        existingPo?.headerOrder,
+      )
+      po.headerOrder = getHeaderOrder(
+        po.headers,
+        ctx.locale,
+        options.customHeaderAttributes,
+        existingPo?.headerOrder,
+      )
 
       po.items = serialize(catalog, options, {
         locale: ctx.locale,
