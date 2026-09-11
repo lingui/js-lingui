@@ -668,6 +668,25 @@ describe("order", () => {
     expect(Object.keys(orderedCatalogs)).toMatchSnapshot()
   })
 
+  it("should not depend on String.localeCompare when ordering message ids", () => {
+    const localeCompare = vi
+      .spyOn(String.prototype, "localeCompare")
+      .mockImplementation(() => {
+        throw new Error("host-locale-dependent comparison")
+      })
+    const catalog = {
+      z: makeNextMessage({ translation: "Z" }),
+      a: makeNextMessage({ translation: "A" }),
+    }
+
+    try {
+      expect(Object.keys(order("messageId", catalog))).toEqual(["a", "z"])
+      expect(localeCompare).not.toHaveBeenCalled()
+    } finally {
+      localeCompare.mockRestore()
+    }
+  })
+
   it("should order messages by origin", () => {
     const catalog = {
       LabelB: makeNextMessage({

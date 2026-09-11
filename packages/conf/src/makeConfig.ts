@@ -112,6 +112,7 @@ export const defaultConfig = {
 
 export const exampleConfig = {
   ...defaultConfig,
+  orderBy: multipleValidOptions("message", Function),
   macro: {
     ...defaultConfig.macro,
     idPrefixLeader: ".",
