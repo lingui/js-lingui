@@ -4,9 +4,13 @@ import { getConsoleMockCalls, mockConsole } from "@lingui/test-utils"
 import { createFixtures, readFsToListing } from "../tests.js"
 
 describe("CLI Command: Compile", () => {
-  function getTestConfig(rootDir: string, pseudoLocale?: string) {
+  function getTestConfig(
+    rootDir: string,
+    pseudoLocale?: LinguiConfig["pseudoLocale"],
+    locales: string[] = ["en", "pl"],
+  ) {
     return makeConfig({
-      locales: ["en", "pl"],
+      locales,
       sourceLocale: "en",
       pseudoLocale: pseudoLocale,
       rootDir: rootDir,
@@ -120,6 +124,52 @@ msgstr ""
 
         expect(actualFiles["pl.js"]).toBeTruthy()
         expect(actualFiles["en.js"]).toBeTruthy()
+
+        const log = getConsoleMockCalls(console.error)
+        expect(log).toBeUndefined()
+        expect(result).toBeTruthy()
+      })
+    })
+
+    it("Should compile multiple pseudolocales with different options without failing when allowEmpty = false", async () => {
+      expect.assertions(6)
+      const rootDir = await createFixtures({
+        "en.po": `
+msgid "Hello World"
+msgstr "Hello World"
+        `,
+        "pseudo-en.po": `
+msgid "Hello World"
+msgstr ""
+        `,
+        "pseudo-ar.po": `
+msgid "Hello World"
+msgstr ""
+        `,
+      })
+
+      const config = getTestConfig(
+        rootDir,
+        [
+          { locale: "pseudo-en", prepend: "⟦ ", append: " ⟧" },
+          { locale: "pseudo-ar", rightToLeft: true },
+        ],
+        ["en", "pseudo-en", "pseudo-ar"],
+      )
+
+      await mockConsole(async (console) => {
+        const result = await command(config, {
+          allowEmpty: false,
+          workersOptions: {
+            poolSize: 0,
+          },
+        })
+        const actualFiles = readFsToListing(config.rootDir)
+
+        expect(actualFiles["pseudo-en.js"]).toContain("⟦")
+        expect(actualFiles["pseudo-en.js"]).toContain("⟧")
+        expect(actualFiles["pseudo-ar.js"]).toContain("\u202E") // RLO marker.
+        expect(actualFiles["pseudo-ar.js"]).toContain("\u202C") // PDF marker.
 
         const log = getConsoleMockCalls(console.error)
         expect(log).toBeUndefined()

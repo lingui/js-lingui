@@ -388,12 +388,13 @@ export type LinguiConfig = {
    * Locale used for pseudolocalization. For example, when you set `pseudoLocale: "en"`, all messages in the en catalog will be pseudo-localized.
    * The locale must be included in the locales config.
    *
-   * You can either pass the locale as a string, or an object to additionally
+   * You can pass a single locale as a string (deprecated), an object to additionally
    * configure the underlying [`pseudolocale`](https://github.com/MartinCerny-awin/pseudolocale)
-   * library (e.g. to customize the prepended/appended markers or extend the string length).
+   * library (e.g. to customize the prepended/appended markers or extend the string length),
+   * or an array of objects to define multiple pseudolocales with different parameters.
    *
    * The string form is deprecated and will be removed in a future major release.
-   * Use the object form (`{ locale: "pseudo" }`) instead.
+   * Use the object form (`{ locale: "pseudo" }`) or array of objects instead.
    *
    * @example
    *
@@ -403,11 +404,18 @@ export type LinguiConfig = {
    *
    * // Extended form
    * pseudoLocale: { locale: "pseudo", prepend: "⟦ ", append: " ⟧", extend: 0.4 }
+   *
+   * // Multiple pseudolocales
+   * pseudoLocale: [
+   *   { locale: "pseudo-en", prepend: "⟦ ", append: " ⟧" },
+   *   { locale: "pseudo-ar", rightToLeft: true }
+   * ]
    * ```
    *
    * https://lingui.dev/guides/pseudolocalization
    */
-  pseudoLocale?: DeprecatedPseudoLocaleString | PseudoLocaleConfig
+  pseudoLocale?:
+    DeprecatedPseudoLocaleString | PseudoLocaleConfig | PseudoLocaleConfig[]
   /**
    * This is the directory where the Lingui CLI scans for messages in your source files during the extraction process.
    *
@@ -587,6 +595,12 @@ export type PseudoLocaleOptions = {
    * @default undefined
    */
   override?: string
+  /**
+   * Emulates right-to-left languages by inserting Unicode RTL override marks.
+   *
+   * @default false
+   */
+  rightToLeft?: boolean
 }
 
 /**
@@ -626,7 +640,7 @@ export type LinguiConfigNormalized = Omit<
   "runtimeConfigModule" | "pseudoLocale"
 > & {
   resolvedConfigPath?: string
-  pseudoLocale: PseudoLocaleConfigNormalized
+  pseudoLocale: PseudoLocaleConfigNormalized[]
   runtimeConfigModule: {
     i18n: ModuleSourceNormalized
     useLingui: ModuleSourceNormalized
