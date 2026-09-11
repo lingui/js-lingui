@@ -1,6 +1,6 @@
 {
   "name": "@lingui/core",
-  "version": "6.6.0",
+  "version": "6.7.0",
   "sideEffects": false,
   "description": "The Lingui i18n runtime: loads compiled message catalogs, tracks the active locale and formats ICU MessageFormat messages",
   "type": "module",
