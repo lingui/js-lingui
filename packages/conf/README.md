@@ -4,24 +4,17 @@
 
 # @lingui/conf
 
-> Get lingui configuration from package.json
+> Resolve and validate Lingui configuration
 
-**⚠️ Internal package: You probably don't need this.**
+`@lingui/conf` is part of [Lingui][documentation]. Lingui is a lightweight, open-source internationalization (i18n) library for JavaScript and TypeScript. It brings compile-time macros and a CLI for message extraction to React, React Native, Vue, SolidJS, Astro, Svelte, and Node.js.
 
-`@lingui/conf` is part of [LinguiJS][linguijs]. See the [documentation][documentation] for all information, tutorials and examples.
-
-Package finds nearest package.json starting from current directory, reads `lingui` configuration, provides defaults for all options and `<rootDir>` with current working directory.
-
-## Usage
-
-See the [reference][reference] documentation.
+**Internal package.** `@lingui/conf` locates `lingui.config.js`, fills in the defaults and validates the options for the Lingui CLI and the bundler plugins. Application code does not need it; `defineConfig` is available from `@lingui/cli`. See the [configuration reference][reference] for all options.
 
 ## License
 
-This package is licensed under [MIT][license] license.
+This package is licensed under the [MIT][license] license.
 
 [license]: https://github.com/lingui/js-lingui/blob/main/LICENSE
-[linguijs]: https://github.com/lingui/js-lingui
 [documentation]: https://lingui.dev
 [reference]: https://lingui.dev/ref/conf
 [package]: https://www.npmjs.com/package/@lingui/conf

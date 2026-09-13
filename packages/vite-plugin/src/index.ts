@@ -94,9 +94,13 @@ Please check that catalogs.path is filled properly.\n`,
               missingBehavior,
             })
 
+          const pseudoLocaleConfig = config.pseudoLocale.find(
+            (item) => item.locale === locale,
+          )
+
           if (
             isFailOnMissingEnabled(failOnMissing) &&
-            locale !== config.pseudoLocale.locale &&
+            !pseudoLocaleConfig &&
             missingMessages.length > 0
           ) {
             const message = createMissingErrorMessage(
@@ -114,8 +118,8 @@ Please check that catalogs.path is filled properly.\n`,
             messages,
             {
               namespace: "es",
-              pseudoLocale: config.pseudoLocale.locale,
-              pseudoLocaleOptions: config.pseudoLocale.options,
+              pseudoLocale: pseudoLocaleConfig?.locale,
+              pseudoLocaleOptions: pseudoLocaleConfig?.options,
             },
           )
 

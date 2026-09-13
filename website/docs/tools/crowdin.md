@@ -1,3 +1,8 @@
+---
+title: Crowdin
+description: Translate a Lingui project with Crowdin. Sync PO catalogs with the Crowdin CLI or the GitHub, GitLab and Bitbucket integrations and deliver them over the air
+---
+
 # Crowdin
 
 <p align="center">

@@ -54,7 +54,7 @@ Resource: ${this.resourcePath}
 Your catalogs:
 ${config.catalogs.map((c) => c.path).join("\n")}
 
-Working dir is: 
+Working dir is:
 ${process.cwd()}
 
 Please check that \`catalogs.path\` is filled properly.\n`,
@@ -75,9 +75,13 @@ Please check that \`catalogs.path\` is filled properly.\n`,
     },
   )
 
+  const pseudoLocaleConfig = config.pseudoLocale.find(
+    (item) => item.locale === locale,
+  )
+
   if (
     isFailOnMissingEnabled(options.failOnMissing) &&
-    locale !== config.pseudoLocale.locale &&
+    !pseudoLocaleConfig &&
     missingMessages.length > 0
   ) {
     const message = createMissingErrorMessage(
@@ -99,8 +103,8 @@ Please check that \`catalogs.path\` is filled properly.\n`,
   const { source: code, errors } = createCompiledCatalog(locale, messages, {
     strict,
     namespace: this._module!.type === "json" ? "json" : "es",
-    pseudoLocale: config.pseudoLocale.locale,
-    pseudoLocaleOptions: config.pseudoLocale.options,
+    pseudoLocale: pseudoLocaleConfig?.locale,
+    pseudoLocaleOptions: pseudoLocaleConfig?.options,
   })
 
   if (errors.length) {

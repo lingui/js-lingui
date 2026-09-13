@@ -151,7 +151,14 @@ export class I18n extends EventEmitter<Events> {
     return this
   }
   private _load(locale: Locale, messages: Messages) {
-    const maybeMessages = this._messages[locale]
+    // Own-property check so a "__proto__" locale key can't resolve to
+    // Object.prototype and get merged into (prototype pollution).
+    const maybeMessages = Object.prototype.hasOwnProperty.call(
+      this._messages,
+      locale,
+    )
+      ? this._messages[locale]
+      : undefined
     if (!maybeMessages) {
       this._messages[locale] = messages
     } else {
@@ -229,7 +236,13 @@ export class I18n extends EventEmitter<Events> {
       id = id.id
     }
 
-    const messageForId = this.messages[id]
+    // Own-property check so an id like "constructor" or "toString" is
+    // reported as missing instead of resolving to a member inherited from
+    // Object.prototype.
+    const messages = this.messages
+    const messageForId = Object.prototype.hasOwnProperty.call(messages, id)
+      ? messages[id]
+      : undefined
     const messageMissing = messageForId === undefined
 
     // replace missing messages with custom message for debugging

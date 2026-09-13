@@ -1,3 +1,8 @@
+---
+title: Testing Components That Use Lingui
+description: How to test React components that use Trans or useLingui by wrapping them in I18nProvider with React Testing Library
+---
+
 # Testing
 
 In a React application, components that use [`Trans`](/ref/react#trans) or [`useLingui`](/ref/react#uselingui) need access to the context provided by [`I18nProvider`](/ref/react#i18nprovider). How you wrap your component with the I18nProvider depends on the testing library you're using.

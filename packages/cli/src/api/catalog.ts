@@ -458,12 +458,16 @@ export function order<T extends CatalogType>(by: OrderBy, catalog: T): T {
       return acc
     }, {} as T)
 }
+// hardcoded en-US locale to have consistent sorting
+// @see https://github.com/lingui/js-lingui/pull/1808
+const collator = new Intl.Collator("en-US")
+
 /**
  * Object keys are in the same order as they were created
  * https://stackoverflow.com/a/31102605/1535540
  */
 const orderByMessageId: OrderByFn = (a, b) => {
-  return a.messageId.localeCompare(b.messageId)
+  return collator.compare(a.messageId, b.messageId)
 }
 
 const orderByOrigin: OrderByFn = (a, b) => {
@@ -515,10 +519,6 @@ export async function writeCompiled(
   await writeFile(filename, compiledCatalog)
   return filename
 }
-
-// hardcoded en-US locale to have consistent sorting
-// @see https://github.com/lingui/js-lingui/pull/1808
-const collator = new Intl.Collator("en-US")
 
 export const orderByMessage: OrderByFn = (a, b) => {
   const aMsg = a.entry.message || ""

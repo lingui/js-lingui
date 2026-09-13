@@ -4,20 +4,21 @@
 
 # @lingui/format-csv
 
-> Read and write message catalogs in CSV 
+> Reads and writes Lingui message catalogs as two-column CSV files for spreadsheets and other CSV tools
 
-`@lingui/format-csv` is part of [LinguiJS][linguijs]. See the [documentation][documentation] for all information, tutorials and examples.
+`@lingui/format-csv` is part of [Lingui][documentation]. Lingui is a lightweight, open-source internationalization (i18n) library for JavaScript and TypeScript. It brings compile-time macros and a CLI for message extraction to React, React Native, Vue, SolidJS, Astro, Svelte, and Node.js.
 
-## Installation & Usage
+Each row holds a message ID and the source message or translation. The format has no options.
 
-See the [reference][reference] documentation.
+## Usage
+
+See the [catalog formats reference][reference].
 
 ## License
 
-This package is licensed under [MIT][license] license.
+This package is licensed under the [MIT][license] license.
 
 [license]: https://github.com/lingui/js-lingui/blob/main/LICENSE
-[linguijs]: https://github.com/lingui/js-lingui
 [documentation]: https://lingui.dev
 [reference]: https://lingui.dev/ref/catalog-formats#csv
 [package]: https://www.npmjs.com/package/@lingui/format-csv

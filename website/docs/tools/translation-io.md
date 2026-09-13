@@ -1,3 +1,8 @@
+---
+title: Translation.io
+description: Sync Lingui catalogs with Translation.io. Push source messages, pull translations, and give translators ICU syntax highlighting and plural management
+---
+
 # Translation.io
 
 <p align="center">

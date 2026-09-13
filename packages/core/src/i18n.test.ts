@@ -55,6 +55,38 @@ describe("I18n", () => {
       i18n.activate("fr")
       expect(i18n.messages).toEqual(frMessages)
     })
+
+    describe("prototype pollution", () => {
+      afterEach(() => {
+        delete (Object.prototype as any).polluted
+      })
+
+      it("should not pollute Object.prototype via __proto__ locale key", () => {
+        const i18n = setupI18n()
+        i18n.load(JSON.parse('{"__proto__":{"polluted":"yes"}}'))
+        expect(({} as any).polluted).toBeUndefined()
+      })
+
+      it("should not pollute Object.prototype via __proto__ string locale", () => {
+        const i18n = setupI18n()
+        i18n.load("__proto__", { polluted: "yes" })
+        expect(({} as any).polluted).toBeUndefined()
+      })
+
+      it("should not pollute Object.prototype via __proto__ message key", () => {
+        const i18n = setupI18n()
+        i18n.load("en", JSON.parse('{"__proto__":"yes"}'))
+        expect(({} as any).polluted).toBeUndefined()
+      })
+
+      it("should still load and merge a normal locale", () => {
+        const i18n = setupI18n()
+        i18n.load({ en: { Hello: "Hello" } })
+        i18n.load({ en: { World: "World" } })
+        i18n.activate("en")
+        expect(i18n.messages).toEqual({ Hello: "Hello", World: "World" })
+      })
+    })
   })
 
   describe("I18n.activate", () => {
@@ -392,6 +424,19 @@ describe("I18n", () => {
       locale: "en",
     })
     i18n.t("missing")
+    expect(handler).toHaveBeenCalledTimes(2)
+  })
+
+  it("._ should treat an id inherited from Object.prototype as missing", () => {
+    const i18n = setupI18n({
+      locale: "en",
+      messages: { en: { exists: "exists" } },
+    })
+
+    const handler = vi.fn()
+    i18n.on("missing", handler)
+    expect(i18n._("constructor")).toEqual("constructor")
+    expect(i18n._("toString")).toEqual("toString")
     expect(handler).toHaveBeenCalledTimes(2)
   })
 

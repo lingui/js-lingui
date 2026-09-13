@@ -33,9 +33,13 @@ export async function compileLocale(
         sourceLocale: config.sourceLocale,
       })
 
+    const pseudoLocaleConfig = config.pseudoLocale.find(
+      (item) => item.locale === locale,
+    )
+
     if (
       !options.allowEmpty &&
-      locale !== config.pseudoLocale.locale &&
+      !pseudoLocaleConfig &&
       missingMessages.length > 0
     ) {
       logger.error(
@@ -117,6 +121,9 @@ async function compileAndWrite(
   const namespace = options.typescript
     ? "ts"
     : options.namespace || config.compileNamespace
+  const pseudoLocaleConfig = config.pseudoLocale.find(
+    (item) => item.locale === locale,
+  )
   const { source: compiledCatalog, errors } = createCompiledCatalog(
     locale,
     messages,
@@ -124,8 +131,8 @@ async function compileAndWrite(
       strict: false,
       namespace,
       outputPrefix: options.outputPrefix,
-      pseudoLocale: config.pseudoLocale.locale,
-      pseudoLocaleOptions: config.pseudoLocale.options,
+      pseudoLocale: pseudoLocaleConfig?.locale,
+      pseudoLocaleOptions: pseudoLocaleConfig?.options,
       compilerBabelOptions: config.compilerBabelOptions,
     },
   )

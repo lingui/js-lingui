@@ -740,6 +740,11 @@ Components and HTML tags are replaced by dummy indexed tags (`<0></0>`) which ha
 - Changing component props doesn't break translation.
 - The message is extracted as a whole sentence (this seems to be obvious, but most i18n libs simply split the message into pieces by tags and translate them separately).
 
+:::tip Named Tag Placeholders
+By default, tags are indexed numerically (`<0></0>`). To provide descriptive placeholder names for translators (e.g. `<link>docs</link>`), configure [`macro.jsxPlaceholderAttribute`](/ref/conf#macrojsxplaceholderattribute) or [`macro.jsxPlaceholderDefaults`](/ref/conf#macrojsxplaceholderdefaults).
+You can enforce named placeholders with the Lingui [ESLint Plugin](/ref/eslint-plugin) rule [`no-unnamed-tag-placeholders`](https://github.com/lingui/eslint-plugin/blob/main/docs/rules/no-unnamed-tag-placeholders.md).
+:::
+
 #### `render`
 
 Custom render callback to render translation. This prop is passed directly to the [`Trans`](/ref/react#trans) component from the [`@lingui/react`](/ref/react) package.

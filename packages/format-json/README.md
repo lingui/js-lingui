@@ -4,20 +4,21 @@
 
 # @lingui/format-json
 
-> Read and write message catalogs in JSON 
+> Reads and writes Lingui message catalogs as JSON, either minimal key-value files or files with full message metadata
 
-`@lingui/format-json` is part of [LinguiJS][linguijs]. See the [documentation][documentation] for all information, tutorials and examples.
+`@lingui/format-json` is part of [Lingui][documentation]. Lingui is a lightweight, open-source internationalization (i18n) library for JavaScript and TypeScript. It brings compile-time macros and a CLI for message extraction to React, React Native, Vue, SolidJS, Astro, Svelte, and Node.js.
 
-## Installation & Usage
+The `minimal` style is a flat object of message IDs and translations. The `lingui` style keeps the source message, comments and origins alongside each translation.
 
-See the [reference][reference] documentation.
+## Usage
+
+See the [catalog formats reference][reference].
 
 ## License
 
-This package is licensed under [MIT][license] license.
+This package is licensed under the [MIT][license] license.
 
 [license]: https://github.com/lingui/js-lingui/blob/main/LICENSE
-[linguijs]: https://github.com/lingui/js-lingui
 [documentation]: https://lingui.dev
 [reference]: https://lingui.dev/ref/catalog-formats#json
 [package]: https://www.npmjs.com/package/@lingui/format-json

@@ -1,3 +1,8 @@
+---
+title: Migration guide from 3.x to 4.x
+description: Upgrade Lingui from 3.x to 4.x. New extractor configuration, hash-based message IDs, the context feature, and the removed APIs to replace
+---
+
 # Migration guide from 3.x to 4.x
 
 ## Backward incompatible changes

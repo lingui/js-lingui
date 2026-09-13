@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.7.0](https://github.com/lingui/js-lingui/compare/v6.6.0...v6.7.0) (2026-09-11)
+
+### Bug Fixes
+
+* **core:** look up select choices and message ids as own properties ([#2664](https://github.com/lingui/js-lingui/issues/2664)) ([6dfa30d](https://github.com/lingui/js-lingui/commit/6dfa30d6888398b7de4ed5c46893d243045f497b))
+* **core:** prevent prototype pollution via __proto__ locale key in i18n.load ([#2658](https://github.com/lingui/js-lingui/issues/2658)) ([9b7986c](https://github.com/lingui/js-lingui/commit/9b7986c79b339b6127bb6fbdd3d132fadbbce89f))
+
+
 # [6.6.0](https://github.com/lingui/js-lingui/compare/v6.5.0...v6.6.0) (2026-07-24)
 
 **Note:** Version bump only for package @lingui/core

@@ -145,7 +145,7 @@ msgstr ""
     expect(rendered).toContain("before applying fallbackLocales")
   })
 
-  it("Should skip pseudo locale", async () => {
+  it("Should skip multiple pseudo locales", async () => {
     const rootDir = await createFixtures({
       "locales/en/messages.po": `
 msgid "Hello World"
@@ -155,10 +155,15 @@ msgstr "Hello World"
 msgid "Hello World"
 msgstr ""
         `,
+      "locales/ru/messages.po": `
+msgid "Hello World"
+msgstr ""
+        `,
     })
 
     const config = getTestConfig(rootDir, {
-      pseudoLocale: "pl",
+      locales: ["en", "pl", "ru"],
+      pseudoLocale: [{ locale: "pl" }, { locale: "ru" }],
     })
 
     const result = await runCheck(config, "missing", {

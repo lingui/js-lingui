@@ -1,3 +1,8 @@
+---
+title: Talks and Articles
+description: Talks and articles about Lingui and JavaScript internationalization, collected from the community
+---
+
 # Talks and Articles
 
 Discover a collection of talks and articles on Lingui and the broader topic of internationalization.

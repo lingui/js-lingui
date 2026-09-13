@@ -4,16 +4,17 @@
 
 # @lingui/message-utils
 
-> Internal package. You probably don't need to use it directly.
+> Low-level Lingui utilities to compile ICU MessageFormat messages and generate stable message IDs
 
-`@lingui/message-utils` is part of [LinguiJS][linguijs]. See the [documentation][documentation] for all information, tutorials and examples.
+`@lingui/message-utils` is part of [Lingui][documentation]. Lingui is a lightweight, open-source internationalization (i18n) library for JavaScript and TypeScript. It brings compile-time macros and a CLI for message extraction to React, React Native, Vue, SolidJS, Astro, Svelte, and Node.js.
+
+**Internal package.** `@lingui/message-utils` is used by the Lingui CLI, plugins and runtime to compile ICU MessageFormat messages and to generate message IDs. Application code does not need it.
 
 ## License
 
-[MIT][license]
+This package is licensed under the [MIT][license] license.
 
 [license]: https://github.com/lingui/js-lingui/blob/main/LICENSE
-[linguijs]: https://github.com/lingui/js-lingui
 [documentation]: https://lingui.dev
 [package]: https://www.npmjs.com/package/@lingui/message-utils
 [badge-downloads]: https://img.shields.io/npm/dw/@lingui/message-utils.svg

@@ -32,8 +32,9 @@ export function Header(): React.ReactElement {
           />
           <h1 className="mb-4 text-3xl font-bold sm:text-5xl">{siteConfig.tagline}</h1>
           <p className="mb-8 text-balance text-base leading-relaxed text-body-fg">
-            A lightweight i18n library for JavaScript and TypeScript. Supports React, React Native, Vue, SolidJS, Astro,
-            Svelte, Node.js, and more.
+            Lingui is a lightweight, open-source internationalization (i18n) library for JavaScript and TypeScript. It
+            brings compile-time macros and a CLI for message extraction to React, React Native, Vue, SolidJS, Astro,
+            Svelte, and Node.js.
           </p>
 
           <div className="my-6 flex flex-wrap items-center justify-center gap-4">

@@ -14,7 +14,7 @@ export async function getMissingTranslationFindings(
   locale: string,
   missingBehavior: MissingBehavior = "resolved",
 ): Promise<MissingTranslationFinding[]> {
-  if (locale === catalog.config.pseudoLocale.locale) {
+  if (catalog.config.pseudoLocale.some((item) => item.locale === locale)) {
     return []
   }
 
