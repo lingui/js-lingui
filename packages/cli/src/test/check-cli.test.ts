@@ -42,6 +42,12 @@ describe("CLI: check", () => {
     expect(syncCommand?.options.map((option) => option.long)).toContain(
       "--overwrite",
     )
+    expect(
+      syncCommand?.options.find((option) => option.long === "--workers")
+        ?.description,
+    ).toBe(
+      "Number of worker threads to use (default: CPU count - 1, capped at 8; on 1-2 core machines, all cores). Pass `--workers 1` to disable worker threads and run everything in a single process",
+    )
     expect(syncCommand?.options.map((option) => option.long)).not.toContain(
       "--mode",
     )

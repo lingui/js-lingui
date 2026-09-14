@@ -132,6 +132,32 @@ msgstr ""
     expect(obsoleteMessage?.obsolete).toBe(true)
   })
 
+  it("should preserve obsolete state for duplicate msgid entries", () => {
+    const format = createFormatter()
+    const actual = format.parse(
+      `msgid ""
+msgstr ""
+"Language: en\\n"
+
+#. js-lingui-explicit-id
+msgid "Hello World"
+msgstr ""
+
+#~ msgid "Hello World"
+#~ msgstr "Ahoj Brno"
+`,
+      defaultParseCtx,
+    )
+
+    const messages = Object.values(actual)
+    const activeMessage = messages.find((message) => !message.obsolete)
+    const obsoleteMessage = messages.find((message) => message.obsolete)
+
+    expect(messages).toHaveLength(2)
+    expect(activeMessage?.translation).toBe("")
+    expect(obsoleteMessage?.translation).toBe("Ahoj Brno")
+  })
+
   it("should serialize and deserialize messages with generated id", () => {
     const format = createFormatter({ origins: true })
 
@@ -598,6 +624,43 @@ msgstr ""
     expect(actual).toContain(`"POT-Creation-Date: 2000-01-01 00:00+0000\\n"`)
   })
 
+  it("should preserve existing headers and their order", async () => {
+    const format = createFormatter()
+    const catalog: CatalogType = {}
+
+    const actual = await format.serialize(catalog, {
+      ...defaultSerializeCtx,
+      existing: `msgid ""
+msgstr ""
+"Language: legacy\\n"
+"X-Generator: legacy-tool\\n"
+"MIME-Version: 0.9\\n"
+"Content-Type: application/x-legacy\\n"
+"POT-Creation-Date: 2000-01-01 00:00+0000\\n"
+"X-Custom-Header: legacy-value\\n"
+`,
+    })
+
+    const expectedHeaders = [
+      '"Language: legacy\\n"',
+      '"X-Generator: legacy-tool\\n"',
+      '"MIME-Version: 0.9\\n"',
+      '"Content-Type: application/x-legacy\\n"',
+      '"POT-Creation-Date: 2000-01-01 00:00+0000\\n"',
+      '"X-Custom-Header: legacy-value\\n"',
+    ]
+
+    expectedHeaders.forEach((header) => {
+      expect(actual).toContain(header)
+    })
+
+    for (let index = 1; index < expectedHeaders.length; index++) {
+      expect(actual.indexOf(expectedHeaders[index - 1]!)).toBeLessThan(
+        actual.indexOf(expectedHeaders[index]!),
+      )
+    }
+  })
+
   it("should preserve header comments when serializing over an existing file", () => {
     const format = createFormatter()
     const catalog: CatalogType = {}
@@ -663,6 +726,30 @@ msgstr ""
     })
 
     expect(actual).toContain(`"X-Custom-Attribute: custom-value\\n"`)
+  })
+
+  it("should let custom header attributes override existing headers", () => {
+    const format = createFormatter({
+      customHeaderAttributes: {
+        "X-Generator": "custom-generator",
+        "X-Custom-Attribute": "custom-value",
+      },
+    })
+    const catalog: CatalogType = {}
+
+    const actual = format.serialize(catalog, {
+      ...defaultSerializeCtx,
+      existing: `msgid ""
+msgstr ""
+"X-Generator: legacy-generator\\n"
+"X-Custom-Attribute: legacy-value\\n"
+`,
+    })
+
+    expect(actual).toContain(`"X-Generator: custom-generator\\n"`)
+    expect(actual).toContain(`"X-Custom-Attribute: custom-value\\n"`)
+    expect(actual).not.toContain(`"X-Generator: legacy-generator\\n"`)
+    expect(actual).not.toContain(`"X-Custom-Attribute: legacy-value\\n"`)
   })
 
   it("should preserve empty default headers when serializing over an existing file", () => {

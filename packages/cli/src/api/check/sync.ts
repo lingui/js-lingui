@@ -82,7 +82,8 @@ export const syncCheck: CheckDefinition = {
       {
         name: "clean",
         runOption: "clean",
-        description: "Mirror extract --clean behavior when running sync check",
+        description:
+          "Remove obsolete messages from the expected catalog before comparing it with the existing catalog. Existing obsolete messages are reported as out of sync.",
       },
       {
         name: "overwrite",

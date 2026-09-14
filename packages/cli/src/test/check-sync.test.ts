@@ -280,6 +280,44 @@ t\`Hello World\`
     expect(rendered).toContain("FAIL sync")
   })
 
+  it("Should pass when existing PO headers use a legacy format", async () => {
+    const rootDir = await createFixtures({
+      "src/app.ts": `
+import { t } from "@lingui/core/macro"
+
+t\`Hello World\`
+        `,
+    })
+
+    const config = getTestConfig(rootDir)
+    await extractCatalogs(config)
+
+    const filename = `${rootDir}/locales/en/messages.po`
+    const existing = await fs.promises.readFile(filename, "utf-8")
+    const headerEnd = existing.indexOf("\n\n")
+    const legacyHeader = `msgid ""
+msgstr ""
+"Language: legacy\\n"
+"X-Generator: legacy-tool\\n"
+"MIME-Version: 0.9\\n"
+"Content-Type: application/x-legacy\\n"
+"POT-Creation-Date: 2000-01-01 00:00+0000\\n"
+"X-Custom-Header: legacy-value\\n"
+`
+
+    await fs.promises.writeFile(
+      filename,
+      legacyHeader + existing.slice(headerEnd + 1),
+      "utf-8",
+    )
+
+    const result = await runCheck(config, "sync", {
+      workersOptions,
+    })
+
+    expect(result.passed).toBeTruthy()
+  })
+
   it("Should render sync findings without writing to console", async () => {
     const rootDir = await createFixtures({
       "src/app.ts": `

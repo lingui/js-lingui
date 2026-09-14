@@ -155,52 +155,14 @@ const MANAGED_HEADERS = [
   "Language",
 ] as const
 
-function shouldKeepExistingHeader(
-  key: string,
-  customHeaderAttributes: PoFormatterOptions["customHeaderAttributes"],
-) {
-  if (MANAGED_HEADERS.includes(key as (typeof MANAGED_HEADERS)[number])) {
-    return false
-  }
-
-  if (customHeaderAttributes && key in customHeaderAttributes) {
-    return false
-  }
-
-  return true
-}
-
-function getNormalizedHeaders(
+function getNewHeaders(
   language: string | undefined,
   customHeaderAttributes: PoFormatterOptions["customHeaderAttributes"],
-  existingHeaders: Partial<POHeaders> | undefined,
-  existingHeaderOrder: string[] | undefined,
 ): Partial<POHeaders> {
   const nextHeaders: Partial<POHeaders> = {}
 
-  // pofile-ts pre-fills `headers` with its own default template (all
-  // standard gettext keys set to ""), even for keys the source file never
-  // wrote. `headerOrder` only records keys actually found in the text, so
-  // it's the only reliable way to tell a real (if empty) header from one
-  // the parser invented.
-  const presentInSource = new Set(existingHeaderOrder ?? [])
-
-  if (existingHeaders) {
-    Object.entries(existingHeaders).forEach(([key, value]) => {
-      if (
-        presentInSource.has(key) &&
-        shouldKeepExistingHeader(key, customHeaderAttributes)
-      ) {
-        nextHeaders[key] = value
-      }
-    })
-  }
-
   nextHeaders["POT-Creation-Date"] =
     customHeaderAttributes?.["POT-Creation-Date"] ??
-    (presentInSource.has("POT-Creation-Date")
-      ? existingHeaders?.["POT-Creation-Date"]
-      : undefined) ??
     formatPotCreationDate(new Date())
   nextHeaders["MIME-Version"] = "1.0"
   nextHeaders["Content-Type"] = "text/plain; charset=utf-8"
@@ -218,11 +180,36 @@ function getNormalizedHeaders(
   return nextHeaders
 }
 
+function getExistingHeaders(
+  existingHeaders: Partial<POHeaders>,
+  existingHeaderOrder: string[],
+  customHeaderAttributes: PoFormatterOptions["customHeaderAttributes"],
+): Partial<POHeaders> {
+  // pofile-ts pre-fills `headers` with its own default template (all
+  // standard gettext keys set to ""), even for keys the source file never
+  // wrote. `headerOrder` only records keys actually found in the text, so
+  // copy only those headers when serializing an existing file.
+  const nextHeaders: Partial<POHeaders> = {}
+
+  existingHeaderOrder.forEach((key) => {
+    if (key in existingHeaders) {
+      nextHeaders[key] = existingHeaders[key]
+    }
+  })
+
+  // Explicit formatter configuration is still allowed to override existing
+  // values or add new headers.
+  Object.entries(customHeaderAttributes ?? {}).forEach(([key, value]) => {
+    nextHeaders[key] = value
+  })
+
+  return nextHeaders
+}
+
 function getHeaderOrder(
   headers: Partial<POHeaders>,
   language: string | undefined,
   customHeaderAttributes: PoFormatterOptions["customHeaderAttributes"],
-  existingHeaderOrder: string[] | undefined,
 ) {
   const managedOrder = [
     "POT-Creation-Date",
@@ -239,11 +226,18 @@ function getHeaderOrder(
 
   const order = new Set(managedOrder)
 
-  existingHeaderOrder?.forEach((key) => {
-    if (key in headers) {
-      order.add(key)
-    }
+  Object.keys(headers).forEach((key) => {
+    order.add(key)
   })
+
+  return [...order]
+}
+
+function getExistingHeaderOrder(
+  headers: Partial<POHeaders>,
+  existingHeaderOrder: string[],
+) {
+  const order = new Set(existingHeaderOrder.filter((key) => key in headers))
 
   Object.keys(headers).forEach((key) => {
     order.add(key)
@@ -255,6 +249,9 @@ function getHeaderOrder(
 function parsePoFile(content: string): PoFile {
   const po = parsePo(content)
 
+  // Workaround for pofile-ts#22; the upstream fix is pending in pofile-ts#23:
+  // https://github.com/sebastian-software/pofile-ts/issues/22
+  // https://github.com/sebastian-software/pofile-ts/pull/23
   // pofile-ts 4.0.3 can lose the obsolete marker when an obsolete item
   // immediately follows an active item without an intervening comment.
   const obsoleteItems = content
@@ -445,23 +442,22 @@ export function formatter(options: PoFormatterOptions = {}): CatalogFormatter {
     },
 
     serialize(catalog, ctx): string {
-      const existingPo = ctx.existing ? parsePoFile(ctx.existing) : undefined
+      const existingPo =
+        ctx.existing !== undefined ? parsePoFile(ctx.existing) : undefined
       const po: PoFile = createPoFile()
 
       po.comments = [...(existingPo?.comments ?? [])]
       po.extractedComments = [...(existingPo?.extractedComments ?? [])]
-      po.headers = getNormalizedHeaders(
-        ctx.locale,
-        options.customHeaderAttributes,
-        existingPo?.headers,
-        existingPo?.headerOrder,
-      )
-      po.headerOrder = getHeaderOrder(
-        po.headers,
-        ctx.locale,
-        options.customHeaderAttributes,
-        existingPo?.headerOrder,
-      )
+      po.headers = existingPo
+        ? getExistingHeaders(
+            existingPo.headers,
+            existingPo.headerOrder,
+            options.customHeaderAttributes,
+          )
+        : getNewHeaders(ctx.locale, options.customHeaderAttributes)
+      po.headerOrder = existingPo
+        ? getExistingHeaderOrder(po.headers, existingPo.headerOrder)
+        : getHeaderOrder(po.headers, ctx.locale, options.customHeaderAttributes)
 
       po.items = serialize(catalog, options, {
         locale: ctx.locale,

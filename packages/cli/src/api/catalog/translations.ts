@@ -1,6 +1,6 @@
 import { Catalog } from "../catalog.js"
-import { CheckFindingBase } from "../findings.js"
 import { toRootRelativePath } from "../utils.js"
+import type { CheckFindingBase } from "../check/types.js"
 import {
   getTranslationsForCatalog,
   TranslationMissingEvent,

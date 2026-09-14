@@ -1,9 +1,13 @@
 import { LinguiConfigNormalized } from "@lingui/conf"
 import { Catalog } from "../catalog.js"
-import { MissingTranslationFinding } from "../catalog/translations.js"
-import { CheckFindingBase } from "../findings.js"
 import { WorkersOptions } from "../resolveWorkersOptions.js"
+import type { MissingTranslationFinding } from "../catalog/translations.js"
 import type { MissingBehavior } from "../catalog/getTranslationsForCatalog.js"
+
+export type CheckFindingBase = {
+  catalogPath: string
+  message: string
+}
 
 export type CheckName = "sync" | "missing"
 export const checkSpecificOptions = [

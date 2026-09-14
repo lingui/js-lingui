@@ -132,16 +132,7 @@ Delay the extraction by `<delay>` milliseconds, bundling multiple file changes t
 
 #### `--workers` {#extract-workers}
 
-Specifies the number of worker threads to use.
-
-Pass `--workers 1` to disable workers and run everything in a single process.
-
-By default, the tool uses a simple heuristic:
-
-- On machines with more than 2 cores → `cpu.count - 1` workers
-- On 2-core machines → all cores
-
-Use the `--verbose` flag to see the actual pool size.
+Number of worker threads to use (default: CPU count - 1, capped at 8; on 1-2 core machines, all cores). Pass `--workers 1` to disable worker threads and run everything in a single process
 
 Worker threads can significantly improve performance on large projects. However, on small projects they may provide little benefit or even be slightly slower due to thread startup overhead.
 
@@ -239,15 +230,7 @@ Delays compilation by `<delay>` milliseconds to avoid multiple compilations for 
 
 #### `--workers` {#compile-workers}
 
-Specifies the number of worker threads to use.
-Pass `--workers 1` to disable workers and run everything in a single process.
-
-By default, the tool uses a simple heuristic:
-
-- On machines with more than 2 cores → `cpu.count - 1` workers
-- On 2-core machines → all cores
-
-Use the `--verbose` flag to see the actual pool size.
+Number of worker threads to use (default: CPU count - 1, capped at 8; on 1-2 core machines, all cores). Pass `--workers 1` to disable worker threads and run everything in a single process
 
 Worker threads can significantly improve performance on large projects. However, on small projects they may provide little benefit or even be slightly slower due to thread startup overhead.
 
@@ -301,7 +284,7 @@ lingui check sync
     [--workers]
 ```
 
-Checks whether locale catalogs are synchronized with the current source code. This validation mirrors the behavior of `lingui extract` in dry-run mode and fails if extract would create or update any locale catalog file.
+Checks whether locale catalogs are synchronized with the current source code. It fails if the expected catalog differs from the existing catalog.
 
 This validation checks locale catalogs only. It does not validate `.pot` / template freshness.
 
@@ -325,7 +308,7 @@ Only check the specified locales when running `lingui check sync`.
 
 #### `sync --clean` {#check-sync-clean}
 
-When running the `sync` validation, mirror `lingui extract --clean`. Obsolete messages are expected to be removed.
+Before comparing catalogs, remove obsolete messages from the expected catalog. Existing obsolete messages are still reported as out of sync.
 
 #### `sync --overwrite` {#check-sync-overwrite}
 
@@ -337,16 +320,7 @@ Print detailed findings for each failing `sync` validation.
 
 #### `sync --workers` {#check-sync-workers}
 
-Specifies the number of worker threads to use for `lingui check sync`.
-
-Pass `--workers 1` to disable workers and run everything in a single process.
-
-By default, the tool uses a simple heuristic:
-
-- On machines with more than 2 cores → `cpu.count - 1` workers
-- On 2-core machines → all cores
-
-Use the `--verbose` flag to see the actual pool size.
+Number of worker threads to use (default: CPU count - 1, capped at 8; on 1-2 core machines, all cores). Pass `--workers 1` to disable worker threads and run everything in a single process
 
 #### `missing --locale <locale, [...]>` {#check-missing-locale}
 
@@ -365,16 +339,7 @@ Print detailed findings for each failing `missing` validation.
 
 #### `missing --workers` {#check-missing-workers}
 
-Specifies the number of worker threads to use for `lingui check missing`.
-
-Pass `--workers 1` to disable workers and run everything in a single process.
-
-By default, the tool uses a simple heuristic:
-
-- On machines with more than 2 cores → `cpu.count - 1` workers
-- On 2-core machines → all cores
-
-Use the `--verbose` flag to see the actual pool size.
+Number of worker threads to use (default: CPU count - 1, capped at 8; on 1-2 core machines, all cores). Pass `--workers 1` to disable worker threads and run everything in a single process
 
 ## Configuring the Source Locale
 
