@@ -1502,7 +1502,7 @@ __metadata:
     "@babel/plugin-syntax-jsx": "npm:^7.28.6"
     "@babel/preset-typescript": "npm:^7.18.6"
     "@babel/traverse": "npm:^7.20.12"
-    "@babel/types": "npm:^7.29.0"
+    "@babel/types": "npm:^7.20.7"
     "@lingui/conf": "workspace:*"
     "@lingui/message-utils": "workspace:*"
     babel-plugin-macros: "npm:^3.1.0"
@@ -1513,11 +1513,8 @@ __metadata:
     vitest: "catalog:"
   peerDependencies:
     "@babel/core": ^7.20.12 || ^8.0.0
-    "@babel/types": ^7.20.7 || ^8.0.0
   peerDependenciesMeta:
     "@babel/core":
-      optional: true
-    "@babel/types":
       optional: true
   languageName: unknown
   linkType: soft
