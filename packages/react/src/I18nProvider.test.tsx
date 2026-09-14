@@ -2,6 +2,7 @@ import * as React from "react"
 import { act, render } from "@testing-library/react"
 
 import { I18nProvider, useLingui } from "./I18nProvider"
+import { Trans } from "./Trans"
 import { I18n, setupI18n } from "@lingui/core"
 import { useMemo, useCallback } from "react"
 import type { TransRenderProps } from "./TransNoContext"
@@ -335,5 +336,141 @@ describe("I18nProvider", () => {
     })
 
     expect(getByTestId("locale").textContent).toBe("cs")
+  })
+
+  describe("variables", () => {
+    it("renders default variables in Trans and updates on setVariables", () => {
+      const i18n = setupI18n({
+        locale: "en",
+        messages: {
+          en: {
+            welcome:
+              "{gender, select, female {[F] Welcome} male {[M] Welcome} other {[N] Welcome}}",
+          },
+        },
+        variables: {
+          gender: "female",
+        },
+      })
+
+      const { getByTestId } = render(
+        <I18nProvider i18n={i18n}>
+          <div data-testid="msg">
+            <Trans id="welcome" />
+          </div>
+        </I18nProvider>,
+      )
+
+      expect(getByTestId("msg").textContent).toBe("[F] Welcome")
+
+      act(() => {
+        i18n.setVariables({ gender: "male" })
+      })
+
+      expect(getByTestId("msg").textContent).toBe("[M] Welcome")
+    })
+
+    it("updates single variable via setVariable in Trans without clobbering", () => {
+      const i18n = setupI18n({
+        locale: "en",
+        messages: {
+          en: {
+            greeting: "Welcome {gender} to {appName}",
+          },
+        },
+        variables: {
+          gender: "female",
+          appName: "LinguiApp",
+        },
+      })
+
+      const { getByTestId } = render(
+        <I18nProvider i18n={i18n}>
+          <div data-testid="msg">
+            <Trans id="greeting" />
+          </div>
+        </I18nProvider>,
+      )
+
+      expect(getByTestId("msg").textContent).toBe("Welcome female to LinguiApp")
+
+      act(() => {
+        i18n.setVariable("gender", "male")
+      })
+
+      expect(getByTestId("msg").textContent).toBe("Welcome male to LinguiApp")
+    })
+
+    it("prioritizes call-site values in Trans over default variables", () => {
+      const i18n = setupI18n({
+        locale: "en",
+        messages: {
+          en: {
+            greeting: "Hello {name}, your role is {role} ({appName})",
+          },
+        },
+        variables: {
+          appName: "LinguiApp",
+          role: "User",
+        },
+      })
+
+      const { getByTestId } = render(
+        <I18nProvider i18n={i18n}>
+          <div data-testid="msg">
+            <Trans id="greeting" values={{ name: "Alice", role: "Admin" }} />
+          </div>
+        </I18nProvider>,
+      )
+
+      expect(getByTestId("msg").textContent).toBe(
+        "Hello Alice, your role is Admin (LinguiApp)",
+      )
+    })
+
+    it("evaluates computed getter variables in Trans", () => {
+      let currentGender = "female"
+      const user = {
+        get gender() {
+          return currentGender
+        },
+      }
+
+      const i18n = setupI18n({
+        locale: "en",
+        messages: {
+          en: {
+            welcome:
+              "{gender, select, female {[F] Welcome} male {[M] Welcome} other {[N] Welcome}}",
+          },
+        },
+        variables: {
+          get gender() {
+            return user.gender
+          },
+        },
+      })
+
+      const Consumer = () => {
+        const { _ } = useLingui()
+        return <div data-testid="msg">{_("welcome")}</div>
+      }
+
+      const { getByTestId, rerender } = render(
+        <I18nProvider i18n={i18n}>
+          <Consumer />
+        </I18nProvider>,
+      )
+
+      expect(getByTestId("msg").textContent).toBe("[F] Welcome")
+
+      currentGender = "male"
+      rerender(
+        <I18nProvider i18n={i18n}>
+          <Consumer />
+        </I18nProvider>,
+      )
+      expect(getByTestId("msg").textContent).toBe("[M] Welcome")
+    })
   })
 })

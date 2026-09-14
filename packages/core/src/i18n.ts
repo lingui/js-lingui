@@ -81,6 +81,7 @@ export type I18nProps = {
   locales?: Locales
   messages?: AllMessages
   missing?: MissingHandler
+  variables?: Values
 }
 
 type Events = {
@@ -103,6 +104,7 @@ export class I18n extends EventEmitter<Events> {
   private _locale: Locale = ""
   private _locales?: Locales
   private _messages: AllMessages = {}
+  private _variables: Values = {}
   private _missing?: MissingHandler
   private _messageCompiler?: MessageCompiler
 
@@ -115,6 +117,7 @@ export class I18n extends EventEmitter<Events> {
 
     if (params.missing != null) this._missing = params.missing
     if (params.messages != null) this.load(params.messages)
+    if (params.variables != null) this._variables = params.variables
     if (typeof params.locale === "string" || params.locales) {
       this.activate(params.locale ?? defaultLocale, params.locales)
     }
@@ -130,6 +133,29 @@ export class I18n extends EventEmitter<Events> {
 
   get messages(): Messages {
     return this._messages[this._locale] ?? {}
+  }
+
+  get variables(): Values {
+    return this._variables
+  }
+
+  setVariable(name: string, value: unknown | (() => unknown)): this {
+    if (value === undefined) {
+      delete this._variables[name]
+    } else {
+      this._variables[name] = value
+    }
+    this.emit("change")
+    return this
+  }
+
+  setVariables(variables: Values | ((prev: Values) => Values)): this {
+    this._variables = isFunction(variables)
+      ? variables(this._variables)
+      : variables
+
+    this.emit("change")
+    return this
   }
   /**
    * Registers a `MessageCompiler` to enable the use of uncompiled catalogs at runtime.
@@ -279,11 +305,11 @@ Please compile your catalog first.
       return decodeEscapeSequences(translation)
     if (isString(translation)) return translation
 
-    return interpolate(
-      translation,
-      this._locale,
-      this._locales,
-    )(values, options?.formats)
+    return interpolate(translation, this._locale, this._locales)(
+      values,
+      options?.formats,
+      this._variables,
+    )
   }
 
   /**
