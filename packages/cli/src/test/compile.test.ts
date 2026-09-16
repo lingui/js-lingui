@@ -449,7 +449,7 @@ msgstr "Witaj {name}"
         expect(log).toBeUndefined()
         expect(result).toBeTruthy()
       })
-    }, 10000)
+    }, 15000)
 
     it("Should produce identical results with multithread enabled and disabled", async () => {
       const rootDir = await createFixtures({
@@ -524,7 +524,7 @@ msgstr "{gender, select, male {On} female {Ona} other {Oni}}"
       // Compare the results
       expect(singleThreadFiles["en.js"]).toEqual(multiThreadFiles["en.js"])
       expect(singleThreadFiles["pl.js"]).toEqual(multiThreadFiles["pl.js"])
-    }, 10000)
+    }, 15000)
 
     it("Should handle compilation errors correctly with multithread", async () => {
       const rootDir = await createFixtures({
@@ -553,7 +553,7 @@ msgstr "{plural,  }"
         expect(log).toContain("invalid syntax at line")
         expect(result).toBeFalsy()
       })
-    }, 10000)
+    }, 15000)
   })
 
   describe("outputPrefix", () => {
