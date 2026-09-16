@@ -472,6 +472,98 @@ describe("E2E Extractor Test", () => {
 
       compareFolders(actualPath, expectedPath)
     })
+
+    it("should not wipe translations in the locale files when the extractor crashes", async () => {
+      const { rootDir, actualPath, expectedPath } = await prepare(
+        "extractor-experimental-crash",
+      )
+
+      await mockConsole(async () => {
+        const result = await extractExperimentalCommand(
+          makeConfig({
+            rootDir: rootDir,
+            locales: ["en", "pl"],
+            sourceLocale: "en",
+
+            catalogs: [],
+            extractors: [
+              {
+                match: () => true,
+                extract: () => {
+                  throw new Error("Extractor crashed")
+                },
+              },
+            ],
+            experimental: {
+              extractor: {
+                entries: ["<rootDir>/fixtures/pages/**/*.page.{ts,tsx}"],
+                output: "<rootDir>/actual/{entryName}.{locale}",
+              },
+            },
+          }),
+          {
+            workersOptions: {
+              poolSize: 0,
+            },
+            clean: true,
+          },
+        )
+
+        // the failed run must be reported as unsuccessful...
+        expect(result).toBeFalsy()
+      })
+
+      // ...and must leave the existing catalogs on disk untouched
+      compareFolders(actualPath, expectedPath)
+    })
+
+    it("should not wipe translations of a failed entry when entries share an output file", async () => {
+      const { rootDir, actualPath, expectedPath } = await prepare(
+        "extractor-experimental-crash-shared-output",
+      )
+
+      await mockConsole(async () => {
+        const result = await extractExperimentalCommand(
+          makeConfig({
+            rootDir: rootDir,
+            locales: ["en", "pl"],
+            sourceLocale: "en",
+
+            catalogs: [],
+            extractors: [
+              {
+                match: (filename: string) => /\.jsx?$/.test(filename),
+                extract: (filename, code, onMessageExtracted) => {
+                  if (code.includes("CRASH_MARKER")) {
+                    throw new Error("Extractor crashed")
+                  }
+                  onMessageExtracted({
+                    id: "indexMsg",
+                    message: "index page message",
+                  })
+                },
+              },
+            ],
+            experimental: {
+              extractor: {
+                entries: ["<rootDir>/fixtures/pages/**/*.page.{ts,tsx}"],
+                output: "<rootDir>/actual/{entryDir}/messages.{locale}",
+              },
+            },
+          }),
+          {
+            workersOptions: {
+              poolSize: 0,
+            },
+            clean: true,
+          },
+        )
+
+        expect(result).toBeFalsy()
+      })
+
+      compareFolders(actualPath, expectedPath)
+    })
   })
 
   describe("extractor-experimental (rolldown)", () => {
