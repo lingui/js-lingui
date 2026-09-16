@@ -66,6 +66,54 @@ t\`New Message\`
     expect(rendered).toContain("out-of-sync")
   })
 
+  it("Should report an existing empty catalog as out of sync", async () => {
+    const rootDir = await createFixtures({
+      "src/app.ts": `
+import { t } from "@lingui/core/macro"
+
+t\`Hello World\`
+        `,
+    })
+
+    const config = getTestConfig(rootDir)
+    await extractCatalogs(config)
+    await fs.promises.writeFile(
+      `${rootDir}/locales/en/messages.po`,
+      "",
+      "utf-8",
+    )
+
+    const result = await runCheck(config, "sync", {
+      workersOptions,
+    })
+    const rendered = renderCheckResult(result, true).join("\n")
+
+    expect(result.passed).toBeFalsy()
+    expect(rendered).toContain("Catalog is out of sync with extract output")
+    expect(rendered).not.toContain("Catalog is missing")
+  })
+
+  it("Should report extraction failures without embedding the catalog path", async () => {
+    const rootDir = await createFixtures({
+      "src/app.ts": "const syntax-error",
+    })
+
+    const result = await runCheck(getTestConfig(rootDir), "sync", {
+      workersOptions,
+    })
+
+    expect(result.passed).toBeFalsy()
+    expect(result.findings[0]).toMatchObject({
+      code: "extract_failed",
+      message: "Failed to extract messages",
+    })
+
+    const rendered = renderCheckResult(result, true)
+    expect(rendered[1]).toBe(
+      `${result.findings[0]!.catalogPath}: Failed to extract messages`,
+    )
+  })
+
   it("Should fail on source locale drift when overwrite = true", async () => {
     const rootDir = await createFixtures({
       "src/app.ts": `

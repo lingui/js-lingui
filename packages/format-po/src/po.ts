@@ -254,24 +254,21 @@ function parsePoFile(content: string): PoFile {
   // https://github.com/sebastian-software/pofile-ts/pull/23
   // pofile-ts 4.0.3 can lose the obsolete marker when an obsolete item
   // immediately follows an active item without an intervening comment.
-  const obsoleteItems = content
-    .split(/\r?\n\r?\n/)
-    .filter((section) => /^#~\s+(?:msgctxt|msgid)\b/m.test(section))
-    .flatMap((section) => parsePo(section).items)
-    .filter((item) => item.obsolete)
+  let itemOffset = 0
 
-  obsoleteItems.forEach((obsoleteItem) => {
-    for (let index = po.items.length - 1; index >= 0; index--) {
-      const item = po.items[index]
+  content.split(/\r?\n\r?\n/).forEach((section) => {
+    const sectionItems = parsePo(section).items
 
-      if (
-        item.msgid === obsoleteItem.msgid &&
-        item.msgctxt === obsoleteItem.msgctxt
-      ) {
-        item.obsolete = true
-        break
+    sectionItems.forEach((sectionItem, index) => {
+      if (sectionItem.obsolete) {
+        const item = po.items[itemOffset + index]
+        if (item) {
+          item.obsolete = true
+        }
       }
-    }
+    })
+
+    itemOffset += sectionItems.length
   })
 
   return po

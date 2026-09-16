@@ -9,7 +9,15 @@ import { getTestConfig, workersOptions } from "./checkTestUtils.js"
 
 describe("Check Registry", () => {
   it("Should reject unknown checks during direct resolution", () => {
-    expect(() => getCheck("unknown")).toThrow("Unknown check")
+    for (const checkName of [
+      "unknown",
+      "toString",
+      "constructor",
+      "hasOwnProperty",
+      "__proto__",
+    ]) {
+      expect(() => getCheck(checkName)).toThrow(`Unknown check ${checkName}.`)
+    }
   })
 
   it("Should expose all registered checks", () => {

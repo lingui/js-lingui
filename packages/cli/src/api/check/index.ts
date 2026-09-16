@@ -63,7 +63,10 @@ export function validateSupportedOptions(
 }
 
 function isCheckName(inputCheck: string): inputCheck is CheckName {
-  return inputCheck in checkDefinitionsByName
+  return Object.prototype.hasOwnProperty.call(
+    checkDefinitionsByName,
+    inputCheck,
+  )
 }
 
 export function getCheck(inputCheck: string): CheckDefinition {

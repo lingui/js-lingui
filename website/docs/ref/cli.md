@@ -58,7 +58,7 @@ lingui extract [files...]
         [--convert-from <format>]
         [--verbose]
         [--watch [--debounce <delay>]]
-        [--workers]
+        [--workers <n>]
 ```
 
 The `extract` command scans source files to locate and extract messages, generating separate message catalogs for each language.
@@ -162,7 +162,7 @@ lingui compile
     [--typescript]
     [--namespace <namespace>]
     [--watch [--debounce <delay>]]
-    [--workers]
+    [--workers <n>]
     [--output-prefix <prefix>]
 ```
 
@@ -281,7 +281,7 @@ lingui check sync
     [--clean]
     [--overwrite]
     [--verbose]
-    [--workers]
+    [--workers <n>]
 ```
 
 Checks whether locale catalogs are synchronized with the current source code. It fails if the expected catalog differs from the existing catalog.
@@ -295,7 +295,7 @@ lingui check missing
     [--locale <locale, [...]>]
     [--mode <resolved|catalog>]
     [--verbose]
-    [--workers]
+    [--workers <n>]
 ```
 
 Checks whether locale catalogs have missing translations. By default, this validation uses `resolved` mode, which matches `lingui compile --strict`: translations are considered missing only if they are still missing after `fallbackLocales` are applied.

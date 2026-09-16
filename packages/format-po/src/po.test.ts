@@ -132,30 +132,108 @@ msgstr ""
     expect(obsoleteMessage?.obsolete).toBe(true)
   })
 
-  it("should preserve obsolete state for duplicate msgid entries", () => {
-    const format = createFormatter()
-    const actual = format.parse(
-      `msgid ""
-msgstr ""
-"Language: en\\n"
-
-#. js-lingui-explicit-id
+  it.each([
+    {
+      name: "active before obsolete",
+      entries: `#. js-lingui-explicit-id
 msgid "Hello World"
 msgstr ""
 
 #~ msgid "Hello World"
 #~ msgstr "Ahoj Brno"
 `,
+      obsoleteTranslation: "Ahoj Brno",
+    },
+    {
+      name: "obsolete before active",
+      entries: `#~ msgid "Hello World"
+#~ msgstr "Ahoj Brno"
+
+#. js-lingui-explicit-id
+msgid "Hello World"
+msgstr ""
+`,
+      obsoleteTranslation: "Ahoj Brno",
+    },
+    {
+      name: "multiple obsolete entries before active",
+      entries: `#~ msgid "Hello World"
+#~ msgstr "Ahoj Brno"
+
+#~ msgid "Hello World"
+#~ msgstr "Ahoj Prague"
+
+#. js-lingui-explicit-id
+msgid "Hello World"
+msgstr ""
+`,
+      obsoleteTranslation: "Ahoj Prague",
+    },
+  ])(
+    "should preserve obsolete state when $name",
+    ({ entries, obsoleteTranslation }) => {
+      const format = createFormatter()
+      const actual = format.parse(
+        `msgid ""
+msgstr ""
+"Language: en\\n"
+
+${entries}`,
+        defaultParseCtx,
+      )
+
+      const messages = Object.values(actual)
+      const activeMessage = messages.find((message) => !message.obsolete)
+      const obsoleteMessage = messages.find((message) => message.obsolete)
+
+      expect(messages).toHaveLength(2)
+      expect(activeMessage?.translation).toBe("")
+      expect(obsoleteMessage?.translation).toBe(obsoleteTranslation)
+    },
+  )
+
+  it("should preserve obsolete state for duplicate entries with different contexts", () => {
+    const format = createFormatter()
+    const actual = format.parse(
+      `msgid ""
+msgstr ""
+"Language: en\\n"
+
+#~ msgctxt "first"
+#~ msgid "Hello World"
+#~ msgstr "Ahoj Brno"
+
+#. js-lingui-explicit-id
+msgctxt "first"
+msgid "Hello World"
+msgstr ""
+
+#~ msgctxt "second"
+#~ msgid "Hello World"
+#~ msgstr "Ahoj Prague"
+`,
       defaultParseCtx,
     )
 
     const messages = Object.values(actual)
-    const activeMessage = messages.find((message) => !message.obsolete)
-    const obsoleteMessage = messages.find((message) => message.obsolete)
+    const firstContextMessages = messages.filter(
+      (message) => message.context === "first",
+    )
+    const secondContextMessages = messages.filter(
+      (message) => message.context === "second",
+    )
 
-    expect(messages).toHaveLength(2)
-    expect(activeMessage?.translation).toBe("")
-    expect(obsoleteMessage?.translation).toBe("Ahoj Brno")
+    expect(messages).toHaveLength(3)
+    expect(firstContextMessages).toHaveLength(2)
+    expect(
+      firstContextMessages.find((message) => !message.obsolete)?.translation,
+    ).toBe("")
+    expect(
+      firstContextMessages.find((message) => message.obsolete)?.translation,
+    ).toBe("Ahoj Brno")
+    expect(secondContextMessages).toHaveLength(1)
+    expect(secondContextMessages[0].obsolete).toBe(true)
+    expect(secondContextMessages[0].translation).toBe("Ahoj Prague")
   })
 
   it("should serialize and deserialize messages with generated id", () => {

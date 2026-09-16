@@ -24,7 +24,7 @@ async function getCatalogSyncFindings(
     return [
       {
         code: "extract_failed",
-        message: `Failed to extract messages for catalog ${catalog.path}`,
+        message: "Failed to extract messages",
         catalogPath: toRootRelativePath(ctx.config.rootDir, catalog.path),
       },
     ]
@@ -59,9 +59,10 @@ async function getCatalogSyncFindings(
 
       return {
         code: "catalog_out_of_sync",
-        message: existing
-          ? "Catalog is out of sync with extract output"
-          : "Catalog is missing and would be created by extract",
+        message:
+          existing !== undefined
+            ? "Catalog is out of sync with extract output"
+            : "Catalog is missing and would be created by extract",
         locale,
         catalogPath,
       }
