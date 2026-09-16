@@ -2,7 +2,7 @@ import fs from "fs"
 import path from "path"
 
 import { CatalogFormatter, CatalogType } from "@lingui/conf"
-import { formatter as createFormatter, POCatalogExtra } from "./po"
+import { formatter as createFormatter, parsePoFile, POCatalogExtra } from "./po"
 
 const defaultParseCtx: Parameters<CatalogFormatter["parse"]>[1] = {
   locale: "en",
@@ -234,6 +234,144 @@ msgstr ""
     expect(secondContextMessages).toHaveLength(1)
     expect(secondContextMessages[0].obsolete).toBe(true)
     expect(secondContextMessages[0].translation).toBe("Ahoj Prague")
+  })
+
+  it.each([
+    {
+      name: "active before obsolete",
+      entries: `msgctxt "menu"
+msgid "Hello "
+"world"
+msgstr "active"
+#~ msgctxt "menu"
+#~ msgid "Hello "
+#~ "world"
+#~ msgstr "obsolete"
+`,
+    },
+    {
+      name: "obsolete before active",
+      entries: `#~ msgctxt "menu"
+#~ msgid "Hello "
+#~ "world"
+#~ msgstr "obsolete"
+msgctxt "menu"
+msgid "Hello "
+"world"
+msgstr "active"
+`,
+    },
+  ])(
+    "should preserve source order for adjacent multiline duplicates when $name",
+    ({ entries }) => {
+      const content = `msgid ""
+msgstr ""
+"Language: en\\n"
+
+${entries}`
+      const po = parsePoFile(content)
+
+      expect(
+        po.items.map((item) => ({
+          msgid: item.msgid,
+          msgctxt: item.msgctxt,
+          translation: item.msgstr[0],
+          obsolete: item.obsolete,
+        })),
+      ).toEqual([
+        {
+          msgid: "Hello world",
+          msgctxt: "menu",
+          translation: entries.startsWith("#~") ? "obsolete" : "active",
+          obsolete: entries.startsWith("#~"),
+        },
+        {
+          msgid: "Hello world",
+          msgctxt: "menu",
+          translation: entries.startsWith("#~") ? "active" : "obsolete",
+          obsolete: !entries.startsWith("#~"),
+        },
+      ])
+
+      const catalog = createFormatter().parse(content, defaultParseCtx)
+      const message = Object.values(catalog).find(
+        (item) => item.context === "menu",
+      )
+
+      expect(message).toMatchObject({
+        message: "Hello world",
+        translation: "active",
+        obsolete: false,
+      })
+    },
+  )
+
+  it("should preserve obsolete markers for multiple multiline duplicates with different contexts", () => {
+    const content = `msgid ""
+msgstr ""
+"Language: en\\n"
+
+#~ msgctxt "menu"
+#~ msgid "Hello "
+#~ "world"
+#~ msgstr "obsolete menu 1"
+#~ msgctxt "menu"
+#~ msgid "Hello "
+#~ "world"
+#~ msgstr "obsolete menu 2"
+msgctxt "menu"
+msgid "Hello "
+"world"
+msgstr "active menu"
+#~ msgctxt "toolbar"
+#~ msgid "Hello "
+#~ "world"
+#~ msgstr "obsolete toolbar"
+`
+    const po = parsePoFile(content)
+
+    expect(
+      po.items.map((item) => ({
+        msgid: item.msgid,
+        msgctxt: item.msgctxt,
+        translation: item.msgstr[0],
+        obsolete: item.obsolete,
+      })),
+    ).toEqual([
+      {
+        msgid: "Hello world",
+        msgctxt: "menu",
+        translation: "obsolete menu 1",
+        obsolete: true,
+      },
+      {
+        msgid: "Hello world",
+        msgctxt: "menu",
+        translation: "obsolete menu 2",
+        obsolete: true,
+      },
+      {
+        msgid: "Hello world",
+        msgctxt: "menu",
+        translation: "active menu",
+        obsolete: false,
+      },
+      {
+        msgid: "Hello world",
+        msgctxt: "toolbar",
+        translation: "obsolete toolbar",
+        obsolete: true,
+      },
+    ])
+
+    const catalog = createFormatter().parse(content, defaultParseCtx)
+    expect(Object.values(catalog)).toHaveLength(2)
+    expect(
+      Object.values(catalog).find((item) => item.context === "menu"),
+    ).toMatchObject({ translation: "active menu", obsolete: false })
+    expect(
+      Object.values(catalog).find((item) => item.context === "toolbar"),
+    ).toMatchObject({ translation: "obsolete toolbar", obsolete: true })
   })
 
   it("should serialize and deserialize messages with generated id", () => {
@@ -803,6 +941,22 @@ msgstr ""
 `,
     })
 
+    expect(actual).toContain(`"X-Custom-Attribute: custom-value\\n"`)
+  })
+
+  it("should use new headers when serializing over an empty existing file", () => {
+    const format = createFormatter({
+      customHeaderAttributes: { "X-Custom-Attribute": "custom-value" },
+    })
+    const catalog: CatalogType = {}
+
+    const actual = format.serialize(catalog, {
+      ...defaultSerializeCtx,
+      existing: "",
+    })
+
+    expect(actual).toContain(`"MIME-Version: 1.0\\n"`)
+    expect(actual).toContain(`"Language: en\\n"`)
     expect(actual).toContain(`"X-Custom-Attribute: custom-value\\n"`)
   })
 

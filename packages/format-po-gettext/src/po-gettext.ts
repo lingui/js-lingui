@@ -1,6 +1,5 @@
 import { parse as parseIcu, Select, SelectCase } from "@messageformat/parser"
 import {
-  parsePo,
   stringifyPo,
   createItem,
   type PoItem,
@@ -8,7 +7,7 @@ import {
 } from "pofile-ts"
 import type { CatalogFormatter, CatalogType, MessageType } from "@lingui/conf"
 import { generateMessageId } from "@lingui/message-utils/generateMessageId"
-import { formatter as poFormatter } from "@lingui/format-po"
+import { parsePoFile, formatter as poFormatter } from "@lingui/format-po"
 import type { PoFormatterOptions } from "@lingui/format-po"
 import { mapGettextPlurals2Icu } from "./utils/mapGettextPlurals2Icu"
 
@@ -468,7 +467,7 @@ export function formatter(
     templateExtension: ".pot",
 
     parse(content, ctx): CatalogType {
-      const po = parsePo(content)
+      const po = parsePoFile(content)
 
       if (options.mergePlurals) {
         // Expand merged entries back to individual catalog entries BEFORE ICU conversion
@@ -507,7 +506,7 @@ export function formatter(
     },
 
     serialize(catalog, ctx): string {
-      const po = parsePo(formatter.serialize(catalog, ctx) as string)
+      const po = parsePoFile(formatter.serialize(catalog, ctx) as string)
 
       po.items = po.items.map((item) => {
         const isGeneratedId = !item.extractedComments.includes(

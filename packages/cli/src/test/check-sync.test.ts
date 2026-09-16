@@ -107,10 +107,50 @@ t\`Hello World\`
       code: "extract_failed",
       message: "Failed to extract messages",
     })
+    expect(result.summary).toBe("Found 1 extraction failure(s).")
 
     const rendered = renderCheckResult(result, true)
     expect(rendered[1]).toBe(
       `${result.findings[0]!.catalogPath}: Failed to extract messages`,
+    )
+  })
+
+  it("Should summarize extraction failures and out-of-sync catalogs separately", async () => {
+    const rootDir = await createFixtures({
+      "invalid/app.ts": "const syntax-error",
+      "src/app.ts": `
+import { t } from "@lingui/core/macro"
+
+t\`Hello World\`
+        `,
+    })
+
+    const config = getTestConfig(rootDir, {
+      catalogs: [
+        {
+          path: "<rootDir>/locales/{locale}/broken",
+          include: ["<rootDir>/invalid"],
+          exclude: [],
+        },
+        {
+          path: "<rootDir>/locales/{locale}/messages",
+          include: ["<rootDir>/src"],
+          exclude: [],
+        },
+      ],
+    })
+
+    const result = await runCheck(config, "sync", {
+      locale: ["en"],
+      workersOptions,
+    })
+
+    expect(result.findings.map((finding) => finding.code)).toEqual([
+      "extract_failed",
+      "catalog_out_of_sync",
+    ])
+    expect(result.summary).toBe(
+      "Found 1 out-of-sync catalog file(s) and 1 extraction failure(s).",
     )
   })
 

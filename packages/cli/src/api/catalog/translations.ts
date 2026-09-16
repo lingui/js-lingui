@@ -12,6 +12,26 @@ export type MissingTranslationFinding = CheckFindingBase & {
   locale: string
 }
 
+export async function getMissingTranslationFindings(
+  catalog: Catalog,
+  locale: string,
+  missingBehavior: MissingBehavior = "resolved",
+): Promise<MissingTranslationFinding[]> {
+  if (catalog.config.pseudoLocale.some((item) => item.locale === locale)) {
+    return []
+  }
+
+  const { missing } = await getCatalogTranslationsWithMissing(
+    catalog,
+    locale,
+    missingBehavior,
+  )
+
+  return missing.map((entry) =>
+    createMissingTranslationFinding(catalog, locale, entry),
+  )
+}
+
 function createMissingTranslationMessage(messageId: string, source?: string) {
   return source || source === messageId
     ? `${messageId}: (${source})`

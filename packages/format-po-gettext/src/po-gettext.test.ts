@@ -123,6 +123,58 @@ describe("po-gettext format", () => {
     expect(catalog).toMatchSnapshot()
   })
 
+  it("should preserve obsolete entries so they can be ignored independently", () => {
+    const pofile = `msgid ""
+msgstr ""
+"Language: en\\n"
+
+msgctxt "menu"
+msgid "Hello "
+"world"
+msgstr "active"
+#~ msgctxt "menu"
+#~ msgid "Hello "
+#~ "world"
+#~ msgstr "obsolete duplicate"
+#~ msgctxt "toolbar"
+#~ msgid "Hello "
+#~ "world"
+#~ msgstr "obsolete toolbar"
+`
+
+    const catalog = format.parse(pofile, defaultParseCtx)
+    const activeMessages = Object.values(catalog).filter(
+      (message) => !message.obsolete,
+    )
+
+    expect(activeMessages).toHaveLength(1)
+    expect(activeMessages[0]).toMatchObject({
+      context: "menu",
+      message: "Hello world",
+      translation: "active",
+      obsolete: false,
+    })
+    expect(
+      Object.values(catalog).find((message) => message.context === "toolbar"),
+    ).toMatchObject({
+      translation: "obsolete toolbar",
+      obsolete: true,
+    })
+  })
+
+  it("should use new headers when serializing over an empty existing file", () => {
+    const pofile = format.serialize(
+      {},
+      {
+        ...defaultSerializeCtx,
+        existing: "",
+      },
+    ) as string
+
+    expect(pofile).toContain(`"Language: en\\n"`)
+    expect(format.parse(pofile, defaultParseCtx)).toEqual({})
+  })
+
   it("should warn when using nested plurals that cannot be represented with gettext plurals", () => {
     const catalog = {
       nested_plural_message: {

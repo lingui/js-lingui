@@ -1,33 +1,9 @@
-import {
-  createMissingTranslationFinding,
-  getCatalogTranslationsWithMissing,
-  MissingTranslationFinding,
-} from "../catalog/translations.js"
-import { Catalog } from "../catalog.js"
+import { getMissingTranslationFindings } from "../catalog/translations.js"
 import { runBounded } from "../runBounded.js"
+import { createMissingWorkerPool, MissingWorkerPool } from "../workerPools.js"
 import { CheckContext, CheckDefinition, finalizeCheckResult } from "./types.js"
-import type { MissingBehavior } from "../catalog/getTranslationsForCatalog.js"
 import { getMissingBehaviorDescription } from "../messages.js"
-
-export async function getMissingTranslationFindings(
-  catalog: Catalog,
-  locale: string,
-  missingBehavior: MissingBehavior = "resolved",
-): Promise<MissingTranslationFinding[]> {
-  if (catalog.config.pseudoLocale.some((item) => item.locale === locale)) {
-    return []
-  }
-
-  const { missing } = await getCatalogTranslationsWithMissing(
-    catalog,
-    locale,
-    missingBehavior,
-  )
-
-  return missing.map((entry) =>
-    createMissingTranslationFinding(catalog, locale, entry),
-  )
-}
+import type { MissingTranslationFinding } from "../catalog/translations.js"
 
 export const missingCheck: CheckDefinition = {
   name: "missing",
@@ -59,16 +35,47 @@ export const missingCheck: CheckDefinition = {
   },
   async run(ctx: CheckContext) {
     const tasks = ctx.locales.flatMap((locale) =>
-      ctx.catalogs.map((catalog) => ({ locale, catalog })),
+      ctx.catalogs.map((catalog) => ({
+        locale,
+        catalog,
+      })),
     )
-    const findings = (
-      await runBounded(
-        tasks,
-        ctx.workersOptions.poolSize,
-        async ({ locale, catalog }) =>
-          getMissingTranslationFindings(catalog, locale, ctx.missingBehavior),
-      )
-    ).flat()
+
+    const resolvedConfigPath = ctx.config.resolvedConfigPath
+    let workerPool: MissingWorkerPool | undefined
+
+    if (ctx.workersOptions.poolSize > 0 && resolvedConfigPath) {
+      workerPool = createMissingWorkerPool(ctx.workersOptions)
+    }
+
+    let findings: MissingTranslationFinding[]
+
+    try {
+      findings = (
+        await runBounded(
+          tasks,
+          ctx.workersOptions.poolSize,
+          async ({ locale, catalog }) =>
+            workerPool
+              ? workerPool.run(
+                  catalog.path,
+                  locale,
+                  ctx.missingBehavior,
+                  resolvedConfigPath!,
+                )
+              : getMissingTranslationFindings(
+                  catalog,
+                  locale,
+                  ctx.missingBehavior,
+                ),
+        )
+      ).flat()
+    } finally {
+      if (workerPool) {
+        await workerPool.destroy()
+      }
+    }
+
     const missingBehaviorDescription = getMissingBehaviorDescription(
       ctx.missingBehavior,
     )

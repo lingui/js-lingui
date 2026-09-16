@@ -246,29 +246,49 @@ function getExistingHeaderOrder(
   return [...order]
 }
 
-function parsePoFile(content: string): PoFile {
+function parsePoItemsInSourceOrder(content: string): PoItem[] {
+  const lines = content.split(/\r?\n/)
+  const messageStart = /^(?:#~\s*)?msgid(?:\s|$)/
+  const contextStart = /^(?:#~\s*)?msgctxt(?:\s|$)/
+  const itemStarts: number[] = []
+  let pendingContextStart: number | undefined
+
+  lines.forEach((rawLine, index) => {
+    const line = rawLine.trim()
+
+    if (contextStart.test(line)) {
+      pendingContextStart = index
+      return
+    }
+
+    if (messageStart.test(line)) {
+      itemStarts.push(pendingContextStart ?? index)
+      pendingContextStart = undefined
+    }
+  })
+
+  return itemStarts.flatMap((start, index) => {
+    const end = itemStarts[index + 1] ?? lines.length
+    return parsePo(lines.slice(start, end).join("\n")).items
+  })
+}
+
+/** Parse a PO file while preserving obsolete markers that pofile-ts can lose. */
+export function parsePoFile(content: string): PoFile {
   const po = parsePo(content)
 
   // Workaround for pofile-ts#22; the upstream fix is pending in pofile-ts#23:
   // https://github.com/sebastian-software/pofile-ts/issues/22
   // https://github.com/sebastian-software/pofile-ts/pull/23
-  // pofile-ts 4.0.3 can lose the obsolete marker when an obsolete item
-  // immediately follows an active item without an intervening comment.
-  let itemOffset = 0
+  // Parse each item separately so the obsolete marker is counted from a fresh
+  // parser state, then apply those markers to the full parse by source order.
+  const sourceItems = parsePoItemsInSourceOrder(content)
 
-  content.split(/\r?\n\r?\n/).forEach((section) => {
-    const sectionItems = parsePo(section).items
-
-    sectionItems.forEach((sectionItem, index) => {
-      if (sectionItem.obsolete) {
-        const item = po.items[itemOffset + index]
-        if (item) {
-          item.obsolete = true
-        }
-      }
-    })
-
-    itemOffset += sectionItems.length
+  po.items.forEach((item, index) => {
+    const sourceItem = sourceItems[index]
+    if (sourceItem) {
+      item.obsolete = sourceItem.obsolete
+    }
   })
 
   return po
@@ -416,7 +436,14 @@ function deserialize(
       message.message = item.msgid
     }
 
-    catalog[id] = message
+    const existingMessage = catalog[id]
+    if (
+      existingMessage === undefined ||
+      !message.obsolete ||
+      existingMessage.obsolete
+    ) {
+      catalog[id] = message
+    }
     return catalog
   }, {})
 }
@@ -440,7 +467,9 @@ export function formatter(options: PoFormatterOptions = {}): CatalogFormatter {
 
     serialize(catalog, ctx): string {
       const existingPo =
-        ctx.existing !== undefined ? parsePoFile(ctx.existing) : undefined
+        ctx.existing !== undefined && ctx.existing !== ""
+          ? parsePoFile(ctx.existing)
+          : undefined
       const po: PoFile = createPoFile()
 
       po.comments = [...(existingPo?.comments ?? [])]

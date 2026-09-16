@@ -10,6 +10,27 @@ import {
   finalizeCheckResult,
 } from "./types.js"
 
+function getSyncFailureSummary(
+  findings: Array<CatalogOutOfSyncFinding | ExtractFailedFinding>,
+) {
+  const outOfSyncCount = findings.filter(
+    (finding) => finding.code === "catalog_out_of_sync",
+  ).length
+  const extractionFailureCount = findings.filter(
+    (finding) => finding.code === "extract_failed",
+  ).length
+
+  if (extractionFailureCount === 0) {
+    return `Found ${outOfSyncCount} out-of-sync catalog file(s).`
+  }
+
+  if (outOfSyncCount === 0) {
+    return `Found ${extractionFailureCount} extraction failure(s).`
+  }
+
+  return `Found ${outOfSyncCount} out-of-sync catalog file(s) and ${extractionFailureCount} extraction failure(s).`
+}
+
 async function getCatalogSyncFindings(
   catalog: Catalog,
   ctx: CheckContext,
@@ -125,7 +146,7 @@ export const syncCheck: CheckDefinition = {
       "sync",
       findings,
       "Catalogs are in sync with extract output.",
-      (count) => `Found ${count} out-of-sync catalog file(s).`,
+      () => getSyncFailureSummary(findings),
     )
   },
 }

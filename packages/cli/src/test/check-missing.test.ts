@@ -1,6 +1,6 @@
 import fs from "fs"
 import { renderCheckResult, runCheck } from "../lingui-check.js"
-import { makeConfig } from "@lingui/conf"
+import { getConfig, LinguiConfig, makeConfig } from "@lingui/conf"
 import { createFixtures, readFsToListing } from "../tests.js"
 import {
   extractCatalogs,
@@ -10,6 +10,22 @@ import {
 } from "./checkTestUtils.js"
 
 describe("Check: missing", () => {
+  function getConfigText() {
+    const config: LinguiConfig = {
+      locales: ["en", "pl"],
+      sourceLocale: "en",
+      catalogs: [
+        {
+          path: "<rootDir>/locales/{locale}/messages",
+          include: ["<rootDir>/src"],
+          exclude: [],
+        },
+      ],
+    }
+
+    return `export default ${JSON.stringify(config)}`
+  }
+
   it("Should fail when a locale catalog has missing translations", async () => {
     const rootDir = await createFixtures({
       "src/app.ts": `
@@ -104,6 +120,65 @@ msgstr ""
     expect(result.passed).toBeTruthy()
     expect(rendered).toContain("PASS missing")
     expect(rendered).toContain("after applying fallbackLocales")
+  })
+
+  it("Should use a worker pool when config is loaded from a file", async () => {
+    const rootDir = await createFixtures({
+      "src/app.ts": `
+import { t } from "@lingui/core/macro"
+
+t\`Hello World\`
+        `,
+      "locales/en/messages.po": `
+msgid "Hello World"
+msgstr "Hello World"
+        `,
+      "locales/pl/messages.po": `
+msgid "Hello World"
+msgstr ""
+        `,
+      "lingui.config.ts": getConfigText(),
+    })
+
+    const config = getConfig({ cwd: rootDir })
+    expect(config.resolvedConfigPath).toContain("lingui.config.ts")
+
+    const result = await runCheck(config, "missing", {
+      workersOptions: { poolSize: 2 },
+    })
+
+    expect(result.passed).toBeFalsy()
+    expect(result.findings).toContainEqual(
+      expect.objectContaining({
+        code: "missing_translation",
+        locale: "pl",
+        catalogPath: "locales/pl/messages.po",
+        message: expect.stringContaining("Hello World"),
+      }),
+    )
+  }, 15000)
+
+  it("Should use the single-process fallback without a config file", async () => {
+    const rootDir = await createFixtures({
+      "locales/en/messages.po": `
+msgid "Hello World"
+msgstr "Hello World"
+        `,
+      "locales/pl/messages.po": `
+msgid "Hello World"
+msgstr ""
+        `,
+    })
+
+    const config = getTestConfig(rootDir)
+    expect(config.resolvedConfigPath).toBeUndefined()
+
+    const result = await runCheck(config, "missing", {
+      workersOptions: { poolSize: 2 },
+    })
+
+    expect(result.passed).toBeFalsy()
+    expect(result.findings).toHaveLength(1)
   })
 
   it("Should fail in catalog mode when fallbackLocales resolve missing translations", async () => {
