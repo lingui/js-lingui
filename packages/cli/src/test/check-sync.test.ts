@@ -31,6 +31,26 @@ t\`Hello World\`
     expect(after).toEqual(before)
   })
 
+  it("Should use the single-process fallback without a config file", async () => {
+    const rootDir = await createFixtures({
+      "src/app.ts": `
+import { t } from "@lingui/core/macro"
+
+t\`Hello World\`
+        `,
+    })
+
+    const config = getTestConfig(rootDir)
+    expect(config.resolvedConfigPath).toBeUndefined()
+
+    const result = await runCheck(config, "sync", {
+      workersOptions: { poolSize: 2 },
+    })
+
+    expect(result.passed).toBeFalsy()
+    expect(result.findings).toHaveLength(2)
+  })
+
   it("Should fail when extract would add new messages", async () => {
     const rootDir = await createFixtures({
       "src/app.ts": `

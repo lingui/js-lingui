@@ -124,7 +124,7 @@ export const syncCheck: CheckDefinition = {
   async run(ctx: CheckContext) {
     let workerPool: ExtractWorkerPool | undefined
 
-    if (ctx.workersOptions.poolSize) {
+    if (ctx.workersOptions.poolSize > 0 && ctx.config.resolvedConfigPath) {
       workerPool = createExtractWorkerPool(ctx.workersOptions)
     }
 
