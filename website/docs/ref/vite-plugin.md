@@ -78,7 +78,7 @@ export default defineConfig({
 This works with `@vitejs/plugin-react`, `@vitejs/plugin-react-swc` and Vite 8+ with Rolldown. The transform runs in the `pre` stage and only touches files that import Lingui macros.
 
 :::caution
-The native transform doesn't support [`macro.jsxRuntime: "solid"`](/ref/conf#macrojsxruntime) yet and fails with an error when it is set. Solid projects should keep transforming macros with `@lingui/babel-plugin-lingui-macro`, see the [Solid tutorial](/tutorials/solid#configure-vite).
+The native transform doesn't support [`macro.jsxRuntime: "solid"` or `"vue"`](/ref/conf#macrojsxruntime) yet and fails with an error when either is set. Solid and Vue projects should keep transforming macros with `@lingui/babel-plugin-lingui-macro`, see the [Solid tutorial](/tutorials/solid#configure-vite) and the [Vue tutorial](/tutorials/vue#configure-vite).
 :::
 
 Macro options such as `macro.corePackage`, `macro.jsxPackage`, `macro.jsxPlaceholderAttribute`, `macro.jsxPlaceholderDefaults`, `macro.idPrefixLeader` and `runtimeConfigModule` are read from your [Lingui configuration](/ref/conf), so in most cases `true` is all you need.

@@ -386,6 +386,51 @@ macroTester({
       `,
     },
     {
+      name: "should point non-JSX references of macro components to the runtime Trans",
+      macroOpts: {
+        linguiConfig: makeConfig(
+          {
+            macro: {
+              jsxPackage: ["@lingui/vue/macro"],
+              jsxRuntime: "vue",
+            },
+            runtimeConfigModule: {
+              Trans: ["@lingui/vue", "Trans"],
+              useLingui: ["@lingui/vue", "useLingui"],
+            },
+          },
+          { skipValidation: true },
+        ),
+      },
+      code: `
+        import { Trans, Plural, useLingui } from '@lingui/vue/macro';
+
+        // Vue SFC compiled in dev mode: bindings are returned to the template
+        export default {
+          setup() {
+            const { t } = useLingui();
+            const __returned__ = { Trans, Plural, t };
+            return __returned__;
+          },
+        };
+
+        // inline template (production): components referenced as values
+        createVNode(Trans, { id: "x" });
+        createVNode(Plural, { id: "y" });
+        <Trans>Hello World</Trans>;
+      `,
+    },
+    {
+      name: "should not point non-JSX references of macro components to the runtime Trans outside of the vue runtime",
+      code: `
+        import { Trans, Plural } from '@lingui/react/macro';
+
+        const T = Trans;
+        const P = Plural;
+        <Trans>Hello World</Trans>;
+      `,
+    },
+    {
       name: "should detects macro imported from config.macro.jsxPackage",
       macroOpts: {
         linguiConfig: makeConfig(

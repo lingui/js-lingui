@@ -502,7 +502,7 @@ export type LinguiConfig = {
      *
      * @default undefined
      */
-    jsxRuntime?: "react" | "solid"
+    jsxRuntime?: "react" | "solid" | "vue"
   }
   experimental?: {
     extractor?: ExperimentalExtractorOptions

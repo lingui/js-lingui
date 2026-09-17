@@ -1,4 +1,8 @@
-import { compileScript, type SFCDescriptor } from "@vue/compiler-sfc"
+import {
+  compileScript,
+  type SFCDescriptor,
+  type SFCScriptCompileOptions,
+} from "@vue/compiler-sfc"
 
 export type ScriptTarget = {
   source: string
@@ -30,11 +34,14 @@ export function compileScriptSetup(
   }
 
   try {
-    const compiled = compileScript(descriptor, {
+    const options: SFCScriptCompileOptions = {
       id: filename,
       sourceMap: true,
-      reactivityTransform,
-    })
+      // Vue < 3.4 only: enables the Reactivity Transform. Removed from the
+      // types in 3.4, where it is ignored.
+      ...({ reactivityTransform } as Partial<SFCScriptCompileOptions>),
+    }
+    const compiled = compileScript(descriptor, options)
 
     return [
       {

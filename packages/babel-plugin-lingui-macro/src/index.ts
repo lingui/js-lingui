@@ -3,7 +3,7 @@ import type { Expression, Identifier, Program } from "./types"
 import { MacroJSX } from "./macroJsx"
 import type { NodePath, Scope } from "@babel/traverse"
 import { MacroJs } from "./macroJs"
-import { JsMacroName } from "./constants"
+import { JsMacroName, JsxMacroName } from "./constants"
 import {
   getConfig as loadConfig,
   LinguiConfig,
@@ -173,6 +173,54 @@ export default function ({
     )
   }
 
+  /**
+   * Vue only: `<script setup>` returns macro components as values to the
+   * template, so point those references to the runtime `Trans` instead of
+   * leaving them dangling once the macro import is removed.
+   */
+  function redirectRemainingComponentReferences(
+    path: NodePath<Program>,
+    state: PluginPass,
+    macroImports: MacroImports,
+  ) {
+    const componentNames: string[] = Object.values(JsxMacroName)
+
+    // references were replaced during the transform, refresh the bindings
+    path.scope.crawl()
+
+    macroImports.jsxPackage.forEach((importPath) => {
+      if (importPath.node.importKind === "type") return
+
+      importPath.get("specifiers").forEach((specifier) => {
+        if (
+          !specifier.isImportSpecifier() ||
+          specifier.node.importKind === "type"
+        ) {
+          return
+        }
+
+        const imported = specifier.get("imported").node
+        const importedName = t.isIdentifier(imported)
+          ? imported.name
+          : imported.value
+
+        if (!componentNames.includes(importedName)) return
+
+        const binding = path.scope.getBinding(specifier.node.local.name)
+
+        binding?.referencePaths.forEach((refPath) => {
+          if (!refPath.isIdentifier() || refPath.isJSXIdentifier()) return
+
+          const runtimeBinding = addImport(macroImports, state, "Trans")
+          const [newPath] = refPath.replaceWith(
+            t.identifier(getSymbolIdentifier(state, "Trans").name),
+          )
+          runtimeBinding.reference(newPath)
+        })
+      })
+    })
+  }
+
   function getMacroImports(
     path: NodePath<Program>,
     config: LinguiConfigNormalized,
@@ -233,7 +281,12 @@ export default function ({
       }
     } else {
       // useLingui might ask for identifiers which are not direct child of macro
-      identPath = identPath || getIdentifierPath(path.getFunctionParent(), node)
+      identPath =
+        identPath ||
+        getIdentifierPath(
+          path.getFunctionParent() ?? path.scope.getProgramParent().path,
+          node,
+        )
 
       if (
         config.macro.corePackage.some((moduleSource) =>
@@ -370,6 +423,14 @@ export default function ({
             "linguiConfig",
           ) as LinguiConfigNormalized
           const macroImports = getMacroImports(path, linguiConfig)
+
+          if (
+            linguiConfig.macro.jsxRuntime === "vue" &&
+            macroImports.jsxPackage.size
+          ) {
+            redirectRemainingComponentReferences(path, state, macroImports)
+          }
+
           macroImports.all.forEach((path) => path.remove())
         },
       },

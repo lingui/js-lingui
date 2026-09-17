@@ -1,0 +1,8 @@
+{
+  "extends": "../../../../tsconfig.typetest.json",
+  "compilerOptions": {
+    "jsx": "preserve",
+    "jsxImportSource": "vue"
+  },
+  "include": ["**/*"]
+}

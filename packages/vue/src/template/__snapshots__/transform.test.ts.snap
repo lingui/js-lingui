@@ -1,0 +1,314 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`linguiTemplateTransform > <Trans> > compiles for SSR 1`] = `
+"import { withCtx as _withCtx, createVNode as _createVNode, mergeProps as _mergeProps } from "vue"
+import { ssrRenderComponent as _ssrRenderComponent } from "vue/server-renderer"
+
+export function ssrRender(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+  _push(_ssrRenderComponent($setup["Trans"], _mergeProps(/** i18n */{id:"aM7C4c",message:"Hello <0>{name}</0>",values:{name:$setup.name}}, _attrs), {
+    "0": _withCtx((_, _push, _parent, _scopeId) => {
+      if (_push) {
+        _push(\`<b\${_scopeId}></b>\`)
+      } else {
+        return [
+          _createVNode("b")
+        ]
+      }
+    }),
+    _: 1 /* STABLE */
+  }, _parent))
+}"
+`;
+
+exports[`linguiTemplateTransform > <Trans> > compiles text, interpolations and elements 1`] = `
+"import { createElementVNode as _createElementVNode, normalizeProps as _normalizeProps, guardReactiveProps as _guardReactiveProps, withCtx as _withCtx, openBlock as _openBlock, createBlock as _createBlock } from "vue"
+
+const _hoisted_1 = ["href"]
+
+export function render(_ctx, _cache, $props, $setup, $data, $options) {
+  return (_openBlock(), _createBlock($setup["Trans"], _normalizeProps(_guardReactiveProps(/** i18n */{id:"YFoG-s",message:"Hello <0>{name}</0>, read the <1>docs</1>.",values:{name:$setup.name}})), {
+    "0": _withCtx(() => [...(_cache[1] || (_cache[1] = [
+      _createElementVNode("b", null, null, -1 /* CACHED */)
+    ]))]),
+    "1": _withCtx(() => [
+      _createElementVNode("a", {
+        href: _ctx.url,
+        onClick: _cache[0] || (_cache[0] = (...args) => (_ctx.go && _ctx.go(...args)))
+      }, null, 8 /* PROPS */, _hoisted_1)
+    ]),
+    _: 1 /* STABLE */
+  }, 16 /* FULL_PROPS */))
+}"
+`;
+
+exports[`linguiTemplateTransform > <Trans> > flattens nested <Trans> and inlines nested choice components 1`] = `
+"import { normalizeProps as _normalizeProps, guardReactiveProps as _guardReactiveProps, openBlock as _openBlock, createBlock as _createBlock } from "vue"
+
+export function render(_ctx, _cache, $props, $setup, $data, $options) {
+  return (_openBlock(), _createBlock($setup["Trans"], _normalizeProps(_guardReactiveProps(/** i18n */{id:"Xcm-Mz",message:"You have {count, plural, one {# message} other {# messages}} in your inbox",values:{count:$setup.count}})), null, 16 /* FULL_PROPS */))
+}"
+`;
+
+exports[`linguiTemplateTransform > <Trans> > generates an id for runtime usage with only a message 1`] = `
+"import { normalizeProps as _normalizeProps, guardReactiveProps as _guardReactiveProps, openBlock as _openBlock, createBlock as _createBlock } from "vue"
+
+export function render(_ctx, _cache, $props, $setup, $data, $options) {
+  return (_openBlock(), _createBlock($setup["Trans"], _normalizeProps(_guardReactiveProps(/** i18n */{id:"uzTaYi",message:"Hello"})), null, 16 /* FULL_PROPS */))
+}"
+`;
+
+exports[`linguiTemplateTransform > <Trans> > keeps the other attributes and directives on the element 1`] = `
+"import { renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, mergeProps as _mergeProps, createBlock as _createBlock, createCommentVNode as _createCommentVNode } from "vue"
+
+export function render(_ctx, _cache, $props, $setup, $data, $options) {
+  return (_ctx.show)
+    ? (_openBlock(true), _createElementBlock(_Fragment, { key: 0 }, _renderList(_ctx.items, (item) => {
+        return (_openBlock(), _createBlock($setup["Trans"], _mergeProps({
+          class: "lead",
+          render: _ctx.renderIt,
+          key: item.id
+        }, { ref_for: true }, /** i18n */{id:"y_5CE8",message:"Item {0}",values:{0:item.name}}), null, 16 /* FULL_PROPS */, ["render"]))
+      }), 128 /* KEYED_FRAGMENT */))
+    : _createCommentVNode("v-if", true)
+}"
+`;
+
+exports[`linguiTemplateTransform > <Trans> > strips the message in production mode 1`] = `
+"import { createElementVNode as _createElementVNode, normalizeProps as _normalizeProps, guardReactiveProps as _guardReactiveProps, withCtx as _withCtx, openBlock as _openBlock, createBlock as _createBlock } from "vue"
+
+export function render(_ctx, _cache, $props, $setup, $data, $options) {
+  return (_openBlock(), _createBlock($setup["Trans"], _normalizeProps(_guardReactiveProps(/** i18n */{id:"aM7C4c",values:{name:$setup.name}})), {
+    "0": _withCtx(() => [...(_cache[0] || (_cache[0] = [
+      _createElementVNode("b", null, null, -1 /* CACHED */)
+    ]))]),
+    _: 1 /* STABLE */
+  }, 16 /* FULL_PROPS */))
+}"
+`;
+
+exports[`linguiTemplateTransform > <Trans> > supports custom id, comment and context 1`] = `
+"import { normalizeProps as _normalizeProps, guardReactiveProps as _guardReactiveProps, openBlock as _openBlock, createBlock as _createBlock } from "vue"
+
+export function render(_ctx, _cache, $props, $setup, $data, $options) {
+  return (_openBlock(), _createBlock($setup["Trans"], _normalizeProps(_guardReactiveProps(/** i18n */{id:"custom.id",message:"Right",comment:"Greeting",context:"direction"})), null, 16 /* FULL_PROPS */))
+}"
+`;
+
+exports[`linguiTemplateTransform > <Trans> > supports kebab-case and lowercase tags 1`] = `
+"import { normalizeProps as _normalizeProps, guardReactiveProps as _guardReactiveProps, createVNode as _createVNode, resolveComponent as _resolveComponent, createTextVNode as _createTextVNode, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock } from "vue"
+
+export function render(_ctx, _cache, $props, $setup, $data, $options) {
+  const _component_select_ordinal = _resolveComponent("select-ordinal")
+
+  return (_openBlock(), _createElementBlock(_Fragment, null, [
+    _createVNode($setup["Trans"], _normalizeProps(_guardReactiveProps(/** i18n */{id:"uzTaYi",message:"Hello"})), null, 16 /* FULL_PROPS */),
+    _cache[0] || (_cache[0] = _createTextVNode()),
+    _createVNode(_component_select_ordinal, _normalizeProps(_guardReactiveProps(/** i18n */{id:"h0DWiT",message:"{n, selectordinal, one {#st} other {#th}}",values:{n:_ctx.n}})), null, 16 /* FULL_PROPS */)
+  ], 64 /* STABLE_FRAGMENT */))
+}"
+`;
+
+exports[`linguiTemplateTransform > <Trans> > supports nested elements, comments and string literals 1`] = `
+"import { createElementVNode as _createElementVNode, normalizeProps as _normalizeProps, guardReactiveProps as _guardReactiveProps, withCtx as _withCtx, openBlock as _openBlock, createBlock as _createBlock } from "vue"
+
+export function render(_ctx, _cache, $props, $setup, $data, $options) {
+  return (_openBlock(), _createBlock($setup["Trans"], _normalizeProps(_guardReactiveProps(/** i18n */{id:"YXBkZu",message:"Read <0>the <1>docs</1> now</0>"})), {
+    "0": _withCtx(() => [...(_cache[0] || (_cache[0] = [
+      _createElementVNode("a", { href: "/docs" }, null, -1 /* CACHED */)
+    ]))]),
+    "1": _withCtx(() => [...(_cache[1] || (_cache[1] = [
+      _createElementVNode("strong", null, null, -1 /* CACHED */)
+    ]))]),
+    _: 1 /* STABLE */
+  }, 16 /* FULL_PROPS */))
+}"
+`;
+
+exports[`linguiTemplateTransform > <Trans> > supports placeholder attributes and defaults 1`] = `
+"import { createElementVNode as _createElementVNode, normalizeProps as _normalizeProps, guardReactiveProps as _guardReactiveProps, withCtx as _withCtx, openBlock as _openBlock, createBlock as _createBlock } from "vue"
+
+export function render(_ctx, _cache, $props, $setup, $data, $options) {
+  return (_openBlock(), _createBlock($setup["Trans"], _normalizeProps(_guardReactiveProps(/** i18n */{id:"2yZeBj",message:"Read <docs>the docs</docs> or <blog>the blog</blog> <br/>"})), {
+    docs: _withCtx(() => [...(_cache[0] || (_cache[0] = [
+      _createElementVNode("a", { href: "/docs" }, null, -1 /* CACHED */)
+    ]))]),
+    blog: _withCtx(() => [...(_cache[1] || (_cache[1] = [
+      _createElementVNode("a", { href: "/blog" }, null, -1 /* CACHED */)
+    ]))]),
+    br: _withCtx(() => [...(_cache[2] || (_cache[2] = [
+      _createElementVNode("br", null, null, -1 /* CACHED */)
+    ]))]),
+    _: 1 /* STABLE */
+  }, 16 /* FULL_PROPS */))
+}"
+`;
+
+exports[`linguiTemplateTransform > <Trans> > supports template literals and t macros inside interpolations 1`] = `
+"import { normalizeProps as _normalizeProps, guardReactiveProps as _guardReactiveProps, openBlock as _openBlock, createBlock as _createBlock } from "vue"
+
+export function render(_ctx, _cache, $props, $setup, $data, $options) {
+  return (_openBlock(), _createBlock($setup["Trans"], _normalizeProps(_guardReactiveProps(/** i18n */{id:"D93rag",message:"Hello {name} - inner - {count, plural, one {# book} other {# books}}",values:{name:$setup.name,count:$setup.count}})), null, 16 /* FULL_PROPS */))
+}"
+`;
+
+exports[`linguiTemplateTransform > <Trans> > uses positional placeholders for non-identifier expressions and labeled expressions 1`] = `
+"import { normalizeProps as _normalizeProps, guardReactiveProps as _guardReactiveProps, openBlock as _openBlock, createBlock as _createBlock } from "vue"
+
+export function render(_ctx, _cache, $props, $setup, $data, $options) {
+  return (_openBlock(), _createBlock($setup["Trans"], _normalizeProps(_guardReactiveProps(/** i18n */{id:"hUaVSi",message:"Hello {0} and {friend} and {age}",values:{0:_ctx.user.name,friend:_ctx.user.friend,age:_ctx.user.age}})), null, 16 /* FULL_PROPS */))
+}"
+`;
+
+exports[`linguiTemplateTransform > choice components > compiles <Plural> with static and bound attributes 1`] = `
+"import { resolveComponent as _resolveComponent, normalizeProps as _normalizeProps, guardReactiveProps as _guardReactiveProps, openBlock as _openBlock, createBlock as _createBlock } from "vue"
+
+export function render(_ctx, _cache, $props, $setup, $data, $options) {
+  const _component_Plural = _resolveComponent("Plural")
+
+  return (_openBlock(), _createBlock(_component_Plural, _normalizeProps(_guardReactiveProps(/** i18n */{id:"KWWOxW",message:"{count, plural, offset:1 =0 {No books} one {# book} other {# books} =1 {One book}}",values:{count:$setup.count}})), null, 16 /* FULL_PROPS */))
+}"
+`;
+
+exports[`linguiTemplateTransform > choice components > compiles <Select> and <SelectOrdinal> 1`] = `
+"import { resolveComponent as _resolveComponent, normalizeProps as _normalizeProps, guardReactiveProps as _guardReactiveProps, createVNode as _createVNode, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock } from "vue"
+
+export function render(_ctx, _cache, $props, $setup, $data, $options) {
+  const _component_Select = _resolveComponent("Select")
+  const _component_SelectOrdinal = _resolveComponent("SelectOrdinal")
+
+  return (_openBlock(), _createElementBlock(_Fragment, null, [
+    _createVNode(_component_Select, _normalizeProps(_guardReactiveProps(/** i18n */{id:"p7wNll",message:"{gender, select, male {His book} female {Her book} other {Their book}}",values:{gender:_ctx.gender}})), null, 16 /* FULL_PROPS */),
+    _createVNode(_component_SelectOrdinal, _normalizeProps(_guardReactiveProps(/** i18n */{id:"YRityE",message:"{position, selectordinal, one {#st} two {#nd} few {#rd} other {#th}}",values:{position:_ctx.user.rank}})), null, 16 /* FULL_PROPS */)
+  ], 64 /* STABLE_FRAGMENT */))
+}"
+`;
+
+exports[`linguiTemplateTransform > choice components > compiles choice components with a bound \`other\` attribute 1`] = `
+"import { resolveComponent as _resolveComponent, normalizeProps as _normalizeProps, guardReactiveProps as _guardReactiveProps, openBlock as _openBlock, createBlock as _createBlock } from "vue"
+
+export function render(_ctx, _cache, $props, $setup, $data, $options) {
+  const _component_Plural = _resolveComponent("Plural")
+
+  return (_openBlock(), _createBlock(_component_Plural, _normalizeProps(_guardReactiveProps(/** i18n */{id:"UE7AkX",message:"{count, plural, one {# book} other {{otherLabel}}}",values:{count:$setup.count,otherLabel:_ctx.otherLabel}})), null, 16 /* FULL_PROPS */))
+}"
+`;
+
+exports[`linguiTemplateTransform > choice components > supports rich choice forms through named slots 1`] = `
+"import { createElementVNode as _createElementVNode, resolveComponent as _resolveComponent, normalizeProps as _normalizeProps, guardReactiveProps as _guardReactiveProps, withCtx as _withCtx, openBlock as _openBlock, createBlock as _createBlock } from "vue"
+
+export function render(_ctx, _cache, $props, $setup, $data, $options) {
+  const _component_Plural = _resolveComponent("Plural")
+
+  return (_openBlock(), _createBlock(_component_Plural, _normalizeProps(_guardReactiveProps(/** i18n */{id:"ygVEIq",message:"{count, plural, other {# books} one {One <0>{name}</0> book} =0 {No books, <1>{name}</1>}}",values:{count:$setup.count,name:$setup.name}})), {
+    "0": _withCtx(() => [...(_cache[0] || (_cache[0] = [
+      _createElementVNode("b", null, null, -1 /* CACHED */)
+    ]))]),
+    "1": _withCtx(() => [...(_cache[1] || (_cache[1] = [
+      _createElementVNode("em", null, null, -1 /* CACHED */)
+    ]))]),
+    _: 1 /* STABLE */
+  }, 16 /* FULL_PROPS */))
+}"
+`;
+
+exports[`linguiTemplateTransform > t macro in expressions > compiles descriptor calls 1`] = `
+"import { toDisplayString as _toDisplayString, openBlock as _openBlock, createElementBlock as _createElementBlock } from "vue"
+
+export function render(_ctx, _cache, $props, $setup, $data, $options) {
+  return (_openBlock(), _createElementBlock("p", null, _toDisplayString($setup.t(/** i18n */{id:"vrfCge",message:"Hello {name}",comment:'Greeting',context:'direction',values:{name:$setup.name}})) + _toDisplayString($setup.t(/** i18n */{id:'my.id',values:{name: $setup.name}})), 1 /* TEXT */))
+}"
+`;
+
+exports[`linguiTemplateTransform > t macro in expressions > compiles macros in props of macro elements 1`] = `
+"import { renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, mergeProps as _mergeProps, createBlock as _createBlock, resolveComponent as _resolveComponent, createVNode as _createVNode } from "vue"
+
+export function render(_ctx, _cache, $props, $setup, $data, $options) {
+  const _component_Plural = _resolveComponent("Plural")
+
+  return (_openBlock(), _createElementBlock(_Fragment, null, [
+    (_openBlock(true), _createElementBlock(_Fragment, null, _renderList([$setup.t(/** i18n */{id:"J6ypuD",message:"A"})], (item) => {
+      return (_openBlock(), _createBlock($setup["Trans"], _mergeProps({
+        title: $setup.t(/** i18n */{id:"NHSuii",message:"Tooltip"}),
+        onClick: _cache[0] || (_cache[0] = $event => (_ctx.toast=$setup.t(/** i18n */{id:"cS9Sst",message:"Clicked"}))),
+        key: item
+      }, { ref_for: true }, /** i18n */{id:"uzTaYi",message:"Hello"}), null, 16 /* FULL_PROPS */, ["title"]))
+    }), 128 /* KEYED_FRAGMENT */)),
+    _createVNode(_component_Plural, _mergeProps({
+      title: $setup.t(/** i18n */{id:"wBMjJ2",message:"Count"})
+    }, /** i18n */{id:"mPUn57",message:"{count, plural, one {Book} other {Books}}",values:{count:$setup.count}}), null, 16 /* FULL_PROPS */, ["title"])
+  ], 64 /* STABLE_FRAGMENT */))
+}"
+`;
+
+exports[`linguiTemplateTransform > t macro in expressions > compiles macros in v-for sources 1`] = `
+"import { renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, toDisplayString as _toDisplayString } from "vue"
+
+export function render(_ctx, _cache, $props, $setup, $data, $options) {
+  return (_openBlock(true), _createElementBlock(_Fragment, null, _renderList([$setup.t(/** i18n */{id:"U0sC6H",message:"Daily"}),$setup.t(/** i18n */{id:"4XSc4l",message:"Weekly"})], (label, i) => {
+    return (_openBlock(), _createElementBlock("li", { key: i }, _toDisplayString(label), 1 /* TEXT */))
+  }), 128 /* KEYED_FRAGMENT */))
+}"
+`;
+
+exports[`linguiTemplateTransform > t macro in expressions > compiles macros in v-on handlers 1`] = `
+"import { openBlock as _openBlock, createElementBlock as _createElementBlock } from "vue"
+
+export function render(_ctx, _cache, $props, $setup, $data, $options) {
+  return (_openBlock(), _createElementBlock("button", {
+    onClick: _cache[0] || (_cache[0] = $event => (_ctx.toast=$setup.t(/** i18n */{id:"idD8Ev",message:"Saved"}))),
+    onFocus: _cache[1] || (_cache[1] = $event => {_ctx.log($setup.t(/** i18n */{id:"Fsd1Wl",message:"Focus"}));_ctx.toast=$setup.t(/** i18n */{id:"OVaF9k",message:"Hello {name}",values:{name:$setup.name}});})
+  }, null, 32 /* NEED_HYDRATION */))
+}"
+`;
+
+exports[`linguiTemplateTransform > t macro in expressions > compiles nested macros and labeled expressions 1`] = `
+"import { toDisplayString as _toDisplayString, openBlock as _openBlock, createElementBlock as _createElementBlock } from "vue"
+
+export function render(_ctx, _cache, $props, $setup, $data, $options) {
+  return (_openBlock(), _createElementBlock("p", null, _toDisplayString($setup.t(/** i18n */{id:"EZZ2fU",message:"{count, plural, one {# book} other {# books}} by {author}",values:{count:$setup.count,author:_ctx.user.name}})), 1 /* TEXT */))
+}"
+`;
+
+exports[`linguiTemplateTransform > t macro in expressions > compiles nested macros and labeled expressions 2`] = `
+"import { openBlock as _openBlock, createElementBlock as _createElementBlock } from "vue"
+
+const _hoisted_1 = ["title"]
+
+export function render(_ctx, _cache, $props, $setup, $data, $options) {
+  return (_openBlock(), _createElementBlock("p", {
+    title: $setup.t(/** i18n */{id:"zgc1R8",message:"{gender, select, male {his} other {their}} book by {author}",values:{gender:_ctx.gender,author:_ctx.user.name}})
+  }, null, 8 /* PROPS */, _hoisted_1))
+}"
+`;
+
+exports[`linguiTemplateTransform > t macro in expressions > compiles tagged templates in interpolations and attributes 1`] = `
+"import { createElementVNode as _createElementVNode, toDisplayString as _toDisplayString, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock } from "vue"
+
+const _hoisted_1 = ["placeholder", "title"]
+
+export function render(_ctx, _cache, $props, $setup, $data, $options) {
+  return (_openBlock(), _createElementBlock(_Fragment, null, [
+    _createElementVNode("input", {
+      placeholder: $setup.t(/** i18n */{id:"A1taO8",message:"Search"}),
+      title: $setup.t(/** i18n */{id:"OVaF9k",message:"Hello {name}",values:{name:$setup.name}})
+    }, null, 8 /* PROPS */, _hoisted_1),
+    _createElementVNode("p", null, _toDisplayString($setup.t(/** i18n */{id:"Y7riaK",message:"Hello {0}",values:{0:_ctx.user.name}})), 1 /* TEXT */)
+  ], 64 /* STABLE_FRAGMENT */))
+}"
+`;
+
+exports[`linguiTemplateTransform > t macro in expressions > handles expressions with TypeScript syntax 1`] = `
+"import { toDisplayString as _toDisplayString, openBlock as _openBlock, createElementBlock as _createElementBlock } from "vue"
+
+export function render(_ctx: any,_cache: any,$props: any,$setup: any,$data: any,$options: any) {
+  return (_openBlock(), _createElementBlock("p", null, _toDisplayString($setup.t(/** i18n */{id:"Y7riaK",message:"Hello {0}",values:{0:(_ctx.user as any).name}})), 1 /* TEXT */))
+}"
+`;
+
+exports[`linguiTemplateTransform > t macro in expressions > supports custom macro names 1`] = `
+"import { toDisplayString as _toDisplayString, openBlock as _openBlock, createElementBlock as _createElementBlock } from "vue"
+
+export function render(_ctx, _cache, $props, $setup, $data, $options) {
+  return (_openBlock(), _createElementBlock("p", null, _toDisplayString(_ctx.$t\`Hello \${$setup.name}\`), 1 /* TEXT */))
+}"
+`;
