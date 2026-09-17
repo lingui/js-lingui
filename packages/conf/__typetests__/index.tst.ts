@@ -4,7 +4,6 @@ import {
   ExtractorCtx,
   FallbackLocales,
   LinguiConfig,
-  ExtractorType,
 } from "@lingui/conf"
 import { expect } from "tstyche"
 
@@ -125,13 +124,3 @@ expect({
     Trans: ["./custom-config", "Trans"] as [string, string],
   },
 }).type.toBeAssignableTo<LinguiConfig>()
-
-const extractor: ExtractorType = {
-  match: (fileName: string) => false,
-  extract: (
-    filename: string,
-    code: string,
-    onMessageExtracted: (msg: ExtractedMessage) => void,
-    ctx?: ExtractorCtx,
-  ) => {},
-}
