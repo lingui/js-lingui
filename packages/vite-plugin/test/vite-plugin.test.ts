@@ -63,6 +63,17 @@ describe("vite-plugin", () => {
     expect(await mod.load()).toBe("Ola")
   })
 
+  it("should report error when native transformer is used with macro.jsxRuntime = vue", async () => {
+    expect.assertions(1)
+    try {
+      await runVite(`vue-runtime-error`, { macroTransform: true })
+    } catch (e) {
+      expect(getErrorMessage(e)).toContain(
+        `The native macro transform doesn't support macro.jsxRuntime: "vue" yet.`,
+      )
+    }
+  })
+
   it("should correctly process with native transformer - PRODUCTION", async () => {
     const oldEnv = process.env.NODE_ENV
     process.env.NODE_ENV = "production"

@@ -1045,6 +1045,81 @@ import { Trans as _Trans } from "@lingui/solid";
 
 `;
 
+exports[`should not point non-JSX references of macro components to the runtime Trans outside of the vue runtime 1`] = `
+import { Trans, Plural } from "@lingui/react/macro";
+const T = Trans;
+const P = Plural;
+<Trans>Hello World</Trans>;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { Trans as _Trans } from "@lingui/react";
+const T = Trans;
+const P = Plural;
+<_Trans
+  {
+    /** i18n */
+    ...{
+      id: "mY42CM",
+      message: "Hello World",
+    }
+  }
+/>;
+
+`;
+
+exports[`should point non-JSX references of macro components to the runtime Trans 1`] = `
+import { Trans, Plural, useLingui } from "@lingui/vue/macro";
+// Vue SFC compiled in dev mode: bindings are returned to the template
+export default {
+  setup() {
+    const { t } = useLingui();
+    const __returned__ = { Trans, Plural, t };
+    return __returned__;
+  },
+};
+
+// inline template (production): components referenced as values
+createVNode(Trans, { id: "x" });
+createVNode(Plural, { id: "y" });
+<Trans>Hello World</Trans>;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+// Vue SFC compiled in dev mode: bindings are returned to the template
+import { Trans as _Trans } from "@lingui/vue";
+import { useLingui as _useLingui } from "@lingui/vue";
+export default {
+  setup() {
+    const { _: _t } = _useLingui();
+    const __returned__ = {
+      Trans: _Trans,
+      Plural: _Trans,
+      t: _t,
+    };
+    return __returned__;
+  },
+};
+
+// inline template (production): components referenced as values
+createVNode(_Trans, {
+  id: "x",
+});
+createVNode(_Trans, {
+  id: "y",
+});
+<_Trans
+  {
+    /** i18n */
+    ...{
+      id: "mY42CM",
+      message: "Hello World",
+    }
+  }
+/>;
+
+`;
+
 exports[`should respect runtimeConfigModule 1`] = `
 import { Trans } from "@lingui/react/macro";
 <Trans>Hello World</Trans>;

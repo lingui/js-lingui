@@ -46,10 +46,19 @@
     "@lingui/conf": "workspace:*",
     "@vue/compiler-sfc": "^3.2.47"
   },
+  "peerDependencies": {
+    "@lingui/vue": "^6"
+  },
+  "peerDependenciesMeta": {
+    "@lingui/vue": {
+      "optional": true
+    }
+  },
   "devDependencies": {
     "@lingui/babel-plugin-extract-messages": "workspace:*",
     "@lingui/core": "workspace:*",
     "@lingui/native-tools": "^0.2.0",
+    "@lingui/vue": "workspace:*",
     "typescript": "catalog:",
     "unbuild": "catalog:",
     "vitest": "catalog:"
