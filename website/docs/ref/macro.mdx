@@ -566,6 +566,10 @@ const msg2 = t`Sign up`;
 
 Both `msg1` and `msg2` will have `context` set to `"homepage"`.
 
+:::tip
+A directive that is never reset applies to every macro that follows it in the file, including messages added later. You can enforce that each `lingui-set` is closed with a `lingui-reset` using the Lingui [ESLint Plugin](/ref/eslint-plugin) rule [`require-directive-reset`](https://github.com/lingui/eslint-plugin/blob/main/docs/rules/require-directive-reset.md).
+:::
+
 #### Supported Params
 
 | Param      | Example                     | Description                                                                                                                                                                 |
@@ -700,6 +704,10 @@ import { Trans } from "@lingui/react";
 #### `comment`
 
 Comment for translators to give them additional information about the message. It will be visible in the [TMS](/tools/introduction) if it is supported, and in the [catalog format](/ref/catalog-formats). It will be removed from production code.
+
+:::tip
+You can require every message to describe itself to translators with the Lingui [ESLint Plugin](/ref/eslint-plugin) rule [`require-comment`](https://github.com/lingui/eslint-plugin/blob/main/docs/rules/require-comment.md). It accepts a [`lingui-set comment="..."`](#lingui-directive) directive as well, which is the only option for tagged template literals such as `` t`Save` ``.
+:::
 
 #### `context`
 
