@@ -188,4 +188,59 @@ describe("mergeCatalog", () => {
       }
     `)
   })
+
+  describe("key order", () => {
+    // key order is what a formatter writes out, so it is what shows up in the
+    // catalog diff, @see https://github.com/lingui/js-lingui/issues/2671
+    const serializedKeys = (entry: unknown) =>
+      Object.keys(JSON.parse(JSON.stringify(entry)))
+
+    const locales: [label: string, forSourceLocale: boolean][] = [
+      ["for a translated locale", false],
+      ["for the source locale", true],
+    ]
+
+    it.each(locales)(
+      "should add translation as the last key of a new message %s",
+      (_, forSourceLocale) => {
+        const result = mergeCatalog(
+          undefined,
+          nextCatalog,
+          forSourceLocale,
+          defaultMergeOptions,
+        )
+
+        expect(serializedKeys(result["custom.id"]).at(-1)).toBe("translation")
+        expect(
+          serializedKeys(result["Message with <0>auto-generated</0> ID"]).at(
+            -1,
+          ),
+        ).toBe("translation")
+      },
+    )
+
+    it.each(locales)(
+      "should keep the key order of a message stable between extract runs %s",
+      (_, forSourceLocale) => {
+        // first extract, both messages are new
+        const firstRun = mergeCatalog(
+          undefined,
+          nextCatalog,
+          forSourceLocale,
+          defaultMergeOptions,
+        )
+        // second extract, the very same messages are merged from the catalog
+        const secondRun = mergeCatalog(
+          firstRun,
+          nextCatalog,
+          forSourceLocale,
+          defaultMergeOptions,
+        )
+
+        expect(JSON.stringify(secondRun, null, 2)).toEqual(
+          JSON.stringify(firstRun, null, 2),
+        )
+      },
+    )
+  })
 })
