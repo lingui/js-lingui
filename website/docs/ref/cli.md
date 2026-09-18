@@ -1,11 +1,11 @@
 ---
 title: Lingui CLI
-description: Learn how to set up and use Lingui CLI to extract, merge and compile message catalogs
+description: Learn how to set up and use Lingui CLI to extract, check, merge and compile message catalogs
 ---
 
 # Lingui CLI
 
-The `@lingui/cli` tool provides the `lingui` command which allows you to extract messages from source files into message catalogs and compile these catalogs for production use.
+The `@lingui/cli` tool provides the `lingui` command which allows you to extract messages from source files into message catalogs, check them, and compile these catalogs for production use.
 
 ## Installation
 
@@ -58,7 +58,7 @@ lingui extract [files...]
         [--convert-from <format>]
         [--verbose]
         [--watch [--debounce <delay>]]
-        [--workers]
+        [--workers <n>]
 ```
 
 The `extract` command scans source files to locate and extract messages, generating separate message catalogs for each language.
@@ -132,16 +132,7 @@ Delay the extraction by `<delay>` milliseconds, bundling multiple file changes t
 
 #### `--workers` {#extract-workers}
 
-Specifies the number of worker threads to use.
-
-Pass `--workers 1` to disable workers and run everything in a single process.
-
-By default, the tool uses a simple heuristic:
-
-- On machines with more than 2 cores → `cpu.count - 1` workers
-- On 2-core machines → all cores
-
-Use the `--verbose` flag to see the actual pool size.
+Number of worker threads to use (default: CPU count - 1, capped at 8; on 1-2 core machines, all cores). Pass `--workers 1` to disable worker threads and run everything in a single process
 
 Worker threads can significantly improve performance on large projects. However, on small projects they may provide little benefit or even be slightly slower due to thread startup overhead.
 
@@ -171,7 +162,7 @@ lingui compile
     [--typescript]
     [--namespace <namespace>]
     [--watch [--debounce <delay>]]
-    [--workers]
+    [--workers <n>]
     [--output-prefix <prefix>]
 ```
 
@@ -209,7 +200,9 @@ Overwrite source locale translations from source.
 
 #### `--strict` {#compile-strict}
 
-Fail if a catalog has missing translations.
+Fail if the compiled catalog still has missing translations after `fallbackLocales` are applied, or if message compilation produces errors.
+
+This preserves the default validation behavior used by Lingui 6. The compiled output uses the normal fallback resolution behavior regardless of strict mode, although catalogs for locales that fail strict validation may not be emitted.
 
 #### `--format <format>` {#compile-format}
 
@@ -237,15 +230,7 @@ Delays compilation by `<delay>` milliseconds to avoid multiple compilations for 
 
 #### `--workers` {#compile-workers}
 
-Specifies the number of worker threads to use.
-Pass `--workers 1` to disable workers and run everything in a single process.
-
-By default, the tool uses a simple heuristic:
-
-- On machines with more than 2 cores → `cpu.count - 1` workers
-- On 2-core machines → all cores
-
-Use the `--verbose` flag to see the actual pool size.
+Number of worker threads to use (default: CPU count - 1, capped at 8; on 1-2 core machines, all cores). Pass `--workers 1` to disable worker threads and run everything in a single process
 
 Worker threads can significantly improve performance on large projects. However, on small projects they may provide little benefit or even be slightly slower due to thread startup overhead.
 
@@ -277,6 +262,84 @@ The generated file header will look like:
 ```js
 /*your-prefix-here*/ export const messages = JSON.parse("{}");
 ```
+
+### `check`
+
+```shell
+lingui check <command>
+```
+
+The `check` command is a namespace for validation subcommands. Running `lingui check` without a subcommand prints help and exits without running any validation.
+
+These subcommands are useful in CI when you want to fail fast on stale catalogs or missing translations but do not need compilation artifacts yet.
+
+#### `sync`
+
+```shell
+lingui check sync
+    [--locale <locale, [...]>]
+    [--clean]
+    [--overwrite]
+    [--verbose]
+    [--workers <n>]
+```
+
+Checks whether locale catalogs are synchronized with the current source code. It fails if the expected catalog differs from the existing catalog.
+
+This validation checks locale catalogs only. It does not validate `.pot` / template freshness.
+
+#### `missing`
+
+```shell
+lingui check missing
+    [--locale <locale, [...]>]
+    [--mode <resolved|catalog>]
+    [--verbose]
+    [--workers <n>]
+```
+
+Checks whether locale catalogs have missing translations. By default, this validation uses `resolved` mode, which matches `lingui compile --strict`: translations are considered missing only if they are still missing after `fallbackLocales` are applied.
+
+Use `--mode catalog` to fail when the target locale catalog itself has missing translations before `fallbackLocales` are applied. This command performs validation without compiling catalogs.
+
+#### `sync --locale <locale, [...]>` {#check-sync-locale}
+
+Only check the specified locales when running `lingui check sync`.
+
+#### `sync --clean` {#check-sync-clean}
+
+Before comparing catalogs, remove obsolete messages from the expected catalog. Existing obsolete messages are still reported as out of sync.
+
+#### `sync --overwrite` {#check-sync-overwrite}
+
+When running the `sync` validation, mirror `lingui extract --overwrite`. Source locale translations are expected to be overwritten from source messages.
+
+#### `sync --verbose` {#check-sync-verbose}
+
+Print detailed findings for each failing `sync` validation.
+
+#### `sync --workers` {#check-sync-workers}
+
+Number of worker threads to use (default: CPU count - 1, capped at 8; on 1-2 core machines, all cores). Pass `--workers 1` to disable worker threads and run everything in a single process
+
+#### `missing --locale <locale, [...]>` {#check-missing-locale}
+
+Only check the specified locales when running `lingui check missing`.
+
+#### `missing --mode <resolved|catalog>` {#check-missing-mode}
+
+Controls how missing translations are detected when running `lingui check missing`.
+
+- `resolved` (default): fail only if a translation is still missing after `fallbackLocales` are applied.
+- `catalog`: fail if the target locale catalog itself has missing translations before `fallbackLocales` are applied.
+
+#### `missing --verbose` {#check-missing-verbose}
+
+Print detailed findings for each failing `missing` validation.
+
+#### `missing --workers` {#check-missing-workers}
+
+Number of worker threads to use (default: CPU count - 1, capped at 8; on 1-2 core machines, all cores). Pass `--workers 1` to disable worker threads and run everything in a single process
 
 ## Configuring the Source Locale
 

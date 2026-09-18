@@ -1,15 +1,69 @@
-import { TranslationMissingEvent } from "./catalog/getTranslationsForCatalog.js"
+import {
+  isMissingBehavior,
+  type MissingBehavior,
+  type TranslationMissingEvent,
+} from "./catalog/getTranslationsForCatalog.js"
 import { styleText } from "node:util"
-import { MessageCompilationError } from "./compile.js"
+import type { MessageCompilationError } from "./compile.js"
+
+export function getMissingBehaviorDescription(
+  missingBehavior: MissingBehavior,
+) {
+  return missingBehavior === "catalog"
+    ? "before applying fallbackLocales"
+    : "after applying fallbackLocales"
+}
+
+export type FailOnMissingOption = boolean | MissingBehavior
+
+export function isFailOnMissingEnabled(
+  option: FailOnMissingOption | undefined,
+) {
+  return option === true || option === "resolved" || option === "catalog"
+}
+
+export function getFailOnMissingBehavior(
+  option: FailOnMissingOption | undefined,
+): MissingBehavior {
+  return option === "catalog" ? "catalog" : "resolved"
+}
+
+export function formatFailOnMissingOption(
+  option: FailOnMissingOption | undefined,
+) {
+  if (option === true) return "true"
+  if (option === "resolved") return '"resolved"'
+  if (option === "catalog") return '"catalog"'
+  return "false"
+}
 
 export function createMissingErrorMessage(
   locale: string,
   missingMessages: TranslationMissingEvent[],
   configurationMsg: string,
+): string
+export function createMissingErrorMessage(
+  locale: string,
+  missingMessages: TranslationMissingEvent[],
+  missingBehavior?: MissingBehavior,
+): string
+export function createMissingErrorMessage(
+  locale: string,
+  missingMessages: TranslationMissingEvent[],
+  missingBehaviorOrConfigurationMsg = "resolved",
 ) {
+  const missingBehavior = isMissingBehavior(
+    missingBehaviorOrConfigurationMsg ?? "",
+  )
+    ? (missingBehaviorOrConfigurationMsg as MissingBehavior)
+    : undefined
+  const missingBehaviorDescription = missingBehavior
+    ? ` ${getMissingBehaviorDescription(missingBehavior)}`
+    : ""
+
   let message = `Failed to compile catalog for locale ${styleText("bold", locale)}!
 
-Missing ${missingMessages.length} translation(s):
+Missing ${missingMessages.length} translation(s)${missingBehaviorDescription}:
 \n`
 
   missingMessages.forEach((missing) => {

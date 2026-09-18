@@ -146,19 +146,152 @@ function isGeneratedId(id: string, message: MessageType): boolean {
   return id === generateMessageId(message.message!, message.context)
 }
 
-function getCreateHeaders(
+const MANAGED_HEADERS = [
+  "POT-Creation-Date",
+  "MIME-Version",
+  "Content-Type",
+  "Content-Transfer-Encoding",
+  "X-Generator",
+  "Language",
+] as const
+
+function getNewHeaders(
   language: string | undefined,
   customHeaderAttributes: PoFormatterOptions["customHeaderAttributes"],
 ): Partial<POHeaders> {
-  return {
-    "POT-Creation-Date": formatPotCreationDate(new Date()),
-    "MIME-Version": "1.0",
-    "Content-Type": "text/plain; charset=utf-8",
-    "Content-Transfer-Encoding": "8bit",
-    "X-Generator": "@lingui/cli",
-    ...(language ? { Language: language } : {}),
-    ...(customHeaderAttributes ?? {}),
+  const nextHeaders: Partial<POHeaders> = {}
+
+  nextHeaders["POT-Creation-Date"] =
+    customHeaderAttributes?.["POT-Creation-Date"] ??
+    formatPotCreationDate(new Date())
+  nextHeaders["MIME-Version"] = "1.0"
+  nextHeaders["Content-Type"] = "text/plain; charset=utf-8"
+  nextHeaders["Content-Transfer-Encoding"] = "8bit"
+  nextHeaders["X-Generator"] = "@lingui/cli"
+
+  if (language) {
+    nextHeaders.Language = language
   }
+
+  Object.entries(customHeaderAttributes ?? {}).forEach(([key, value]) => {
+    nextHeaders[key] = value
+  })
+
+  return nextHeaders
+}
+
+function getExistingHeaders(
+  existingHeaders: Partial<POHeaders>,
+  existingHeaderOrder: string[],
+  customHeaderAttributes: PoFormatterOptions["customHeaderAttributes"],
+): Partial<POHeaders> {
+  // pofile-ts pre-fills `headers` with its own default template (all
+  // standard gettext keys set to ""), even for keys the source file never
+  // wrote. `headerOrder` only records keys actually found in the text, so
+  // copy only those headers when serializing an existing file.
+  const nextHeaders: Partial<POHeaders> = {}
+
+  existingHeaderOrder.forEach((key) => {
+    if (key in existingHeaders) {
+      nextHeaders[key] = existingHeaders[key]
+    }
+  })
+
+  // Explicit formatter configuration is still allowed to override existing
+  // values or add new headers.
+  Object.entries(customHeaderAttributes ?? {}).forEach(([key, value]) => {
+    nextHeaders[key] = value
+  })
+
+  return nextHeaders
+}
+
+function getHeaderOrder(
+  headers: Partial<POHeaders>,
+  language: string | undefined,
+  customHeaderAttributes: PoFormatterOptions["customHeaderAttributes"],
+) {
+  const managedOrder = [
+    "POT-Creation-Date",
+    "MIME-Version",
+    "Content-Type",
+    "Content-Transfer-Encoding",
+    "X-Generator",
+    ...(language ? ["Language"] : []),
+    ...Object.keys(customHeaderAttributes ?? {}).filter(
+      (key) =>
+        !MANAGED_HEADERS.includes(key as (typeof MANAGED_HEADERS)[number]),
+    ),
+  ]
+
+  const order = new Set(managedOrder)
+
+  Object.keys(headers).forEach((key) => {
+    order.add(key)
+  })
+
+  return [...order]
+}
+
+function getExistingHeaderOrder(
+  headers: Partial<POHeaders>,
+  existingHeaderOrder: string[],
+) {
+  const order = new Set(existingHeaderOrder.filter((key) => key in headers))
+
+  Object.keys(headers).forEach((key) => {
+    order.add(key)
+  })
+
+  return [...order]
+}
+
+function parsePoItemsInSourceOrder(content: string): PoItem[] {
+  const lines = content.split(/\r?\n/)
+  const messageStart = /^(?:#~\s*)?msgid(?:\s|$)/
+  const contextStart = /^(?:#~\s*)?msgctxt(?:\s|$)/
+  const itemStarts: number[] = []
+  let pendingContextStart: number | undefined
+
+  lines.forEach((rawLine, index) => {
+    const line = rawLine.trim()
+
+    if (contextStart.test(line)) {
+      pendingContextStart = index
+      return
+    }
+
+    if (messageStart.test(line)) {
+      itemStarts.push(pendingContextStart ?? index)
+      pendingContextStart = undefined
+    }
+  })
+
+  return itemStarts.flatMap((start, index) => {
+    const end = itemStarts[index + 1] ?? lines.length
+    return parsePo(lines.slice(start, end).join("\n")).items
+  })
+}
+
+/** Parse a PO file while preserving obsolete markers that pofile-ts can lose. */
+export function parsePoFile(content: string): PoFile {
+  const po = parsePo(content)
+
+  // Workaround for pofile-ts#22; the upstream fix is pending in pofile-ts#23:
+  // https://github.com/sebastian-software/pofile-ts/issues/22
+  // https://github.com/sebastian-software/pofile-ts/pull/23
+  // Parse each item separately so the obsolete marker is counted from a fresh
+  // parser state, then apply those markers to the full parse by source order.
+  const sourceItems = parsePoItemsInSourceOrder(content)
+
+  po.items.forEach((item, index) => {
+    const sourceItem = sourceItems[index]
+    if (sourceItem) {
+      item.obsolete = sourceItem.obsolete
+    }
+  })
+
+  return po
 }
 
 const EXPLICIT_ID_FLAG = "js-lingui-explicit-id"
@@ -303,7 +436,14 @@ function deserialize(
       message.message = item.msgid
     }
 
-    catalog[id] = message
+    const existingMessage = catalog[id]
+    if (
+      existingMessage === undefined ||
+      !message.obsolete ||
+      existingMessage.obsolete
+    ) {
+      catalog[id] = message
+    }
     return catalog
   }, {})
 }
@@ -321,23 +461,29 @@ export function formatter(options: PoFormatterOptions = {}): CatalogFormatter {
     templateExtension: ".pot",
 
     parse(content): CatalogType {
-      const po = parsePo(content)
+      const po = parsePoFile(content)
       return deserialize(po.items, options)
     },
 
     serialize(catalog, ctx): string {
-      let po: PoFile
+      const existingPo =
+        ctx.existing !== undefined && ctx.existing !== ""
+          ? parsePoFile(ctx.existing)
+          : undefined
+      const po: PoFile = createPoFile()
 
-      if (ctx.existing) {
-        po = parsePo(ctx.existing)
-      } else {
-        po = createPoFile()
-        po.headers = getCreateHeaders(
-          ctx.locale,
-          options.customHeaderAttributes,
-        )
-        po.headerOrder = Object.keys(po.headers)
-      }
+      po.comments = [...(existingPo?.comments ?? [])]
+      po.extractedComments = [...(existingPo?.extractedComments ?? [])]
+      po.headers = existingPo
+        ? getExistingHeaders(
+            existingPo.headers,
+            existingPo.headerOrder,
+            options.customHeaderAttributes,
+          )
+        : getNewHeaders(ctx.locale, options.customHeaderAttributes)
+      po.headerOrder = existingPo
+        ? getExistingHeaderOrder(po.headers, existingPo.headerOrder)
+        : getHeaderOrder(po.headers, ctx.locale, options.customHeaderAttributes)
 
       po.items = serialize(catalog, options, {
         locale: ctx.locale,

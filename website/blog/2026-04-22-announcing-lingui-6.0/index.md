@@ -114,7 +114,7 @@ You can configure the number of worker threads with the `--workers` flag:
 lingui extract --workers 4
 ```
 
-By default, Lingui uses CPU cores - 1, capped at 8. Use `--workers 1` to disable multithreading and run in a single process.
+Number of worker threads to use (default: CPU count - 1, capped at 8; on 1-2 core machines, all cores). Pass `--workers 1` to disable worker threads and run everything in a single process
 
 ### Explicit Placeholder Labels Macro
 
