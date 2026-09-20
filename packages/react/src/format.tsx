@@ -1,7 +1,10 @@
 import { cloneElement } from "react"
 
 // match <tag>paired</tag> and <tag/> unpaired tags
-const tagRe = /<([a-zA-Z0-9]+)>([\s\S]*?)<\/\1>|<([a-zA-Z0-9]+)\/>/
+// Names: auto-generated digits, or the macro charset from tokenizeElement —
+// /^[a-zA-Z_]([\w.-]*\w)?$/ — so `_`, `.` and `-` are valid in between.
+const tagRe =
+  /<([a-zA-Z0-9_](?:[\w.-]*\w)?)>([\s\S]*?)<\/\1>|<([a-zA-Z0-9_](?:[\w.-]*\w)?)\/>/
 
 // For HTML, certain tags should omit their close tag. We keep a whitelist for
 // those special-case tags.
