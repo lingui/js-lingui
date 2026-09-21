@@ -191,7 +191,7 @@ describe("mergeCatalog", () => {
 
   describe("key order", () => {
     // key order is what a formatter writes out, so it is what shows up in the
-    // catalog diff, @see https://github.com/lingui/js-lingui/issues/2671
+    // catalog diff
     const serializedKeys = (entry: unknown) =>
       Object.keys(JSON.parse(JSON.stringify(entry)))
 

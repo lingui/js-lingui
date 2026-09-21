@@ -33,7 +33,6 @@ export function mergeCatalog(
   // Initialize new catalog with new keys
   // `translation` is added last, so a message keeps the same key order once it
   // is merged from the previous catalog on the next extract
-  // @see https://github.com/lingui/js-lingui/issues/2671
   const newMessages: CatalogType = Object.fromEntries(
     newKeys.map((key) => [
       key,
