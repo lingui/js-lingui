@@ -50,7 +50,18 @@ export default defineConfig({
 });
 ```
 
-Run [`lingui extract`](/ref/cli#extract) and [`lingui compile`](/ref/cli#compile) from `apps/web`, typically through the app's `package.json` scripts. Every catalog contains exactly what its app renders. Any bundler plugin works unchanged.
+Run [`lingui extract`](/ref/cli#extract) and [`lingui compile`](/ref/cli#compile) from `apps/web` through the app's `package.json` scripts:
+
+```json title="apps/web/package.json"
+{
+  "scripts": {
+    "extract": "lingui extract",
+    "compile": "lingui compile"
+  }
+}
+```
+
+Scripts run with the package as the working directory, so the CLI finds the app's config. From another directory, pass `--config apps/web/lingui.config.ts`. Every catalog contains exactly what its app renders. Any bundler plugin works unchanged.
 
 The trade-off is that a string from `packages/ui` is translated once per app. A translation management system with translation memory removes most of that cost.
 
@@ -118,7 +129,21 @@ packages/ui/
 └── src/
 ```
 
-`catalogsMergePath` applies only to `lingui compile`. The [Vite plugin](/ref/vite-plugin) and [webpack loader](/ref/loader) compile one `.po` file per import and do not merge. With them, call [`i18n.load`](/ref/core#i18n.load) once for the app's catalog and once per package. It merges messages of the same locale.
+`catalogsMergePath` applies only to `lingui compile`. The [Vite plugin](/ref/vite-plugin) and [webpack loader](/ref/loader) compile one `.po` file per import and do not merge. With them, call [`i18n.load`](/ref/core#i18n.load) once for the app's catalog and once per package. It merges messages of the same locale:
+
+```ts title="apps/admin/src/activate.ts"
+import { i18n } from "@lingui/core";
+
+export async function activate(locale: string) {
+  const app = await import(`../locales/${locale}.po`);
+  const ui = await import(`../../../packages/ui/locales/${locale}.po`);
+  i18n.load(locale, app.messages);
+  i18n.load(locale, ui.messages);
+  i18n.activate(locale);
+}
+```
+
+Both tools compile a `.po` file from any directory, as long as the app's config lists its catalog.
 
 ## Dependency-Based Extraction
 
@@ -153,7 +178,7 @@ export default defineConfig({
 Consumers of an npm package cannot see its sources by default. The package either brings its translations along or leaves translation to the consumer. Three patterns work, from simplest to most flexible:
 
 - Keep translations out of the package. Accept already-translated text as props (`label`, `placeholder`, `aria-label`) and let the consuming app translate it with its own catalog. This suits a few components, not a whole component library.
-- One catalog for the whole library, shipped compiled. Extract all library packages into a single catalog and compile it in the library's build. Publish the compiled catalogs inside the library or as a dedicated package such as `@acme/translations`. The host app loads two catalogs with `i18n.load`, its own and the library's. The library catalog also contains messages of components the app never renders, usually a small cost.
+- One catalog for the whole library, shipped compiled. Extract all library packages into a single catalog and compile it in the library's build. Publish the compiled catalogs inside the library or as a dedicated package such as `@acme/translations`. The host app loads two catalogs with `i18n.load`, its own and the library's, as in the [example above](#catalog-per-package-merged-per-app) but from the library's compiled files. The library catalog also contains messages of components the app never renders, usually a small cost.
 - Ship the sources next to the compiled output. Publish `src/` alongside `dist/`. The consuming app adds the package's source directory to `include`, for example `<rootDir>/node_modules/@acme/ui/src`, and translates the library's messages like its own. List each package directory explicitly. A wildcard such as `@acme/*/src` does not descend into the symlinks package managers create under `node_modules`.
 
 In every case, declare `@lingui/react` and `@lingui/core` as `peerDependencies` so the package uses the consumer's copy, and rely on the consumer's `I18nProvider`.
@@ -163,6 +188,20 @@ In every case, declare `@lingui/react` and `@lingui/core` as `peerDependencies` 
 The runtime setup is the same for every strategy:
 
 - One `I18nProvider`, owned by the app. Shared packages render `<Trans>` and call `useLingui`, but never create a provider or load catalogs themselves. In components, take `t` from `useLingui()` rather than the global `t` from `@lingui/core/macro`. The global `t` uses the global `i18n` instance, not the one the provider passes down. It can then render untranslated text while the rest of the app is fine.
+
+  ```tsx title="packages/ui/src/SaveButton.tsx"
+  import { Trans, useLingui } from "@lingui/react/macro";
+
+  export function SaveButton() {
+    const { t } = useLingui(); // bound to the provider's i18n, not the global one
+    return (
+      <button aria-label={t`Save changes`}>
+        <Trans>Save</Trans>
+      </button>
+    );
+  }
+  ```
+
 - Import macros directly in every package, from `@lingui/react/macro` and `@lingui/core/macro`. If you re-export them from a shared package instead, add that package to [`macro.corePackage`](/ref/conf#macrocorepackage) and [`macro.jsxPackage`](/ref/conf#macrojsxpackage). Without that, messages behind the re-export are silently skipped during extraction.
 - Exactly one copy of `@lingui/react` and `@lingui/core`. Declare them in every package that uses them, with the same version. pnpm's `catalog:` protocol or a root-level override keeps versions aligned. Two copies mean two React contexts, and shared components throw an error about a missing `I18nProvider`.
 - Optionally, a shared `i18n` instance. By default every package imports the same `i18n` singleton from `@lingui/core`, so there is nothing to do. If you create your own with `setupI18n`, export it from a workspace package such as `@acme/i18n` and set [`runtimeConfigModule`](/ref/conf#runtimeconfigmodule) to `["@acme/i18n", "i18n"]`. The value becomes an import in every transformed file, so a relative path such as `./i18n` would resolve from only one directory.
