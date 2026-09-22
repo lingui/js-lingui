@@ -39,18 +39,18 @@
     "@eslint/js": "^9.39.3",
     "@size-limit/preset-small-lib": "^11.1.6",
     "@types/mock-fs": "^4.13.1",
-    "@types/node": "22.20.1",
+    "@types/node": "22.19.17",
     "@vitest/coverage-v8": "catalog:",
     "eslint": "^9.39.3",
     "eslint-import-resolver-typescript": "^4.4.4",
     "eslint-plugin-import": "^2.32.0",
     "husky": "^8.0.3",
-    "lerna": "^10.0.1",
+    "lerna": "^9.0.0",
     "lint-staged": "^13.1.0",
     "mock-fs": "^5.2.0",
     "npm-cli-login": "^0.1.1",
     "ora": "^9.1.0",
-    "prettier": "3.9.6",
+    "prettier": "3.8.1",
     "size-limit": "^11.1.6",
     "tstyche": "^7.0.0",
     "tsx": "^4.21.0",
@@ -60,7 +60,8 @@
   },
   "workspaces": [
     "packages/*",
-    "test/*"
+    "test/*",
+    "benchmarks"
   ],
   "homepage": "https://lingui.dev",
   "repository": {
@@ -70,7 +71,7 @@
   "lint-staged": {
     "*.{ts,tsx,js,jsx}": [
       "prettier --write --ignore-unknown",
-      "eslint --fix --no-warn-ignored"
+      "eslint --fix"
     ]
   },
   "size-limit": [
@@ -85,7 +86,7 @@
     },
     {
       "path": "./packages/react/dist/index.mjs",
-      "limit": "2 kB",
+      "limit": "1.5 kB",
       "ignore": [
         "react"
       ]
