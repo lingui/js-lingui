@@ -17,12 +17,13 @@ benchmarks/
       extract.bench.ts         ← Benchmarks the extract command (babel vs swc × 1/2 workers)
       extract-template.bench.ts← Benchmarks extract-template command
       compile.bench.ts         ← Benchmarks compile command
-      macro-transform.bench.ts ← Pure Babel vs SWC plugin transform (no CLI, no I/O)
+      macro-transform.bench.ts ← Pure Babel vs SWC plugin vs native transform (no CLI, no I/O)
     reporters/
       console-reporter.ts      ← Prints a bar-chart style report to stdout
       json-reporter.ts         ← Writes .results/results.json
     utils/
-      config-builder.ts        ← Builds LinguiConfigNormalized + writes a config file to disk
+      config-builder.ts        ← Writes lingui.config.{babel,swc}.mjs into the fixtures directory
+      run-cli.ts               ← Spawns the built @lingui/cli binary with LINGUI_CONFIG set
 ```
 
 ## Key Patterns
@@ -36,6 +37,7 @@ runLingui(["extract", "--workers", "1"], configs.babel)
 ```
 
 This runs the `@lingui/cli` JS entrypoint (bin `./dist/lingui.js`) in a subprocess with `LINGUI_CONFIG` env var pointing to the config file. The subprocess approach:
+
 - Uses the built `dist/` code (no transpilation cost in measurement)
 - Workers resolve modules correctly (no tsx needed)
 - Measures real-world performance including Node.js startup and config loading
@@ -45,26 +47,29 @@ If a command exits with non-zero code, `runLingui` throws with the command's std
 ### Config building
 
 `writeConfigs()` in `utils/config-builder.ts` writes two config files to the fixtures directory:
+
 - `lingui.config.babel.mjs` — default Babel extractor
-- `lingui.config.swc.mjs` — uses `lingui-swc` extractor
+- `lingui.config.swc.mjs` — uses the `@lingui/native-tools` extractor (`createSwcExtractor()`)
 
 Scenarios pass the appropriate config path via `LINGUI_CONFIG` env var.
 
 ### Macro transform scenario
 
-The `macro-transform` scenario is the exception — it calls `@babel/core.transformAsync` and `@swc/core.transform` directly (no subprocess) since it measures pure transformation speed without CLI overhead. It uses `@lingui/babel-plugin-lingui-macro` and `@lingui/swc-plugin` as plugins.
+The `macro-transform` scenario is the exception — it calls `@babel/core.transformAsync` and `@swc/core.transform` directly (no subprocess) since it measures pure transformation speed without CLI overhead. It uses `@lingui/babel-plugin-lingui-macro` and `@lingui/swc-plugin` as plugins, plus the standalone `transform()` from `@lingui/native-tools`.
 
 ### Fixture generation
 
 Messages are deterministic — same preset always produces identical fixtures. The `message-pool.ts` provides ~150 base templates combined with file-specific qualifiers to achieve **10-18% message reuse** (realistic for a large project).
 
 **Message variety mechanisms:**
+
 - ~150 curated templates (60 simple, 70 interpolated with ~30% using complex expressions like `user.name`, `formatDate()`, 20 plurals)
 - ~30% of messages are longer (20-50 words) simulating tooltips, descriptions, error messages
 - File-scoped qualifiers ("for this project", "in your workspace" etc.) appended to ~85% of simple/interpolated messages, varying by file index to reduce collisions
 - `getMessageAtIndex(fileIndex, msgIndex, isPlural)` uses coprime strides to distribute selection across the pool
 
 **Macro patterns exercised:**
+
 - `<Trans>` and `<Plural>` JSX macros
 - `useLingui()` hook — ~30% of messages in JSX files use `const { t } = useLingui()` + `` t`...` ``
 - `t` tagged template and `plural()` in JS files
@@ -79,18 +84,22 @@ Catalog overlap: 90% of unique messages have pre-existing translations. The rema
 ## Adding a New Scenario
 
 1. Create `src/scenarios/my-scenario.bench.ts`:
+
 ```ts
 import { Bench } from "tinybench"
 import type { PresetConfig } from "../presets.js"
-import { buildConfig } from "../utils/config-builder.js"
-import { silenceConsole } from "../utils/silence.js"
+import { writeConfigs } from "../utils/config-builder.js"
+import { runLingui } from "../utils/run-cli.js"
 
-export async function runMyBenchmark(fixturesDir: string, preset: PresetConfig) {
-  const bench = new Bench({ warmup: 1, iterations: 3 })
+export async function runMyBenchmark(
+  fixturesDir: string,
+  preset: PresetConfig,
+) {
+  const configs = writeConfigs(fixturesDir, preset)
+  const bench = new Bench({ warmupIterations: 1, iterations: 3, throws: true })
 
-  bench.add("variant A", async () => {
-    const restore = silenceConsole()
-    try { /* ... */ } finally { restore() }
+  bench.add("variant A", () => {
+    runLingui(["my-command", "--some-flag"], configs.babel)
   })
 
   await bench.run()
@@ -99,25 +108,29 @@ export async function runMyBenchmark(fixturesDir: string, preset: PresetConfig) 
 ```
 
 2. Wire it in `run-benchmarks.ts`:
+
 ```ts
 import { runMyBenchmark } from "./scenarios/my-scenario.bench.js"
 
 // In main(), add:
 if (!selectedScenario || selectedScenario === "my-scenario") {
   console.log("\nRunning: My Scenario...")
-  const bench = await runMyBenchmark(fixturesDir, preset)
-  printScenario("My Scenario", bench, "ops/s", someDivisor)
-  scenarios.push({ name: "my-scenario", bench, throughputDivisor: someDivisor, throughputUnit: "ops/s" })
+  const bench = await runMyBenchmark(FIXTURES_DIR, preset)
+  const opts = { throughputUnit: "ops/s", throughputDivisor: someDivisor }
+  printScenario("My Scenario", bench, opts)
+  scenarios.push({ name: "my-scenario", bench, ...opts })
 }
 ```
 
 ## Adding More Message Variety
 
 The message pool (`generators/message-pool.ts`) has ~150 base templates. Uniqueness is achieved by:
+
 - **Qualifiers**: 20 suffix phrases ("for this project", "in your workspace") appended to base messages, combined with a variant number derived from `fileIndex / QUALIFIERS.length`
 - **Context directives**: 20% of files get unique `lingui-set context="..."` which produces unique message IDs even for shared text
 
 To increase variety further:
+
 - Add entries to `SIMPLE_MESSAGES`, `INTERPOLATED_MESSAGES`, or `PLURAL_MESSAGES` arrays
 - Add more entries to the `QUALIFIERS` array (more suffixes = more unique combinations)
 - Adjust the `shouldQualify`/`shouldExtend` modulo thresholds to control reuse rate
@@ -126,7 +139,8 @@ To increase variety further:
 
 - **Build first**: workspace packages must be built (`yarn release:build`) because the `lingui` binary runs from `dist/` and config files import from built packages.
 - **Error handling**: `runLingui()` throws on non-zero exit with the command's stderr. Tinybench uses `throws: true` so any CLI failure immediately stops the benchmark rather than silently recording a failed task.
-- **SWC plugin WASM overhead**: the `@lingui/swc-plugin` has per-call WASM init cost when called via `@swc/core.transform()`. The `lingui-swc` extractor batches internally and amortizes this. So the `macro-transform` scenario (per-file transform) shows different perf characteristics than the `extract` scenario (batched extractor).
+- **SWC plugin WASM overhead**: the `@lingui/swc-plugin` has per-call WASM init cost when called via `@swc/core.transform()`. The `@lingui/native-tools` extractor batches internally and amortizes this. So the `macro-transform` scenario (per-file transform) shows different perf characteristics than the `extract` scenario (batched extractor).
+- **Native extractor and workers**: `@lingui/native-tools` is single-threaded by design and its README recommends `--workers 1`. The bench still runs it with 1 and 2 workers so the overhead of splitting work across CLI workers is visible.
 - **Unique message count**: with qualifiers and context, the catalog contains ~85-90% of total source messages as unique entries (e.g., medium preset: ~8200 unique entries from 10000 source messages). This is realistic for a large project with moderate message sharing.
 - **Fixture generation shells out**: `generatePoCatalogs()` runs `lingui extract-template` via `execFileSync` to produce a `.pot` with real origins, then populates translations programmatically.
 - **PO origins**: the formatter uses `origins: true` — catalogs contain `#: src/components/Component0000.tsx:33` references. This adds serialization/parsing cost that a real project would have.

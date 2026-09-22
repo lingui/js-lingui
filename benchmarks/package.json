@@ -17,9 +17,9 @@
     "@lingui/conf": "workspace:*",
     "@lingui/format-po": "workspace:*",
     "@lingui/message-utils": "workspace:*",
+    "@lingui/native-tools": "^0.1.0",
     "@lingui/swc-plugin": "^6.3.0",
     "@swc/core": "^1.11.0",
-    "lingui-swc": "^0.5.2",
     "tinybench": "^2.6.0"
   },
   "devDependencies": {

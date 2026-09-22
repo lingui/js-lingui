@@ -18,7 +18,7 @@ yarn workspace @lingui/benchmarks bench
 ## Presets
 
 | Preset | Files | Messages | Locales |
-|--------|-------|----------|---------|
+| ------ | ----- | -------- | ------- |
 | small  | 100   | 1,000    | 3       |
 | medium | 1,000 | 10,000   | 5       |
 | large  | 5,000 | 50,000   | 5       |
@@ -41,7 +41,7 @@ yarn workspace @lingui/benchmarks bench --scenario extract
 
 Runs `lingui extract` command: scan source files → transform macros → extract messages → merge with existing PO catalogs → serialize and write.
 
-Tested with: Babel extractor vs SWC extractor (`lingui-swc`), 1 worker vs 2 workers.
+Tested with: Babel extractor vs SWC extractor (`@lingui/native-tools`), 1 worker vs 2 workers.
 
 ### `extract-template` — Extraction without merge
 
@@ -54,8 +54,10 @@ Runs `lingui compile`: read PO catalogs → parse ICU messages → generate comp
 ### `macro-transform` — Pure macro transformation
 
 Isolated benchmark of macro transformation speed (no file I/O, no catalog logic). Compares:
+
 - **Babel**: `@lingui/babel-plugin-lingui-macro` via `@babel/core.transformAsync`
 - **SWC**: `@lingui/swc-plugin` via `@swc/core.transform`
+- **Native**: `@lingui/native-tools` `transform()` — standalone Rust macro transformer, no SWC plugin runtime
 
 ## Output
 
@@ -65,6 +67,7 @@ Isolated benchmark of macro transformation speed (no file I/O, no catalog logic)
 ## How Fixtures Work
 
 The benchmark generates a simulated project:
+
 - 50% `.tsx` files with `<Trans>`, `<Plural>`, and `useLingui()` hook (JSX macros)
 - 50% `.ts` files with `` t` ` `` and `plural()` (JS macros)
 - ~10% of messages are plurals
@@ -78,5 +81,5 @@ The benchmark generates a simulated project:
 
 - `tinybench` — benchmarking framework
 - `@swc/core` + `@lingui/swc-plugin` — SWC macro transformation
-- `lingui-swc` — Rust-based extractor for the CLI
+- `@lingui/native-tools` — Rust-based extractor for the CLI and standalone macro transformer
 - Workspace packages: `@lingui/cli`, `@lingui/conf`, `@lingui/format-po`, etc.

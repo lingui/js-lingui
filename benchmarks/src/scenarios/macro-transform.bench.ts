@@ -33,6 +33,7 @@ export async function runMacroTransformBenchmark(
 ) {
   const { transformAsync } = await import("@babel/core")
   const swc = await import("@swc/core")
+  const native = await import("@lingui/native-tools")
 
   const sourceFiles = loadSourceFiles(fixturesDir)
   const linguiConfig = makeConfig(
@@ -91,6 +92,10 @@ export async function runMacroTransformBenchmark(
     })
   }
 
+  async function compileNative(code: string, filename: string) {
+    await native.transform(code, filename)
+  }
+
   const bench = new Bench({ warmupIterations: 1, iterations: 3, throws: true })
 
   bench.add("Babel", async () => {
@@ -120,6 +125,12 @@ export async function runMacroTransformBenchmark(
       sourceFiles.map(({ filename, code }) =>
         compileSwc(code, filename, false),
       ),
+    )
+  })
+
+  bench.add("Native transformer", async () => {
+    await Promise.all(
+      sourceFiles.map(({ filename, code }) => compileNative(code, filename)),
     )
   })
 

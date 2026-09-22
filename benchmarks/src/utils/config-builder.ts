@@ -25,7 +25,7 @@ export default {
 
   const swcConfig = `
 import { formatter } from "@lingui/format-po"
-import { createSwcExtractor } from "lingui-swc"
+import { createSwcExtractor } from "@lingui/native-tools"
 
 export default {
   locales: ${JSON.stringify(preset.locales)},
