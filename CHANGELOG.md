@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.8.0](https://github.com/lingui/js-lingui/compare/v6.7.0...v6.8.0) (2026-09-23)
+
+### Bug Fixes
+
+* **babel-plugin-lingui-macro:** restore `@babel/types` as a runtime dependency ([#2634](https://github.com/lingui/js-lingui/issues/2634)) ([db5f57c](https://github.com/lingui/js-lingui/commit/db5f57c8aa1f2895359ad74aee91791e74436d17))
+* **cli:** add translation as the last key of a new message ([#2677](https://github.com/lingui/js-lingui/issues/2677)) ([202a5f0](https://github.com/lingui/js-lingui/commit/202a5f053b23415810f7423d37b05f5e56b7bc21))
+* **cli:** export all types that are part of the public API ([#2668](https://github.com/lingui/js-lingui/issues/2668)) ([279de2d](https://github.com/lingui/js-lingui/commit/279de2dce6bebe3b02b0c8f117c309b272cb3eac))
+* **react:** substitute macro-accepted placeholder names in formatElements ([#2680](https://github.com/lingui/js-lingui/issues/2680)) ([74089ab](https://github.com/lingui/js-lingui/commit/74089ab0c305b1867fbd57c77377c7b093c5178c))
+
+### Features
+
+* **cli:** add lingui check sync | missing commands ([#2515](https://github.com/lingui/js-lingui/issues/2515)) ([4cc6cdd](https://github.com/lingui/js-lingui/commit/4cc6cddcab739bf172924618aa7c3bf4cfffce6f))
+
+### Reverts
+
+* "feat(cli): add support for `BatchExtractor` ([#2562](https://github.com/lingui/js-lingui/issues/2562))" ([#2673](https://github.com/lingui/js-lingui/issues/2673)) ([fd416f9](https://github.com/lingui/js-lingui/commit/fd416f9ef6b9cb49652873277f0ace111649bbfb))
+
+
 # [6.7.0](https://github.com/lingui/js-lingui/compare/v6.6.0...v6.7.0) (2026-09-11)
 
 ### Bug Fixes

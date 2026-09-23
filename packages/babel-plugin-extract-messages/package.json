@@ -1,6 +1,6 @@
 {
   "name": "@lingui/babel-plugin-extract-messages",
-  "version": "6.7.0",
+  "version": "6.8.0",
   "description": "Babel plugin to extract translatable messages from source code into Lingui catalogs",
   "type": "module",
   "author": {
