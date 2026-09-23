@@ -1,6 +1,6 @@
 {
   "name": "@lingui/detect-locale",
-  "version": "6.7.0",
+  "version": "6.8.0",
   "type": "module",
   "sideEffects": false,
   "description": "Detects the user's locale from the URL, a cookie, storage, the browser settings or the HTML lang attribute",

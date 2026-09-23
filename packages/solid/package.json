@@ -1,6 +1,6 @@
 {
   "name": "@lingui/solid",
-  "version": "6.7.0",
+  "version": "6.8.0",
   "sideEffects": false,
   "description": "SolidJS bindings for Lingui i18n: I18nProvider, Trans and useLingui, with compile-time macros",
   "type": "module",

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.8.0](https://github.com/lingui/js-lingui/compare/v6.7.0...v6.8.0) (2026-09-23)
+
+### Features
+
+* **cli:** add lingui check sync | missing commands ([#2515](https://github.com/lingui/js-lingui/issues/2515)) ([4cc6cdd](https://github.com/lingui/js-lingui/commit/4cc6cddcab739bf172924618aa7c3bf4cfffce6f))
+
 # [6.7.0](https://github.com/lingui/js-lingui/compare/v6.6.0...v6.7.0) (2026-09-11)
 
 ### Features

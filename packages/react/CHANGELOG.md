@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.8.0](https://github.com/lingui/js-lingui/compare/v6.7.0...v6.8.0) (2026-09-23)
+
+### Bug Fixes
+
+* **react:** substitute macro-accepted placeholder names in formatElements ([#2680](https://github.com/lingui/js-lingui/issues/2680)) ([74089ab](https://github.com/lingui/js-lingui/commit/74089ab0c305b1867fbd57c77377c7b093c5178c))
+
 # [6.7.0](https://github.com/lingui/js-lingui/compare/v6.6.0...v6.7.0) (2026-09-11)
 
 **Note:** Version bump only for package @lingui/react
