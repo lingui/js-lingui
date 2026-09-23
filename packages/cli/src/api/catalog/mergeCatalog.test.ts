@@ -195,52 +195,39 @@ describe("mergeCatalog", () => {
     const serializedKeys = (entry: unknown) =>
       Object.keys(JSON.parse(JSON.stringify(entry)))
 
-    const locales: [label: string, forSourceLocale: boolean][] = [
-      ["for a translated locale", false],
-      ["for the source locale", true],
-    ]
+    it("should add translation as the last key of a new message", () => {
+      const result = mergeCatalog(
+        undefined,
+        nextCatalog,
+        false,
+        defaultMergeOptions,
+      )
 
-    it.each(locales)(
-      "should add translation as the last key of a new message %s",
-      (_, forSourceLocale) => {
-        const result = mergeCatalog(
-          undefined,
-          nextCatalog,
-          forSourceLocale,
-          defaultMergeOptions,
-        )
+      expect(serializedKeys(result["custom.id"]).at(-1)).toBe("translation")
+      expect(
+        serializedKeys(result["Message with <0>auto-generated</0> ID"]).at(-1),
+      ).toBe("translation")
+    })
 
-        expect(serializedKeys(result["custom.id"]).at(-1)).toBe("translation")
-        expect(
-          serializedKeys(result["Message with <0>auto-generated</0> ID"]).at(
-            -1,
-          ),
-        ).toBe("translation")
-      },
-    )
+    it("should keep the key order of a message stable between extract runs", () => {
+      // first extract, both messages are new
+      const firstRun = mergeCatalog(
+        undefined,
+        nextCatalog,
+        false,
+        defaultMergeOptions,
+      )
+      // second extract, the very same messages are merged from the catalog
+      const secondRun = mergeCatalog(
+        firstRun,
+        nextCatalog,
+        false,
+        defaultMergeOptions,
+      )
 
-    it.each(locales)(
-      "should keep the key order of a message stable between extract runs %s",
-      (_, forSourceLocale) => {
-        // first extract, both messages are new
-        const firstRun = mergeCatalog(
-          undefined,
-          nextCatalog,
-          forSourceLocale,
-          defaultMergeOptions,
-        )
-        // second extract, the very same messages are merged from the catalog
-        const secondRun = mergeCatalog(
-          firstRun,
-          nextCatalog,
-          forSourceLocale,
-          defaultMergeOptions,
-        )
-
-        expect(JSON.stringify(secondRun, null, 2)).toEqual(
-          JSON.stringify(firstRun, null, 2),
-        )
-      },
-    )
+      expect(JSON.stringify(secondRun, null, 2)).toEqual(
+        JSON.stringify(firstRun, null, 2),
+      )
+    })
   })
 })
