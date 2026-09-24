@@ -1533,7 +1533,7 @@ __metadata:
     "@lingui/core": "workspace:*"
     "@lingui/format-po": "workspace:*"
     "@lingui/message-utils": "workspace:*"
-    "@lingui/native-tools": "npm:^0.1.1"
+    "@lingui/native-tools": "npm:^0.1.3"
     "@lingui/test-utils": "workspace:*"
     "@rolldown/plugin-babel": "npm:^0.2.3"
     "@types/babel__generator": "npm:^7.27.0"
@@ -1740,82 +1740,82 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lingui/native-tools-android-arm64@npm:0.1.1":
-  version: 0.1.1
-  resolution: "@lingui/native-tools-android-arm64@npm:0.1.1"
+"@lingui/native-tools-android-arm64@npm:0.1.3":
+  version: 0.1.3
+  resolution: "@lingui/native-tools-android-arm64@npm:0.1.3"
   conditions: os=android & cpu=arm64
   languageName: node
   linkType: hard
 
-"@lingui/native-tools-darwin-arm64@npm:0.1.1":
-  version: 0.1.1
-  resolution: "@lingui/native-tools-darwin-arm64@npm:0.1.1"
+"@lingui/native-tools-darwin-arm64@npm:0.1.3":
+  version: 0.1.3
+  resolution: "@lingui/native-tools-darwin-arm64@npm:0.1.3"
   conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
 
-"@lingui/native-tools-darwin-x64@npm:0.1.1":
-  version: 0.1.1
-  resolution: "@lingui/native-tools-darwin-x64@npm:0.1.1"
+"@lingui/native-tools-darwin-x64@npm:0.1.3":
+  version: 0.1.3
+  resolution: "@lingui/native-tools-darwin-x64@npm:0.1.3"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
 
-"@lingui/native-tools-linux-arm64-gnu@npm:0.1.1":
-  version: 0.1.1
-  resolution: "@lingui/native-tools-linux-arm64-gnu@npm:0.1.1"
+"@lingui/native-tools-linux-arm64-gnu@npm:0.1.3":
+  version: 0.1.3
+  resolution: "@lingui/native-tools-linux-arm64-gnu@npm:0.1.3"
   conditions: os=linux & cpu=arm64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@lingui/native-tools-linux-arm64-musl@npm:0.1.1":
-  version: 0.1.1
-  resolution: "@lingui/native-tools-linux-arm64-musl@npm:0.1.1"
+"@lingui/native-tools-linux-arm64-musl@npm:0.1.3":
+  version: 0.1.3
+  resolution: "@lingui/native-tools-linux-arm64-musl@npm:0.1.3"
   conditions: os=linux & cpu=arm64 & libc=musl
   languageName: node
   linkType: hard
 
-"@lingui/native-tools-linux-x64-gnu@npm:0.1.1":
-  version: 0.1.1
-  resolution: "@lingui/native-tools-linux-x64-gnu@npm:0.1.1"
+"@lingui/native-tools-linux-x64-gnu@npm:0.1.3":
+  version: 0.1.3
+  resolution: "@lingui/native-tools-linux-x64-gnu@npm:0.1.3"
   conditions: os=linux & cpu=x64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@lingui/native-tools-linux-x64-musl@npm:0.1.1":
-  version: 0.1.1
-  resolution: "@lingui/native-tools-linux-x64-musl@npm:0.1.1"
+"@lingui/native-tools-linux-x64-musl@npm:0.1.3":
+  version: 0.1.3
+  resolution: "@lingui/native-tools-linux-x64-musl@npm:0.1.3"
   conditions: os=linux & cpu=x64 & libc=musl
   languageName: node
   linkType: hard
 
-"@lingui/native-tools-win32-arm64-msvc@npm:0.1.1":
-  version: 0.1.1
-  resolution: "@lingui/native-tools-win32-arm64-msvc@npm:0.1.1"
+"@lingui/native-tools-win32-arm64-msvc@npm:0.1.3":
+  version: 0.1.3
+  resolution: "@lingui/native-tools-win32-arm64-msvc@npm:0.1.3"
   conditions: os=win32 & cpu=arm64
   languageName: node
   linkType: hard
 
-"@lingui/native-tools-win32-x64-msvc@npm:0.1.1":
-  version: 0.1.1
-  resolution: "@lingui/native-tools-win32-x64-msvc@npm:0.1.1"
+"@lingui/native-tools-win32-x64-msvc@npm:0.1.3":
+  version: 0.1.3
+  resolution: "@lingui/native-tools-win32-x64-msvc@npm:0.1.3"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
 
-"@lingui/native-tools@npm:^0.1.1":
-  version: 0.1.1
-  resolution: "@lingui/native-tools@npm:0.1.1"
+"@lingui/native-tools@npm:^0.1.3":
+  version: 0.1.3
+  resolution: "@lingui/native-tools@npm:0.1.3"
   dependencies:
-    "@lingui/native-tools-android-arm64": "npm:0.1.1"
-    "@lingui/native-tools-darwin-arm64": "npm:0.1.1"
-    "@lingui/native-tools-darwin-x64": "npm:0.1.1"
-    "@lingui/native-tools-linux-arm64-gnu": "npm:0.1.1"
-    "@lingui/native-tools-linux-arm64-musl": "npm:0.1.1"
-    "@lingui/native-tools-linux-x64-gnu": "npm:0.1.1"
-    "@lingui/native-tools-linux-x64-musl": "npm:0.1.1"
-    "@lingui/native-tools-win32-arm64-msvc": "npm:0.1.1"
-    "@lingui/native-tools-win32-x64-msvc": "npm:0.1.1"
+    "@lingui/native-tools-android-arm64": "npm:0.1.3"
+    "@lingui/native-tools-darwin-arm64": "npm:0.1.3"
+    "@lingui/native-tools-darwin-x64": "npm:0.1.3"
+    "@lingui/native-tools-linux-arm64-gnu": "npm:0.1.3"
+    "@lingui/native-tools-linux-arm64-musl": "npm:0.1.3"
+    "@lingui/native-tools-linux-x64-gnu": "npm:0.1.3"
+    "@lingui/native-tools-linux-x64-musl": "npm:0.1.3"
+    "@lingui/native-tools-win32-arm64-msvc": "npm:0.1.3"
+    "@lingui/native-tools-win32-x64-msvc": "npm:0.1.3"
     "@swc/types": "npm:^0.1.25"
   peerDependencies:
     "@lingui/conf": ^6.0.1
@@ -1838,7 +1838,7 @@ __metadata:
       optional: true
     "@lingui/native-tools-win32-x64-msvc":
       optional: true
-  checksum: 10/f822b8b90e03b18fc28d82d543f3f9980fdab4ddce6073af6a0a23670cf741e75050d75cc5988090c9c9568d8ae24d6406d7a29bc12578980bd584fe57a26c34
+  checksum: 10/517165fa44a99922b659005dd8fe36684f870008d0607d66ed89e414adddf8c5d7b2d79620af85c191ba8566daabef3edad47ad9ff8f49ea898b2502729205e0
   languageName: node
   linkType: hard
 

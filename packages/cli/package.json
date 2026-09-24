@@ -60,7 +60,7 @@
     "@lingui/core": "workspace:*",
     "@lingui/format-po": "workspace:*",
     "@lingui/message-utils": "workspace:*",
-    "@lingui/native-tools": "^0.1.1",
+    "@lingui/native-tools": "^0.1.3",
     "chokidar": "5.0.0",
     "cli-table3": "^0.6.5",
     "commander": "^14.0.2",

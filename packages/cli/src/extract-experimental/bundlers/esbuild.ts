@@ -11,7 +11,10 @@ import fs from "fs"
 import { Plugin } from "esbuild"
 import { LinguiConfigNormalized } from "@lingui/conf"
 import { buildContentFilterRe } from "../buildContentFilter.js"
-import { transform as transformMacro } from "@lingui/native-tools"
+import {
+  transform as transformMacro,
+  mapMacroOptions,
+} from "@lingui/native-tools"
 
 export type EsbuildBundlerOptions = {
   /**
@@ -186,8 +189,7 @@ const pluginLinguiMacro = (options: {
 
         const result = await transformMacro(contents, path.basename(filename), {
           macro: {
-            // todo: use mapMacroOptions from @lingui/native-tools https://github.com/lingui/swc-plugin/pull/266
-            // ...mapMacroOptions(linguiConfig)
+            ...mapMacroOptions(options.linguiConfig),
             descriptorFields: "all",
           },
           sourceMaps: "inline",

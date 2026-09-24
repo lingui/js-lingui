@@ -8,7 +8,10 @@ import path from "path"
 import { buildIncludeDepsFilter } from "../buildIncludeDepsFilter.js"
 import { DEFAULT_EXCLUDE_EXTENSIONS } from "../constants.js"
 import { buildContentFilterRe } from "../buildContentFilter.js"
-import { transform as transformMacro } from "@lingui/native-tools"
+import {
+  mapMacroOptions,
+  transform as transformMacro,
+} from "@lingui/native-tools"
 
 export type RolldownBundlerOptions = {
   /**
@@ -76,8 +79,7 @@ export function createRolldownBundler(
           handler: async (code, filename, meta) => {
             const result = await transformMacro(code, path.basename(filename), {
               macro: {
-                // todo: use mapMacroOptions from @lingui/native-tools https://github.com/lingui/swc-plugin/pull/266
-                // ...mapMacroOptions(linguiConfig)
+                ...mapMacroOptions(linguiConfig),
                 descriptorFields: "all",
                 useJsdocI18nComment: true,
               },
