@@ -7,15 +7,11 @@ import type {
 import path from "path"
 import { buildIncludeDepsFilter } from "../buildIncludeDepsFilter.js"
 import { DEFAULT_EXCLUDE_EXTENSIONS } from "../constants.js"
-import { transformAsync } from "@babel/core"
 import fs from "fs"
 import { Plugin } from "esbuild"
-import { babelRe, getBabelParserOptions } from "../../api/extractors/babel.js"
-import linguiMacroPlugin, {
-  type LinguiPluginOpts,
-} from "@lingui/babel-plugin-lingui-macro"
 import { LinguiConfigNormalized } from "@lingui/conf"
 import { buildContentFilterRe } from "../buildContentFilter.js"
+import { transform as transformMacro } from "@lingui/native-tools"
 
 export type EsbuildBundlerOptions = {
   /**
@@ -174,41 +170,31 @@ const pluginLinguiMacro = (options: {
 }): Plugin => ({
   name: "linguiMacro",
   setup(build) {
-    build.onLoad({ filter: babelRe, namespace: "" }, async (args) => {
-      const filename = path.relative(process.cwd(), args.path)
+    build.onLoad(
+      { filter: /\.(?:[jt]sx?|[cm][jt]s)(?:$|\?)/, namespace: "" },
+      async (args) => {
+        const filename = path.relative(process.cwd(), args.path)
 
-      const contents = await fs.promises.readFile(args.path, "utf8")
+        const contents = await fs.promises.readFile(args.path, "utf8")
 
-      const hasMacroRe = buildContentFilterRe(options.linguiConfig)
+        const hasMacroRe = buildContentFilterRe(options.linguiConfig)
 
-      if (!hasMacroRe.test(contents)) {
-        // let esbuild process file as usual
-        return undefined
-      }
+        if (!hasMacroRe.test(contents)) {
+          // let esbuild process file as usual
+          return undefined
+        }
 
-      const result = await transformAsync(contents, {
-        babelrc: false,
-        configFile: false,
+        const result = await transformMacro(contents, filename, {
+          macro: {
+            // todo: use mapMacroOptions from @lingui/native-tools https://github.com/lingui/swc-plugin/pull/266
+            // ...mapMacroOptions(linguiConfig)
+            descriptorFields: "all",
+          },
+          sourceMaps: "inline",
+        })
 
-        filename,
-
-        sourceMaps: "inline",
-        parserOpts: {
-          plugins: getBabelParserOptions(filename, {}),
-        },
-
-        plugins: [
-          [
-            linguiMacroPlugin,
-            {
-              descriptorFields: "all",
-              linguiConfig: options.linguiConfig,
-            } satisfies LinguiPluginOpts,
-          ],
-        ],
-      })
-
-      return { contents: result!.code!, loader: "tsx" }
-    })
+        return { contents: result.code, loader: "tsx" }
+      },
+    )
   },
 })
