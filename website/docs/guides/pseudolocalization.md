@@ -21,6 +21,18 @@ import { defineConfig } from "@lingui/cli";
 export default defineConfig({
   locales: ["en", "pseudo-LOCALE"],
   pseudoLocale: { locale: "pseudo-LOCALE" },
+  fallbackLocales: {
+    "pseudo-LOCALE": "en",
+  },
+});
+```
+
+To generate several pseudolocales at once, for example one left-to-right and one right-to-left, pass an array:
+
+```ts title="lingui.config.{ts,js}"
+import { defineConfig } from "@lingui/cli";
+
+export default defineConfig({
   locales: ["en", "pseudo-LOCALE", "pseudo-RTL"],
   pseudoLocale: [{ locale: "pseudo-LOCALE" }, { locale: "pseudo-RTL", rightToLeft: true }],
   fallbackLocales: {
