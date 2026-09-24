@@ -67,6 +67,11 @@ const sidebar = [
       },
       {
         type: "doc",
+        label: "Translator-friendly Messages",
+        id: "guides/translator-friendly-messages",
+      },
+      {
+        type: "doc",
         label: "Lazy Translations",
         id: "guides/lazy-translations",
       },

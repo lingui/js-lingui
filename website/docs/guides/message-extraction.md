@@ -88,7 +88,7 @@ const msg2 = t`Cancel`;
 
 Both messages will be extracted with `context="settings"` and `comment="Settings page"`. The directive values persist for all subsequent macros until overridden by another directive or cleared with `lingui-reset`.
 
-See [`lingui-set` Comment Directive](/ref/macro#lingui-directive) in the Macros reference for full details and examples.
+See [`lingui-set` Comment Directive](/ref/macro#lingui-directive) in the Macros reference for full details and examples, and [Translator-friendly Messages](/guides/translator-friendly-messages#set-context-once-per-file) for when to use directives.
 
 ### Explicitly Marking Messages
 
