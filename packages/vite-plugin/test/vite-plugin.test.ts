@@ -2,6 +2,7 @@ import { describe } from "vitest"
 import { lingui, LinguiPluginOpts } from "../src"
 import { runVite as _runVite } from "./run-vite"
 import macrosPlugin from "vite-plugin-babel-macros"
+import path from "path"
 
 function getErrorMessage(error: unknown) {
   return error instanceof Error ? error.message : String(error)
@@ -35,6 +36,11 @@ describe("vite-plugin", () => {
   })
   it("should not report error when macro correctly used", async () => {
     const { mod } = await runVite(`macro-usage`, {}, { useMacroPlugin: true })
+    expect(await mod.load()).toMatchSnapshot()
+  })
+
+  it("should correctly process with native transformer", async () => {
+    const { mod } = await runVite(`macro-usage`, { macroTransform: true })
     expect(await mod.load()).toMatchSnapshot()
   })
 
@@ -137,8 +143,10 @@ async function runVite(
     useVitePlugin = true,
   }: { useMacroPlugin?: boolean; useVitePlugin?: boolean } = {},
 ) {
+  const cwd = path.join(import.meta.dirname, fixturesPath)
+
   return _runVite(fixturesPath, [
-    useVitePlugin ? lingui(pluginConfig) : null,
+    useVitePlugin ? lingui({ ...pluginConfig, cwd }) : null,
     useMacroPlugin ? macrosPlugin() : null,
   ])
 }
