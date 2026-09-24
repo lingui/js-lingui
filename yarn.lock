@@ -34,7 +34,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/core@npm:7.29.7, @babel/core@npm:^7.17.7, @babel/core@npm:^7.21.0, @babel/core@npm:^7.23.3, @babel/core@npm:^7.24.4, @babel/core@npm:^7.29.0":
+"@babel/core@npm:7.29.7, @babel/core@npm:^7.17.7, @babel/core@npm:^7.20.12, @babel/core@npm:^7.21.0, @babel/core@npm:^7.23.3, @babel/core@npm:^7.24.4, @babel/core@npm:^7.29.0":
   version: 7.29.7
   resolution: "@babel/core@npm:7.29.7"
   dependencies:
@@ -1519,6 +1519,26 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@lingui/benchmarks@workspace:benchmarks":
+  version: 0.0.0-use.local
+  resolution: "@lingui/benchmarks@workspace:benchmarks"
+  dependencies:
+    "@babel/core": "npm:^7.20.12"
+    "@lingui/babel-plugin-extract-messages": "workspace:*"
+    "@lingui/babel-plugin-lingui-macro": "workspace:*"
+    "@lingui/cli": "workspace:*"
+    "@lingui/conf": "workspace:*"
+    "@lingui/format-po": "workspace:*"
+    "@lingui/message-utils": "workspace:*"
+    "@lingui/native-tools": "npm:^0.1.0"
+    "@lingui/swc-plugin": "npm:^6.3.0"
+    "@swc/core": "npm:^1.11.0"
+    tinybench: "npm:^2.6.0"
+    tsx: "npm:^4.21.0"
+    typescript: "catalog:"
+  languageName: unknown
+  linkType: soft
+
 "@lingui/cli@workspace:*, @lingui/cli@workspace:packages/cli":
   version: 0.0.0-use.local
   resolution: "@lingui/cli@workspace:packages/cli"
@@ -1568,7 +1588,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lingui/conf@workspace:*, @lingui/conf@workspace:packages/conf":
+"@lingui/conf@npm:5 || 6, @lingui/conf@workspace:*, @lingui/conf@workspace:packages/conf":
   version: 0.0.0-use.local
   resolution: "@lingui/conf@workspace:packages/conf"
   dependencies:
@@ -1739,6 +1759,108 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@lingui/native-tools-android-arm64@npm:0.1.0":
+  version: 0.1.0
+  resolution: "@lingui/native-tools-android-arm64@npm:0.1.0"
+  conditions: os=android & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"@lingui/native-tools-darwin-arm64@npm:0.1.0":
+  version: 0.1.0
+  resolution: "@lingui/native-tools-darwin-arm64@npm:0.1.0"
+  conditions: os=darwin & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"@lingui/native-tools-darwin-x64@npm:0.1.0":
+  version: 0.1.0
+  resolution: "@lingui/native-tools-darwin-x64@npm:0.1.0"
+  conditions: os=darwin & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@lingui/native-tools-linux-arm64-gnu@npm:0.1.0":
+  version: 0.1.0
+  resolution: "@lingui/native-tools-linux-arm64-gnu@npm:0.1.0"
+  conditions: os=linux & cpu=arm64 & libc=glibc
+  languageName: node
+  linkType: hard
+
+"@lingui/native-tools-linux-arm64-musl@npm:0.1.0":
+  version: 0.1.0
+  resolution: "@lingui/native-tools-linux-arm64-musl@npm:0.1.0"
+  conditions: os=linux & cpu=arm64 & libc=musl
+  languageName: node
+  linkType: hard
+
+"@lingui/native-tools-linux-x64-gnu@npm:0.1.0":
+  version: 0.1.0
+  resolution: "@lingui/native-tools-linux-x64-gnu@npm:0.1.0"
+  conditions: os=linux & cpu=x64 & libc=glibc
+  languageName: node
+  linkType: hard
+
+"@lingui/native-tools-linux-x64-musl@npm:0.1.0":
+  version: 0.1.0
+  resolution: "@lingui/native-tools-linux-x64-musl@npm:0.1.0"
+  conditions: os=linux & cpu=x64 & libc=musl
+  languageName: node
+  linkType: hard
+
+"@lingui/native-tools-win32-arm64-msvc@npm:0.1.0":
+  version: 0.1.0
+  resolution: "@lingui/native-tools-win32-arm64-msvc@npm:0.1.0"
+  conditions: os=win32 & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"@lingui/native-tools-win32-x64-msvc@npm:0.1.0":
+  version: 0.1.0
+  resolution: "@lingui/native-tools-win32-x64-msvc@npm:0.1.0"
+  conditions: os=win32 & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@lingui/native-tools@npm:^0.1.0":
+  version: 0.1.0
+  resolution: "@lingui/native-tools@npm:0.1.0"
+  dependencies:
+    "@lingui/native-tools-android-arm64": "npm:0.1.0"
+    "@lingui/native-tools-darwin-arm64": "npm:0.1.0"
+    "@lingui/native-tools-darwin-x64": "npm:0.1.0"
+    "@lingui/native-tools-linux-arm64-gnu": "npm:0.1.0"
+    "@lingui/native-tools-linux-arm64-musl": "npm:0.1.0"
+    "@lingui/native-tools-linux-x64-gnu": "npm:0.1.0"
+    "@lingui/native-tools-linux-x64-musl": "npm:0.1.0"
+    "@lingui/native-tools-win32-arm64-msvc": "npm:0.1.0"
+    "@lingui/native-tools-win32-x64-msvc": "npm:0.1.0"
+    "@swc/types": "npm:^0.1.25"
+  peerDependencies:
+    "@lingui/conf": ^6.0.1
+  dependenciesMeta:
+    "@lingui/native-tools-android-arm64":
+      optional: true
+    "@lingui/native-tools-darwin-arm64":
+      optional: true
+    "@lingui/native-tools-darwin-x64":
+      optional: true
+    "@lingui/native-tools-linux-arm64-gnu":
+      optional: true
+    "@lingui/native-tools-linux-arm64-musl":
+      optional: true
+    "@lingui/native-tools-linux-x64-gnu":
+      optional: true
+    "@lingui/native-tools-linux-x64-musl":
+      optional: true
+    "@lingui/native-tools-win32-arm64-msvc":
+      optional: true
+    "@lingui/native-tools-win32-x64-msvc":
+      optional: true
+  checksum: 10/0f70c40c49f3886e0340157fe6d8031429b796cd1044e57313aa4e2c429717eb39eee831b4bef5e82ac5e2f6500e6e5182c8263f1a80e5b8155346c04dcef8d9
+  languageName: node
+  linkType: hard
+
 "@lingui/react@workspace:^, @lingui/react@workspace:packages/react":
   version: 0.0.0-use.local
   resolution: "@lingui/react@workspace:packages/react"
@@ -1807,6 +1929,22 @@ __metadata:
       optional: true
   languageName: unknown
   linkType: soft
+
+"@lingui/swc-plugin@npm:^6.3.0":
+  version: 6.7.0
+  resolution: "@lingui/swc-plugin@npm:6.7.0"
+  dependencies:
+    "@lingui/conf": "npm:5 || 6"
+  peerDependencies:
+    "@lingui/core": 5 || 6
+  peerDependenciesMeta:
+    "@swc/core":
+      optional: true
+    next:
+      optional: true
+  checksum: 10/a01b6ffa293f1849f11238737dab05280b0031a5775f13431d9a3a709f0a0910fe12e2080f3f2a78115d021ade556ea4aaa15c04fb0d9e2fb9019006b34329dd
+  languageName: node
+  linkType: hard
 
 "@lingui/test-utils@workspace:*, @lingui/test-utils@workspace:packages/test-utils":
   version: 0.0.0-use.local
@@ -3303,6 +3441,158 @@ __metadata:
   version: 1.1.0
   resolution: "@standard-schema/spec@npm:1.1.0"
   checksum: 10/a209615c9e8b2ea535d7db0a5f6aa0f962fd4ab73ee86a46c100fb78116964af1f55a27c1794d4801e534a196794223daa25ff5135021e03c7828aa3d95e1763
+  languageName: node
+  linkType: hard
+
+"@swc/core-darwin-arm64@npm:1.16.2":
+  version: 1.16.2
+  resolution: "@swc/core-darwin-arm64@npm:1.16.2"
+  conditions: os=darwin & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"@swc/core-darwin-x64@npm:1.16.2":
+  version: 1.16.2
+  resolution: "@swc/core-darwin-x64@npm:1.16.2"
+  conditions: os=darwin & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@swc/core-linux-arm-gnueabihf@npm:1.16.2":
+  version: 1.16.2
+  resolution: "@swc/core-linux-arm-gnueabihf@npm:1.16.2"
+  conditions: os=linux & cpu=arm
+  languageName: node
+  linkType: hard
+
+"@swc/core-linux-arm64-gnu@npm:1.16.2":
+  version: 1.16.2
+  resolution: "@swc/core-linux-arm64-gnu@npm:1.16.2"
+  conditions: os=linux & cpu=arm64 & libc=glibc
+  languageName: node
+  linkType: hard
+
+"@swc/core-linux-arm64-musl@npm:1.16.2":
+  version: 1.16.2
+  resolution: "@swc/core-linux-arm64-musl@npm:1.16.2"
+  conditions: os=linux & cpu=arm64 & libc=musl
+  languageName: node
+  linkType: hard
+
+"@swc/core-linux-ppc64-gnu@npm:1.16.2":
+  version: 1.16.2
+  resolution: "@swc/core-linux-ppc64-gnu@npm:1.16.2"
+  conditions: os=linux & cpu=ppc64 & libc=glibc
+  languageName: node
+  linkType: hard
+
+"@swc/core-linux-s390x-gnu@npm:1.16.2":
+  version: 1.16.2
+  resolution: "@swc/core-linux-s390x-gnu@npm:1.16.2"
+  conditions: os=linux & cpu=s390x & libc=glibc
+  languageName: node
+  linkType: hard
+
+"@swc/core-linux-x64-gnu@npm:1.16.2":
+  version: 1.16.2
+  resolution: "@swc/core-linux-x64-gnu@npm:1.16.2"
+  conditions: os=linux & cpu=x64 & libc=glibc
+  languageName: node
+  linkType: hard
+
+"@swc/core-linux-x64-musl@npm:1.16.2":
+  version: 1.16.2
+  resolution: "@swc/core-linux-x64-musl@npm:1.16.2"
+  conditions: os=linux & cpu=x64 & libc=musl
+  languageName: node
+  linkType: hard
+
+"@swc/core-win32-arm64-msvc@npm:1.16.2":
+  version: 1.16.2
+  resolution: "@swc/core-win32-arm64-msvc@npm:1.16.2"
+  conditions: os=win32 & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"@swc/core-win32-ia32-msvc@npm:1.16.2":
+  version: 1.16.2
+  resolution: "@swc/core-win32-ia32-msvc@npm:1.16.2"
+  conditions: os=win32 & cpu=ia32
+  languageName: node
+  linkType: hard
+
+"@swc/core-win32-x64-msvc@npm:1.16.2":
+  version: 1.16.2
+  resolution: "@swc/core-win32-x64-msvc@npm:1.16.2"
+  conditions: os=win32 & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@swc/core@npm:^1.11.0":
+  version: 1.16.2
+  resolution: "@swc/core@npm:1.16.2"
+  dependencies:
+    "@swc/core-darwin-arm64": "npm:1.16.2"
+    "@swc/core-darwin-x64": "npm:1.16.2"
+    "@swc/core-linux-arm-gnueabihf": "npm:1.16.2"
+    "@swc/core-linux-arm64-gnu": "npm:1.16.2"
+    "@swc/core-linux-arm64-musl": "npm:1.16.2"
+    "@swc/core-linux-ppc64-gnu": "npm:1.16.2"
+    "@swc/core-linux-s390x-gnu": "npm:1.16.2"
+    "@swc/core-linux-x64-gnu": "npm:1.16.2"
+    "@swc/core-linux-x64-musl": "npm:1.16.2"
+    "@swc/core-win32-arm64-msvc": "npm:1.16.2"
+    "@swc/core-win32-ia32-msvc": "npm:1.16.2"
+    "@swc/core-win32-x64-msvc": "npm:1.16.2"
+    "@swc/counter": "npm:^0.1.3"
+    "@swc/types": "npm:^0.1.28"
+  peerDependencies:
+    "@swc/helpers": ">=0.5.17"
+  dependenciesMeta:
+    "@swc/core-darwin-arm64":
+      optional: true
+    "@swc/core-darwin-x64":
+      optional: true
+    "@swc/core-linux-arm-gnueabihf":
+      optional: true
+    "@swc/core-linux-arm64-gnu":
+      optional: true
+    "@swc/core-linux-arm64-musl":
+      optional: true
+    "@swc/core-linux-ppc64-gnu":
+      optional: true
+    "@swc/core-linux-s390x-gnu":
+      optional: true
+    "@swc/core-linux-x64-gnu":
+      optional: true
+    "@swc/core-linux-x64-musl":
+      optional: true
+    "@swc/core-win32-arm64-msvc":
+      optional: true
+    "@swc/core-win32-ia32-msvc":
+      optional: true
+    "@swc/core-win32-x64-msvc":
+      optional: true
+  peerDependenciesMeta:
+    "@swc/helpers":
+      optional: true
+  checksum: 10/c8a9b12e3fe071701d09735b1984a64332759f222f6697d199f9fcb338d588a9bc3dd255a7362dc6330836fbe06d13093225eb83f83395cc9399b23e08db99b0
+  languageName: node
+  linkType: hard
+
+"@swc/counter@npm:^0.1.3":
+  version: 0.1.3
+  resolution: "@swc/counter@npm:0.1.3"
+  checksum: 10/df8f9cfba9904d3d60f511664c70d23bb323b3a0803ec9890f60133954173047ba9bdeabce28cd70ba89ccd3fd6c71c7b0bd58be85f611e1ffbe5d5c18616598
+  languageName: node
+  linkType: hard
+
+"@swc/types@npm:^0.1.25, @swc/types@npm:^0.1.28":
+  version: 0.1.28
+  resolution: "@swc/types@npm:0.1.28"
+  dependencies:
+    "@swc/counter": "npm:^0.1.3"
+  checksum: 10/9cd2b13a640c36d28235a30567dc38330e01dc54ba0ca6ff4000fc56f0be27252b91c3df4989a9ef019b9df9eb722e73fb273913675f8b891428981fb9cc9a0f
   languageName: node
   linkType: hard
 
@@ -13509,7 +13799,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tinybench@npm:^2.9.0":
+"tinybench@npm:^2.6.0, tinybench@npm:^2.9.0":
   version: 2.9.0
   resolution: "tinybench@npm:2.9.0"
   checksum: 10/cfa1e1418e91289219501703c4693c70708c91ffb7f040fd318d24aef419fb5a43e0c0160df9471499191968b2451d8da7f8087b08c3133c251c40d24aced06c
