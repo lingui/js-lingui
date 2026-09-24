@@ -184,7 +184,7 @@ const pluginLinguiMacro = (options: {
           return undefined
         }
 
-        const result = await transformMacro(contents, filename, {
+        const result = await transformMacro(contents, path.basename(filename), {
           macro: {
             // todo: use mapMacroOptions from @lingui/native-tools https://github.com/lingui/swc-plugin/pull/266
             // ...mapMacroOptions(linguiConfig)

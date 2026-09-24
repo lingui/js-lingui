@@ -74,11 +74,12 @@ export function createRolldownBundler(
             code: hasMacroRe,
           },
           handler: async (code, filename, meta) => {
-            const result = await transformMacro(code, filename, {
+            const result = await transformMacro(code, path.basename(filename), {
               macro: {
                 // todo: use mapMacroOptions from @lingui/native-tools https://github.com/lingui/swc-plugin/pull/266
                 // ...mapMacroOptions(linguiConfig)
                 descriptorFields: "all",
+                useJsdocI18nComment: true,
               },
             })
 
