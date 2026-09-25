@@ -1929,6 +1929,7 @@ __metadata:
     "@lingui/conf": "workspace:*"
     "@lingui/core": "workspace:^"
     "@lingui/format-json": "workspace:^"
+    "@lingui/native-tools": "npm:^0.1.3"
     "@lingui/react": "workspace:^"
     "@rolldown/plugin-babel": "npm:^0.2.2"
     rolldown: "npm:1.2.6"

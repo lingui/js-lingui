@@ -1,5 +1,7 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
+exports[`vite-plugin > should correctly process with native transformer 1`] = `"Ola"`;
+
 exports[`vite-plugin > should not report error when macro correctly used 1`] = `"Ola"`;
 
 exports[`vite-plugin > should return compiled catalog 1`] = `

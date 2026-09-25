@@ -3,6 +3,7 @@ import type {
   RolldownBabelPreset,
 } from "./optionalTypes"
 import { getConfig } from "@lingui/conf"
+import { buildMacroFilterRe } from "./buildMacroFilterRe"
 
 /**
  * Convenient helper to define a rolldown preset with Lingui Transformer for `@rolldown/plugin-babel`
@@ -44,18 +45,17 @@ export const linguiTransformerBabelPreset = (
     skipValidation?: boolean
   } = {},
 ): RolldownBabelPreset => {
+  if (!process.env.LINGUI_SUPPRESS_BABEL_WARNING) {
+    console.warn(
+      `[@lingui/vite-plugin] Babel-based macro transformation is deprecated and will be removed in a future version.\n` +
+        `Use the native transformer instead: lingui({ macroTransform: true })\n` +
+        `If you are using \`@rolldown/plugin-babel\` only for Lingui, you can remove it entirely.\n` +
+        `Set LINGUI_SUPPRESS_BABEL_WARNING=1 to suppress this warning.`,
+    )
+  }
+
   const config = getConfig(linguiConfigConfigOpts)
-
-  const macroIds = new Set([
-    ...config.macro.corePackage,
-    ...config.macro.jsxPackage,
-  ])
-
-  // 1. Escape any special regex characters in the IDs (just in case)
-  // 2. Join them with the '|' (OR) operator
-  const macroPattern = Array.from(macroIds)
-    .map((id) => id.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"))
-    .join("|")
+  const hasMacroRe = buildMacroFilterRe(config)
 
   return {
     preset: {
@@ -63,7 +63,7 @@ export const linguiTransformerBabelPreset = (
     },
     rolldown: {
       filter: {
-        code: new RegExp(`from ['"](?:${macroPattern})['"]`),
+        code: hasMacroRe,
       },
     },
   }
