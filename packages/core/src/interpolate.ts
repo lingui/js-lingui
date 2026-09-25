@@ -9,7 +9,7 @@ import {
   type PluralOptions,
   time,
 } from "./formats"
-import { isString } from "./essentials"
+import { isString, isFunction } from "./essentials"
 import { CompiledIcuChoices } from "@lingui/message-utils/compileMessage"
 import { decodeEscapeSequences, ESCAPE_SEQUENCE_REGEX } from "./escapeSequences"
 
@@ -91,11 +91,21 @@ export function interpolate(
   locales?: Locales,
 ) {
   /**
-   * @param values  - Parameters for variable interpolation
-   * @param formats - Custom format styles
+   * @param values    - Parameters for variable interpolation
+   * @param formats   - Custom format styles
+   * @param variables - Default variables configured in the i18n instance
    */
-  return (values: Values = {}, formats?: Formats): string => {
+  return (
+    values: Values = {},
+    formats?: Formats,
+    variables?: Values,
+  ): string => {
     const formatters = getDefaultFormats(locale, locales, formats)
+
+    const getValue = (name: string): unknown => {
+      const value = values[name] ?? variables?.[name]
+      return isFunction(value) ? value() : value
+    }
 
     const formatMessage = (
       tokens: CompiledMessage | number | undefined,
@@ -138,10 +148,10 @@ export function interpolate(
         if (type) {
           // run formatter, such as plural, number, etc.
           const formatter = (formatters as any)[type]
-          value = formatter(values[name], interpolatedFormat)
+          value = formatter(getValue(name), interpolatedFormat)
         } else {
           // simple placeholder variable interpolation eq {variableName}
-          value = values[name]
+          value = getValue(name)
         }
 
         if (value == null) {
