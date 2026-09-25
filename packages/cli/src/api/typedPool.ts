@@ -23,7 +23,7 @@ export type WorkerPool<TFn extends (...args: never[]) => unknown> = TypedPool<
 
 const resolveWorkerFile = (basePath: string, baseUrl: string) =>
   new URL(
-    process.env.NODE_ENV === "test"
+    new URL(baseUrl).pathname.endsWith(".ts")
       ? `${basePath}.jiti.js`
       : `${basePath}.prod.js`,
     baseUrl,
