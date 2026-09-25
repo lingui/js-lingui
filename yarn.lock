@@ -1533,6 +1533,7 @@ __metadata:
     "@lingui/core": "workspace:*"
     "@lingui/format-po": "workspace:*"
     "@lingui/message-utils": "workspace:*"
+    "@lingui/native-tools": "npm:^0.1.3"
     "@lingui/test-utils": "workspace:*"
     "@rolldown/plugin-babel": "npm:^0.2.3"
     "@types/babel__generator": "npm:^7.27.0"
