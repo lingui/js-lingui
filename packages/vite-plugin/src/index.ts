@@ -15,11 +15,7 @@ import path from "path"
 import type { Plugin } from "vite"
 import { linguiTransformerBabelPreset } from "./linguiTransformerPreset"
 import { buildMacroFilterRe } from "./buildMacroFilterRe"
-import {
-  transform as transformMacro,
-  mapMacroOptions,
-} from "@lingui/native-tools"
-import type { LinguiMacroOptions } from "@lingui/native-tools"
+import type { LinguiMacroOptions, TransformOptions } from "@lingui/native-tools"
 
 const fileRegex = /(\.po|\?lingui)$/
 
@@ -50,7 +46,12 @@ export type LinguiPluginOpts = {
    *
    * @default false
    **/
-  macroTransform?: boolean | Partial<LinguiMacroOptions>
+  macroTransform?:
+    | boolean
+    | Partial<{
+        macro?: Partial<LinguiMacroOptions>
+        parser: TransformOptions["parser"]
+      }>
 }
 
 export function lingui({
@@ -60,6 +61,8 @@ export function lingui({
   ...linguiConfigOpts
 }: LinguiPluginOpts = {}): Plugin[] {
   let config: LinguiConfigNormalized
+
+  let nativeTools: typeof import("@lingui/native-tools")
 
   const getOrLoadConfig = () => {
     if (!config) {
@@ -82,7 +85,7 @@ export function lingui({
   if (macroTransform) {
     const earlyConfig = getOrLoadConfig()
     const hasMacroRe = buildMacroFilterRe(earlyConfig)
-    const macroOverrides =
+    const transformOptions =
       typeof macroTransform === "object" ? macroTransform : undefined
 
     plugins.push({
@@ -94,11 +97,23 @@ export function lingui({
           code: hasMacroRe,
         },
         async handler(code, id) {
-          const result = await transformMacro(code, path.basename(id), {
-            macro: mapMacroOptions(config, macroOverrides),
+          if (!nativeTools) {
+            nativeTools = await import("@lingui/native-tools")
+          }
+
+          const { transform, mapMacroOptions } = nativeTools
+
+          const result = await transform(code, path.basename(id), {
+            macro: {
+              descriptorFields: this.environment.config.isProduction
+                ? "id-only"
+                : "all",
+              ...mapMacroOptions(config, transformOptions?.macro),
+            },
+            parser: transformOptions?.parser,
           })
 
-          return { code: result?.code ?? undefined, map: result?.map }
+          return { code: result.code, map: result.map }
         },
       },
     })

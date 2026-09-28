@@ -47,10 +47,10 @@ export const linguiTransformerBabelPreset = (
 ): RolldownBabelPreset => {
   if (!process.env.LINGUI_SUPPRESS_BABEL_WARNING) {
     console.warn(
-      `[@lingui/vite-plugin] Babel-based macro transformation is deprecated and will be removed in a future version.\n` +
-        `Use the native transformer instead: lingui({ macroTransform: true })\n` +
-        `If you are using \`@rolldown/plugin-babel\` only for Lingui, you can remove it entirely.\n` +
-        `Set LINGUI_SUPPRESS_BABEL_WARNING=1 to suppress this warning.`,
+      `[@lingui/vite-plugin] The Lingui Vite plugin now has a built-in macro transform, so you no longer need Babel for Lingui macros.\n` +
+        `Turn it on with lingui({ macroTransform: true }). It will be on by default in the next major version.\n` +
+        `If you only use \`@rolldown/plugin-babel\` for Lingui, you can remove it.\n` +
+        `Set LINGUI_SUPPRESS_BABEL_WARNING=1 to hide this message.`,
     )
   }
 
