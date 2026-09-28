@@ -82,6 +82,42 @@ describe("formatElements", function () {
     ).toEqual('<a href="/about">About</a>')
   })
 
+  it("should format paired elements whose names use the macro charset", function () {
+    const link = (props: { children?: JSX.Element }) => (
+      <a href="/terms">{props.children}</a>
+    )
+
+    for (const name of ["terms-link", "terms_link", "terms.link"]) {
+      expect(
+        html(() =>
+          formatElements(`<${name}>Terms</${name}>`, { [name]: link }),
+        ),
+      ).toEqual('<a href="/terms">Terms</a>')
+    }
+
+    expect(
+      html(() =>
+        formatElements(
+          "I agree to the <terms-link>Terms</terms-link> and the <privacy-link>Privacy Policy</privacy-link>.",
+          {
+            "terms-link": link,
+            "privacy-link": (props) => <a href="/privacy">{props.children}</a>,
+          },
+        ),
+      ),
+    ).toEqual(
+      'I agree to the <a href="/terms">Terms</a> and the <a href="/privacy">Privacy Policy</a>.',
+    )
+  })
+
+  it("should format unpaired elements whose names use the macro charset", function () {
+    for (const name of ["terms-link", "terms_link", "terms.link"]) {
+      expect(
+        html(() => formatElements(`text<${name}/>`, { [name]: () => <br /> })),
+      ).toEqual("text<br>")
+    }
+  })
+
   it("should preserve nested named element props", function () {
     expect(
       html(() =>
