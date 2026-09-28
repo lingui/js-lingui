@@ -12,6 +12,7 @@ import {
   mapMacroOptions,
   transform as transformMacro,
 } from "@lingui/native-tools"
+import type { BundlerMacroTransformOptions } from "./macroTransformOptions.js"
 
 export type RolldownBundlerOptions = {
   /**
@@ -39,6 +40,11 @@ export type RolldownBundlerOptions = {
    */
   excludeExtensions?: string[]
   resolveRolldownOptions?: (options: BuildOptions) => BuildOptions
+
+  /**
+   * Options for the native macro transform applied before bundling.
+   */
+  macroTransform?: BundlerMacroTransformOptions
 }
 
 function createExtRegExp(extensions: string[]) {
@@ -79,10 +85,14 @@ export function createRolldownBundler(
           handler: async (code, filename, meta) => {
             const result = await transformMacro(code, path.basename(filename), {
               macro: {
-                ...mapMacroOptions(linguiConfig),
+                ...mapMacroOptions(
+                  linguiConfig,
+                  options?.macroTransform?.macro,
+                ),
                 descriptorFields: "all",
                 useJsdocI18nComment: true,
               },
+              parser: options?.macroTransform?.parser,
             })
 
             return { code: result?.code ?? undefined, map: result?.map }

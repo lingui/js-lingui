@@ -15,6 +15,7 @@ import {
   transform as transformMacro,
   mapMacroOptions,
 } from "@lingui/native-tools"
+import type { BundlerMacroTransformOptions } from "./macroTransformOptions.js"
 
 export type EsbuildBundlerOptions = {
   /**
@@ -42,6 +43,11 @@ export type EsbuildBundlerOptions = {
    */
   excludeExtensions?: string[]
   resolveEsbuildOptions?: (options: BuildOptions) => BuildOptions
+
+  /**
+   * Options for the native macro transform applied before bundling.
+   */
+  macroTransform?: BundlerMacroTransformOptions
 }
 
 function createExtRegExp(extensions: string[]) {
@@ -96,7 +102,10 @@ export function createEsbuildBundler(
         sourcesContent: false,
         metafile: true,
         plugins: [
-          pluginLinguiMacro({ linguiConfig }),
+          pluginLinguiMacro({
+            linguiConfig,
+            macroTransform: options?.macroTransform,
+          }),
           {
             name: "externalize-deps",
             setup(build) {
@@ -170,17 +179,18 @@ export function createEsbuildBundler(
 
 const pluginLinguiMacro = (options: {
   linguiConfig: LinguiConfigNormalized
+  macroTransform?: BundlerMacroTransformOptions
 }): Plugin => ({
   name: "linguiMacro",
   setup(build) {
+    const hasMacroRe = buildContentFilterRe(options.linguiConfig)
+
     build.onLoad(
       { filter: /\.(?:[jt]sx?|[cm][jt]s)(?:$|\?)/, namespace: "" },
       async (args) => {
         const filename = path.relative(process.cwd(), args.path)
 
         const contents = await fs.promises.readFile(args.path, "utf8")
-
-        const hasMacroRe = buildContentFilterRe(options.linguiConfig)
 
         if (!hasMacroRe.test(contents)) {
           // let esbuild process file as usual
@@ -189,9 +199,13 @@ const pluginLinguiMacro = (options: {
 
         const result = await transformMacro(contents, path.basename(filename), {
           macro: {
-            ...mapMacroOptions(options.linguiConfig),
+            ...mapMacroOptions(
+              options.linguiConfig,
+              options.macroTransform?.macro,
+            ),
             descriptorFields: "all",
           },
+          parser: options.macroTransform?.parser,
           sourceMaps: "inline",
         })
 
