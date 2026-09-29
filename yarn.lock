@@ -1911,7 +1911,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@lingui/test-utils@workspace:*, @lingui/test-utils@workspace:packages/test-utils":
+"@lingui/test-utils@workspace:*, @lingui/test-utils@workspace:^, @lingui/test-utils@workspace:packages/test-utils":
   version: 0.0.0-use.local
   resolution: "@lingui/test-utils@workspace:packages/test-utils"
   dependencies:
@@ -1931,6 +1931,7 @@ __metadata:
     "@lingui/format-json": "workspace:^"
     "@lingui/native-tools": "npm:^0.1.3"
     "@lingui/react": "workspace:^"
+    "@lingui/test-utils": "workspace:^"
     "@rolldown/plugin-babel": "npm:^0.2.2"
     rolldown: "npm:1.2.6"
     typescript: "catalog:"

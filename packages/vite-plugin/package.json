@@ -73,6 +73,7 @@
     "@lingui/core": "workspace:^",
     "@lingui/format-json": "workspace:^",
     "@lingui/react": "workspace:^",
+    "@lingui/test-utils": "workspace:^",
     "@rolldown/plugin-babel": "^0.2.2",
     "rolldown": "1.2.6",
     "typescript": "catalog:",

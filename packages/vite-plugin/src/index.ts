@@ -38,11 +38,11 @@ export type LinguiPluginOpts = {
    * Enable native macro transformation via `@lingui/native-tools`.
    * When enabled, you don't need `@rolldown/plugin-babel` or SWC pipeline for macro transformation.
    *
-   * Native transform is up to 2.7x times faster than SWC + Plugin and 29x times faster that babel.
+   * Native transform is up to 2.5x times faster than SWC + Plugin and 29x times faster than Babel.
    *
    * Will be a default option in the next major release
    *
-   * Pass `true` to enable with default options, or an object to override specific `LinguiMacroOptions`.
+   * Pass `true` to enable with default options, or an object to configure the transform.
    *
    * @default false
    **/

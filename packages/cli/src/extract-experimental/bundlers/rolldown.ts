@@ -95,7 +95,7 @@ export function createRolldownBundler(
               parser: options?.macroTransform?.parser,
             })
 
-            return { code: result?.code ?? undefined, map: result?.map }
+            return { code: result.code, map: result.map }
           },
         },
       }
