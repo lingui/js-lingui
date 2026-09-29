@@ -2,6 +2,8 @@ import { describe } from "vitest"
 import { lingui, LinguiPluginOpts } from "../src"
 import { runVite as _runVite } from "./run-vite"
 import macrosPlugin from "vite-plugin-babel-macros"
+import path from "path"
+import { mockConsole } from "@lingui/test-utils"
 
 function getErrorMessage(error: unknown) {
   return error instanceof Error ? error.message : String(error)
@@ -36,6 +38,24 @@ describe("vite-plugin", () => {
   it("should not report error when macro correctly used", async () => {
     const { mod } = await runVite(`macro-usage`, {}, { useMacroPlugin: true })
     expect(await mod.load()).toMatchSnapshot()
+  })
+
+  it("should correctly process with native transformer", async () => {
+    const { mod } = await runVite(`macro-usage`, { macroTransform: true })
+    expect(await mod.load()).toMatchSnapshot()
+  })
+
+  it("should correctly process with native transformer - PRODUCTION", async () => {
+    const oldEnv = process.env.NODE_ENV
+    process.env.NODE_ENV = "production"
+    const { mod } = await runVite(`macro-usage`, { macroTransform: true })
+    process.env.NODE_ENV = oldEnv
+
+    expect.assertions(2)
+    await mockConsole(async (console) => {
+      expect(await mod.load()).toMatchSnapshot()
+      expect(console.warn).toHaveBeenCalled()
+    })
   })
 
   it("should report missing error when failOnMissing = true", async () => {
@@ -137,8 +157,10 @@ async function runVite(
     useVitePlugin = true,
   }: { useMacroPlugin?: boolean; useVitePlugin?: boolean } = {},
 ) {
+  const cwd = path.join(import.meta.dirname, fixturesPath)
+
   return _runVite(fixturesPath, [
-    useVitePlugin ? lingui(pluginConfig) : null,
+    useVitePlugin ? lingui({ ...pluginConfig, cwd }) : null,
     useMacroPlugin ? macrosPlugin() : null,
   ])
 }

@@ -43,7 +43,8 @@
   ],
   "dependencies": {
     "@lingui/cli": "workspace:*",
-    "@lingui/conf": "workspace:*"
+    "@lingui/conf": "workspace:*",
+    "@lingui/native-tools": "^0.1.3"
   },
   "peerDependencies": {
     "@babel/core": "^7.29.0 || ^8.0.0",
@@ -72,6 +73,7 @@
     "@lingui/core": "workspace:^",
     "@lingui/format-json": "workspace:^",
     "@lingui/react": "workspace:^",
+    "@lingui/test-utils": "workspace:^",
     "@rolldown/plugin-babel": "^0.2.2",
     "rolldown": "1.2.6",
     "typescript": "catalog:",
