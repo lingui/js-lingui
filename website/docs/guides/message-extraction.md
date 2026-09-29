@@ -284,7 +284,8 @@ import type { ExperimentalExtractorBundler, BundleChunk } from "@lingui/conf";
 const myBundler: ExperimentalExtractorBundler = {
   async bundle(entryPoints, outDir, linguiConfig) {
     // Your bundling logic here.
-    // Must apply @lingui/babel-plugin-lingui-macro or @lingui/swc-plugin during the transform phase.
+    // Must apply the Lingui macro transform (e.g. `transform` from @lingui/native-tools,
+    // @lingui/babel-plugin-lingui-macro or @lingui/swc-plugin) during the transform phase.
 
     // Return a chunk graph — the CLI traverses it to determine
     // which entry points depend on each shared chunk.
@@ -322,15 +323,41 @@ export default defineConfig({
 
 Both `createEsbuildBundler` and `createRolldownBundler` accept the following common options:
 
-| Option              | Description                                                                                                  |
-| ------------------- | ------------------------------------------------------------------------------------------------------------ |
-| `includeDeps`       | Package names to bundle instead of marking as external. Use this for internal packages that contain messages |
-| `excludeExtensions` | File extensions to externalize (e.g., `css`, `svg`). Has sensible defaults                                   |
+| Option              | Description                                                                                                             |
+| ------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| `includeDeps`       | Package names to bundle instead of marking as external. Use this for internal packages that contain messages            |
+| `excludeExtensions` | File extensions to externalize (e.g., `css`, `svg`). Has sensible defaults                                              |
+| `macroTransform`    | Options for the native macro transform applied during bundling. See [Macro Transform Options](#macro-transform-options) |
 
 Additionally, each bundler accepts a resolver function for full control over bundler-specific options:
 
 - `createEsbuildBundler({ resolveEsbuildOptions: (opts) => opts })`
 - `createRolldownBundler({ resolveRolldownOptions: (opts) => opts })`
+
+##### Macro Transform Options
+
+Both built-in bundlers transform Lingui macros natively with [`@lingui/native-tools`](https://www.npmjs.com/package/@lingui/native-tools) while bundling. Macro options are read from your Lingui configuration, so in most cases nothing needs to be configured. Use `macroTransform` when you need to override them:
+
+```ts title="lingui.config.ts"
+import { createRolldownBundler } from "@lingui/cli/bundlers/rolldown";
+
+createRolldownBundler({
+  macroTransform: {
+    macro: {
+      jsxPlaceholderAttribute: "_t",
+    },
+    parser: {
+      syntax: "typescript",
+      decorators: true,
+    },
+  },
+});
+```
+
+- `macro` - overrides for the macro options derived from your Lingui configuration, such as `corePackage`, `jsxPackage`, `jsxPlaceholderAttribute`, `jsxPlaceholderDefaults`, `runtimeModules` or `idPrefixLeader`. The `descriptorFields` option is always `"all"` during extraction and cannot be overridden.
+- `parser` - SWC parser options, the same as [`jsc.parser`](https://swc.rs/docs/configuration/compilation#jscparser) in `.swcrc`. The actual syntax (ECMAScript or TypeScript) and JSX support are inferred from the file name, so you only need this for non-standard parser features such as decorators.
+
+`createEsbuildBundler` accepts the same `macroTransform` option with the same meaning.
 
 #### Important Notes
 

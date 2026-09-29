@@ -25,7 +25,7 @@ Don't miss the [Lingui ESLint Plugin](/ref/eslint-plugin) which can help you fin
 
 > A transpiler converts code within a language, transforming newer features into older equivalents for compatibility, or expanding concise syntax into more verbose implementations.
 
-Lingui needs a transpiler to work. It's responsible for transforming Lingui's JS/JSX components into [ICU MessageFormat](/guides/message-format) and extracting message IDs. Both Babel and SWC transpilers are supported. Follow the Babel or SWC setup depending on what transpiler your project already uses.
+Lingui needs a transpiler to work. It's responsible for transforming Lingui's JS/JSX components into [ICU MessageFormat](/guides/message-format) and extracting message IDs. Both Babel and SWC transpilers are supported. Follow the Babel or SWC setup depending on what transpiler your project already uses. If you use Vite, you can skip this step: the [Vite plugin](#vite) transforms macros natively without Babel or SWC.
 
 <Tabs groupId="transpiler" queryString>
 <TabItem value="babel" label="Babel" default>
@@ -127,9 +127,45 @@ The PO format is the default and recommended format for message catalogs. See th
 
 > Vite is a blazing fast frontend build tool powering the next generation of web applications.
 
-Lingui supports Vite with a dedicated plugin [`@lingui/vite-plugin`](/ref/vite-plugin). This plugin is responsible for compiling message catalogs and some fine-tuning for Vite.
+Lingui supports Vite with a dedicated plugin [`@lingui/vite-plugin`](/ref/vite-plugin). This plugin compiles message catalogs on the fly and, with `macroTransform: true`, transforms Lingui macros natively. This is the recommended setup: it doesn't need `@lingui/babel-plugin-lingui-macro` or `@lingui/swc-plugin` and works with `@vitejs/plugin-react`, `@vitejs/plugin-react-swc` and Vite 8+ with Rolldown.
 
-There are two ways to set up Lingui with Vite by using the [`@vitejs/plugin-react`](https://www.npmjs.com/package/@vitejs/plugin-react) or [`@vitejs/plugin-react-swc`](https://www.npmjs.com/package/@vitejs/plugin-react-swc). You need to choose the one that fits your project setup.
+1.  Install `@lingui/vite-plugin` as a development dependency and `@lingui/react` as a runtime dependency:
+
+    ```bash npm2yarn
+    npm install --save-dev @lingui/vite-plugin
+    npm install --save @lingui/react
+    ```
+
+2.  Setup Lingui in `vite.config.ts`:
+
+    ```ts title="vite.config.ts"
+    import { defineConfig } from "vite";
+    import react from "@vitejs/plugin-react";
+    import { lingui } from "@lingui/vite-plugin";
+
+    export default defineConfig({
+      plugins: [react(), lingui({ macroTransform: true })],
+    });
+    ```
+
+Macro options are read from your Lingui configuration. See the [Native Macro Transform](/ref/vite-plugin#native-macro-transform) reference for the available overrides.
+
+:::info
+If you use React Compiler through `@rolldown/plugin-babel`, keep the Babel plugin for the compiler only and place `lingui()` before it in the `plugins` array:
+
+```js
+plugins: [
+  react(),
+  lingui({ macroTransform: true }),
+  babel({ presets: [reactCompilerPreset()] }),
+],
+```
+
+:::
+
+#### Transforming Macros with Babel or SWC
+
+If you prefer to keep transforming macros with your existing Babel or SWC pipeline, or you need an option the native transform doesn't support (for example `macro.jsxRuntime: "solid"`), use one of the setups below. Choose the one that fits your project.
 
 <Tabs groupId="transpiler" queryString>
 <TabItem value="babel" label="Babel (plugin-react)" default>
@@ -201,11 +237,9 @@ The `@vitejs/plugin-react-swc` plugin uses SWC to transform your code, which is 
     ```
 
 </TabItem>
-<TabItem value="vite-rolldown" label="Vite 8+ with Rolldown" default>
+<TabItem value="vite-rolldown" label="Vite 8+ with Rolldown">
 
-Vite 8+ uses Rolldown to transpile and bundle your code. By default, it doesn't require Babel or SWC. However, Rolldown doesn't support native plugins yet, so you still need Babel or SWC to transform Lingui macros.
-
-The easiest approach is to use a preset exported from `@lingui/vite-plugin`:
+Vite 8+ uses Rolldown to transpile and bundle your code. By default, it doesn't require Babel or SWC. If you don't want to use the native macro transform, you can transform Lingui macros with Babel through `@rolldown/plugin-babel` and the preset exported from `@lingui/vite-plugin`:
 
 1.  Install `@lingui/vite-plugin` and `@rolldown/plugin-babel` as development dependencies and `@lingui/react` as a runtime dependency:
 
