@@ -428,13 +428,8 @@ describe("I18nProvider", () => {
       )
     })
 
-    it("evaluates computed getter variables in Trans", () => {
+    it("evaluates function variables in Trans", () => {
       let currentGender = "female"
-      const user = {
-        get gender() {
-          return currentGender
-        },
-      }
 
       const i18n = setupI18n({
         locale: "en",
@@ -445,9 +440,7 @@ describe("I18nProvider", () => {
           },
         },
         variables: {
-          get gender() {
-            return user.gender
-          },
+          gender: () => currentGender,
         },
       })
 

@@ -10,7 +10,9 @@ export type {
   Locales,
   MessageOptions,
   Register,
+  Value,
   Values,
+  Variables,
 } from "./i18n"
 
 // Default i18n object

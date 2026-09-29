@@ -26,7 +26,9 @@ export type Formats = Record<
   Intl.DateTimeFormatOptions | Intl.NumberFormatOptions
 >
 
+export type Value = string | number | Date
 export type Values = Record<string, unknown>
+export type Variables = Record<string, Value | (() => Value)>
 
 export type UncompiledMessage = string
 export type Messages = Record<string, UncompiledMessage | CompiledMessage>
@@ -81,7 +83,7 @@ export type I18nProps = {
   locales?: Locales
   messages?: AllMessages
   missing?: MissingHandler
-  variables?: Values
+  variables?: Variables
 }
 
 type Events = {
@@ -104,7 +106,7 @@ export class I18n extends EventEmitter<Events> {
   private _locale: Locale = ""
   private _locales?: Locales
   private _messages: AllMessages = {}
-  private _variables: Values = {}
+  private _variables: Variables = {}
   private _missing?: MissingHandler
   private _messageCompiler?: MessageCompiler
 
@@ -135,11 +137,11 @@ export class I18n extends EventEmitter<Events> {
     return this._messages[this._locale] ?? {}
   }
 
-  get variables(): Values {
+  get variables(): Variables {
     return this._variables
   }
 
-  setVariable(name: string, value: unknown | (() => unknown)): this {
+  setVariable(name: string, value?: Value | (() => Value)): this {
     if (value === undefined) {
       delete this._variables[name]
     } else {
@@ -149,7 +151,7 @@ export class I18n extends EventEmitter<Events> {
     return this
   }
 
-  setVariables(variables: Values | ((prev: Values) => Values)): this {
+  setVariables(variables: Variables | ((prev: Variables) => Variables)): this {
     this._variables = isFunction(variables)
       ? variables(this._variables)
       : variables

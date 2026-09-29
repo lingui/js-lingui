@@ -231,7 +231,7 @@ describe("interpolate", () => {
       ).toEqual("Hello Bob!")
     })
 
-    it("should evaluate function/getter variables on demand", () => {
+    it("should evaluate function variables on demand", () => {
       let callCount = 0
       const cache = compile("Hello {name}!")
       const format = interpolate(cache, "en", [])
@@ -240,7 +240,7 @@ describe("interpolate", () => {
           callCount++
           return "Dynamic"
         },
-        get unused() {
+        unused: () => {
           throw new Error("should not be called")
         },
       }

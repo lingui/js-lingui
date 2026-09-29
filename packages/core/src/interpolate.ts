@@ -1,4 +1,4 @@
-import { CompiledMessage, Formats, Locales, Values } from "./i18n"
+import { CompiledMessage, Formats, Locales, Values, Variables } from "./i18n"
 import {
   date,
   DateTimeFormatSize,
@@ -98,7 +98,7 @@ export function interpolate(
   return (
     values: Values = {},
     formats?: Formats,
-    variables?: Values,
+    variables?: Variables,
   ): string => {
     const formatters = getDefaultFormats(locale, locales, formats)
 

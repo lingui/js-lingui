@@ -902,13 +902,8 @@ describe("I18n", () => {
       ).toEqual("Welcome to LinguiApp!")
     })
 
-    it("should support computed properties (getters) and evaluate them dynamically", () => {
+    it("should support function variables and evaluate them dynamically", () => {
       let currentGender = "female"
-      const user = {
-        get gender() {
-          return currentGender
-        },
-      }
 
       const i18n = setupI18n({
         locale: "en",
@@ -919,9 +914,7 @@ describe("I18n", () => {
           },
         },
         variables: {
-          get gender() {
-            return user.gender
-          },
+          gender: () => currentGender,
         },
       })
 
@@ -931,8 +924,8 @@ describe("I18n", () => {
       expect(i18n._("welcome")).toEqual("[M] Welcome")
     })
 
-    it("should not evaluate getters if variable is not referenced in the message", () => {
-      let getterCalls = 0
+    it("should not evaluate function variables if variable is not referenced in the message", () => {
+      let calls = 0
       const i18n = setupI18n({
         locale: "en",
         messages: {
@@ -941,15 +934,15 @@ describe("I18n", () => {
           },
         },
         variables: {
-          get expensive() {
-            getterCalls++
+          expensive: () => {
+            calls++
             return "computed"
           },
         },
       })
 
       expect(i18n._("simple")).toEqual("Just a simple message")
-      expect(getterCalls).toEqual(0)
+      expect(calls).toEqual(0)
     })
 
     it("should preserve variables across locale changes", () => {
