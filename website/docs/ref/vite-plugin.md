@@ -104,7 +104,7 @@ lingui({
 ```
 
 - `macro` - overrides for the macro options derived from your Lingui configuration. Accepts a partial [`LinguiMacroOptions`](https://www.npmjs.com/package/@lingui/native-tools) object from `@lingui/native-tools`, for example `corePackage`, `jsxPackage`, `jsxPlaceholderAttribute`, `jsxPlaceholderDefaults`, `runtimeModules`, `idPrefixLeader` or `descriptorFields`. Explicit values take precedence over the values from `lingui.config`.
-- `parser` - SWC parser options, the same as [`jsc.parser`](https://swc.rs/docs/configuration/compilation#jscparser) in `.swcrc`. The actual syntax (ECMAScript or TypeScript) and JSX support are inferred from the file name, so you only need this for non-standard parser features such as decorators.
+- `parser` - SWC parser options, the same as [`jsc.parser`](https://swc.rs/docs/configuration/compilation#jscparser) in `.swcrc`. The actual syntax (ECMAScript or TypeScript) and JSX support are inferred from the file name, Decorators are enabled by default. A custom `parser` replaces the defaults, so set `decorators: true` yourself if you need them.
 
 ## Options
 

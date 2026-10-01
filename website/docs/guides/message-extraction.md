@@ -355,7 +355,7 @@ createRolldownBundler({
 ```
 
 - `macro` - overrides for the macro options derived from your Lingui configuration, such as `corePackage`, `jsxPackage`, `jsxPlaceholderAttribute`, `jsxPlaceholderDefaults`, `runtimeModules` or `idPrefixLeader`. The `descriptorFields` option is always `"all"` during extraction and cannot be overridden.
-- `parser` - SWC parser options, the same as [`jsc.parser`](https://swc.rs/docs/configuration/compilation#jscparser) in `.swcrc`. The actual syntax (ECMAScript or TypeScript) and JSX support are inferred from the file name, so you only need this for non-standard parser features such as decorators.
+- `parser` - SWC parser options, the same as [`jsc.parser`](https://swc.rs/docs/configuration/compilation#jscparser) in `.swcrc`. The actual syntax (ECMAScript or TypeScript) and JSX support are inferred from the file name, Decorators are enabled by default. A custom `parser` replaces the defaults, so set `decorators: true` yourself if you need them.
 
 `createEsbuildBundler` accepts the same `macroTransform` option with the same meaning.
 
