@@ -355,6 +355,84 @@ msgstr[2] "{count} jours"
     `)
   })
 
+  describe("untranslated plurals", () => {
+    const message = "{count, plural, one {# book} other {# books}}"
+    const id = generateMessageId(message)
+    const catalog: CatalogType = {
+      [id]: { message, translation: "" },
+    }
+
+    const getMsgstrKeys = (pofile: string) => pofile.match(/^msgstr\[\d+\]/gm)
+
+    it("should write a msgstr for each plural form of the language", () => {
+      const ru = format.serialize(catalog, {
+        ...defaultSerializeCtx,
+        locale: "ru",
+      }) as string
+      const ja = format.serialize(catalog, {
+        ...defaultSerializeCtx,
+        locale: "ja",
+      }) as string
+
+      expect(getMsgstrKeys(ru)).toEqual(["msgstr[0]", "msgstr[1]", "msgstr[2]"])
+      expect(getMsgstrKeys(ja)).toEqual(["msgstr[0]"])
+    })
+
+    it("should parse back all translated plural forms", () => {
+      const pofile = format.serialize(catalog, {
+        ...defaultSerializeCtx,
+        locale: "ru",
+      }) as string
+
+      const translated = pofile
+        .replace('msgstr[0] ""', 'msgstr[0] "# книга"')
+        .replace('msgstr[1] ""', 'msgstr[1] "# книги"')
+        .replace('msgstr[2] ""', 'msgstr[2] "# книг"')
+
+      const parsed = format.parse(translated, {
+        ...defaultParseCtx,
+        locale: "ru",
+      })
+
+      expect(parsed).toMatchObject({
+        [id]: {
+          translation:
+            "{count, plural, one {# книга} few {# книги} other {# книг}}",
+        },
+      })
+    })
+
+    it("should prefer nplurals from the Plural-Forms header", () => {
+      const existing = `msgid ""
+msgstr ""
+"Language: ru\\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);\\n"
+`
+
+      const pofile = format.serialize(catalog, {
+        ...defaultSerializeCtx,
+        locale: "ru",
+        existing,
+      }) as string
+
+      expect(getMsgstrKeys(pofile)).toEqual([
+        "msgstr[0]",
+        "msgstr[1]",
+        "msgstr[2]",
+        "msgstr[3]",
+      ])
+    })
+
+    it("should keep two msgstr in the template", () => {
+      const pofile = format.serialize(catalog, {
+        ...defaultSerializeCtx,
+        locale: undefined,
+      }) as string
+
+      expect(getMsgstrKeys(pofile)).toEqual(["msgstr[0]", "msgstr[1]"])
+    })
+  })
+
   it("should correctly handle skipped form", () => {
     // in this test Plural-Forms header defines 4 forms via `nplurals=4`
     // but expression never returns 2 form, only [0, 1, 3]
