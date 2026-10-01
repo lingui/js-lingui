@@ -8,7 +8,7 @@
 
 `@lingui/vite-plugin` is part of [Lingui][documentation]. Lingui is a lightweight, open-source internationalization (i18n) library for JavaScript and TypeScript. It brings compile-time macros and a CLI for message extraction to React, React Native, Vue, SolidJS, Astro, Svelte, and Node.js.
 
-The plugin compiles catalogs when they are imported, so there is no `lingui compile` step to run. Macros are still transformed by the Babel or SWC plugin in your Vite setup.
+The plugin compiles catalogs when they are imported, so there is no `lingui compile` step to run. With `lingui({ macroTransform: true })` it also transforms Lingui macros natively via `@lingui/native-tools`, so no Babel or SWC plugin is needed for Lingui.
 
 ## Usage
 
