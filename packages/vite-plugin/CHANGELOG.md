@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.9.0](https://github.com/lingui/js-lingui/compare/v6.8.0...v6.9.0) (2026-10-01)
+
+### Features
+
+* **vite-plugin:** add native macro transformer ([#2686](https://github.com/lingui/js-lingui/issues/2686)) ([2a576d3](https://github.com/lingui/js-lingui/commit/2a576d324c222e318ae8ab5e49c57004ef675063))
+
 # [6.8.0](https://github.com/lingui/js-lingui/compare/v6.7.0...v6.8.0) (2026-09-23)
 
 ### Features
