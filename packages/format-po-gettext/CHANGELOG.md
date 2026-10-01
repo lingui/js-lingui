@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.9.0](https://github.com/lingui/js-lingui/compare/v6.8.0...v6.9.0) (2026-10-01)
+
+### Bug Fixes
+
+* **format-po-gettext:** write one msgstr per plural form of locale ([#2690](https://github.com/lingui/js-lingui/issues/2690)) ([9f400ef](https://github.com/lingui/js-lingui/commit/9f400ef68f5a19de0a893e638594425373d8dbd7))
+
 # [6.8.0](https://github.com/lingui/js-lingui/compare/v6.7.0...v6.8.0) (2026-09-23)
 
 ### Features

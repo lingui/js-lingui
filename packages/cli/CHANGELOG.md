@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.9.0](https://github.com/lingui/js-lingui/compare/v6.8.0...v6.9.0) (2026-10-01)
+
+### Bug Fixes
+
+* **cli:** resolve workers from caller source ([#2682](https://github.com/lingui/js-lingui/issues/2682)) ([cac9880](https://github.com/lingui/js-lingui/commit/cac98805cec97dbd874fd5b90c5440143e26420d))
+
+### Features
+
+* use native macro transformer in experimental extractor ([#2685](https://github.com/lingui/js-lingui/issues/2685)) ([71b4394](https://github.com/lingui/js-lingui/commit/71b439493cc351c8aa1df83a2e785afe3afed467))
+* **vite-plugin:** add native macro transformer ([#2686](https://github.com/lingui/js-lingui/issues/2686)) ([2a576d3](https://github.com/lingui/js-lingui/commit/2a576d324c222e318ae8ab5e49c57004ef675063))
+
 # [6.8.0](https://github.com/lingui/js-lingui/compare/v6.7.0...v6.8.0) (2026-09-23)
 
 ### Bug Fixes
