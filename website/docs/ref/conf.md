@@ -683,6 +683,30 @@ A mapping of JSX element tag names to default placeholder names. When a JSX elem
 
 Explicit attributes (via `jsxPlaceholderAttribute`) take priority over defaults.
 
+:::caution One Name per Distinct Element
+A placeholder name can be used only once per message. If two elements in the same `<Trans>` resolve to the same name but differ in tag or props, for example two `<a>` elements with different `href` values both mapped to `link`, the macro throws an error instead of numbering them (`<link1>`, `<link2>`). Give at least one of them an explicit name via `jsxPlaceholderAttribute`:
+
+```jsx
+<Trans>
+  Read the{" "}
+  <a _t="docs" href="/docs">
+    docs
+  </a>{" "}
+  or the{" "}
+  <a _t="faq" href="/faq">
+    FAQ
+  </a>
+  .
+</Trans>
+
+// extracted message: "Read the <docs>docs</docs> or the <faq>FAQ</faq>."
+```
+
+Identical elements, such as two `<br />` with no props, share a single placeholder without error.
+:::
+
+See [Translator-friendly Messages](/guides/translator-friendly-messages#name-your-tags) for when and why to name tags.
+
 :::tip Enforce Named Placeholders with ESLint
 You can enforce that all JSX tags in `<Trans>` have named placeholders across your codebase using the Lingui [ESLint Plugin](/ref/eslint-plugin) rule [`no-unnamed-tag-placeholders`](https://github.com/lingui/eslint-plugin/blob/main/docs/rules/no-unnamed-tag-placeholders.md).
 :::

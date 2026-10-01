@@ -503,7 +503,7 @@ const message = /** i18n */ {
 
 The `ph` macro is used to provide explicit labels for placeholders. By default, only simple variables are referenced by name in transformed messages. Complex expressions (like function calls) are referenced by numeric index (`{0}`, `{1}`), which provides little context for translators.
 
-The `ph` macro solves this by letting you assign meaningful names to any expression:
+The `ph` macro solves this by letting you assign meaningful names to any expression. See [Translator-friendly Messages](/guides/translator-friendly-messages#name-your-placeholders) for guidance on when to use it:
 
 ```js
 import { t, ph } from "@lingui/core/macro";
@@ -549,7 +549,7 @@ import { Trans } from "@lingui/react";
 
 ### `lingui-set` / `lingui-reset` Comment Directives {#lingui-directive}
 
-Instead of passing `context` and/or `comment` to every macro call, you can use the `lingui-set` and `lingui-reset` comment directives to set these values for all subsequent macros in the same file (or until the next directive resets/overrides them).
+Instead of passing `context` and/or `comment` to every macro call, you can use the `lingui-set` and `lingui-reset` comment directives to set these values for all subsequent macros in the same file (or until the next directive resets/overrides them). See [Translator-friendly Messages](/guides/translator-friendly-messages#set-context-once-per-file) for typical use cases.
 
 - **`lingui-set`**: Sets the specified parameters for all subsequent macros. Requires at least one parameter.
 - **`lingui-reset`**: Clears all previously set parameters. Also accepts new parameters to set like `lingui-set`.
@@ -703,7 +703,7 @@ import { Trans } from "@lingui/react";
 
 #### `comment`
 
-Comment for translators to give them additional information about the message. It will be visible in the [TMS](/tools/introduction) if it is supported, and in the [catalog format](/ref/catalog-formats). It will be removed from production code.
+Comment for translators to give them additional information about the message. It will be visible in the [TMS](/tools/introduction) if it is supported, and in the [catalog format](/ref/catalog-formats). It will be removed from production code. See [Translator-friendly Messages](/guides/translator-friendly-messages#explain-what-the-message-means) for what makes a useful comment.
 
 :::tip
 You can require every message to describe itself to translators with the Lingui [ESLint Plugin](/ref/eslint-plugin) rule [`require-comment`](https://github.com/lingui/eslint-plugin/blob/main/docs/rules/require-comment.md). It accepts a [`lingui-set comment="..."`](#lingui-directive) directive as well, which is the only option for tagged template literals such as `` t`Save` ``.
