@@ -25,6 +25,8 @@ import {
 } from "./extract-experimental/writeCatalogs.js"
 import { createExtractExperimentalWorkerPool } from "./api/workerPools.js"
 import { buildChunkGraph } from "./extract-experimental/buildChunkGraph.js"
+import { resolveCatalogPath } from "./extract-experimental/resolveCatalogPath.js"
+import { resolveTemplatePath } from "./extract-experimental/resolveTemplatePath.js"
 import { mergeExtractedMessage } from "./api/catalog/extractFromFiles.js"
 import ora from "ora"
 import ms from "ms"
@@ -127,6 +129,9 @@ export default async function command(
   spinner.start("Extracting messages...")
   phaseStart = Date.now()
   const messagesByEntry = new Map<string, ExtractedCatalogType>()
+  // entry points fed by a chunk that failed to extract; their catalogs would be
+  // incomplete, so they must not be written back to disk
+  const failedEntries = new Set<string>()
 
   if (options.workersOptions.poolSize) {
     const resolvedConfigPath = linguiConfig.resolvedConfigPath
@@ -153,6 +158,7 @@ export default async function command(
 
           if (!success) {
             commandSuccess = false
+            entryPoints.forEach((entryPoint) => failedEntries.add(entryPoint))
           }
 
           for (const entryPoint of entryPoints) {
@@ -183,6 +189,7 @@ export default async function command(
 
         if (!success) {
           commandSuccess = false
+          entryPoints.forEach((entryPoint) => failedEntries.add(entryPoint))
         }
 
         for (const entryPoint of entryPoints) {
@@ -209,7 +216,36 @@ export default async function command(
   const format = await getFormat(linguiConfig.format, linguiConfig.sourceLocale)
   const locales = options.locales || linguiConfig.locales
 
+  const resolveOutputKey = (entryPoint: string) =>
+    options.template
+      ? resolveTemplatePath(
+          entryPoint,
+          extractorConfig.output,
+          linguiConfig.rootDir,
+          format.getTemplateExtension(),
+        )
+      : resolveCatalogPath(
+          extractorConfig.output,
+          entryPoint,
+          linguiConfig.rootDir,
+          undefined,
+          format.getCatalogExtension(),
+        )
+
+  const failedOutputs = new Set(
+    [...failedEntries].map((entryPoint) => resolveOutputKey(entryPoint)),
+  )
+
   for (const [entryPoint, messages] of messagesByEntry) {
+    if (failedOutputs.has(resolveOutputKey(entryPoint))) {
+      console.error(
+        `Skipped writing catalogs for ${normalizePath(
+          nodepath.relative(linguiConfig.rootDir, entryPoint),
+        )} because extraction failed for an entry writing to the same output. Existing catalogs are left untouched.`,
+      )
+      continue
+    }
+
     let stat: string
 
     if (options.template) {
