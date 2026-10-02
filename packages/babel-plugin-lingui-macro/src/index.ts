@@ -1,6 +1,10 @@
-import type { PluginObj, PluginPass, Visitor } from "@babel/core"
-import type * as babelTypes from "@babel/types"
-import { Expression, Identifier, Program } from "@babel/types"
+import type {
+  PluginObj,
+  PluginPass,
+  types as babelTypes,
+  Visitor,
+} from "@babel/core"
+import type { Expression, Identifier, Program } from "./types"
 import { MacroJSX } from "./macroJsx"
 import type { NodePath, Scope } from "@babel/traverse"
 import { MacroJs } from "./macroJs"
@@ -317,6 +321,7 @@ export default function ({
                 state: PluginPass,
               ) {
                 const macro = new MacroJs({
+                  types: t,
                   descriptorFields: resolveDescriptorFields(
                     state.opts as LinguiPluginOpts,
                   ),

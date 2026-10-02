@@ -1,11 +1,11 @@
-import { type CallExpression, type Expression } from "@babel/types"
+import type { CallExpression, Expression } from "./types"
 import {
   tokenizeTemplateLiteral,
   tokenizeChoiceComponent,
   createMacroJsContext,
 } from "./macroJsAst"
 import type { NodePath } from "@babel/traverse"
-import { transformSync } from "@babel/core"
+import { transformSync, types } from "@babel/core"
 import { JsMacroName } from "./constants"
 
 const parseExpression = (expression: string) => {
@@ -35,9 +35,13 @@ const parseExpression = (expression: string) => {
 }
 
 function createMacroCtx() {
-  return createMacroJsContext((identifier, macro) => {
-    return identifier.name === macro
-  }, "all")
+  return createMacroJsContext(
+    types,
+    (identifier, macro) => {
+      return identifier.name === macro
+    },
+    "all",
+  )
 }
 
 describe("js macro", () => {

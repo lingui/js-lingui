@@ -1,5 +1,5 @@
-import * as babelTypes from "@babel/types"
-import {
+import type { types as babelTypes } from "@babel/core"
+import type {
   ConditionalExpression,
   Expression,
   JSXAttribute,
@@ -13,7 +13,7 @@ import {
   TemplateLiteral,
   SourceLocation,
   Identifier,
-} from "@babel/types"
+} from "./types"
 import type { NodePath } from "@babel/traverse"
 
 import { ArgToken, ElementToken, TextToken, Token } from "./icu"
@@ -89,6 +89,7 @@ export class MacroJSX {
     this.ctx = {
       getDirective: () => undefined,
       ...opts,
+      types,
       getExpressionIndex: makeCounter(),
       elementIndex: makeCounter(),
       elementsTracking: new Map(),
@@ -117,6 +118,7 @@ export class MacroJSX {
     )
 
     const messageDescriptor = createMessageDescriptorFromTokens(
+      this.types,
       tokens,
       path.node.loc,
       this.ctx.descriptorFields,

@@ -1,5 +1,5 @@
 import type { VisitNodeObject } from "@babel/traverse"
-import { Program } from "@babel/types"
+import type { Program } from "./types"
 
 import linguiPlugin from "./index"
 import * as Babel from "@babel/core"

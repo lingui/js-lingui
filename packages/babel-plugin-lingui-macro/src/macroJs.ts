@@ -1,14 +1,12 @@
-// eslint-disable-next-line import/no-duplicates
-import * as babelTypes from "@babel/types"
-// eslint-disable-next-line import/no-duplicates
-import * as t from "@babel/types"
-import {
+import type { types as babelTypes } from "@babel/core"
+import type {
+  BabelTypes,
   CallExpression,
   Expression,
   Identifier,
   ObjectExpression,
   ObjectProperty,
-} from "@babel/types"
+} from "./types"
 import type { NodePath } from "@babel/traverse"
 
 import { Tokens } from "./icu"
@@ -28,6 +26,7 @@ import {
 } from "./macroJsAst"
 
 export type MacroJsOpts = {
+  types: BabelTypes
   i18nImportName: string
   useLinguiImportName: string
 
@@ -65,6 +64,7 @@ export class MacroJs {
   ) => {
     return this.createI18nCall(
       createMessageDescriptorFromTokens(
+        this._ctx.types,
         tokens,
         path.node.loc,
         this._ctx.descriptorFields,
@@ -99,6 +99,7 @@ export class MacroJs {
     ) {
       const tokens = tokenizeTemplateLiteral(path.get("quasi").node, ctx)
       return createMessageDescriptorFromTokens(
+        ctx.types,
         tokens,
         path.node.loc,
         ctx.descriptorFields,
@@ -181,6 +182,7 @@ export class MacroJs {
     ctx: MacroJsContext,
     linguiInstance?: babelTypes.Expression,
   ): babelTypes.CallExpression => {
+    const t = ctx.types
     let arg: Expression = node.arguments[0] as Expression
 
     if (t.isObjectExpression(arg)) {
@@ -205,6 +207,8 @@ export class MacroJs {
    * _t({id: <hash>, message: "Message"})
    */
   processUseLingui(path: NodePath<CallExpression>, ctx: MacroJsContext) {
+    const t = ctx.types
+
     /*
      * path is CallExpression eq:
      * useLingui()
@@ -279,6 +283,7 @@ export class MacroJs {
           const tokens = tokenizeTemplateLiteral(currentPath.node, _ctx)
 
           const descriptor = createMessageDescriptorFromTokens(
+            _ctx.types,
             tokens,
             currentPath.node.loc,
             _ctx.descriptorFields,
@@ -331,6 +336,8 @@ export class MacroJs {
     messageDescriptor: Expression | undefined,
     linguiInstance?: Expression,
   ) {
+    const t = this._ctx.types
+
     return t.callExpression(
       t.memberExpression(
         linguiInstance ?? t.identifier(this.i18nImportName),

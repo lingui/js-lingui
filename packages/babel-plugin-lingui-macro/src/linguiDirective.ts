@@ -1,4 +1,4 @@
-import type { Comment, ObjectProperty } from "@babel/types"
+import type { Comment, ObjectProperty } from "./types"
 import type { TextWithLoc } from "./messageDescriptorUtils"
 
 export type DirectiveValues = {
