@@ -1,11 +1,11 @@
 import { ICUMessageFormat, ParsedResult, Tokens } from "./icu"
-import * as types from "@babel/types"
-import {
+import type {
+  BabelTypes,
   Expression,
   ObjectExpression,
   ObjectProperty,
   SourceLocation,
-} from "@babel/types"
+} from "./types"
 import { EXTRACT_MARK, MsgDescriptorPropKey } from "./constants"
 import { generateMessageId } from "@lingui/message-utils/generateMessageId"
 import type { DirectiveValues } from "./linguiDirective"
@@ -38,6 +38,7 @@ function isObjectProperty(
 export type ResolvedDescriptorFields = "all" | "id-only" | "message"
 
 export function createMessageDescriptorFromTokens(
+  types: BabelTypes,
   tokens: Tokens,
   oldLoc: SourceLocation,
   descriptorFields: ResolvedDescriptorFields,
@@ -46,7 +47,7 @@ export function createMessageDescriptorFromTokens(
     idPrefixLeader?: string
   } = {},
   transforms: MessageDescriptorElementTransforms = {},
-) {
+): ObjectExpression {
   const result = buildICUFromTokens(tokens)
 
   if (result.elements && transforms.transformElement) {
@@ -58,10 +59,17 @@ export function createMessageDescriptorFromTokens(
     )
   }
 
-  return createMessageDescriptor(result, oldLoc, descriptorFields, defaults)
+  return createMessageDescriptor(
+    types,
+    result,
+    oldLoc,
+    descriptorFields,
+    defaults,
+  )
 }
 
 export function createMessageDescriptor(
+  types: BabelTypes,
   result: Partial<ParsedResult>,
   oldLoc: SourceLocation,
   descriptorFields: ResolvedDescriptorFields,
@@ -69,7 +77,7 @@ export function createMessageDescriptor(
     id?: TextWithLoc | ObjectProperty
     idPrefixLeader?: string
   } = {},
-) {
+): ObjectExpression {
   const { message, values, elements } = result
 
   // Field inclusion rules based on descriptorFields mode:
@@ -81,16 +89,20 @@ export function createMessageDescriptor(
   const keepComment = descriptorFields === "all"
 
   const properties: ObjectProperty[] = []
-  const explicitIdProperty = createExplicitIdProperty(defaults)
+  const explicitIdProperty = createExplicitIdProperty(types, defaults)
 
   properties.push(
     explicitIdProperty
       ? explicitIdProperty
       : createIdProperty(
+          types,
           message,
           defaults.context
             ? isObjectProperty(defaults.context)
-              ? getTextFromExpression(defaults.context.value as Expression)
+              ? getTextFromExpression(
+                  types,
+                  defaults.context.value as Expression,
+                )
               : defaults.context.text
             : null,
         ),
@@ -98,7 +110,7 @@ export function createMessageDescriptor(
 
   if (keepMessage && message) {
     properties.push(
-      createStringObjectProperty(MsgDescriptorPropKey.message, message),
+      createStringObjectProperty(types, MsgDescriptorPropKey.message, message),
     )
   }
 
@@ -107,6 +119,7 @@ export function createMessageDescriptor(
       isObjectProperty(defaults.comment)
         ? defaults.comment
         : createStringObjectProperty(
+            types,
             MsgDescriptorPropKey.comment,
             defaults.comment.text,
             defaults.comment.loc,
@@ -119,6 +132,7 @@ export function createMessageDescriptor(
       isObjectProperty(defaults.context)
         ? defaults.context
         : createStringObjectProperty(
+            types,
             MsgDescriptorPropKey.context,
             defaults.context.text,
             defaults.context.loc,
@@ -127,16 +141,19 @@ export function createMessageDescriptor(
   }
 
   if (values) {
-    properties.push(createValuesProperty(MsgDescriptorPropKey.values, values))
+    properties.push(
+      createValuesProperty(types, MsgDescriptorPropKey.values, values),
+    )
   }
 
   if (elements) {
     properties.push(
-      createValuesProperty(MsgDescriptorPropKey.components, elements),
+      createValuesProperty(types, MsgDescriptorPropKey.components, elements),
     )
   }
 
   return createMessageDescriptorObjectExpression(
+    types,
     properties,
     // preserve line numbers for extractor
     oldLoc,
@@ -144,6 +161,7 @@ export function createMessageDescriptor(
 }
 
 function createExplicitIdProperty(
+  types: BabelTypes,
   defaults: DirectiveValues & {
     id?: TextWithLoc | ObjectProperty
     idPrefixLeader?: string
@@ -154,7 +172,7 @@ function createExplicitIdProperty(
   }
 
   const explicitId = isObjectProperty(defaults.id)
-    ? getTextFromExpression(defaults.id.value as Expression)
+    ? getTextFromExpression(types, defaults.id.value as Expression)
     : defaults.id.text
 
   const resolvedId =
@@ -169,20 +187,30 @@ function createExplicitIdProperty(
   }
 
   return createStringObjectProperty(
+    types,
     MsgDescriptorPropKey.id,
     resolvedId,
     defaults.id.loc,
   )
 }
 
-function createIdProperty(message: string, context?: string) {
+function createIdProperty(
+  types: BabelTypes,
+  message: string,
+  context?: string,
+) {
   return createStringObjectProperty(
+    types,
     MsgDescriptorPropKey.id,
     generateMessageId(message, context),
   )
 }
 
-function createValuesProperty(key: string, values: Record<string, Expression>) {
+function createValuesProperty(
+  types: BabelTypes,
+  key: string,
+  values: Record<string, Expression>,
+) {
   const valuesObject = Object.keys(values).map((key) =>
     types.objectProperty(
       types.isValidIdentifier(key)
@@ -206,10 +234,11 @@ function createValuesProperty(key: string, values: Record<string, Expression>) {
 }
 
 export function createStringObjectProperty(
+  types: BabelTypes,
   key: string,
   value: string,
   oldLoc?: SourceLocation,
-) {
+): ObjectProperty {
   const property = types.objectProperty(
     types.identifier(key),
     types.stringLiteral(value),
@@ -221,7 +250,7 @@ export function createStringObjectProperty(
   return property
 }
 
-function getTextFromExpression(exp: Expression): string {
+function getTextFromExpression(types: BabelTypes, exp: Expression): string {
   if (types.isStringLiteral(exp)) {
     return exp.value
   }
@@ -234,6 +263,7 @@ function getTextFromExpression(exp: Expression): string {
 }
 
 function createMessageDescriptorObjectExpression(
+  types: BabelTypes,
   properties: ObjectProperty[],
   oldLoc?: SourceLocation,
 ): ObjectExpression {

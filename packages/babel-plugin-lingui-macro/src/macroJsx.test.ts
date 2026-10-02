@@ -1,10 +1,17 @@
-import type { JSXElement } from "@babel/types"
-import * as types from "@babel/types"
+import type { JSXElement } from "./types"
 import { MacroJSX } from "./macroJsx"
-import { transformSync } from "@babel/core"
+import {
+  transformSync,
+  types,
+  type PluginItem,
+  type PluginPass,
+} from "@babel/core"
 import type { NodePath } from "@babel/traverse"
 import { JsxMacroName } from "./constants"
 import { makeConfig } from "@lingui/conf"
+import Module from "node:module"
+
+const require = Module.createRequire(import.meta.url)
 
 const parseExpression = (expression: string) => {
   let path: NodePath<JSXElement>
@@ -16,10 +23,11 @@ const parseExpression = (expression: string) => {
     configFile: false,
     presets: [],
     plugins: [
-      "@babel/plugin-syntax-jsx",
-      {
+      require.resolve("@babel/plugin-syntax-jsx"),
+      // Babel 8 accepts only a plugin name or factory here
+      (() => ({
         visitor: {
-          JSXElement: (d, state) => {
+          JSXElement: (d: NodePath<JSXElement>, state: PluginPass) => {
             state.set("linguiConfig", makeConfig({}, { skipValidation: true }))
 
             path = d
@@ -27,7 +35,7 @@ const parseExpression = (expression: string) => {
             d.stop()
           },
         },
-      },
+      })) as PluginItem,
     ],
   })
 
