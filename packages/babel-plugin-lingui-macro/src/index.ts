@@ -1,9 +1,4 @@
-import type {
-  PluginObj,
-  PluginPass,
-  types as babelTypes,
-  Visitor,
-} from "@babel/core"
+import type { PluginPass, types as babelTypes, Visitor } from "@babel/core"
 import type { Expression, Identifier, Program } from "./types"
 import { MacroJSX } from "./macroJsx"
 import type { NodePath, Scope } from "@babel/traverse"
@@ -98,6 +93,12 @@ function resolveDescriptorFields(
   }
   // "auto": production → "id-only", otherwise → "all"
   return process.env.NODE_ENV === "production" ? "id-only" : "all"
+}
+
+// Babel 7 names this `PluginObj` and Babel 8 `PluginObject`
+type PluginObj = {
+  name?: string
+  visitor: Visitor<PluginPass>
 }
 
 type LinguiSymbol = "Trans" | "useLingui" | "i18n"
@@ -402,7 +403,6 @@ function wrapJsxElementAsComponent(
       ),
       null,
       [],
-      true,
     ),
   )
 }

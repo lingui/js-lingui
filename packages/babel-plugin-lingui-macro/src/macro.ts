@@ -1,5 +1,11 @@
-import type { VisitNodeObject } from "@babel/traverse"
-import type { Program } from "./types"
+import type { NodePath } from "@babel/core"
+import type { Node, Program } from "./types"
+
+// `@babel/traverse` 8 no longer exports `VisitNodeObject`
+type VisitNodeObject<S, P extends Node> = {
+  enter?: (path: NodePath<P>, state: S) => void
+  exit?: (path: NodePath<P>, state: S) => void
+}
 
 import linguiPlugin from "./index"
 import * as Babel from "@babel/core"

@@ -5,8 +5,11 @@ import {
   createMacroJsContext,
 } from "./macroJsAst"
 import type { NodePath } from "@babel/traverse"
-import { transformSync, types } from "@babel/core"
+import { transformSync, types, type PluginItem } from "@babel/core"
 import { JsMacroName } from "./constants"
+import Module from "node:module"
+
+const require = Module.createRequire(import.meta.url)
 
 const parseExpression = (expression: string) => {
   let path: NodePath<Expression>
@@ -17,8 +20,9 @@ const parseExpression = (expression: string) => {
     configFile: false,
     presets: [],
     plugins: [
-      "@babel/plugin-syntax-jsx",
-      {
+      require.resolve("@babel/plugin-syntax-jsx"),
+      // Babel 8 accepts only a plugin name or factory here
+      (() => ({
         visitor: {
           "CallExpression|TaggedTemplateExpression": (
             d: NodePath<Expression>,
@@ -27,7 +31,7 @@ const parseExpression = (expression: string) => {
             d.stop()
           },
         },
-      },
+      })) as PluginItem,
     ],
   })
 
