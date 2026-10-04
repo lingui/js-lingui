@@ -1,8 +1,12 @@
-import { sha256 } from "js-sha256"
+import { sha256 } from "@noble/hashes/sha2.js"
 import { UNIT_SEPARATOR } from "./constants"
 
+const textEncoder = new TextEncoder()
+
 export function generateMessageId(msg: string, context = "") {
-  const hashBytes = sha256.array(msg + UNIT_SEPARATOR + (context || ""))
+  const hashBytes = sha256(
+    textEncoder.encode(msg + UNIT_SEPARATOR + (context || "")),
+  )
 
   return btoa(String.fromCharCode(...hashBytes))
     .replace(/\+/g, "-")
