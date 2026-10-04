@@ -41,21 +41,23 @@ describe("csv format", () => {
     })
 
     it.each([
-      ["LF", "\n"],
-      ["CRLF", "\r\n"],
-    ])("should read a %s line break", (_, eol) => {
-      const csv = `static,Static message${eol}empty,${eol}`
-
-      expect(format.parse(csv, {} as any)).toEqual({
-        static: parsed("Static message"),
-        empty: parsed(""),
-      })
-    })
-
-    it("should read a single message", () => {
-      expect(format.parse("static,Static message\n", {} as any)).toEqual({
-        static: parsed("Static message"),
-      })
+      [
+        "LF",
+        "static,Static message\nempty,\n",
+        { static: parsed("Static message"), empty: parsed("") },
+      ],
+      [
+        "CRLF",
+        "static,Static message\r\nempty,\r\n",
+        { static: parsed("Static message"), empty: parsed("") },
+      ],
+      [
+        "LF, single row",
+        "static,Static message\n",
+        { static: parsed("Static message") },
+      ],
+    ])("should read the catalog (%s)", (_, csv, expected) => {
+      expect(format.parse(csv, {} as any)).toEqual(expected)
     })
 
     it("should not add an empty id to a long catalog", () => {

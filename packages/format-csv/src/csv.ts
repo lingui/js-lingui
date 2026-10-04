@@ -11,8 +11,7 @@ const serialize = (catalog: CatalogType) => {
 }
 
 const deserialize = (raw: string): { [key: string]: MessageType } => {
-  // Most spreadsheets and editors end the file with a line break, which
-  // would otherwise be read as an extra, empty row.
+  // Skip the trailing line break that editors and spreadsheets add on save.
   const rawCatalog = Papa.parse<[string, string]>(raw, { skipEmptyLines: true })
   const messages: CatalogType = {}
   if (rawCatalog.errors.length) {

@@ -1634,7 +1634,7 @@ __metadata:
   resolution: "@lingui/format-csv@workspace:packages/format-csv"
   dependencies:
     "@lingui/conf": "workspace:*"
-    papaparse: "npm:^5.4.0"
+    papaparse: "npm:^5.7.0"
     typescript: "catalog:"
     unbuild: "catalog:"
     vitest: "catalog:"
@@ -11228,10 +11228,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"papaparse@npm:^5.4.0":
-  version: 5.4.0
-  resolution: "papaparse@npm:5.4.0"
-  checksum: 10/2d2c171128f6c93b554daa6925ac4eba142e1ddd49bae771c767f53adb8fbf222aebf363315c48fb4103d4e4283012a247eedfd16eb4b1d7edb5dc982b1983eb
+"papaparse@npm:^5.7.0":
+  version: 5.7.0
+  resolution: "papaparse@npm:5.7.0"
+  checksum: 10/ce787e38d109c75b261bf2e0ea724fe655430554f7dfec98c82b8e95c18d7b3005db25f3d290847383e8debb0c0774c518ea3439e6a22cc864dd0b8df7db0f20
   languageName: node
   linkType: hard
 
