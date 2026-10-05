@@ -45,6 +45,38 @@ describe("vite-plugin", () => {
     expect(await mod.load()).toMatchSnapshot()
   })
 
+  it("should parse a TSX module whose id carries a query with native transformer", async () => {
+    // https://github.com/lingui/js-lingui/issues/2702
+    const cwd = path.join(import.meta.dirname, "macro-usage")
+    const plugin = lingui({ macroTransform: true, cwd }).find(
+      (p) => p.name === "vite-plugin-lingui-macro-transform",
+    )!
+    const { handler } = plugin.transform as {
+      handler: (
+        this: unknown,
+        code: string,
+        id: string,
+      ) => Promise<{ code: string }>
+    }
+
+    const code = [
+      `import type { Route } from "./+types/home"`,
+      `import { Trans } from "@lingui/react/macro"`,
+      `export default function Home(_: Route.ComponentProps) {`,
+      `  return <Trans>Hello</Trans>`,
+      `}`,
+    ].join("\n")
+
+    const result = await handler.call(
+      { environment: { config: { isProduction: false } } },
+      code,
+      path.join(cwd, "home.route.tsx?__react-router-build-client-route"),
+    )
+
+    expect(result.code).not.toContain("@lingui/react/macro")
+    expect(result.code).toContain("Hello")
+  })
+
   it("should correctly process with native transformer - PRODUCTION", async () => {
     const oldEnv = process.env.NODE_ENV
     process.env.NODE_ENV = "production"

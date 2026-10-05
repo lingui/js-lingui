@@ -103,7 +103,11 @@ export function lingui({
 
           const { transform, mapMacroOptions } = nativeTools
 
-          const result = await transform(code, path.basename(id), {
+          // Vite ids can carry a query (e.g. React Router's `?__react-router-build-client-route`),
+          // and the native parser picks TS/JSX syntax from the file extension, so strip it first.
+          const filename = path.basename(id.replace(/\?.*$/, ""))
+
+          const result = await transform(code, filename, {
             macro: {
               descriptorFields: this.environment.config.isProduction
                 ? "id-only"
