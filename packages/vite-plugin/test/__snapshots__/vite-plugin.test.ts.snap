@@ -4,6 +4,8 @@ exports[`vite-plugin > should correctly process with native transformer - PRODUC
 
 exports[`vite-plugin > should correctly process with native transformer 1`] = `"Ola"`;
 
+exports[`vite-plugin > should correctly process with native transformer when the module id has a query 1`] = `"Ola"`;
+
 exports[`vite-plugin > should not report error when macro correctly used 1`] = `"Ola"`;
 
 exports[`vite-plugin > should return compiled catalog 1`] = `

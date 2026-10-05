@@ -103,7 +103,12 @@ export function lingui({
 
           const { transform, mapMacroOptions } = nativeTools
 
-          const result = await transform(code, path.basename(id), {
+          // The filter above accepts an id with a query, and the parser reads
+          // the file type from the extension — so `route.tsx?plugin-option`
+          // has to lose the query before the name is passed on.
+          const fileName = path.basename(id.split("?")[0]!)
+
+          const result = await transform(code, fileName, {
             macro: {
               descriptorFields: this.environment.config.isProduction
                 ? "id-only"

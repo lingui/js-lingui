@@ -45,6 +45,16 @@ describe("vite-plugin", () => {
     expect(await mod.load()).toMatchSnapshot()
   })
 
+  // The plugin's own filter accepts an id with a query, so the native transform has to be given a
+  // name it can still read the extension from. React Router's framework mode appends one to every
+  // client route during `vite build`, which made the first piece of TS syntax a parse error.
+  it("should correctly process with native transformer when the module id has a query", async () => {
+    const { mod } = await runVite(`macro-id-with-query`, {
+      macroTransform: true,
+    })
+    expect(await mod.load()).toMatchSnapshot()
+  })
+
   it("should correctly process with native transformer - PRODUCTION", async () => {
     const oldEnv = process.env.NODE_ENV
     process.env.NODE_ENV = "production"
