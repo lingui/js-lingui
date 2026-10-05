@@ -41,7 +41,7 @@
   ],
   "dependencies": {
     "@lingui/conf": "workspace:*",
-    "papaparse": "^5.4.0"
+    "papaparse": "^5.7.0"
   },
   "devDependencies": {
     "typescript": "catalog:",
