@@ -1294,9 +1294,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@lingui/swc-plugin@npm:^6.3.0":
-  version: 6.3.0
-  resolution: "@lingui/swc-plugin@npm:6.3.0"
+"@lingui/swc-plugin@npm:6.6.0":
+  version: 6.6.0
+  resolution: "@lingui/swc-plugin@npm:6.6.0"
   dependencies:
     "@lingui/conf": "npm:5 || 6"
   peerDependencies:
@@ -1306,7 +1306,7 @@ __metadata:
       optional: true
     next:
       optional: true
-  checksum: 10/3ffc772a73a88687b2ea97bf172072a6a1896f6985c56ef1b2a0051f3fcbc716060c4ed0adc9563092ebb33bf5a0ee61d521a67b0497f99602178df89cebce52
+  checksum: 10/4484c1cec345c96676e4f2b5f1c271b771ea248f06d6d399e43e4dc0da7051fd3829b30f8659454e45c36db363eaac548eb1c0506a7c11b3f499312150b4c610
   languageName: node
   linkType: hard
 
@@ -4248,7 +4248,7 @@ __metadata:
     "@lingui/core": "npm:^6.1.0"
     "@lingui/loader": "npm:^6.1.0"
     "@lingui/react": "npm:^6.1.0"
-    "@lingui/swc-plugin": "npm:^6.3.0"
+    "@lingui/swc-plugin": "npm:6.6.0"
     "@types/negotiator": "npm:^0.6.3"
     "@types/react": "npm:^19.3.0"
     "@types/react-dom": "npm:^19.3.0"
