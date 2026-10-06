@@ -45,6 +45,11 @@ describe("vite-plugin", () => {
     expect(await mod.load()).toMatchSnapshot()
   })
 
+  it("should process a TSX module whose id carries a query with native transformer", async () => {
+    const { mod } = await runVite(`query-id`, { macroTransform: true })
+    expect(await mod.load()).toBe("Ola")
+  })
+
   it("should correctly process with native transformer - PRODUCTION", async () => {
     const oldEnv = process.env.NODE_ENV
     process.env.NODE_ENV = "production"
