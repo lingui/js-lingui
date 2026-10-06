@@ -2,9 +2,10 @@
   "name": "@lingui/loader",
   "version": "6.9.0",
   "type": "module",
-  "description": "Webpack-compatible loader that compiles Lingui message catalogs on the fly, so .po files can be imported directly",
+  "description": "Webpack-compatible loaders for Lingui: compile message catalogs on the fly so .po files can be imported directly, and transform Lingui macros natively",
   "exports": {
-    ".": "./dist/index.cjs"
+    ".": "./dist/index.cjs",
+    "./macro": "./dist/macro.cjs"
   },
   "sideEffects": false,
   "author": {
@@ -48,7 +49,8 @@
   ],
   "dependencies": {
     "@lingui/cli": "workspace:*",
-    "@lingui/conf": "workspace:*"
+    "@lingui/conf": "workspace:*",
+    "@lingui/native-tools": "^0.1.5"
   },
   "devDependencies": {
     "@lingui/format-json": "workspace:*",
