@@ -46,7 +46,6 @@ describe("vite-plugin", () => {
   })
 
   it("should process a TSX module whose id carries a query with native transformer", async () => {
-    // https://github.com/lingui/js-lingui/issues/2702
     const { mod } = await runVite(`query-id`, { macroTransform: true })
     expect(await mod.load()).toBe("Ola")
   })
