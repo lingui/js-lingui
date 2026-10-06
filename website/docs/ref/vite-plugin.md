@@ -85,6 +85,10 @@ Production builds emit `id`-only message descriptors, while development builds k
 `@lingui/native-tools` ships prebuilt binaries for macOS, Linux, Windows and Android. There is no WASM fallback, so make sure your build environment matches one of the supported platforms. The binary is loaded lazily, only when `macroTransform` is enabled.
 :::
 
+:::note
+`lingui extract` still uses Babel by default. Use the [native extractor](/guides/custom-extractor#native-extractor) to extract without Babel as well.
+:::
+
 ### Options Reference
 
 `macroTransform` accepts `true` to enable the transform with default options, or an object to fine-tune it:

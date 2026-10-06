@@ -569,7 +569,7 @@ Extractors it's the way to customize which extractor you want for your codebase.
 }
 ```
 
-See the [Custom Extractor](/guides/custom-extractor) guide for instructions on creating your own extractor.
+See the [Custom Extractor](/guides/custom-extractor) guide for instructions on creating your own extractor, or use the [native extractor](/guides/custom-extractor#native-extractor) to extract without Babel.
 
 ## macro.corePackage
 
