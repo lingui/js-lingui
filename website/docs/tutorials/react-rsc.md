@@ -15,9 +15,9 @@ Before going further, please follow the [Installation and Setup](/installation?t
 
 ### Adding i18n Support to Next.js
 
-Firstly, your Next.js app needs to be ready for routing and rendering of content in multiple languages. This is done through the middleware (see the [example app's middleware](https://github.com/lingui/js-lingui/blob/main/examples/nextjs-swc/src/middleware.ts)). Please read the [official Next.js docs](https://nextjs.org/docs/app/building-your-application/routing/internationalization) for more information.
+Firstly, your Next.js app needs to be ready for routing and rendering of content in multiple languages. This is done through the proxy, called middleware before Next.js 16 (see the [example app's proxy](https://github.com/lingui/js-lingui/blob/main/examples/nextjs-swc/src/proxy.ts)). Please read the [official Next.js docs](https://nextjs.org/docs/app/guides/internationalization) for more information.
 
-After configuring the middleware, make sure your page and route files are moved from `app` to `app/[lang]` folder (example: `app/[lang]/layout.tsx`). This enables the Next.js router to dynamically handle different locales in the route, and forward the `lang` parameter to every layout and page.
+After configuring the proxy, make sure your page and route files are moved from `app` to `app/[lang]` folder (example: `app/[lang]/layout.tsx`). This enables the Next.js router to dynamically handle different locales in the route. Because `[lang]` sits above the root layout, it's a root parameter: since Next.js 16.3, any Server Component can read it with [`next/root-params`](https://nextjs.org/docs/app/api-reference/functions/next-root-params), without passing `params` down from layouts and pages.
 
 ### Next.js Config
 
@@ -45,40 +45,85 @@ With Lingui, the experience of localizing React is the same in client and server
 Translation strings, one way or another, are obtained from an [I18n](/ref/core) object instance. In client components, this instance is passed around using React context. Because context is not available in Server components, instead [`cache`](https://react.dev/reference/react/cache) is used to maintain an I18n instance for each request.
 :::
 
-To make Lingui work in both server and client components, we need to take the `lang` prop which Next.js passes to our layouts and pages, and create a corresponding instance of the I18n object. We then make it available to the components in our app. This is a 2-step process:
+To make Lingui work in both server and client components, we need to take the `lang` of the current request and create a corresponding instance of the I18n object. We then make it available to the components in our app. This is a 2-step process:
 
 1. given `lang`, take an I18n instance and store it in the [`cache`](https://react.dev/reference/react/cache) so it can be used server-side
 2. given `lang`, take an I18n instance and make it available to client components via `I18nProvider`
 
-This is how step (1) can be implemented:
+Step (1) fits in a small helper. It reads `lang` with `next/root-params`, so it doesn't need any arguments:
 
-```tsx title="src/app/[lang]/layout.tsx"
+```ts title="src/initLingui.ts"
+import { lang } from "next/root-params";
 import { setI18n } from "@lingui/react/server";
 import { getI18nInstance } from "./appRouterI18n";
+
+export async function initLingui() {
+  const i18n = getI18nInstance(await lang()); // get a ready-made i18n instance for the current locale
+  setI18n(i18n); // make it available server-side for the current request
+  return i18n;
+}
+```
+
+The root layout calls it, and so does `generateMetadata`:
+
+```tsx title="src/app/[lang]/layout.tsx"
+import { msg } from "@lingui/core/macro";
+import { initLingui } from "../../initLingui";
 import { LinguiClientProvider } from "./LinguiClientProvider";
 
-type Props = {
-  params: {
-    lang: string;
-  };
-  children: React.ReactNode;
-};
+export async function generateMetadata() {
+  const i18n = await initLingui();
 
-export default function RootLayout({ params: { lang }, children }: Props) {
-  const i18n = getI18nInstance(lang); // get a ready-made i18n instance for the given locale
-  setI18n(i18n); // make it available server-side for the current request
+  return {
+    title: i18n._(msg`Translation Demo`),
+  };
+}
+
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const i18n = await initLingui();
 
   return (
-    <html lang={lang}>
+    <html lang={i18n.locale}>
       <body>
-        <LinguiClientProvider initialLocale={lang} initialMessages={i18n.messages}>
-          <YourApp />
+        <LinguiClientProvider initialLocale={i18n.locale} initialMessages={i18n.messages}>
+          {children}
         </LinguiClientProvider>
       </body>
     </html>
   );
 }
 ```
+
+:::note Next.js older than 16.3
+`next/root-params` isn't available before Next.js 16.3. Take `lang` from the `params` prop that Next.js passes to every layout and page, and pass it to the helper instead:
+
+```tsx
+export function initLingui(lang: string) {
+  const i18n = getI18nInstance(lang);
+  setI18n(i18n);
+  return i18n;
+}
+
+type Props = {
+  params: Promise<{ lang: string }>;
+  children: React.ReactNode;
+};
+
+export default async function RootLayout({ params, children }: Props) {
+  const { lang } = await params;
+  const i18n = initLingui(lang);
+  // ...render the same tree as above
+}
+```
+
+In Next.js 14 and older, `params` is a plain object rather than a promise.
+:::
+
+:::caution
+Root parameter getters such as `lang()` only work in Server Components and the server-side code they call. They aren't available in Client Components, Server Actions, or Route Handlers: pass the locale explicitly there, for example as an argument from the component that calls the Server Action.
+
+Inside a [`"use cache"`](https://nextjs.org/docs/app/api-reference/directives/use-cache) function, Next.js adds the root parameters you read to the cache key, so `getI18nInstance(await lang())` gives you one cache entry per locale. Calling `lang()` inside `unstable_cache` throws an error.
+:::
 
 Step (2) is implemented in `LinguiClientProvider`, which is a client component:
 
@@ -147,11 +192,23 @@ There's one last caveat: in a real-world app, you will need to localize many pag
 - [Why do nested layouts/pages render before their parent layouts?](https://github.com/vercel/next.js/discussions/53026)
 - [On navigation, layouts preserve state and do not re-render](https://nextjs.org/docs/app/building-your-application/routing/pages-and-layouts#layouts)
 
-This means you need to repeat the `setI18n` in every page and layout. Luckily, you can easily factor it out into a simple function call, or create a HOC with which you'll wrap pages and layouts [as seen here](https://github.com/lingui/js-lingui/blob/main/examples/nextjs-swc/src/initLingui.tsx). Please let us know if there's a known better way.
+`next/root-params` doesn't change this. Lingui's server-side `Trans` and `useLingui` read the I18n instance synchronously from the React `cache`, so it has to be set before they render, in every page and layout. What root params remove is the need to thread `params` through each of them: the call becomes a one-liner without arguments.
+
+```tsx title="src/app/[lang]/some-page/page.tsx"
+import { initLingui } from "../../../initLingui";
+import { SomeComponent } from "../components/SomeComponent";
+
+export default async function Page() {
+  await initLingui();
+  return <SomeComponent />;
+}
+```
+
+See [`initLingui.tsx`](https://github.com/lingui/js-lingui/blob/main/examples/nextjs-swc/src/initLingui.tsx) in the example app.
 
 ### Changing the Active Language
 
-Most likely, your users will not need to change the language of the application because it will render in their preferred language (obtained from the `accept-language` header in the [middleware](https://github.com/lingui/js-lingui/blob/2f1c1c3ae9e079c1c0e1a2ff617b1d0775af3170/examples/nextjs-swc/src/middleware.ts#L30)), or with a fallback.
+Most likely, your users will not need to change the language of the application because it will render in their preferred language (obtained from the `accept-language` header in the [proxy](https://github.com/lingui/js-lingui/blob/main/examples/nextjs-swc/src/proxy.ts)), or with a fallback.
 
 To change language, redirect users to a page with the new locale in the url. We do not recommend [dynamic](/guides/dynamic-loading-catalogs.md) switching because server-rendered locale-dependent content would become stale.
 
