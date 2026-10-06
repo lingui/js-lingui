@@ -127,6 +127,10 @@ export default defineConfig({
 });
 ```
 
+:::note
+The [native macro transform](/ref/vite-plugin#native-macro-transform) of `@lingui/vite-plugin` doesn't support Solid yet, so keep the Babel plugin for macros and don't enable `macroTransform`.
+:::
+
 ## Setup
 
 We will start translating the `Inbox` component right away, but we need to do one more step to set up our application.
