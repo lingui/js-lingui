@@ -1,70 +1,51 @@
-## Example project using Next 16 and SWC Compiler with LinguiJS Plugin
+# Next.js App Router + SWC plugin
 
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app). It showcases use with app router (in `src/app`) as well as with pages router (in `src/pages`).
+Example of [Lingui](https://lingui.dev) in a [Next.js](https://nextjs.org/) 16 app that uses the App Router and React Server Components. Macros are compiled by the [`@lingui/swc-plugin`](https://lingui.dev/ref/swc-plugin), so there is no Babel in the project.
 
-## SWC Compatibility
+Looking for the Pages Router? See the [`nextjs-babel`](../nextjs-babel) example.
 
-SWC Plugin support is still experimental. Semver backwards compatibility between different `next-swc` versions is not guaranteed.
+## Getting Started
 
-Therefore, you need to select an appropriate version of the Lingui plugin to match compatible `NextJs` version.
-You also need to add the `@lingui/swc-plugin` dependency with strict version without a range specifier.
+```bash
+yarn install
+yarn dev
+```
+
+Open [http://localhost:3000](http://localhost:3000). The proxy picks a locale from the `Accept-Language` header and redirects you to it. Open [http://localhost:3000/es](http://localhost:3000/es) or [http://localhost:3000/pseudo](http://localhost:3000/pseudo) to see the page in another locale.
+
+## How It Works
+
+Each locale lives under its own URL prefix: `/en`, `/es`, `/sr` and `/pseudo`.
+
+- `src/proxy.ts` redirects requests without a prefix to the browser's preferred locale.
+- `src/appRouterI18n.ts` keeps one `I18n` instance per locale on the server.
+- `src/initLingui.tsx` reads the locale from the `[lang]` segment with `next/root-params` and activates the matching instance. Call it in every page, layout and `generateMetadata`.
+- `src/app/[lang]/layout.tsx` provides the instance to Client Components through `LinguiClientProvider`.
+
+The [React Server Components tutorial](https://lingui.dev/tutorials/react-rsc) walks through this setup step by step.
+
+## Lingui Commands
+
+Extract messages from the source code into `src/locales/*.po`:
+
+```bash
+yarn lingui:extract
+```
+
+`yarn build` runs the extraction before `next build`, so the catalogs are always up to date.
+
+## SWC Plugin Compatibility
+
+SWC plugins are compiled against a specific version of SWC, and backwards compatibility between `next-swc` versions is not guaranteed. Pin `@lingui/swc-plugin` to an exact version that matches your Next.js version, without a range specifier:
 
 ```json
 {
   "devDependencies": {
-    "@lingui/swc-plugin": "see-below"
+    "@lingui/swc-plugin": "6.6.0"
   }
 }
 ```
 
-For version compatibility table, please refer to the [Compatibility section](https://github.com/lingui/swc-plugin#compatibility).
+See the [compatibility table](https://github.com/lingui/swc-plugin#compatibility) for the right version.
 
-## Getting Started
-
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-## LinguiJS Integration
-
-LinguiJs is integrated with standard Next.js i18n support using [proxy](https://nextjs.org/docs/app/guides/internationalization) (`src/proxy.ts`). The App Router reads the locale with [`next/root-params`](https://nextjs.org/docs/app/api-reference/functions/next-root-params) in `src/initLingui.tsx`, so pages and layouts don't need to pass `params` around.
-
-Open [http://localhost:3000/es](http://localhost:3000/es) with your browser to prerender page in different language.
-
-## LinguiJS Related Commands
-
-Extract messages from sourcecode:
-```bash
-npm run lingui:extract
-# or
-yarn lingui:extract
-# or
-pnpm lingui:extract
-```
-
-## Important Notes
-- You **should not have** a babel config in the project, otherwise Next will turn off SWC compiler in favor of babel.
-- The actual code is compiled with SWC + Lingui SWC plugin.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Do **not** add a Babel config to the project. Next.js would switch to Babel and the SWC plugin would no longer run.
