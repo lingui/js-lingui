@@ -24,7 +24,7 @@ export function Section({ title, intro, width = "wide", className, children }: S
       <div className={cx("mx-auto", WIDTHS[width])}>
         {title && (
           <div className="mb-12 text-center">
-            <h2 className="m-0 text-balance text-3xl font-semibold tracking-tight text-heading sm:text-4xl">{title}</h2>
+            <h2 className="m-0 text-balance text-3xl font-semibold text-heading sm:text-4xl">{title}</h2>
             {intro && <p className="mx-auto mb-0 mt-4 max-w-xl text-base leading-relaxed text-body-fg">{intro}</p>}
           </div>
         )}

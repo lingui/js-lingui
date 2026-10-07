@@ -58,11 +58,6 @@
   --ifm-color-secondary: var(--ifm-color-gray-500);
 }
 
-h1,
-h2 {
-  letter-spacing: -0.02em;
-}
-
 /* Docs content: Infima bumps these to 2rem / 1.5rem; keep the scale consistent with the rest of the site. */
 .markdown > h2 {
   --ifm-h2-font-size: 1.75rem;
