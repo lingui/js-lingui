@@ -18,6 +18,8 @@ const config: Config = {
     },
   },
   themes: ["@docusaurus/theme-mermaid"],
+  // Self-hosted Inter Variable (@fontsource-variable/inter); the font stack is set in src/css/custom.scss.
+  clientModules: [require.resolve("@fontsource-variable/inter")],
   themeConfig: {
     colorMode: {
       disableSwitch: false,

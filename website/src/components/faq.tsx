@@ -1,4 +1,5 @@
 import React from "react";
+import { Section } from "./ui/section";
 
 interface FaqItem {
   question: string;
@@ -80,36 +81,31 @@ const FAQ: FaqItem[] = [
 
 export function Faq(): React.ReactElement {
   return (
-    <section className="px-4">
-      <div className="mx-auto max-w-3xl">
-        <h2 className="mb-12 text-center text-3xl font-medium tracking-tight text-heading sm:text-4xl">
-          Frequently asked questions
-        </h2>
-        <div className="divide-y divide-secondary/25 border-y border-secondary/25 dark:divide-white/10 dark:border-white/10">
-          {FAQ.map(({ question, answer }) => (
-            <details key={question} className="group py-5">
-              <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-left [&::-webkit-details-marker]:hidden">
-                <h3 className="m-0 text-lg font-medium tracking-tight text-heading">{question}</h3>
-                <svg
-                  aria-hidden="true"
-                  viewBox="0 0 20 20"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="h-5 w-5 shrink-0 text-body-fg motion-safe:transition-transform group-open:rotate-180"
-                >
-                  <path d="M5 8l5 5 5-5" />
-                </svg>
-              </summary>
-              <div className="mt-3 pr-9 text-base leading-relaxed text-body-fg [&_p]:m-0 [&_a]:text-link [&_a]:no-underline [&_a]:underline-offset-2 [&_a:hover]:underline [&_code]:rounded-md [&_code]:bg-secondary/15 [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:text-[0.875em]">
-                {answer}
-              </div>
-            </details>
-          ))}
-        </div>
+    <Section title="Frequently asked questions" width="narrow">
+      <div className="divide-y divide-secondary/25 border-y border-secondary/25 dark:divide-white/10 dark:border-white/10">
+        {FAQ.map(({ question, answer }) => (
+          <details key={question} className="group py-5">
+            <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-left [&::-webkit-details-marker]:hidden">
+              <h3 className="m-0 text-lg font-medium tracking-tight text-heading">{question}</h3>
+              <svg
+                aria-hidden="true"
+                viewBox="0 0 20 20"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={2}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="h-5 w-5 shrink-0 text-body-fg motion-safe:transition-transform group-open:rotate-180"
+              >
+                <path d="M5 8l5 5 5-5" />
+              </svg>
+            </summary>
+            <div className="mt-3 pr-9 text-base leading-relaxed text-body-fg [&_p]:m-0 [&_a]:text-link [&_a]:no-underline [&_a]:underline-offset-2 [&_a:hover]:underline [&_code]:rounded-md [&_code]:bg-secondary/15 [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:text-[0.875em]">
+              {answer}
+            </div>
+          </details>
+        ))}
       </div>
-    </section>
+    </Section>
   );
 }

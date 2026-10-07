@@ -2,6 +2,7 @@ import React from "react";
 import type { ReactNode } from "react";
 import { Terminal, FileText, Languages, FileCode, Server } from "lucide-react";
 import CodeBlock from "@theme/CodeBlock";
+import { Section } from "./ui/section";
 
 interface CodeSnippet {
   code: string;
@@ -127,82 +128,76 @@ interface LinguiWorkflowProps {
 
 export function LinguiWorkflow({ steps = defaultSteps }: LinguiWorkflowProps) {
   return (
-    <section className="px-4">
-      <div className="max-w-4xl mx-auto">
-        <div className="mb-12 text-center">
-          <h2 className="text-2xl font-medium tracking-tight text-heading sm:text-3xl">Workflow</h2>
-        </div>
+    <Section title="From source messages to shipped translations" width="default">
+      {steps.map((step, index) => (
+        <div key={step.id} className="relative">
+          {/* Mobile Layout */}
+          <div className="md:hidden flex flex-col items-center mb-8">
+            <div className="text-center mb-6">
+              <h3 className="mb-2 text-2xl font-medium tracking-tight text-heading">{step.title}</h3>
+              <p className="mx-auto max-w-xs text-base leading-relaxed text-body-fg">{step.description}</p>
+            </div>
 
-        {steps.map((step, index) => (
-          <div key={step.id} className="relative">
-            {/* Mobile Layout */}
-            <div className="md:hidden flex flex-col items-center mb-8">
-              <div className="text-center mb-6">
-                <h3 className="mb-2 text-2xl font-medium tracking-tight text-heading">{step.title}</h3>
-                <p className="mx-auto max-w-xs text-base leading-relaxed text-body-fg">{step.description}</p>
+            {step.id === "deploy" ? (
+              <div className="mb-6">
+                <ServerIcon />
               </div>
+            ) : (
+              <StepIcon icon={step.icon} bgColor={step.iconBgColor} showLine={index < steps.length - 1} />
+            )}
 
-              {step.id === "deploy" ? (
-                <div className="mb-6">
-                  <ServerIcon />
+            {step.codeSnippet && (
+              <div className="mt-6 w-full flex justify-center">
+                <WorkflowCodeBlock snippet={step.codeSnippet} />
+              </div>
+            )}
+
+            {index < steps.length - 1 && step.id !== "deploy" && (
+              <div className="w-0.5 h-8 bg-gradient-to-b from-cyan-400/30 to-transparent mt-4" />
+            )}
+          </div>
+
+          {/* Desktop Layout */}
+          <div className="hidden md:grid md:grid-cols-3 md:gap-1 md:items-start mb-12">
+            {/* Left Column */}
+            <div className="flex justify-end">
+              {step.codePosition === "left" && step.codeSnippet && <WorkflowCodeBlock snippet={step.codeSnippet} />}
+              {step.codePosition === "right" && (
+                <div className="text-right">
+                  <h3 className="mb-3 text-3xl font-medium tracking-tight text-heading">{step.title}</h3>
+                  <p className="ml-auto max-w-xs text-base leading-relaxed text-body-fg">{step.description}</p>
                 </div>
+              )}
+            </div>
+
+            {/* Center Column - Icon */}
+            <div className="flex justify-center">
+              {step.id === "deploy" ? (
+                <ServerIcon />
               ) : (
                 <StepIcon icon={step.icon} bgColor={step.iconBgColor} showLine={index < steps.length - 1} />
               )}
+            </div>
 
-              {step.codeSnippet && (
-                <div className="mt-6 w-full flex justify-center">
-                  <WorkflowCodeBlock snippet={step.codeSnippet} />
+            {/* Right Column */}
+            <div className="flex justify-start">
+              {step.codePosition === "right" && step.codeSnippet && <WorkflowCodeBlock snippet={step.codeSnippet} />}
+              {step.codePosition === "left" && (
+                <div className="text-left">
+                  <h3 className="mb-3 text-3xl font-medium tracking-tight text-heading">{step.title}</h3>
+                  <p className="max-w-xs text-base leading-relaxed text-body-fg">{step.description}</p>
                 </div>
               )}
-
-              {index < steps.length - 1 && step.id !== "deploy" && (
-                <div className="w-0.5 h-8 bg-gradient-to-b from-cyan-400/30 to-transparent mt-4" />
+              {!step.codeSnippet && step.codePosition !== "left" && (
+                <div className="text-left">
+                  <h3 className="mb-3 text-3xl font-medium tracking-tight text-heading">{step.title}</h3>
+                  <p className="max-w-xs text-base leading-relaxed text-body-fg">{step.description}</p>
+                </div>
               )}
             </div>
-
-            {/* Desktop Layout */}
-            <div className="hidden md:grid md:grid-cols-3 md:gap-1 md:items-start mb-12">
-              {/* Left Column */}
-              <div className="flex justify-end">
-                {step.codePosition === "left" && step.codeSnippet && <WorkflowCodeBlock snippet={step.codeSnippet} />}
-                {step.codePosition === "right" && (
-                  <div className="text-right">
-                    <h3 className="mb-3 text-3xl font-medium tracking-tight text-heading">{step.title}</h3>
-                    <p className="ml-auto max-w-xs text-base leading-relaxed text-body-fg">{step.description}</p>
-                  </div>
-                )}
-              </div>
-
-              {/* Center Column - Icon */}
-              <div className="flex justify-center">
-                {step.id === "deploy" ? (
-                  <ServerIcon />
-                ) : (
-                  <StepIcon icon={step.icon} bgColor={step.iconBgColor} showLine={index < steps.length - 1} />
-                )}
-              </div>
-
-              {/* Right Column */}
-              <div className="flex justify-start">
-                {step.codePosition === "right" && step.codeSnippet && <WorkflowCodeBlock snippet={step.codeSnippet} />}
-                {step.codePosition === "left" && (
-                  <div className="text-left">
-                    <h3 className="mb-3 text-3xl font-medium tracking-tight text-heading">{step.title}</h3>
-                    <p className="max-w-xs text-base leading-relaxed text-body-fg">{step.description}</p>
-                  </div>
-                )}
-                {!step.codeSnippet && step.codePosition !== "left" && (
-                  <div className="text-left">
-                    <h3 className="mb-3 text-3xl font-medium tracking-tight text-heading">{step.title}</h3>
-                    <p className="max-w-xs text-base leading-relaxed text-body-fg">{step.description}</p>
-                  </div>
-                )}
-              </div>
-            </div>
           </div>
-        ))}
-      </div>
-    </section>
+        </div>
+      ))}
+    </Section>
   );
 }

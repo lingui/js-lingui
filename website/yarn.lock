@@ -4438,6 +4438,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@fontsource-variable/inter@npm:5.3.0":
+  version: 5.3.0
+  resolution: "@fontsource-variable/inter@npm:5.3.0"
+  checksum: 10/b7d30aa2605cc1b4db5d87ddc06de7b315c7b0e67c919052c8002d11670ee41fc0a0fcb01b7adbe8243bb889230ab61fbc0b0b84d34fd1fd4cf6f6f641a0ff73
+  languageName: node
+  linkType: hard
+
 "@hapi/hoek@npm:^9.0.0, @hapi/hoek@npm:^9.3.0":
   version: 9.3.0
   resolution: "@hapi/hoek@npm:9.3.0"
@@ -12609,6 +12616,7 @@ __metadata:
     "@docusaurus/theme-mermaid": "npm:3.10.2"
     "@docusaurus/utils": "npm:3.10.2"
     "@eslint/js": "npm:^9.39.5"
+    "@fontsource-variable/inter": "npm:5.3.0"
     "@mdx-js/react": "npm:3.1.1"
     "@signalwire/docusaurus-plugin-llms-txt": "npm:^1.2.2"
     "@tailwindcss/postcss": "npm:^4.3.3"
