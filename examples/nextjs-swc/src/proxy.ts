@@ -1,6 +1,6 @@
 /*
  * For more info see
- * https://nextjs.org/docs/app/building-your-application/routing/internationalization
+ * https://nextjs.org/docs/app/guides/internationalization
  * */
 import { type NextRequest, NextResponse } from 'next/server'
 
@@ -9,7 +9,7 @@ import linguiConfig from '../lingui.config'
 
 const { locales } = linguiConfig
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
 
   const pathnameHasLocale = locales.some(

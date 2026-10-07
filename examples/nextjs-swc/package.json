@@ -15,17 +15,17 @@
     "@lingui/core": "^6.1.0",
     "@lingui/react": "^6.1.0",
     "negotiator": "^0.6.3",
-    "next": "15.0.1",
-    "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "next": "16.3.8",
+    "react": "19.3.0",
+    "react-dom": "19.3.0"
   },
   "devDependencies": {
     "@lingui/cli": "^6.1.0",
     "@lingui/loader": "^6.1.0",
-    "@lingui/swc-plugin": "^6.3.0",
+    "@lingui/swc-plugin": "6.6.0",
     "@types/negotiator": "^0.6.3",
-    "@types/react": "^18.3.3",
-    "@types/react-dom": "^18.3.0",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
     "eslint": "^8.57.0",
     "eslint-config-next": "15.0.1",
     "typescript": "^5.4.5"

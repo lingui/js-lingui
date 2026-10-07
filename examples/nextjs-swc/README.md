@@ -1,4 +1,4 @@
-## Example project using Next 14 and SWC Compiler with LinguiJS Plugin
+## Example project using Next 16 and SWC Compiler with LinguiJS Plugin
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app). It showcases use with app router (in `src/app`) as well as with pages router (in `src/pages`).
 
@@ -35,7 +35,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ## LinguiJS Integration
 
-LinguiJs is integrated with standard Next.js i18n support for using [middleware](https://nextjs.org/docs/app/building-your-application/routing/internationalization).
+LinguiJs is integrated with standard Next.js i18n support using [proxy](https://nextjs.org/docs/app/guides/internationalization) (`src/proxy.ts`). The App Router reads the locale with [`next/root-params`](https://nextjs.org/docs/app/api-reference/functions/next-root-params) in `src/initLingui.tsx`, so pages and layouts don't need to pass `params` around.
 
 Open [http://localhost:3000/es](http://localhost:3000/es) with your browser to prerender page in different language.
 
