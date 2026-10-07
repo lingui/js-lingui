@@ -27,7 +27,7 @@ Next.js owns the locale routing, Lingui translates the pages.
 Extract messages from the source code into `src/locales/*.po`:
 
 ```bash
-yarn extract
+yarn lingui:extract
 ```
 
 `yarn build` runs the extraction before `next build`, so the catalogs are always up to date.

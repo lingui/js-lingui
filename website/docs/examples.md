@@ -11,8 +11,8 @@ To help you get started with Lingui, we've provided some example projects that d
 Check out the example projects below:
 
 - [Vanilla JS](https://github.com/lingui/js-lingui/tree/main/examples/js)
-- [Next.js with Babel](https://github.com/lingui/js-lingui/tree/main/examples/nextjs-babel)
-- [Next.js with SWC and app router](https://github.com/lingui/js-lingui/tree/main/examples/nextjs-swc)
+- [Next.js App Router with SWC](https://github.com/lingui/js-lingui/tree/main/examples/nextjs-swc)
+- [Next.js Pages Router with Babel](https://github.com/lingui/js-lingui/tree/main/examples/nextjs-babel)
 - [React Native (uses Expo)](https://github.com/lingui/js-lingui/tree/main/examples/react-native)
 - [React with Vite and Babel](https://github.com/lingui/js-lingui/tree/main/examples/vite-project-react-babel)
 - [React with Vite and SWC](https://github.com/lingui/js-lingui/tree/main/examples/vite-project-react-swc)
