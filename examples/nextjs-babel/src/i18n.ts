@@ -1,23 +1,30 @@
-import { setupI18n, Messages } from "@lingui/core"
+import { Messages, setupI18n } from "@lingui/core"
 import { useRouter } from "next/router"
-import { useEffect } from "react"
+import { useMemo } from "react"
 
 /**
- * Load messages for requested locale and activate it.
- * This function isn't part of the LinguiJS library because there are
- * many ways how to load messages — from REST API, from file, from cache, etc.
+ * Load the catalog for the requested locale.
+ *
+ * `@lingui/loader` compiles the `.po` file at build time, so the import
+ * resolves to the compiled messages.
  */
-export async function loadCatalog(locale: string) {
-  const catalog = await import(`./locales/${locale}.po`)
-  return catalog.messages
+export async function loadCatalog(locale: string): Promise<Messages> {
+  const { messages } = await import(`./locales/${locale}.po`)
+  return messages
 }
 
+/**
+ * Create the I18n instance for the active locale from the catalog that
+ * `getStaticProps` put into the page props.
+ */
 export function useLinguiInit(messages: Messages) {
   const router = useRouter()
-  const locale = router.locale || router.defaultLocale!
+  // Always set, because `i18n` is configured in next.config.ts
+  const locale = router.locale!
 
-  return setupI18n({
-    locale,
-    messages: { [locale]: messages}
-  })
+  // A new instance is only needed when the locale or its catalog changes
+  return useMemo(
+    () => setupI18n({ locale, messages: { [locale]: messages } }),
+    [locale, messages]
+  )
 }

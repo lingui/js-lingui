@@ -1,30 +1,37 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Next.js Pages Router + Babel
+
+Example of [Lingui](https://lingui.dev) in a [Next.js](https://nextjs.org/) 16 app that uses the Pages Router and the built-in [internationalized routing](https://nextjs.org/docs/pages/guides/internationalization). Macros are compiled by [`@lingui/babel-plugin-lingui-macro`](https://lingui.dev/ref/babel-plugin-lingui-macro), configured in `.babelrc`.
+
+Looking for the App Router and React Server Components? See the [`nextjs-swc`](../nextjs-swc) example.
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
-npm run dev
-# or
+yarn install
 yarn dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000). Open [http://localhost:3000/cs](http://localhost:3000/cs) or [http://localhost:3000/pseudo](http://localhost:3000/pseudo) to see the page in another locale.
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+## How It Works
 
-## Learn More
+Next.js owns the locale routing, Lingui translates the pages.
 
-To learn more about Next.js, take a look at the following resources:
+- `next.config.ts` declares the locales, `lingui.config.ts` reads them from there.
+- `src/i18n.ts` loads the catalog of a locale and creates the `I18n` instance.
+- Each page loads its catalog in `getStaticProps`, `_app.tsx` provides it to the page.
+- `src/components/LocaleSwitcher.tsx` switches the language with `router.push(..., { locale })`.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Lingui Commands
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+Extract messages from the source code into `src/locales/*.po`:
 
-## Deploy on Vercel
+```bash
+yarn extract
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/import?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+`yarn build` runs the extraction before `next build`, so the catalogs are always up to date.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## Babel vs. SWC
+
+The `.babelrc` in the project makes Next.js compile with Babel instead of SWC. That is what the Babel macro plugin needs, but it also makes builds slower. If you don't depend on Babel for anything else, prefer the SWC plugin shown in the [`nextjs-swc`](../nextjs-swc) example.

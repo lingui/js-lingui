@@ -13,66 +13,78 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: src/pages/examples.tsx:37
+#: src/pages/examples.tsx:39
 msgid "{value, plural, one {There's one book} other {There are # books}}"
 msgstr ""
 
-#: src/pages/examples.tsx:19
+#: src/pages/examples.tsx:21
 msgid "Black"
 msgstr ""
 
-#: src/pages/index.tsx:55
-msgid "Checkout LinguiJS examples and usecases."
+#: src/pages/index.tsx:50
+msgid "Check out LinguiJS examples and use cases."
 msgstr ""
 
-#: src/pages/examples.tsx:19
+#: src/pages/examples.tsx:21
 msgid "Cyan"
 msgstr ""
 
-#: src/pages/index.tsx:41
+#: src/components/LocaleSwitcher.tsx:11
+msgid "Czech"
+msgstr ""
+
+#: src/pages/index.tsx:35
 msgid "Documentation →"
 msgstr ""
 
-#: src/components/Layout.tsx:26
+#: src/components/LocaleSwitcher.tsx:10
+msgid "English"
+msgstr ""
+
+#: src/components/Layout.tsx:23
 msgid "Example project using LinguiJS"
 msgstr ""
 
-#: src/pages/examples.tsx:27
+#: src/pages/examples.tsx:29
 msgid "Examples"
 msgstr ""
 
-#: src/pages/index.tsx:52
+#: src/pages/index.tsx:47
 msgid "Examples →"
 msgstr ""
 
-#: src/pages/index.tsx:44
+#: src/pages/index.tsx:38
 msgid "Find in-depth information about LinguiJS features and API."
 msgstr ""
 
-#: src/pages/index.tsx:33
-msgid "Get started by editing <0>locales/en.po</0>"
+#: src/pages/index.tsx:27
+msgid "Get started by editing <0>src/pages/index.tsx</0>"
 msgstr ""
 
-#: src/pages/examples.tsx:19
+#: src/pages/examples.tsx:21
 msgid "Magenta"
 msgstr ""
 
-#: src/pages/examples.tsx:31
+#: src/pages/examples.tsx:33
 msgid "Plurals"
 msgstr ""
 
-#: src/components/Layout.tsx:38
+#: src/components/Layout.tsx:35
 msgid "Powered by <0/>"
 msgstr ""
 
-#: src/pages/examples.tsx:47
+#: src/components/LocaleSwitcher.tsx:12
+msgid "Pseudo"
+msgstr ""
+
+#: src/pages/examples.tsx:49
 msgid "Translation outside of React components"
 msgstr ""
 
-#: src/pages/index.tsx:28
+#: src/pages/index.tsx:22
 msgid "Welcome to <0>LinguiJS!</0>"
 msgstr ""
 
-#: src/pages/examples.tsx:19
+#: src/pages/examples.tsx:21
 msgid "Yellow"
 msgstr ""
