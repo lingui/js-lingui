@@ -1,5 +1,6 @@
 import React from "react";
 import { useBaseUrlUtils } from "@docusaurus/useBaseUrl";
+import { Section } from "./ui/section";
 
 interface UserDetails {
   logo: string;
@@ -76,13 +77,9 @@ export function Users(): React.ReactElement {
   const { withBaseUrl } = useBaseUrlUtils();
 
   return (
-    <section className="bg-zinc-100/70 dark:bg-zinc-800/70 px-4 py-6 sm:px-6">
-      <div className="mx-auto max-w-6xl text-center">
-        <h2 className="mb-12 text-center text-3xl font-medium tracking-tight text-heading sm:text-4xl">
-          Loved by hundreds of teams worldwide
-        </h2>
-
-        <div className="mx-auto mt-6 grid max-w-4xl grid-cols-2 place-items-center gap-x-3 gap-y-6 sm:flex sm:flex-wrap sm:justify-center sm:gap-x-6 sm:gap-y-8">
+    <Section title="Loved by hundreds of teams worldwide" className="bg-zinc-100/70 dark:bg-zinc-800/70">
+      <div className="text-center">
+        <div className="mx-auto grid max-w-4xl grid-cols-2 place-items-center gap-x-3 gap-y-6 sm:flex sm:flex-wrap sm:justify-center sm:gap-x-6 sm:gap-y-8">
           {USERS.map((user) => (
             <a
               href={user.link}
@@ -108,6 +105,6 @@ export function Users(): React.ReactElement {
           And many more...
         </a>
       </div>
-    </section>
+    </Section>
   );
 }

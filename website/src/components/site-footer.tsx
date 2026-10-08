@@ -82,7 +82,7 @@ function FooterLinkItem(props: { label: string; href: string; external?: boolean
 
 export function SiteFooter(): React.ReactElement {
   return (
-    <footer className="bg-[#282d37] px-4 pb-14 pt-8 text-white sm:px-6">
+    <footer className="bg-(--lingui-footer-background) px-4 pb-14 pt-8 text-white sm:px-6">
       <div className="mx-auto max-w-6xl">
         <nav className="grid grid-cols-2 gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-4" aria-label="Footer">
           {COLUMNS.map((col) => (

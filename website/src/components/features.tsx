@@ -1,6 +1,7 @@
 import React from "react";
 import { useBaseUrlUtils } from "@docusaurus/useBaseUrl";
 import { Button } from "./ui/button";
+import { Section } from "./ui/section";
 import cx from "clsx";
 
 interface FeatureDetails {
@@ -202,35 +203,29 @@ export function Features(): React.ReactElement {
     ));
 
   return (
-    <section className="overflow-x-hidden">
-      <div className="mx-auto max-w-6xl px-4">
-        <h2 className="mx-auto mb-12 max-w-3xl text-center text-3xl font-medium tracking-tight text-heading sm:text-4xl">
-          Why choose Lingui for your localization projects?
-        </h2>
-
-        <div className="grid grid-cols-1 gap-x-6 sm:grid-cols-2 lg:grid-cols-3">
-          {cards(FEATURES.slice(0, 4))}
-          <div className="relative col-span-full row-start-2 h-0 -z-10 hidden md:block">
-            <img
-              src="./img/features/pattern-left-big.svg"
-              width="900"
-              height="680"
-              alt="Features Background"
-              className="absolute -bottom-16 -left-36 select-none pointer-events-none"
-            />
-          </div>
-          {cards(FEATURES.slice(4, 6))}
-          <div className="relative col-span-full row-start-4 z-0 h-0 hidden md:block">
-            <img
-              src="./img/features/pattern-right-big.svg"
-              width="900"
-              height="680"
-              alt="Features Background"
-              className="absolute -right-36 -top-16 select-none pointer-events-none"
-            />
-          </div>
-          {cards(FEATURES.slice(6))}
+    <Section title="Why choose Lingui for your localization projects?" className="overflow-x-hidden">
+      <div className="grid grid-cols-1 gap-x-6 sm:grid-cols-2 lg:grid-cols-3">
+        {cards(FEATURES.slice(0, 4))}
+        <div className="relative col-span-full row-start-2 h-0 -z-10 hidden md:block">
+          <img
+            src="./img/features/pattern-left-big.svg"
+            width="900"
+            height="680"
+            alt="Features Background"
+            className="absolute -bottom-16 -left-36 select-none pointer-events-none"
+          />
         </div>
+        {cards(FEATURES.slice(4, 6))}
+        <div className="relative col-span-full row-start-4 z-0 h-0 hidden md:block">
+          <img
+            src="./img/features/pattern-right-big.svg"
+            width="900"
+            height="680"
+            alt="Features Background"
+            className="absolute -right-36 -top-16 select-none pointer-events-none"
+          />
+        </div>
+        {cards(FEATURES.slice(6))}
       </div>
 
       <div className="text-center">
@@ -238,6 +233,6 @@ export function Features(): React.ReactElement {
           More Features
         </Button>
       </div>
-    </section>
+    </Section>
   );
 }
