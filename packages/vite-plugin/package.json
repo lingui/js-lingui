@@ -44,7 +44,7 @@
   "dependencies": {
     "@lingui/cli": "workspace:*",
     "@lingui/conf": "workspace:*",
-    "@lingui/native-tools": "^0.1.5"
+    "@lingui/native-tools": "^0.1.6"
   },
   "peerDependencies": {
     "@babel/core": "^7.29.0 || ^8.0.0",
