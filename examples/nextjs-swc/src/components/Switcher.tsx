@@ -1,52 +1,38 @@
 'use client'
-// this is a client component because it uses the `useState` hook
 
-import { useState } from 'react'
 import { msg } from '@lingui/core/macro'
 import { useLingui } from '@lingui/react'
 import { usePathname, useRouter } from 'next/navigation'
 
-type LOCALES = 'en' | 'sr' | 'es' | 'pseudo'
-
+// The names are message descriptors, so the switcher is translated as well.
+// Keep this in sync with `locales` in lingui.config.ts.
 const languages = {
   en: msg`English`,
   sr: msg`Serbian`,
-  es: msg`Spanish`
-} as const
+  es: msg`Spanish`,
+  pseudo: msg`Pseudo`
+}
 
 export function Switcher() {
   const router = useRouter()
-  const { i18n } = useLingui()
   const pathname = usePathname()
-
-  const [locale, setLocale] = useState<LOCALES>(
-    pathname?.split('/')[1] as LOCALES
-  )
-
-  // disabled for DEMO - so we can demonstrate the 'pseudo' locale functionality
-  // if (process.env.NEXT_PUBLIC_NODE_ENV !== 'production') {
-  //   languages['pseudo'] = t`Pseudo`
-  // }
+  const { i18n } = useLingui()
 
   function handleChange(event: React.ChangeEvent<HTMLSelectElement>) {
-    const locale = event.target.value as LOCALES
-
-    const pathNameWithoutLocale = pathname?.split('/')?.slice(2) ?? []
-    const newPath = `/${locale}/${pathNameWithoutLocale.join('/')}`
-
-    setLocale(locale)
-    router.push(newPath)
+    // Swap the locale segment and keep the rest of the path, e.g.
+    // /en/about -> /es/about
+    const segments = (pathname ?? '').split('/')
+    segments[1] = event.target.value
+    router.push(segments.join('/'))
   }
 
   return (
-    <select value={locale} onChange={handleChange}>
-      {Object.keys(languages).map((locale) => {
-        return (
-          <option value={locale} key={locale}>
-            {i18n._(languages[locale as keyof typeof languages])}
-          </option>
-        )
-      })}
+    <select value={i18n.locale} onChange={handleChange}>
+      {Object.entries(languages).map(([locale, name]) => (
+        <option value={locale} key={locale}>
+          {i18n._(name)}
+        </option>
+      ))}
     </select>
   )
 }

@@ -1,28 +1,29 @@
 'use client'
-// this is a client component because it uses the `useState` hook
+// This is a Client Component because it keeps state with `useState`.
+// Macros work the same way in Client and Server Components.
 
 import { useState } from 'react'
-import { Trans, Plural } from '@lingui/react/macro'
+import { Plural, Trans } from '@lingui/react/macro'
 
-export default function Developers() {
-  const [selected, setSelected] = useState('1')
+export function Developers() {
+  const [count, setCount] = useState(1)
+
   return (
     <div>
       <p>
-        <Trans>Plural Test: How many developers?</Trans>
+        <label>
+          <Trans>How many developers?</Trans>{' '}
+          <input
+            type="number"
+            min={0}
+            value={count}
+            onChange={(event) => setCount(Number(event.target.value))}
+          />
+        </label>
       </p>
-      <div style={{ display: 'flex', justifyContent: 'space-evenly' }}>
-        <select
-          value={selected}
-          onChange={(evt) => setSelected(evt.target.value)}
-        >
-          <option value={'1'}>1</option>
-          <option value={'2'}>2</option>
-        </select>
-        <p>
-          <Plural value={selected} one={'Developer'} other={`Developers`} />
-        </p>
-      </div>
+      <p>
+        <Plural value={count} one="# developer" other="# developers" />
+      </p>
     </div>
   )
 }

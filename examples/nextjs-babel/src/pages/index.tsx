@@ -1,11 +1,10 @@
+import type { GetStaticProps } from "next"
 import Link from "next/link"
-
-import { Trans, useLingui } from "@lingui/react/macro"
+import { Trans } from "@lingui/react/macro"
 
 import { Layout } from "../components/Layout"
-import styles from "./index.module.css"
-import { GetStaticProps } from "next"
 import { loadCatalog } from "../i18n"
+import styles from "./index.module.css"
 
 export const getStaticProps: GetStaticProps = async (ctx) => {
   const translation = await loadCatalog(ctx.locale!)
@@ -27,7 +26,7 @@ export default function Home() {
       <p className={styles.description}>
         <Trans>
           Get started by editing{" "}
-          <code className={styles.code}>locales/en.po</code>
+          <code className={styles.code}>src/pages/index.tsx</code>
         </Trans>
       </p>
       <div className={styles.grid}>
@@ -42,12 +41,13 @@ export default function Home() {
           </p>
         </a>
 
+        {/* `Link` adds the current locale prefix to the URL on its own */}
         <Link href="/examples" className={styles.card}>
           <h3>
             <Trans>Examples →</Trans>
           </h3>
           <p>
-            <Trans>Checkout LinguiJS examples and usecases.</Trans>
+            <Trans>Check out LinguiJS examples and use cases.</Trans>
           </p>
         </Link>
       </div>
