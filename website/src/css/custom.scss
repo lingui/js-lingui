@@ -1,3 +1,4 @@
+@import "@fontsource-variable/inter/opsz.css";
 /**
  * Global styles for the Docusaurus classic preset (docs chrome still uses Infima variables).
  * Tailwind and shared tokens are centralized in this stylesheet.
@@ -32,7 +33,6 @@
   --ifm-link-color: var(--ifm-color-primary);
   --ifm-color-secondary: var(--ifm-color-gray-600);
 
-  /* Inter Variable is self-hosted via @fontsource-variable/inter (see clientModules in docusaurus.config.ts). */
   --ifm-font-family-base:
     "Inter Variable", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif,
     "Apple Color Emoji", "Segoe UI Emoji";
