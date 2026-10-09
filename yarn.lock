@@ -1708,7 +1708,7 @@ __metadata:
     "@lingui/test-utils": "workspace:*"
     "@messageformat/date-skeleton": "npm:^1.1.0"
     "@messageformat/parser": "npm:^5.0.0"
-    js-sha256: "npm:^0.10.1"
+    "@noble/hashes": "npm:^2.4.0"
     typescript: "catalog:"
     unbuild: "catalog:"
     vitest: "catalog:"
@@ -2030,6 +2030,13 @@ __metadata:
     "@emnapi/core": ^1.7.1
     "@emnapi/runtime": ^1.7.1
   checksum: 10/3e43425df17547d9d58ab69cce8e6cef38a062eccec4d2def5fc9e10e81cd19ae228b3ab9be4b149b57078d33913687511312d2414089877759b7db1f43625ba
+  languageName: node
+  linkType: hard
+
+"@noble/hashes@npm:^2.4.0":
+  version: 2.4.0
+  resolution: "@noble/hashes@npm:2.4.0"
+  checksum: 10/88d4cdd6cef00f412a39f65bda1d24cba2264c6cacdd1c6c48d7ed66fd9be865ffb7231024fb81177975c684b8a463879b89c5ae6960370b05a546c0fd8afa2c
   languageName: node
   linkType: hard
 
@@ -8818,13 +8825,6 @@ __metadata:
     vitest: "catalog:"
   languageName: unknown
   linkType: soft
-
-"js-sha256@npm:^0.10.1":
-  version: 0.10.1
-  resolution: "js-sha256@npm:0.10.1"
-  checksum: 10/6bae235dd458744e573876cc0875e21ea18a84e3aec4ba82d0efdb28537366e225304d93072789883500ca995fcc7c4500528c66d02da88cc5d6ab4554ce2b8c
-  languageName: node
-  linkType: hard
 
 "js-tokens@npm:^10.0.0":
   version: 10.0.0
