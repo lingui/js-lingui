@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.9.1](https://github.com/lingui/js-lingui/compare/v6.9.0...v6.9.1) (2026-10-09)
+
+### Bug Fixes
+
+* **vite-plugin:** fail early when native transform is used with Solid ([#2708](https://github.com/lingui/js-lingui/issues/2708)) ([15549f3](https://github.com/lingui/js-lingui/commit/15549f3cec626ab59eac1de00cccbbb56730c84f))
+* **vite-plugin:** strip query from module id before native macro transform ([#2703](https://github.com/lingui/js-lingui/issues/2703)) ([10c1b79](https://github.com/lingui/js-lingui/commit/10c1b79b6b287983593946fb965b8b0b558b96c1))
+
 # [6.9.0](https://github.com/lingui/js-lingui/compare/v6.8.0...v6.9.0) (2026-10-01)
 
 ### Features

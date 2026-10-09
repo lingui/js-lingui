@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.9.1](https://github.com/lingui/js-lingui/compare/v6.9.0...v6.9.1) (2026-10-09)
+
+### Performance Improvements
+
+* **cli:** write experimental extractor catalogs in worker pool ([#2715](https://github.com/lingui/js-lingui/issues/2715)) ([f7731f2](https://github.com/lingui/js-lingui/commit/f7731f2a3e07145c45e2a62482ab3496302b5536))
+
 # [6.9.0](https://github.com/lingui/js-lingui/compare/v6.8.0...v6.9.0) (2026-10-01)
 
 ### Bug Fixes
