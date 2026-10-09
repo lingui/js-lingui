@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.9.1](https://github.com/lingui/js-lingui/compare/v6.9.0...v6.9.1) (2026-10-09)
+
+### Bug Fixes
+
+* **format-csv:** read catalogs that end with a line break ([#2696](https://github.com/lingui/js-lingui/issues/2696)) ([c3b7838](https://github.com/lingui/js-lingui/commit/c3b7838a4a8ab734ee8c48458ea67af9a72e7528))
+
 # [6.9.0](https://github.com/lingui/js-lingui/compare/v6.8.0...v6.9.0) (2026-10-01)
 
 **Note:** Version bump only for package @lingui/format-csv

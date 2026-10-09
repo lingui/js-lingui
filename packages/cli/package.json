@@ -1,6 +1,6 @@
 {
   "name": "@lingui/cli",
-  "version": "6.9.0",
+  "version": "6.9.1",
   "description": "Lingui CLI: extracts i18n messages from source code into catalogs and compiles the translated catalogs for the runtime",
   "type": "module",
   "keywords": [

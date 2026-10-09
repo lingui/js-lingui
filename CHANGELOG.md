@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.9.1](https://github.com/lingui/js-lingui/compare/v6.9.0...v6.9.1) (2026-10-09)
+
+### Bug Fixes
+
+* **format-csv:** read catalogs that end with a line break ([#2696](https://github.com/lingui/js-lingui/issues/2696)) ([c3b7838](https://github.com/lingui/js-lingui/commit/c3b7838a4a8ab734ee8c48458ea67af9a72e7528))
+* **vite-plugin:** fail early when native transform is used with Solid ([#2708](https://github.com/lingui/js-lingui/issues/2708)) ([15549f3](https://github.com/lingui/js-lingui/commit/15549f3cec626ab59eac1de00cccbbb56730c84f))
+* **vite-plugin:** strip query from module id before native macro transform ([#2703](https://github.com/lingui/js-lingui/issues/2703)) ([10c1b79](https://github.com/lingui/js-lingui/commit/10c1b79b6b287983593946fb965b8b0b558b96c1))
+
+### Performance Improvements
+
+* **cli:** write experimental extractor catalogs in worker pool ([#2715](https://github.com/lingui/js-lingui/issues/2715)) ([f7731f2](https://github.com/lingui/js-lingui/commit/f7731f2a3e07145c45e2a62482ab3496302b5536))
+
 # [6.9.0](https://github.com/lingui/js-lingui/compare/v6.8.0...v6.9.0) (2026-10-01)
 
 ### Bug Fixes
