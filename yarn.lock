@@ -1688,6 +1688,7 @@ __metadata:
     "@lingui/cli": "workspace:*"
     "@lingui/conf": "workspace:*"
     "@lingui/format-json": "workspace:*"
+    "@lingui/native-tools": "npm:^0.1.5"
     jiti: "npm:^2.6.1"
     typescript: "catalog:"
     unbuild: "catalog:"

@@ -4,11 +4,13 @@
 
 # @lingui/loader
 
-> Webpack-compatible loader that compiles Lingui message catalogs on the fly, so .po files can be imported directly
+> Webpack-compatible loaders for Lingui: compile message catalogs on the fly so .po files can be imported directly, and transform Lingui macros natively
 
 `@lingui/loader` is part of [Lingui][documentation]. Lingui is a lightweight, open-source internationalization (i18n) library for JavaScript and TypeScript. It brings compile-time macros and a CLI for message extraction to React, React Native, Vue, SolidJS, Astro, Svelte, and Node.js.
 
 The loader works with Webpack, Rspack and Rsbuild and replaces the `lingui compile` step.
+
+`@lingui/loader/macro` transforms Lingui macros with the native transform from `@lingui/native-tools`, so Webpack, Rspack and Next.js (Turbopack and webpack) don't need the Babel or SWC macro plugin.
 
 ## Usage
 
