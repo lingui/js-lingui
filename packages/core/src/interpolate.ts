@@ -1,4 +1,4 @@
-import { CompiledMessage, Formats, Locales, Values } from "./i18n"
+import { CompiledMessage, Formats, Locales, Values, Variables } from "./i18n"
 import {
   date,
   DateTimeFormatSize,
@@ -9,7 +9,7 @@ import {
   type PluralOptions,
   time,
 } from "./formats"
-import { isString } from "./essentials"
+import { isString, isFunction } from "./essentials"
 import { CompiledIcuChoices } from "@lingui/message-utils/compileMessage"
 import { decodeEscapeSequences, ESCAPE_SEQUENCE_REGEX } from "./escapeSequences"
 
@@ -91,11 +91,22 @@ export function interpolate(
   locales?: Locales,
 ) {
   /**
-   * @param values  - Parameters for variable interpolation
-   * @param formats - Custom format styles
+   * @param values    - Parameters for variable interpolation
+   * @param formats   - Custom format styles
+   * @param variables - Default variables configured in the i18n instance
    */
-  return (values: Values = {}, formats?: Formats): string => {
+  return (
+    values: Values = {},
+    formats?: Formats,
+    variables?: Variables,
+  ): string => {
     const formatters = getDefaultFormats(locale, locales, formats)
+
+    const getValue = (name: string): unknown => {
+      // Only lazily invoke functions from default variables, not per-call values
+      const variable = variables?.[name]
+      return values[name] ?? (isFunction(variable) ? variable() : variable)
+    }
 
     const formatMessage = (
       tokens: CompiledMessage | number | undefined,
@@ -138,10 +149,10 @@ export function interpolate(
         if (type) {
           // run formatter, such as plural, number, etc.
           const formatter = (formatters as any)[type]
-          value = formatter(values[name], interpolatedFormat)
+          value = formatter(getValue(name), interpolatedFormat)
         } else {
           // simple placeholder variable interpolation eq {variableName}
-          value = values[name]
+          value = getValue(name)
         }
 
         if (value == null) {
