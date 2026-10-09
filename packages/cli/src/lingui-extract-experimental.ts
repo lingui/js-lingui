@@ -20,10 +20,15 @@ import {
 } from "./api/resolveWorkersOptions.js"
 import { extractFromChunk } from "./extract-experimental/extractFromChunk.js"
 import {
-  writeCatalogs,
-  writeTemplate,
+  ExtractStats,
+  printExtractStats,
+  writeEntry,
+  WriteEntryParams,
 } from "./extract-experimental/writeCatalogs.js"
-import { createExtractExperimentalWorkerPool } from "./api/workerPools.js"
+import {
+  createExtractExperimentalWorkerPool,
+  ExtractExperimentalWorkerPool,
+} from "./api/workerPools.js"
 import { buildChunkGraph } from "./extract-experimental/buildChunkGraph.js"
 import { mergeExtractedMessage } from "./api/catalog/extractFromFiles.js"
 import ora from "ora"
@@ -126,10 +131,12 @@ export default async function command(
   // Phase: Extract messages from each chunk
   spinner.start("Extracting messages...")
   phaseStart = Date.now()
-  const messagesByEntry = new Map<string, ExtractedCatalogType>()
+
+  let pool: ExtractExperimentalWorkerPool | undefined
+  let resolvedConfigPath: string | undefined
 
   if (options.workersOptions.poolSize) {
-    const resolvedConfigPath = linguiConfig.resolvedConfigPath
+    resolvedConfigPath = linguiConfig.resolvedConfigPath
     if (!resolvedConfigPath) {
       throw new Error(
         "Multithreading is only supported when lingui config loaded from file system, not passed by API",
@@ -139,47 +146,20 @@ export default async function command(
     options.verbose &&
       console.log(`Use worker pool of size ${options.workersOptions.poolSize}`)
 
-    const pool = createExtractExperimentalWorkerPool({
+    // the same pool serves both extracting and writing phases
+    pool = createExtractExperimentalWorkerPool({
       poolSize: options.workersOptions.poolSize,
     })
+  }
 
-    try {
-      await Promise.all(
-        resolvedChunks.map(async ({ filePath, entryPoints }) => {
-          const { messages, success } = await pool.run(
-            resolvedConfigPath,
-            filePath,
-          )
+  try {
+    const messagesByEntry = new Map<string, ExtractedCatalogType>()
 
-          if (!success) {
-            commandSuccess = false
-          }
-
-          for (const entryPoint of entryPoints) {
-            if (!messagesByEntry.has(entryPoint)) {
-              messagesByEntry.set(entryPoint, {})
-            }
-
-            messages.forEach((message) => {
-              mergeExtractedMessage(
-                message,
-                messagesByEntry.get(entryPoint)!,
-                linguiConfig,
-              )
-            })
-          }
-        }),
-      )
-    } finally {
-      await pool.destroy()
-    }
-  } else {
     await Promise.all(
       resolvedChunks.map(async ({ filePath, entryPoints }) => {
-        const { messages, success } = await extractFromChunk(
-          filePath,
-          linguiConfig,
-        )
+        const { messages, success } = pool
+          ? await pool.run("extract", resolvedConfigPath!, filePath)
+          : await extractFromChunk(filePath, linguiConfig)
 
         if (!success) {
           commandSuccess = false
@@ -200,50 +180,82 @@ export default async function command(
         }
       }),
     )
-  }
-  spinner.succeed(`Extracting done (${ms(Date.now() - phaseStart)})`)
+    spinner.succeed(`Extracting done (${ms(Date.now() - phaseStart)})`)
 
-  // Phase: Write catalogs per entry point
-  spinner.start("Writing catalogs...")
-  phaseStart = Date.now()
-  const format = await getFormat(linguiConfig.format, linguiConfig.sourceLocale)
-  const locales = options.locales || linguiConfig.locales
+    // Phase: Write catalogs per entry point
+    // merging, sorting and serializing catalogs is CPU bound,
+    // so it's parallelized across workers same as extracting
+    spinner.start("Writing catalogs...")
+    phaseStart = Date.now()
+    const locales = options.locales || linguiConfig.locales
 
-  for (const [entryPoint, messages] of messagesByEntry) {
-    let stat: string
+    const getWriteParams = (
+      entryPoint: string,
+      messages: ExtractedCatalogType,
+    ): WriteEntryParams => ({
+      template: options.template || false,
+      locales,
+      clean: options.clean || false,
+      messages,
+      entryPoint,
+      overwrite: options.overwrite || false,
+      outputPattern: extractorConfig.output,
+    })
 
-    if (options.template) {
-      stat = (
-        await writeTemplate({
-          linguiConfig,
-          clean: options.clean || false,
-          format,
-          messages,
-          entryPoint,
-          outputPattern: extractorConfig.output,
-        })
-      ).statMessage
-    } else {
-      stat = (
-        await writeCatalogs({
-          locales,
-          linguiConfig,
-          clean: options.clean || false,
-          format,
-          messages,
-          entryPoint,
-          overwrite: options.overwrite || false,
-          outputPattern: extractorConfig.output,
-        })
-      ).statMessage
+    const addStats = (entryPoint: string, entryStats: ExtractStats) => {
+      stats.push({
+        entry: normalizePath(
+          nodepath.relative(linguiConfig.rootDir, entryPoint),
+        ),
+        content: printExtractStats(linguiConfig, entryStats),
+      })
     }
 
-    stats.push({
-      entry: normalizePath(nodepath.relative(linguiConfig.rootDir, entryPoint)),
-      content: stat,
-    })
+    if (pool) {
+      // wait for every write to settle before the pool gets destroyed,
+      // otherwise a single failure would terminate workers in the middle of
+      // writing other catalogs and could leave them truncated
+      const results = await Promise.allSettled(
+        Array.from(messagesByEntry, async ([entryPoint, messages]) => {
+          addStats(
+            entryPoint,
+            await pool.run(
+              "writeCatalogs",
+              resolvedConfigPath!,
+              getWriteParams(entryPoint, messages),
+            ),
+          )
+        }),
+      )
+
+      const failure = results.find(
+        (result): result is PromiseRejectedResult =>
+          result.status === "rejected",
+      )
+      if (failure) {
+        throw failure.reason
+      }
+    } else {
+      const format = await getFormat(
+        linguiConfig.format,
+        linguiConfig.sourceLocale,
+      )
+
+      for (const [entryPoint, messages] of messagesByEntry) {
+        addStats(
+          entryPoint,
+          await writeEntry(
+            getWriteParams(entryPoint, messages),
+            linguiConfig,
+            format,
+          ),
+        )
+      }
+    }
+    spinner.succeed(`Writing catalogs done (${ms(Date.now() - phaseStart)})`)
+  } finally {
+    await pool?.destroy()
   }
-  spinner.succeed(`Writing catalogs done (${ms(Date.now() - phaseStart)})`)
 
   // cleanup temp directory
   await fs.rm(tempDir, { recursive: true, force: true })

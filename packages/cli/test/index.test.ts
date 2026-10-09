@@ -6,7 +6,7 @@ import fs from "fs/promises"
 import { globSync } from "node:fs"
 import nodepath from "path"
 import { getConfig, makeConfig } from "@lingui/conf"
-import { compareFolders } from "../src/tests.js"
+import { compareFolders, normalizeLineEndings } from "../src/tests.js"
 import { getConsoleMockCalls, mockConsole } from "@lingui/test-utils"
 import { vi } from "vitest"
 
@@ -255,6 +255,72 @@ describe("E2E Extractor Test", () => {
       compareFolders(actualPath, expectedPath)
     })
 
+    it("should extract to template with worker pool", async () => {
+      const { rootDir, actualPath, expectedPath } = await prepare(
+        "extractor-experimental-template",
+      )
+
+      const config = getConfig({ cwd: rootDir })
+
+      await mockConsole(async (console) => {
+        const result = await extractExperimentalCommand(config, {
+          template: true,
+          workersOptions: {
+            poolSize: 2,
+          },
+        })
+
+        await compileCommand(config, {
+          allowEmpty: true,
+          workersOptions: {
+            poolSize: 0,
+          },
+        })
+
+        expect(getConsoleMockCalls(console.error)).toBeFalsy()
+        expect(result).toBeTruthy()
+        expect(replaceDuration(getConsoleMockCalls(console.log)))
+          .toMatchInlineSnapshot(`
+            You have using an experimental feature
+            Experimental features are not covered by semver, and may cause unexpected or broken application behavior. Use at your own risk.
+
+            Resolving entry points...
+            Found 2 entry point(s) (<T>): fixtures/pages/index.page.ts, fixtures/pages/about.page.tsx
+            Bundling...
+            Bundling done (<T>)
+            Extracting messages...
+            Extracting done (<T>)
+            Writing catalogs...
+            Writing catalogs done (<T>)
+            Catalog statistics for fixtures/pages/about.page.tsx:
+            5 message(s) extracted
+
+            Catalog statistics for fixtures/pages/index.page.ts:
+            1 message(s) extracted
+
+            Extraction completed successfully in <T>
+            Compiling message catalogs…
+            Done in <T>
+          `)
+      })
+
+      // mocked system time doesn't propagate to worker threads
+      for (const file of await fs.readdir(actualPath)) {
+        if (!file.endsWith(".pot")) continue
+        const filePath = nodepath.join(actualPath, file)
+        const content = await fs.readFile(filePath, "utf-8")
+        await fs.writeFile(
+          filePath,
+          content.replace(
+            /"POT-Creation-Date: .*\\n"/,
+            '"POT-Creation-Date: 2023-03-15 10:00+0000\\n"',
+          ),
+        )
+      }
+
+      compareFolders(actualPath, expectedPath)
+    })
+
     it("should extract to catalogs and merge with existing", async () => {
       const { rootDir, actualPath, expectedPath } = await prepare(
         "extractor-experimental",
@@ -377,6 +443,38 @@ describe("E2E Extractor Test", () => {
       })
 
       compareFolders(actualPath, expectedPath)
+    })
+
+    it("should finish writing other catalogs when one entry fails with worker pool", async () => {
+      const { rootDir, actualPath, expectedPath } = await prepare(
+        "extractor-experimental",
+      )
+
+      // a directory in place of an existing catalog makes this entry fail on read
+      const brokenCatalog = nodepath.join(actualPath, "about.page.pl.po")
+      await fs.rm(brokenCatalog)
+      await fs.mkdir(brokenCatalog)
+
+      await mockConsole(async () => {
+        const config = getConfig({ cwd: rootDir })
+
+        await expect(
+          extractExperimentalCommand(config, {
+            workersOptions: {
+              poolSize: 1,
+            },
+          }),
+        ).rejects.toThrow()
+      })
+
+      for (const file of ["index.page.en.po", "index.page.pl.po"]) {
+        const read = async (dir: string) =>
+          normalizeLineEndings(
+            await fs.readFile(nodepath.join(dir, file), "utf-8"),
+          )
+
+        expect(await read(actualPath)).toBe(await read(expectedPath))
+      }
     })
 
     it("should not hang when no entry points match with worker pool", async () => {
