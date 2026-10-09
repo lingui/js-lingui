@@ -7,7 +7,11 @@ import {
 import { styleText } from "node:util"
 import { resolveCatalogPath } from "./resolveCatalogPath.js"
 import { mergeCatalog } from "../api/catalog/mergeCatalog.js"
-import { printStats } from "../api/stats.js"
+import {
+  AllCatalogStats,
+  getAllStats,
+  printCatalogStats,
+} from "../api/stats.js"
 import { LinguiConfigNormalized, OrderBy } from "@lingui/conf"
 import { cleanObsolete, order } from "../api/catalog.js"
 import { FormatterWrapper } from "../api/formats/index.js"
@@ -25,8 +29,23 @@ type ExtractParams = ExtractTemplateParams & {
   locales: string[]
   overwrite: boolean
 }
-type ExtractStats = {
-  statMessage: string
+
+/**
+ * Plain data (no terminal styling), so it can be returned from a worker thread
+ */
+export type ExtractStats =
+  | { type: "catalogs"; stats: AllCatalogStats }
+  | { type: "template"; messagesCount: number }
+
+/**
+ * Everything needed to write catalogs of one entry point,
+ * except config and format which are not transferable to worker threads
+ */
+export type WriteEntryParams = Omit<
+  ExtractParams,
+  "format" | "linguiConfig"
+> & {
+  template: boolean
 }
 
 function cleanAndSort(catalog: CatalogType, clean: boolean, orderBy: OrderBy) {
@@ -78,9 +97,7 @@ export async function writeCatalogs(
     stat[locale] = catalog
   }
 
-  return {
-    statMessage: printStats(linguiConfig, stat).toString(),
-  }
+  return { type: "catalogs", stats: getAllStats(stat) }
 }
 
 export async function writeTemplate(
@@ -102,10 +119,29 @@ export async function writeTemplate(
     undefined,
   )
 
-  return {
-    statMessage: `${styleText(
+  return { type: "template", messagesCount: Object.keys(messages).length }
+}
+
+export async function writeEntry(
+  { template, ...params }: WriteEntryParams,
+  linguiConfig: LinguiConfigNormalized,
+  format: FormatterWrapper,
+): Promise<ExtractStats> {
+  return template
+    ? writeTemplate({ ...params, linguiConfig, format })
+    : writeCatalogs({ ...params, linguiConfig, format })
+}
+
+export function printExtractStats(
+  linguiConfig: LinguiConfigNormalized,
+  stats: ExtractStats,
+): string {
+  if (stats.type === "template") {
+    return `${styleText(
       "bold",
-      String(Object.keys(messages).length),
-    )} message(s) extracted`,
+      String(stats.messagesCount),
+    )} message(s) extracted`
   }
+
+  return printCatalogStats(linguiConfig, stats.stats).toString()
 }
