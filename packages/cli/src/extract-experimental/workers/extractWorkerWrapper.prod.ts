@@ -1,4 +1,7 @@
-import { extractWorker } from "./extractWorker.js"
+import { extractWorker, writeCatalogsWorker } from "./extractWorker.js"
 
-export default (args: Parameters<typeof extractWorker>) =>
+export const extract = (args: Parameters<typeof extractWorker>) =>
   extractWorker(...args)
+
+export const writeCatalogs = (args: Parameters<typeof writeCatalogsWorker>) =>
+  writeCatalogsWorker(...args)

@@ -1,11 +1,23 @@
-import { createWorkerPool, WorkerPool } from "./typedPool.js"
+import {
+  createNamedWorkerPool,
+  createWorkerPool,
+  NamedWorkerPool,
+  WorkerPool,
+} from "./typedPool.js"
 import type { ExtractWorkerFunction } from "../workers/extractWorker.js"
-import type { ExtractWorkerFunction as ExtractExperimentalWorkerFunction } from "../extract-experimental/workers/extractWorker.js"
+import type {
+  ExtractWorkerFunction as ExtractExperimentalWorkerFunction,
+  WriteCatalogsWorkerFunction,
+} from "../extract-experimental/workers/extractWorker.js"
 import type { CompileWorkerFunction } from "../workers/compileWorker.js"
 import type { MissingWorkerFunction } from "../workers/missingWorker.js"
 
 export type ExtractWorkerPool = WorkerPool<ExtractWorkerFunction>
 export type MissingWorkerPool = WorkerPool<MissingWorkerFunction>
+export type ExtractExperimentalWorkerPool = NamedWorkerPool<{
+  extract: ExtractExperimentalWorkerFunction
+  writeCatalogs: WriteCatalogsWorkerFunction
+}>
 
 type PoolOptions = {
   poolSize: number
@@ -22,8 +34,8 @@ export const createExtractWorkerPool = (opts: PoolOptions): ExtractWorkerPool =>
 /** @internal */
 export const createExtractExperimentalWorkerPool = (
   opts: PoolOptions,
-): WorkerPool<ExtractExperimentalWorkerFunction> =>
-  createWorkerPool<ExtractExperimentalWorkerFunction>(
+): ExtractExperimentalWorkerPool =>
+  createNamedWorkerPool(
     "../extract-experimental/workers/extractWorkerWrapper",
     import.meta.url,
     opts.poolSize,
