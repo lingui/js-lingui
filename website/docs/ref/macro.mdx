@@ -777,7 +777,6 @@ Available Props:
 | ----------- | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `other`     | string         | _(required)_ general _plural_ form                                                                                                                      |
 | `value`     | number         | _(required)_ Value is mapped to plural form below                                                                                                       |
-| `format`    | string\|Object | Number format passed as options to [`Intl.NumberFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat) |
 | `offset`    | number         | Offset of value when calculating plural forms                                                                                                           |
 | `zero`      | string         | Form for empty `value`                                                                                                                                  |
 | `one`       | string         | _Singular_ form                                                                                                                                         |
@@ -789,6 +788,8 @@ Available Props:
 | `comment`   | string         | Comment for translators                                                                                                                                 |
 | `context`   | string         | Allows to extract the same messages with different IDs                                                                                                  |
 | `render`    | func           | Custom render callback to render translation                                                                                                            |
+
+`#` in a form is replaced with `value` (minus `offset`), formatted for the active locale with [`Intl.NumberFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat): `1234.5` reads `1,234.5` in `en` and `1.234,5` in `de`.
 
 Exact matches in MessageFormat syntax are expressed as `=int` (e.g. `=0`), but in React this isn't a valid prop name. Therefore, exact matches are expressed as `_int` prop (e.g. `_0`). This is commonly used in combination with `offset` prop. `offset` affects only plural forms, not exact matches.
 
@@ -845,7 +846,6 @@ Available Props:
 | `few`       | string         | _Paucal_ form                                                                                                                                           |
 | `many`      | string         | _Plural_ form                                                                                                                                           |
 | `_<number>` | string         | Exact match form, correspond to `=N` rule. (e.g: `_0`, `_1`)                                                                                            |
-| `format`    | string\|Object | Number format passed as options to [`Intl.NumberFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat) |
 
 ### `Select`
 
