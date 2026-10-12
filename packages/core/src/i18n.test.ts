@@ -707,4 +707,301 @@ describe("I18n", () => {
       ).toMatchInlineSnapshot(`"It starts on 5:40:00 PM UTC"`)
     })
   })
+
+  describe("variables", () => {
+    it("should initialize default variables via setupI18n", () => {
+      const i18n = setupI18n({
+        locale: "en",
+        messages: {
+          en: {
+            welcome:
+              "{gender, select, female {[F] Welcome} male {[M] Welcome} other {[N] Welcome}}",
+            brand: "Powered by {appName}",
+          },
+        },
+        variables: {
+          gender: "female",
+          appName: "LinguiApp",
+        },
+      })
+
+      expect(i18n.variables).toEqual({
+        gender: "female",
+        appName: "LinguiApp",
+      })
+
+      expect(i18n._("welcome")).toEqual("[F] Welcome")
+      expect(i18n._("brand")).toEqual("Powered by LinguiApp")
+    })
+
+    it("should allow updating variables via setVariables and emit change event", () => {
+      const i18n = setupI18n({
+        locale: "en",
+        messages: {
+          en: {
+            welcome:
+              "{gender, select, female {[F] Welcome} male {[M] Welcome} other {[N] Welcome}}",
+          },
+        },
+        variables: {
+          gender: "female",
+        },
+      })
+
+      const onChange = vi.fn()
+      i18n.on("change", onChange)
+
+      expect(i18n._("welcome")).toEqual("[F] Welcome")
+
+      const result = i18n.setVariables({ gender: "male" })
+      expect(result).toBe(i18n)
+      expect(onChange).toHaveBeenCalledTimes(1)
+      expect(i18n.variables).toEqual({ gender: "male" })
+      expect(i18n._("welcome")).toEqual("[M] Welcome")
+    })
+
+    it("should support functional updates with previous variables", () => {
+      const i18n = setupI18n({
+        locale: "en",
+        messages: {
+          en: {
+            info: "{appName} version {version} for {gender}",
+          },
+        },
+        variables: {
+          appName: "LinguiApp",
+          gender: "female",
+        },
+      })
+
+      i18n.setVariables((prev) => ({
+        ...prev,
+        version: "6.0",
+      }))
+
+      expect(i18n.variables).toEqual({
+        appName: "LinguiApp",
+        gender: "female",
+        version: "6.0",
+      })
+      expect(i18n._("info")).toEqual("LinguiApp version 6.0 for female")
+    })
+
+    it("should allow setting or updating a single variable via setVariable without clobbering", () => {
+      const i18n = setupI18n({
+        locale: "en",
+        messages: {
+          en: {
+            info: "{appName} version {version} for {gender}",
+          },
+        },
+        variables: {
+          appName: "LinguiApp",
+          gender: "female",
+        },
+      })
+
+      const onChange = vi.fn()
+      i18n.on("change", onChange)
+
+      const result = i18n.setVariable("version", "6.0")
+      expect(result).toBe(i18n)
+      expect(onChange).toHaveBeenCalledTimes(1)
+
+      expect(i18n.variables).toEqual({
+        appName: "LinguiApp",
+        gender: "female",
+        version: "6.0",
+      })
+      expect(i18n._("info")).toEqual("LinguiApp version 6.0 for female")
+
+      i18n.setVariable("version", "6.1")
+      expect(i18n.variables.version).toEqual("6.1")
+      expect(i18n._("info")).toEqual("LinguiApp version 6.1 for female")
+
+      i18n.setVariable("version", undefined)
+      expect("version" in i18n.variables).toBe(false)
+      expect(i18n._("info")).toEqual("LinguiApp version  for female")
+    })
+
+    it("should not mutate initial variables", () => {
+      const initialVariables = {
+        appName: "ExampleApp",
+      }
+
+      const i18n = setupI18n({
+        locale: "en",
+        messages: {
+          en: {
+            info: "{appName} {version}",
+          },
+        },
+        variables: initialVariables,
+      })
+
+      i18n.setVariable("version", "1.2.3")
+      i18n.setVariable("appName", "ExampleApp2")
+
+      expect(initialVariables).toEqual({ appName: "ExampleApp" })
+      expect(i18n.variables).toEqual({
+        appName: "ExampleApp2",
+        version: "1.2.3",
+      })
+    })
+
+    it("should support frozen variables objects", () => {
+      const i18n = setupI18n({
+        locale: "en",
+        messages: { en: {} },
+        variables: Object.freeze({ appName: "ExampleApp" }),
+      })
+
+      i18n.setVariable("appName", "ExampleApp2")
+      expect(i18n.variables).toEqual({ appName: "ExampleApp2" })
+
+      i18n.setVariables(Object.freeze({ appName: "ExampleApp3" }))
+      i18n.setVariable("appName", "ExampleApp4")
+      expect(i18n.variables).toEqual({ appName: "ExampleApp4" })
+    })
+
+    it("should support setting a function via setVariable", () => {
+      let currentGender = "female"
+
+      const i18n = setupI18n({
+        locale: "en",
+        messages: {
+          en: {
+            welcome:
+              "{gender, select, female {[F] Welcome} male {[M] Welcome} other {[N] Welcome}}",
+          },
+        },
+      })
+
+      i18n.setVariable("gender", () => currentGender)
+      expect(i18n._("welcome")).toEqual("[F] Welcome")
+
+      currentGender = "male"
+      expect(i18n._("welcome")).toEqual("[M] Welcome")
+    })
+
+    it("should prioritize caller-supplied values over default variables", () => {
+      const i18n = setupI18n({
+        locale: "en",
+        messages: {
+          en: {
+            info: "{appName} greeting: Hello {name}, gender {gender}!",
+          },
+        },
+        variables: {
+          appName: "LinguiApp",
+          gender: "neutral",
+        },
+      })
+
+      expect(
+        i18n._("info", {
+          name: "Alex",
+          gender: "female",
+        }),
+      ).toEqual("LinguiApp greeting: Hello Alex, gender female!")
+
+      expect(
+        i18n._("info", {
+          name: "Sam",
+          gender: undefined,
+        }),
+      ).toEqual("LinguiApp greeting: Hello Sam, gender neutral!")
+    })
+
+    it("should work with message descriptors and i18n.t alias", () => {
+      const i18n = setupI18n({
+        locale: "en",
+        messages: { en: {} },
+        variables: {
+          appName: "LinguiApp",
+        },
+      })
+
+      expect(
+        i18n._({
+          id: "brand",
+          message: "Welcome to {appName}!",
+        }),
+      ).toEqual("Welcome to LinguiApp!")
+
+      expect(
+        i18n.t({
+          id: "brand",
+          message: "Welcome to {appName}!",
+        }),
+      ).toEqual("Welcome to LinguiApp!")
+    })
+
+    it("should support function variables and evaluate them dynamically", () => {
+      let currentGender = "female"
+
+      const i18n = setupI18n({
+        locale: "en",
+        messages: {
+          en: {
+            welcome:
+              "{gender, select, female {[F] Welcome} male {[M] Welcome} other {[N] Welcome}}",
+          },
+        },
+        variables: {
+          gender: () => currentGender,
+        },
+      })
+
+      expect(i18n._("welcome")).toEqual("[F] Welcome")
+
+      currentGender = "male"
+      expect(i18n._("welcome")).toEqual("[M] Welcome")
+    })
+
+    it("should not evaluate function variables if variable is not referenced in the message", () => {
+      let calls = 0
+      const i18n = setupI18n({
+        locale: "en",
+        messages: {
+          en: {
+            simple: "Just a simple message",
+          },
+        },
+        variables: {
+          expensive: () => {
+            calls++
+            return "computed"
+          },
+        },
+      })
+
+      expect(i18n._("simple")).toEqual("Just a simple message")
+      expect(calls).toEqual(0)
+    })
+
+    it("should preserve variables across locale changes", () => {
+      const i18n = setupI18n({
+        locale: "en",
+        messages: {
+          en: {
+            welcome:
+              "{gender, select, female {[F] Welcome} male {[M] Welcome} other {[N] Welcome}}",
+          },
+          es: {
+            welcome:
+              "{gender, select, female {[F] Bienvenida} male {[M] Bienvenido} other {[N] Bienvenidx}}",
+          },
+        },
+        variables: {
+          gender: "female",
+        },
+      })
+
+      expect(i18n._("welcome")).toEqual("[F] Welcome")
+
+      i18n.activate("es")
+      expect(i18n._("welcome")).toEqual("[F] Bienvenida")
+    })
+  })
 })
