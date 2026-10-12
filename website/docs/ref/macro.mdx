@@ -773,21 +773,21 @@ import { Trans } from "@lingui/react";
 
 Available Props:
 
-| Prop name   | Type           | Description                                                                                                                                             |
-| ----------- | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `other`     | string         | _(required)_ general _plural_ form                                                                                                                      |
-| `value`     | number         | _(required)_ Value is mapped to plural form below                                                                                                       |
-| `offset`    | number         | Offset of value when calculating plural forms                                                                                                           |
-| `zero`      | string         | Form for empty `value`                                                                                                                                  |
-| `one`       | string         | _Singular_ form                                                                                                                                         |
-| `two`       | string         | _Dual_ form                                                                                                                                             |
-| `few`       | string         | _Paucal_ form                                                                                                                                           |
-| `many`      | string         | _Plural_ form                                                                                                                                           |
-| `_<number>` | string         | Exact match form, corresponds to `=N` rule                                                                                                              |
-| `id`        | string         | Custom message ID                                                                                                                                       |
-| `comment`   | string         | Comment for translators                                                                                                                                 |
-| `context`   | string         | Allows to extract the same messages with different IDs                                                                                                  |
-| `render`    | func           | Custom render callback to render translation                                                                                                            |
+| Prop name   | Type   | Description                                            |
+| ----------- | ------ | ------------------------------------------------------ |
+| `other`     | string | _(required)_ general _plural_ form                     |
+| `value`     | number | _(required)_ Value is mapped to plural form below      |
+| `offset`    | number | Offset of value when calculating plural forms          |
+| `zero`      | string | Form for empty `value`                                 |
+| `one`       | string | _Singular_ form                                        |
+| `two`       | string | _Dual_ form                                            |
+| `few`       | string | _Paucal_ form                                          |
+| `many`      | string | _Plural_ form                                          |
+| `_<number>` | string | Exact match form, corresponds to `=N` rule             |
+| `id`        | string | Custom message ID                                      |
+| `comment`   | string | Comment for translators                                |
+| `context`   | string | Allows to extract the same messages with different IDs |
+| `render`    | func   | Custom render callback to render translation           |
 
 `#` in a form is replaced with `value` (minus `offset`), formatted for the active locale with [`Intl.NumberFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat): `1234.5` reads `1,234.5` in `en` and `1.234,5` in `de`.
 
@@ -835,17 +835,17 @@ import { SelectOrdinal } from "@lingui/react/macro";
 
 Available Props:
 
-| Prop name   | Type           | Description                                                                                                                                             |
-| ----------- | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `value`     | number         | _(required)_ Value is mapped to plural form below                                                                                                       |
-| `other`     | string         | _(required)_ general _plural_ form                                                                                                                      |
-| `offset`    | number         | Offset of value for plural forms                                                                                                                        |
-| `zero`      | string         | Form for empty `value`                                                                                                                                  |
-| `one`       | string         | _Singular_ form                                                                                                                                         |
-| `two`       | string         | _Dual_ form                                                                                                                                             |
-| `few`       | string         | _Paucal_ form                                                                                                                                           |
-| `many`      | string         | _Plural_ form                                                                                                                                           |
-| `_<number>` | string         | Exact match form, correspond to `=N` rule. (e.g: `_0`, `_1`)                                                                                            |
+| Prop name   | Type   | Description                                                  |
+| ----------- | ------ | ------------------------------------------------------------ |
+| `value`     | number | _(required)_ Value is mapped to plural form below            |
+| `other`     | string | _(required)_ general _plural_ form                           |
+| `offset`    | number | Offset of value for plural forms                             |
+| `zero`      | string | Form for empty `value`                                       |
+| `one`       | string | _Singular_ form                                              |
+| `two`       | string | _Dual_ form                                                  |
+| `few`       | string | _Paucal_ form                                                |
+| `many`      | string | _Plural_ form                                                |
+| `_<number>` | string | Exact match form, correspond to `=N` rule. (e.g: `_0`, `_1`) |
 
 ### `Select`
 
