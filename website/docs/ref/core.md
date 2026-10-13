@@ -461,9 +461,12 @@ i18n._(welcome);
 The runtime macro supports a subset of the core macros, with a few differences:
 
 - **Placeholders must be named.** Variable names can't be read at runtime, so write `${{ name }}` instead of `${name}`. A plain value throws an error.
-- **Option values can't be template literals.** Use a nested `msg` instead: `` select({ gender }, { female: msg`She is ${{ name }}`, other: msg`They are ${{ name }}` }) ``.
+- **Option values can't be template literals.** Use a nested `msg` instead: ``select({ gender }, { female: msg`She is ${{ name }}`, other: msg`They are ${{ name }}` })``.
 - **No `t` and no JSX.** Define a message with `msg` and translate it with [`i18n._`](#i18n._).
-- **The source message stays in your bundle.** The compile-time macros can strip it in production; the runtime macro can't.
+- **Use `plural`, `select` and `selectOrdinal` inside `msg`.** On their own, they return a Message Descriptor at runtime, but a build step that compiles them (see below) turns them into a translated string, like the core macros. Inside `msg`, both give the same result.
+- **Without a compile step, the source message stays in your bundle.** The compile-time macros can strip it in production.
+
+With [`experimental.runtimeMacro`](/ref/conf#experimentalruntimemacro) enabled, the Babel macro plugin and the [Vite native transform](/ref/vite-plugin) also compile these imports at build time, like the core macros. The [SWC plugin](/ref/swc-plugin) doesn't read the Lingui config: add `@lingui/core/runtime-macro` to its `corePackage` option if you want the same there. Without compilation, the code still works as it is.
 
 ## AllMessages
 

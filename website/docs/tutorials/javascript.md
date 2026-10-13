@@ -38,6 +38,10 @@ Alternatively, you can load catalogs dynamically using the [`@lingui/loader`](/r
 
 To localize your application, you need to wrap your localizable texts in [Macros](/ref/macro). Lingui provides a set of Core Macros that transform tagged template literals and can be used in any JavaScript context.
 
+:::tip
+Macros need a compiler plugin, such as Babel or SWC. For code that runs without a build step, see the experimental [runtime macro](/ref/core#runtime-macro).
+:::
+
 Let's wrap our text in the [`t`](/ref/macro#t) macro:
 
 ```js
