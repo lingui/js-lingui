@@ -434,6 +434,37 @@ const i18n = setupI18n({
 // i18n.setVariables({ appName: "ExampleApp", version: "1.2.3" })
 ```
 
+## Runtime macro (experimental) {#runtime-macro}
+
+:::caution Experimental
+The runtime macro is experimental. Its API and import path may change in a minor release.
+:::
+
+`@lingui/core/runtime-macro` exports `msg` (and its alias `defineMessage`), `plural`, `select` and `selectOrdinal` as plain functions. They work without a Babel or SWC plugin, so you can use them where there is no build step: Node.js scripts, serverless functions, CLI tools or test runners.
+
+They return the same [Message Descriptor](/ref/macro#core-macros), with the same generated ID, as the [core macros](/ref/macro#core-macros). The extractor picks them up when [`experimental.runtimeMacro`](/ref/conf#experimentalruntimemacro) is enabled in your config.
+
+```ts
+import { i18n } from "@lingui/core";
+import { msg, plural } from "@lingui/core/runtime-macro";
+
+const greeting = msg`Hello ${{ name }}`;
+i18n._(greeting);
+
+const inbox = msg`You have ${plural({ count }, { one: "# message", other: "# messages" })}`;
+i18n._(inbox);
+
+const welcome = msg({ message: "Welcome back", context: "homepage" });
+i18n._(welcome);
+```
+
+The runtime macro supports a subset of the core macros, with a few differences:
+
+- **Placeholders must be named.** Variable names can't be read at runtime, so write `${{ name }}` instead of `${name}`. A plain value throws an error.
+- **Option values can't be template literals.** Use a nested `msg` instead: `` select({ gender }, { female: msg`She is ${{ name }}`, other: msg`They are ${{ name }}` }) ``.
+- **No `t` and no JSX.** Define a message with `msg` and translate it with [`i18n._`](#i18n._).
+- **The source message stays in your bundle.** The compile-time macros can strip it in production; the runtime macro can't.
+
 ## AllMessages
 
 The `AllMessages` parameter in the [`I18n.load`](#i18n.load) method is of the following type:

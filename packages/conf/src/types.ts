@@ -506,6 +506,14 @@ export type LinguiConfig = {
   }
   experimental?: {
     extractor?: ExperimentalExtractorOptions
+    /**
+     * Recognize imports from `@lingui/core/runtime-macro` as macro imports,
+     * so messages defined with the runtime `msg`, `plural`, `select` and
+     * `selectOrdinal` helpers are extracted.
+     *
+     * @default false
+     */
+    runtimeMacro?: boolean
   }
 }
 

@@ -39,6 +39,7 @@
   },
   "exports": {
     ".": "./dist/index.mjs",
+    "./runtime-macro": "./dist/runtime-macro.mjs",
     "./macro": {
       "browser": "./macro/browser.mjs",
       "types": "./macro/index.d.mts",
