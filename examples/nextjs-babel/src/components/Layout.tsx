@@ -1,29 +1,26 @@
 import Head from "next/head"
 import classnames from "classnames"
-
+import type { PropsWithChildren } from "react"
 import { Trans, useLingui } from "@lingui/react/macro"
 
+import { LocaleSwitcher } from "./LocaleSwitcher"
 import styles from "./Layout.module.css"
-import { useRouter } from "next/router"
 
-export function Layout({ title = null, className = "", children }) {
-  /**
-   * This macro hook is needed to get `t` which
-   * is bound to i18n from React.Context
-   */
+type Props = PropsWithChildren<{ className?: string }>
+
+export function Layout({ className, children }: Props) {
+  // The `t` macro translates with the i18n instance from React context
   const { t } = useLingui()
-  const router = useRouter()
-  const { pathname, asPath, query } = router
 
   return (
     <div className={styles.container}>
       <Head>
         {/*
-         The Next Head component is not being rendered in the React
-         component tree and React Context is not being passed down to the components placed in the <Head>.
-         That means we cannot use the <Trans> component here and instead have to use `t` macro.
+          `next/head` renders its children outside of the React tree, so React
+          context isn't available in there. The title is translated here, in
+          the component, with the `t` macro instead of `<Trans>`.
         */}
-        <title>{title || t`Example project using LinguiJS`}</title>
+        <title>{t`Example project using LinguiJS`}</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
@@ -40,24 +37,7 @@ export function Layout({ title = null, className = "", children }) {
             <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
           </Trans>
         </a>
-        &nbsp;{" | "}
-        <button
-          className={styles.link}
-          onClick={() =>
-            router.push({ pathname, query }, asPath, { locale: "en" })
-          }
-        >
-          English
-        </button>
-        {" | "}
-        <button
-          className={styles.link}
-          onClick={() =>
-            router.push({ pathname, query }, asPath, { locale: "cs" })
-          }
-        >
-          Česky
-        </button>
+        <LocaleSwitcher />
       </footer>
     </div>
   )

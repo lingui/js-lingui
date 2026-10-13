@@ -3,6 +3,32 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.9.1](https://github.com/lingui/js-lingui/compare/v6.9.0...v6.9.1) (2026-10-09)
+
+**Note:** Version bump only for package @lingui/conf
+
+# [6.9.0](https://github.com/lingui/js-lingui/compare/v6.8.0...v6.9.0) (2026-10-01)
+
+**Note:** Version bump only for package @lingui/conf
+
+# [6.8.0](https://github.com/lingui/js-lingui/compare/v6.7.0...v6.8.0) (2026-09-23)
+
+### Reverts
+
+* "feat(cli): add support for `BatchExtractor` ([#2562](https://github.com/lingui/js-lingui/issues/2562))" ([#2673](https://github.com/lingui/js-lingui/issues/2673)) ([fd416f9](https://github.com/lingui/js-lingui/commit/fd416f9ef6b9cb49652873277f0ace111649bbfb))
+
+# [6.7.0](https://github.com/lingui/js-lingui/compare/v6.6.0...v6.7.0) (2026-09-11)
+
+### Bug Fixes
+
+* make orderBy handling consistent ([#2665](https://github.com/lingui/js-lingui/issues/2665)) ([8cff1f0](https://github.com/lingui/js-lingui/commit/8cff1f0a820aad3d24f2c96780bb21e907b4f56a))
+
+### Features
+
+* **cli,conf:** add RTL pseudolocale and allow multiple pseudolocales ([#2652](https://github.com/lingui/js-lingui/issues/2652)) ([4c00dec](https://github.com/lingui/js-lingui/commit/4c00decb3dddbd9539725d093a5e68080c376668))
+* **conf:** support pseudolocale extend character ([#2651](https://github.com/lingui/js-lingui/issues/2651)) ([3f7f03d](https://github.com/lingui/js-lingui/commit/3f7f03d98445ed912ffeb9794b7bf9acc1d8d73d))
+
+
 # [6.6.0](https://github.com/lingui/js-lingui/compare/v6.5.0...v6.6.0) (2026-07-24)
 
 **Note:** Version bump only for package @lingui/conf

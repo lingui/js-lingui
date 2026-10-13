@@ -21,6 +21,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  gap: 1.5rem;
 }
 
 .footer img {
@@ -35,11 +36,4 @@
 
 .logo {
   height: 1em;
-}
-
-.link {
-  border: none;
-  background: none;
-  cursor: pointer;
-  font-size: inherit;
 }

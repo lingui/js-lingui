@@ -59,7 +59,7 @@ export async function transformFile(
 Your catalogs:
 ${config.catalogs.map((c) => c.path).join("\n")}
 
-Working dir is: 
+Working dir is:
 ${process.cwd()}
 
 Please check that \`catalogs.path\` is filled properly and restart the Metro server.\n`,
@@ -75,11 +75,15 @@ Please check that \`catalogs.path\` is filled properly and restart the Metro ser
 
   const strict = process.env.NODE_ENV !== "production"
 
+  const pseudoLocaleConfig = config.pseudoLocale.find(
+    (item) => item.locale === locale,
+  )
+
   const { source } = createCompiledCatalog(locale, messages, {
     strict,
     namespace: "es",
-    pseudoLocale: config.pseudoLocale.locale,
-    pseudoLocaleOptions: config.pseudoLocale.options,
+    pseudoLocale: pseudoLocaleConfig?.locale,
+    pseudoLocaleOptions: pseudoLocaleConfig?.options,
   })
 
   return source

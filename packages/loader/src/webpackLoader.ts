@@ -7,16 +7,20 @@ import {
   getCatalogDependentFiles,
   createMissingErrorMessage,
   createCompilationErrorMessage,
+  isFailOnMissingEnabled,
+  getFailOnMissingBehavior,
+  formatFailOnMissingOption,
 } from "@lingui/cli/api"
+import type { FailOnMissingOption } from "@lingui/cli/api"
 import type { LoaderDefinitionFunction } from "webpack"
 
 export type LinguiLoaderOptions = {
   config?: string
 
   /**
-   * If true would fail compilation on missing translations
+   * If true would fail compilation on missing translations after fallbackLocales are applied
    **/
-  failOnMissing?: boolean
+  failOnMissing?: FailOnMissingOption
 
   /**
    * If true would fail compilation on message compilation errors
@@ -50,7 +54,7 @@ Resource: ${this.resourcePath}
 Your catalogs:
 ${config.catalogs.map((c) => c.path).join("\n")}
 
-Working dir is: 
+Working dir is:
 ${process.cwd()}
 
 Please check that \`catalogs.path\` is filled properly.\n`,
@@ -60,23 +64,33 @@ Please check that \`catalogs.path\` is filled properly.\n`,
   const { locale, catalog } = fileCatalog
   const dependency = await getCatalogDependentFiles(catalog, locale)
   dependency.forEach((file) => this.addDependency(path.normalize(file)))
+  const missingBehavior = getFailOnMissingBehavior(options.failOnMissing)
 
   const { messages, missing: missingMessages } = await catalog.getTranslations(
     locale,
     {
       fallbackLocales: config.fallbackLocales,
       sourceLocale: config.sourceLocale,
+      missingBehavior,
     },
   )
 
+  const pseudoLocaleConfig = config.pseudoLocale.find(
+    (item) => item.locale === locale,
+  )
+
   if (
-    options.failOnMissing &&
-    locale !== config.pseudoLocale.locale &&
+    isFailOnMissingEnabled(options.failOnMissing) &&
+    !pseudoLocaleConfig &&
     missingMessages.length > 0
   ) {
-    const message = createMissingErrorMessage(locale, missingMessages, "loader")
+    const message = createMissingErrorMessage(
+      locale,
+      missingMessages,
+      missingBehavior,
+    )
     throw new Error(
-      `${message}\nYou see this error because \`failOnMissing=true\` in Lingui Loader configuration.`,
+      `${message}\nYou see this error because \`failOnMissing=${formatFailOnMissingOption(options.failOnMissing)}\` in Lingui Loader configuration.`,
     )
   }
 
@@ -89,8 +103,8 @@ Please check that \`catalogs.path\` is filled properly.\n`,
   const { source: code, errors } = createCompiledCatalog(locale, messages, {
     strict,
     namespace: this._module!.type === "json" ? "json" : "es",
-    pseudoLocale: config.pseudoLocale.locale,
-    pseudoLocaleOptions: config.pseudoLocale.options,
+    pseudoLocale: pseudoLocaleConfig?.locale,
+    pseudoLocaleOptions: pseudoLocaleConfig?.options,
   })
 
   if (errors.length) {

@@ -39,18 +39,8 @@ export type CatalogType<Extra = CatalogExtra> = {
   [msgId: string]: MessageType<Extra>
 }
 
-/**
- * Per-file extractor that processes one file at a time.
- * The CLI reads file contents and calls `extract` for each file that `match` returns true for.
- */
-export type PerFileExtractorType = {
-  /**
-   * Determine whether this extractor should handle the given file.
-   */
+export type ExtractorType = {
   match(filename: string): boolean
-  /**
-   * Extract messages from a single file's source code.
-   */
   extract(
     filename: string,
     code: string,
@@ -58,38 +48,6 @@ export type PerFileExtractorType = {
     ctx: ExtractorCtx,
   ): Promise<void> | void
 }
-
-/**
- * Batch extractor that receives all matched file paths at once and handles
- * file I/O and parallelism internally.
- *
- * Files are matched using `match` and only those are passed to `extractFromFiles`.
- * The CLI does not read file contents or use worker pools for batch extractors.
- *
- * @experimental This type is experimental and may change in future versions.
- */
-export type Experimental__BatchExtractorType = {
-  /**
-   * Determine whether this extractor should handle the given file.
-   */
-  match(filename: string): boolean
-  /**
-   * Extract messages from multiple files at once.
-   * The extractor is responsible for reading file contents and managing concurrency.
-   *
-   * @param filenames - File paths that passed the `match` filter.
-   * @param onMessageExtracted - Callback to emit each extracted message.
-   * @param ctx - Extraction context containing the Lingui configuration.
-   */
-  extractFromFiles(
-    filenames: string[],
-    onMessageExtracted: (msg: ExtractedMessage) => void,
-    ctx: ExtractorCtx,
-  ): Promise<void>
-}
-
-export type ExtractorType =
-  PerFileExtractorType | Experimental__BatchExtractorType
 
 export type CatalogFormatter = {
   catalogExtension: string
@@ -322,11 +280,7 @@ export type LinguiConfig = {
   compilerBabelOptions?: any
   fallbackLocales?: FallbackLocales | false
   /**
-   * Specifies custom message extractor implementations.
-   *
-   * Extractors can be either per-file (with `match` and `extract` methods)
-   * or batch (with `extractFromFiles` method that receives all paths at once
-   * and handles file I/O and parallelism internally).
+   * Specifies custom message extractor implementations
    *
    * https://lingui.dev/guides/custom-extractor
    */
@@ -388,12 +342,13 @@ export type LinguiConfig = {
    * Locale used for pseudolocalization. For example, when you set `pseudoLocale: "en"`, all messages in the en catalog will be pseudo-localized.
    * The locale must be included in the locales config.
    *
-   * You can either pass the locale as a string, or an object to additionally
+   * You can pass a single locale as a string (deprecated), an object to additionally
    * configure the underlying [`pseudolocale`](https://github.com/MartinCerny-awin/pseudolocale)
-   * library (e.g. to customize the prepended/appended markers or extend the string length).
+   * library (e.g. to customize the prepended/appended markers or extend the string length),
+   * or an array of objects to define multiple pseudolocales with different parameters.
    *
    * The string form is deprecated and will be removed in a future major release.
-   * Use the object form (`{ locale: "pseudo" }`) instead.
+   * Use the object form (`{ locale: "pseudo" }`) or array of objects instead.
    *
    * @example
    *
@@ -403,11 +358,18 @@ export type LinguiConfig = {
    *
    * // Extended form
    * pseudoLocale: { locale: "pseudo", prepend: "⟦ ", append: " ⟧", extend: 0.4 }
+   *
+   * // Multiple pseudolocales
+   * pseudoLocale: [
+   *   { locale: "pseudo-en", prepend: "⟦ ", append: " ⟧" },
+   *   { locale: "pseudo-ar", rightToLeft: true }
+   * ]
    * ```
    *
    * https://lingui.dev/guides/pseudolocalization
    */
-  pseudoLocale?: DeprecatedPseudoLocaleString | PseudoLocaleConfig
+  pseudoLocale?:
+    DeprecatedPseudoLocaleString | PseudoLocaleConfig | PseudoLocaleConfig[]
   /**
    * This is the directory where the Lingui CLI scans for messages in your source files during the extraction process.
    *
@@ -575,12 +537,24 @@ export type PseudoLocaleOptions = {
    */
   extend?: number
   /**
+   * Character used to pad pseudo-localized messages when `extend` is set.
+   *
+   * @default " "
+   */
+  extendCharacter?: string
+  /**
    * Replaces every (non-token) character with the given one. Handy to quickly
    * spot strings that were not extracted/translated.
    *
    * @default undefined
    */
   override?: string
+  /**
+   * Emulates right-to-left languages by inserting Unicode RTL override marks.
+   *
+   * @default false
+   */
+  rightToLeft?: boolean
 }
 
 /**
@@ -620,7 +594,7 @@ export type LinguiConfigNormalized = Omit<
   "runtimeConfigModule" | "pseudoLocale"
 > & {
   resolvedConfigPath?: string
-  pseudoLocale: PseudoLocaleConfigNormalized
+  pseudoLocale: PseudoLocaleConfigNormalized[]
   runtimeConfigModule: {
     i18n: ModuleSourceNormalized
     useLingui: ModuleSourceNormalized

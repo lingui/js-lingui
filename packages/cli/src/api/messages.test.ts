@@ -4,21 +4,40 @@ import {
 } from "./messages.js"
 
 describe("createMissingErrorMessage", () => {
-  it("should print correct missing message", async () => {
-    const message = createMissingErrorMessage(
-      "en",
-      [
-        {
-          id: "1",
-          source: "Hello",
-        },
-        {
-          id: "World",
-          source: "World",
-        },
-      ],
-      "bla bla",
+  const missingMessages = [
+    {
+      id: "1",
+      source: "Hello",
+    },
+    {
+      id: "World",
+      source: "World",
+    },
+  ]
+
+  it("should print correct missing message for resolved behavior", () => {
+    const message = createMissingErrorMessage("en", missingMessages, "resolved")
+
+    expect(message).toMatchInlineSnapshot(`
+      Failed to compile catalog for locale en!
+
+      Missing 2 translation(s) after applying fallbackLocales:
+
+      1: Hello
+      World: World
+    `)
+  })
+
+  it("should print correct missing message for catalog behavior", () => {
+    const message = createMissingErrorMessage("en", missingMessages, "catalog")
+
+    expect(message).toContain(
+      "Missing 2 translation(s) before applying fallbackLocales:",
     )
+  })
+
+  it("should preserve the legacy message for arbitrary configuration strings", () => {
+    const message = createMissingErrorMessage("en", missingMessages, "loader")
 
     expect(message).toMatchInlineSnapshot(`
       Failed to compile catalog for locale en!
@@ -27,7 +46,6 @@ describe("createMissingErrorMessage", () => {
 
       1: Hello
       World: World
-
     `)
   })
 })

@@ -33,9 +33,6 @@ yarn-error.log*
 # vercel
 .vercel
 
-# lingui js
-/src/translations/**/*.js
-
 .pnp.*
 .yarn/*
 !.yarn/patches
@@ -43,3 +40,9 @@ yarn-error.log*
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+
+# next.js generates this on every dev/build
+next-env.d.ts
+
+# typescript
+*.tsbuildinfo

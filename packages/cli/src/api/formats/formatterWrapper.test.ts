@@ -113,6 +113,75 @@ describe("FormatterWrapper", () => {
   })
 
   describe("write", () => {
+    it("should serialize catalog without writing to FS", async () => {
+      const format = new FormatterWrapper(
+        {
+          serialize: (catalog) => JSON.stringify(catalog),
+          parse: () => ({}),
+          catalogExtension: ".po",
+          templateExtension: ".pot",
+        },
+        "en",
+      )
+
+      mockFs({
+        "messages.json": `{"existing":{"translation":"Existing message"}}`,
+      })
+
+      const content = await format.serialize(
+        "messages.json",
+        {
+          static: {
+            translation: "Static message",
+          },
+        },
+        "en",
+      )
+
+      mockFs.restore()
+
+      expect(content).toMatchInlineSnapshot(
+        `{"static":{"translation":"Static message"}}`,
+      )
+    })
+
+    it("should not re-read file when existing is passed explicitly as undefined", async () => {
+      const serializeMock = vi
+        .fn()
+        .mockImplementation((catalog) => JSON.stringify(catalog))
+      const readFileSpy = vi.spyOn(fs.promises, "readFile")
+      const format = new FormatterWrapper(
+        {
+          serialize: serializeMock,
+          parse: () => ({}),
+          catalogExtension: ".po",
+          templateExtension: ".pot",
+        },
+        "en",
+      )
+
+      mockFs({})
+
+      await format.serialize(
+        "messages.json",
+        {
+          static: {
+            translation: "Static message",
+          },
+        },
+        "en",
+        undefined,
+      )
+
+      mockFs.restore()
+      readFileSpy.mockRestore()
+
+      expect(readFileSpy).not.toHaveBeenCalled()
+      expect(serializeMock.mock.calls[0]?.[1]).toMatchObject({
+        existing: undefined,
+      })
+    })
+
     it("should write to FS and serialize catalog using provided formatter", async () => {
       const format = new FormatterWrapper(
         {

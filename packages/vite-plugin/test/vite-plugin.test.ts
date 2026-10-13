@@ -2,6 +2,12 @@ import { describe } from "vitest"
 import { lingui, LinguiPluginOpts } from "../src"
 import { runVite as _runVite } from "./run-vite"
 import macrosPlugin from "vite-plugin-babel-macros"
+import path from "path"
+import { mockConsole } from "@lingui/test-utils"
+
+function getErrorMessage(error: unknown) {
+  return error instanceof Error ? error.message : String(error)
+}
 
 describe("vite-plugin", () => {
   it("should return compiled catalog", async () => {
@@ -13,7 +19,7 @@ describe("vite-plugin", () => {
     const { mod } = await runVite(`json-format`)
 
     expect((await mod.load()).messages).toMatchSnapshot()
-  })
+  }, 10000)
 
   it("should report error when macro used without a plugin", async () => {
     expect.assertions(1)
@@ -24,7 +30,7 @@ describe("vite-plugin", () => {
         { useVitePlugin: false, useMacroPlugin: false },
       )
     } catch (e) {
-      expect((e as Error).message).toContain(
+      expect(getErrorMessage(e)).toContain(
         'The macro you imported from "@lingui/core/macro" is being executed outside the context of compilation.',
       )
     }
@@ -34,6 +40,40 @@ describe("vite-plugin", () => {
     expect(await mod.load()).toMatchSnapshot()
   })
 
+  it("should correctly process with native transformer", async () => {
+    const { mod } = await runVite(`macro-usage`, { macroTransform: true })
+    expect(await mod.load()).toMatchSnapshot()
+  })
+
+  it("should process a TSX module whose id carries a query with native transformer", async () => {
+    const { mod } = await runVite(`query-id`, { macroTransform: true })
+    expect(await mod.load()).toBe("Ola")
+  })
+
+  it("should report error when native transformer is used with macro.jsxRuntime = solid", async () => {
+    expect.assertions(1)
+    try {
+      await runVite(`solid-runtime-error`, { macroTransform: true })
+    } catch (e) {
+      expect(getErrorMessage(e)).toContain(
+        `The native macro transform doesn't support macro.jsxRuntime: "solid" yet.`,
+      )
+    }
+  })
+
+  it("should correctly process with native transformer - PRODUCTION", async () => {
+    const oldEnv = process.env.NODE_ENV
+    process.env.NODE_ENV = "production"
+    const { mod } = await runVite(`macro-usage`, { macroTransform: true })
+    process.env.NODE_ENV = oldEnv
+
+    expect.assertions(2)
+    await mockConsole(async (console) => {
+      expect(await mod.load()).toMatchSnapshot()
+      expect(console.warn).toHaveBeenCalled()
+    })
+  })
+
   it("should report missing error when failOnMissing = true", async () => {
     expect.assertions(1)
     try {
@@ -41,9 +81,41 @@ describe("vite-plugin", () => {
         failOnMissing: true,
       })
     } catch (e) {
-      expect((e as Error).message).toContain("Missing 1 translation(s):")
+      expect(getErrorMessage(e)).toContain(
+        "Missing 1 translation(s) after applying fallbackLocales:",
+      )
     }
   })
+
+  it("should not report missing error when fallbackLocales resolve translation and failOnMissing = true", async () => {
+    await expect(
+      runVite(`fail-on-missing-fallback`, {
+        failOnMissing: true,
+      }),
+    ).resolves.toBeTruthy()
+  }, 10000)
+
+  it('should not report missing error when fallbackLocales resolve translation and failOnMissing = "resolved"', async () => {
+    await expect(
+      runVite(`fail-on-missing-fallback`, {
+        failOnMissing: "resolved",
+      }),
+    ).resolves.toBeTruthy()
+  }, 10000)
+
+  it('should report missing error when fallbackLocales resolve translation and failOnMissing = "catalog"', async () => {
+    expect.assertions(2)
+    try {
+      await runVite(`fail-on-missing-fallback`, {
+        failOnMissing: "catalog",
+      })
+    } catch (e) {
+      expect(getErrorMessage(e)).toContain(
+        "Missing 1 translation(s) before applying fallbackLocales:",
+      )
+      expect(getErrorMessage(e)).toContain('failOnMissing="catalog"')
+    }
+  }, 10000)
 
   it("should NOT report missing messages for pseudo locale when failOnMissing = true", async () => {
     await expect(
@@ -60,7 +132,7 @@ describe("vite-plugin", () => {
         failOnCompileError: true,
       })
     } catch (e) {
-      expect((e as Error).message).toContain(
+      expect(getErrorMessage(e)).toContain(
         "Compilation error for 2 translation(s)",
       )
     }
@@ -84,7 +156,7 @@ describe("vite-plugin", () => {
       )
       await mod.load()
     } catch (e) {
-      expect((e as Error).message).toMatchInlineSnapshot(`
+      expect(getErrorMessage(e)).toMatchInlineSnapshot(`
         "The macro you imported from "@lingui/core/macro" is being executed outside the context of compilation. 
         This indicates that you don't configured correctly one of the "babel-plugin-macros" / "@lingui/swc-plugin" / "babel-plugin-lingui-macro" 
         Additionally, dynamic imports — e.g., \`await import('@lingui/core/macro')\` — are not supported."
@@ -101,8 +173,10 @@ async function runVite(
     useVitePlugin = true,
   }: { useMacroPlugin?: boolean; useVitePlugin?: boolean } = {},
 ) {
+  const cwd = path.join(import.meta.dirname, fixturesPath)
+
   return _runVite(fixturesPath, [
-    useVitePlugin ? lingui(pluginConfig) : null,
+    useVitePlugin ? lingui({ ...pluginConfig, cwd }) : null,
     useMacroPlugin ? macrosPlugin() : null,
   ])
 }

@@ -768,6 +768,7 @@ msgid "custom.id"
 msgid_plural "custom.id_plural"
 msgstr[0] ""
 msgstr[1] ""
+msgstr[2] ""
 
 #. js-lingui:icu=%7BanotherCount%2C+plural%2C+one+%7BSingular+case%7D+other+%7BCase+number+%7BanotherCount%7D%7D%7D&pluralize_on=anotherCount
 msgid "Singular case"

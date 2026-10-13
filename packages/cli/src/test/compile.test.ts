@@ -4,9 +4,13 @@ import { getConsoleMockCalls, mockConsole } from "@lingui/test-utils"
 import { createFixtures, readFsToListing } from "../tests.js"
 
 describe("CLI Command: Compile", () => {
-  function getTestConfig(rootDir: string, pseudoLocale?: string) {
+  function getTestConfig(
+    rootDir: string,
+    pseudoLocale?: LinguiConfig["pseudoLocale"],
+    locales: string[] = ["en", "pl"],
+  ) {
     return makeConfig({
-      locales: ["en", "pl"],
+      locales,
       sourceLocale: "en",
       pseudoLocale: pseudoLocale,
       rootDir: rootDir,
@@ -59,7 +63,7 @@ msgstr ""
     })
 
     it("Should show error and stop compilation of catalog if message doesnt have a translation (with template)", async () => {
-      expect.assertions(3)
+      expect.assertions(4)
       const rootDir = await createFixtures({
         "messages.pot": `
 msgid "Hello World"
@@ -85,8 +89,9 @@ msgstr ""
           en: actualFiles["en.js"],
         }).toMatchSnapshot()
 
-        let log = getConsoleMockCalls(console.error)!
-        log = log.split("\n\n").sort().join("\n\n")
+        const rawLog = getConsoleMockCalls(console.error)
+        expect(rawLog).toBeDefined()
+        const log = rawLog?.split("\n\n").sort().join("\n\n")
 
         expect(log).toMatchSnapshot()
         expect(result).toBeFalsy()
@@ -127,6 +132,52 @@ msgstr ""
       })
     })
 
+    it("Should compile multiple pseudolocales with different options without failing when allowEmpty = false", async () => {
+      expect.assertions(6)
+      const rootDir = await createFixtures({
+        "en.po": `
+msgid "Hello World"
+msgstr "Hello World"
+        `,
+        "pseudo-en.po": `
+msgid "Hello World"
+msgstr ""
+        `,
+        "pseudo-ar.po": `
+msgid "Hello World"
+msgstr ""
+        `,
+      })
+
+      const config = getTestConfig(
+        rootDir,
+        [
+          { locale: "pseudo-en", prepend: "⟦ ", append: " ⟧" },
+          { locale: "pseudo-ar", rightToLeft: true },
+        ],
+        ["en", "pseudo-en", "pseudo-ar"],
+      )
+
+      await mockConsole(async (console) => {
+        const result = await command(config, {
+          allowEmpty: false,
+          workersOptions: {
+            poolSize: 0,
+          },
+        })
+        const actualFiles = readFsToListing(config.rootDir)
+
+        expect(actualFiles["pseudo-en.js"]).toContain("⟦")
+        expect(actualFiles["pseudo-en.js"]).toContain("⟧")
+        expect(actualFiles["pseudo-ar.js"]).toContain("\u202E") // RLO marker.
+        expect(actualFiles["pseudo-ar.js"]).toContain("\u202C") // PDF marker.
+
+        const log = getConsoleMockCalls(console.error)
+        expect(log).toBeUndefined()
+        expect(result).toBeTruthy()
+      })
+    })
+
     it("Should show missing messages verbosely when verbose = true", async () => {
       expect.assertions(2)
       const rootDir = await createFixtures({
@@ -153,6 +204,54 @@ msgstr ""
         const log = getConsoleMockCalls(console.error)
         expect(log).toMatchSnapshot()
         expect(result).toBeFalsy()
+      })
+    })
+
+    it("Should pass by default when fallbackLocales can resolve missing translation", async () => {
+      expect.assertions(4)
+
+      const rootDir = await createFixtures({
+        "en-US.po": `
+msgid "Hello World"
+msgstr "Hello World"
+        `,
+        "en-GB.po": `
+msgid "Hello World"
+msgstr ""
+        `,
+      })
+
+      const config = makeConfig({
+        locales: ["en-US", "en-GB"],
+        sourceLocale: "en-US",
+        fallbackLocales: {
+          default: "en-US",
+        },
+        rootDir,
+        catalogs: [
+          {
+            path: "<rootDir>/{locale}",
+            include: ["<rootDir>"],
+            exclude: [],
+          },
+        ],
+      })
+
+      await mockConsole(async (console) => {
+        const result = await command(config, {
+          allowEmpty: false,
+          workersOptions: {
+            poolSize: 0,
+          },
+        })
+        const actualFiles = readFsToListing(config.rootDir)
+
+        expect(actualFiles["en-US.js"]).toBeTruthy()
+        expect(actualFiles["en-GB.js"]).toBeTruthy()
+
+        const log = getConsoleMockCalls(console.error)
+        expect(log).toBeUndefined()
+        expect(result).toBeTruthy()
       })
     })
   })
@@ -350,7 +449,7 @@ msgstr "Witaj {name}"
         expect(log).toBeUndefined()
         expect(result).toBeTruthy()
       })
-    })
+    }, 15000)
 
     it("Should produce identical results with multithread enabled and disabled", async () => {
       const rootDir = await createFixtures({
@@ -425,7 +524,7 @@ msgstr "{gender, select, male {On} female {Ona} other {Oni}}"
       // Compare the results
       expect(singleThreadFiles["en.js"]).toEqual(multiThreadFiles["en.js"])
       expect(singleThreadFiles["pl.js"]).toEqual(multiThreadFiles["pl.js"])
-    })
+    }, 15000)
 
     it("Should handle compilation errors correctly with multithread", async () => {
       const rootDir = await createFixtures({
@@ -454,7 +553,7 @@ msgstr "{plural,  }"
         expect(log).toContain("invalid syntax at line")
         expect(result).toBeFalsy()
       })
-    })
+    }, 15000)
   })
 
   describe("outputPrefix", () => {

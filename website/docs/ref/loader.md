@@ -1,3 +1,8 @@
+---
+title: Webpack-compatible loader
+description: Import PO catalogs directly and compile them on the fly with @lingui/loader in Webpack, Rspack and Rsbuild, instead of running lingui compile
+---
+
 # Webpack-compatible loader
 
 The `@lingui/loader` is a Webpack-compatible loader for Lingui message catalogs. It can be used with Webpack, Rspack, and Rsbuild. It offers an alternative to the [`lingui compile`](/ref/cli#compile) and compiles catalogs on the fly.
@@ -60,6 +65,20 @@ export async function dynamicActivate(locale: string) {
 ```
 
 Remember that the file extension is mandatory.
+
+## Options
+
+### `failOnMissing`
+
+Fail the build when missing translations are detected.
+
+- `true` or `"resolved"`: fail only if a translation is still missing after `fallbackLocales` are applied.
+- `"catalog"`: fail if the target locale catalog itself has missing translations before `fallbackLocales` are applied.
+- `false` or omitted: do not fail the build on missing translations.
+
+### `failOnCompileError`
+
+Fail the build when message compilation produces errors.
 
 :::note
 Catalogs with the `.json` extension are treated differently by Webpack-compatible bundlers. They load as ES module with default export, so your import should look like this:

@@ -74,19 +74,10 @@ describe("extractFromFilesWithWorkerPool", () => {
 
     const pool = { run, destroy: vi.fn() } as unknown as ExtractWorkerPool
 
-    const messages: Record<string, any> = {}
-
-    await extractFromFilesWithWorkerPool(
-      pool,
-      paths,
-      (next) => {
-        mergeExtractedMessage(next, messages, config)
-      },
-      config,
-    )
+    const catalog = await extractFromFilesWithWorkerPool(pool, paths, config)
 
     expect(run).toHaveBeenCalledTimes(2)
-    expect(messages.one?.origin).toEqual([
+    expect(catalog?.one?.origin).toEqual([
       ["a.ts", 1],
       ["z.ts", 1],
     ])

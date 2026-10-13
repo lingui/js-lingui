@@ -1,3 +1,8 @@
+---
+title: Sync & Collaboration Tools
+description: How to manage translations for a Lingui project. Manual catalog editing versus translation management systems, and the tools that integrate with Lingui
+---
+
 # Sync & Collaboration Tools
 
 While Lingui provides a powerful API for managing your translations, it doesn't provide an integrated solution for managing synchronization and collaboration with your translators.

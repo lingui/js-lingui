@@ -1,11 +1,13 @@
 ---
 title: JavaScript i18n Introduction & Core Concepts
-description: Lingui is a universal, clean and readable, lightweight and powerful internationalization (i18n) framework for global projects
+description: What Lingui is and how it works. A lightweight i18n library for JavaScript and TypeScript with compile-time macros and a message extraction CLI
 ---
 
 # Introduction
 
-📖 A readable, automated, and optimized internationalization for JavaScript
+📖 Lingui is a lightweight, open-source internationalization (i18n) library for JavaScript and TypeScript. It brings compile-time macros and a CLI for message extraction to React, React Native, Vue, SolidJS, Astro, Svelte, and Node.js.
+
+You wrap text in macros like `Trans` and `t`, and the CLI extracts it into PO catalogs that any translation tool can open. Once translated, the catalogs are compiled into small modules that your app loads at runtime.
 
 > **Internationalization** is the design and development of a product, application or document content that enables easy **localization** for target audiences that vary in culture, region, or language.
 >
@@ -13,9 +15,19 @@ description: Lingui is a universal, clean and readable, lightweight and powerful
 
 [![GitHub stars](https://img.shields.io/github/stars/lingui/js-lingui.svg?style=social&label=Stars)](https://github.com/lingui/js-lingui/)
 
-## Key Features
+## Design Decisions
 
-Lingui is an easy yet powerful internationalization framework for global projects.
+Three design decisions shape how Lingui feels to use.
+
+Messages are compiled at build time by a [Babel or SWC plugin](/installation#choosing-a-transpiler). Most frameworks already run one of the two, so setup is usually one line in your Next.js, Vite or Babel config. The runtime stays around 2 kB and ships no message parser.
+
+Message IDs are generated from the source text. You never name a key, duplicate messages are merged, and searching for a UI string leads straight to the code. When the source text changes, the message is treated as new and goes back to translators; for strings that change often, [explicit IDs](/guides/explicit-vs-generated-ids) keep the ID stable.
+
+Catalogs are PO files by default, so any translation tool opens them and comments and context travel with each message. [JSON and CSV formats](/ref/catalog-formats) are available if your team already works with them.
+
+If you are weighing Lingui against a library you already use, see [Lingui vs i18next](/misc/i18next) and [Lingui vs react-intl](/misc/react-intl).
+
+## Key Features
 
 ### Clean and Readable
 

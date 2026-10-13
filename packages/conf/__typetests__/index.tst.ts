@@ -4,7 +4,6 @@ import {
   ExtractorCtx,
   FallbackLocales,
   LinguiConfig,
-  ExtractorType,
 } from "@lingui/conf"
 import { expect } from "tstyche"
 
@@ -22,7 +21,32 @@ expect({
 // pseudoLocale as an object with pseudolocale options
 expect({
   locales: ["en", "pseudo"],
-  pseudoLocale: { locale: "pseudo", prepend: "⟦ ", append: " ⟧", extend: 0.4 },
+  pseudoLocale: {
+    locale: "pseudo",
+    prepend: "⟦ ",
+    append: " ⟧",
+    extend: 0.4,
+    extendCharacter: ".",
+    override: "_",
+    rightToLeft: true,
+  },
+}).type.toBeAssignableTo<LinguiConfig>()
+
+// pseudoLocale as an array of objects with pseudolocale options
+expect({
+  locales: ["en", "pseudo-en", "pseudo-ar"],
+  pseudoLocale: [
+    {
+      locale: "pseudo-en",
+      prepend: "⟦ ",
+      append: " ⟧",
+      extend: 0.4,
+    },
+    {
+      locale: "pseudo-ar",
+      rightToLeft: true,
+    },
+  ],
 }).type.toBeAssignableTo<LinguiConfig>()
 
 // all props
@@ -100,13 +124,3 @@ expect({
     Trans: ["./custom-config", "Trans"] as [string, string],
   },
 }).type.toBeAssignableTo<LinguiConfig>()
-
-const extractor: ExtractorType = {
-  match: (fileName: string) => false,
-  extract: (
-    filename: string,
-    code: string,
-    onMessageExtracted: (msg: ExtractedMessage) => void,
-    ctx?: ExtractorCtx,
-  ) => {},
-}

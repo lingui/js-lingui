@@ -114,7 +114,7 @@ You can configure the number of worker threads with the `--workers` flag:
 lingui extract --workers 4
 ```
 
-By default, Lingui uses CPU cores - 1, capped at 8. Use `--workers 1` to disable multithreading and run in a single process.
+Number of worker threads to use (default: CPU count - 1, capped at 8; on 1-2 core machines, all cores). Pass `--workers 1` to disable worker threads and run everything in a single process
 
 ### Explicit Placeholder Labels Macro
 
@@ -136,7 +136,7 @@ better context for translators:
 
 Named placeholders help translators understand _what_ the value represents, so they can choose the correct grammar or wording for the target language.
 
-📖 Read more about the `ph()` macro in the [macro documentation](/ref/macro#ph).
+📖 Read more about the `ph()` macro in the [macro documentation](/ref/macro#ph) and in the [Translator-friendly Messages](/guides/translator-friendly-messages) guide.
 
 ## What's New in 6.0?
 
@@ -222,6 +222,8 @@ You can also set an explicit name directly in markup:
 The result is more human-readable messages, better translator context, and fewer accidental translation breaks when UI markup changes.
 
 The same capability is also available in [`@lingui/swc-plugin`](/ref/swc-plugin), so teams using either Babel or SWC can keep placeholder naming behavior consistent.
+
+📖 See the [Translator-friendly Messages](/guides/translator-friendly-messages#name-your-tags) guide for configuration details and limitations.
 
 ### Vue 3 Reactivity Transform in Vue Extractor
 

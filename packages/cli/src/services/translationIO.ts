@@ -20,9 +20,9 @@ import path from "node:path"
 
 const getTargetLocales = (config: LinguiConfigNormalized) => {
   const sourceLocale = config.sourceLocale || "en"
-  const pseudoLocale = config.pseudoLocale.locale || "pseudo"
+  const pseudoLocales = new Set(config.pseudoLocale.map((item) => item.locale))
   return config.locales.filter(
-    (value) => value != sourceLocale && value != pseudoLocale,
+    (value: string) => value != sourceLocale && !pseudoLocales.has(value),
   )
 }
 

@@ -1,3 +1,8 @@
+---
+title: Vue.js Extractor
+description: Extract messages from Vue single-file components with @lingui/extractor-vue. Installation, configuration and options
+---
+
 # Vue.js Extractor
 
 The `@lingui/extractor-vue` package provides a custom extractor that handles Vue.js files.

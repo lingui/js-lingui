@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.9.1](https://github.com/lingui/js-lingui/compare/v6.9.0...v6.9.1) (2026-10-09)
+
+**Note:** Version bump only for package @lingui/loader
+
+# [6.9.0](https://github.com/lingui/js-lingui/compare/v6.8.0...v6.9.0) (2026-10-01)
+
+**Note:** Version bump only for package @lingui/loader
+
+# [6.8.0](https://github.com/lingui/js-lingui/compare/v6.7.0...v6.8.0) (2026-09-23)
+
+### Features
+
+* **cli:** add lingui check sync | missing commands ([#2515](https://github.com/lingui/js-lingui/issues/2515)) ([4cc6cdd](https://github.com/lingui/js-lingui/commit/4cc6cddcab739bf172924618aa7c3bf4cfffce6f))
+
+# [6.7.0](https://github.com/lingui/js-lingui/compare/v6.6.0...v6.7.0) (2026-09-11)
+
+### Features
+
+* **cli,conf:** add RTL pseudolocale and allow multiple pseudolocales ([#2652](https://github.com/lingui/js-lingui/issues/2652)) ([4c00dec](https://github.com/lingui/js-lingui/commit/4c00decb3dddbd9539725d093a5e68080c376668))
+
+
 # [6.6.0](https://github.com/lingui/js-lingui/compare/v6.5.0...v6.6.0) (2026-07-24)
 
 **Note:** Version bump only for package @lingui/loader

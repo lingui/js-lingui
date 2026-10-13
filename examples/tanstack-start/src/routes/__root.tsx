@@ -146,7 +146,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
             <Trans>Content</Trans>
           </Link>{" "}
           <Link
-            // @ts-expect-error
+            // @ts-expect-error - This deliberately links to a missing route.
             to="/this-route-does-not-exist"
             activeProps={{
               className: "font-bold",

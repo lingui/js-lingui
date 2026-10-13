@@ -11,5 +11,10 @@ export { getCatalogDependentFiles } from "./catalog/getCatalogDependentFiles.js"
 export {
   createMissingErrorMessage,
   createCompilationErrorMessage,
+  isFailOnMissingEnabled,
+  getFailOnMissingBehavior,
+  formatFailOnMissingOption,
 } from "./messages.js"
+export type { FailOnMissingOption } from "./messages.js"
+export type { MissingBehavior } from "./catalog/getTranslationsForCatalog.js"
 export * from "./types.js"

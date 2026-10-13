@@ -8,9 +8,13 @@ import { createCompiledCatalog } from "../compile.js"
 
 import normalizePath from "normalize-path"
 import nodepath from "path"
-import { createCompilationErrorMessage } from "../messages.js"
+import {
+  createCompilationErrorMessage,
+  getMissingBehaviorDescription,
+} from "../messages.js"
 import { getTranslationsForCatalog } from "../catalog/getTranslationsForCatalog.js"
 import { Logger } from "../logger.js"
+import { createMissingTranslationFinding } from "../catalog/translations.js"
 
 export async function compileLocale(
   catalogs: Catalog[],
@@ -29,9 +33,13 @@ export async function compileLocale(
         sourceLocale: config.sourceLocale,
       })
 
+    const pseudoLocaleConfig = config.pseudoLocale.find(
+      (item) => item.locale === locale,
+    )
+
     if (
       !options.allowEmpty &&
-      locale !== config.pseudoLocale.locale &&
+      !pseudoLocaleConfig &&
       missingMessages.length > 0
     ) {
       logger.error(
@@ -42,18 +50,26 @@ export async function compileLocale(
       )
 
       if (options.verbose) {
-        logger.error(styleText("red", "Missing translations:"))
+        logger.error(
+          styleText(
+            "red",
+            `Missing translations ${getMissingBehaviorDescription("resolved")}:`,
+          ),
+        )
         missingMessages.forEach((missing) => {
-          const source =
-            missing.source || missing.source === missing.id
-              ? `: (${missing.source})`
-              : ""
-
-          logger.error(`${missing.id}${source}`)
+          const finding = createMissingTranslationFinding(
+            catalog,
+            locale,
+            missing,
+          )
+          logger.error(`${finding.catalogPath}: ${finding.message}`)
         })
       } else {
         logger.error(
-          styleText("red", `Missing ${missingMessages.length} translation(s)`),
+          styleText(
+            "red",
+            `Missing ${missingMessages.length} translation(s) ${getMissingBehaviorDescription("resolved")}`,
+          ),
         )
       }
       logger.error("")
@@ -105,6 +121,9 @@ async function compileAndWrite(
   const namespace = options.typescript
     ? "ts"
     : options.namespace || config.compileNamespace
+  const pseudoLocaleConfig = config.pseudoLocale.find(
+    (item) => item.locale === locale,
+  )
   const { source: compiledCatalog, errors } = createCompiledCatalog(
     locale,
     messages,
@@ -112,8 +131,8 @@ async function compileAndWrite(
       strict: false,
       namespace,
       outputPrefix: options.outputPrefix,
-      pseudoLocale: config.pseudoLocale.locale,
-      pseudoLocaleOptions: config.pseudoLocale.options,
+      pseudoLocale: pseudoLocaleConfig?.locale,
+      pseudoLocaleOptions: pseudoLocaleConfig?.options,
       compilerBabelOptions: config.compilerBabelOptions,
     },
   )

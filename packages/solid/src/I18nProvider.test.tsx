@@ -252,4 +252,68 @@ describe("I18nProvider", () => {
 
     expect(getByTestId("locale").textContent).toBe("cs")
   })
+
+  it("updates computations when variables change via setVariables", () => {
+    const i18n = setupI18n({
+      locale: "en",
+      messages: {
+        en: {
+          welcome:
+            "{gender, select, female {[F] Welcome} male {[M] Welcome} other {[N] Welcome}}",
+        },
+      },
+      variables: {
+        gender: "female",
+      },
+    })
+
+    const Component = () => {
+      const { _ } = useLingui()
+      return <div data-testid="msg">{_("welcome")}</div>
+    }
+
+    const { getByTestId } = render(() => (
+      <I18nProvider i18n={i18n}>
+        <Component />
+      </I18nProvider>
+    ))
+
+    expect(getByTestId("msg").textContent).toBe("[F] Welcome")
+
+    i18n.setVariables({ gender: "male" })
+
+    expect(getByTestId("msg").textContent).toBe("[M] Welcome")
+  })
+
+  it("updates computations when single variable changes via setVariable", () => {
+    const i18n = setupI18n({
+      locale: "en",
+      messages: {
+        en: {
+          greeting: "Hello {gender} from {appName}",
+        },
+      },
+      variables: {
+        gender: "female",
+        appName: "LinguiApp",
+      },
+    })
+
+    const Component = () => {
+      const { _ } = useLingui()
+      return <div data-testid="msg">{_("greeting")}</div>
+    }
+
+    const { getByTestId } = render(() => (
+      <I18nProvider i18n={i18n}>
+        <Component />
+      </I18nProvider>
+    ))
+
+    expect(getByTestId("msg").textContent).toBe("Hello female from LinguiApp")
+
+    i18n.setVariable("gender", "male")
+
+    expect(getByTestId("msg").textContent).toBe("Hello male from LinguiApp")
+  })
 })

@@ -23,7 +23,7 @@ export type WorkerPool<TFn extends (...args: never[]) => unknown> = TypedPool<
 
 const resolveWorkerFile = (basePath: string, baseUrl: string) =>
   new URL(
-    process.env.NODE_ENV === "test"
+    new URL(baseUrl).pathname.endsWith(".ts")
       ? `${basePath}.jiti.js`
       : `${basePath}.prod.js`,
     baseUrl,
@@ -39,3 +39,34 @@ export const createWorkerPool = <TFn extends (...args: never[]) => unknown>(
     minThreads: poolSize,
     maxThreads: poolSize,
   })
+
+type WorkerFunctions = Record<string, (...args: never[]) => unknown>
+
+/**
+ * Pool over a worker module with several named exports,
+ * so the same threads (and their per-worker caches) can serve different tasks
+ */
+export type NamedWorkerPool<TFns extends WorkerFunctions> = {
+  run<TName extends keyof TFns & string>(
+    name: TName,
+    ...args: Parameters<TFns[TName]>
+  ): Promise<Awaited<ReturnType<TFns[TName]>>>
+  destroy(): Promise<void>
+}
+
+export const createNamedWorkerPool = <TFns extends WorkerFunctions>(
+  workerBasePath: string,
+  baseUrl: string,
+  poolSize: number,
+): NamedWorkerPool<TFns> => {
+  const pool = new Tinypool({
+    filename: resolveWorkerFile(workerBasePath, baseUrl),
+    minThreads: poolSize,
+    maxThreads: poolSize,
+  })
+
+  return {
+    run: (name, ...args) => pool.run(args, { name }),
+    destroy: () => pool.destroy(),
+  }
+}

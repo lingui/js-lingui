@@ -5,7 +5,9 @@ import {
 } from "solid-js"
 
 // match <tag>paired</tag> and <tag/> unpaired tags
-const tagRe = /<([a-zA-Z0-9]+)>([\s\S]*?)<\/\1>|<([a-zA-Z0-9]+)\/>/
+// Names use the same charset the macro accepts, so `_`, `.` and `-` are valid in between.
+const tagRe =
+  /<([a-zA-Z0-9_](?:[\w.-]*\w)?)>([\s\S]*?)<\/\1>|<([a-zA-Z0-9_](?:[\w.-]*\w)?)\/>/
 
 /**
  * `formatElements` - parse string and return tree of Solid elements

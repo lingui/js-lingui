@@ -1,3 +1,8 @@
+---
+title: Migration guide from 5.x to 6.x
+description: Upgrade Lingui from 5.x to 6.x. Node.js 22.19 minimum, ESM-only packages, URL-safe message IDs and the removed format options, with migration steps for each
+---
+
 # Migration guide from 5.x to 6.x
 
 This guide will help you migrate from Lingui 5.x to 6.x. It covers the most important changes and breaking changes.

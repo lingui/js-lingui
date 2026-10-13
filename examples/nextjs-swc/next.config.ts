@@ -4,12 +4,12 @@ import { linguiMacroSwcPlugin } from '@lingui/swc-plugin/options'
 const nextConfig: NextConfig = {
   experimental: {
     swcPlugins: [linguiMacroSwcPlugin()],
-    turbo: {
-      rules: {
-        '*.po': {
-          loaders: ['@lingui/loader'],
-          as: '*.js'
-        }
+  },
+  turbopack: {
+    rules: {
+      '*.po': {
+        loaders: ['@lingui/loader'],
+        as: '*.js'
       }
     }
   },

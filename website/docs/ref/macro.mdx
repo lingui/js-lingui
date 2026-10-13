@@ -503,7 +503,7 @@ const message = /** i18n */ {
 
 The `ph` macro is used to provide explicit labels for placeholders. By default, only simple variables are referenced by name in transformed messages. Complex expressions (like function calls) are referenced by numeric index (`{0}`, `{1}`), which provides little context for translators.
 
-The `ph` macro solves this by letting you assign meaningful names to any expression:
+The `ph` macro solves this by letting you assign meaningful names to any expression. See [Translator-friendly Messages](/guides/translator-friendly-messages#name-your-placeholders) for guidance on when to use it:
 
 ```js
 import { t, ph } from "@lingui/core/macro";
@@ -549,7 +549,7 @@ import { Trans } from "@lingui/react";
 
 ### `lingui-set` / `lingui-reset` Comment Directives {#lingui-directive}
 
-Instead of passing `context` and/or `comment` to every macro call, you can use the `lingui-set` and `lingui-reset` comment directives to set these values for all subsequent macros in the same file (or until the next directive resets/overrides them).
+Instead of passing `context` and/or `comment` to every macro call, you can use the `lingui-set` and `lingui-reset` comment directives to set these values for all subsequent macros in the same file (or until the next directive resets/overrides them). See [Translator-friendly Messages](/guides/translator-friendly-messages#set-context-once-per-file) for typical use cases.
 
 - **`lingui-set`**: Sets the specified parameters for all subsequent macros. Requires at least one parameter.
 - **`lingui-reset`**: Clears all previously set parameters. Also accepts new parameters to set like `lingui-set`.
@@ -565,6 +565,10 @@ const msg2 = t`Sign up`;
 ```
 
 Both `msg1` and `msg2` will have `context` set to `"homepage"`.
+
+:::tip
+A directive that is never reset applies to every macro that follows it in the file, including messages added later. You can enforce that each `lingui-set` is closed with a `lingui-reset` using the Lingui [ESLint Plugin](/ref/eslint-plugin) rule [`require-directive-reset`](https://github.com/lingui/eslint-plugin/blob/main/docs/rules/require-directive-reset.md).
+:::
 
 #### Supported Params
 
@@ -699,7 +703,11 @@ import { Trans } from "@lingui/react";
 
 #### `comment`
 
-Comment for translators to give them additional information about the message. It will be visible in the [TMS](/tools/introduction) if it is supported, and in the [catalog format](/ref/catalog-formats). It will be removed from production code.
+Comment for translators to give them additional information about the message. It will be visible in the [TMS](/tools/introduction) if it is supported, and in the [catalog format](/ref/catalog-formats). It will be removed from production code. See [Translator-friendly Messages](/guides/translator-friendly-messages#explain-what-the-message-means) for what makes a useful comment.
+
+:::tip
+You can require every message to describe itself to translators with the Lingui [ESLint Plugin](/ref/eslint-plugin) rule [`require-comment`](https://github.com/lingui/eslint-plugin/blob/main/docs/rules/require-comment.md). It accepts a [`lingui-set comment="..."`](#lingui-directive) directive as well, which is the only option for tagged template literals such as `` t`Save` ``.
+:::
 
 #### `context`
 
@@ -740,6 +748,11 @@ Components and HTML tags are replaced by dummy indexed tags (`<0></0>`) which ha
 - Changing component props doesn't break translation.
 - The message is extracted as a whole sentence (this seems to be obvious, but most i18n libs simply split the message into pieces by tags and translate them separately).
 
+:::tip Named Tag Placeholders
+By default, tags are indexed numerically (`<0></0>`). To provide descriptive placeholder names for translators (e.g. `<link>docs</link>`), configure [`macro.jsxPlaceholderAttribute`](/ref/conf#macrojsxplaceholderattribute) or [`macro.jsxPlaceholderDefaults`](/ref/conf#macrojsxplaceholderdefaults).
+You can enforce named placeholders with the Lingui [ESLint Plugin](/ref/eslint-plugin) rule [`no-unnamed-tag-placeholders`](https://github.com/lingui/eslint-plugin/blob/main/docs/rules/no-unnamed-tag-placeholders.md).
+:::
+
 #### `render`
 
 Custom render callback to render translation. This prop is passed directly to the [`Trans`](/ref/react#trans) component from the [`@lingui/react`](/ref/react) package.
@@ -760,22 +773,23 @@ import { Trans } from "@lingui/react";
 
 Available Props:
 
-| Prop name   | Type           | Description                                                                                                                                             |
-| ----------- | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `other`     | string         | _(required)_ general _plural_ form                                                                                                                      |
-| `value`     | number         | _(required)_ Value is mapped to plural form below                                                                                                       |
-| `format`    | string\|Object | Number format passed as options to [`Intl.NumberFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat) |
-| `offset`    | number         | Offset of value when calculating plural forms                                                                                                           |
-| `zero`      | string         | Form for empty `value`                                                                                                                                  |
-| `one`       | string         | _Singular_ form                                                                                                                                         |
-| `two`       | string         | _Dual_ form                                                                                                                                             |
-| `few`       | string         | _Paucal_ form                                                                                                                                           |
-| `many`      | string         | _Plural_ form                                                                                                                                           |
-| `_<number>` | string         | Exact match form, corresponds to `=N` rule                                                                                                              |
-| `id`        | string         | Custom message ID                                                                                                                                       |
-| `comment`   | string         | Comment for translators                                                                                                                                 |
-| `context`   | string         | Allows to extract the same messages with different IDs                                                                                                  |
-| `render`    | func           | Custom render callback to render translation                                                                                                            |
+| Prop name   | Type   | Description                                            |
+| ----------- | ------ | ------------------------------------------------------ |
+| `other`     | string | _(required)_ general _plural_ form                     |
+| `value`     | number | _(required)_ Value is mapped to plural form below      |
+| `offset`    | number | Offset of value when calculating plural forms          |
+| `zero`      | string | Form for empty `value`                                 |
+| `one`       | string | _Singular_ form                                        |
+| `two`       | string | _Dual_ form                                            |
+| `few`       | string | _Paucal_ form                                          |
+| `many`      | string | _Plural_ form                                          |
+| `_<number>` | string | Exact match form, corresponds to `=N` rule             |
+| `id`        | string | Custom message ID                                      |
+| `comment`   | string | Comment for translators                                |
+| `context`   | string | Allows to extract the same messages with different IDs |
+| `render`    | func   | Custom render callback to render translation           |
+
+`#` in a form is replaced with `value` (minus `offset`), formatted for the active locale with [`Intl.NumberFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat): `1234.5` reads `1,234.5` in `en` and `1.234,5` in `de`.
 
 Exact matches in MessageFormat syntax are expressed as `=int` (e.g. `=0`), but in React this isn't a valid prop name. Therefore, exact matches are expressed as `_int` prop (e.g. `_0`). This is commonly used in combination with `offset` prop. `offset` affects only plural forms, not exact matches.
 
@@ -821,18 +835,17 @@ import { SelectOrdinal } from "@lingui/react/macro";
 
 Available Props:
 
-| Prop name   | Type           | Description                                                                                                                                             |
-| ----------- | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `value`     | number         | _(required)_ Value is mapped to plural form below                                                                                                       |
-| `other`     | string         | _(required)_ general _plural_ form                                                                                                                      |
-| `offset`    | number         | Offset of value for plural forms                                                                                                                        |
-| `zero`      | string         | Form for empty `value`                                                                                                                                  |
-| `one`       | string         | _Singular_ form                                                                                                                                         |
-| `two`       | string         | _Dual_ form                                                                                                                                             |
-| `few`       | string         | _Paucal_ form                                                                                                                                           |
-| `many`      | string         | _Plural_ form                                                                                                                                           |
-| `_<number>` | string         | Exact match form, correspond to `=N` rule. (e.g: `_0`, `_1`)                                                                                            |
-| `format`    | string\|Object | Number format passed as options to [`Intl.NumberFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NumberFormat) |
+| Prop name   | Type   | Description                                                  |
+| ----------- | ------ | ------------------------------------------------------------ |
+| `value`     | number | _(required)_ Value is mapped to plural form below            |
+| `other`     | string | _(required)_ general _plural_ form                           |
+| `offset`    | number | Offset of value for plural forms                             |
+| `zero`      | string | Form for empty `value`                                       |
+| `one`       | string | _Singular_ form                                              |
+| `two`       | string | _Dual_ form                                                  |
+| `few`       | string | _Paucal_ form                                                |
+| `many`      | string | _Plural_ form                                                |
+| `_<number>` | string | Exact match form, correspond to `=N` rule. (e.g: `_0`, `_1`) |
 
 ### `Select`
 

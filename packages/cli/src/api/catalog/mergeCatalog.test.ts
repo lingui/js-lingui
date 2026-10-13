@@ -188,4 +188,46 @@ describe("mergeCatalog", () => {
       }
     `)
   })
+
+  describe("key order", () => {
+    // key order is what a formatter writes out, so it is what shows up in the
+    // catalog diff
+    const serializedKeys = (entry: unknown) =>
+      Object.keys(JSON.parse(JSON.stringify(entry)))
+
+    it("should add translation as the last key of a new message", () => {
+      const result = mergeCatalog(
+        undefined,
+        nextCatalog,
+        false,
+        defaultMergeOptions,
+      )
+
+      expect(serializedKeys(result["custom.id"]).at(-1)).toBe("translation")
+      expect(
+        serializedKeys(result["Message with <0>auto-generated</0> ID"]).at(-1),
+      ).toBe("translation")
+    })
+
+    it("should keep the key order of a message stable between extract runs", () => {
+      // first extract, both messages are new
+      const firstRun = mergeCatalog(
+        undefined,
+        nextCatalog,
+        false,
+        defaultMergeOptions,
+      )
+      // second extract, the very same messages are merged from the catalog
+      const secondRun = mergeCatalog(
+        firstRun,
+        nextCatalog,
+        false,
+        defaultMergeOptions,
+      )
+
+      expect(JSON.stringify(secondRun, null, 2)).toEqual(
+        JSON.stringify(firstRun, null, 2),
+      )
+    })
+  })
 })

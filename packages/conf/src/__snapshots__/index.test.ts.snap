@@ -32,10 +32,7 @@ exports[`@lingui/conf > should return default config 1`] = `
     ],
   },
   "orderBy": "message",
-  "pseudoLocale": {
-    "locale": "",
-    "options": {},
-  },
+  "pseudoLocale": [],
   "resolvedConfigPath": StringContaining "lingui.config.js",
   "rootDir": StringContaining "fixtures/valid",
   "runtimeConfigModule": {

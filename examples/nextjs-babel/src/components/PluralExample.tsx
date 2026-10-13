@@ -1,16 +1,22 @@
-import React from "react"
+import { ReactNode, useState } from "react"
 
-export function PluralExample({ initialValue = 1, render }) {
-  const [value, setValue] = React.useState(initialValue)
+type Props = {
+  initialValue?: number
+  render: (props: { value: number }) => ReactNode
+}
+
+export function PluralExample({ initialValue = 1, render }: Props) {
+  const [value, setValue] = useState(initialValue)
 
   return (
     <div>
       <div>{render({ value })}</div>
       <div>
         <input
-          value={value}
           type="number"
-          onChange={(e) => setValue(e.target.value as any)}
+          min={0}
+          value={value}
+          onChange={(event) => setValue(Number(event.target.value))}
         />
       </div>
     </div>

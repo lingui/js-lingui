@@ -4,20 +4,21 @@
 
 # @lingui/detect-locale
 
-> Detect the user's locale based on different strategies
+> Detects the user's locale from the URL, a cookie, storage, the browser settings or the HTML lang attribute
 
-`@lingui/detect-locale` is part of [LinguiJS][linguijs]. See the [documentation][documentation] for all information, tutorials and examples.
+`@lingui/detect-locale` is part of [Lingui][documentation]. Lingui is a lightweight, open-source internationalization (i18n) library for JavaScript and TypeScript. It brings compile-time macros and a CLI for message extraction to React, React Native, Vue, SolidJS, Astro, Svelte, and Node.js.
 
-## Installation & Usage
+The package has no dependency on the rest of Lingui and works with any i18n library.
 
-See the [reference][reference] documentation.
+## Usage
+
+See the [locale detection reference][reference].
 
 ## License
 
-This package is licensed under [MIT][license] license.
+This package is licensed under the [MIT][license] license.
 
 [license]: https://github.com/lingui/js-lingui/blob/main/LICENSE
-[linguijs]: https://github.com/lingui/js-lingui
 [documentation]: https://lingui.dev
 [reference]: https://lingui.dev/ref/locale-detector
 [package]: https://www.npmjs.com/package/@lingui/detect-locale

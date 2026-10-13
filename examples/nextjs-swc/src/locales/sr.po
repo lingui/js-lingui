@@ -13,36 +13,54 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: src/components/Developers.tsx:23
-msgid "{selected, plural, one {Developer} other {Developers}}"
-msgstr "{selected, plural, one {Програмер} other {Програмера}}"
+#: src/components/Developers.tsx:25
+msgid "{count, plural, one {# developer} other {# developers}}"
+msgstr "{count, plural, one {# програмер} few {# програмера} other {# програмера}}"
 
-#: src/components/Switcher.tsx:12
+#: src/app/[lang]/about/page.tsx:12
+msgid "About"
+msgstr "О пројекту"
+
+#: src/app/[lang]/page.tsx:27
+msgid "About this example"
+msgstr "О овом примеру"
+
+#: src/app/[lang]/about/page.tsx:26
+msgid "Back to the homepage"
+msgstr "Назад на почетну страну"
+
+#: src/components/Switcher.tsx:10
 msgid "English"
 msgstr "Енглески"
 
-#. js-lingui-explicit-id
-#: src/components/AboutText.tsx:6
-msgid "next-explanation"
+#: src/components/Developers.tsx:15
+msgid "How many developers?"
+msgstr "Колико програмера?"
+
+#: src/app/[lang]/about/page.tsx:15
+msgid "Next.js is an open-source React front-end development web framework that enables functionality such as server-side rendering and generating static websites for React based web applications. It is a production-ready framework that allows developers to quickly create static and dynamic JAMstack websites and is used widely by many large companies."
 msgstr "Некст.јс је отворени изворни Реацт-ов развојни вебоквир који омогућава функционалност као што је приказивање на страни сервера и генерисање статичких веблокација за веб апликације засноване на Реацт-у."
 
-#: src/components/Developers.tsx:12
-msgid "Plural Test: How many developers?"
-msgstr "Тест за Множину: Колико програмера?"
-
 #: src/components/Switcher.tsx:13
+msgid "Pseudo"
+msgstr "Псеудо"
+
+#: src/components/Switcher.tsx:11
 msgid "Serbian"
 msgstr "Српски"
 
-#: src/components/Switcher.tsx:14
+#: src/components/Switcher.tsx:12
 msgid "Spanish"
 msgstr "Шпански"
 
-#: src/components/HomePage.tsx:22
-#: src/app/[lang]/layout.tsx:16
+#: src/app/[lang]/page.tsx:18
+msgid "This page is a Server Component. It's rendered on the server in the language from the URL and shipped to the browser as static HTML."
+msgstr "Ова страница је серверска компонента. Исцртава се на серверу на језику из URL адресе и шаље прегледачу као статички HTML."
+
+#: src/app/[lang]/layout.tsx:18
 msgid "Translation Demo"
 msgstr "Демо Превод"
 
-#: src/components/HomePage.tsx:29
+#: src/app/[lang]/page.tsx:13
 msgid "Welcome to <0>Next.js!</0>"
 msgstr "Добродошли у <0>Нект.јс!</0>"

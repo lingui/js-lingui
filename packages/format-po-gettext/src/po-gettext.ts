@@ -1,6 +1,5 @@
 import { parse as parseIcu, Select, SelectCase } from "@messageformat/parser"
 import {
-  parsePo,
   stringifyPo,
   createItem,
   type PoItem,
@@ -8,9 +7,12 @@ import {
 } from "pofile-ts"
 import type { CatalogFormatter, CatalogType, MessageType } from "@lingui/conf"
 import { generateMessageId } from "@lingui/message-utils/generateMessageId"
-import { formatter as poFormatter } from "@lingui/format-po"
+import { parsePoFile, formatter as poFormatter } from "@lingui/format-po"
 import type { PoFormatterOptions } from "@lingui/format-po"
-import { mapGettextPlurals2Icu } from "./utils/mapGettextPlurals2Icu"
+import {
+  getLanguageDef,
+  mapGettextPlurals2Icu,
+} from "./utils/mapGettextPlurals2Icu"
 
 export type PoGettextFormatterOptions = PoFormatterOptions & {
   /**
@@ -125,7 +127,7 @@ function serializePlurals(
 
       // If there is a translated value, parse that instead of the original message to prevent overriding localized
       // content with the original message. If there is no translated value, don't touch msgstr, since marking item as
-      // plural (above) already causes `pofile` to automatically generate `msgstr[0]` and `msgstr[1]`.
+      // plural (above) already causes `pofile` to automatically generate empty `msgstr[]` entries.
       if (message.translation) {
         const ast = parseIcu(message.translation)[0] as Select
         if (ast.cases == null) {
@@ -468,7 +470,7 @@ export function formatter(
     templateExtension: ".pot",
 
     parse(content, ctx): CatalogType {
-      const po = parsePo(content)
+      const po = parsePoFile(content)
 
       if (options.mergePlurals) {
         // Expand merged entries back to individual catalog entries BEFORE ICU conversion
@@ -507,9 +509,20 @@ export function formatter(
     },
 
     serialize(catalog, ctx): string {
-      const po = parsePo(formatter.serialize(catalog, ctx) as string)
+      const po = parsePoFile(formatter.serialize(catalog, ctx) as string)
+
+      // Without a Plural-Forms header, parse() reads msgstr[] using the CLDR plural
+      // forms of the language, so leave the same number of msgstr[] to translate.
+      const nplurals =
+        !po.headers["Plural-Forms"] && po.headers.Language
+          ? getLanguageDef(po.headers.Language)?.plurals
+          : undefined
 
       po.items = po.items.map((item) => {
+        if (nplurals) {
+          item.nplurals = nplurals
+        }
+
         const isGeneratedId = !item.extractedComments.includes(
           "js-lingui-explicit-id",
         )

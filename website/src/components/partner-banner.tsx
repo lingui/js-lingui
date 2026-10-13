@@ -2,7 +2,7 @@ import React from "react";
 
 export function PartnerBanner(): React.ReactElement {
   return (
-    <section>
+    <section className="pt-20 sm:pt-24">
       <div className="mx-auto max-w-6xl px-4 text-center">
         <a
           href="https://crowdin.com/?utm_source=lingui.dev&utm_medium=referral&utm_campaign=lingui.dev"

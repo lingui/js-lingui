@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.9.1](https://github.com/lingui/js-lingui/compare/v6.9.0...v6.9.1) (2026-10-09)
+
+**Note:** Version bump only for package @lingui/extractor-vue
+
+# [6.9.0](https://github.com/lingui/js-lingui/compare/v6.8.0...v6.9.0) (2026-10-01)
+
+**Note:** Version bump only for package @lingui/extractor-vue
+
+# [6.8.0](https://github.com/lingui/js-lingui/compare/v6.7.0...v6.8.0) (2026-09-23)
+
+### Reverts
+
+* "feat(cli): add support for `BatchExtractor` ([#2562](https://github.com/lingui/js-lingui/issues/2562))" ([#2673](https://github.com/lingui/js-lingui/issues/2673)) ([fd416f9](https://github.com/lingui/js-lingui/commit/fd416f9ef6b9cb49652873277f0ace111649bbfb))
+
+# [6.7.0](https://github.com/lingui/js-lingui/compare/v6.6.0...v6.7.0) (2026-09-11)
+
+**Note:** Version bump only for package @lingui/extractor-vue
+
 # [6.6.0](https://github.com/lingui/js-lingui/compare/v6.5.0...v6.6.0) (2026-07-24)
 
 **Note:** Version bump only for package @lingui/extractor-vue

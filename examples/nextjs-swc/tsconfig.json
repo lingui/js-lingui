@@ -18,7 +18,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     // "downlevelIteration": true,
-    "jsx": "preserve",
+    "jsx": "react-jsx",
     "incremental": true,
     "plugins": [
       {
@@ -32,7 +32,8 @@
     "src/**/*.tsx",
     ".next/types/**/*.ts",
     "next.config.ts",
-    "lingui.config.ts"
+    "lingui.config.ts",
+    ".next/dev/types/**/*.ts"
   ],
   "exclude": [
     "node_modules"

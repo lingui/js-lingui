@@ -1,12 +1,15 @@
-import {defineConfig} from "@lingui/cli"
-import nextConfig from "./next.config.js"
+import { defineConfig } from "@lingui/cli"
+import nextConfig from "./next.config"
+
+// Next.js is the source of truth for the supported locales
+const { locales, defaultLocale } = nextConfig.i18n!
 
 export default defineConfig({
-  locales: nextConfig.i18n.locales as string[],
+  locales: [...locales],
   pseudoLocale: "pseudo",
-  sourceLocale: nextConfig.i18n.defaultLocale,
+  sourceLocale: defaultLocale,
   fallbackLocales: {
-    default: "en",
+    default: defaultLocale,
   },
   catalogs: [
     {

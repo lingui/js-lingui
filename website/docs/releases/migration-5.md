@@ -1,3 +1,8 @@
+---
+title: Migration guide from 4.x to 5.x
+description: Upgrade Lingui from 4.x to 5.x. Node.js 20 minimum, React and JS macros split into separate packages, whitespace handling changes and the new useLingui macro
+---
+
 # Migration guide from 4.x to 5.x
 
 This guide will help you migrate from Lingui 4.x to 5.x. It covers the most important changes and breaking changes.

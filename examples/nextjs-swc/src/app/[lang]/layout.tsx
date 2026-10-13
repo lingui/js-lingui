@@ -1,37 +1,43 @@
-import linguiConfig from '../../../lingui.config'
-import { allMessages, getI18nInstance } from '../../appRouterI18n'
-import { LinguiClientProvider } from '../../components/LinguiClientProvider'
-import { initLingui, PageLangParam } from '../../initLingui'
-import React, {PropsWithChildren} from 'react'
+import '../../styles/globals.css'
+import { PropsWithChildren } from 'react'
 import { msg } from '@lingui/core/macro'
+import linguiConfig from '../../../lingui.config'
+import { initLingui } from '../../initLingui'
+import { LinguiClientProvider } from '../../components/LinguiClientProvider'
+import { Switcher } from '../../components/Switcher'
 
+// Pre-render every page in every supported locale at build time.
 export async function generateStaticParams() {
   return linguiConfig.locales.map((lang) => ({ lang }))
 }
 
-export async function generateMetadata(props: PageLangParam) {
-  const i18n = getI18nInstance((await props.params).lang)
+export async function generateMetadata() {
+  const i18n = await initLingui()
 
   return {
     title: i18n._(msg`Translation Demo`)
   }
 }
 
-export default async function RootLayout({ children, params }: PropsWithChildren<PageLangParam>) {
-  const lang = (await params).lang
-  initLingui(lang)
+export default async function RootLayout({ children }: PropsWithChildren) {
+  const i18n = await initLingui()
 
   return (
-    <html lang={lang}>
-      <body className="bg-background text-foreground">
-        <main className="min-h-screen flex flex-col">
-          <LinguiClientProvider
-            initialLocale={lang}
-            initialMessages={allMessages[lang]!}
-          >
-            {children}
-          </LinguiClientProvider>
-        </main>
+    <html lang={i18n.locale}>
+      <body>
+        {/*
+          The I18n instance can't be serialized and sent to the browser, so the
+          client gets the active locale and its messages and builds its own one.
+        */}
+        <LinguiClientProvider
+          initialLocale={i18n.locale}
+          initialMessages={i18n.messages}
+        >
+          <header>
+            <Switcher />
+          </header>
+          {children}
+        </LinguiClientProvider>
       </body>
     </html>
   )

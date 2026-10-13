@@ -91,7 +91,7 @@ Alternatively, add `lingui` to the `plugins` section of your `.eslintrc` configu
 }
 ```
 
-In the rules section, configure the rules you want to use:
+In the rules section, configure the rules you want to use. For example:
 
 ```json
 {
@@ -101,10 +101,32 @@ In the rules section, configure the rules you want to use:
     "lingui/no-single-variables-to-translate": 2,
     "lingui/no-expression-in-message": 2,
     "lingui/no-single-tag-to-translate": 2,
-    "lingui/no-trans-inside-trans": 2
+    "lingui/no-trans-inside-trans": 2,
+    "lingui/no-unnamed-tag-placeholders": 2
   }
 }
 ```
+
+### Oxlint {#oxlint}
+
+The plugin also works as an [Oxlint JS plugin](https://oxc.rs/docs/guide/usage/linter/js-plugins) without any changes. Add it to `jsPlugins` in your `.oxlintrc.json` and enable the rules you need.
+
+Oxlint doesn't read the plugin's `configs`, so the recommended rules have to be listed explicitly:
+
+```json
+{
+  "jsPlugins": ["eslint-plugin-lingui"],
+  "rules": {
+    "lingui/t-call-in-function": "error",
+    "lingui/no-single-tag-to-translate": "warn",
+    "lingui/no-single-variables-to-translate": "warn",
+    "lingui/no-trans-inside-trans": "warn",
+    "lingui/no-expression-in-message": "warn"
+  }
+}
+```
+
+Compatibility with Oxlint is verified in CI on every change. The only known limitation is the `useTsTypes` option of the [`no-unlocalized-strings`](https://github.com/lingui/eslint-plugin/blob/main/docs/rules/no-unlocalized-strings.md) rule: it needs type information from `@typescript-eslint/parser`, which Oxlint doesn't provide.
 
 :::tip
 See the [official repository](https://github.com/lingui/eslint-plugin) for more information about the rules.

@@ -13,70 +13,78 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: src/pages/examples.tsx:37
+#: src/pages/examples.tsx:39
 msgid "{value, plural, one {There's one book} other {There are # books}}"
 msgstr "{value, plural, one {Je tam jedna kniha} few {Jsou tam # knihy} other {Je tam # knih}}"
 
-#: src/pages/examples.tsx:19
+#: src/pages/examples.tsx:21
 msgid "Black"
 msgstr "Černý"
 
-#: src/pages/index.tsx:55
-msgid "Checkout LinguiJS examples and usecases."
+#: src/pages/index.tsx:50
+msgid "Check out LinguiJS examples and use cases."
 msgstr "Podívej se na ukázky a příklady LinguiJS"
 
-#: src/pages/examples.tsx:19
+#: src/pages/examples.tsx:21
 msgid "Cyan"
 msgstr "Azurový"
 
-#: src/pages/index.tsx:41
+#: src/components/LocaleSwitcher.tsx:11
+msgid "Czech"
+msgstr "Čeština"
+
+#: src/pages/index.tsx:35
 msgid "Documentation →"
 msgstr "Dokumentace →"
 
-#: src/components/Layout.tsx:26
+#: src/components/LocaleSwitcher.tsx:10
+msgid "English"
+msgstr "Angličtina"
+
+#: src/components/Layout.tsx:23
 msgid "Example project using LinguiJS"
 msgstr "Ukázkový projekt s LinguiJS"
 
-#: src/pages/examples.tsx:27
+#: src/pages/examples.tsx:29
 msgid "Examples"
 msgstr "Ukázky"
 
-#: src/pages/index.tsx:52
+#: src/pages/index.tsx:47
 msgid "Examples →"
 msgstr "Ukázky →"
 
-#: src/pages/index.tsx:44
+#: src/pages/index.tsx:38
 msgid "Find in-depth information about LinguiJS features and API."
 msgstr "Vyhledej podrobné informace o funkcích LinguiJS"
 
-#: pages/index.tsx:13
-#~ msgid "Get started by editing <0>locale/en/messages.po</0>"
-#~ msgstr "Začni úpravou <0>locale/cs/messages.po</0>"
+#: src/pages/index.tsx:27
+msgid "Get started by editing <0>src/pages/index.tsx</0>"
+msgstr "Začni úpravou <0>src/pages/index.tsx</0>"
 
-#: src/pages/index.tsx:33
-msgid "Get started by editing <0>locales/en.po</0>"
-msgstr ""
-
-#: src/pages/examples.tsx:19
+#: src/pages/examples.tsx:21
 msgid "Magenta"
 msgstr "Fialová"
 
-#: src/pages/examples.tsx:31
+#: src/pages/examples.tsx:33
 msgid "Plurals"
 msgstr "Množné číslo"
 
-#: src/components/Layout.tsx:38
+#: src/components/Layout.tsx:35
 msgid "Powered by <0/>"
 msgstr "Používá <0/>"
 
-#: src/pages/examples.tsx:47
+#: src/components/LocaleSwitcher.tsx:12
+msgid "Pseudo"
+msgstr "Pseudo"
+
+#: src/pages/examples.tsx:49
 msgid "Translation outside of React components"
 msgstr "Překlad mimo komponenty React"
 
-#: src/pages/index.tsx:28
+#: src/pages/index.tsx:22
 msgid "Welcome to <0>LinguiJS!</0>"
 msgstr "Vítá tě <0>LinguiJS!</0>"
 
-#: src/pages/examples.tsx:19
+#: src/pages/examples.tsx:21
 msgid "Yellow"
 msgstr "Žlutý"

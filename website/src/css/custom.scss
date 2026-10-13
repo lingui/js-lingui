@@ -1,3 +1,4 @@
+@import "@fontsource-variable/inter/opsz.css";
 /**
  * Global styles for the Docusaurus classic preset (docs chrome still uses Infima variables).
  * Tailwind and shared tokens are centralized in this stylesheet.
@@ -32,13 +33,21 @@
   --ifm-link-color: var(--ifm-color-primary);
   --ifm-color-secondary: var(--ifm-color-gray-600);
 
-  --ifm-heading-font-weight: 500;
-  --ifm-h2-font-size: 1.85rem;
-  --ifm-h3-font-size: 1.7rem;
-  --ifm-h4-font-size: 1.3rem;
-  --ifm-h5-font-size: 1.2rem;
+  --ifm-font-family-base:
+    "Inter Variable", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji";
+  --ifm-line-height-base: 1.7;
+  --ifm-heading-font-weight: 600;
+  --ifm-h2-font-size: 1.75rem;
+  --ifm-h3-font-size: 1.3rem;
+  --ifm-h4-font-size: 1.1rem;
+  --ifm-h5-font-size: 1rem;
 
   --ifm-navbar-height: 4rem;
+  --ifm-navbar-shadow: none;
+
+  /* Shared by the homepage footer (site-footer.tsx) and the Docusaurus footer so both render in one shade. */
+  --lingui-footer-background: #282d37;
   --ifm-menu-link-sublist-icon-filter: opacity(50%);
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
 }
@@ -47,6 +56,31 @@
   --ifm-link-color: var(--ifm-color-primary-lighter);
   --ifm-color-primary: var(--ifm-color-primary-lighter);
   --ifm-color-secondary: var(--ifm-color-gray-500);
+}
+
+/* Docs content: Infima bumps these to 2rem / 1.5rem; keep the scale consistent with the rest of the site. */
+.markdown > h2 {
+  --ifm-h2-font-size: 1.75rem;
+}
+
+.markdown > h3 {
+  --ifm-h3-font-size: 1.3rem;
+}
+
+/* Flat navbar: a hairline instead of the default drop shadow. */
+.navbar {
+  border-bottom: 1px solid var(--ifm-toc-border-color);
+}
+
+/* Code blocks: framed with a hairline, no shadow. `div` is there to win over the theme's module class. */
+div.theme-code-block {
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-radius: 10px;
+  box-shadow: none;
+}
+
+.footer--dark {
+  --ifm-footer-background-color: var(--lingui-footer-background);
 }
 
 /* Line up the left edge of the logo with the left edge of the docs sidebar */

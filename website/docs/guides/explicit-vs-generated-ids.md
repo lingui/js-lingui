@@ -74,7 +74,7 @@ By default, when using generated IDs, the same text elements are extracted with 
 
 To distinguish these two cases, you can add `context` to messages. The same text elements with different contexts are extracted with different IDs. Then, they can be translated differently and merged back into the application as different translation entries.
 
-Regardless of whether you use generated IDs or not, adding context makes the translation process less challenging and helps translators interpret the source accurately. You, in return, get translations of better quality faster and decrease the number of context-related issues you would need to solve.
+Regardless of whether you use generated IDs or not, adding context makes the translation process less challenging and helps translators interpret the source accurately. You, in return, get translations of better quality faster and decrease the number of context-related issues you would need to solve. See [Translator-friendly Messages](/guides/translator-friendly-messages) for the other ways to give translators context.
 
 Examples:
 

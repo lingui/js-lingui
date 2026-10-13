@@ -127,6 +127,10 @@ export default defineConfig({
 });
 ```
 
+:::note
+The [native macro transform](/ref/vite-plugin#native-macro-transform) of `@lingui/vite-plugin` doesn't support Solid yet, so keep the Babel plugin for macros and don't enable `macroTransform`.
+:::
+
 ## Setup
 
 We will start translating the `Inbox` component right away, but we need to do one more step to set up our application.
@@ -446,7 +450,11 @@ Any expressions are allowed, not just simple variables. The only difference is, 
   ```
 
 :::caution
-Try to keep your messages simple and avoid complex expressions. During extraction, these expressions will be replaced by placeholders, resulting in a lack of context for translators. There is also a special rule in Lingui [ESLint Plugin](/ref/eslint-plugin) to catch these cases: [`no-expression-in-message`](https://github.com/lingui/eslint-plugin/blob/main/docs/rules/no-expression-in-message.md).
+Try to keep your messages simple and avoid complex expressions. During extraction, these expressions will be replaced by positional placeholders such as `{0}`, resulting in a lack of context for translators. When you can't avoid an expression, give it a name with the [`ph`](/ref/macro#ph) macro: `` t`Hello ${ph({ name: user.name })}` `` is extracted as `Hello {name}`. There is also a special rule in Lingui [ESLint Plugin](/ref/eslint-plugin) to catch these cases: [`no-expression-in-message`](https://github.com/lingui/eslint-plugin/blob/main/docs/rules/no-expression-in-message.md).
+
+Similarly, to prevent numbered tag placeholders like `<0>` from depriving translators of context, use [named tag placeholders](/ref/conf#macrojsxplaceholderattribute) and enforce them with [`no-unnamed-tag-placeholders`](https://github.com/lingui/eslint-plugin/blob/main/docs/rules/no-unnamed-tag-placeholders.md).
+
+See [Translator-friendly Messages](/guides/translator-friendly-messages) for the complete set of practices.
 :::
 
 ### Dates and Numbers

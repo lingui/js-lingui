@@ -3,6 +3,7 @@ import { useBaseUrlUtils } from "@docusaurus/useBaseUrl";
 import CodeBlock from "@theme/CodeBlock";
 import clsx from "clsx";
 import { Button } from "./ui/button";
+import { Section } from "./ui/section";
 
 interface CodeSample {
   id: string;
@@ -135,55 +136,49 @@ export function Code(): React.ReactElement {
   const activeSample = codeSamples.find((sample) => sample.id === activeTab);
 
   return (
-    <section>
-      <div className="mx-auto max-w-6xl px-4">
-        <h2 className="text-heading mb-12 text-center text-3xl font-medium tracking-tight sm:text-4xl">
-          Integrating Lingui into your project is easy!
-        </h2>
-
-        <div className="grid gap-4 lg:grid-cols-[18rem_minmax(0,1fr)] lg:items-start">
-          <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-1">
-            {codeSamples.map((sample) => (
-              <button
-                key={sample.id}
-                type="button"
-                onClick={() => setActiveTab(sample.id)}
-                aria-pressed={activeTab === sample.id}
-                className={clsx(
-                  "rounded-xl border p-3 text-left transition",
-                  activeTab === sample.id
-                    ? "border-primary bg-primary/10"
-                    : "border-secondary/25 bg-white/10 hover:border-secondary/35 dark:border-white/10 dark:bg-white/5 dark:hover:border-white/14"
-                )}
-              >
-                <span className="block text-sm font-semibold">{sample.title}</span>
-              </button>
-            ))}
-          </div>
-
-          <div className="min-w-0 flex-1">
-            {activeSample && (
-              <div>
-                <div
-                  className="overflow-hidden rounded-xl border border-secondary/25 bg-white/10 dark:border-white/10 dark:bg-white/5 [&_.theme-code-block]:mb-0"
-                  key={activeSample.id}
-                >
-                  <CodeBlock className={`language-${activeSample.language}`}>{activeSample.code.trim()}</CodeBlock>
-                  <div className="border-t border-secondary/25 px-4 py-3 text-sm leading-relaxed text-body-fg dark:border-white/10 [&_code]:rounded-md [&_code]:bg-secondary/15 [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:text-[0.875em]">
-                    {activeSample.description}
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
+    <Section title="Integrating Lingui into your project is easy!">
+      <div className="grid gap-4 lg:grid-cols-[18rem_minmax(0,1fr)] lg:items-start">
+        <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-1">
+          {codeSamples.map((sample) => (
+            <button
+              key={sample.id}
+              type="button"
+              onClick={() => setActiveTab(sample.id)}
+              aria-pressed={activeTab === sample.id}
+              className={clsx(
+                "rounded-xl border p-3 text-left transition",
+                activeTab === sample.id
+                  ? "border-primary bg-primary/10"
+                  : "border-secondary/25 bg-white/10 hover:border-secondary/35 dark:border-white/10 dark:bg-white/5 dark:hover:border-white/14"
+              )}
+            >
+              <span className="block text-sm font-semibold">{sample.title}</span>
+            </button>
+          ))}
         </div>
 
-        <p className="mt-6 text-center">
-          <Button href={withBaseUrl("/ref/macro")} isOutline={true}>
-            Macros Reference
-          </Button>
-        </p>
+        <div className="min-w-0 flex-1">
+          {activeSample && (
+            <div>
+              <div
+                className="overflow-hidden rounded-xl border border-secondary/25 bg-white/10 dark:border-white/10 dark:bg-white/5 [&_.theme-code-block]:mb-0 [&_.theme-code-block]:rounded-none [&_.theme-code-block]:border-0"
+                key={activeSample.id}
+              >
+                <CodeBlock className={`language-${activeSample.language}`}>{activeSample.code.trim()}</CodeBlock>
+                <div className="border-t border-secondary/25 px-4 py-3 text-sm leading-relaxed text-body-fg dark:border-white/10 [&_code]:rounded-md [&_code]:bg-secondary/15 [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:text-[0.875em]">
+                  {activeSample.description}
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
-    </section>
+
+      <p className="mt-6 text-center">
+        <Button href={withBaseUrl("/ref/macro")} isOutline={true}>
+          Macros Reference
+        </Button>
+      </p>
+    </Section>
   );
 }

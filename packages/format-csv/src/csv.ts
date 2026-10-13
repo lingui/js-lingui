@@ -11,7 +11,8 @@ const serialize = (catalog: CatalogType) => {
 }
 
 const deserialize = (raw: string): { [key: string]: MessageType } => {
-  const rawCatalog = Papa.parse<[string, string]>(raw)
+  // Skip the trailing line break that editors and spreadsheets add on save.
+  const rawCatalog = Papa.parse<[string, string]>(raw, { skipEmptyLines: true })
   const messages: CatalogType = {}
   if (rawCatalog.errors.length) {
     throw new Error(

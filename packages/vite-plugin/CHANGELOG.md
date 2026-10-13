@@ -3,6 +3,31 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.9.1](https://github.com/lingui/js-lingui/compare/v6.9.0...v6.9.1) (2026-10-09)
+
+### Bug Fixes
+
+* **vite-plugin:** fail early when native transform is used with Solid ([#2708](https://github.com/lingui/js-lingui/issues/2708)) ([15549f3](https://github.com/lingui/js-lingui/commit/15549f3cec626ab59eac1de00cccbbb56730c84f))
+* **vite-plugin:** strip query from module id before native macro transform ([#2703](https://github.com/lingui/js-lingui/issues/2703)) ([10c1b79](https://github.com/lingui/js-lingui/commit/10c1b79b6b287983593946fb965b8b0b558b96c1))
+
+# [6.9.0](https://github.com/lingui/js-lingui/compare/v6.8.0...v6.9.0) (2026-10-01)
+
+### Features
+
+* **vite-plugin:** add native macro transformer ([#2686](https://github.com/lingui/js-lingui/issues/2686)) ([2a576d3](https://github.com/lingui/js-lingui/commit/2a576d324c222e318ae8ab5e49c57004ef675063))
+
+# [6.8.0](https://github.com/lingui/js-lingui/compare/v6.7.0...v6.8.0) (2026-09-23)
+
+### Features
+
+* **cli:** add lingui check sync | missing commands ([#2515](https://github.com/lingui/js-lingui/issues/2515)) ([4cc6cdd](https://github.com/lingui/js-lingui/commit/4cc6cddcab739bf172924618aa7c3bf4cfffce6f))
+
+# [6.7.0](https://github.com/lingui/js-lingui/compare/v6.6.0...v6.7.0) (2026-09-11)
+
+### Features
+
+* **cli,conf:** add RTL pseudolocale and allow multiple pseudolocales ([#2652](https://github.com/lingui/js-lingui/issues/2652)) ([4c00dec](https://github.com/lingui/js-lingui/commit/4c00decb3dddbd9539725d093a5e68080c376668))
+
 # [6.6.0](https://github.com/lingui/js-lingui/compare/v6.5.0...v6.6.0) (2026-07-24)
 
 ### Features

@@ -1,0 +1,46 @@
+name: Documentation issue
+description: Report something missing, unclear, or incorrect in the docs
+labels:
+  - documentation
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping improve the [Lingui documentation](https://lingui.dev)! Please note:
+        - For bugs in Lingui itself, use the bug report template instead.
+        - For usage questions, consider asking on [GitHub discussions](https://github.com/lingui/js-lingui/discussions) or [Discord](https://discord.gg/hdNuF3rupQ).
+        - Small fixes such as typos are very welcome as a direct pull request - the docs live in [`website/docs`](https://github.com/lingui/js-lingui/tree/main/website/docs).
+  - type: input
+    attributes:
+      label: Page
+      description: Link to the affected page, or the path in `website/docs` if the content doesn't exist yet.
+      placeholder: https://lingui.dev/installation
+    validations:
+      required: true
+  - type: dropdown
+    attributes:
+      label: Type of Issue
+      options:
+        - Incorrect or outdated information
+        - Missing information
+        - Confusing or hard to follow
+        - Broken example or code sample
+        - Broken link or rendering problem
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Description
+      description: What is wrong or missing? Quote the relevant part of the page where it helps.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Suggested Improvement
+      description: How would you word or structure it instead?
+  - type: checkboxes
+    attributes:
+      label: Contribution
+      options:
+        - label: I'd be willing to open a pull request for this.

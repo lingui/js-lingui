@@ -1,27 +1,29 @@
 {
-  "name": "next-js-babel",
+  "name": "nextjs-babel-example",
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "extract": "lingui extract",
     "dev": "next dev",
-    "build": "yarn extract && next build",
-    "start": "next start"
+    "build": "yarn lingui:extract && next build",
+    "start": "next start",
+    "lingui:extract": "lingui extract --clean",
+    "test": "yarn build",
+    "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "@lingui/core": "^6.0.0",
-    "@lingui/react": "^6.0.0",
+    "@lingui/core": "^6.9.0",
+    "@lingui/react": "^6.9.0",
     "classnames": "^2.3.1",
-    "next": "^16.2.4",
-    "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "next": "^16.3.8",
+    "react": "19.3.0",
+    "react-dom": "19.3.0"
   },
   "devDependencies": {
-    "@lingui/babel-plugin-lingui-macro": "^6.0.0",
-    "@lingui/cli": "^6.0.0",
-    "@lingui/loader": "^6.0.0",
-    "@types/react": "^18.0.28",
-    "typescript": "^6.0.3",
-    "webpack": "^5.106.2"
+    "@lingui/babel-plugin-lingui-macro": "^6.9.0",
+    "@lingui/cli": "^6.9.0",
+    "@lingui/loader": "^6.9.0",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "typescript": "^6.0.3"
   }
 }

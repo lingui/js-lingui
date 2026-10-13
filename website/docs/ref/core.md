@@ -220,6 +220,38 @@ import { i18n } from "@lingui/core";
 i18n._({ id: "Hello" });
 ```
 
+### `i18n.setVariables(variables)` {#i18n.setvariables}
+
+Set default values for message variables when they are not passed to [`i18n.t`](#i18n.t). Accepts an object of static values or lazy functions, or an updater `(prev) => next`.
+
+```ts
+import { i18n } from "@lingui/core";
+
+i18n.setVariables({
+  appName: "ExampleApp",
+  version: "1.2.3",
+});
+
+i18n.t("Powered by {appName} v{version}");
+// Returns "Powered by ExampleApp v1.2.3"
+```
+
+:::info Advanced
+Default variables also work for placeholders that only exist in translations, like `{gender, select, ...}`. Since the placeholder isn't in the source string, the `select` must be added by your translation pipeline or translators who know the variable exists.
+:::
+
+### `i18n.setVariable(name, value)` {#i18n.setvariable}
+
+Set or update a single default variable, or pass `undefined` to remove it.
+
+```ts
+import { i18n } from "@lingui/core";
+
+i18n.setVariable("appName", "ExampleApp");
+i18n.setVariable("currentYear", () => new Date().getFullYear());
+i18n.setVariable("appName", undefined);
+```
+
 ### `i18n.date(value: string | Date | number[, format: Intl.DateTimeFormatOptions])` {#i18n.date}
 
 Format a date using the conventional format for the active language.
@@ -383,6 +415,25 @@ const i18n = setupI18n({ missing });
 i18n.t("missing translation"); // Triggers an alert
 ```
 
+### `options.variables`
+
+Initial default message variables (see [`i18n.setVariables`](#i18n.setvariables)).
+
+```tsx
+import { setupI18n } from "@lingui/core";
+
+const i18n = setupI18n({
+  variables: {
+    appName: "ExampleApp",
+    version: "1.2.3",
+  },
+});
+
+// This is a shortcut for:
+// const i18n = setupI18n()
+// i18n.setVariables({ appName: "ExampleApp", version: "1.2.3" })
+```
+
 ## AllMessages
 
 The `AllMessages` parameter in the [`I18n.load`](#i18n.load) method is of the following type:
@@ -425,7 +476,7 @@ const messagesEn: Messages = {
 
 ### `change`
 
-The `change` event is triggered **after** changing the locale or loading a new message catalog. No arguments are passed to this event.
+The `change` event is triggered **after** changing the locale, loading a new message catalog, or updating default variables. No arguments are passed to this event.
 
 ### `missing`
 

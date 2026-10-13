@@ -4,50 +4,19 @@
 
 # @lingui/babel-plugin-extract-messages
 
-> Babel plugin which extracts messages for translation from source files
+> Babel plugin to extract translatable messages from source code into Lingui catalogs
 
-`@lingui/babel-plugin-extract-messages` is part of [LinguiJS][linguijs]. See the [documentation][documentation] for all information, tutorials and examples.
+`@lingui/babel-plugin-extract-messages` is part of [Lingui][documentation]. Lingui is a lightweight, open-source internationalization (i18n) library for JavaScript and TypeScript. It brings compile-time macros and a CLI for message extraction to React, React Native, Vue, SolidJS, Astro, Svelte, and Node.js.
 
-## Installation
-
-```sh
-npm install --save-dev @lingui/babel-plugin-extract-messages
-# yarn add --dev @lingui/babel-plugin-extract-messages
-```
-
-## Usage
-
-### Via `.babelrc` (Recommended)
-
-**.babelrc**
-
-```json
-{
-  "plugins": ["@lingui/babel-plugin-extract-messages"]
-}
-```
-
-### Via CLI
-
-```bash
-babel --plugins @lingui/babel-plugin-extract-messages script.js
-```
-
-### Via Node API
-
-```js
-require("@babel/core").transform("code", {
-  plugins: ["@lingui/babel-plugin-extract-messages"]
-})
-```
+**Internal package.** `@lingui/cli` runs this plugin during `lingui extract` to collect the messages that go into the catalogs. You do not need to install it or add it to your Babel config. See the [message extraction guide][extraction] for what the extractor recognizes.
 
 ## License
 
-[MIT][license]
+This package is licensed under the [MIT][license] license.
 
 [license]: https://github.com/lingui/js-lingui/blob/main/LICENSE
-[linguijs]: https://github.com/lingui/js-lingui
 [documentation]: https://lingui.dev
+[extraction]: https://lingui.dev/guides/message-extraction
 [package]: https://www.npmjs.com/package/@lingui/babel-plugin-extract-messages
 [badge-downloads]: https://img.shields.io/npm/dw/@lingui/babel-plugin-extract-messages.svg
 [badge-version]: https://img.shields.io/npm/v/@lingui/babel-plugin-extract-messages.svg

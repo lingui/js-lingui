@@ -229,6 +229,7 @@ msgstr[1] "many books"
 This format comes with several caveats and should only be used when using ICU plurals in PO files is not an option:
 
 - Nested/multiple plurals in a message as shown in [`plural`](/ref/macro#plural) are not supported because they cannot be expressed with gettext plurals. Messages containing nested/multiple formats will not be output correctly.
+- A [`Plural`](/ref/macro#plural-1) nested inside a [`Trans`](/ref/macro#trans) (`<Trans>You have <Plural … /></Trans>`) is exported as a single ICU message rather than as `msgid`/`msgid_plural`. Keep the plural as the top-level translation unit; the [`no-plural-inside-trans`](https://github.com/lingui/eslint-plugin/blob/main/docs/rules/no-plural-inside-trans.md) ESLint rule catches this.
 - The [`select`](/ref/macro#select) and [`selectOrdinal`](/ref/macro#selectordinal) cannot be expressed with gettext plurals, but the original ICU format is still stored in the `msgid`/`msgstr` properties. To disable the warning that this may not be the expected behavior, add `{ disableSelectWarning: true }` to the [`format`](/ref/conf#format) options.
 - Source/development languages with more than two plurals could experience difficulties when no custom IDs are used, as gettext cannot have more than two plurals cases identifying an item (`msgid` and `msgid_plural`).
 - Gettext doesn't support plurals for negative and fractional numbers even though some languages have special rules for these cases.

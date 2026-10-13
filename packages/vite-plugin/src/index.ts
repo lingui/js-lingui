@@ -6,10 +6,16 @@ import {
   getCatalogDependentFiles,
   createMissingErrorMessage,
   createCompilationErrorMessage,
+  isFailOnMissingEnabled,
+  getFailOnMissingBehavior,
+  formatFailOnMissingOption,
 } from "@lingui/cli/api"
+import type { FailOnMissingOption } from "@lingui/cli/api"
 import path from "path"
 import type { Plugin } from "vite"
 import { linguiTransformerBabelPreset } from "./linguiTransformerPreset"
+import { buildMacroFilterRe } from "./buildMacroFilterRe"
+import type { LinguiMacroOptions, TransformOptions } from "@lingui/native-tools"
 
 const fileRegex = /(\.po|\?lingui)$/
 
@@ -19,128 +25,217 @@ export type LinguiPluginOpts = {
   skipValidation?: boolean
 
   /**
-   * If true would fail compilation on missing translations
+   * If true would fail compilation on missing translations after fallbackLocales are applied
    **/
-  failOnMissing?: boolean
+  failOnMissing?: FailOnMissingOption
 
   /**
    * If true would fail compilation on message compilation errors
    **/
   failOnCompileError?: boolean
+
+  /**
+   * Enable native macro transformation via `@lingui/native-tools`.
+   * When enabled, you don't need `@rolldown/plugin-babel` or SWC pipeline for macro transformation.
+   *
+   * Native transform is up to 2.5x times faster than SWC + Plugin and 29x times faster than Babel.
+   *
+   * Will be a default option in the next major release
+   *
+   * Pass `true` to enable with default options, or an object to configure the transform.
+   *
+   * @default false
+   **/
+  macroTransform?:
+    | boolean
+    | Partial<{
+        macro?: Partial<LinguiMacroOptions>
+        parser: TransformOptions["parser"]
+      }>
 }
 
 export function lingui({
   failOnMissing,
   failOnCompileError,
-  ...linguiConfig
+  macroTransform,
+  ...linguiConfigOpts
 }: LinguiPluginOpts = {}): Plugin[] {
   let config: LinguiConfigNormalized
 
-  return [
+  let nativeTools: typeof import("@lingui/native-tools")
+
+  const getOrLoadConfig = () => {
+    if (!config) {
+      config = getConfig(linguiConfigOpts)
+    }
+    return config
+  }
+
+  const plugins: Plugin[] = [
     {
       name: "vite-plugin-lingui-get-config",
       enforce: "pre",
+
       configResolved: () => {
-        config = getConfig(linguiConfig)
+        getOrLoadConfig()
       },
     },
-    {
-      name: "vite-plugin-lingui-load-catalog",
+  ]
+
+  if (macroTransform) {
+    const earlyConfig = getOrLoadConfig()
+
+    if (earlyConfig.macro?.jsxRuntime === "solid") {
+      throw new Error(
+        `[@lingui/vite-plugin] The native macro transform doesn't support macro.jsxRuntime: "solid" yet. ` +
+          `Remove macroTransform from the plugin options and transform macros with @lingui/babel-plugin-lingui-macro instead. ` +
+          `See https://lingui.dev/tutorials/solid#configure-vite`,
+      )
+    }
+
+    const hasMacroRe = buildMacroFilterRe(earlyConfig)
+    const transformOptions =
+      typeof macroTransform === "object" ? macroTransform : undefined
+
+    plugins.push({
+      name: "vite-plugin-lingui-macro-transform",
+      enforce: "pre",
       transform: {
         filter: {
-          id: fileRegex,
+          id: /\.(?:[jt]sx?|[cm][jt]s)(?:$|\?)/,
+          code: hasMacroRe,
         },
-        async handler(src, id) {
-          // Additional check for backward compatibility, don't need for Rolldown powered Vite versions (8+)
-          if (!fileRegex.test(id)) {
-            return
+        async handler(code, id) {
+          if (!nativeTools) {
+            nativeTools = await import("@lingui/native-tools")
           }
 
-          id = id.split("?")[0]!
+          const { transform, mapMacroOptions } = nativeTools
 
-          const catalogRelativePath = path.relative(config.rootDir, id)
+          // Vite ids can carry a query (e.g. React Router's `?__react-router-build-client-route`),
+          // and the native parser picks TS/JSX syntax from the file extension, so strip it first.
+          const filename = path.basename(id.replace(/\?.*$/, ""))
 
-          const fileCatalog = getCatalogForFile(
-            catalogRelativePath,
-            await getCatalogs(config),
-          )
+          const result = await transform(code, filename, {
+            macro: {
+              descriptorFields: this.environment.config.isProduction
+                ? "id-only"
+                : "all",
+              ...mapMacroOptions(config, transformOptions?.macro),
+            },
+            parser: transformOptions?.parser,
+          })
 
-          if (!fileCatalog) {
-            throw new Error(
-              `Requested resource ${catalogRelativePath} is not matched to any of your catalogs paths specified in "lingui.config".
+          return { code: result.code, map: result.map }
+        },
+      },
+    })
+  }
+
+  plugins.push({
+    name: "vite-plugin-lingui-load-catalog",
+    transform: {
+      filter: {
+        id: fileRegex,
+      },
+      async handler(src, id) {
+        // Additional check for backward compatibility, don't need for Rolldown powered Vite versions (8+)
+        if (!fileRegex.test(id)) {
+          return
+        }
+
+        id = id.split("?")[0]!
+
+        const catalogRelativePath = path.relative(config.rootDir, id)
+
+        const fileCatalog = getCatalogForFile(
+          catalogRelativePath,
+          await getCatalogs(config),
+        )
+
+        if (!fileCatalog) {
+          throw new Error(
+            `Requested resource ${catalogRelativePath} is not matched to any of your catalogs paths specified in "lingui.config".
 
 Resource: ${id}
 
 Your catalogs:
 ${config.catalogs.map((c) => c.path).join("\n")}
 Please check that catalogs.path is filled properly.\n`,
-            )
-          }
-
-          const { locale, catalog } = fileCatalog
-
-          const dependency = await getCatalogDependentFiles(catalog, locale)
-          dependency.forEach((file) => this.addWatchFile(file))
-
-          const { messages, missing: missingMessages } =
-            await catalog.getTranslations(locale, {
-              fallbackLocales: config.fallbackLocales,
-              sourceLocale: config.sourceLocale,
-            })
-
-          if (
-            failOnMissing &&
-            locale !== config.pseudoLocale.locale &&
-            missingMessages.length > 0
-          ) {
-            const message = createMissingErrorMessage(
-              locale,
-              missingMessages,
-              "loader",
-            )
-            throw new Error(
-              `${message}\nYou see this error because \`failOnMissing=true\` in Vite Plugin configuration.`,
-            )
-          }
-
-          const { source: code, errors } = createCompiledCatalog(
-            locale,
-            messages,
-            {
-              namespace: "es",
-              pseudoLocale: config.pseudoLocale.locale,
-              pseudoLocaleOptions: config.pseudoLocale.options,
-            },
           )
+        }
 
-          if (errors.length) {
-            const message = createCompilationErrorMessage(locale, errors)
+        const { locale, catalog } = fileCatalog
 
-            if (failOnCompileError) {
-              throw new Error(
-                message +
-                  `These errors fail build because \`failOnCompileError=true\` in Lingui Vite plugin configuration.`,
-              )
-            } else {
-              this.warn(
-                message +
-                  `You can fail the build on these errors by setting \`failOnCompileError=true\` in Lingui Vite Plugin configuration.`,
-              )
-            }
+        const dependency = await getCatalogDependentFiles(catalog, locale)
+        dependency.forEach((file) => this.addWatchFile(file))
+        const missingBehavior = getFailOnMissingBehavior(failOnMissing)
+
+        const { messages, missing: missingMessages } =
+          await catalog.getTranslations(locale, {
+            fallbackLocales: config.fallbackLocales,
+            sourceLocale: config.sourceLocale,
+            missingBehavior,
+          })
+
+        const pseudoLocaleConfig = config.pseudoLocale.find(
+          (item) => item.locale === locale,
+        )
+
+        if (
+          isFailOnMissingEnabled(failOnMissing) &&
+          !pseudoLocaleConfig &&
+          missingMessages.length > 0
+        ) {
+          const message = createMissingErrorMessage(
+            locale,
+            missingMessages,
+            missingBehavior,
+          )
+          throw new Error(
+            `${message}\nYou see this error because \`failOnMissing=${formatFailOnMissingOption(failOnMissing)}\` in Vite Plugin configuration.`,
+          )
+        }
+
+        const { source: code, errors } = createCompiledCatalog(
+          locale,
+          messages,
+          {
+            namespace: "es",
+            pseudoLocale: pseudoLocaleConfig?.locale,
+            pseudoLocaleOptions: pseudoLocaleConfig?.options,
+          },
+        )
+
+        if (errors.length) {
+          const message = createCompilationErrorMessage(locale, errors)
+
+          if (failOnCompileError) {
+            throw new Error(
+              message +
+                `These errors fail build because \`failOnCompileError=true\` in Lingui Vite plugin configuration.`,
+            )
+          } else {
+            this.warn(
+              message +
+                `You can fail the build on these errors by setting \`failOnCompileError=true\` in Lingui Vite Plugin configuration.`,
+            )
           }
+        }
 
-          return {
-            code,
-            map: null, // provide source map if available
-            // Vite 8+ (Rolldown) auto-detects module types by file extension.
-            // Since .po files are transformed to JS, we must explicitly declare
-            // the module type to avoid misinterpretation.
-            moduleType: "js",
-          }
-        },
+        return {
+          code,
+          map: null, // provide source map if available
+          // Vite 8+ (Rolldown) auto-detects module types by file extension.
+          // Since .po files are transformed to JS, we must explicitly declare
+          // the module type to avoid misinterpretation.
+          moduleType: "js",
+        }
       },
     },
-  ]
+  })
+
+  return plugins
 }
 
 export default lingui

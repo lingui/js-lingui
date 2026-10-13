@@ -26,7 +26,9 @@ export type Formats = Record<
   Intl.DateTimeFormatOptions | Intl.NumberFormatOptions
 >
 
+export type VariableValue = string | number | Date
 export type Values = Record<string, unknown>
+export type Variables = Record<string, VariableValue | (() => VariableValue)>
 
 export type UncompiledMessage = string
 export type Messages = Record<string, UncompiledMessage | CompiledMessage>
@@ -81,6 +83,7 @@ export type I18nProps = {
   locales?: Locales
   messages?: AllMessages
   missing?: MissingHandler
+  variables?: Variables
 }
 
 type Events = {
@@ -103,6 +106,7 @@ export class I18n extends EventEmitter<Events> {
   private _locale: Locale = ""
   private _locales?: Locales
   private _messages: AllMessages = {}
+  private _variables: Variables = {}
   private _missing?: MissingHandler
   private _messageCompiler?: MessageCompiler
 
@@ -115,6 +119,7 @@ export class I18n extends EventEmitter<Events> {
 
     if (params.missing != null) this._missing = params.missing
     if (params.messages != null) this.load(params.messages)
+    if (params.variables != null) this._variables = { ...params.variables }
     if (typeof params.locale === "string" || params.locales) {
       this.activate(params.locale ?? defaultLocale, params.locales)
     }
@@ -130,6 +135,32 @@ export class I18n extends EventEmitter<Events> {
 
   get messages(): Messages {
     return this._messages[this._locale] ?? {}
+  }
+
+  get variables(): Variables {
+    return this._variables
+  }
+
+  setVariable(
+    name: string,
+    value?: VariableValue | (() => VariableValue),
+  ): this {
+    if (value === undefined) {
+      delete this._variables[name]
+    } else {
+      this._variables[name] = value
+    }
+    this.emit("change")
+    return this
+  }
+
+  setVariables(variables: Variables | ((prev: Variables) => Variables)): this {
+    this._variables = {
+      ...(isFunction(variables) ? variables(this._variables) : variables),
+    }
+
+    this.emit("change")
+    return this
   }
   /**
    * Registers a `MessageCompiler` to enable the use of uncompiled catalogs at runtime.
@@ -151,7 +182,14 @@ export class I18n extends EventEmitter<Events> {
     return this
   }
   private _load(locale: Locale, messages: Messages) {
-    const maybeMessages = this._messages[locale]
+    // Own-property check so a "__proto__" locale key can't resolve to
+    // Object.prototype and get merged into (prototype pollution).
+    const maybeMessages = Object.prototype.hasOwnProperty.call(
+      this._messages,
+      locale,
+    )
+      ? this._messages[locale]
+      : undefined
     if (!maybeMessages) {
       this._messages[locale] = messages
     } else {
@@ -229,7 +267,13 @@ export class I18n extends EventEmitter<Events> {
       id = id.id
     }
 
-    const messageForId = this.messages[id]
+    // Own-property check so an id like "constructor" or "toString" is
+    // reported as missing instead of resolving to a member inherited from
+    // Object.prototype.
+    const messages = this.messages
+    const messageForId = Object.prototype.hasOwnProperty.call(messages, id)
+      ? messages[id]
+      : undefined
     const messageMissing = messageForId === undefined
 
     // replace missing messages with custom message for debugging
@@ -266,11 +310,11 @@ Please compile your catalog first.
       return decodeEscapeSequences(translation)
     if (isString(translation)) return translation
 
-    return interpolate(
-      translation,
-      this._locale,
-      this._locales,
-    )(values, options?.formats)
+    return interpolate(translation, this._locale, this._locales)(
+      values,
+      options?.formats,
+      this._variables,
+    )
   }
 
   /**

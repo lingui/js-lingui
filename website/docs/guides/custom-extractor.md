@@ -5,7 +5,7 @@ description: Learn how to write a custom message extractor for your project
 
 # Custom Extractor
 
-Lingui's default extractor supports JavaScript (Stage 3), TypeScript, and Flow out of the box, covering most standard and modern syntax features. However, if your project relies on experimental ECMAScript syntax or custom file formats, a custom extractor gives you the flexibility to handle these scenarios.
+Lingui's default extractor is based on Babel and supports JavaScript (Stage 3), TypeScript, and Flow out of the box, covering most standard and modern syntax features. To extract without Babel, use the [native extractor](#native-extractor). If your project relies on experimental ECMAScript syntax or custom file formats, a custom extractor gives you the flexibility to handle these scenarios.
 
 ### Why It Doesn't Use Your Babel Config?
 
@@ -13,6 +13,35 @@ Babel plugins from your configuration define transformations, and some of these 
 
 :::info
 We are constantly updating the extractor to keep up with the latest ECMAScript features. However, if you find that a recently added Stage 3 feature doesn't work as expected, please [create an issue](https://github.com/lingui/js-lingui/issues/new/choose).
+:::
+
+## Native Extractor
+
+[`@lingui/native-tools`](https://www.npmjs.com/package/@lingui/native-tools), the toolchain behind the [native macro transform](/ref/vite-plugin#native-macro-transform), also provides an SWC-based extractor for `lingui extract`. Use it to extract messages without Babel:
+
+```bash npm2yarn
+npm install --save-dev @lingui/native-tools
+```
+
+```ts title="lingui.config.ts"
+import { defineConfig } from "@lingui/cli";
+import { createSwcExtractor } from "@lingui/native-tools";
+
+export default defineConfig({
+  // [...]
+  extractors: [createSwcExtractor()],
+});
+```
+
+It handles `.js`, `.jsx`, `.ts`, `.tsx` files and their `.mjs`, `.cjs`, `.mts`, `.cts` variants. Macro options are read from your Lingui configuration.
+
+Differences from the default extractor:
+
+- [`extractorParserOptions`](/ref/conf#extractorparseroptions) doesn't apply. Pass SWC `parser` options instead, the same as [`jsc.parser`](https://swc.rs/docs/configuration/compilation#jscparser) in `.swcrc`. Syntax and JSX are inferred from the file name, Decorators are enabled by default.
+- Flow is not supported.
+
+:::note
+`@lingui/cli` still depends on Babel for the default extractor and `lingui compile`, so Babel stays in your dependency tree until the next major release.
 :::
 
 ## Experimental ECMAScript Syntax

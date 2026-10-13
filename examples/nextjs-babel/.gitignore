@@ -12,9 +12,6 @@
 /.next/
 /out/
 
-# LinguiJS
-locale/*/*.js
-
 # production
 /build
 
@@ -43,3 +40,9 @@ yarn-error.log*
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+
+# next.js generates this on every dev/build
+next-env.d.ts
+
+# typescript
+*.tsbuildinfo
