@@ -1,5 +1,5 @@
 import linguiMacroPlugin, { LinguiPluginOpts } from "../src"
-import { transformFileSync, transformSync, TransformOptions } from "@babel/core"
+import { transformFileSync, transformSync, type PluginItem } from "@babel/core"
 import { format } from "prettier"
 import path from "path"
 import fs from "fs"
@@ -7,6 +7,9 @@ import { macro } from "../src/macro"
 import Module from "node:module"
 import { stripVTControlCharacters } from "node:util"
 import { makeConfig } from "@lingui/conf"
+
+// Babel 7 names this `TransformOptions` and Babel 8 `InputOptions`
+type TransformOptions = NonNullable<Parameters<typeof transformSync>[1]>
 
 export type TestCase = TestCaseInline | TestCaseFixture
 
@@ -204,9 +207,9 @@ export const getDefaultBabelOptions = (
     filename: "<filename>" + (isTs ? ".tsx" : "jsx"),
     configFile: false,
     babelrc: false,
-    presets: [...(isTs ? ["@babel/preset-typescript"] : [])],
+    presets: [...(isTs ? [require.resolve("@babel/preset-typescript")] : [])],
     plugins: [
-      "@babel/plugin-syntax-jsx",
+      require.resolve("@babel/plugin-syntax-jsx"),
       transformType === "plugin"
         ? [linguiMacroPlugin, macroOpts]
         : [
@@ -234,7 +237,7 @@ export const getDefaultBabelOptions = (
               {
                 panicThreshold: "critical_errors",
               },
-            ],
+            ] as PluginItem,
           ]
         : []),
     ],

@@ -55,7 +55,6 @@
     "node": ">=22.19.0"
   },
   "dependencies": {
-    "@babel/types": "^7.20.7",
     "@lingui/conf": "workspace:*",
     "@lingui/message-utils": "workspace:*"
   },

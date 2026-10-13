@@ -1,4 +1,4 @@
-import * as types from "@babel/types"
+import { types } from "@babel/core"
 import { createMessageDescriptor } from "./messageDescriptorUtils"
 import { generateMessageId } from "@lingui/message-utils/generateMessageId"
 
@@ -46,6 +46,7 @@ describe("createMessageDescriptor", () => {
     },
   ])("$name", ({ defaults, expectedId }) => {
     const descriptor = createMessageDescriptor(
+      types,
       { message: "Hello" },
       undefined,
       "all",
@@ -57,6 +58,7 @@ describe("createMessageDescriptor", () => {
 
   it("generates the hash id when no explicit id is provided", () => {
     const descriptor = createMessageDescriptor(
+      types,
       { message: "Hello" },
       undefined,
       "all",
@@ -75,6 +77,7 @@ describe("createMessageDescriptor", () => {
       types.stringLiteral("greeting"),
     )
     const descriptor = createMessageDescriptor(
+      types,
       { message: "Hello" },
       undefined,
       "all",

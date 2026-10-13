@@ -1,4 +1,4 @@
-import { Expression, isJSXEmptyExpression, Node } from "@babel/types"
+import type { Expression, Node } from "./types"
 
 const metaOptions = ["id", "comment", "props"]
 
@@ -72,7 +72,7 @@ export class ICUMessageFormat {
     } else if (token.type === "arg") {
       if (
         token.value !== undefined &&
-        isJSXEmptyExpression(token.value as Node)
+        (token.value as Node)?.type === "JSXEmptyExpression"
       ) {
         return null
       }

@@ -5,7 +5,7 @@ import {
   collectLinguiDirectives,
   findDirectiveForLine,
 } from "../src/linguiDirective"
-import type { Comment } from "@babel/types"
+import type { Comment } from "../src/types"
 import { macroTester } from "./macroTester"
 
 describe("parseLinguiDirective", () => {

@@ -43,6 +43,43 @@ jobs:
       - name: Unit Testing
         run: yarn test:ci
 
+  babel-8:
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    name: macro plugin on Babel 8
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Setup node
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: .nvmrc
+          cache: 'yarn'
+          scope: '@lingui'
+
+      - name: Install dependencies if needed
+        run: yarn install
+
+      # The workspace stays on Babel 7; only the macro plugin's Babel devDependencies move to 8
+      - name: Install Babel 8 for the macro plugin
+        run: >-
+          yarn workspace @lingui/babel-plugin-lingui-macro add -D
+          @babel/core@^8 @babel/parser@^8 @babel/plugin-syntax-jsx@^8
+          @babel/preset-typescript@^8 @babel/traverse@^8
+
+      - name: Assert Babel 8 is resolved
+        working-directory: packages/babel-plugin-lingui-macro
+        run: node -e "const v = require('@babel/core/package.json').version; console.log(v); if (!v.startsWith('8.')) process.exit(1)"
+
+      - name: Build packages
+        run: yarn release:build
+
+      - name: Types
+        run: yarn workspace @lingui/babel-plugin-lingui-macro check-types
+
+      - name: Unit Testing
+        run: yarn vitest --run --project @lingui/babel-plugin-lingui-macro
+
   validate:
     timeout-minutes: 10
     runs-on: ubuntu-latest

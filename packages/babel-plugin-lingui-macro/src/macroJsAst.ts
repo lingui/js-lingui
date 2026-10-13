@@ -1,5 +1,5 @@
-import * as t from "@babel/types"
-import {
+import type {
+  BabelTypes,
   CallExpression,
   Expression,
   Identifier,
@@ -8,7 +8,7 @@ import {
   ObjectProperty,
   StringLiteral,
   TemplateLiteral,
-} from "@babel/types"
+} from "./types"
 import { JsMacroName, MsgDescriptorPropKey } from "./constants"
 import { ArgToken, TextToken, Token } from "./icu"
 import {
@@ -19,6 +19,7 @@ import { makeCounter } from "./utils"
 import type { DirectiveValues } from "./linguiDirective"
 
 export type MacroJsContext = {
+  types: BabelTypes
   // Positional expressions counter (e.g. for placeholders `Hello {0}, today is {1}`)
   getExpressionIndex: () => number
   descriptorFields: ResolvedDescriptorFields
@@ -28,11 +29,13 @@ export type MacroJsContext = {
 }
 
 export function createMacroJsContext(
+  types: BabelTypes,
   isLinguiIdentifier: MacroJsContext["isLinguiIdentifier"],
   descriptorFields: ResolvedDescriptorFields,
   getDirective: MacroJsContext["getDirective"] = () => undefined,
 ): MacroJsContext {
   return {
+    types,
     isLinguiIdentifier,
     getExpressionIndex: makeCounter(),
     descriptorFields,
@@ -61,19 +64,28 @@ export function createMacroJsContext(
 export function processDescriptor(
   descriptor: ObjectExpression,
   ctx: MacroJsContext,
-) {
+): ObjectExpression {
+  const t = ctx.types
+
   const messageProperty = getObjectPropertyByKey(
     descriptor,
     MsgDescriptorPropKey.message,
+    ctx,
   )
-  const idProperty = getObjectPropertyByKey(descriptor, MsgDescriptorPropKey.id)
+  const idProperty = getObjectPropertyByKey(
+    descriptor,
+    MsgDescriptorPropKey.id,
+    ctx,
+  )
   const contextProperty = getObjectPropertyByKey(
     descriptor,
     MsgDescriptorPropKey.context,
+    ctx,
   )
   const commentProperty = getObjectPropertyByKey(
     descriptor,
     MsgDescriptorPropKey.comment,
+    ctx,
   )
 
   let tokens: Token[] = []
@@ -92,6 +104,7 @@ export function processDescriptor(
   const directive = ctx.getDirective(descriptor.loc?.start.line) || {}
 
   return createMessageDescriptorFromTokens(
+    ctx.types,
     tokens,
     descriptor.loc,
     ctx.descriptorFields,
@@ -110,6 +123,8 @@ export function tokenizeNode(
   ignoreExpression = false,
   ctx: MacroJsContext,
 ): Token[] {
+  const t = ctx.types
+
   if (isI18nMethod(node, ctx)) {
     // t
     return tokenizeTemplateLiteral(node as Expression, ctx)
@@ -156,6 +171,8 @@ export function tokenizeTemplateLiteral(
   node: Expression,
   ctx: MacroJsContext,
 ): Token[] {
+  const t = ctx.types
+
   const tpl = t.isTaggedTemplateExpression(node)
     ? node.quasi
     : (node as TemplateLiteral)
@@ -187,6 +204,8 @@ export function tokenizeChoiceComponent(
   componentName: string,
   ctx: MacroJsContext,
 ): ArgToken {
+  const t = ctx.types
+
   const format = componentName.toLowerCase()
 
   const token: ArgToken = {
@@ -244,6 +263,8 @@ function tokenizeLabeledExpression(
   node: ObjectExpression,
   ctx: MacroJsContext,
 ): ArgToken {
+  const t = ctx.types
+
   if (node.properties.length > 1) {
     throw new Error(
       "Incorrect usage, expected exactly one property as `{variableName: variableValue}`",
@@ -270,6 +291,8 @@ export function tokenizeExpression(
   node: Node | Expression,
   ctx: MacroJsContext,
 ): ArgToken {
+  const t = ctx.types
+
   if (
     t.isTSAsExpression(node) ||
     t.isTSNonNullExpression(node) ||
@@ -320,6 +343,8 @@ export function expressionToArgument(
   exp: Expression,
   ctx: MacroJsContext,
 ): string {
+  const t = ctx.types
+
   if (t.isIdentifier(exp)) {
     return exp.name
   }
@@ -327,6 +352,8 @@ export function expressionToArgument(
 }
 
 export function isArgDecorator(node: Node, ctx: MacroJsContext): boolean {
+  const t = ctx.types
+
   return (
     t.isCallExpression(node) &&
     isLinguiIdentifier(node.callee, JsMacroName.arg, ctx)
@@ -341,6 +368,8 @@ export function isDefineMessage(node: Node, ctx: MacroJsContext): boolean {
 }
 
 export function isI18nMethod(node: Node, ctx: MacroJsContext) {
+  const t = ctx.types
+
   if (!t.isTaggedTemplateExpression(node)) {
     return
   }
@@ -359,6 +388,8 @@ export function isLinguiIdentifier(
   name: JsMacroName,
   ctx: MacroJsContext,
 ) {
+  const t = ctx.types
+
   if (!t.isIdentifier(node)) {
     return false
   }
@@ -367,6 +398,8 @@ export function isLinguiIdentifier(
 }
 
 export function isChoiceMethod(node: Node, ctx: MacroJsContext) {
+  const t = ctx.types
+
   if (!t.isCallExpression(node)) {
     return
   }
@@ -385,7 +418,10 @@ export function isChoiceMethod(node: Node, ctx: MacroJsContext) {
 function getObjectPropertyByKey(
   objectExp: ObjectExpression,
   key: string,
+  ctx: MacroJsContext,
 ): ObjectProperty {
+  const t = ctx.types
+
   return objectExp.properties.find(
     (property) =>
       t.isObjectProperty(property) &&

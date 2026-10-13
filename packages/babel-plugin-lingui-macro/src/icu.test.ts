@@ -1,5 +1,5 @@
 import { ICUMessageFormat, Token } from "./icu"
-import { Identifier } from "@babel/types"
+import type { Identifier } from "./types"
 
 describe("ICU MessageFormat", function () {
   it("should collect text message", function () {
