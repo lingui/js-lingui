@@ -60,6 +60,28 @@ Example: `Attachment {name} saved`
                        other {#th message}}
 ```
 
+### Custom formatters
+
+Arguments can also use formatters registered on the `i18n` instance with [`options.formatters`](/ref/core#options.formatters). For example, a `list` formatter based on `Intl.ListFormat` formats an array of values, with an optional parameter for the list type:
+
+```icu-message-format
+Genres: {genres, list}
+Genres: {genres, list, disjunction}
+```
+
+With `genres` set to `["Rock", "Jazz", "Pop"]` in English, this gives "Genres: Rock, Jazz, and Pop" and "Genres: Rock, Jazz, or Pop".
+
+```ts
+const i18n = setupI18n({
+  formatters: {
+    list: (value, { locale, param }) =>
+      new Intl.ListFormat(locale, {
+        type: param === "disjunction" || param === "unit" ? param : "conjunction",
+      }).format(value as string[]),
+  },
+});
+```
+
 ## See Also
 
 - [Pluralization](/guides/plurals)

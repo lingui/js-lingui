@@ -2,6 +2,9 @@ export { setupI18n, I18n } from "./i18n"
 
 export type {
   AllMessages,
+  Formatter,
+  FormatterContext,
+  Formatters,
   I18nProps,
   MessageDescriptor,
   MessageId,
