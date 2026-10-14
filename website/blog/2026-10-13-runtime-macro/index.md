@@ -43,7 +43,7 @@ export default defineConfig({
 
 Variable names can't be read at runtime, so placeholders must be named: `${{ name }}` instead of `${name}`. A plain value throws an error that tells you what to write instead. This is what keeps the messages identical to the compile-time output.
 
-The runtime macro also has no `t` and no JSX: you define a message with `msg` and translate it with `i18n._`. Without a compile step, the source message stays in your bundle. The [reference](/ref/core#runtime-macro) covers the details.
+The runtime macro also has no `t` and no JSX: you define a message with `msg` and translate it with `i18n._`. If you prefer a shorter call, `const t = i18n.t` works too. Without a compile step, the source message stays in your bundle. The [reference](/ref/core#runtime-macro) covers the details.
 
 ## Experimental for now
 
