@@ -1004,4 +1004,98 @@ describe("I18n", () => {
       expect(i18n._("welcome")).toEqual("[F] Bienvenida")
     })
   })
+
+  describe("formatters", () => {
+    const capitalize = (value: unknown, { locale }: { locale: string }) => {
+      const [first = "", ...rest] = String(value ?? "")
+      return first.toLocaleUpperCase(locale) + rest.join("")
+    }
+
+    it("should use formatters passed to setupI18n", () => {
+      const i18n = setupI18n({
+        locale: "de",
+        messages: {
+          de: { removed: "{type, capitalize} wurde entfernt" },
+        },
+        formatters: { capitalize },
+      })
+
+      expect(i18n._("removed", { type: "album" })).toEqual(
+        "Album wurde entfernt",
+      )
+      expect(
+        i18n.t({
+          id: "other",
+          message: "{type, capitalize}!",
+          values: { type: "ä" },
+        }),
+      ).toEqual("Ä!")
+    })
+
+    it("should pass the active locale and locales to formatters", () => {
+      const formatter = vi.fn(() => "")
+      const i18n = setupI18n({
+        locale: "en",
+        messages: { en: {}, fr: {} },
+        formatters: { fn: formatter },
+      })
+
+      i18n._("a", { value: 1 }, { message: "{value, fn}" })
+      expect(formatter).toHaveBeenLastCalledWith(1, {
+        locale: "en",
+        locales: undefined,
+        param: undefined,
+      })
+
+      i18n.activate("fr", ["fr-CH"])
+      i18n._("a", { value: 2 }, { message: "{value, fn, short}" })
+      expect(formatter).toHaveBeenLastCalledWith(2, {
+        locale: "fr",
+        locales: ["fr-CH"],
+        param: "short",
+      })
+    })
+
+    it.each(["plural", "select", "selectordinal", "number", "date", "time"])(
+      "should throw when registering the reserved name %s",
+      (name) => {
+        expect(() => setupI18n({ formatters: { [name]: capitalize } })).toThrow(
+          `"${name}"`,
+        )
+      },
+    )
+
+    it("should render the plain value and warn for unknown formatters", () => {
+      mockConsole((console) => {
+        const i18n = setupI18n({ locale: "en", messages: { en: {} } })
+
+        expect(
+          i18n._(
+            "a",
+            { type: "album" },
+            { message: "{type, capitalize} removed" },
+          ),
+        ).toEqual("album removed")
+        expect(console.warn).toHaveBeenCalledWith(
+          expect.stringContaining('Unknown formatter "capitalize"'),
+        )
+      })
+    })
+
+    it("should not warn for unknown formatters in production", () => {
+      mockEnv("production", () => {
+        mockConsole((console) => {
+          const i18n = setupI18n({
+            locale: "en",
+            messages: {
+              en: { removed: [["type", "capitalize"], " removed"] },
+            },
+          })
+
+          expect(i18n._("removed", { type: "album" })).toEqual("album removed")
+          expect(console.warn).not.toBeCalled()
+        })
+      })
+    })
+  })
 })

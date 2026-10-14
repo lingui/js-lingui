@@ -1,4 +1,11 @@
-import { CompiledMessage, Formats, Locales, Values, Variables } from "./i18n"
+import {
+  CompiledMessage,
+  Formats,
+  Formatters,
+  Locales,
+  Values,
+  Variables,
+} from "./i18n"
 import {
   date,
   DateTimeFormatSize,
@@ -14,6 +21,21 @@ import { CompiledIcuChoices } from "@lingui/message-utils/compileMessage"
 import { decodeEscapeSequences, ESCAPE_SEQUENCE_REGEX } from "./escapeSequences"
 
 const OCTOTHORPE_PH = "%__lingui_octothorpe__%"
+
+/**
+ * Names handled by `getDefaultFormats`, which can't be used for custom formatters
+ */
+export const BUILT_IN_FORMATTERS: readonly string[] = [
+  "plural",
+  "selectordinal",
+  "select",
+  "number",
+  "date",
+  "time",
+]
+
+const hasOwn = (obj: object, key: string) =>
+  Object.prototype.hasOwnProperty.call(obj, key)
 
 const getDefaultFormats = (
   locale: string,
@@ -84,11 +106,13 @@ const selectFormatter = (value: string, rules: Record<string, any>) =>
  * @param translation compiled message
  * @param locale Locale of message
  * @param locales Locales to be used when formatting the numbers or dates
+ * @param customFormatters Custom formatters configured in the i18n instance
  */
 export function interpolate(
   translation: CompiledMessage,
   locale: string,
   locales?: Locales,
+  customFormatters: Formatters = {},
 ) {
   /**
    * @param values    - Parameters for variable interpolation
@@ -146,12 +170,27 @@ export function interpolate(
 
         let value: unknown
 
-        if (type) {
-          // run formatter, such as plural, number, etc.
+        if (!type) {
+          // simple placeholder variable interpolation eq {variableName}
+          value = getValue(name)
+        } else if (hasOwn(formatters, type)) {
+          // run built-in formatter, such as plural, number, etc.
           const formatter = (formatters as any)[type]
           value = formatter(getValue(name), interpolatedFormat)
+        } else if (hasOwn(customFormatters, type)) {
+          value = customFormatters[type]!(getValue(name), {
+            locale,
+            locales,
+            param: format as string | undefined,
+          })
         } else {
-          // simple placeholder variable interpolation eq {variableName}
+          if (process.env.NODE_ENV !== "production") {
+            console.warn(
+              `Lingui: Unknown formatter "${type}" used in "{${name}, ${type}}". ` +
+                `The value is rendered without formatting. ` +
+                `Register custom formatters with \`setupI18n({ formatters })\`.`,
+            )
+          }
           value = getValue(name)
         }
 

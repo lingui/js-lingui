@@ -332,6 +332,30 @@ describe("Trans component", () => {
     expect(translation).toEqual("1,00 €")
   })
 
+  it("should render custom formatter", () => {
+    const i18nWithFormatters = setupI18n({
+      locale: "de",
+      messages: {
+        de: { "msg.removed": "<0>{type, upper}</0> wurde entfernt" },
+      },
+      formatters: {
+        upper: (value, { locale }) => String(value).toLocaleUpperCase(locale),
+      },
+    })
+
+    const { container } = render(
+      <I18nProvider i18n={i18nWithFormatters}>
+        <Trans
+          id="msg.removed"
+          message="<0>{type}</0> was removed"
+          values={{ type: "album" }}
+          components={{ 0: <strong /> }}
+        />
+      </I18nProvider>,
+    )
+    expect(container.innerHTML).toEqual("<strong>ALBUM</strong> wurde entfernt")
+  })
+
   it("should render plural", () => {
     const render = (count: number) =>
       html(
