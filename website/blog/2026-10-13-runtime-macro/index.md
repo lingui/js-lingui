@@ -47,7 +47,7 @@ The runtime macro also has no `t` and no JSX: you define a message with `msg` an
 
 ## Experimental for now
 
-The API and the import path may still change in a minor release, and we'll revisit the name before the next major. Real-world feedback will shape both.
+The API and the import path may still change in a minor release, and we'll revisit the name before the next major. Real-world feedback will shape both. If you have thoughts on the name, join the [naming discussion](https://github.com/lingui/js-lingui/discussions/2720).
 
 ## Try it out
 
