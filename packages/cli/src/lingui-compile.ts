@@ -14,6 +14,7 @@ import {
 import ms from "ms"
 import { getPathsForCompileWatcher } from "./api/getPathsForCompileWatcher.js"
 import { ProgramExit } from "./api/ProgramExit.js"
+import { createWatchDispatcher } from "./api/createWatchDispatcher.js"
 
 export type CliCompileOptions = {
   verbose?: boolean
@@ -179,16 +180,10 @@ if (import.meta.main) {
     return previousRun
   }
 
-  let debounceTimer: NodeJS.Timeout
-
-  const dispatchCompile = () => {
-    // Skip debouncing if not enabled
-    if (!options.debounce) compile()
-
-    // CLear the previous timer if there is any, and schedule the next
-    debounceTimer && clearTimeout(debounceTimer)
-    debounceTimer = setTimeout(() => compile(), options.debounce)
-  }
+  const dispatchCompile = createWatchDispatcher({
+    debounce: options.debounce,
+    run: compile,
+  })
 
   // Check if Watch Mode is enabled
   if (options.watch) {
