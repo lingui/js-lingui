@@ -17,7 +17,7 @@ msgstr ""
 #~ msgid "{count, plural, one {# message} other {# messages}}"
 #~ msgstr ""
 
-#: src/PluralExample.tsx:10
+#: src/PluralExample.tsx:15
 msgid "{count, plural, one {# month} other {# months}}"
 msgstr ""
 
@@ -29,15 +29,15 @@ msgstr ""
 msgid "Blue"
 msgstr "Blue"
 
-#: src/App.tsx:54
+#: src/App.tsx:46
 msgid "Click on the Vite and React logos to learn more"
 msgstr ""
 
-#: src/PluralExample.tsx:9
+#: src/PluralExample.tsx:12
 msgid "Click on this button to test plurals"
 msgstr "Click on this button to test plurals"
 
-#: src/App.tsx:39
+#: src/App.tsx:31
 msgid "Edit <0>src/App.tsx</0> and save to test HMR"
 msgstr ""
 
