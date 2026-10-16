@@ -749,3 +749,22 @@ Controls which JSX runtime semantics the Lingui JSX macro emit.
   }
 }
 ```
+
+## experimental.runtimeMacro
+
+Default value: `false`
+
+:::caution Experimental
+This option is experimental and may change in a minor release.
+:::
+
+Extracts messages defined with the [runtime macro](/ref/core#runtime-macro) (imports from `@lingui/core/runtime-macro`) to your catalogs.
+
+```js
+// lingui.config
+{
+  experimental: {
+    runtimeMacro: true,
+  }
+}
+```

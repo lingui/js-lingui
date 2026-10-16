@@ -17,6 +17,10 @@ The benefits of using macros:
 
 There are two types of macros: [Core Macros](#core-macros) (JS) and [React Macros](#react-macros) (JSX).
 
+:::tip No build step?
+Macros need a compiler plugin. If your code runs without a build step, for example in Node.js scripts, serverless functions or test runners, see the experimental [runtime macro](/ref/core#runtime-macro).
+:::
+
 ## Core Macros
 
 Core (JS) Macros can be used in any JavaScript context (e.g. outside JSX). All JS macros are transformed into a _Message Descriptor_ wrapped inside of [`i18n._`](/ref/core#i18n._) call:

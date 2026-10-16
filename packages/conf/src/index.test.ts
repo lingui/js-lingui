@@ -189,6 +189,44 @@ describe("@lingui/conf", () => {
     })
   })
 
+  describe("experimental.runtimeMacro", () => {
+    it("is off by default", () => {
+      const config = makeConfig({}, { skipValidation: true })
+      expect(config.macro.corePackage).toEqual(["@lingui/core/macro"])
+    })
+
+    it("adds the runtime macro to macro.corePackage", () => {
+      mockConsole((console) => {
+        const config = makeConfig({
+          locales: ["en"],
+          experimental: { runtimeMacro: true },
+        })
+        expect(console.error).not.toBeCalled()
+        expect(console.warn).not.toBeCalled()
+        expect(config.macro.corePackage).toEqual([
+          "@lingui/core/macro",
+          "@lingui/core/runtime-macro",
+        ])
+      })
+    })
+
+    it("keeps a custom macro.corePackage and does not duplicate the entry", () => {
+      const config = makeConfig(
+        {
+          macro: {
+            corePackage: ["@acme/macro", "@lingui/core/runtime-macro"],
+          },
+          experimental: { runtimeMacro: true },
+        },
+        { skipValidation: true },
+      )
+      expect(config.macro.corePackage).toEqual([
+        "@acme/macro",
+        "@lingui/core/runtime-macro",
+      ])
+    })
+  })
+
   describe("Build parent cldr fallbackLocales", () => {
     it("if fallbackLocales.default is defined, we dont build the cldr", () => {
       const config = makeConfig({

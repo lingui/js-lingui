@@ -42,6 +42,7 @@ export function makeConfig(
   // List config migrations from oldest to newest
   config = setCldrParentLocales(config)
   config = normalizeRuntimeConfigModule(config) as any
+  config = applyExperimentalRuntimeMacro(config)
 
   // `replaceRootDir` should always be the last
   const out = replaceRootDir(
@@ -53,6 +54,27 @@ export function makeConfig(
     ...out,
     pseudoLocale: normalizePseudoLocale(config.pseudoLocale),
     resolvedConfigPath: opts.resolvedConfigPath,
+  }
+}
+
+const RUNTIME_MACRO_PACKAGE = "@lingui/core/runtime-macro"
+
+function applyExperimentalRuntimeMacro(config: LinguiConfig): LinguiConfig {
+  const corePackage = config.macro?.corePackage ?? []
+
+  if (
+    !config.experimental?.runtimeMacro ||
+    corePackage.includes(RUNTIME_MACRO_PACKAGE)
+  ) {
+    return config
+  }
+
+  return {
+    ...config,
+    macro: {
+      ...config.macro,
+      corePackage: [...corePackage, RUNTIME_MACRO_PACKAGE],
+    },
   }
 }
 
@@ -175,7 +197,8 @@ export const exampleConfig = {
       bundler: multipleValidOptions({}, undefined),
       resolveEsbuildOptions: Function,
     },
-  } as { extractor: ExperimentalExtractorOptions },
+    runtimeMacro: false,
+  } as { extractor: ExperimentalExtractorOptions; runtimeMacro: boolean },
 }
 
 const configValidation = {
