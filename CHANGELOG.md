@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.10.0](https://github.com/lingui/js-lingui/compare/v6.9.1...v6.10.0) (2026-10-16)
+
+### Bug Fixes
+
+* **cli:** don't compile twice per change in watch mode without --debounce ([#2722](https://github.com/lingui/js-lingui/issues/2722)) ([92c8622](https://github.com/lingui/js-lingui/commit/92c8622e68e6b94bd3ea4f241b7314d610c46e83))
+
+### Features
+
+* **core:** add default global variables support to i18n instance ([#2661](https://github.com/lingui/js-lingui/issues/2661)) ([7fa9acd](https://github.com/lingui/js-lingui/commit/7fa9acd777290d5f78e17935df21d976585433a2))
+* runtime core macro ([#2618](https://github.com/lingui/js-lingui/issues/2618)) ([bd79e85](https://github.com/lingui/js-lingui/commit/bd79e85d57d95669b4e3c05f624a9974897c42b9))
+
 ## [6.9.1](https://github.com/lingui/js-lingui/compare/v6.9.0...v6.9.1) (2026-10-09)
 
 ### Bug Fixes
