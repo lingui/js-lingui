@@ -312,6 +312,35 @@ describe("runtime macro", () => {
       expect(result.message).toBe(compiled.message)
     })
 
+    it("with offset after the cases", () => {
+      const vars = { count: 5 }
+      const code =
+        'plural({ count }, { one: "# book", other: "# books", offset: 1 })'
+      const result = runtimeMacro(code, vars)
+      expect(result.message).toBe(
+        "{count, plural, offset:1 one {# book} other {# books}}",
+      )
+
+      const compiled = compileTimeMacro(code, vars)
+      expect(result.id).toBe(compiled.id)
+      expect(result.message).toBe(compiled.message)
+    })
+
+    it("with offset and exact numeric matches", () => {
+      const vars = { count: 5 }
+      // integer keys come before `offset` in the object, whatever the source order
+      const code =
+        'plural({ count }, { offset: 1, 0: "Nobody arrived", 1: "Only you arrived", one: "You and # other guest arrived", other: "You and # other guests arrived" })'
+      const result = runtimeMacro(code, vars)
+      expect(result.message).toBe(
+        "{count, plural, offset:1 =0 {Nobody arrived} =1 {Only you arrived} one {You and # other guest arrived} other {You and # other guests arrived}}",
+      )
+
+      const compiled = compileTimeMacro(code, vars)
+      expect(result.id).toBe(compiled.id)
+      expect(result.message).toBe(compiled.message)
+    })
+
     it("nested in msg with surrounding text", () => {
       const vars = { count: 5 }
       const code =
@@ -369,6 +398,20 @@ describe("runtime macro", () => {
         },
       }
     `)
+
+      const compiled = compileTimeMacro(code, vars)
+      expect(result.id).toBe(compiled.id)
+      expect(result.message).toBe(compiled.message)
+    })
+
+    it("with escaped id, comment and props options", () => {
+      const vars = { kind: "id" }
+      const code =
+        'select({ kind }, { _id: "An ID", _comment: "A comment", _props: "Props", other: "Something else" })'
+      const result = runtimeMacro(code, vars)
+      expect(result.message).toBe(
+        "{kind, select, id {An ID} comment {A comment} props {Props} other {Something else}}",
+      )
 
       const compiled = compileTimeMacro(code, vars)
       expect(result.id).toBe(compiled.id)
