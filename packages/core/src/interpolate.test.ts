@@ -1,6 +1,7 @@
 import { compileMessage as compile } from "@lingui/message-utils/compileMessage"
 import { interpolate } from "./interpolate"
-import { Locale, Locales } from "./i18n"
+import { Formatters, Locale, Locales } from "./i18n"
+import { mockConsole } from "@lingui/test-utils"
 
 describe("interpolate", () => {
   const prepare = (translation: string, locale?: Locale, locales?: Locales) => {
@@ -256,6 +257,83 @@ describe("interpolate", () => {
 
       format({ name: fn }, undefined, { name: "Default" })
       expect(fn).not.toHaveBeenCalled()
+    })
+  })
+  describe("custom formatters", () => {
+    const formatters: Formatters = {
+      upper: (value, { locale }) => String(value).toLocaleUpperCase(locale),
+      wrap: (value, { param }) => `${param ?? "?"}${value}${param ?? "?"}`,
+      ctx: (_value, ctx) => JSON.stringify(ctx),
+      empty: () => null,
+    }
+
+    const prepareCustom = (
+      translation: string,
+      locale: Locale = "en",
+      locales?: Locales,
+    ) => interpolate(compile(translation), locale, locales, formatters)
+
+    it("should call a custom formatter with the value", () => {
+      const msg = prepareCustom("{type, upper} was removed")
+      expect(msg({ type: "album" })).toEqual("ALBUM was removed")
+    })
+
+    it("should pass the trimmed param", () => {
+      expect(prepareCustom("{value, wrap,  * }")({ value: "x" })).toEqual("*x*")
+      expect(prepareCustom("{value, wrap}")({ value: "x" })).toEqual("?x?")
+    })
+
+    it("should pass locale and locales in the context", () => {
+      expect(prepareCustom("{value, ctx}", "tr")({ value: 1 })).toEqual(
+        '{"locale":"tr"}',
+      )
+      expect(
+        prepareCustom("{value, ctx, p}", "fr", ["fr-CH", "fr"])({ value: 1 }),
+      ).toEqual('{"locale":"fr","locales":["fr-CH","fr"],"param":"p"}')
+    })
+
+    it("should use the locale for case mapping", () => {
+      expect(
+        prepareCustom("{value, upper}", "tr")({ value: "istanbul" }),
+      ).toEqual("İSTANBUL")
+    })
+
+    it("should render nothing when the formatter returns null", () => {
+      expect(prepareCustom("a{value, empty}b")({ value: "x" })).toEqual("ab")
+    })
+
+    it("should work inside plural and select branches", () => {
+      const msg = prepareCustom(
+        "{count, plural, one {{type, upper} item} other {# {type, upper} items}}",
+      )
+      expect(msg({ count: 1, type: "song" })).toEqual("SONG item")
+      expect(msg({ count: 2, type: "song" })).toEqual("2 SONG items")
+    })
+
+    it("should apply custom formatters to default variables", () => {
+      const msg = prepareCustom("{appName, upper}")
+      expect(msg({}, undefined, { appName: "lingui" })).toEqual("LINGUI")
+    })
+
+    it("should render the plain value and warn for unknown formatters", () => {
+      mockConsole((console) => {
+        expect(
+          prepareCustom("{type, unknown} was removed")({ type: "album" }),
+        ).toEqual("album was removed")
+        expect(console.warn).toHaveBeenCalledWith(
+          expect.stringContaining('Unknown formatter "unknown"'),
+        )
+      })
+    })
+
+    it("should not resolve formatters inherited from Object.prototype", () => {
+      mockConsole((console) => {
+        expect(prepareCustom("{value, toString}")({ value: "x" })).toEqual("x")
+        expect(prepareCustom("{value, constructor}")({ value: "x" })).toEqual(
+          "x",
+        )
+        expect(console.warn).toHaveBeenCalledTimes(2)
+      })
     })
   })
 })

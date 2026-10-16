@@ -434,6 +434,58 @@ const i18n = setupI18n({
 // i18n.setVariables({ appName: "ExampleApp", version: "1.2.3" })
 ```
 
+### `options.formatters` {#options.formatters}
+
+Custom ICU formatters, called for arguments like `{value, name}` and `{value, name, param}`. Use them for transforms that translators need to control, such as capitalizing a value only in languages where it starts the sentence.
+
+```ts
+import { setupI18n } from "@lingui/core";
+
+const i18n = setupI18n({
+  formatters: {
+    capitalize: (value, { locale }) => {
+      const [first = "", ...rest] = String(value ?? "");
+      return first.toLocaleUpperCase(locale) + rest.join("");
+    },
+  },
+});
+
+// A German translation of "Your {type} has been removed" can then use:
+// "{type, capitalize} wurde entfernt"
+i18n.t("Your {type} has been removed", { type: "album" });
+// Returns "Album wurde entfernt" when the German catalog is active
+```
+
+A formatter receives the value of the argument and a context object, and returns the formatted value. The result is converted to a string, and `null` or `undefined` renders nothing.
+
+```ts
+type Formatter = (value: unknown, ctx: FormatterContext) => unknown;
+
+type FormatterContext = {
+  /** Active locale */
+  locale: string;
+  /** Locales used for formatting, if set */
+  locales?: string | string[];
+  /** Raw text after the second comma, trimmed. `{value, fn, abc}` gives `"abc"` */
+  param?: string;
+};
+```
+
+- The names `plural`, `select`, `selectordinal`, `number`, `date` and `time` are reserved for the built-in formatters. Registering one of them throws an error.
+- If a message uses a formatter that isn't registered, the value is rendered without formatting, and a warning is logged in development builds.
+- `param` is passed as written. ICU MessageFormat has no syntax for multiple parameters, so a formatter that needs several values has to parse `param` itself.
+
+:::caution
+Some translation management systems don't recognize custom formatters. Their QA checks may report `{type, capitalize}` in a translation as a missing placeholder when the source only contains `{type}`, and their editors may not highlight it as a placeholder.
+:::
+
+:::note Limitations
+
+- In `<Trans>`, a value that is a React element has already been replaced by a placeholder such as `<0/>` when the formatter runs, so the formatter receives that placeholder instead of the element.
+- Only the first token of `param` is kept, so in `{value, fn, {other}}` the nested `{other}` argument is lost.
+
+:::
+
 ## AllMessages
 
 The `AllMessages` parameter in the [`I18n.load`](#i18n.load) method is of the following type:
