@@ -1,6 +1,6 @@
 {
   "name": "@lingui/format-csv",
-  "version": "6.9.1",
+  "version": "6.10.0",
   "description": "Reads and writes Lingui message catalogs as two-column CSV files for spreadsheets and other CSV tools",
   "type": "module",
   "exports": {

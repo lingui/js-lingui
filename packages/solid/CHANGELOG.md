@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.10.0](https://github.com/lingui/js-lingui/compare/v6.9.1...v6.10.0) (2026-10-16)
+
+### Features
+
+* **core:** add default global variables support to i18n instance ([#2661](https://github.com/lingui/js-lingui/issues/2661)) ([7fa9acd](https://github.com/lingui/js-lingui/commit/7fa9acd777290d5f78e17935df21d976585433a2))
+
 ## [6.9.1](https://github.com/lingui/js-lingui/compare/v6.9.0...v6.9.1) (2026-10-09)
 
 **Note:** Version bump only for package @lingui/solid

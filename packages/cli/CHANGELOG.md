@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.10.0](https://github.com/lingui/js-lingui/compare/v6.9.1...v6.10.0) (2026-10-16)
+
+### Bug Fixes
+
+* **cli:** don't compile twice per change in watch mode without --debounce ([#2722](https://github.com/lingui/js-lingui/issues/2722)) ([92c8622](https://github.com/lingui/js-lingui/commit/92c8622e68e6b94bd3ea4f241b7314d610c46e83))
+
 ## [6.9.1](https://github.com/lingui/js-lingui/compare/v6.9.0...v6.9.1) (2026-10-09)
 
 ### Performance Improvements
