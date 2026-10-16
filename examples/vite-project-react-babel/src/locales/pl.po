@@ -13,19 +13,23 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: src/PluralExample.tsx:10
+#: src/PluralExample.tsx:15
 msgid "{count, plural, one {# month} other {# months}}"
 msgstr "{count, plural, one {# miesiąc} few {# miesiące} many {# miesięcy} other {# miesiąca}}"
 
-#: src/App.tsx:54
+#: src/MsgExample.tsx:11
+msgid "Blue"
+msgstr "Niebieski"
+
+#: src/App.tsx:46
 msgid "Click on the Vite and React logos to learn more"
 msgstr "Kliknij na logo Vite i React, aby dowiedzieć się więcej"
 
-#: src/PluralExample.tsx:9
+#: src/PluralExample.tsx:12
 msgid "Click on this button to test plurals"
 msgstr "Kliknij ten przycisk, aby przetestować formy liczby mnogiej"
 
-#: src/App.tsx:39
+#: src/App.tsx:31
 msgid "Edit <0>src/App.tsx</0> and save to test HMR"
 msgstr "Edytuj <0>src/App.tsx</0> i zapisz, aby przetestować HMR"
 
@@ -36,7 +40,3 @@ msgstr "Pomarańczowy"
 #: src/MsgExample.tsx:7
 msgid "Red"
 msgstr "Czerwony"
-
-#: src/MsgExample.tsx:11
-msgid "Blue"
-msgstr "Niebieski"
