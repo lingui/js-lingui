@@ -89,6 +89,46 @@ const { messages } = (await import(`@lingui/loader!./locales/${locale}/messages.
 
 :::
 
+## Native Macro Transform
+
+`@lingui/loader/macro` is a second loader in the same package. It transforms [Lingui macros](/ref/macro) with the Rust-based [`@lingui/native-tools`](https://www.npmjs.com/package/@lingui/native-tools), so you don't need `@lingui/babel-plugin-lingui-macro` or `@lingui/swc-plugin`. It works with Webpack, Rspack, and Next.js (Turbopack and webpack). For Next.js, follow the [Next.js installation guide](/installation#nextjs).
+
+Register it for your source files and make sure it runs before your JavaScript compiler (Babel, SWC, or the built-in one):
+
+```js
+module: {
+  rules: [
+    {
+      test: /\.[cm]?[jt]sx?$/,
+      exclude: /node_modules/,
+      enforce: "pre",
+      use: {
+        loader: "@lingui/loader/macro",
+      },
+    },
+    ...otherRules
+  ],
+}
+```
+
+The loader reads macro options from your [Lingui configuration](/ref/conf), found from the bundler's root directory, and only transforms files that import a macro package. Other files are passed through unchanged. In production builds (`NODE_ENV=production`), message descriptors keep only the message ID, like the Babel and SWC plugins do.
+
+The output matches the Babel and SWC plugins. The native transform doesn't support `macro.jsxRuntime: "solid"` yet. Use `@lingui/babel-plugin-lingui-macro` for Solid.
+
+### Options
+
+#### `config`
+
+Path to the Lingui configuration file. If omitted, the configuration is looked up from the bundler's root directory.
+
+#### `macro`
+
+Overrides for the macro options read from the Lingui configuration.
+
+#### `parser`
+
+The same options as [`jsc.parser`](https://swc.rs/docs/configuration/compilation#jscparser) in `.swcrc`. The syntax (ECMAScript or TypeScript) and JSX support are inferred from the file extension, so you rarely need to set this.
+
 ## See Also
 
 - [Dynamic Loading of Message Catalogs](/guides/dynamic-loading-catalogs)

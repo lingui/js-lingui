@@ -66,7 +66,11 @@ Add the following configuration to your [`.swcrc`](https://swc.rs/docs/configura
 }
 ```
 
-If you use Next.js, add the following to your `next.config.js`:
+:::tip
+For Next.js, the recommended setup is the [native macro transform](/installation#nextjs). It doesn't need this plugin and doesn't depend on the `swc_core` version bundled with Next.js.
+:::
+
+If you use Next.js and want to keep the SWC plugin, add the following to your `next.config.js`:
 
 ```javascript title="next.config.js"
 /** @type {import('next').NextConfig} */
