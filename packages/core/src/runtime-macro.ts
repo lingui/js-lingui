@@ -78,6 +78,10 @@ function isTemplateStringsArray(x: unknown): x is TemplateStringsArray {
   return Array.isArray(x) && "raw" in x && Array.isArray((x as any).raw)
 }
 
+// Option keys the compile-time macro reads as `_id`, `_comment` and `_props`
+// because the unprefixed names have a meaning of their own there
+const ESCAPED_META_OPTION_RE = /^_(id|comment|props)$/
+
 function buildICUFragment(marker: MacroMarker, name: string): string {
   return `{${name}, ${marker.format}, ${marker.formattedOptions}}`
 }
@@ -131,14 +135,19 @@ function buildChoiceMarker(
   const nestedValues: Record<string, unknown> = {}
   let optCounter = 0
   const optionParts: string[] = []
+  let offset: string | undefined
 
   for (const [key, optValue] of Object.entries(options)) {
     if (key === "offset" && format !== "select") {
-      optionParts.push(`offset:${optValue}`)
+      // ICU needs the offset before the cases. It can't keep its position in
+      // `options` either: integer keys like `0` always come first in an object.
+      offset = `offset:${optValue}`
       continue
     }
 
-    const formatKey = /^\d+$/.test(key) ? `=${key}` : key
+    const formatKey = /^\d+$/.test(key)
+      ? `=${key}`
+      : key.replace(ESCAPED_META_OPTION_RE, "$1")
 
     if (isMacroMarker(optValue)) {
       const nestedName = optValue.labeledName
@@ -161,6 +170,9 @@ function buildChoiceMarker(
     }
   }
 
+  if (offset !== undefined) {
+    optionParts.unshift(offset)
+  }
   const formattedOptions = optionParts.join(" ")
 
   const marker: MacroMarker = {
