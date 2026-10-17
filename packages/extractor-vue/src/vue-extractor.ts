@@ -1,11 +1,21 @@
 import { compileTemplate, parse, type SFCBlock } from "@vue/compiler-sfc"
-import { extractor } from "@lingui/cli/api"
+import { extractor as babelExtractor } from "@lingui/cli/api"
 import { type ExtractorCtx, type ExtractorType } from "@lingui/conf"
 import { compileScriptSetup, type ScriptTarget } from "./compile-script-setup"
 
 export interface VueExtractorConfig {
   reactivityTransform?: boolean
+  /**
+   * Extractor used for the script and template code compiled from `.vue` files.
+   * Defaults to the Babel extractor from `@lingui/cli`.
+   */
+  extractor?: ExtractorType
 }
+
+const withInlineSourceMap = (source: string, map: unknown) =>
+  `${source}\n//# sourceMappingURL=data:application/json;base64,${Buffer.from(
+    JSON.stringify(map),
+  ).toString("base64")}`
 
 export const createVueExtractor = (
   config: VueExtractorConfig = {},
@@ -27,7 +37,7 @@ export const createVueExtractor = (
 
     const isTsBlock = (block: SFCBlock | null) => block?.lang === "ts"
 
-    const { reactivityTransform = false } = config
+    const { reactivityTransform = false, extractor = babelExtractor } = config
 
     const compiledScripts = compileScriptSetup(
       descriptor,
@@ -66,7 +76,9 @@ export const createVueExtractor = (
         .map(({ source, map, start, isTs }) =>
           extractor.extract(
             filename + (isTs ? ".ts" : ""),
-            source,
+            // the map is also passed as `ctx.sourceMaps`, inlining it covers
+            // extractors which only read inline source maps, like the SWC one
+            map ? withInlineSourceMap(source, map) : source,
             map || !start
               ? onMessageExtracted
               : (msg) => {

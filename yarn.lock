@@ -1621,6 +1621,7 @@ __metadata:
     "@lingui/cli": "workspace:*"
     "@lingui/conf": "workspace:*"
     "@lingui/core": "workspace:*"
+    "@lingui/native-tools": "npm:^0.1.6"
     "@vue/compiler-sfc": "npm:^3.2.47"
     typescript: "catalog:"
     unbuild: "catalog:"
