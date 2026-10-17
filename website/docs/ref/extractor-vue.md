@@ -50,6 +50,22 @@ export default defineConfig({
 });
 ```
 
+### Underlying Extractor
+
+The Vue extractor compiles the `<script>`, `<script setup>` and `<template>` blocks to JavaScript and passes the result to the Babel extractor. Use the `extractor` option to pass the code to another extractor instead, for example the SWC-based [native extractor](/guides/custom-extractor#native-extractor):
+
+```js title="lingui.config.{js,ts}"
+import { createVueExtractor } from "@lingui/extractor-vue";
+import { createSwcExtractor } from "@lingui/native-tools";
+
+const swc = createSwcExtractor();
+
+export default defineConfig({
+  // ... other config
+  extractors: [swc, createVueExtractor({ extractor: swc })],
+});
+```
+
 ## See Also
 
 - [Message Extraction](/guides/message-extraction)
