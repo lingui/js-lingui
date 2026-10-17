@@ -604,6 +604,37 @@ msgstr[3] "# dní"
     })
   })
 
+  describe("explicitIdAsDefault", () => {
+    const format = createFormat({ explicitIdAsDefault: true })
+
+    const catalog: CatalogType = {
+      "cart.items": {
+        message: "{count, plural, one {# item} other {# items}}",
+        translation: "{count, plural, one {# item} other {# items}}",
+      },
+      [generateMessageId("{count, plural, one {# file} other {# files}}")]: {
+        message: "{count, plural, one {# file} other {# files}}",
+        translation: "{count, plural, one {# file} other {# files}}",
+      },
+    }
+
+    it("should convert plurals for both explicit and generated ids", () => {
+      const pofile = format.serialize(catalog, defaultSerializeCtx) as string
+
+      expect(pofile).toMatchSnapshot()
+    })
+
+    it("should parse back the serialized catalog", () => {
+      const pofile = format.serialize(catalog, defaultSerializeCtx) as string
+      const parsed = format.parse(pofile, defaultParseCtx) as CatalogType
+
+      expect(Object.keys(parsed)).toEqual(Object.keys(catalog))
+      for (const [id, entry] of Object.entries(catalog)) {
+        expect(parsed[id]!.translation).toEqual(entry.translation)
+      }
+    })
+  })
+
   describe("merging plurals", () => {
     const duplicateFormatter = createFormat({ mergePlurals: true })
 
