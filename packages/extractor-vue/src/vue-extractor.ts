@@ -63,11 +63,31 @@ export const createVueExtractor = (
           (target): target is ScriptTarget =>
             target != null && target.source !== "",
         )
-        .map(({ source, map, isTs }) =>
+        .map(({ source, map, start, isTs }) =>
           extractor.extract(
             filename + (isTs ? ".ts" : ""),
             source,
-            onMessageExtracted,
+            map || !start
+              ? onMessageExtracted
+              : (msg) => {
+                  if (!msg.origin) {
+                    return onMessageExtracted(msg)
+                  }
+
+                  // without a source map the position is relative to the block
+                  const [, line, column] = msg.origin
+
+                  onMessageExtracted({
+                    ...msg,
+                    origin: [
+                      filename,
+                      line + start.line - 1,
+                      line === 1 && column != null
+                        ? column + start.column - 1
+                        : column,
+                    ],
+                  })
+                },
             {
               sourceMaps: map,
               ...ctx,

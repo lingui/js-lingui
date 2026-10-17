@@ -1,8 +1,17 @@
-import { compileScript, type SFCDescriptor } from "@vue/compiler-sfc"
+import {
+  compileScript,
+  type SFCBlock,
+  type SFCDescriptor,
+} from "@vue/compiler-sfc"
 
 export type ScriptTarget = {
   source: string
   map?: unknown
+  /**
+   * Where `source` starts in the .vue file. Used to report message positions
+   * when there is no source map, as Vue doesn't generate one for `<script setup>`
+   */
+  start?: SFCBlock["loc"]["start"]
   isTs: boolean
 }
 
@@ -19,11 +28,13 @@ export function compileScriptSetup(
       {
         source: descriptor.script?.content ?? "",
         map: descriptor.script?.map,
+        start: descriptor.script?.loc.start,
         isTs: isTsScript,
       },
       {
         source: descriptor.scriptSetup?.content ?? "",
         map: descriptor.scriptSetup?.map,
+        start: descriptor.scriptSetup?.loc.start,
         isTs: isTsScriptSetup,
       },
     ]
@@ -48,11 +59,13 @@ export function compileScriptSetup(
       {
         source: descriptor.script?.content ?? "",
         map: descriptor.script?.map,
+        start: descriptor.script?.loc.start,
         isTs: isTsScript,
       },
       {
         source: descriptor.scriptSetup.content,
         map: descriptor.scriptSetup.map,
+        start: descriptor.scriptSetup.loc.start,
         isTs: isTsScriptSetup,
       },
     ]
