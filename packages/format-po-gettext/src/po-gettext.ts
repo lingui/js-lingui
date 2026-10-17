@@ -523,9 +523,11 @@ export function formatter(
           item.nplurals = nplurals
         }
 
-        const isGeneratedId = !item.extractedComments.includes(
-          "js-lingui-explicit-id",
-        )
+        // Mirror how @lingui/format-po flags ids: with `explicitIdAsDefault`
+        // only generated ids are marked, otherwise only explicit ids are.
+        const isGeneratedId = options.explicitIdAsDefault
+          ? item.extractedComments.includes("js-lingui-generated-id")
+          : !item.extractedComments.includes("js-lingui-explicit-id")
         const id = isGeneratedId
           ? generateMessageId(item.msgid, item.msgctxt as string)
           : item.msgid
