@@ -71,6 +71,33 @@ describe("@lingui/conf", () => {
     })
   })
 
+  it("should not leak `rootDir` between calls or mutate the passed config", () => {
+    const userCatalogs = [
+      { path: "<rootDir>/locales/{locale}", include: ["<rootDir>/src"] },
+    ]
+
+    const first = makeConfig(
+      { locales: ["en"], rootDir: "/project-a" },
+      { skipValidation: true },
+    )
+    const second = makeConfig(
+      { locales: ["en"], rootDir: "/project-b" },
+      { skipValidation: true },
+    )
+    const third = makeConfig(
+      { locales: ["en"], rootDir: "/project-c", catalogs: userCatalogs },
+      { skipValidation: true },
+    )
+
+    expect(first.catalogs[0].path).toBe("/project-a/locale/{locale}/messages")
+    expect(second.catalogs[0].path).toBe("/project-b/locale/{locale}/messages")
+    expect(second.catalogs[0].include).toEqual(["/project-b"])
+    expect(third.catalogs[0].path).toBe("/project-c/locales/{locale}")
+    expect(userCatalogs).toEqual([
+      { path: "<rootDir>/locales/{locale}", include: ["<rootDir>/src"] },
+    ])
+  })
+
   it("should validate `format` and throw error if old string format passed (remove in v7)", () => {
     expect(() =>
       makeConfig({

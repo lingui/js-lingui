@@ -16,14 +16,23 @@ export function replaceRootDir<T extends Partial<LinguiConfig>>(
       return replace(value)
     } else if (Array.isArray(value)) {
       return value.map((item) => replaceDeep(item, rootDir))
-    } else if (typeof value === "object") {
-      Object.keys(value).forEach((key) => {
-        const newKey = replaceDeep(key, rootDir)
-        value[newKey] = replaceDeep(value[key], rootDir)
-        if (key !== newKey) delete value[key]
-      })
+    } else if (isPlainObject(value)) {
+      // Build a new object instead of mutating `value`: it may be the caller's
+      // config or the shared `defaultConfig`, which must stay untouched.
+      return Object.fromEntries(
+        Object.entries(value).map(([key, item]) => [
+          replace(key),
+          replaceDeep(item, rootDir),
+        ]),
+      )
     }
 
     return value
   })(config, rootDir) as T
+}
+
+function isPlainObject(value: unknown): value is Record<string, unknown> {
+  if (typeof value !== "object" || value === null) return false
+  const proto = Object.getPrototypeOf(value)
+  return proto === Object.prototype || proto === null
 }
