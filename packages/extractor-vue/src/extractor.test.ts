@@ -142,7 +142,7 @@ describe("vue extractor", () => {
   })
 
   it("should pass the compiled code to the configured extractor", async () => {
-    const filePath = path.resolve(__dirname, "fixtures/test.vue")
+    const filePath = path.resolve(import.meta.dirname, "fixtures/test.vue")
     const code = fs.readFileSync(filePath, "utf-8")
 
     const calls: { filename: string; code: string; sourceMaps: unknown }[] = []
@@ -184,7 +184,7 @@ describe("vue extractor", () => {
   })
 
   it("should map positions back to the vue file with the SWC extractor", async () => {
-    const filePath = path.resolve(__dirname, "fixtures/test.vue")
+    const filePath = path.resolve(import.meta.dirname, "fixtures/test.vue")
     const code = fs.readFileSync(filePath, "utf-8")
 
     const extract = async (vueExtractor: ExtractorType) => {
