@@ -26,3 +26,17 @@ it("should replace <rootDir>", () => {
     ],
   })
 })
+
+it("should not mutate the passed config", () => {
+  const catalog = { path: "<rootDir>/locales", include: ["<rootDir>/src"] }
+  const config = replaceRootDir({ catalogs: [catalog] }, "/Root")
+
+  expect(config.catalogs![0]).toEqual({
+    path: "/Root/locales",
+    include: ["/Root/src"],
+  })
+  expect(catalog).toEqual({
+    path: "<rootDir>/locales",
+    include: ["<rootDir>/src"],
+  })
+})
