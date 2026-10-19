@@ -462,6 +462,7 @@ The runtime macro supports a subset of the core macros, with a few differences:
 
 - **Placeholders must be named.** Variable names can't be read at runtime, so write `${{ name }}` instead of `${name}`. A plain value throws an error.
 - **Option values can't be template literals.** Use a nested `msg` instead: ``select({ gender }, { female: msg`She is ${{ name }}`, other: msg`They are ${{ name }}` })``.
+- **Write exact matches first, in ascending order.** JavaScript puts integer keys before the other keys of an object, so `plural({ count }, { one: "...", 0: "...", other: "..." })` and `{ 1: "...", 0: "..." }` produce a different message, and so a different ID, than the core macros. Write `{ 0: "...", 1: "...", one: "...", other: "..." }` instead.
 - **No `t` and no JSX.** Define a message with `msg` and translate it with [`i18n._`](#i18n._). If you prefer a shorter call, `const t = i18n.t` works too.
 - **Use `plural`, `select` and `selectOrdinal` inside `msg`.** On their own, they return a Message Descriptor at runtime, but a build step that compiles them (see below) turns them into a translated string, like the core macros. Inside `msg`, both give the same result.
 - **Without a compile step, the source message stays in your bundle.** The compile-time macros can strip it in production.
