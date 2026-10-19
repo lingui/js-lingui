@@ -25,7 +25,7 @@ exports[`vue extractor > should extract message from vue file 1`] = `
     "id": "Setup message",
     "message": undefined,
     "origin": [
-      "test.vue.ts",
+      "test.vue",
       4,
       0,
     ],
