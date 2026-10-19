@@ -1,0 +1,50 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2026-09-04 00:00+0000\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: @lingui/cli\n"
+"Language: en\n"
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Plural-Forms: \n"
+
+#: src/PluralExample.vue:15
+msgid "{count, plural, one {# month} other {# months}}"
+msgstr ""
+
+#: src/SelectExample.vue:25
+msgid "{gender, select, male {His inbox} female {Her inbox} other {Their inbox}}"
+msgstr "{gender, select, male {His inbox} female {Her inbox} other {Their inbox}}"
+
+#: src/MsgExample.tsx:12
+msgid "Blue"
+msgstr "Blue"
+
+#: src/App.vue:43
+msgid "Click on the Vite and Vue logos to learn more"
+msgstr ""
+
+#: src/PluralExample.vue:12
+msgid "Click on this button to test plurals"
+msgstr "Click on this button to test plurals"
+
+#: src/App.vue:33
+msgid "Edit <0>src/App.vue</0> and save to test HMR"
+msgstr ""
+
+#: src/MsgExample.tsx:16
+msgid "Orange"
+msgstr "Orange"
+
+#: src/MsgExample.tsx:8
+msgid "Red"
+msgstr "Red"
+
+#: src/SelectExample.vue:12
+msgid "Whose inbox?"
+msgstr "Whose inbox?"

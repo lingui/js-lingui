@@ -47,9 +47,10 @@ const FAQ: FaqItem[] = [
     answer: (
       <p>
         Yes. <code>@lingui/core</code> is framework-agnostic and works in the browser, on a Node.js server or in a
-        script, and the core macros work in any JavaScript code. Vue files are handled by{" "}
-        <code>@lingui/extractor-vue</code>; Svelte and Astro use community packages. Start with the{" "}
-        <a href="/tutorials/javascript">JavaScript tutorial</a> or the <a href="/ref/extractor-vue">Vue extractor</a>.
+        script, and the core macros work in any JavaScript code. Vue 3 has first-class bindings in{" "}
+        <code>@lingui/vue</code>, including macros inside single-file component templates; Svelte and Astro use
+        community packages. Start with the <a href="/tutorials/javascript">JavaScript tutorial</a> or the{" "}
+        <a href="/tutorials/vue">Vue tutorial</a>.
       </p>
     ),
   },

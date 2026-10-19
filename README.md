@@ -63,7 +63,7 @@ msgid "Read the <0>documentation</0> for more info."
 msgstr "Přečtěte si <0>dokumentaci</0> pro více informací."
 ```
 
-Continue with the [React tutorial](https://lingui.dev/tutorials/react), or jump to [React Server Components](https://lingui.dev/tutorials/react-rsc), [React Native](https://lingui.dev/tutorials/react-native), [SolidJS](https://lingui.dev/tutorials/solid), or [plain JavaScript](https://lingui.dev/tutorials/javascript). Working projects for Vite, Next.js, Remix, TanStack Start, React Native and more live in the [examples](https://github.com/lingui/js-lingui/tree/main/examples) directory.
+Continue with the [React tutorial](https://lingui.dev/tutorials/react), or jump to [React Server Components](https://lingui.dev/tutorials/react-rsc), [React Native](https://lingui.dev/tutorials/react-native), [SolidJS](https://lingui.dev/tutorials/solid), [Vue](https://lingui.dev/tutorials/vue), or [plain JavaScript](https://lingui.dev/tutorials/javascript). Working projects for Vite, Next.js, Remix, TanStack Start, React Native and more live in the [examples](https://github.com/lingui/js-lingui/tree/main/examples) directory.
 
 ## Why Lingui
 
@@ -87,7 +87,7 @@ On top of that:
 
 - **Compiled, not parsed at runtime.** Catalogs are compiled ahead of time, so the runtime ships without a MessageFormat parser. Core [![@lingui/core](https://deno.bundlejs.com/?q=%40lingui%2Fcore&treeshake=%5B%7Bi18n%7D%5D&badge=)](https://bundlejs.com/?q=%40lingui%2Fcore), React bindings [![@lingui/react](https://deno.bundlejs.com/?q=%40lingui%2Freact&config=%7B%22esbuild%22%3A%7B%22external%22%3A%5B%22react%22%2C%22%40lingui%2Fcore%22%5D%7D%7D&badge=)](https://bundlejs.com/?q=%40lingui%2Freact&config=%7B%22esbuild%22%3A%7B%22external%22%3A%5B%22react%22%2C%22%40lingui%2Fcore%22%5D%7D%7D).
 
-- **One library for the whole stack.** `@lingui/core` works in any JavaScript project. `@lingui/react` adds components and hooks, including React Server Components support, and `@lingui/solid` brings native SolidJS bindings. React Native uses the same extract-and-compile workflow, Vue single-file components are supported through `@lingui/extractor-vue`, and Astro and Svelte work through community packages.
+- **One library for the whole stack.** `@lingui/core` works in any JavaScript project. `@lingui/react` adds components and hooks, including React Server Components support, `@lingui/solid` brings native SolidJS bindings, and `@lingui/vue` brings Vue 3 components, composables and macros that work inside single-file component templates. React Native uses the same extract-and-compile workflow, and Astro and Svelte work through community packages.
 
 - **Standard formats and real tooling.** Translations live in PO files by default, which almost every translation tool understands, or in JSON, CSV, or a custom format. Messages carry comments and context for translators and machine translation. The [CLI](https://lingui.dev/ref/cli) extracts, compiles and validates, the [Vite plugin](https://lingui.dev/ref/vite-plugin) compiles catalogs on the fly, the [SWC plugin](https://lingui.dev/ref/swc-plugin) replaces Babel, and the [ESLint plugin](https://lingui.dev/ref/eslint-plugin) catches common mistakes.
 

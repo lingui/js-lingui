@@ -739,7 +739,7 @@ import { Trans } from "@lingui/react/macro"
 
 Default value: `undefined`
 
-Controls which JSX runtime semantics the Lingui JSX macro emit.
+Controls which JSX runtime semantics the Lingui JSX macro emit. Accepts `"react"`, `"solid"` or `"vue"`.
 
 ```ts
 // lingui.config

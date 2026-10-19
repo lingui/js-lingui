@@ -85,11 +85,13 @@ export function lingui({
   if (macroTransform) {
     const earlyConfig = getOrLoadConfig()
 
-    if (earlyConfig.macro?.jsxRuntime === "solid") {
+    const jsxRuntime = earlyConfig.macro?.jsxRuntime
+
+    if (jsxRuntime === "solid" || jsxRuntime === "vue") {
       throw new Error(
-        `[@lingui/vite-plugin] The native macro transform doesn't support macro.jsxRuntime: "solid" yet. ` +
+        `[@lingui/vite-plugin] The native macro transform doesn't support macro.jsxRuntime: "${jsxRuntime}" yet. ` +
           `Remove macroTransform from the plugin options and transform macros with @lingui/babel-plugin-lingui-macro instead. ` +
-          `See https://lingui.dev/tutorials/solid#configure-vite`,
+          `See https://lingui.dev/tutorials/${jsxRuntime}#configure-vite`,
       )
     }
 

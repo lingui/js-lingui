@@ -1,0 +1,39 @@
+{
+  "name": "vite-project-vue",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "messages:extract": "lingui extract",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "prettier": "prettier --write '**/*.{ts,tsx,js,jsx,vue}'"
+  },
+  "dependencies": {
+    "@lingui/core": "link:../../packages/core",
+    "@lingui/vue": "link:../../packages/vue",
+    "vue": "^3.5.42"
+  },
+  "devDependencies": {
+    "@lingui/babel-plugin-lingui-macro": "link:../../packages/babel-plugin-lingui-macro",
+    "@lingui/cli": "^6.0.0",
+    "@lingui/conf": "link:../../packages/conf",
+    "@lingui/extractor-vue": "link:../../packages/extractor-vue",
+    "@lingui/vite-plugin": "^6.0.0",
+    "@vitejs/plugin-vue": "^6.0.8",
+    "@vitejs/plugin-vue-jsx": "^5.1.6",
+    "@vue/test-utils": "^2.5.0",
+    "happy-dom": "^20.0.10",
+    "prettier": "^3.8.1",
+    "typescript": "^5.9.3",
+    "vite": "^7.3.1",
+    "vitest": "^4.0.18"
+  },
+  "resolutions": {
+    "@lingui/babel-plugin-lingui-macro": "link:../../packages/babel-plugin-lingui-macro",
+    "@lingui/core": "link:../../packages/core",
+    "@lingui/conf": "link:../../packages/conf"
+  }
+}
