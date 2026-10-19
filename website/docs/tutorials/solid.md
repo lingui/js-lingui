@@ -127,8 +127,15 @@ export default defineConfig({
 });
 ```
 
-:::note
-The [native macro transform](/ref/vite-plugin#native-macro-transform) of `@lingui/vite-plugin` doesn't support Solid yet, so keep the Babel plugin for macros and don't enable `macroTransform`.
+:::tip
+You can transform Lingui macros with the faster [native macro transform](/ref/vite-plugin#native-macro-transform) instead. Remove `@lingui/babel-plugin-lingui-macro` from the `solid()` options and place `lingui()` before `solid()`, so macros are transformed before Solid compiles JSX:
+
+```ts title="vite.config.ts"
+export default defineConfig({
+  plugins: [lingui({ macroTransform: true }), solid()],
+});
+```
+
 :::
 
 ## Setup

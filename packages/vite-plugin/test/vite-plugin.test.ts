@@ -50,15 +50,9 @@ describe("vite-plugin", () => {
     expect(await mod.load()).toBe("Ola")
   })
 
-  it("should report error when native transformer is used with macro.jsxRuntime = solid", async () => {
-    expect.assertions(1)
-    try {
-      await runVite(`solid-runtime-error`, { macroTransform: true })
-    } catch (e) {
-      expect(getErrorMessage(e)).toContain(
-        `The native macro transform doesn't support macro.jsxRuntime: "solid" yet.`,
-      )
-    }
+  it("should process with native transformer when macro.jsxRuntime = solid", async () => {
+    const { mod } = await runVite(`solid-runtime`, { macroTransform: true })
+    expect(await mod.load()).toBe("Ola")
   })
 
   it("should correctly process with native transformer - PRODUCTION", async () => {
