@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useMemo, useState } from "react"
 import { Trans, Plural } from "@lingui/react/macro"
 import { locales, dynamicActivate } from "./i18n"
 import { useLingui } from "@lingui/react"
@@ -8,6 +8,19 @@ import "./App.css"
 function App() {
   const [count, setCount] = useState(0)
   const { i18n } = useLingui()
+
+  const dateFormatter = useMemo(
+    () => new Intl.DateTimeFormat(i18n.locale),
+    [i18n.locale],
+  )
+  const currencyFormatter = useMemo(
+    () =>
+      new Intl.NumberFormat(i18n.locale, {
+        style: "currency",
+        currency: "EUR",
+      }),
+    [i18n.locale],
+  )
 
   return (
     <div className="App">
@@ -20,7 +33,7 @@ function App() {
         <h1>
           <Trans>React Webpack Po-Gettext Example</Trans>
         </h1>
-        
+
         <h3>
           <Trans>Language switcher example:</Trans>
         </h3>
@@ -47,7 +60,7 @@ function App() {
             <Trans>Decrement</Trans>
           </button>
         </div>
-        
+
         <div>
           <Plural
             value={count}
@@ -67,7 +80,7 @@ function App() {
           <Trans>Date formatter example:</Trans>
         </h3>
         <div>
-          <Trans>Today is {i18n.date(new Date(), {})}</Trans>
+          <Trans>Today is {dateFormatter.format(new Date())}</Trans>
         </div>
 
         <h3>
@@ -75,8 +88,7 @@ function App() {
         </h3>
         <div>
           <Trans>
-            I have a balance of{" "}
-            {i18n.number(1_000_000, { style: "currency", currency: "EUR" })}
+            I have a balance of {currencyFormatter.format(1_000_000)}
           </Trans>
         </div>
       </header>

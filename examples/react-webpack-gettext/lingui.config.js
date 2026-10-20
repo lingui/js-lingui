@@ -1,7 +1,7 @@
-/** @type {import('@lingui/conf').LinguiConfig} */
+import { defineConfig } from "@lingui/cli"
 import { formatter } from "@lingui/format-po-gettext"
 
-const config = {
+export default defineConfig({
   locales: ["en", "cs"],
   sourceLocale: "en",
   catalogs: [
@@ -17,6 +17,4 @@ const config = {
     printPlaceholdersInComments: false,
   }),
   compileNamespace: "json",
-}
-
-export default config
+})
