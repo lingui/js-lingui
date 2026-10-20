@@ -8,4 +8,12 @@ describe("fromPath detector", () => {
 
     expect(fromPath(0, mockedLocation)).toEqual("fr")
   })
+
+  it("should find a locale on a deeper index", () => {
+    expect(fromPath(1, { pathname: "/app/fr/some/route" })).toEqual("fr")
+  })
+
+  it("should return null when the path has no segment at the given index", () => {
+    expect(fromPath(1, { pathname: "/" })).toBeNull()
+  })
 })
