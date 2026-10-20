@@ -14,51 +14,51 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. js-lingui:icu=%7Bcount%2C+plural%2C+one+%7Bone+book%7D+other+%7Bmany+books%7D%7D&pluralize_on=count
-#: src/App.tsx:60
+#: src/App.tsx:73
 msgid "one book"
 msgid_plural "many books"
 msgstr[0] "one book"
 msgstr[1] "many books"
 
 #. js-lingui:icu=%7Bcount%2C+plural%2C+one+%7BThere%27s+one+book%7D+other+%7BThere+are+%23+books%7D%7D&pluralize_on=count
-#: src/App.tsx:52
+#: src/App.tsx:65
 msgid "There's one book"
 msgid_plural "There are # books"
 msgstr[0] "There's one book"
 msgstr[1] "There are # books"
 
-#: src/App.tsx:67
+#: src/App.tsx:80
 msgid "Date formatter example:"
 msgstr "Date formatter example:"
 
-#: src/App.tsx:47
+#: src/App.tsx:60
 msgid "Decrement"
 msgstr "Decrement"
 
-#: src/App.tsx:77
+#: src/App.tsx:90
 msgid "I have a balance of {0}"
 msgstr "I have a balance of {0}"
 
-#: src/App.tsx:44
+#: src/App.tsx:57
 msgid "Increment"
 msgstr "Increment"
 
-#: src/App.tsx:25
+#: src/App.tsx:38
 msgid "Language switcher example:"
 msgstr "Language switcher example:"
 
-#: src/App.tsx:74
+#: src/App.tsx:87
 msgid "Number formatter example:"
 msgstr "Number formatter example:"
 
-#: src/App.tsx:40
+#: src/App.tsx:53
 msgid "Plurals example:"
 msgstr "Plurals example:"
 
-#: src/App.tsx:21
+#: src/App.tsx:34
 msgid "React Webpack Po-Gettext Example"
 msgstr "React Webpack Po-Gettext Example"
 
-#: src/App.tsx:70
+#: src/App.tsx:83
 msgid "Today is {0}"
 msgstr "Today is {0}"
