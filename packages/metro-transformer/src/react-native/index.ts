@@ -4,4 +4,6 @@ import { createLinguiMetroTransformer } from "../metroTransformer"
 // eslint-disable-next-line import/no-unresolved
 import reactNativeTransformer from "@react-native/metro-babel-transformer"
 
-export const transform = createLinguiMetroTransformer(reactNativeTransformer)
+export const { transform, getCacheKey } = createLinguiMetroTransformer(
+  reactNativeTransformer,
+)

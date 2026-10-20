@@ -7,19 +7,33 @@ import {
 import type { BabelTransformer, BabelTransformerArgs } from "./types"
 import path from "path"
 import memoizeOne from "memoize-one"
+import { version } from "../package.json"
+
+// Mixed into the cache key so that adding, removing or upgrading this
+// transformer invalidates Metro's cache. Without it the key would be
+// byte-identical to the upstream transformer's own.
+const CACHE_KEY_SALT = `@lingui/metro-transformer@${version}`
 
 export const createLinguiMetroTransformer = (
   upstreamTransformer: BabelTransformer,
-): BabelTransformer["transform"] => {
-  return async function linguiMetroTransformer(params) {
-    if (!params.filename.endsWith(".po")) {
-      return upstreamTransformer.transform(params)
-    }
-    const jsSource = await transformFile(params)
-    return upstreamTransformer.transform({
-      ...params,
-      src: jsSource,
-    })
+): Required<BabelTransformer> => {
+  return {
+    transform: async function linguiMetroTransformer(params) {
+      if (!params.filename.endsWith(".po")) {
+        return upstreamTransformer.transform(params)
+      }
+      const jsSource = await transformFile(params)
+      return upstreamTransformer.transform({
+        ...params,
+        src: jsSource,
+      })
+    },
+    // Metro substitutes an empty babel cache key when the configured
+    // transformer has no `getCacheKey`, so changes to `babel.config.js` (and
+    // the files it references) would never invalidate the transform cache.
+    // The arguments matter: Expo's implementation derives its key from them.
+    getCacheKey: (args) =>
+      `${upstreamTransformer.getCacheKey?.(args) ?? ""}$${CACHE_KEY_SALT}`,
   }
 }
 

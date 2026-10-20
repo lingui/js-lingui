@@ -4,4 +4,5 @@ import { createLinguiMetroTransformer } from "../metroTransformer"
 // eslint-disable-next-line import/no-unresolved
 import expoTransformer from "@expo/metro-config/babel-transformer"
 
-export const transform = createLinguiMetroTransformer(expoTransformer)
+export const { transform, getCacheKey } =
+  createLinguiMetroTransformer(expoTransformer)

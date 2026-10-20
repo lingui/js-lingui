@@ -8,10 +8,19 @@ export type BabelTransformerArgs = {
   readonly src: string
 }
 
+// Metro's published types declare `getCacheKey` as zero-argument, but both
+// Metro and Expo call it with these options, and Expo's implementation returns
+// an empty key without them. See metro-transform-worker's `getCacheKey`.
+export type BabelTransformerCacheKeyArgs = {
+  readonly projectRoot?: string
+  readonly enableBabelRCLookup?: boolean
+  readonly extendsBabelConfigPath?: string
+}
+
 export type BabelTransformer = {
   transform: (args: BabelTransformerArgs) => Promise<{
     ast: unknown
     metadata: unknown
   }>
-  getCacheKey?: () => string
+  getCacheKey?: (args?: BabelTransformerCacheKeyArgs) => string
 }
