@@ -62,6 +62,11 @@ export function lingui({
 }: LinguiPluginOpts = {}): Plugin[] {
   let config: LinguiConfigNormalized
 
+  // `getCatalogs()` globs the file system on every call (`{name}` catalogs and
+  // `experimental.extractor.entries`), so it's resolved once and shared by all
+  // catalog modules. Reset on `buildStart` and `watchChange`.
+  let catalogs: ReturnType<typeof getCatalogs> | undefined
+
   let nativeTools: typeof import("@lingui/native-tools")
 
   const getOrLoadConfig = () => {
@@ -69,6 +74,26 @@ export function lingui({
       config = getConfig(linguiConfigOpts)
     }
     return config
+  }
+
+  const getOrLoadCatalogs = () => {
+    if (!catalogs) {
+      const pending: ReturnType<typeof getCatalogs> = getCatalogs(config).catch(
+        (error) => {
+          // don't cache a failure, the next catalog module will retry
+          if (catalogs === pending) {
+            catalogs = undefined
+          }
+          throw error
+        },
+      )
+      catalogs = pending
+    }
+    return catalogs
+  }
+
+  const resetCatalogs = () => {
+    catalogs = undefined
   }
 
   const plugins: Plugin[] = [
@@ -125,6 +150,8 @@ export function lingui({
 
   plugins.push({
     name: "vite-plugin-lingui-load-catalog",
+    buildStart: resetCatalogs,
+    watchChange: resetCatalogs,
     transform: {
       filter: {
         id: fileRegex,
@@ -139,10 +166,20 @@ export function lingui({
 
         const catalogRelativePath = path.relative(config.rootDir, id)
 
-        const fileCatalog = getCatalogForFile(
+        let fileCatalog = getCatalogForFile(
           catalogRelativePath,
-          await getCatalogs(config),
+          await getOrLoadCatalogs(),
         )
+
+        if (!fileCatalog) {
+          // The catalog may have been created after the list was cached
+          // without a `watchChange` reaching this plugin, so check a fresh list
+          resetCatalogs()
+          fileCatalog = getCatalogForFile(
+            catalogRelativePath,
+            await getOrLoadCatalogs(),
+          )
+        }
 
         if (!fileCatalog) {
           throw new Error(

@@ -1,0 +1,6 @@
+msgid ""
+msgstr ""
+"Language: pl\n"
+
+msgid "About us"
+msgstr "O nas"

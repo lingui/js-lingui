@@ -1,9 +1,17 @@
-import { describe } from "vitest"
+import { describe, vi } from "vitest"
+import { getCatalogs } from "@lingui/cli/api"
 import { lingui, LinguiPluginOpts } from "../src"
 import { runVite as _runVite } from "./run-vite"
 import macrosPlugin from "vite-plugin-babel-macros"
 import path from "path"
 import { mockConsole } from "@lingui/test-utils"
+
+vi.mock(import("@lingui/cli/api"), async (importOriginal) => {
+  const actual = await importOriginal()
+  return { ...actual, getCatalogs: vi.fn(actual.getCatalogs) }
+})
+
+const getCatalogsMock = vi.mocked(getCatalogs)
 
 function getErrorMessage(error: unknown) {
   return error instanceof Error ? error.message : String(error)
@@ -157,7 +165,106 @@ describe("vite-plugin", () => {
       `)
     }
   })
+
+  describe("catalogs resolution", () => {
+    beforeEach(() => {
+      getCatalogsMock.mockClear()
+    })
+
+    it("should resolve catalogs once per build regardless of the number of imported catalogs", async () => {
+      const { mod } = await runVite(`multiple-catalogs`)
+
+      expect(getCatalogsMock).toHaveBeenCalledTimes(1)
+      expect(await mod.load()).toMatchSnapshot()
+    })
+
+    it("should reuse resolved catalogs between catalog modules", async () => {
+      const hooks = setupLoadCatalogHooks(`po-format`)
+
+      await hooks.transform("locale/en.po")
+      await hooks.transform("locale/en.po?lingui")
+
+      expect(getCatalogsMock).toHaveBeenCalledTimes(1)
+    })
+
+    it("should resolve catalogs again after watchChange and buildStart", async () => {
+      const hooks = setupLoadCatalogHooks(`po-format`)
+
+      await hooks.transform("locale/en.po")
+      await hooks.watchChange("locale/new.po")
+      await hooks.transform("locale/en.po")
+
+      expect(getCatalogsMock).toHaveBeenCalledTimes(2)
+
+      await hooks.buildStart()
+      await hooks.transform("locale/en.po")
+
+      expect(getCatalogsMock).toHaveBeenCalledTimes(3)
+    })
+
+    it("should not cache a failed catalogs resolution", async () => {
+      const hooks = setupLoadCatalogHooks(`po-format`)
+      getCatalogsMock.mockRejectedValueOnce(new Error("Invalid catalog path"))
+
+      await expect(hooks.transform("locale/en.po")).rejects.toThrow(
+        "Invalid catalog path",
+      )
+      await expect(hooks.transform("locale/en.po")).resolves.toMatchObject({
+        code: expect.stringContaining("messages"),
+      })
+
+      expect(getCatalogsMock).toHaveBeenCalledTimes(2)
+    })
+
+    it("should resolve catalogs again when a module doesn't match the cached catalogs", async () => {
+      const hooks = setupLoadCatalogHooks(`po-format`)
+      // e.g. a catalog created after the list was cached
+      getCatalogsMock.mockResolvedValueOnce([])
+
+      await expect(hooks.transform("locale/en.po")).resolves.toMatchObject({
+        code: expect.stringContaining("messages"),
+      })
+
+      expect(getCatalogsMock).toHaveBeenCalledTimes(2)
+    })
+
+    it("should report error when a module doesn't match any catalog", async () => {
+      const hooks = setupLoadCatalogHooks(`po-format`)
+
+      await expect(hooks.transform("other/en.po")).rejects.toThrow(
+        "is not matched to any of your catalogs paths",
+      )
+    })
+  })
 })
+
+/**
+ * Call hooks of the catalog loader plugin directly, without a Vite build
+ */
+function setupLoadCatalogHooks(fixturesPath: string) {
+  const cwd = path.join(import.meta.dirname, fixturesPath)
+  const plugins = lingui({ cwd })
+  const getPlugin = (name: string) => plugins.find((p) => p.name === name)!
+
+  const context = { addWatchFile: vi.fn(), warn: vi.fn() }
+  const callHook = (hook: unknown, ...args: unknown[]) => {
+    const handler = typeof hook === "function" ? hook : (hook as any).handler
+    return handler.call(context, ...args)
+  }
+
+  callHook(getPlugin("vite-plugin-lingui-get-config").configResolved)
+  const loadCatalog = getPlugin("vite-plugin-lingui-load-catalog")
+
+  return {
+    transform: async (file: string) =>
+      callHook(loadCatalog.transform, "", path.join(cwd, file)),
+    watchChange: async (file: string) =>
+      callHook(loadCatalog.watchChange, path.join(cwd, file), {
+        event: "create",
+      }),
+    buildStart: async () => callHook(loadCatalog.buildStart),
+  }
+}
 
 async function runVite(
   fixturesPath: string,
