@@ -78,6 +78,41 @@ describe("Lingui Metro transformer tests", () => {
       }),
     ).rejects.toThrow(/is not matched to any of your catalogs paths/)
   })
+
+  it("should hand non-PO files to the upstream transformer untouched", async () => {
+    const transform = vi.fn(async () => ({ ast: null, metadata: null }))
+    const transformer = createLinguiMetroTransformer({ transform })
+    const params = {
+      filename: "src/index.ts",
+      options: {},
+      src: "export const answer = 42",
+    }
+
+    await transformer.transform(params)
+
+    expect(transform).toHaveBeenCalledWith(params)
+  })
+
+  it("should compile PO files and hand the compiled catalog to the upstream transformer", async () => {
+    const transform = vi.fn(async () => ({ ast: null, metadata: null }))
+    const transformer = createLinguiMetroTransformer({ transform })
+    const filename = path.relative(
+      testProjectDir,
+      path.join(catalogsDir, "en", "messages.po"),
+    )
+
+    await transformer.transform({
+      filename,
+      options: {},
+      src: 'msgid "Cancel"\nmsgstr "Cancel"\n',
+    })
+
+    expect(transform).toHaveBeenCalledWith({
+      filename,
+      options: {},
+      src: await transformFile({ filename }),
+    })
+  })
 })
 
 describe("Lingui Metro transformer cache key", () => {
