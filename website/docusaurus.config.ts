@@ -24,8 +24,8 @@ const config: Config = {
       respectPrefersColorScheme: true,
     },
     announcementBar: {
-      id: "lingui-6.0",
-      content: `✨ Lingui <strong>6.0</strong> is now available. <a href="/blog/2026/04/22/announcing-lingui-6.0">Read the release announcement</a> for what's new ✨`,
+      id: "runtime-macro",
+      content: `✨ Lingui macros without a build step: meet the experimental <a href="/blog/2026/10/16/runtime-macro">runtime macro</a> ✨`,
       backgroundColor: "#0d9488",
       textColor: "#ffffff",
       isCloseable: true,
