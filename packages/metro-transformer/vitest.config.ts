@@ -1,9 +1,7 @@
 import path from "path"
 import { defineProject } from "vitest/config"
 
-// `@expo/metro-config` and `@react-native/metro-babel-transformer` are
-// optional peer dependencies that aren't installed here, so the package
-// entrypoints can't be imported under test without standing them in.
+// the upstream transformers are optional peer deps and aren't installed here
 const upstreamTransformerStub = path.join(
   import.meta.dirname,
   "test",
