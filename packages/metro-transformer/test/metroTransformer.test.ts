@@ -1,5 +1,13 @@
 import path from "path"
-import { transformFile } from "../src/metroTransformer"
+import {
+  createLinguiMetroTransformer,
+  transformFile,
+} from "../src/metroTransformer"
+import type {
+  BabelTransformer,
+  BabelTransformerCacheKeyArgs,
+} from "../src/types"
+import { version } from "../package.json"
 
 describe("Lingui Metro transformer tests", () => {
   const priorEnv = process.env.LINGUI_CONFIG
@@ -70,4 +78,109 @@ describe("Lingui Metro transformer tests", () => {
       }),
     ).rejects.toThrow(/is not matched to any of your catalogs paths/)
   })
+
+  it("should hand non-PO files to the upstream transformer untouched", async () => {
+    const transform = vi.fn(async () => ({ ast: null, metadata: null }))
+    const transformer = createLinguiMetroTransformer({ transform })
+    const params = {
+      filename: "src/index.ts",
+      options: {},
+      src: "export const answer = 42",
+    }
+
+    await transformer.transform(params)
+
+    expect(transform).toHaveBeenCalledWith(params)
+  })
+
+  it("should compile PO files and hand the compiled catalog to the upstream transformer", async () => {
+    const transform = vi.fn(async () => ({ ast: null, metadata: null }))
+    const transformer = createLinguiMetroTransformer({ transform })
+    const filename = path.relative(
+      testProjectDir,
+      path.join(catalogsDir, "en", "messages.po"),
+    )
+
+    await transformer.transform({
+      filename,
+      options: {},
+      src: 'msgid "Cancel"\nmsgstr "Cancel"\n',
+    })
+
+    expect(transform).toHaveBeenCalledWith({
+      filename,
+      options: {},
+      src: await transformFile({ filename }),
+    })
+  })
+})
+
+describe("Lingui Metro transformer cache key", () => {
+  const createUpstreamTransformer = (
+    getCacheKey?: BabelTransformer["getCacheKey"],
+  ): BabelTransformer => ({
+    transform: async () => ({ ast: null, metadata: null }),
+    getCacheKey,
+  })
+
+  it("should derive the key from the upstream key and this package's version", () => {
+    const transformer = createLinguiMetroTransformer(
+      createUpstreamTransformer(() => "upstream-key"),
+    )
+
+    expect(transformer.getCacheKey()).toBe(
+      `upstream-key$@lingui/metro-transformer@${version}`,
+    )
+  })
+
+  it("should change when the upstream key changes, so babel config edits invalidate the cache", () => {
+    let upstreamKey = "upstream-key"
+    const transformer = createLinguiMetroTransformer(
+      createUpstreamTransformer(() => upstreamKey),
+    )
+
+    const before = transformer.getCacheKey()
+    upstreamKey = "upstream-key-after-babel-config-edit"
+
+    expect(transformer.getCacheKey()).not.toBe(before)
+  })
+
+  it("should forward its arguments, which Expo needs to derive a key at all", () => {
+    const getCacheKey = vi.fn(
+      (args?: BabelTransformerCacheKeyArgs) => args?.projectRoot ?? "",
+    )
+    const transformer = createLinguiMetroTransformer(
+      createUpstreamTransformer(getCacheKey),
+    )
+
+    const key = transformer.getCacheKey({ projectRoot: "/some/project" })
+
+    expect(getCacheKey).toHaveBeenCalledWith({ projectRoot: "/some/project" })
+    expect(key).not.toBe(transformer.getCacheKey({ projectRoot: "/other" }))
+  })
+
+  it("should still produce a key when the upstream transformer has none", () => {
+    const transformer = createLinguiMetroTransformer(
+      createUpstreamTransformer(),
+    )
+
+    expect(transformer.getCacheKey()).toBe(
+      `$@lingui/metro-transformer@${version}`,
+    )
+  })
+})
+
+describe("Lingui Metro transformer entrypoints", () => {
+  it.for(["../src/expo", "../src/react-native"])(
+    "%s should export both transform and getCacheKey",
+    async (entrypoint) => {
+      const transformer = await import(entrypoint)
+
+      expect(typeof transformer.transform).toBe("function")
+      expect(typeof transformer.getCacheKey).toBe("function")
+      expect(transformer.getCacheKey()).toBe(
+        `upstream-key$@lingui/metro-transformer@${version}`,
+      )
+    },
+  )
 })

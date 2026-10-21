@@ -7,19 +7,27 @@ import {
 import type { BabelTransformer, BabelTransformerArgs } from "./types"
 import path from "path"
 import memoizeOne from "memoize-one"
+import { version } from "../package.json"
+
+// a new @lingui/cli version can compile catalogs differently
+const CACHE_KEY_SALT = `@lingui/metro-transformer@${version}`
 
 export const createLinguiMetroTransformer = (
   upstreamTransformer: BabelTransformer,
-): BabelTransformer["transform"] => {
-  return async function linguiMetroTransformer(params) {
-    if (!params.filename.endsWith(".po")) {
-      return upstreamTransformer.transform(params)
-    }
-    const jsSource = await transformFile(params)
-    return upstreamTransformer.transform({
-      ...params,
-      src: jsSource,
-    })
+): Required<BabelTransformer> => {
+  return {
+    transform: async function linguiMetroTransformer(params) {
+      if (!params.filename.endsWith(".po")) {
+        return upstreamTransformer.transform(params)
+      }
+      const jsSource = await transformFile(params)
+      return upstreamTransformer.transform({
+        ...params,
+        src: jsSource,
+      })
+    },
+    getCacheKey: (args) =>
+      `${upstreamTransformer.getCacheKey?.(args) ?? ""}$${CACHE_KEY_SALT}`,
   }
 }
 
