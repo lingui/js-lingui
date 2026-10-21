@@ -16,4 +16,10 @@ describe("fromPath detector", () => {
   it("should return null when the path has no segment at the given index", () => {
     expect(fromPath(1, { pathname: "/" })).toBeNull()
   })
+
+  it("should keep locales with underscores or numeric regions intact", () => {
+    expect(fromPath(0, { pathname: "/pt_BR/some/route" })).toEqual("pt_BR")
+    expect(fromPath(0, { pathname: "/es-419/some/route" })).toEqual("es-419")
+    expect(fromPath(1, { pathname: "/v2/en_US/some/route" })).toEqual("en_US")
+  })
 })
