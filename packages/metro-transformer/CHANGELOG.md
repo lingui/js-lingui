@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.10.1](https://github.com/lingui/js-lingui/compare/v6.10.0...v6.10.1) (2026-10-22)
+
+### Bug Fixes
+
+* **metro-transformer:** forward getCacheKey from the wrapped transformer ([#2736](https://github.com/lingui/js-lingui/issues/2736)) ([9acef0b](https://github.com/lingui/js-lingui/commit/9acef0bc37803fc5fe7349fdd22d91c2f38bb6c0))
+
 # [6.10.0](https://github.com/lingui/js-lingui/compare/v6.9.1...v6.10.0) (2026-10-16)
 
 **Note:** Version bump only for package @lingui/metro-transformer

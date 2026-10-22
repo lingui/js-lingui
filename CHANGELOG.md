@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.10.1](https://github.com/lingui/js-lingui/compare/v6.10.0...v6.10.1) (2026-10-22)
+
+### Bug Fixes
+
+* **conf:** do not mutate config objects when replacing <rootDir> ([#2730](https://github.com/lingui/js-lingui/issues/2730)) ([60e823f](https://github.com/lingui/js-lingui/commit/60e823f936b6825604e9edf044f3025456c6e8ec))
+* **core:** put the plural offset first and unescape meta option keys in the runtime macro ([#2726](https://github.com/lingui/js-lingui/issues/2726)) ([0255d73](https://github.com/lingui/js-lingui/commit/0255d73b04ed539bf7126a361786d06793da6abd))
+* **detect-locale:** read subdomains from the host only and return null for missing segments ([#2733](https://github.com/lingui/js-lingui/issues/2733)) ([735036e](https://github.com/lingui/js-lingui/commit/735036ef297323772aee85ebabb4aa46a5e33cce))
+* **format-po-gettext:** respect explicitIdAsDefault when serializing ([#2727](https://github.com/lingui/js-lingui/issues/2727)) ([18123cf](https://github.com/lingui/js-lingui/commit/18123cf04607d34b00dba97f7eb95bd91a0289c7))
+* **metro-transformer:** forward getCacheKey from the wrapped transformer ([#2736](https://github.com/lingui/js-lingui/issues/2736)) ([9acef0b](https://github.com/lingui/js-lingui/commit/9acef0bc37803fc5fe7349fdd22d91c2f38bb6c0))
+* **vite-plugin:** support Solid in the native macro transform ([#2731](https://github.com/lingui/js-lingui/issues/2731)) ([2a0662d](https://github.com/lingui/js-lingui/commit/2a0662d432e631346ecf30b7988cbb15666a5d82))
+* **vue-extractor:** report the .vue file and line for messages in <script setup> ([#2728](https://github.com/lingui/js-lingui/issues/2728)) ([aed4f98](https://github.com/lingui/js-lingui/commit/aed4f98ea05437dbbb2f0221271f84c850a72cdb))
+
+### Performance Improvements
+
+* **vite-plugin:** resolve catalogs once per build instead of on every catalog import ([#2737](https://github.com/lingui/js-lingui/issues/2737)) ([bfa5b76](https://github.com/lingui/js-lingui/commit/bfa5b76d50c04e3c2c8d062f6363fc972f83336a))
+
 # [6.10.0](https://github.com/lingui/js-lingui/compare/v6.9.1...v6.10.0) (2026-10-16)
 
 ### Bug Fixes
