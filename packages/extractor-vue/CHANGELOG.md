@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.10.1](https://github.com/lingui/js-lingui/compare/v6.10.0...v6.10.1) (2026-10-22)
+
+### Bug Fixes
+
+* **vue-extractor:** report the .vue file and line for messages in <script setup> ([#2728](https://github.com/lingui/js-lingui/issues/2728)) ([aed4f98](https://github.com/lingui/js-lingui/commit/aed4f98ea05437dbbb2f0221271f84c850a72cdb))
+
 # [6.10.0](https://github.com/lingui/js-lingui/compare/v6.9.1...v6.10.0) (2026-10-16)
 
 **Note:** Version bump only for package @lingui/extractor-vue

@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.10.1](https://github.com/lingui/js-lingui/compare/v6.10.0...v6.10.1) (2026-10-22)
+
+### Bug Fixes
+
+* **vite-plugin:** support Solid in the native macro transform ([#2731](https://github.com/lingui/js-lingui/issues/2731)) ([2a0662d](https://github.com/lingui/js-lingui/commit/2a0662d432e631346ecf30b7988cbb15666a5d82))
+
+### Performance Improvements
+
+* **vite-plugin:** resolve catalogs once per build instead of on every catalog import ([#2737](https://github.com/lingui/js-lingui/issues/2737)) ([bfa5b76](https://github.com/lingui/js-lingui/commit/bfa5b76d50c04e3c2c8d062f6363fc972f83336a))
+
 # [6.10.0](https://github.com/lingui/js-lingui/compare/v6.9.1...v6.10.0) (2026-10-16)
 
 **Note:** Version bump only for package @lingui/vite-plugin

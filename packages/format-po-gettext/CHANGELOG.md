@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.10.1](https://github.com/lingui/js-lingui/compare/v6.10.0...v6.10.1) (2026-10-22)
+
+### Bug Fixes
+
+* **format-po-gettext:** respect explicitIdAsDefault when serializing ([#2727](https://github.com/lingui/js-lingui/issues/2727)) ([18123cf](https://github.com/lingui/js-lingui/commit/18123cf04607d34b00dba97f7eb95bd91a0289c7))
+
 # [6.10.0](https://github.com/lingui/js-lingui/compare/v6.9.1...v6.10.0) (2026-10-16)
 
 **Note:** Version bump only for package @lingui/format-po-gettext

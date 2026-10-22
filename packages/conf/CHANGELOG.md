@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.10.1](https://github.com/lingui/js-lingui/compare/v6.10.0...v6.10.1) (2026-10-22)
+
+### Bug Fixes
+
+* **conf:** do not mutate config objects when replacing <rootDir> ([#2730](https://github.com/lingui/js-lingui/issues/2730)) ([60e823f](https://github.com/lingui/js-lingui/commit/60e823f936b6825604e9edf044f3025456c6e8ec))
+
 # [6.10.0](https://github.com/lingui/js-lingui/compare/v6.9.1...v6.10.0) (2026-10-16)
 
 ### Features

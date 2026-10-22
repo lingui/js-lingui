@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.10.1](https://github.com/lingui/js-lingui/compare/v6.10.0...v6.10.1) (2026-10-22)
+
+### Bug Fixes
+
+* **detect-locale:** read subdomains from the host only and return null for missing segments ([#2733](https://github.com/lingui/js-lingui/issues/2733)) ([735036e](https://github.com/lingui/js-lingui/commit/735036ef297323772aee85ebabb4aa46a5e33cce))
+
 # [6.10.0](https://github.com/lingui/js-lingui/compare/v6.9.1...v6.10.0) (2026-10-16)
 
 **Note:** Version bump only for package @lingui/detect-locale

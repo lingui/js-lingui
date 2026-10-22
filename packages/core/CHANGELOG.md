@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.10.1](https://github.com/lingui/js-lingui/compare/v6.10.0...v6.10.1) (2026-10-22)
+
+### Bug Fixes
+
+* **core:** put the plural offset first and unescape meta option keys in the runtime macro ([#2726](https://github.com/lingui/js-lingui/issues/2726)) ([0255d73](https://github.com/lingui/js-lingui/commit/0255d73b04ed539bf7126a361786d06793da6abd))
+
 # [6.10.0](https://github.com/lingui/js-lingui/compare/v6.9.1...v6.10.0) (2026-10-16)
 
 ### Features
