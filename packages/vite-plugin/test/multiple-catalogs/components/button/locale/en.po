@@ -1,0 +1,6 @@
+msgid ""
+msgstr ""
+"Language: en\n"
+
+msgid "Click me"
+msgstr "Click me"

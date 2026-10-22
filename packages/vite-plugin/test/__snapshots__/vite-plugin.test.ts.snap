@@ -1,5 +1,40 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
+exports[`vite-plugin > catalogs resolution > should resolve catalogs once per build regardless of the number of imported catalogs 1`] = `
+{
+  "./components/button/locale/en.po": {
+    "_j9z93": [
+      "Click me",
+    ],
+  },
+  "./components/button/locale/pl.po": {
+    "_j9z93": [
+      "Kliknij mnie",
+    ],
+  },
+  "./pages/locales/about/en.po": {
+    "-mNwru": [
+      "About us",
+    ],
+  },
+  "./pages/locales/about/pl.po": {
+    "-mNwru": [
+      "O nas",
+    ],
+  },
+  "./pages/locales/home/en.po": {
+    "U85IAq": [
+      "Welcome home",
+    ],
+  },
+  "./pages/locales/home/pl.po": {
+    "U85IAq": [
+      "Witaj w domu",
+    ],
+  },
+}
+`;
+
 exports[`vite-plugin > should correctly process with native transformer - PRODUCTION 1`] = `"l1LkPs"`;
 
 exports[`vite-plugin > should correctly process with native transformer 1`] = `"Ola"`;

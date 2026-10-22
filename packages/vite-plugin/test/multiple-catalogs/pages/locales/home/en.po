@@ -1,0 +1,6 @@
+msgid ""
+msgstr ""
+"Language: en\n"
+
+msgid "Welcome home"
+msgstr "Welcome home"
