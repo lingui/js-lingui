@@ -72,6 +72,14 @@ const getDefaultFormats = (
   } as const
 }
 
+const getOwnProperty = <T>(
+  object: Record<string, T> | undefined,
+  key: string,
+): T | undefined =>
+  object && Object.prototype.hasOwnProperty.call(object, key)
+    ? object[key]
+    : undefined
+
 const selectFormatter = (value: string, rules: Record<string, any>) =>
   // Own-property check so a runtime value like "constructor" or "toString"
   // falls back to the `other` branch instead of resolving to a member
@@ -103,9 +111,14 @@ export function interpolate(
     const formatters = getDefaultFormats(locale, locales, formats)
 
     const getValue = (name: string): unknown => {
+      // Own-property lookups so a placeholder named like an Object.prototype
+      // member (e.g. "constructor") isn't filled with the inherited member.
       // Only lazily invoke functions from default variables, not per-call values
-      const variable = variables?.[name]
-      return values[name] ?? (isFunction(variable) ? variable() : variable)
+      const variable = getOwnProperty(variables, name)
+      return (
+        getOwnProperty(values, name) ??
+        (isFunction(variable) ? variable() : variable)
+      )
     }
 
     const formatMessage = (
