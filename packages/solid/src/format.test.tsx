@@ -173,6 +173,21 @@ describe("formatElements", function () {
     })
   })
 
+  it("should ignore elements named like Object.prototype members", function () {
+    mockConsole((console) => {
+      expect(
+        html(() =>
+          formatElements("<constructor>a</constructor>b", {
+            0: (props) => <em>{props.children}</em>,
+          }),
+        ),
+      ).toEqual("ab")
+      expect(html(() => formatElements("a<toString/>b"))).toEqual("ab")
+
+      expect(console.error).toBeCalledTimes(2)
+    })
+  })
+
   it("should ignore incorrect tags and print them as a text", function () {
     mockConsole((console) => {
       expect(html(() => formatElements("text</0>"))).toEqual("text&lt;/0&gt;")

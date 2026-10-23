@@ -31,7 +31,14 @@ function formatElements(
   if (before) tree.push(before)
 
   for (const [index, children, after] of getElements(parts)) {
-    const element = index === undefined ? undefined : elements[index]
+    // Own-property check so a tag like <constructor> or <toString/> in a
+    // translation is reported as undeclared instead of resolving to a member
+    // inherited from Object.prototype.
+    const element =
+      index !== undefined &&
+      Object.prototype.hasOwnProperty.call(elements, index)
+        ? elements[index]
+        : undefined
     const formattedChildren = children
       ? formatElements(children, elements)
       : undefined
