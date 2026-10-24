@@ -2,7 +2,7 @@ import { lingui } from "@lingui/vite-plugin";
 import { vitePlugin as remix } from "@remix-run/dev";
 import { installGlobals } from "@remix-run/node";
 import { defineConfig } from "vite";
-import macrosPlugin from "vite-plugin-babel-macros";
+import babel from "vite-plugin-babel";
 import tsconfigPaths from "vite-tsconfig-paths";
 
 installGlobals();
@@ -10,7 +10,14 @@ installGlobals();
 export default defineConfig({
   plugins: [
     remix(),
-    macrosPlugin(),
+    babel({
+      include: /\.[jt]sx?$/,
+      exclude: /node_modules/,
+      babelConfig: {
+        presets: ["@babel/preset-typescript"],
+        plugins: ["@lingui/babel-plugin-lingui-macro"],
+      },
+    }),
     lingui(),
     tsconfigPaths()
   ],

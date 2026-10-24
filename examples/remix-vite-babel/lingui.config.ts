@@ -1,2 +1,1 @@
-// eslint-disable-next-line import/export
-export * from "./app/modules/lingui/config";
+export { default } from "./app/modules/lingui/config";
