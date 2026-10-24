@@ -20,6 +20,6 @@
     "@lingui/cli": "^6.10.0",
     "@lingui/vite-plugin": "^6.10.0",
     "vite": "^7.3.1",
-    "vitest": "^4.0.18"
+    "vitest": "^5.0.0"
   }
 }
