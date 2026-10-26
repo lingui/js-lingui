@@ -9,11 +9,13 @@ export const localeCookie = createCookie("lng", {
   httpOnly: true,
 });
 
+const fallbackLocale = config.fallbackLocales && config.fallbackLocales.default;
+
 export const linguiServer = new RemixLingui({
   detection: {
     supportedLanguages: config.locales,
     fallbackLanguage:
-      (!!config.fallbackLocales && config.fallbackLocales?.default) || "en",
+      typeof fallbackLocale === "string" ? fallbackLocale : "en",
     cookie: localeCookie,
   },
 });

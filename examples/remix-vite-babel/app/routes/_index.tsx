@@ -1,7 +1,12 @@
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
-import { json, type MetaFunction } from "@remix-run/node";
-import { LocaleSelector } from "~/modules/lingui/lingui";
+import {
+  json,
+  type LoaderFunctionArgs,
+  type MetaFunction,
+} from "@remix-run/node";
+import { loadCatalog, LocaleSelector } from "~/modules/lingui/lingui";
+import { linguiServer } from "~/modules/lingui/lingui.server";
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
   return [
@@ -10,7 +15,10 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
   ];
 };
 
-export function loader() {
+export async function loader({ request }: LoaderFunctionArgs) {
+  // Loaders run before entry.server.tsx activates a locale, and `t` needs one.
+  await loadCatalog(await linguiServer.getLocale(request));
+
   return json({
     title: t`New Remix App`,
   })
