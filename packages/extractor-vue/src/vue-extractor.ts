@@ -12,11 +12,6 @@ export interface VueExtractorConfig {
   extractor?: ExtractorType
 }
 
-const withInlineSourceMap = (source: string, map: unknown) =>
-  `${source}\n//# sourceMappingURL=data:application/json;base64,${Buffer.from(
-    JSON.stringify(map),
-  ).toString("base64")}`
-
 export const createVueExtractor = (
   config: VueExtractorConfig = {},
 ): ExtractorType => ({
@@ -76,9 +71,7 @@ export const createVueExtractor = (
         .map(({ source, map, start, isTs }) =>
           extractor.extract(
             filename + (isTs ? ".ts" : ""),
-            // the map is also passed as `ctx.sourceMaps`, inlining it covers
-            // extractors which only read inline source maps, like the SWC one
-            map ? withInlineSourceMap(source, map) : source,
+            source,
             map || !start
               ? onMessageExtracted
               : (msg) => {

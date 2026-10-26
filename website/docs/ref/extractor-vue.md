@@ -66,6 +66,8 @@ export default defineConfig({
 });
 ```
 
+The SWC extractor reads the source maps the Vue extractor passes from `@lingui/native-tools` 0.2.0, so use that version or later to get origins that point into the `.vue` file.
+
 ## See Also
 
 - [Message Extraction](/guides/message-extraction)
