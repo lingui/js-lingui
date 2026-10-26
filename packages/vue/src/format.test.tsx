@@ -84,6 +84,60 @@ describe("formatElements", function () {
     ).toEqual('<a href="/about">About</a>')
   })
 
+  it("should format paired placeholders whose names use the macro charset", function () {
+    expect(
+      html(() =>
+        formatElements("<terms-link>Terms</terms-link>", {
+          "terms-link": <a href="/terms" />,
+        }),
+      ),
+    ).toEqual('<a href="/terms">Terms</a>')
+
+    expect(
+      html(() =>
+        formatElements("<terms_link>Terms</terms_link>", {
+          terms_link: <a href="/terms" />,
+        }),
+      ),
+    ).toEqual('<a href="/terms">Terms</a>')
+
+    expect(
+      html(() =>
+        formatElements("<terms.link>Terms</terms.link>", {
+          "terms.link": <a href="/terms" />,
+        }),
+      ),
+    ).toEqual('<a href="/terms">Terms</a>')
+
+    expect(
+      html(() =>
+        formatElements(
+          "I agree to the <terms-link>Terms of Service</terms-link> and the <privacy-link>Privacy Policy</privacy-link>.",
+          {
+            "terms-link": <a href="/terms" />,
+            "privacy-link": <a href="/privacy" />,
+          },
+        ),
+      ),
+    ).toEqual(
+      'I agree to the <a href="/terms">Terms of Service</a> and the <a href="/privacy">Privacy Policy</a>.',
+    )
+  })
+
+  it("should format unpaired placeholders whose names use the macro charset", function () {
+    expect(
+      html(() => formatElements("text<terms-link/>", { "terms-link": <br /> })),
+    ).toEqual("text<br>")
+
+    expect(
+      html(() => formatElements("text<terms_link/>", { terms_link: <br /> })),
+    ).toEqual("text<br>")
+
+    expect(
+      html(() => formatElements("text<terms.link/>", { "terms.link": <br /> })),
+    ).toEqual("text<br>")
+  })
+
   it("should preserve nested named element props", function () {
     expect(
       html(() =>

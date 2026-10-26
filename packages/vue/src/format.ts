@@ -21,7 +21,10 @@ import { toArray } from "./utils"
 export type TransElement = VNode | Component | string
 
 // match <tag>paired</tag> and <tag/> unpaired tags
-const tagRe = /<([a-zA-Z0-9]+)>([\s\S]*?)<\/\1>|<([a-zA-Z0-9]+)\/>/
+// Names: auto-generated digits, or the macro charset from tokenizeElement —
+// /^[a-zA-Z_]([\w.-]*\w)?$/ — so `_`, `.` and `-` are valid in between.
+const tagRe =
+  /<([a-zA-Z0-9_](?:[\w.-]*\w)?)>([\s\S]*?)<\/\1>|<([a-zA-Z0-9_](?:[\w.-]*\w)?)\/>/
 
 const voidElementTags: Record<string, true> = {
   area: true,
