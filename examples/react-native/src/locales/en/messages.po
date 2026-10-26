@@ -13,42 +13,43 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: src/MainScreen.tsx:91
+#: src/MainScreen.tsx:92
 msgid "{messageIndex, selectordinal, one {#st message} two {#nd message} few {#rd message} other {#th message}}"
 msgstr "{messageIndex, selectordinal, one {#st message} two {#nd message} few {#rd message} other {#th message}}"
 
-#: src/MainScreen.tsx:78
+#: src/MainScreen.tsx:79
 msgid "{messagesCount, plural, =0 {You have no unread messages} one {There's # message in your inbox} few {There're # messages in your inbox} other {There're # messages in your inbox}}"
 msgstr "{messagesCount, plural, =0 {You have no unread messages} one {There's # message in your inbox} few {There're # messages in your inbox} other {There're # messages in your inbox}}"
 
-#: src/MainScreen.tsx:76
+#: src/MainScreen.tsx:77
 msgid "Add a message to your inbox"
 msgstr "Add a message to your inbox"
 
-#: src/MainScreen.tsx:23
+#: src/MainScreen.tsx:22
 msgid "Cancel"
 msgstr "Cancel"
 
-#: src/MainScreen.tsx:15
+#: src/MainScreen.tsx:14
 msgid "Do you want to set all your messages as read?"
 msgstr "Do you want to set all your messages as read?"
 
-#: src/MainScreen.tsx:75
+#: src/MainScreen.tsx:76
 msgid "Mark messages as read"
 msgstr "Mark messages as read"
 
-#: src/MainScreen.tsx:73
+#: src/MainScreen.tsx:74
 msgid "Message Inbox"
 msgstr "Message Inbox"
 
-#: src/MainScreen.tsx:90
-msgid "order:"
-msgstr "order:"
+#: src/MainScreen.tsx:91
+msgid "order: "
+msgstr "order: "
 
-#: src/MainScreen.tsx:44
+#. placeholder {0}: i18n.locale === "en" ? "cs" : "en"
+#: src/MainScreen.tsx:43
 msgid "Toggle language to {0}"
 msgstr "Toggle language to {0}"
 
-#: src/MainScreen.tsx:17
+#: src/MainScreen.tsx:16
 msgid "Yes"
 msgstr "Yes"
