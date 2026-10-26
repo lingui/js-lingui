@@ -149,6 +149,18 @@ describe("interpolate", () => {
     expect(cache({ value: "hasOwnProperty" })).toEqual("They")
   })
 
+  it("should not fill placeholders named like Object.prototype members with the inherited member", () => {
+    expect(prepare("Hi {constructor}")({})).toEqual("Hi ")
+    expect(prepare("Hi {toString}")({})).toEqual("Hi ")
+    expect(prepare("Hi {constructor}")({ constructor: "Bob" })).toEqual(
+      "Hi Bob",
+    )
+    expect(prepare("Hi {toString}")({}, undefined, {})).toEqual("Hi ")
+    expect(
+      prepare("Hi {toString}")({}, undefined, { toString: "Bob" }),
+    ).toEqual("Hi Bob")
+  })
+
   describe("Custom format", () => {
     const testVector = [
       ["en", undefined, "0.1", "10%", "20%", "€0.10", "€1.00"],
