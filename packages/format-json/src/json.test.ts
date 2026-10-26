@@ -222,4 +222,45 @@ describe("json format", () => {
       expect(actual).toMatchSnapshot()
     })
   })
+
+  describe("trailing newline", () => {
+    const format = createFormat({ style: "minimal" })
+    const filename = path.join("locale", "en", "messages.json")
+    const catalog: CatalogType = {
+      static: {
+        translation: "Static message",
+      },
+    }
+
+    it("should end a new catalog with a newline", async () => {
+      // the CLI passes `existing: undefined` when the catalog file doesn't exist yet
+      const actual = await format.serialize(catalog, {
+        locale: "en",
+        filename,
+        existing: undefined,
+        sourceLocale: "en",
+      })
+      expect(actual).toBe('{\n  "static": "Static message"\n}\n')
+    })
+
+    it("should keep the trailing newline of an existing catalog", async () => {
+      const actual = await format.serialize(catalog, {
+        locale: "en",
+        filename,
+        existing: "{}\n",
+        sourceLocale: "en",
+      })
+      expect(actual).toBe('{\n  "static": "Static message"\n}\n')
+    })
+
+    it("should not add a newline to an existing catalog without one", async () => {
+      const actual = await format.serialize(catalog, {
+        locale: "en",
+        filename,
+        existing: "{}",
+        sourceLocale: "en",
+      })
+      expect(actual).toBe('{\n  "static": "Static message"\n}')
+    })
+  })
 })
