@@ -1,20 +1,21 @@
 # Using LinguiJS in VanillaJS projects
 
-Prepare the example by installing dependencies and compiling message catalogs:
+This example uses the [Lingui Vite plugin](https://lingui.dev/ref/vite-plugin) with the native macro transform, so no Babel setup is needed. [Vitest](https://vitest.dev/) picks up the same configuration from `vite.config.js`.
+
+Install dependencies:
 
 ```sh
 yarn install
-yarn lingui compile
 ```
 
-Now, either run full test suit:
+Extract messages from the source files:
+
+```sh
+yarn extract
+```
+
+Compile message catalogs and run the test suite:
 
 ```sh
 yarn test
-```
-
-Or each file individually (you need to have `babel-cli` installed globally):
-
-```sh
-babel-node src/messages.js
 ```

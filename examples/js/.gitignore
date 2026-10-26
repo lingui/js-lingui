@@ -1,5 +1,5 @@
 src/locale/_build/
-src/locale/*/*.js
+src/locale/*/*.mjs
 
 .pnp.*
 .yarn/*

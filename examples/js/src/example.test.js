@@ -1,12 +1,15 @@
+import { describe, expect, it } from "vitest"
 import { i18n } from "@lingui/core"
+import * as messages from "./messages"
+import * as ids from "./ids"
 
 describe("vanilla-js example", function () {
   describe("messages as ids", function () {
-    test(require("./messages"))
+    test(messages)
   })
 
   describe("custom ids", function () {
-    test(require("./ids"))
+    test(ids)
   })
 })
 

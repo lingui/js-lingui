@@ -1,9 +1,11 @@
 import { i18n } from "@lingui/core"
 import { t, plural, defineMessage } from "@lingui/core/macro"
+import { messages as enMessages } from "./locale/en/messages.mjs"
+import { messages as csMessages } from "./locale/cs/messages.mjs"
 
 i18n.load({
-  en: require("./locale/en/messages").messages,
-  cs: require("./locale/cs/messages").messages,
+  en: enMessages,
+  cs: csMessages,
 })
 
 /**
@@ -57,29 +59,4 @@ export function getLazy() {
   const yes = i18n._(common.yes)
   const no = i18n._(common.no)
   return t`Do you want to proceed? ${yes}/${no}`
-}
-
-function main(locale) {
-  const header = getStatic()
-
-  console.log(header)
-  console.log("*".repeat(header.length))
-  console.log()
-
-  console.log(getVariables("Joe"))
-  console.log(getPlural(1))
-  console.log(getPlural(100))
-  console.log()
-
-  console.log(getLazy())
-  console.log()
-}
-
-if (require.main === module) {
-  i18n.activate("en")
-  main()
-
-  console.log()
-  i18n.activate("cs")
-  main()
 }
