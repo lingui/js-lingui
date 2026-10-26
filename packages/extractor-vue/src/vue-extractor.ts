@@ -230,18 +230,48 @@ export const createVueExtractor = (
         },
       })
 
-    const extractTarget = ({ source, map, isTs, isTemplate }: ExtractTarget) =>
-      extractor.extract(
+    const extractTarget = ({
+      source,
+      map,
+      start,
+      isTs,
+      isTemplate,
+    }: ExtractTarget) => {
+      const onTargetMessageExtracted: typeof onMessageExtracted =
+        map || !start
+          ? onMessageExtracted
+          : (msg) => {
+              if (!msg.origin) {
+                return onMessageExtracted(msg)
+              }
+
+              // without a source map the position is relative to the block
+              const [, line, column] = msg.origin
+
+              onMessageExtracted({
+                ...msg,
+                origin: [
+                  filename,
+                  line + start.line - 1,
+                  line === 1 && column != null
+                    ? column + start.column - 1
+                    : column,
+                ],
+              })
+            }
+
+      return extractor.extract(
         filename + (isTs ? ".ts" : ""),
         source,
         isTemplate
-          ? normalizeTemplatePlaceholders(onMessageExtracted)
-          : onMessageExtracted,
+          ? normalizeTemplatePlaceholders(onTargetMessageExtracted)
+          : onTargetMessageExtracted,
         {
           sourceMaps: map,
           ...ctx,
         },
       )
+    }
 
     // Extract the `<script>` blocks first so their messages are reported
     // even when the `<template>` block does not compile.

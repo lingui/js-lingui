@@ -1,5 +1,6 @@
 import {
   compileScript,
+  type SFCBlock,
   type SFCDescriptor,
   type SFCScriptCompileOptions,
 } from "@vue/compiler-sfc"

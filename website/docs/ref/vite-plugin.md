@@ -78,10 +78,10 @@ export default defineConfig({
 This works with `@vitejs/plugin-react`, `@vitejs/plugin-react-swc` and Vite 8+ with Rolldown. The transform runs in the `pre` stage and only touches files that import Lingui macros.
 
 :::caution
-The native transform doesn't support [`macro.jsxRuntime: "solid"` or `"vue"`](/ref/conf#macrojsxruntime) yet and fails with an error when either is set. Solid and Vue projects should keep transforming macros with `@lingui/babel-plugin-lingui-macro`, see the [Solid tutorial](/tutorials/solid#configure-vite) and the [Vue tutorial](/tutorials/vue#configure-vite).
+The native transform doesn't support [`macro.jsxRuntime: "vue"`](/ref/conf#macrojsxruntime) yet and fails with an error when it is set. Vue projects should keep transforming macros with `@lingui/babel-plugin-lingui-macro`, see the [Vue tutorial](/tutorials/vue#configure-vite).
 :::
 
-Macro options such as `macro.corePackage`, `macro.jsxPackage`, `macro.jsxPlaceholderAttribute`, `macro.jsxPlaceholderDefaults`, `macro.idPrefixLeader` and `runtimeConfigModule` are read from your [Lingui configuration](/ref/conf), so in most cases `true` is all you need.
+Macro options such as `macro.corePackage`, `macro.jsxPackage`, `macro.jsxPlaceholderAttribute`, `macro.jsxPlaceholderDefaults`, `macro.jsxRuntime`, `macro.idPrefixLeader` and `runtimeConfigModule` are read from your [Lingui configuration](/ref/conf), so in most cases `true` is all you need.
 
 Production builds emit `id`-only message descriptors, while development builds keep the `message` as well. This matches the behavior of the Babel and SWC plugins. To change it, set `descriptorFields` in the `macro` overrides, for example `"message"` to keep messages in production builds.
 
