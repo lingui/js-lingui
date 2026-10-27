@@ -106,8 +106,7 @@ export function formatter(
         outputCatalog = removeLineNumbers(outputCatalog)
       }
 
-      const shouldUseTrailingNewline =
-        existing === null || existing?.endsWith("\n")
+      const shouldUseTrailingNewline = !existing || existing.endsWith("\n")
       const trailingNewLine = shouldUseTrailingNewline ? "\n" : ""
 
       if (options.style === "minimal") {
