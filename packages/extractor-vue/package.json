@@ -49,6 +49,7 @@
   "devDependencies": {
     "@lingui/babel-plugin-extract-messages": "workspace:*",
     "@lingui/core": "workspace:*",
+    "@lingui/native-tools": "^0.2.0",
     "typescript": "catalog:",
     "unbuild": "catalog:",
     "vitest": "catalog:"

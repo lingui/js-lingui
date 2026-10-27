@@ -1,10 +1,15 @@
 import { compileTemplate, parse, type SFCBlock } from "@vue/compiler-sfc"
-import { extractor } from "@lingui/cli/api"
+import { extractor as babelExtractor } from "@lingui/cli/api"
 import { type ExtractorCtx, type ExtractorType } from "@lingui/conf"
 import { compileScriptSetup, type ScriptTarget } from "./compile-script-setup"
 
 export interface VueExtractorConfig {
   reactivityTransform?: boolean
+  /**
+   * Extractor used for the script and template code compiled from `.vue` files.
+   * Defaults to the Babel extractor from `@lingui/cli`.
+   */
+  extractor?: ExtractorType
 }
 
 export const createVueExtractor = (
@@ -27,7 +32,7 @@ export const createVueExtractor = (
 
     const isTsBlock = (block: SFCBlock | null) => block?.lang === "ts"
 
-    const { reactivityTransform = false } = config
+    const { reactivityTransform = false, extractor = babelExtractor } = config
 
     const compiledScripts = compileScriptSetup(
       descriptor,
