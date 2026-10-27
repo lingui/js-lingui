@@ -34,6 +34,7 @@ import Inbox from "./Inbox.vue";
 createApp(Inbox).mount("#app");
 ```
 
+<!-- prettier-ignore -->
 ```vue title="src/Inbox.vue"
 <script setup lang="ts">
 const messages = [{}, {}];
@@ -361,6 +362,7 @@ It's not necessary to extract/translate messages one by one. This is usually don
 
 Let's move on to another paragraph in our project. The following paragraph has some variables, some HTML and components inside:
 
+<!-- prettier-ignore -->
 ```html
 <p>
   See all <a href="/unread">unread messages</a> or <a @click="markAsRead">mark them</a> as read.
@@ -369,6 +371,7 @@ Let's move on to another paragraph in our project. The following paragraph has s
 
 Although it looks complex, there's really nothing special here. Just wrap the content of the paragraph in [`Trans`](/ref/vue#trans) and let the compiler do the magic:
 
+<!-- prettier-ignore -->
 ```html
 <p>
   <Trans>
@@ -523,6 +526,7 @@ Refer to the [Explicit vs Generated IDs](/guides/explicit-vs-generated-ids) guid
 
 Let's take a closer look at the following code in our component:
 
+<!-- prettier-ignore -->
 ```html
 <p>
   {{
@@ -732,6 +736,7 @@ All Core Macros cannot be used at the module level. They must be used within a c
 
 After all modifications, the final i18n-ready component looks like this:
 
+<!-- prettier-ignore -->
 ```vue title="src/Inbox.vue"
 <script setup lang="ts">
 import { computed } from "vue";

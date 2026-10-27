@@ -55,6 +55,7 @@ export default {
   extractors: [babel, createVueExtractor()],
   macro: {
     jsxPackage: ["@lingui/vue/macro"],
+    jsxRuntime: "vue",
   },
   runtimeConfigModule: {
     Trans: ["@lingui/vue", "Trans"],
@@ -68,7 +69,7 @@ export default {
 The `linguiVue` plugin from `@lingui/vue/vite` wires everything up in a Vite project:
 
 1. It registers the [template transform](#template-transform) in `@vitejs/plugin-vue`, so macros work inside `<template>` blocks.
-2. It runs [`@lingui/babel-plugin-lingui-macro`](/ref/babel-plugin-lingui-macro) on `.vue`, `.js`, `.ts`, `.jsx` and `.tsx` modules that import from `@lingui/core/macro` or `@lingui/vue/macro`.
+2. It runs [`@lingui/babel-plugin-lingui-macro`](/installation?transpiler=babel#choosing-a-transpiler) on `.vue`, `.js`, `.ts`, `.jsx` and `.tsx` modules that import from `@lingui/core/macro` or `@lingui/vue/macro`.
 
 Place it after `vue()`:
 
@@ -83,12 +84,12 @@ export default defineConfig({
 });
 ```
 
-| Option             | Type                                              | Description                                                                                                                                      |
-| ------------------ | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `descriptorFields` | `"auto"` \| `"all"` \| `"id-only"` \| `"message"` | Which message descriptor fields are kept in the compiled code. Defaults to `"id-only"` in production builds and `"all"` otherwise.               |
-| `template`         | `false` \| `LinguiTemplateTransformOptions`       | Options of the template transform, or `false` to disable it (when registering [`linguiTemplateTransform`](#template-transform) yourself).       |
-| `macro`            | `boolean`                                         | Set to `false` to skip the Babel macro transform, e.g. when you run `@rolldown/plugin-babel` with [`linguiTransformerBabelPreset`](/ref/vite-plugin). |
-| `cwd`, `configPath`, `skipValidation` | | Passed to the Lingui config discovery, same as in [`@lingui/vite-plugin`](/ref/vite-plugin). |
+| Option                                | Type                                              | Description                                                                                                                                           |
+| ------------------------------------- | ------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `descriptorFields`                    | `"auto"` \| `"all"` \| `"id-only"` \| `"message"` | Which message descriptor fields are kept in the compiled code. Defaults to `"id-only"` in production builds and `"all"` otherwise.                    |
+| `template`                            | `false` \| `LinguiTemplateTransformOptions`       | Options of the template transform, or `false` to disable it (when registering [`linguiTemplateTransform`](#template-transform) yourself).             |
+| `macro`                               | `boolean`                                         | Set to `false` to skip the Babel macro transform, e.g. when you run `@rolldown/plugin-babel` with [`linguiTransformerBabelPreset`](/ref/vite-plugin). |
+| `cwd`, `configPath`, `skipValidation` |                                                   | Passed to the Lingui config discovery, same as in [`@lingui/vite-plugin`](/ref/vite-plugin).                                                          |
 
 :::tip JSX and TSX
 Vue JSX is compiled by `@vitejs/plugin-vue-jsx`. Import the macros from `@lingui/vue/macro` in `.jsx`/`.tsx` files: `linguiVue()` transforms them before `vueJsx()` compiles the JSX away, whatever the order of the two plugins. Passing the macro plugin to `vueJsx({ babelPlugins: ["@lingui/babel-plugin-lingui-macro"] })` works as well.
@@ -147,18 +148,19 @@ vue({
 });
 ```
 
-| Option                 | Type                                              | Description                                                                                                  |
-| ---------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| Option                 | Type                                              | Description                                                                                                    |
+| ---------------------- | ------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
 | `descriptorFields`     | `"auto"` \| `"all"` \| `"id-only"` \| `"message"` | Which message descriptor fields are kept in the compiled template. `"auto"` keeps only the `id` in production. |
-| `tags`                 | `{ Trans?, Plural?, Select?, SelectOrdinal? }`    | Tag names of the macro components. Matching is case-insensitive and accepts kebab-case.                      |
-| `macroNames`           | `{ t?, plural?, select?, selectOrdinal?, ph? }`   | Names of the macros recognized inside template expressions.                                                  |
-| `placeholderAttribute` | `string`                                          | Same as [`macro.jsxPlaceholderAttribute`](/ref/conf#macro.jsxplaceholderattribute).                          |
-| `placeholderDefaults`  | `Record<string, string>`                          | Same as [`macro.jsxPlaceholderDefaults`](/ref/conf#macro.jsxplaceholderdefaults).                            |
+| `tags`                 | `{ Trans?, Plural?, Select?, SelectOrdinal? }`    | Tag names of the macro components. Matching is case-insensitive and accepts kebab-case.                        |
+| `macroNames`           | `{ t?, plural?, select?, selectOrdinal?, ph? }`   | Names of the macros recognized inside template expressions.                                                    |
+| `placeholderAttribute` | `string`                                          | Same as [`macro.jsxPlaceholderAttribute`](/ref/conf#macrojsxplaceholderattribute).                             |
+| `placeholderDefaults`  | `Record<string, string>`                          | Same as [`macro.jsxPlaceholderDefaults`](/ref/conf#macrojsxplaceholderdefaults).                               |
 
 ### How templates are compiled
 
 The transform produces the same message descriptors as the JSX macros. Inline elements are moved into indexed named slots, so all their attributes, bindings and event listeners stay in the template:
 
+<!-- prettier-ignore -->
 ```vue
 <template>
   <Trans>Hello <b>{{ name }}</b>, read the <a :href="url" @click="track">docs</a>.</Trans>
@@ -253,11 +255,11 @@ You can set a default rendering component using the `defaultComponent` prop in [
 
 You can customize how translations are rendered locally within individual i18n components using the following props:
 
-| Prop name   | Type                                     | Description                                                   |
-| ----------- | ---------------------------------------- | ------------------------------------------------------------- |
+| Prop name   | Type                                      | Description                                                   |
+| ----------- | ----------------------------------------- | ------------------------------------------------------------- |
 | `render`    | Function(props) -> `VNodeChild` \| `null` | Custom render callback to render translation                  |
 | `component` | `Component` \| `string` \| `null`         | Vue component (or tag name) to wrap the translation           |
-| `comment`   | `string`                                 | Comment picked up by extractor to provide translation context |
+| `comment`   | `string`                                  | Comment picked up by extractor to provide translation context |
 
 When using the `render` callback, it accepts an object of type `TransRenderProps` as an argument:
 
@@ -376,12 +378,12 @@ Unlike `I18nProvider`, the plugin does not wait for `i18n.activate()` before ren
 
 The `useLingui` composable provides access to the Lingui context. It returns an object with the following properties:
 
-| Key                | Type               | Description                                                                              |
-| ------------------ | ------------------ | ---------------------------------------------------------------------------------------- |
-| `i18n`             | `ShallowRef<I18n>` | Reactive reference to the `I18n` object instance that you passed to `I18nProvider`       |
-| `_`                | `I18n["_"]`        | Reference to the [`i18n._`](/ref/core#i18n._) function, explained below                  |
+| Key                | Type               | Description                                                                                   |
+| ------------------ | ------------------ | --------------------------------------------------------------------------------------------- |
+| `i18n`             | `ShallowRef<I18n>` | Reactive reference to the `I18n` object instance that you passed to `I18nProvider`            |
+| `_`                | `I18n["_"]`        | Reference to the [`i18n._`](/ref/core#i18n._) function, explained below                       |
 | `t`                | `I18n["_"]`        | Alias of `_`, called by templates compiled with the [template transform](#template-transform) |
-| `defaultComponent` | `Component`        | The same `defaultComponent` you passed to `I18nProvider`, if provided                    |
+| `defaultComponent` | `Component`        | The same `defaultComponent` you passed to `I18nProvider`, if provided                         |
 
 The `i18n` value returned from `useLingui` is a shallow ref that is triggered whenever the locale or the catalogs change. Read `i18n.value.locale` in a `computed` or in the render function to react to updates. In templates and `<script setup>`, refs are unwrapped automatically, so `{{ i18n.locale }}` just works.
 
@@ -434,11 +436,11 @@ This section serves as a reference for those who prefer to use the components di
 
 ### `Trans`
 
-| Prop name    | Type     | Description                                                          |
-| ------------ | -------- | -------------------------------------------------------------------- |
-| `id`         | `string` | Key, the message ID                                                  |
-| `message`    | `string` | Default message                                                      |
-| `values`     | `object` | Variables to interpolate into the message                            |
+| Prop name    | Type     | Description                                                             |
+| ------------ | -------- | ----------------------------------------------------------------------- |
+| `id`         | `string` | Key, the message ID                                                     |
+| `message`    | `string` | Default message                                                         |
+| `values`     | `object` | Variables to interpolate into the message                               |
 | `components` | `object` | VNodes, components or tag names used for inline elements (`<0>...</0>`) |
 
 The `values` and `components` props allow to pass dynamic values and components used for formatting the translation. Named slots can be used instead of the `components` prop: a slot named `0` (or `link`) provides the element for the `<0>` (or `<link>`) placeholder. In addition, the `comment` prop provides context to translators, helping them to understand the intent behind the message.
@@ -456,7 +458,7 @@ Write the message directly in the [`Trans`](/ref/macro#trans) element instead if
 
 :::
 
-It's also possible to use the `Trans` component directly without macros. In this case `id` identifies the message to be translated. Static `id`, `message`, `comment` and `context` attributes are extracted and stripped in production like the macro form. Bound attributes (`:message`) are only known at runtime and aren't extracted, use the [`msg`](/ref/macro#msg) macro for messages picked dynamically.
+It's also possible to use the `Trans` component directly without macros. In this case `id` identifies the message to be translated. Static `id`, `message`, `comment` and `context` attributes are extracted and stripped in production like the macro form. Bound attributes (`:message`) are only known at runtime and aren't extracted, use the [`msg`](/ref/macro#definemessage) macro for messages picked dynamically.
 
 #### Examples
 
