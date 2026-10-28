@@ -11,7 +11,7 @@ import { linguiServer } from "~/modules/lingui/lingui.server";
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
   return [
     { title: data?.title ?? t`An Unexpected Error Occured` },
-    { name: "description", content: t`Welcome to Remix!` },
+    { name: "description", content: data?.description },
   ];
 };
 
@@ -21,6 +21,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
   return json({
     title: t`New Remix App`,
+    description: t`Welcome to Remix!`,
   })
 }
 
