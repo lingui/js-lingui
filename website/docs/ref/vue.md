@@ -84,12 +84,12 @@ export default defineConfig({
 });
 ```
 
-| Option                                | Type                                              | Description                                                                                                                                           |
-| ------------------------------------- | ------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `descriptorFields`                    | `"auto"` \| `"all"` \| `"id-only"` \| `"message"` | Which message descriptor fields are kept in the compiled code. Defaults to `"id-only"` in production builds and `"all"` otherwise.                    |
-| `template`                            | `false` \| `LinguiTemplateTransformOptions`       | Options of the template transform, or `false` to disable it (when registering [`linguiTemplateTransform`](#template-transform) yourself).             |
-| `macro`                               | `boolean`                                         | Set to `false` to skip the Babel macro transform, e.g. when you run `@rolldown/plugin-babel` with [`linguiTransformerBabelPreset`](/ref/vite-plugin). |
-| `cwd`, `configPath`, `skipValidation` |                                                   | Passed to the Lingui config discovery, same as in [`@lingui/vite-plugin`](/ref/vite-plugin).                                                          |
+| Option                                | Type                                              | Description                                                                                                                                          |
+| ------------------------------------- | ------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `descriptorFields`                    | `"auto"` \| `"all"` \| `"id-only"` \| `"message"` | Which message descriptor fields are kept in the compiled code. Defaults to `"id-only"` in production builds and `"all"` otherwise                    |
+| `template`                            | `false` \| `LinguiTemplateTransformOptions`       | Options of the template transform, or `false` to disable it (when registering [`linguiTemplateTransform`](#template-transform) yourself)             |
+| `macro`                               | `boolean`                                         | Set to `false` to skip the Babel macro transform, e.g. when you run `@rolldown/plugin-babel` with [`linguiTransformerBabelPreset`](/ref/vite-plugin) |
+| `cwd`, `configPath`, `skipValidation` |                                                   | Passed to the Lingui config discovery, same as in [`@lingui/vite-plugin`](/ref/vite-plugin)                                                          |
 
 :::tip JSX and TSX
 Vue JSX is compiled by `@vitejs/plugin-vue-jsx`. Import the macros from `@lingui/vue/macro` in `.jsx`/`.tsx` files: `linguiVue()` transforms them before `vueJsx()` compiles the JSX away, whatever the order of the two plugins. Passing the macro plugin to `vueJsx({ babelPlugins: ["@lingui/babel-plugin-lingui-macro"] })` works as well.
@@ -148,13 +148,13 @@ vue({
 });
 ```
 
-| Option                 | Type                                              | Description                                                                                                    |
-| ---------------------- | ------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
-| `descriptorFields`     | `"auto"` \| `"all"` \| `"id-only"` \| `"message"` | Which message descriptor fields are kept in the compiled template. `"auto"` keeps only the `id` in production. |
-| `tags`                 | `{ Trans?, Plural?, Select?, SelectOrdinal? }`    | Tag names of the macro components. Matching is case-insensitive and accepts kebab-case.                        |
-| `macroNames`           | `{ t?, plural?, select?, selectOrdinal?, ph? }`   | Names of the macros recognized inside template expressions.                                                    |
-| `placeholderAttribute` | `string`                                          | Same as [`macro.jsxPlaceholderAttribute`](/ref/conf#macrojsxplaceholderattribute).                             |
-| `placeholderDefaults`  | `Record<string, string>`                          | Same as [`macro.jsxPlaceholderDefaults`](/ref/conf#macrojsxplaceholderdefaults).                               |
+| Option                 | Type                                              | Description                                                                                                   |
+| ---------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| `descriptorFields`     | `"auto"` \| `"all"` \| `"id-only"` \| `"message"` | Which message descriptor fields are kept in the compiled template. `"auto"` keeps only the `id` in production |
+| `tags`                 | `{ Trans?, Plural?, Select?, SelectOrdinal? }`    | Tag names of the macro components. Matching is case-insensitive and accepts kebab-case                        |
+| `macroNames`           | `{ t?, plural?, select?, selectOrdinal?, ph? }`   | Names of the macros recognized inside template expressions                                                    |
+| `placeholderAttribute` | `string`                                          | Same as [`macro.jsxPlaceholderAttribute`](/ref/conf#macrojsxplaceholderattribute)                             |
+| `placeholderDefaults`  | `Record<string, string>`                          | Same as [`macro.jsxPlaceholderDefaults`](/ref/conf#macrojsxplaceholderdefaults)                               |
 
 ### How templates are compiled
 
