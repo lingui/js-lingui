@@ -126,3 +126,199 @@ exports[`vue extractor > should extract message with compiled props transformati
   },
 ]
 `;
+
+exports[`vue extractor > should extract messages from template macros 1`] = `
+[
+  {
+    "comment": undefined,
+    "context": undefined,
+    "id": "YFoG-s",
+    "message": "Hello <0>{name}</0>, read the <1>docs</1>.",
+    "origin": [
+      "trans.vue",
+      16,
+      14,
+    ],
+    "placeholders": {
+      "name": "name",
+    },
+  },
+  {
+    "comment": "Greeting shown on the homepage",
+    "context": "direction",
+    "id": "custom.id",
+    "message": "Right",
+    "origin": [
+      "trans.vue",
+      19,
+      6,
+    ],
+    "placeholders": {},
+  },
+  {
+    "comment": undefined,
+    "context": undefined,
+    "id": "esnaQO",
+    "message": "{count, plural, one {# book} other {# books}}",
+    "origin": [
+      "trans.vue",
+      22,
+      60,
+    ],
+    "placeholders": {
+      "count": "count",
+    },
+  },
+  {
+    "comment": undefined,
+    "context": undefined,
+    "id": "p7wNll",
+    "message": "{gender, select, male {His book} female {Her book} other {Their book}}",
+    "origin": [
+      "trans.vue",
+      23,
+      87,
+    ],
+    "placeholders": {
+      "gender": "gender",
+    },
+  },
+  {
+    "comment": undefined,
+    "context": undefined,
+    "id": "A1taO8",
+    "message": "Search",
+    "origin": [
+      "trans.vue",
+      25,
+      26,
+    ],
+    "placeholders": {},
+  },
+  {
+    "comment": undefined,
+    "context": undefined,
+    "id": "OVaF9k",
+    "message": "Hello {name}",
+    "origin": [
+      "trans.vue",
+      26,
+      11,
+    ],
+    "placeholders": {
+      "name": "name",
+    },
+  },
+  {
+    "comment": "Descriptor comment",
+    "context": undefined,
+    "id": "39ivQ8",
+    "message": "Descriptor message",
+    "origin": [
+      "trans.vue",
+      27,
+      11,
+    ],
+    "placeholders": {},
+  },
+  {
+    "comment": undefined,
+    "context": undefined,
+    "id": "Snm3oG",
+    "message": "Total {0} by {1}",
+    "origin": [
+      "trans.vue",
+      29,
+      78,
+    ],
+    "placeholders": {
+      "0": "count+count",
+      "1": "user.first+user.last",
+    },
+  },
+  {
+    "comment": undefined,
+    "context": undefined,
+    "id": "U0sC6H",
+    "message": "Daily",
+    "origin": [
+      "trans.vue",
+      32,
+      33,
+    ],
+    "placeholders": {},
+  },
+  {
+    "comment": undefined,
+    "context": undefined,
+    "id": "4XSc4l",
+    "message": "Weekly",
+    "origin": [
+      "trans.vue",
+      32,
+      77,
+    ],
+    "placeholders": {},
+  },
+  {
+    "comment": undefined,
+    "context": undefined,
+    "id": "idD8Ev",
+    "message": "Saved",
+    "origin": [
+      "trans.vue",
+      34,
+      34,
+    ],
+    "placeholders": {},
+  },
+  {
+    "comment": undefined,
+    "context": undefined,
+    "id": "tfDRzk",
+    "message": "Save",
+    "origin": [
+      "trans.vue",
+      34,
+      50,
+    ],
+    "placeholders": {},
+  },
+  {
+    "comment": "Runtime usage",
+    "context": undefined,
+    "id": "runtime.id",
+    "message": "Hello {name}",
+    "origin": [
+      "trans.vue",
+      36,
+      6,
+    ],
+    "placeholders": {},
+  },
+  {
+    "comment": undefined,
+    "context": undefined,
+    "id": "runtime.link",
+    "message": "Read <link>Description</link> below.",
+    "origin": [
+      "trans.vue",
+      37,
+      6,
+    ],
+    "placeholders": {},
+  },
+  {
+    "comment": "Dynamic message",
+    "context": undefined,
+    "id": "runtime.dynamic",
+    "message": undefined,
+    "origin": [
+      "trans.vue",
+      40,
+      6,
+    ],
+    "placeholders": {},
+  },
+]
+`;

@@ -143,7 +143,7 @@ export const exampleConfig = {
       {},
       { a: "link", em: "em", strong: "b" },
     ),
-    jsxRuntime: multipleValidOptions("react", "solid"),
+    jsxRuntime: multipleValidOptions("react", "solid", "vue"),
   },
   format: multipleValidOptions({}, {}),
   pseudoLocale: multipleValidOptions(

@@ -46,6 +46,11 @@ const sidebar = [
       },
       {
         type: "doc",
+        label: "Vue",
+        id: "tutorials/vue",
+      },
+      {
+        type: "doc",
         label: "JavaScript",
         id: "tutorials/javascript",
       },
@@ -140,6 +145,11 @@ const sidebar = [
         type: "doc",
         label: "@lingui/solid",
         id: "ref/solid",
+      },
+      {
+        type: "doc",
+        label: "@lingui/vue",
+        id: "ref/vue",
       },
       {
         type: "doc",
