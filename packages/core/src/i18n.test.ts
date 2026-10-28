@@ -67,10 +67,13 @@ describe("I18n", () => {
         expect(({} as any).polluted).toBeUndefined()
       })
 
-      it("should not pollute Object.prototype via __proto__ string locale", () => {
+      it("should merge catalogs for a __proto__ locale", () => {
         const i18n = setupI18n()
-        i18n.load("__proto__", { polluted: "yes" })
-        expect(({} as any).polluted).toBeUndefined()
+        i18n.load("__proto__", { Hello: "Hello" })
+        i18n.load("__proto__", { World: "World" })
+        i18n.activate("__proto__")
+
+        expect(i18n.messages).toEqual({ Hello: "Hello", World: "World" })
       })
 
       it("should not pollute Object.prototype via __proto__ message key", () => {

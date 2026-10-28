@@ -105,7 +105,7 @@ export type MessageCompiler = (message: string) => CompiledMessage
 export class I18n extends EventEmitter<Events> {
   private _locale: Locale = ""
   private _locales?: Locales
-  private _messages: AllMessages = {}
+  private _messages: AllMessages = Object.create(null)
   private _variables: Variables = {}
   private _missing?: MissingHandler
   private _messageCompiler?: MessageCompiler
