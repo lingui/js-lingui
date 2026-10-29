@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.11.0](https://github.com/lingui/js-lingui/compare/v6.10.1...v6.11.0) (2026-10-29)
+
+### Bug Fixes
+
+* **detect-locale:** keep underscores and digits in fromPath segments ([#2738](https://github.com/lingui/js-lingui/issues/2738)) ([bad25c3](https://github.com/lingui/js-lingui/commit/bad25c33eb97c92771da9032e693fb1db8b19e6b))
+
 ## [6.10.1](https://github.com/lingui/js-lingui/compare/v6.10.0...v6.10.1) (2026-10-22)
 
 ### Bug Fixes

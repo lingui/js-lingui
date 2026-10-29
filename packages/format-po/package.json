@@ -1,6 +1,6 @@
 {
   "name": "@lingui/format-po",
-  "version": "6.10.1",
+  "version": "6.11.0",
   "description": "Reads and writes Lingui message catalogs as gettext PO files with ICU plurals, the default catalog format",
   "type": "module",
   "sideEffects": false,
