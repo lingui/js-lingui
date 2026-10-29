@@ -87,7 +87,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 * "feat(cli): add support for `BatchExtractor` ([#2562](https://github.com/lingui/js-lingui/issues/2562))" ([#2673](https://github.com/lingui/js-lingui/issues/2673)) ([fd416f9](https://github.com/lingui/js-lingui/commit/fd416f9ef6b9cb49652873277f0ace111649bbfb))
 
-
 # [6.7.0](https://github.com/lingui/js-lingui/compare/v6.6.0...v6.7.0) (2026-09-11)
 
 ### Bug Fixes
@@ -100,7 +99,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 * **cli,conf:** add RTL pseudolocale and allow multiple pseudolocales ([#2652](https://github.com/lingui/js-lingui/issues/2652)) ([4c00dec](https://github.com/lingui/js-lingui/commit/4c00decb3dddbd9539725d093a5e68080c376668))
 * **conf:** support pseudolocale extend character ([#2651](https://github.com/lingui/js-lingui/issues/2651)) ([3f7f03d](https://github.com/lingui/js-lingui/commit/3f7f03d98445ed912ffeb9794b7bf9acc1d8d73d))
-
 
 # [6.6.0](https://github.com/lingui/js-lingui/compare/v6.5.0...v6.6.0) (2026-07-24)
 
@@ -115,7 +113,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 * **babel-plugin-lingui-macro:** add nested `msg` and `t` support ([#2625](https://github.com/lingui/js-lingui/issues/2625)) ([eb1fbec](https://github.com/lingui/js-lingui/commit/eb1fbec3a5ddd80f1c37f459bd2bf30e1891e820))
 * **babel-plugin:** support Babel 8 via peer dependencies ([#2623](https://github.com/lingui/js-lingui/issues/2623)) ([c979f86](https://github.com/lingui/js-lingui/commit/c979f86d75c1bc1c221c40679162be260f65ed89))
-
 
 # [6.5.0](https://github.com/lingui/js-lingui/compare/v6.4.0...v6.5.0) (2026-07-06)
 
@@ -304,7 +301,6 @@ Check out the links below for more details:
 
 * remove `VFC`, `FC` type usage ([#2290](https://github.com/lingui/js-lingui/issues/2290)) ([30e5242](https://github.com/lingui/js-lingui/commit/30e5242f132a7e0aa847f45b472330f6113b0168))
 * remove metro peer dep from metro-transformer ([#2287](https://github.com/lingui/js-lingui/issues/2287)) ([eb8a429](https://github.com/lingui/js-lingui/commit/eb8a4295bf3ea216a8bc1cba736f28e6b44c9107))
-
 
 ### Features
 

@@ -16,7 +16,7 @@
       ]
     },
     "publish": {
-      "allowBranch": ["main","next"],
+      "allowBranch": ["main", "next"],
       "ignoreChanges": [
         "**/CHANGELOG.md",
         "**/examples/*",

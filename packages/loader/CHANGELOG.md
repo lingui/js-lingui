@@ -35,7 +35,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 * **cli,conf:** add RTL pseudolocale and allow multiple pseudolocales ([#2652](https://github.com/lingui/js-lingui/issues/2652)) ([4c00dec](https://github.com/lingui/js-lingui/commit/4c00decb3dddbd9539725d093a5e68080c376668))
 
-
 # [6.6.0](https://github.com/lingui/js-lingui/compare/v6.5.0...v6.6.0) (2026-07-24)
 
 **Note:** Version bump only for package @lingui/loader

@@ -62,7 +62,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 * **cli,conf:** add RTL pseudolocale and allow multiple pseudolocales ([#2652](https://github.com/lingui/js-lingui/issues/2652)) ([4c00dec](https://github.com/lingui/js-lingui/commit/4c00decb3dddbd9539725d093a5e68080c376668))
 * **conf:** support pseudolocale extend character ([#2651](https://github.com/lingui/js-lingui/issues/2651)) ([3f7f03d](https://github.com/lingui/js-lingui/commit/3f7f03d98445ed912ffeb9794b7bf9acc1d8d73d))
 
-
 # [6.6.0](https://github.com/lingui/js-lingui/compare/v6.5.0...v6.6.0) (2026-07-24)
 
 ### Bug Fixes
@@ -153,7 +152,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 * allow passing custom orderBy function ([#2394](https://github.com/lingui/js-lingui/issues/2394)) ([7de6af5](https://github.com/lingui/js-lingui/commit/7de6af59a55ca3c8832bfdafdaafbc4c12079b78))
 * **po-format:** print source message as translation for explicit id ([#2390](https://github.com/lingui/js-lingui/issues/2390)) ([94efdc0](https://github.com/lingui/js-lingui/commit/94efdc05b62a3e4a296c582e9ee757a80e6aeea7))
-
 
 ### Reverts
 
