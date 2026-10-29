@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.11.0](https://github.com/lingui/js-lingui/compare/v6.10.1...v6.11.0) (2026-10-29)
+
+### Bug Fixes
+
+* **vite-plugin:** require @lingui/native-tools 0.2 for Solid jsxRuntime ([#2743](https://github.com/lingui/js-lingui/issues/2743)) ([460f89a](https://github.com/lingui/js-lingui/commit/460f89a40fe59bd7a0e9d1464776693c052dd682))
+
+### Features
+
+* **vue:** add @lingui/vue, Vue 3 bindings with template macros ([#2732](https://github.com/lingui/js-lingui/issues/2732)) ([594308f](https://github.com/lingui/js-lingui/commit/594308f1ed7d6998b1b849a0a1068a837ab4ad64))
+
 ## [6.10.1](https://github.com/lingui/js-lingui/compare/v6.10.0...v6.10.1) (2026-10-22)
 
 ### Bug Fixes

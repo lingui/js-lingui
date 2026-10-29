@@ -1,5 +1,5 @@
 {
-  "version": "6.10.1",
+  "version": "6.11.0",
   "packages": ["packages/*"],
   "npmClient": "yarn",
   "command": {
@@ -16,7 +16,7 @@
       ]
     },
     "publish": {
-      "allowBranch": ["main", "next"],
+      "allowBranch": ["main","next"],
       "ignoreChanges": [
         "**/CHANGELOG.md",
         "**/examples/*",

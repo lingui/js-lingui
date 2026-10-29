@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.11.0](https://github.com/lingui/js-lingui/compare/v6.10.1...v6.11.0) (2026-10-29)
+
+### Bug Fixes
+
+* **format-json:** add a trailing newline to newly created catalogs ([#2747](https://github.com/lingui/js-lingui/issues/2747)) ([ae97ba0](https://github.com/lingui/js-lingui/commit/ae97ba00661320f93d8c32814ca9b284168263a0))
+
 ## [6.10.1](https://github.com/lingui/js-lingui/compare/v6.10.0...v6.10.1) (2026-10-22)
 
 **Note:** Version bump only for package @lingui/format-json

@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.11.0](https://github.com/lingui/js-lingui/compare/v6.10.1...v6.11.0) (2026-10-29)
+
+### Bug Fixes
+
+* **core:** preserve prototype-named locale catalogs ([#2748](https://github.com/lingui/js-lingui/issues/2748)) ([9ec54ad](https://github.com/lingui/js-lingui/commit/9ec54ad4124ffc1ca1074c18374798e1260f4488))
+* **detect-locale:** keep underscores and digits in fromPath segments ([#2738](https://github.com/lingui/js-lingui/issues/2738)) ([bad25c3](https://github.com/lingui/js-lingui/commit/bad25c33eb97c92771da9032e693fb1db8b19e6b))
+* **format-json:** add a trailing newline to newly created catalogs ([#2747](https://github.com/lingui/js-lingui/issues/2747)) ([ae97ba0](https://github.com/lingui/js-lingui/commit/ae97ba00661320f93d8c32814ca9b284168263a0))
+* look up placeholder values, default variables and Trans elements as own properties ([#2741](https://github.com/lingui/js-lingui/issues/2741)) ([2527a65](https://github.com/lingui/js-lingui/commit/2527a65badfc069f3a242db1f347111487004c15))
+* **vite-plugin:** require @lingui/native-tools 0.2 for Solid jsxRuntime ([#2743](https://github.com/lingui/js-lingui/issues/2743)) ([460f89a](https://github.com/lingui/js-lingui/commit/460f89a40fe59bd7a0e9d1464776693c052dd682))
+
+### Features
+
+* **vue-extractor:** make the underlying extractor configurable ([#2729](https://github.com/lingui/js-lingui/issues/2729)) ([1527e4e](https://github.com/lingui/js-lingui/commit/1527e4eb523509fa6977e956a7c8df95dd9bad44))
+* **vue:** add @lingui/vue, Vue 3 bindings with template macros ([#2732](https://github.com/lingui/js-lingui/issues/2732)) ([594308f](https://github.com/lingui/js-lingui/commit/594308f1ed7d6998b1b849a0a1068a837ab4ad64))
+
 ## [6.10.1](https://github.com/lingui/js-lingui/compare/v6.10.0...v6.10.1) (2026-10-22)
 
 ### Bug Fixes

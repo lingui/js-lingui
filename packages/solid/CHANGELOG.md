@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.11.0](https://github.com/lingui/js-lingui/compare/v6.10.1...v6.11.0) (2026-10-29)
+
+### Bug Fixes
+
+* look up placeholder values, default variables and Trans elements as own properties ([#2741](https://github.com/lingui/js-lingui/issues/2741)) ([2527a65](https://github.com/lingui/js-lingui/commit/2527a65badfc069f3a242db1f347111487004c15))
+
 ## [6.10.1](https://github.com/lingui/js-lingui/compare/v6.10.0...v6.10.1) (2026-10-22)
 
 **Note:** Version bump only for package @lingui/solid
