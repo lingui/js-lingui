@@ -330,6 +330,47 @@ msgstr "Hello User"
         expect(result).toBeTruthy()
       })
     })
+
+    it("Should fail compilation if message has plural case not valid for the locale when failOnCompileError = true", async () => {
+      expect.assertions(3)
+
+      const rootDir = await createFixtures({
+        "en-US.po": `
+msgid "Hello World"
+msgstr "{count, plural, two {Hello two} other {Hello}}"
+        `,
+      })
+
+      const config = makeConfig({
+        locales: ["en-US"],
+        sourceLocale: "en-US",
+        rootDir,
+        catalogs: [
+          {
+            path: "<rootDir>/{locale}",
+            include: ["<rootDir>"],
+            exclude: [],
+          },
+        ],
+      })
+
+      await mockConsole(async (console) => {
+        const result = await command(config, {
+          failOnCompileError: true,
+          allowEmpty: true,
+          workersOptions: {
+            poolSize: 0,
+          },
+        })
+        const actualFiles = readFsToListing(config.rootDir)
+
+        expect(actualFiles["en-US.js"]).toBeFalsy()
+
+        const log = getConsoleMockCalls(console.error)
+        expect(log).toMatchSnapshot()
+        expect(result).toBeFalsy()
+      })
+    })
   })
 
   describe("merge", () => {

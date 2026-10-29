@@ -240,6 +240,90 @@ describe("createCompiledCatalog", () => {
     })
   })
 
+  describe("plural cases validation", () => {
+    const getErrors = (locale: string, message: string) =>
+      createCompiledCatalog(locale, { key: message }, {}).errors
+
+    it("should not report valid cardinal plural cases", () => {
+      expect(
+        getErrors("en", "{count, plural, =1 {# book} other {# books}}"),
+      ).toEqual([])
+    })
+
+    it("should not report plural categories valid for the locale", () => {
+      expect(
+        getErrors(
+          "pl",
+          "{count, plural, one {# książka} few {# książki} many {# książek} other {# książki}}",
+        ),
+      ).toEqual([])
+    })
+
+    it("should report a missing `other` case in plural", () => {
+      const errors = getErrors("en", "{count, plural, one {# book}}")
+      expect(errors).toHaveLength(1)
+      expect(errors[0]!.id).toBe("key")
+      expect(errors[0]!.error.message).toMatch(
+        /`plural` argument "count" is missing the required `other` case/,
+      )
+    })
+
+    it("should report a missing `other` case in select", () => {
+      const errors = getErrors("en", "{gender, select, male {He} female {She}}")
+      expect(errors).toHaveLength(1)
+      expect(errors[0]!.error.message).toMatch(
+        /`select` argument "gender" is missing the required `other` case/,
+      )
+    })
+
+    it("should report plural cases not valid for the locale", () => {
+      const errors = getErrors(
+        "en",
+        "{count, plural, two {# books} other {# books}}",
+      )
+      expect(errors).toHaveLength(1)
+      expect(errors[0]!.error.message).toMatch(
+        /`plural` argument "count" has case "two", which is not a valid plural category for locale "en"/,
+      )
+    })
+
+    it("should validate selectordinal against ordinal categories", () => {
+      const errors = getErrors(
+        "en",
+        "{position, selectordinal, one {#st} many {#th} other {#th}}",
+      )
+      expect(errors).toHaveLength(1)
+      expect(errors[0]!.error.message).toMatch(
+        /`selectordinal` argument "position" has case "many", which is not a valid plural category for locale "en"/,
+      )
+    })
+
+    it("should accept any select case besides the required `other`", () => {
+      expect(
+        getErrors("en", "{size, select, small {S} large {L} other {M}}"),
+      ).toEqual([])
+    })
+
+    it("should validate nested plural arguments", () => {
+      const errors = getErrors(
+        "en",
+        "{count, plural, other {{gender, select, male {he} female {she}}}}",
+      )
+      expect(errors).toHaveLength(1)
+      expect(errors[0]!.error.message).toMatch(
+        /`select` argument "gender" is missing the required `other` case/,
+      )
+    })
+
+    it("should still require the `other` case for unknown locales", () => {
+      const errors = getErrors("xx", "{count, plural, one {# item}}")
+      expect(errors).toHaveLength(1)
+      expect(errors[0]!.error.message).toMatch(
+        /`plural` argument "count" is missing the required `other` case/,
+      )
+    })
+  })
+
   describe("options.pseudoLocale", () => {
     const getCompiledCatalog = (pseudoLocale: string) =>
       createCompiledCatalog(

@@ -31,6 +31,17 @@ pl.po: 2ZeN02: (Test String)
 
 `;
 
+exports[`CLI Command: Compile > failOnCompileError > Should fail compilation if message has plural case not valid for the locale when failOnCompileError = true 1`] = `
+Failed to compile catalog for locale en-US!
+
+Compilation error for 1 translation(s):
+
+mY42CM: {count, plural, two {Hello two} other {Hello}}
+Reason: \`plural\` argument "count" has case "two", which is not a valid plural category for locale "en-US" (valid: one, other)
+
+These errors fail command execution because \`--strict\` option passed
+`;
+
 exports[`CLI Command: Compile > failOnCompileError > Should show error and continue compilation of catalog if message has compilation error when failOnCompileError = false" 1`] = `/*eslint-disable*/module.exports={messages:JSON.parse("{\\"lg1L7K\\":[\\"Hello User\\"]}")};`;
 
 exports[`CLI Command: Compile > failOnCompileError > Should show error and continue compilation of catalog if message has compilation error when failOnCompileError = false" 2`] = `

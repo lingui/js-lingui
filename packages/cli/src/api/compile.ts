@@ -37,6 +37,107 @@ export type MessageCompilationError = {
   error: Error
 }
 
+const PLURAL_CASE_TYPES = ["plural", "selectordinal", "select"] as const
+const EXACT_MATCH_CASE = /^\d+(\.\d+)?$/
+
+/**
+ * Returns plural categories available for the locale, or `undefined` when
+ * the locale is unknown to `Intl.PluralRules` and categories can't be verified.
+ *
+ * Uses the same data as the runtime (`@lingui/core` resolves plurals with
+ * `Intl.PluralRules`), so a message that passes validation here is guaranteed
+ * to have a matching case at runtime.
+ */
+function getPluralCategories(
+  locale: string,
+  type: "cardinal" | "ordinal",
+): Set<string> | undefined {
+  try {
+    if (Intl.PluralRules.supportedLocalesOf([locale]).length === 0) {
+      return undefined
+    }
+
+    return new Set(
+      new Intl.PluralRules(locale, { type }).resolvedOptions().pluralCategories,
+    )
+  } catch {
+    return undefined
+  }
+}
+
+/**
+ * Validates plural cases of a compiled message against the locale:
+ *
+ * - every `plural`, `selectordinal` and `select` argument must define
+ *   the fallback `other` case (required by the ICU message format),
+ * - non-exact cases of `plural`/`selectordinal` arguments must be plural
+ *   categories of the target locale (e.g. `two` is never matched for `en`
+ *   cardinals, which only have `one` and `other`).
+ *
+ * Returns an `Error` listing all problems, or `undefined` if the message is valid.
+ */
+export function validateCompiledMessage(
+  message: CompiledMessage,
+  locale: string,
+): Error | undefined {
+  const cardinalCategories = getPluralCategories(locale, "cardinal")
+  const ordinalCategories = getPluralCategories(locale, "ordinal")
+  const problems: string[] = []
+
+  const validateTokens = (tokens: CompiledMessage) => {
+    for (const token of tokens) {
+      if (typeof token === "string") continue
+
+      const [, type, format] = token
+      if (
+        !type ||
+        !(PLURAL_CASE_TYPES as readonly string[]).includes(type) ||
+        !format ||
+        typeof format !== "object"
+      ) {
+        continue
+      }
+
+      const [arg] = token
+      const cases = format as Record<string, CompiledMessage>
+      const caseKeys = Object.keys(cases).filter((key) => key !== "offset")
+
+      if (!caseKeys.includes("other")) {
+        problems.push(
+          `\`${type}\` argument "${arg}" is missing the required \`other\` case`,
+        )
+      }
+
+      if (type !== "select") {
+        const categories =
+          type === "plural" ? cardinalCategories : ordinalCategories
+
+        if (categories) {
+          for (const key of caseKeys) {
+            if (EXACT_MATCH_CASE.test(key) || categories.has(key)) continue
+
+            problems.push(
+              `\`${type}\` argument "${arg}" has case "${key}", which is not a valid plural category for locale "${locale}" (valid: ${[...categories].join(", ")})`,
+            )
+          }
+        }
+      }
+
+      for (const key of caseKeys) {
+        validateTokens(cases[key])
+      }
+    }
+  }
+
+  validateTokens(message)
+
+  if (problems.length) {
+    return new Error(problems.join("; "))
+  }
+
+  return undefined
+}
+
 export function createCompiledCatalog(
   locale: string,
   messages: CompiledCatalogType,
@@ -63,11 +164,21 @@ export function createCompiledCatalog(
       const translation = (messages[key] || (!strict ? key : "")) as string
 
       try {
-        obj[key] = compile(
+        const compiledMessage = compile(
           translation,
           shouldPseudolocalize,
           pseudoLocaleOptions,
         )
+        obj[key] = compiledMessage
+
+        const validationError = validateCompiledMessage(compiledMessage, locale)
+        if (validationError) {
+          errors.push({
+            id: key,
+            source: translation,
+            error: validationError,
+          })
+        }
       } catch (e) {
         errors.push({
           id: key,
