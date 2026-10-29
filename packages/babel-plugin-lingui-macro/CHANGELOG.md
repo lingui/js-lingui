@@ -41,7 +41,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 * **babel-plugin-lingui-macro:** unwrap non-null assertion (`x!`) and `satisfies` in placeholders ([#2622](https://github.com/lingui/js-lingui/issues/2622)) ([d0479ad](https://github.com/lingui/js-lingui/commit/d0479adcc8cd1a5d4c00ae26633031002f400867))
 
-
 ### Features
 
 * **babel-plugin-lingui-macro:** add nested `msg` and `t` support ([#2625](https://github.com/lingui/js-lingui/issues/2625)) ([eb1fbec](https://github.com/lingui/js-lingui/commit/eb1fbec3a5ddd80f1c37f459bd2bf30e1891e820))
@@ -157,7 +156,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 * standardize repository field format across all packages ([#2269](https://github.com/lingui/js-lingui/issues/2269)) ([a03a984](https://github.com/lingui/js-lingui/commit/a03a984cdc027ece9902277243f671ca15912adc))
 
 ## [5.3.2](https://github.com/lingui/js-lingui/compare/v5.3.1...v5.3.2) (2025-05-27)
-
 
 ### Bug Fixes
 

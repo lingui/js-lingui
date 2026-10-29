@@ -1,3 +1,5 @@
+# Opens a version bump PR (versions + changelogs). Merge it, then run the `release` workflow
+# and publish a GitHub Release tagged `v<version>`.
 name: version-bump
 
 on:
@@ -11,6 +13,9 @@ on:
         - next
         required: true
         default: "latest"
+
+permissions:
+  contents: read
 
 jobs:
   version-bump:
@@ -40,15 +45,24 @@ jobs:
       - name: Linting & Types
         run: yarn lint:all
 
-      - name: Prepare Lingui-Bot git account
-        uses: oleksiyrudenko/gha-git-credentials@8bb1fe6d543b2233ef1856cd3b0181f5abbd4d6a # v2.1.2
-        with:
-          name: 'Lingui Bot'
-          email: 'linguibot@gmail.com'
-          actor: 'lingui-bot'
-          token: '${{ secrets.GH_TOKEN }}'
-
       - name: Versioning packages
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
-        run: yarn version:${{github.event.inputs.versionType}}
+        run: yarn version:${{ inputs.versionType }}
+
+      - name: Read new version
+        id: version
+        run: echo "version=$(node -p "require('./lerna.json').version")" >> "$GITHUB_OUTPUT"
+
+      - name: Create pull request
+        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8.1.1
+        with:
+          token: ${{ secrets.GH_TOKEN }}
+          author: 'Lingui Bot <linguibot@gmail.com>'
+          committer: 'Lingui Bot <linguibot@gmail.com>'
+          branch: chore/version-${{ steps.version.outputs.version }}
+          delete-branch: true
+          commit-message: "chore(release): published v${{ steps.version.outputs.version }} [skip ci]"
+          title: "chore(release): published v${{ steps.version.outputs.version }} [skip ci]"
+          body: |
+            Bumps all packages to `${{ steps.version.outputs.version }}` (${{ inputs.versionType }}) and updates the changelogs.
+
+            After merging, run the `release` workflow (`${{ inputs.versionType }}`) and publish a GitHub Release with tag `v${{ steps.version.outputs.version }}`.
