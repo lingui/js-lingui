@@ -134,7 +134,7 @@ While the glob-based extraction process works well for most projects, it can be 
 
 This means that the entire catalog must be loaded for each page or navigation, resulting in unnecessary loading of messages that aren't utilized on that specific page.
 
-To address this issue, an `experimental-extractor` has been introduced in Lingui v4.
+To address this issue, Lingui provides an `experimental-extractor`.
 
 :::caution Experimental
 This is an experimental feature. Experimental features are not covered by semver and may be subject to change.
