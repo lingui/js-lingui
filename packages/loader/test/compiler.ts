@@ -3,6 +3,7 @@ import webpack from "webpack"
 import { mkdtempSync } from "fs"
 import os from "os"
 import { LinguiLoaderOptions } from "../src/webpackLoader"
+import { LinguiMacroLoaderOptions } from "../src/macroLoader"
 
 export type BuildResult = {
   loadBundle(): Promise<any>
@@ -15,13 +16,14 @@ function delay(ms: number) {
 export async function build(
   entryPoint: string,
   loaderOptions: LinguiLoaderOptions = {},
+  macroLoaderOptions?: LinguiMacroLoaderOptions,
 ): Promise<BuildResult> {
   // set cwd() to working path
   const oldCwd = process.cwd()
 
   process.chdir(path.dirname(entryPoint))
 
-  const compiler = getCompiler(entryPoint, loaderOptions)
+  const compiler = getCompiler(entryPoint, loaderOptions, macroLoaderOptions)
 
   return new Promise((resolve, reject) => {
     compiler.run((err, stats) => {
@@ -81,6 +83,7 @@ export function watch(
 export function getCompiler(
   entryPoint: string,
   loaderOptions: LinguiLoaderOptions,
+  macroLoaderOptions?: LinguiMacroLoaderOptions,
 ) {
   return webpack({
     mode: "development",
@@ -88,6 +91,7 @@ export function getCompiler(
     entry: entryPoint,
     resolveLoader: {
       alias: {
+        "@lingui/loader/macro": path.resolve(__dirname, "./macroLoader.cjs"),
         "@lingui/loader": path.resolve(__dirname, "./loader.cjs"),
       },
     },
@@ -100,6 +104,18 @@ export function getCompiler(
             options: loaderOptions,
           },
         },
+        ...(macroLoaderOptions
+          ? [
+              {
+                test: /\.[cm]?jsx?$/,
+                exclude: /node_modules/,
+                use: {
+                  loader: "@lingui/loader/macro",
+                  options: macroLoaderOptions,
+                },
+              },
+            ]
+          : []),
       ],
     },
     output: {
