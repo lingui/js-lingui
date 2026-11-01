@@ -108,7 +108,7 @@
     "happy-dom": "^20.0.10",
     "typescript": "catalog:",
     "unbuild": "catalog:",
-    "vite": "8.2.2",
+    "vite": "8.3.5",
     "vitest": "catalog:",
     "vue": "^3.5.42"
   }
