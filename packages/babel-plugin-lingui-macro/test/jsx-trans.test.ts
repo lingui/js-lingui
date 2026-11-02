@@ -98,6 +98,13 @@ macroTester({
       `,
     },
     {
+      name: "Variable named `__proto__` is kept as an own key in values",
+      code: `
+        import { Trans } from '@lingui/react/macro';
+        <Trans>Hello {__proto__}</Trans>;
+      `,
+    },
+    {
       name: "Quoted JSX attributes are handled",
       code: `
         import { Trans } from '@lingui/react/macro';

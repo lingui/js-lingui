@@ -63,6 +63,13 @@ macroTester({
     `,
     },
     {
+      name: "Variable named `__proto__` is kept as an own key in values",
+      code: `
+        import { t } from '@lingui/core/macro';
+        t\`Hello \${__proto__}\`;
+    `,
+    },
+    {
       name: "Anything variables except simple identifiers are used as positional arguments",
       code: `
         import { t } from '@lingui/core/macro';

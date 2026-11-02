@@ -506,6 +506,26 @@ const msg = global.i18n._(
 
 `;
 
+exports[`Variable named \`__proto__\` is kept as an own key in values 1`] = `
+import { t } from "@lingui/core/macro";
+t\`Hello \${__proto__}\`;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { i18n as _i18n } from "@lingui/core";
+_i18n._(
+  /** i18n */
+  {
+    id: "CSRPGG",
+    message: "Hello {__proto__}",
+    values: {
+      ["__proto__"]: __proto__,
+    },
+  },
+);
+
+`;
+
 exports[`Variables are replaced with named arguments 1`] = `
 import { t } from "@lingui/core/macro";
 t\`Variable \${name}\`;

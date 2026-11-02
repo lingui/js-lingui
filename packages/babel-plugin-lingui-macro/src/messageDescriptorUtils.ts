@@ -211,8 +211,14 @@ function createValuesProperty(
   key: string,
   values: Record<string, Expression>,
 ) {
-  const valuesObject = Object.keys(values).map((key) =>
-    types.objectProperty(
+  const valuesObject = Object.keys(values).map((key) => {
+    // A `__proto__: value` key in an object literal sets the prototype instead
+    // of adding an own property, so it is emitted as `["__proto__"]: value`.
+    if (key === "__proto__") {
+      return types.objectProperty(types.stringLiteral(key), values[key], true)
+    }
+
+    return types.objectProperty(
       types.isValidIdentifier(key)
         ? types.identifier(key)
         : // Numeric placeholder keys (e.g. plural/select indices) must be built
@@ -222,8 +228,8 @@ function createValuesProperty(
           ? types.numericLiteral(Number(key))
           : types.stringLiteral(key),
       values[key],
-    ),
-  )
+    )
+  })
 
   if (!valuesObject.length) return
 

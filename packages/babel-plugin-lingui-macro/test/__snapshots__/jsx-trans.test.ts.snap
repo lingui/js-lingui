@@ -935,6 +935,28 @@ import { Trans as _Trans } from "@lingui/react";
 
 `;
 
+exports[`Variable named \`__proto__\` is kept as an own key in values 1`] = `
+import { Trans } from "@lingui/react/macro";
+<Trans>Hello {__proto__}</Trans>;
+
+↓ ↓ ↓ ↓ ↓ ↓
+
+import { Trans as _Trans } from "@lingui/react";
+<_Trans
+  {
+    /** i18n */
+    ...{
+      id: "CSRPGG",
+      message: "Hello {__proto__}",
+      values: {
+        ["__proto__"]: __proto__,
+      },
+    }
+  }
+/>;
+
+`;
+
 exports[`Variables are converted to named arguments 1`] = `
 import { Trans } from "@lingui/react/macro";
 <Trans>
