@@ -2,6 +2,7 @@ import { i18n, setupI18n } from "@lingui/core"
 import type {
   Formatter,
   FormatterContext,
+  Formatters,
   I18n,
   MessageId,
   VariableValue,
@@ -95,3 +96,14 @@ expect(
   }),
 ).type.toBe<I18n>()
 expect(setupI18n).type.not.toBeCallableWith({ formatters: { upper: "x" } })
+expect(i18n.formatters).type.toBe<Formatters>()
+expect(
+  i18n.setFormatters({ upper: (value) => String(value) }),
+).type.toBe<I18n>()
+expect(
+  i18n.setFormatters((prev) => ({ ...prev, upper: (value) => String(value) })),
+).type.toBe<I18n>()
+expect(i18n.setFormatters).type.not.toBeCallableWith({ upper: "x" })
+expect(i18n.setFormatter("upper", (value) => String(value))).type.toBe<I18n>()
+expect(i18n.setFormatter("upper", undefined)).type.toBe<I18n>()
+expect(i18n.setFormatter).type.not.toBeCallableWith("upper", "x")

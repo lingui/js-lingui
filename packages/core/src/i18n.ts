@@ -139,14 +139,7 @@ export class I18n extends EventEmitter<Events> {
     if (params.messages != null) this.load(params.messages)
     if (params.variables != null) this._variables = { ...params.variables }
     if (params.formatters != null) {
-      const reserved = Object.keys(params.formatters).filter((name) =>
-        BUILT_IN_FORMATTERS.includes(name),
-      )
-      if (reserved.length) {
-        throw new Error(
-          `Lingui: Formatter names ${reserved.map((name) => `"${name}"`).join(", ")} are reserved for built-in ICU formatters.`,
-        )
-      }
+      assertNoReservedFormatters(params.formatters)
       this._formatters = { ...params.formatters }
     }
     if (typeof params.locale === "string" || params.locales) {
@@ -187,6 +180,34 @@ export class I18n extends EventEmitter<Events> {
     this._variables = {
       ...(isFunction(variables) ? variables(this._variables) : variables),
     }
+
+    this.emit("change")
+    return this
+  }
+
+  get formatters(): Formatters {
+    return this._formatters
+  }
+
+  setFormatter(name: string, formatter?: Formatter): this {
+    if (formatter === undefined) {
+      delete this._formatters[name]
+    } else {
+      assertNoReservedFormatters({ [name]: formatter })
+      this._formatters[name] = formatter
+    }
+    this.emit("change")
+    return this
+  }
+
+  setFormatters(
+    formatters: Formatters | ((prev: Formatters) => Formatters),
+  ): this {
+    const next = isFunction(formatters)
+      ? formatters(this._formatters)
+      : formatters
+    assertNoReservedFormatters(next)
+    this._formatters = { ...next }
 
     this.emit("change")
     return this
@@ -367,6 +388,17 @@ Please compile your catalog first.
    */
   number(value: NumberFormatValue, format?: Intl.NumberFormatOptions): string {
     return number(this._locales || this._locale, value, format)
+  }
+}
+
+function assertNoReservedFormatters(formatters: Formatters) {
+  const reserved = Object.keys(formatters).filter((name) =>
+    BUILT_IN_FORMATTERS.includes(name),
+  )
+  if (reserved.length) {
+    throw new Error(
+      `Lingui: Formatter names ${reserved.map((name) => `"${name}"`).join(", ")} are reserved for built-in ICU formatters.`,
+    )
   }
 }
 

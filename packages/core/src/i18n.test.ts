@@ -1065,8 +1065,79 @@ describe("I18n", () => {
         expect(() => setupI18n({ formatters: { [name]: capitalize } })).toThrow(
           `"${name}"`,
         )
+        expect(() => setupI18n().setFormatters({ [name]: capitalize })).toThrow(
+          `"${name}"`,
+        )
+        expect(() => setupI18n().setFormatter(name, capitalize)).toThrow(
+          `"${name}"`,
+        )
       },
     )
+
+    it("should replace formatters via setFormatters and emit change event", () => {
+      const i18n = setupI18n({
+        locale: "de",
+        messages: { de: { removed: "{type, capitalize} wurde entfernt" } },
+        formatters: { other: capitalize },
+      })
+      const cbChange = vi.fn()
+      i18n.on("change", cbChange)
+
+      expect(i18n.setFormatters({ capitalize })).toBe(i18n)
+      expect(cbChange).toHaveBeenCalledTimes(1)
+      expect(i18n.formatters).toEqual({ capitalize })
+      expect(i18n._("removed", { type: "album" })).toEqual(
+        "Album wurde entfernt",
+      )
+    })
+
+    it("should set and remove a single formatter via setFormatter", () => {
+      const upper = (value: unknown) => String(value).toUpperCase()
+      const i18n = setupI18n({
+        locale: "en",
+        messages: { en: {} },
+        formatters: { capitalize },
+      })
+      const cbChange = vi.fn()
+      i18n.on("change", cbChange)
+
+      expect(i18n.setFormatter("upper", upper)).toBe(i18n)
+      expect(i18n.formatters).toEqual({ capitalize, upper })
+      expect(i18n._("a", { v: "x" }, { message: "{v, upper}" })).toEqual("X")
+
+      i18n.setFormatter("capitalize", undefined)
+      expect(i18n.formatters).toEqual({ upper })
+      expect(cbChange).toHaveBeenCalledTimes(2)
+    })
+
+    it("should support functional updates with previous formatters", () => {
+      const upper = (value: unknown) => String(value).toUpperCase()
+      const i18n = setupI18n({ formatters: { capitalize } })
+
+      i18n.setFormatters((prev) => ({ ...prev, upper }))
+      expect(i18n.formatters).toEqual({ capitalize, upper })
+    })
+
+    it("should not change formatters when setFormatters throws", () => {
+      const i18n = setupI18n({ formatters: { capitalize } })
+
+      expect(() =>
+        i18n.setFormatters((prev) => ({ ...prev, number: capitalize })),
+      ).toThrow()
+      expect(i18n.formatters).toEqual({ capitalize })
+    })
+
+    it("should not mutate formatters passed to setFormatters", () => {
+      const formatters = { capitalize }
+      const i18n = setupI18n()
+
+      i18n.setFormatters(formatters)
+      i18n.setFormatters((prev) => {
+        delete prev.capitalize
+        return prev
+      })
+      expect(formatters).toEqual({ capitalize })
+    })
 
     it("should render the plain value and warn for unknown formatters", () => {
       mockConsole((console) => {

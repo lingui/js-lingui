@@ -34,9 +34,6 @@ export const BUILT_IN_FORMATTERS: readonly string[] = [
   "time",
 ]
 
-const hasOwn = (obj: object, key: string) =>
-  Object.prototype.hasOwnProperty.call(obj, key)
-
 const getDefaultFormats = (
   locale: string,
   passedLocales?: Locales,
@@ -183,15 +180,22 @@ export function interpolate(
 
         let value: unknown
 
+        const builtInFormatter =
+          type &&
+          getOwnProperty(
+            formatters as Record<string, (value: any, format: any) => unknown>,
+            type,
+          )
+        const customFormatter = type && getOwnProperty(customFormatters, type)
+
         if (!type) {
           // simple placeholder variable interpolation eq {variableName}
           value = getValue(name)
-        } else if (hasOwn(formatters, type)) {
+        } else if (builtInFormatter) {
           // run built-in formatter, such as plural, number, etc.
-          const formatter = (formatters as any)[type]
-          value = formatter(getValue(name), interpolatedFormat)
-        } else if (hasOwn(customFormatters, type)) {
-          value = customFormatters[type]!(getValue(name), {
+          value = builtInFormatter(getValue(name), interpolatedFormat)
+        } else if (customFormatter) {
+          value = customFormatter(getValue(name), {
             locale,
             locales,
             param: format as string | undefined,
@@ -201,7 +205,7 @@ export function interpolate(
             console.warn(
               `Lingui: Unknown formatter "${type}" used in "{${name}, ${type}}". ` +
                 `The value is rendered without formatting. ` +
-                `Register custom formatters with \`setupI18n({ formatters })\`.`,
+                `Register custom formatters with \`i18n.setFormatters()\`.`,
             )
           }
           value = getValue(name)
