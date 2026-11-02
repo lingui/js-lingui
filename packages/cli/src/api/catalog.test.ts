@@ -702,6 +702,31 @@ describe("order", () => {
     expect(Object.keys(orderedCatalogs)).toMatchSnapshot()
   })
 
+  it("should order messages without origin after messages with origin", () => {
+    const catalog = {
+      LabelB: makeNextMessage({
+        translation: "B",
+        origin: [["file2.js", 2]],
+      }),
+      // e.g. an obsolete message read from a catalog that doesn't store origins
+      LabelObsolete: makeNextMessage({
+        translation: "Obsolete",
+        origin: [],
+        obsolete: true,
+      }),
+      LabelA: makeNextMessage({
+        translation: "A",
+        origin: [["file1.js", 1]],
+      }),
+    }
+
+    expect(Object.keys(order("origin", catalog))).toEqual([
+      "LabelA",
+      "LabelB",
+      "LabelObsolete",
+    ])
+  })
+
   it("should order messages by message and then by context", () => {
     const catalog = {
       msg1: makeNextMessage({

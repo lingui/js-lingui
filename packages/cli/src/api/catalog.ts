@@ -387,8 +387,12 @@ const orderByMessageId: OrderByFn = (a, b) => {
 }
 
 const orderByOrigin: OrderByFn = (a, b) => {
-  if (!a.entry.origin || !b.entry.origin) {
-    return 0
+  const aHasOrigin = Boolean(a.entry.origin?.length)
+  const bHasOrigin = Boolean(b.entry.origin?.length)
+
+  // messages without origin (e.g. obsolete ones) go last
+  if (!aHasOrigin || !bHasOrigin) {
+    return Number(bHasOrigin) - Number(aHasOrigin)
   }
 
   function getFirstOrigin(entry: MessageType) {
