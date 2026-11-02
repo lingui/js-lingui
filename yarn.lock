@@ -4251,7 +4251,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vue/compiler-core@npm:3.5.43, @vue/compiler-core@npm:^3.4.0":
+"@vue/compiler-core@npm:3.5.43":
   version: 3.5.43
   resolution: "@vue/compiler-core@npm:3.5.43"
   dependencies:
@@ -4264,7 +4264,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vue/compiler-core@npm:3.5.44":
+"@vue/compiler-core@npm:3.5.44, @vue/compiler-core@npm:^3.4.0":
   version: 3.5.44
   resolution: "@vue/compiler-core@npm:3.5.44"
   dependencies:
