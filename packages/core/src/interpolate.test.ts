@@ -149,6 +149,16 @@ describe("interpolate", () => {
     expect(cache({ value: "hasOwnProperty" })).toEqual("They")
   })
 
+  it("should not pick a plural or selectordinal choice inherited from Object.prototype", () => {
+    const plural = prepare("{value, plural, one {# Book} other {# Books}}")
+    expect(plural({ value: "constructor" })).toEqual("NaN Books")
+    expect(plural({ value: "toString" })).toEqual("NaN Books")
+    expect(plural({ value: "__proto__" })).toEqual("NaN Books")
+
+    const ordinal = prepare("{value, selectordinal, one {#st} other {#th}}")
+    expect(ordinal({ value: "valueOf" })).toEqual("NaNth")
+  })
+
   it("should not fill placeholders named like Object.prototype members with the inherited member", () => {
     expect(prepare("Hi {constructor}")({})).toEqual("Hi ")
     expect(prepare("Hi {toString}")({})).toEqual("Hi ")

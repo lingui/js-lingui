@@ -143,7 +143,15 @@ export function plural(
         () => new Intl.PluralRules(_locales, { type: "cardinal" }),
       )
 
-  return rules[value] ?? rules[plurals.select(value - offset)] ?? rules.other
+  // Own-property check so a runtime value like "constructor" or "toString"
+  // doesn't resolve to a member inherited from Object.prototype.
+  return (
+    (Object.prototype.hasOwnProperty.call(rules, value)
+      ? rules[value]
+      : undefined) ??
+    rules[plurals.select(value - offset)] ??
+    rules.other
+  )
 }
 
 function getMemoized<T>(getKey: () => string, construct: () => T) {
