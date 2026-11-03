@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.12.0](https://github.com/lingui/js-lingui/compare/v6.11.0...v6.12.0) (2026-11-03)
+
+### Features
+
+* **core:** support custom ICU formatters ([#2721](https://github.com/lingui/js-lingui/issues/2721)) ([fb41433](https://github.com/lingui/js-lingui/commit/fb414337cfbb60fd15db21a31d7f37c41503b099))
+
 # [6.11.0](https://github.com/lingui/js-lingui/compare/v6.10.1...v6.11.0) (2026-10-29)
 
 ### Bug Fixes

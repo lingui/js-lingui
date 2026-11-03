@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.12.0](https://github.com/lingui/js-lingui/compare/v6.11.0...v6.12.0) (2026-11-03)
+
+### Bug Fixes
+
+* **cli:** don't crash orderBy "origin" on messages without origin ([#2760](https://github.com/lingui/js-lingui/issues/2760)) ([842f361](https://github.com/lingui/js-lingui/commit/842f3617686b7cfa45d93bcbae88b847e6d6cd2e))
+* **vite-plugin:** support @rolldown/plugin-babel 0.3 ([#2761](https://github.com/lingui/js-lingui/issues/2761)) ([cbf16e9](https://github.com/lingui/js-lingui/commit/cbf16e9825cea76408ce06da02980ba57c8ea6c0))
+
+### Features
+
+* **core:** support custom ICU formatters ([#2721](https://github.com/lingui/js-lingui/issues/2721)) ([fb41433](https://github.com/lingui/js-lingui/commit/fb414337cfbb60fd15db21a31d7f37c41503b099))
+
 # [6.11.0](https://github.com/lingui/js-lingui/compare/v6.10.1...v6.11.0) (2026-10-29)
 
 ### Bug Fixes

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.12.0](https://github.com/lingui/js-lingui/compare/v6.11.0...v6.12.0) (2026-11-03)
+
+### Bug Fixes
+
+* **cli:** don't crash orderBy "origin" on messages without origin ([#2760](https://github.com/lingui/js-lingui/issues/2760)) ([842f361](https://github.com/lingui/js-lingui/commit/842f3617686b7cfa45d93bcbae88b847e6d6cd2e))
+
 # [6.11.0](https://github.com/lingui/js-lingui/compare/v6.10.1...v6.11.0) (2026-10-29)
 
 ### Bug Fixes
