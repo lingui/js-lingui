@@ -252,6 +252,69 @@ i18n.setVariable("currentYear", () => new Date().getFullYear());
 i18n.setVariable("appName", undefined);
 ```
 
+### `i18n.setFormatters(formatters)` {#i18n.setformatters}
+
+Set custom ICU formatters, called for arguments like `{value, name}` and `{value, name, param}`. Accepts an object of formatters, or an updater `(prev) => next`. It replaces all previously set formatters.
+
+Use them for transforms that translators need to control, such as capitalizing a value only in languages where it starts the sentence.
+
+```ts
+import { i18n } from "@lingui/core";
+
+i18n.setFormatters({
+  capitalize: (value, { locale }) => {
+    const [first = "", ...rest] = String(value ?? "");
+    return first.toLocaleUpperCase(locale) + rest.join("");
+  },
+});
+
+// A German translation of "Your {type} has been removed" can then use:
+// "{type, capitalize} wurde entfernt"
+i18n.t("Your {type} has been removed", { type: "album" });
+// Returns "Album wurde entfernt" when the German catalog is active
+```
+
+A formatter receives the value of the argument and a context object, and returns the formatted value. The result is converted to a string, and `null` or `undefined` renders nothing.
+
+```ts
+type Formatter = (value: unknown, ctx: FormatterContext) => unknown;
+
+type FormatterContext = {
+  /** Active locale */
+  locale: string;
+  /** Locales used for formatting, if set */
+  locales?: string | string[];
+  /** Raw text after the second comma, trimmed. `{value, fn, abc}` gives `"abc"` */
+  param?: string;
+};
+```
+
+- The names `plural`, `select`, `selectordinal`, `number`, `date` and `time` are reserved for the built-in formatters. Registering one of them throws an error.
+- If a message uses a formatter that isn't registered, the value is rendered without formatting, and a warning is logged in development builds.
+- `param` is passed as written. ICU MessageFormat has no syntax for multiple parameters, so a formatter that needs several values has to parse `param` itself.
+
+:::caution
+Some translation management systems don't recognize custom formatters. Their QA checks may report `{type, capitalize}` in a translation as a missing placeholder when the source only contains `{type}`, and their editors may not highlight it as a placeholder.
+:::
+
+:::note Limitations
+
+- In `<Trans>`, a value that is a React element has already been replaced by a placeholder such as `<0/>` when the formatter runs, so the formatter receives that placeholder instead of the element.
+- Only the first token of `param` is kept, so in `{value, fn, {other}}` the nested `{other}` argument is lost.
+
+:::
+
+### `i18n.setFormatter(name, formatter)` {#i18n.setformatter}
+
+Set or update a single formatter (see [`i18n.setFormatters`](#i18n.setformatters)), or pass `undefined` to remove it.
+
+```ts
+import { i18n } from "@lingui/core";
+
+i18n.setFormatter("upper", (value, { locale }) => String(value).toLocaleUpperCase(locale));
+i18n.setFormatter("upper", undefined);
+```
+
 ### `i18n.date(value: string | Date | number[, format: Intl.DateTimeFormatOptions])` {#i18n.date}
 
 Format a date using the conventional format for the active language.
@@ -434,6 +497,24 @@ const i18n = setupI18n({
 // i18n.setVariables({ appName: "ExampleApp", version: "1.2.3" })
 ```
 
+### `options.formatters` {#options.formatters}
+
+Initial custom ICU formatters (see [`i18n.setFormatters`](#i18n.setformatters)).
+
+```ts
+import { setupI18n } from "@lingui/core";
+
+const i18n = setupI18n({
+  formatters: {
+    upper: (value, { locale }) => String(value).toLocaleUpperCase(locale),
+  },
+});
+
+// This is a shortcut for:
+// const i18n = setupI18n()
+// i18n.setFormatters({ upper: ... })
+```
+
 ## Runtime macro (experimental) {#runtime-macro}
 
 :::caution Experimental
@@ -511,7 +592,7 @@ const messagesEn: Messages = {
 
 ### `change`
 
-The `change` event is triggered **after** changing the locale, loading a new message catalog, or updating default variables. No arguments are passed to this event.
+The `change` event is triggered **after** changing the locale, loading a new message catalog, or updating default variables or formatters. No arguments are passed to this event.
 
 ### `missing`
 

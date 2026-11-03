@@ -1,5 +1,13 @@
 import { i18n, setupI18n } from "@lingui/core"
-import type { I18n, MessageId, VariableValue, Variables } from "@lingui/core"
+import type {
+  Formatter,
+  FormatterContext,
+  Formatters,
+  I18n,
+  MessageId,
+  VariableValue,
+  Variables,
+} from "@lingui/core"
 import { expect } from "tstyche"
 
 // MessageId resolves to string when Register is not augmented
@@ -71,3 +79,31 @@ expect(
     gender: "female",
   })),
 ).type.toBe<I18n>()
+
+expect<Formatter>().type.toBe<
+  (value: unknown, ctx: FormatterContext) => unknown
+>()
+expect(
+  setupI18n({
+    formatters: {
+      upper: (value, { locale, locales, param }) => {
+        expect(locale).type.toBe<string>()
+        expect(locales).type.toBe<string | string[] | undefined>()
+        expect(param).type.toBe<string | undefined>()
+        return String(value).toLocaleUpperCase(locale)
+      },
+    },
+  }),
+).type.toBe<I18n>()
+expect(setupI18n).type.not.toBeCallableWith({ formatters: { upper: "x" } })
+expect(i18n.formatters).type.toBe<Formatters>()
+expect(
+  i18n.setFormatters({ upper: (value) => String(value) }),
+).type.toBe<I18n>()
+expect(
+  i18n.setFormatters((prev) => ({ ...prev, upper: (value) => String(value) })),
+).type.toBe<I18n>()
+expect(i18n.setFormatters).type.not.toBeCallableWith({ upper: "x" })
+expect(i18n.setFormatter("upper", (value) => String(value))).type.toBe<I18n>()
+expect(i18n.setFormatter("upper", undefined)).type.toBe<I18n>()
+expect(i18n.setFormatter).type.not.toBeCallableWith("upper", "x")

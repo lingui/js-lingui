@@ -1,4 +1,4 @@
-import { interpolate } from "./interpolate"
+import { BUILT_IN_FORMATTERS, interpolate } from "./interpolate"
 import { isString, isFunction } from "./essentials"
 import {
   date,
@@ -25,6 +25,22 @@ export type Formats = Record<
   string,
   Intl.DateTimeFormatOptions | Intl.NumberFormatOptions
 >
+
+export type FormatterContext = {
+  /** Active locale */
+  locale: Locale
+  /** Locales used for formatting, if set */
+  locales?: Locales
+  /** Raw text after the second comma, trimmed. `{value, fn, abc}` gives `"abc"` */
+  param?: string
+}
+
+/**
+ * Custom ICU formatter, called for `{value, name}` and `{value, name, param}`
+ * when registered under `name`. The result is converted to a string.
+ */
+export type Formatter = (value: unknown, ctx: FormatterContext) => unknown
+export type Formatters = Record<string, Formatter>
 
 export type VariableValue = string | number | Date
 export type Values = Record<string, unknown>
@@ -84,6 +100,7 @@ export type I18nProps = {
   messages?: AllMessages
   missing?: MissingHandler
   variables?: Variables
+  formatters?: Formatters
 }
 
 type Events = {
@@ -107,6 +124,7 @@ export class I18n extends EventEmitter<Events> {
   private _locales?: Locales
   private _messages: AllMessages = Object.create(null)
   private _variables: Variables = {}
+  private _formatters: Formatters = {}
   private _missing?: MissingHandler
   private _messageCompiler?: MessageCompiler
 
@@ -120,6 +138,10 @@ export class I18n extends EventEmitter<Events> {
     if (params.missing != null) this._missing = params.missing
     if (params.messages != null) this.load(params.messages)
     if (params.variables != null) this._variables = { ...params.variables }
+    if (params.formatters != null) {
+      assertNoReservedFormatters(params.formatters)
+      this._formatters = { ...params.formatters }
+    }
     if (typeof params.locale === "string" || params.locales) {
       this.activate(params.locale ?? defaultLocale, params.locales)
     }
@@ -158,6 +180,34 @@ export class I18n extends EventEmitter<Events> {
     this._variables = {
       ...(isFunction(variables) ? variables(this._variables) : variables),
     }
+
+    this.emit("change")
+    return this
+  }
+
+  get formatters(): Formatters {
+    return this._formatters
+  }
+
+  setFormatter(name: string, formatter?: Formatter): this {
+    if (formatter === undefined) {
+      delete this._formatters[name]
+    } else {
+      assertNoReservedFormatters({ [name]: formatter })
+      this._formatters[name] = formatter
+    }
+    this.emit("change")
+    return this
+  }
+
+  setFormatters(
+    formatters: Formatters | ((prev: Formatters) => Formatters),
+  ): this {
+    const next = isFunction(formatters)
+      ? formatters(this._formatters)
+      : formatters
+    assertNoReservedFormatters(next)
+    this._formatters = { ...next }
 
     this.emit("change")
     return this
@@ -310,11 +360,12 @@ Please compile your catalog first.
       return decodeEscapeSequences(translation)
     if (isString(translation)) return translation
 
-    return interpolate(translation, this._locale, this._locales)(
-      values,
-      options?.formats,
-      this._variables,
-    )
+    return interpolate(
+      translation,
+      this._locale,
+      this._locales,
+      this._formatters,
+    )(values, options?.formats, this._variables)
   }
 
   /**
@@ -337,6 +388,17 @@ Please compile your catalog first.
    */
   number(value: NumberFormatValue, format?: Intl.NumberFormatOptions): string {
     return number(this._locales || this._locale, value, format)
+  }
+}
+
+function assertNoReservedFormatters(formatters: Formatters) {
+  const reserved = Object.keys(formatters).filter((name) =>
+    BUILT_IN_FORMATTERS.includes(name),
+  )
+  if (reserved.length) {
+    throw new Error(
+      `Lingui: Formatter names ${reserved.map((name) => `"${name}"`).join(", ")} are reserved for built-in ICU formatters.`,
+    )
   }
 }
 
