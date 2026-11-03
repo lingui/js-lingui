@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.12.0](https://github.com/lingui/js-lingui/compare/v6.11.0...v6.12.0) (2026-11-03)
+
+**Note:** Version bump only for package @lingui/format-po-gettext
+
 # [6.11.0](https://github.com/lingui/js-lingui/compare/v6.10.1...v6.11.0) (2026-10-29)
 
 **Note:** Version bump only for package @lingui/format-po-gettext
