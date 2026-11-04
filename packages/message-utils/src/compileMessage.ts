@@ -19,6 +19,21 @@ export type CompiledMessageToken =
 
 export type CompiledMessage = CompiledMessageToken[]
 
+/**
+ * Compiled form of the ICU octothorpe (the `#` placeholder inside a
+ * `plural` or `selectordinal` case). It is a tuple token rather than
+ * the bare string `"#"`, so it can never collide with literal message
+ * text: a quoted `'#'` compiles to the string `"#"`, while the
+ * octothorpe compiles to this token, and the runtime tells them apart.
+ */
+export type OctothorpeToken = ["#", "octothorpe"]
+
+export function isOctothorpeToken(
+  token: CompiledMessageToken,
+): token is OctothorpeToken {
+  return Array.isArray(token) && token[0] === "#" && token[1] === "octothorpe"
+}
+
 type MapTextFn = (value: string) => string
 
 function processTokens(tokens: Token[], mapText: MapTextFn): CompiledMessage {
@@ -32,7 +47,7 @@ function processTokens(tokens: Token[], mapText: MapTextFn): CompiledMessage {
 
       // # in plural case
     } else if (token.type === "octothorpe") {
-      return "#"
+      return ["#", "octothorpe"]
 
       // simple argument
     } else if (token.type === "argument") {

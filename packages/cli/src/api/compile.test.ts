@@ -50,7 +50,14 @@ describe("compile", () => {
         expect(
           getPSource("{value, plural, one {# book} other {# books}}"),
         ).toEqual([
-          ["value", "plural", { one: ["#", " ƀōōķ"], other: ["#", " ƀōōķś"] }],
+          [
+            "value",
+            "plural",
+            {
+              one: [["#", "octothorpe"], " ƀōōķ"],
+              other: [["#", "octothorpe"], " ƀōōķś"],
+            },
+          ],
         ])
       })
 
@@ -83,7 +90,11 @@ describe("compile", () => {
             {
               offset: 1,
               zero: ["Ţĥēŕē àŕē ńō ḿēśśàĝēś"],
-              other: ["Ţĥēŕē àŕē ", "#", " ḿēśśàĝēś ĩń ŷōũŕ ĩńƀōx"],
+              other: [
+                "Ţĥēŕē àŕē ",
+                ["#", "octothorpe"],
+                " ḿēśśàĝēś ĩń ŷōũŕ ĩńƀōx",
+              ],
             },
           ],
         ])
@@ -99,8 +110,8 @@ describe("compile", () => {
             "count",
             "plural",
             {
-              zero: ["Ţĥēŕē'ś ", "#", " <span>ḿēśśàĝē</span>"],
-              other: ["Ţĥēŕē àŕē ", "#", " ḿēśśàĝēś"],
+              zero: ["Ţĥēŕē'ś ", ["#", "octothorpe"], " <span>ḿēśśàĝē</span>"],
+              other: ["Ţĥēŕē àŕē ", ["#", "octothorpe"], " ḿēśśàĝēś"],
             },
           ],
         ])
@@ -116,8 +127,8 @@ describe("compile", () => {
             "count",
             "plural",
             {
-              0: ["Ţĥēŕē'ś ", "#", " <span>ḿēśśàĝē</span>"],
-              other: ["Ţĥēŕē àŕē ", "#", " ḿēśśàĝēś"],
+              0: ["Ţĥēŕē'ś ", ["#", "octothorpe"], " <span>ḿēśśàĝē</span>"],
+              other: ["Ţĥēŕē àŕē ", ["#", "octothorpe"], " ḿēśśàĝēś"],
             },
           ],
         ])
@@ -135,12 +146,12 @@ describe("compile", () => {
           "selectordinal",
           {
             offset: 1,
-            one: ["#", "śţ"],
-            two: ["#", "ńď"],
-            few: ["#", "ŕď"],
+            one: [["#", "octothorpe"], "śţ"],
+            two: [["#", "octothorpe"], "ńď"],
+            few: [["#", "octothorpe"], "ŕď"],
             4: ["4ţĥ"],
             many: ["ţēśţḾàńŷ"],
-            other: ["#", "ţĥ"],
+            other: [["#", "octothorpe"], "ţĥ"],
           },
         ],
       ])
@@ -171,9 +182,17 @@ describe("compile", () => {
           "{bcount, plural, one {boy} other {# boys}} {gcount, plural, one {girl} other {# girls}}",
         ),
       ).toEqual([
-        ["bcount", "plural", { one: ["ƀōŷ"], other: ["#", " ƀōŷś"] }],
+        [
+          "bcount",
+          "plural",
+          { one: ["ƀōŷ"], other: [["#", "octothorpe"], " ƀōŷś"] },
+        ],
         " ",
-        ["gcount", "plural", { one: ["ĝĩŕĺ"], other: ["#", " ĝĩŕĺś"] }],
+        [
+          "gcount",
+          "plural",
+          { one: ["ĝĩŕĺ"], other: [["#", "octothorpe"], " ĝĩŕĺś"] },
+        ],
       ])
     })
   })
