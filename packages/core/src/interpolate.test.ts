@@ -21,7 +21,7 @@ describe("interpolate", () => {
         "plural",
         {
           one: [["value"], "< Book>"],
-          other: ["#", "< Books>"],
+          other: [["#", "octothorpe"], "< Books>"],
         },
       ],
     ])
@@ -79,6 +79,20 @@ describe("interpolate", () => {
     expect(interpolate(cache, "en", [])({ place: 7 })).toEqual(
       "#7 in best seller list",
     )
+  })
+
+  it("should not replace a quoted `#` symbol inside plural and selectordinal", () => {
+    const plural = prepare("{count, plural, other {'#'}}")
+    expect(plural({ count: 5 })).toEqual("#")
+
+    const pluralWithValue = prepare("{count, plural, other {'#'{id}}}")
+    expect(pluralWithValue({ count: 5, id: "42" })).toEqual("#42")
+
+    const attached = prepare("{count, plural, other {Ticket '#'{id}}}")
+    expect(attached({ count: 5, id: "42" })).toEqual("Ticket #42")
+
+    const selectordinal = prepare("{count, selectordinal, other {'#'}}")
+    expect(selectordinal({ count: 5 })).toEqual("#")
   })
 
   it("should replace more than one octothorpe symbols in message", () => {

@@ -17,7 +17,10 @@ import {
   time,
 } from "./formats"
 import { isString, isFunction } from "./essentials"
-import { CompiledIcuChoices } from "@lingui/message-utils/compileMessage"
+import {
+  CompiledIcuChoices,
+  isOctothorpeToken,
+} from "@lingui/message-utils/compileMessage"
 import { decodeEscapeSequences, ESCAPE_SEQUENCE_REGEX } from "./escapeSequences"
 
 const OCTOTHORPE_PH = "%__lingui_octothorpe__%"
@@ -149,8 +152,8 @@ export function interpolate(
       if (!Array.isArray(tokens)) return tokens
 
       return tokens.reduce<string>((message, token) => {
-        if (token === "#" && replaceOctothorpe) {
-          return message + OCTOTHORPE_PH
+        if (isOctothorpeToken(token)) {
+          return message + (replaceOctothorpe ? OCTOTHORPE_PH : "#")
         }
 
         if (isString(token)) {

@@ -23,7 +23,7 @@ describe("compileMessage", () => {
         "plural",
         {
           one: [["value"], "< Book>"],
-          other: ["#", "< Books>"],
+          other: [["#", "octothorpe"], "< Books>"],
         },
       ],
     ])
@@ -77,11 +77,17 @@ describe("compileMessage", () => {
             ],
             "offset": 1,
             "one": [
-              "#",
+              [
+                "#",
+                "octothorpe",
+              ],
               " Book",
             ],
             "other": [
-              "#",
+              [
+                "#",
+                "octothorpe",
+              ],
               " Books",
             ],
           },
@@ -102,11 +108,17 @@ describe("compileMessage", () => {
           {
             "offset": undefined,
             "one": [
-              "#",
+              [
+                "#",
+                "octothorpe",
+              ],
               "st Book",
             ],
             "two": [
-              "#",
+              [
+                "#",
+                "octothorpe",
+              ],
               "nd Book",
             ],
           },
@@ -140,7 +152,10 @@ describe("compileMessage", () => {
                   ],
                   "other": [
                     "She invites ",
-                    "#",
+                    [
+                      "#",
+                      "octothorpe",
+                    ],
                     " guests",
                   ],
                 },
@@ -157,7 +172,10 @@ describe("compileMessage", () => {
                   ],
                   "other": [
                     "He invites ",
-                    "#",
+                    [
+                      "#",
+                      "octothorpe",
+                    ],
                     " guests",
                   ],
                 },
@@ -174,6 +192,15 @@ describe("compileMessage", () => {
         ],
       ]
     `)
+  })
+
+  it("should compile a quoted '#' in a plural case as literal text, not as the octothorpe", () => {
+    expect(compileMessage("{count, plural, other {'#'}}")).toEqual([
+      ["count", "plural", { other: ["#"] }],
+    ])
+    expect(compileMessage("{count, plural, other {#}}")).toEqual([
+      ["count", "plural", { other: [["#", "octothorpe"]] }],
+    ])
   })
 
   it("should compile select", () => {
