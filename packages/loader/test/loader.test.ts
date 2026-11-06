@@ -205,6 +205,56 @@ msgstr ""
   })
 })
 
+describe("lingui-loader/macro", () => {
+  it("should transform macros with the native transform", async () => {
+    const built = await build(
+      path.join(__dirname, "macro-transform/entrypoint.js"),
+      {},
+      {},
+    )
+
+    expect(built.stats.errors).toEqual([])
+    expect(built.stats.warnings).toEqual([])
+
+    const data = await built.loadBundle()
+    expect(await data.load()).toEqual({ message: "Ola", plain: "plain" })
+  })
+
+  it("should strip message descriptors in production", async () => {
+    const oldEnv = process.env.NODE_ENV
+    process.env.NODE_ENV = "production"
+
+    try {
+      const built = await build(
+        path.join(__dirname, "macro-transform/entrypoint.js"),
+        {},
+        {},
+      )
+
+      expect(built.stats.errors).toEqual([])
+
+      const data = await built.loadBundle()
+      // descriptorFields: "id-only" keeps only the generated id, so with an empty catalog
+      // the id is rendered instead of the source message
+      expect((await data.load()).message).toBe("l1LkPs")
+    } finally {
+      process.env.NODE_ENV = oldEnv
+    }
+  })
+
+  it("should report an error when macro.jsxRuntime = solid", async () => {
+    const built = await build(
+      path.join(__dirname, "macro-transform-solid/entrypoint.js"),
+      {},
+      {},
+    )
+
+    expect(built.stats.errors![0]!.message).toContain(
+      `The native macro transform doesn't support macro.jsxRuntime: "solid" yet.`,
+    )
+  })
+})
+
 async function copyFixture(srcPath: string) {
   // copy fixtures to in-project folder to allow node_modules resolution works correctly
   const tempFolder = path.join(import.meta.dirname, ".temp")
