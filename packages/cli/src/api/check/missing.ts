@@ -9,6 +9,9 @@ export const missingCheck: CheckDefinition = {
   name: "missing",
   description:
     "Verify that message catalogs have no missing translations after fallbackLocales are applied.",
+  problems: {
+    missing_translation: "error",
+  },
   cli: {
     options: [
       {
@@ -16,6 +19,7 @@ export const missingCheck: CheckDefinition = {
         runOption: "missingBehavior",
         description:
           "Missing translation behavior: resolved (after fallbackLocales) or catalog (before fallbackLocales)",
+        choices: ["resolved", "catalog"],
       },
     ],
     examples: [

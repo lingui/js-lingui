@@ -187,6 +187,18 @@ export const exampleConfig = {
     apiKey: "",
     name: "",
   },
+  check: {
+    rules: {
+      sync: multipleValidOptions("on", {
+        level: "on",
+        options: { clean: false, overwrite: false },
+      }),
+      missing: multipleValidOptions("on", {
+        level: "on",
+        options: { mode: "resolved" },
+      }),
+    },
+  },
   experimental: {
     extractor: {
       entries: [],

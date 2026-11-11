@@ -99,6 +99,10 @@ export const syncCheck: CheckDefinition = {
   name: "sync",
   description:
     "Verify that locale catalogs are already synchronized with what lingui extract would write.",
+  problems: {
+    catalog_out_of_sync: "error",
+    extract_failed: "error",
+  },
   cli: {
     options: [
       {

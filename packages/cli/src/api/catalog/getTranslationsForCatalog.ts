@@ -1,10 +1,17 @@
 import { FallbackLocales } from "@lingui/conf"
-import type { AllCatalogsType, CatalogType, MessageType } from "../types.js"
+import type {
+  AllCatalogsType,
+  CatalogType,
+  MessageOrigin,
+  MessageType,
+} from "../types.js"
 import { getFallbackListForLocale } from "./getFallbackListForLocale.js"
 
 export type TranslationMissingEvent = {
   source: string
   id: string
+  context?: string
+  origin?: MessageOrigin[]
 }
 
 export type MissingBehavior = "resolved" | "catalog"
@@ -179,12 +186,17 @@ function getTranslation(
       : !translation
 
   if (isMissingTranslation) {
+    // the target catalog may be stored without origins, while the source locale one keeps them
+    const origin = msg.origin ?? catalogs[sourceLocale]?.[key]?.origin
+
     onMissing({
       id: key,
       source:
         msg.message ||
         sourceLocaleFallback(catalogs[sourceLocale], key, ignoreObsolete) ||
         "",
+      ...(msg.context !== undefined && { context: msg.context }),
+      ...(origin?.length && { origin }),
     })
   }
 
