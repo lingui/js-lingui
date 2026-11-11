@@ -239,6 +239,53 @@ export type ExperimentalExtractorOptions = {
   resolveEsbuildOptions?: (options: any) => any
 }
 
+/**
+ * Level of a `lingui check` rule.
+ *
+ * - `off` — the check is not run by a plain `lingui check`.
+ * - `on` — the check is run, and every kind of problem it reports is
+ *   treated with the level recommended by the check itself.
+ * - `warn` — every problem is printed but doesn't fail the run.
+ * - `error` — every problem is printed and fails the run.
+ */
+export type CheckRuleLevel = "off" | "on" | "warn" | "error"
+
+/**
+ * A rule is either a plain level or an object with the level and
+ * the options of the check.
+ */
+export type CheckRuleConfig<Options> =
+  CheckRuleLevel | { level?: CheckRuleLevel; options?: Options }
+
+export type CheckConfig = {
+  rules?: {
+    /**
+     * Verify that locale catalogs are synchronized with what `lingui extract` would write.
+     *
+     * @default "error"
+     */
+    sync?: CheckRuleConfig<{
+      /** Remove obsolete messages from the expected catalog before comparing. */
+      clean?: boolean
+      /** Mirror `lingui extract --overwrite`. */
+      overwrite?: boolean
+    }>
+    /**
+     * Verify that catalogs have no missing translations.
+     *
+     * @default "error"
+     */
+    missing?: CheckRuleConfig<{
+      /**
+       * `resolved` (default) counts a translation as missing only if it is still
+       * missing after `fallbackLocales` are applied, `catalog` checks the target
+       * catalog itself.
+       */
+      mode?: "resolved" | "catalog"
+    }>
+  }
+}
+
 export type LinguiConfig = {
   /**
    * The catalogs configuration defines the location of message catalogs and specifies
@@ -504,6 +551,12 @@ export type LinguiConfig = {
      */
     jsxRuntime?: "react" | "solid" | "vue"
   }
+  /**
+   * Configuration of the `lingui check` command.
+   *
+   * https://lingui.dev/ref/conf#check
+   */
+  check?: CheckConfig
   experimental?: {
     extractor?: ExperimentalExtractorOptions
     /**

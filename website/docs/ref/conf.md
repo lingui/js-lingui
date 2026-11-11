@@ -750,6 +750,43 @@ Controls which JSX runtime semantics the Lingui JSX macro emit. Accepts `"react"
 }
 ```
 
+## check
+
+Default value: `{}`
+
+Configures the [`lingui check`](/ref/cli#check) command. Each check has a rule in `check.rules`, and a rule is either a level or an object with a `level` and the `options` of the check.
+
+| Level     | Meaning                                                                                                                      |
+| --------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| `"off"`   | `lingui check` doesn't run the check.                                                                                        |
+| `"on"`    | The check runs, and every kind of problem it reports is treated with the level the check recommends for it. This is the default. |
+| `"warn"`  | The check runs and prints all of its problems, but they don't fail the run.                                                  |
+| `"error"` | The check runs and all of its problems fail the run.                                                                         |
+
+Available rules:
+
+- `sync` — options: `clean` (`boolean`), `overwrite` (`boolean`). Same as the [`--clean`](/ref/cli#check-sync-clean) and [`--overwrite`](/ref/cli#check-sync-overwrite) flags.
+- `missing` — options: `mode` (`"resolved"` or `"catalog"`). Same as the [`--mode`](/ref/cli#check-missing-mode) flag.
+
+```ts
+// lingui.config
+import { defineConfig } from "@lingui/cli"
+
+export default defineConfig({
+  // ...
+  check: {
+    rules: {
+      // don't run the sync check
+      sync: "off",
+      // run the missing check, but only warn about problems
+      missing: { level: "warn", options: { mode: "catalog" } },
+    },
+  },
+})
+```
+
+Options passed in the command line take precedence over the options of the rule.
+
 ## experimental.runtimeMacro
 
 Default value: `false`

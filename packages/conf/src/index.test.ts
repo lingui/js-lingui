@@ -71,6 +71,30 @@ describe("@lingui/conf", () => {
     })
   })
 
+  describe("check", () => {
+    it("should accept levels and options of the check rules", () => {
+      mockConsole((console) => {
+        const check = {
+          rules: {
+            sync: "off",
+            missing: { level: "warn", options: { mode: "catalog" } },
+          },
+        } as const
+        const config = makeConfig({ locales: ["en"], check })
+
+        expect(config.check).toEqual(check)
+        expect(console.warn).not.toBeCalled()
+        expect(console.error).not.toBeCalled()
+      })
+    })
+
+    it("should reject a rule which is neither a level nor an object", () => {
+      expect(() =>
+        makeConfig({ locales: ["en"], check: { rules: { sync: 1 as any } } }),
+      ).toThrow(/check\.rules\.sync/)
+    })
+  })
+
   it("should not leak `rootDir` between calls or mutate the passed config", () => {
     const userCatalogs = [
       { path: "<rootDir>/locales/{locale}", include: ["<rootDir>/src"] },
