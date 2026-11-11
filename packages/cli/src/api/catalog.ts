@@ -416,10 +416,9 @@ const orderByOrigin: OrderByFn = (a, b) => {
   return 0
 }
 
-export async function writeCompiled(
+export function getCompiledFilename(
   path: string,
   locale: string,
-  compiledCatalog: string,
   namespace?: CompiledCatalogNamespace,
 ) {
   let ext: string
@@ -435,7 +434,16 @@ export async function writeCompiled(
       ext = "js"
   }
 
-  const filename = `${replacePlaceholders(path, { locale })}.${ext}`
+  return `${replacePlaceholders(path, { locale })}.${ext}`
+}
+
+export async function writeCompiled(
+  path: string,
+  locale: string,
+  compiledCatalog: string,
+  namespace?: CompiledCatalogNamespace,
+) {
+  const filename = getCompiledFilename(path, locale, namespace)
   await writeFile(filename, compiledCatalog)
   return filename
 }
