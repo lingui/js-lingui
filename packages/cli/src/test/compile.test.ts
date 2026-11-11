@@ -623,4 +623,107 @@ msgstr "Test PL"
       })
     })
   })
+
+  describe("cjs namespace in an ES module package", () => {
+    const catalogs = {
+      "en.po": `
+msgid "Hello World"
+msgstr "Hello World"
+      `,
+      "pl.po": `
+msgid "Hello World"
+msgstr "Cześć świat"
+      `,
+    }
+
+    async function compileWarnings(
+      rootDir: string,
+      catalogPath = "<rootDir>/{locale}",
+      namespace?: string,
+    ) {
+      const config = makeConfig({
+        locales: ["en", "pl"],
+        sourceLocale: "en",
+        rootDir,
+        catalogs: [{ path: catalogPath, include: ["<rootDir>"], exclude: [] }],
+      })
+
+      return mockConsole(async (console) => {
+        const result = await command(config, {
+          namespace,
+          workersOptions: { poolSize: 0 },
+        })
+        expect(result).toBeTruthy()
+        return getConsoleMockCalls(console.warn)
+      })
+    }
+
+    it("Should warn once, naming the package.json, and still write module.exports", async () => {
+      const rootDir = await createFixtures({
+        "package.json": `{ "type": "module" }`,
+        ...catalogs,
+      })
+
+      const warnings = await compileWarnings(rootDir)
+
+      expect(warnings?.split("\n")).toHaveLength(1)
+      expect(warnings).toContain(`package.json has "type": "module"`)
+      expect(warnings).toContain(`compileNamespace to "es" or "ts"`)
+      expect(readFsToListing(rootDir)["en.js"]).toContain("module.exports")
+    })
+
+    it("Should not warn when the nearest package.json has no type", async () => {
+      const rootDir = await createFixtures({
+        "package.json": `{}`,
+        ...catalogs,
+      })
+
+      expect(await compileWarnings(rootDir)).toBeUndefined()
+    })
+
+    it("Should not warn when the namespace is es", async () => {
+      const rootDir = await createFixtures({
+        "package.json": `{ "type": "module" }`,
+        ...catalogs,
+      })
+
+      expect(await compileWarnings(rootDir, undefined, "es")).toBeUndefined()
+    })
+
+    it("Should go by the package.json nearest to the compiled files", async () => {
+      const rootDir = await createFixtures({
+        "package.json": `{ "type": "module" }`,
+        "app/package.json": `{ "type": "commonjs" }`,
+        "app/en.po": catalogs["en.po"],
+        "app/pl.po": catalogs["pl.po"],
+      })
+
+      expect(
+        await compileWarnings(rootDir, "<rootDir>/app/{locale}"),
+      ).toBeUndefined()
+    })
+
+    it("Should warn once with a worker pool", async () => {
+      const rootDir = await createFixtures({
+        "package.json": `{ "type": "module" }`,
+        "lingui.config.ts": `export default ${JSON.stringify({
+          locales: ["en", "pl"],
+          sourceLocale: "en",
+          catalogs: [{ path: "<rootDir>/{locale}", include: ["<rootDir>"] }],
+        })}`,
+        ...catalogs,
+      })
+
+      const config = getConfig({ cwd: rootDir })
+
+      await mockConsole(async (console) => {
+        const result = await command(config, {
+          workersOptions: { poolSize: 2 },
+        })
+
+        expect(result).toBeTruthy()
+        expect(getConsoleMockCalls(console.warn)?.split("\n")).toHaveLength(1)
+      })
+    }, 15000)
+  })
 })
