@@ -1,7 +1,7 @@
 import { I18n, setupI18n } from "@lingui/core"
 import { render } from "@solidjs/testing-library"
 import type { JSX } from "solid-js"
-import { createMemo } from "solid-js"
+import { createMemo, createRenderEffect } from "solid-js"
 import { I18nProvider, useLingui } from "./I18nProvider"
 
 describe("I18nProvider", () => {
@@ -315,5 +315,35 @@ describe("I18nProvider", () => {
     i18n.setVariable("gender", "male")
 
     expect(getByTestId("msg").textContent).toBe("Hello male from LinguiApp")
+  })
+
+  it("picks up messages loaded after the first render but before it subscribes", () => {
+    const i18n = setupI18n({
+      locale: "en",
+      messages: { en: {} },
+    })
+
+    // A child's render effect runs before the provider's effect, where it
+    // subscribes.
+    const LoadMessages = () => {
+      createRenderEffect(() => {
+        i18n.load("en", { greeting: "Hello World" })
+      })
+      return null
+    }
+
+    const Component = () => {
+      const { _ } = useLingui()
+      return <div data-testid="greeting">{_("greeting")}</div>
+    }
+
+    const { getByTestId } = render(() => (
+      <I18nProvider i18n={i18n}>
+        <Component />
+        <LoadMessages />
+      </I18nProvider>
+    ))
+
+    expect(getByTestId("greeting").textContent).toEqual("Hello World")
   })
 })

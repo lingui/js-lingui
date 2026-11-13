@@ -127,6 +127,7 @@ export class I18n extends EventEmitter<Events> {
   private _formatters: Formatters = {}
   private _missing?: MissingHandler
   private _messageCompiler?: MessageCompiler
+  private _changeCount = 0
 
   constructor(params: I18nProps) {
     super()
@@ -161,6 +162,20 @@ export class I18n extends EventEmitter<Events> {
 
   get variables(): Variables {
     return this._variables
+  }
+
+  /**
+   * Number of "change" events emitted so far. Lets a consumer that was not
+   * listening yet tell whether anything changed since it last read the state,
+   * since `load` merges messages in place and may leave the locale unchanged.
+   */
+  get changeCount(): number {
+    return this._changeCount
+  }
+
+  emit<E extends keyof Events>(event: E, ...args: Parameters<Events[E]>): void {
+    if (event === "change") this._changeCount++
+    super.emit(event, ...args)
   }
 
   setVariable(
