@@ -53,6 +53,9 @@ export function I18nProvider(props: I18nProviderProps): JSXElement {
   const [latestKnownLocale, setLatestKnownLocale] = createSignal<string | null>(
     props.i18n.locale || null,
   )
+  // The provider subscribes in an effect, after its children have run; the
+  // count tells it whether a change was emitted before that.
+  let latestKnownChangeCount = props.i18n.changeCount
   const [i18nSignal, setI18nSignal] = createSignal(props.i18n, {
     equals: false,
   })
@@ -75,10 +78,15 @@ export function I18nProvider(props: I18nProviderProps): JSXElement {
       (i18n, previousI18n) => {
         const previousKnownI18n = previousI18n ?? i18n
 
+        // The locale check still matters when i18n comes from another copy of
+        // @lingui/core without changeCount.
         const contextNeedsUpdate = () =>
-          previousKnownI18n !== i18n || latestKnownLocale() !== i18n.locale
+          previousKnownI18n !== i18n ||
+          latestKnownLocale() !== i18n.locale ||
+          latestKnownChangeCount !== i18n.changeCount
 
         const updateContext = () => {
+          latestKnownChangeCount = i18n.changeCount
           setLatestKnownLocale(i18n.locale || null)
           setI18nSignal(() => i18n)
         }
