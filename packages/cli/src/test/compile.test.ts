@@ -256,6 +256,31 @@ msgstr ""
     })
   })
 
+  it("uses the traditional Chinese parent when compiling region catalogs", async () => {
+    const rootDir = await createFixtures({
+      "en.po": 'msgid "Open"\nmsgstr "Open"\n',
+      "zh.po": 'msgid "Open"\nmsgstr "打开"\n',
+      "zh-Hant.po": 'msgid "Open"\nmsgstr "開啟"\n',
+      "zh-Hant-HK.po": 'msgid "Open"\nmsgstr ""\n',
+      "zh-Hant-MO.po": 'msgid "Open"\nmsgstr ""\n',
+    })
+    const config = getTestConfig(rootDir, undefined, [
+      "en",
+      "zh",
+      "zh-Hant",
+      "zh-Hant-HK",
+      "zh-Hant-MO",
+    ])
+
+    await mockConsole(async () => {
+      await command(config, { workersOptions: { poolSize: 0 } })
+      const files = readFsToListing(rootDir)
+
+      expect(files["zh-Hant-HK.js"]).toContain("開啟")
+      expect(files["zh-Hant-MO.js"]).toContain("開啟")
+    })
+  })
+
   describe("failOnCompileError", () => {
     it("Should show error and stop compilation of catalog if message has compilation error when failOnCompileError = true", async () => {
       expect.assertions(3)
