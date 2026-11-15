@@ -1,5 +1,6 @@
 import path from "path"
 import { transformSync } from "@babel/core"
+import { makeConfig } from "@lingui/conf"
 import { getDefaultBabelOptions } from "./macroTester"
 
 describe("descriptorFields validation", () => {
@@ -42,5 +43,36 @@ describe("descriptorFields validation", () => {
       })
 
     expect(transform).toThrow(/Invalid descriptorFields value: "invalid"/)
+  })
+
+  it("should read descriptorFields from the Lingui config when the plugin option is not set", () => {
+    const code =
+      transformSync(codeWithMacro, {
+        ...getDefaultBabelOptions("plugin", {
+          linguiConfig: makeConfig({
+            rootDir: __dirname,
+            locales: ["en"],
+            descriptorFields: "id-only",
+          }),
+        }),
+      })?.code ?? ""
+    // "id-only" keeps only the id: the message text must not survive.
+    expect(code).not.toContain("Message")
+    expect(code).toContain("id:")
+  })
+
+  it("should prefer the plugin option over the Lingui config", () => {
+    const code =
+      transformSync(codeWithMacro, {
+        ...getDefaultBabelOptions("plugin", {
+          linguiConfig: makeConfig({
+            rootDir: __dirname,
+            locales: ["en"],
+            descriptorFields: "id-only",
+          }),
+          descriptorFields: "all",
+        }),
+      })?.code ?? ""
+    expect(code).toContain("Message")
   })
 })
