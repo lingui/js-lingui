@@ -371,6 +371,24 @@ For example, setting [`compileNamespace`](#compilenamespace) to `window.i18n` cr
 /* eslint-disable */window.i18n={messages: {"..."}}
 ```
 
+## descriptorFields
+
+Default value: `auto`
+
+Controls which descriptor fields the macro compiler preserves in the transformed code. Macro plugins read this when they are not given their own `descriptorFields` option, so a single setting here applies to every transpiler instead of having to be repeated in each plugin's options.
+
+- `auto`: In production (`NODE_ENV === "production"`), keeps only the `id`. Otherwise, behaves like `all`.
+- `all`: Keeps every field: `id`, `message`, `context`, and `comment`. Used by the Lingui CLI during extraction.
+- `id-only`: Strips everything except the `id`. Most optimized for production.
+- `message`: Keeps `id`, `message`, and `context` (but not `comment`). Use when you need runtime access to message and context.
+
+```js
+export default {
+  locales: ["en"],
+  descriptorFields: "id-only",
+}
+```
+
 ## extractorParserOptions
 
 :::note
