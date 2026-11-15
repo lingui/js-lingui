@@ -113,9 +113,7 @@ export type DescriptorFields = "auto" | "all" | "id-only" | "message"
 
 type ModuleSource = readonly [module: string, specifier?: string]
 
-type CatalogService = {
-
-  
+type CatalogService = {  
   name: string
   apiKey: string
 }
