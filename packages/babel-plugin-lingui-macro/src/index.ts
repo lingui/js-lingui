@@ -7,6 +7,7 @@ import { JsMacroName, JsxMacroName } from "./constants"
 import {
   getConfig as loadConfig,
   LinguiConfig,
+  type DescriptorFields,
   type LinguiConfigNormalized,
 } from "@lingui/conf"
 import { ResolvedDescriptorFields } from "./messageDescriptorUtils"
@@ -27,9 +28,13 @@ export type LinguiPluginOpts = {
    * - `"message"`: Keeps `id`, `message`, and `context` (but not `comment`).
    *    Use when you need runtime access to message and context.
    *
+   * When not set here, the value from the Lingui configuration
+   * (`descriptorFields` in `lingui.config`) is used instead, so the
+   * setting only needs to be defined once for all transpilers.
+   *
    * @default "auto"
    */
-  descriptorFields?: "auto" | "all" | "id-only" | "message"
+  descriptorFields?: DescriptorFields
 
   /**
    * Resolved and normalized Lingui Configuration
@@ -71,6 +76,7 @@ const REMOVED_OPTIONS: Record<string, string> = {
 
 function resolveDescriptorFields(
   opts: LinguiPluginOpts,
+  linguiConfig?: LinguiConfigNormalized,
 ): ResolvedDescriptorFields {
   // introduced in v6, remove these hints in V7
   for (const [key, hint] of Object.entries(REMOVED_OPTIONS)) {
@@ -79,7 +85,11 @@ function resolveDescriptorFields(
     }
   }
 
-  const mode = opts.descriptorFields ?? "auto"
+  // The plugin option wins; otherwise fall back to the top-level
+  // `descriptorFields` setting from the Lingui configuration, so tools
+  // that don't go through the Babel plugin options (e.g. a Vite or
+  // SvelteKit pipeline reading the config) get the same behaviour.
+  const mode = opts.descriptorFields ?? linguiConfig?.descriptorFields ?? "auto"
 
   if (!VALID_DESCRIPTOR_FIELDS.includes(mode)) {
     throw new Error(
@@ -336,6 +346,7 @@ export default function ({
                     transImportName: getSymbolIdentifier(state, "Trans").name,
                     descriptorFields: resolveDescriptorFields(
                       state.opts as LinguiPluginOpts,
+          linguiConfig,
                     ),
                     transformElement:
                       linguiConfig.macro.jsxRuntime === "solid"
@@ -378,6 +389,7 @@ export default function ({
                   types: t,
                   descriptorFields: resolveDescriptorFields(
                     state.opts as LinguiPluginOpts,
+          linguiConfig,
                   ),
                   i18nImportName: getSymbolIdentifier(state, "i18n").name,
                   useLinguiImportName: getSymbolIdentifier(state, "useLingui")
