@@ -386,7 +386,7 @@ Controls which descriptor fields the macro compiler preserves in the transformed
 export default {
   locales: ["en"],
   descriptorFields: "id-only",
-}
+};
 ```
 
 ## extractorParserOptions
