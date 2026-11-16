@@ -116,6 +116,7 @@ type ModuleSource = readonly [module: string, specifier?: string]
 type CatalogService = {
   name: string
   apiKey: string
+}
 
 /**
  * Describes a single output chunk produced by the bundler.
