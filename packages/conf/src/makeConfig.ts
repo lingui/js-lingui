@@ -183,7 +183,7 @@ export const exampleConfig = {
   descriptorFields: multipleValidOptions("auto", "all", "id-only", "message"),
   extractorParserOptions: {
     flow: false,
-tsExperimentalDecorators: false,
+    tsExperimentalDecorators: false,
   },
   service: {
     apiKey: "",
