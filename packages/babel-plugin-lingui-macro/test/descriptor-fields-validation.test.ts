@@ -56,6 +56,7 @@ describe("descriptorFields validation", () => {
           }),
         }),
       })?.code ?? ""
+
     // "id-only" keeps only the id: the message text must not survive.
     expect(code).not.toContain("Message")
     expect(code).toContain("id:")
@@ -73,6 +74,7 @@ describe("descriptorFields validation", () => {
           descriptorFields: "all",
         }),
       })?.code ?? ""
+
     expect(code).toContain("Message")
   })
 })
