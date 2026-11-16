@@ -179,7 +179,7 @@ export const exampleConfig = {
     { "en-US": ["en"] },
     { default: "en" },
     false,
-    ),
+  ),
   descriptorFields: multipleValidOptions("auto", "all", "id-only", "message"),
   extractorParserOptions: {
     flow: false,
