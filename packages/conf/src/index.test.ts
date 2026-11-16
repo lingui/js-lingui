@@ -296,7 +296,7 @@ describe("@lingui/conf", () => {
       expect(
         makeConfig({ locales: ["en"], descriptorFields: "id-only" })
           .descriptorFields,
-        ).toEqual("id-only")
+      ).toEqual("id-only")
     })
   })
 })
