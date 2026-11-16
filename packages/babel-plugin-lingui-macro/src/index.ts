@@ -6,7 +6,7 @@ import { MacroJs } from "./macroJs"
 import { JsMacroName, JsxMacroName } from "./constants"
 import {
   getConfig as loadConfig,
-                    linguiConfig,
+  LinguiConfig,
   type DescriptorFields,
   type LinguiConfigNormalized,
 } from "@lingui/conf"
@@ -346,7 +346,7 @@ export default function ({
                     transImportName: getSymbolIdentifier(state, "Trans").name,
                     descriptorFields: resolveDescriptorFields(
                       state.opts as LinguiPluginOpts,
-                      linguiConfig,
+                    linguiConfig,
                     ),
                     transformElement:
                       linguiConfig.macro.jsxRuntime === "solid"
@@ -389,7 +389,7 @@ export default function ({
                   types: t,
                   descriptorFields: resolveDescriptorFields(
                     state.opts as LinguiPluginOpts,
-                      linguiConfig,
+          linguiConfig,
                   ),
                   i18nImportName: getSymbolIdentifier(state, "i18n").name,
                   useLinguiImportName: getSymbolIdentifier(state, "useLingui")
