@@ -109,6 +109,8 @@ type LocaleObject =
 
 export type FallbackLocales = LocaleObject
 
+export type DescriptorFields = "auto" | "all" | "id-only" | "message"
+
 type ModuleSource = readonly [module: string, specifier?: string]
 
 type CatalogService = {
@@ -248,6 +250,23 @@ export type LinguiConfig = {
    */
   catalogs?: CatalogConfig[]
   compileNamespace?: "es" | "ts" | "cjs" | string
+  /**
+   * Controls which descriptor fields the macro compiler preserves in the
+   * transformed code. Macro plugins read this when they are not given
+   * their own `descriptorFields` option, so a single setting here applies
+   * to every transpiler (Babel, SWC, Vite, and others) instead of having
+   * to be repeated in each plugin's options.
+   *
+   * - `"auto"` (default): In production (`NODE_ENV === "production"`), keeps only the `id`.
+   *    Otherwise, behaves like `"all"`.
+   * - `"all"`: Keeps every field: `id`, `message`, `context`, and `comment`.
+   * - `"id-only"`: Strips everything except the `id`. Most optimized for production.
+   * - `"message"`: Keeps `id`, `message`, and `context` (but not `comment`).
+   *    Use when you need runtime access to message and context.
+   *
+   * @default "auto"
+   */
+  descriptorFields?: DescriptorFields
   /**
    * Specify additional options used to parse source files when extracting messages.
    *

@@ -289,5 +289,14 @@ describe("@lingui/conf", () => {
 
       expect(config.fallbackLocales).toEqual({})
     })
+
+    it("descriptorFields defaults to auto and can be set in config", () => {
+      expect(makeConfig({ locales: ["en"] }).descriptorFields).toEqual("auto")
+
+      expect(
+        makeConfig({ locales: ["en"], descriptorFields: "id-only" })
+          .descriptorFields,
+      ).toEqual("id-only")
+    })
   })
 })

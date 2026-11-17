@@ -112,6 +112,7 @@ export const defaultConfig = {
   ],
   catalogsMergePath: "",
   compileNamespace: "cjs",
+  descriptorFields: "auto",
   compilerBabelOptions: {
     minified: true,
     jsescOption: {
@@ -179,6 +180,7 @@ export const exampleConfig = {
     { default: "en" },
     false,
   ),
+  descriptorFields: multipleValidOptions("auto", "all", "id-only", "message"),
   extractorParserOptions: {
     flow: false,
     tsExperimentalDecorators: false,

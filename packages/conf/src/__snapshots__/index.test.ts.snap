@@ -18,6 +18,7 @@ exports[`@lingui/conf > should return default config 1`] = `
     },
     "minified": true,
   },
+  "descriptorFields": "auto",
   "fallbackLocales": {},
   "locales": [
     "en",
