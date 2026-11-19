@@ -168,13 +168,15 @@ The locale tags used in the project. The [`extract`](/ref/cli#extract) and [`com
 
 Default value: `{}`
 
-Translations from `fallbackLocales` are used if the translation for the given locale is missing. It uses [CLDR Parent Locales](https://github.com/unicode-cldr/cldr-core/blob/master/supplemental/parentLocales.json) by default, unless you override it with a `false` to use the default message or message ID instead:
+Translations from `fallbackLocales` are used if the translation for the given locale is missing. Lingui uses selected [CLDR parent locales](https://github.com/unicode-org/cldr-json/blob/49.0.0/cldr-json/cldr-core/supplemental/parentLocales.json) by default. Set `fallbackLocales` to `false` to disable these fallbacks:
 
 ```json
 {
   "fallbackLocales": false
 }
 ```
+
+When a configured regional parent has a translation, Lingui uses it before the base language. For example, `pt-AO` tries `pt-PT` before `pt`. For `zh-Hant` and other supported script-specific locales whose CLDR parent is the root locale, missing translations fall back to the source locale unless you configure a fallback.
 
 The `fallbackLocales` object allows to configure fallback locales for each locale instance:
 

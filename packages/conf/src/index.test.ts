@@ -281,6 +281,66 @@ describe("@lingui/conf", () => {
       })
     })
 
+    it("keeps CLDR fallbacks in the declared script", () => {
+      const { fallbackLocales } = makeConfig({
+        locales: [
+          "en",
+          "zh",
+          "zh-Hant",
+          "zh-Hant-HK",
+          "zh-Hant-MO",
+          "sr",
+          "sr-Latn",
+        ],
+        sourceLocale: "en",
+      })
+
+      expect(fallbackLocales["zh-Hant"]).toBeUndefined()
+      expect(fallbackLocales["sr-Latn"]).toBeUndefined()
+      expect(fallbackLocales["zh-Hant-HK"]).toBe("zh-Hant")
+      expect(fallbackLocales["zh-Hant-MO"]).toEqual(["zh-Hant-HK", "zh-Hant"])
+    })
+
+    it("prefers configured regional parents and keeps the base language last", () => {
+      const { fallbackLocales } = makeConfig({
+        locales: [
+          "en",
+          "en-001",
+          "en-150",
+          "en-AT",
+          "es",
+          "es-419",
+          "es-MX",
+          "pt",
+          "pt-PT",
+          "pt-AO",
+        ],
+      })
+
+      expect(fallbackLocales["en-AT"]).toEqual(["en-150", "en-001", "en"])
+      expect(fallbackLocales["es-MX"]).toEqual(["es-419", "es"])
+      expect(fallbackLocales["pt-AO"]).toEqual(["pt-PT", "pt"])
+    })
+
+    it("keeps explicit fallbacks in place of automatic parents", () => {
+      const { fallbackLocales } = makeConfig({
+        locales: ["zh", "zh-Hant", "zh-Hant-HK", "zh-Hant-MO"],
+        fallbackLocales: { "zh-Hant": "zh", "zh-Hant-HK": [] },
+      })
+
+      expect(fallbackLocales["zh-Hant"]).toBe("zh")
+      expect(fallbackLocales["zh-Hant-HK"]).toEqual([])
+      expect(fallbackLocales["zh-Hant-MO"]).toEqual(["zh-Hant-HK", "zh-Hant"])
+    })
+
+    it("keeps Hindi messages as the fallback for romanized Hindi", () => {
+      const { fallbackLocales } = makeConfig({
+        locales: ["en", "en-IN", "hi", "hi-Latn"],
+      })
+
+      expect(fallbackLocales["hi-Latn"]).toBe("hi")
+    })
+
     it("if fallbackLocales = false, we dont build the cldr", () => {
       const config = makeConfig({
         locales: ["en-US", "es-MX"],
