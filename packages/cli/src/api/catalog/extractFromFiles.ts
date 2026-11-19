@@ -140,13 +140,21 @@ export async function extractFromFilesWithWorkerPool(
     paths.map((filename) => workerPool.run(filename, resolvedConfigPath)),
   )
 
-  results.forEach((result) => {
+  results.forEach((result, index) => {
     if (!result.success) {
       catalogSuccess = false
-    } else {
+      return
+    }
+
+    try {
       result.messages.forEach((message) => {
         mergeExtractedMessage(message, messages, config)
       })
+    } catch (e) {
+      console.error(
+        `Cannot process file ${paths[index]} ${(e as Error).message}`,
+      )
+      catalogSuccess = false
     }
   })
 
