@@ -5,7 +5,10 @@ import { program } from "commander"
 import { getConfig, LinguiConfigNormalized } from "@lingui/conf"
 import { helpRun } from "./api/help.js"
 import { getCatalogs } from "./api/index.js"
+import { Catalog, getCompiledFilename } from "./api/catalog.js"
+import { getMergedCatalogPath } from "./api/catalog/getCatalogs.js"
 import { compileLocale } from "./api/compile/compileLocale.js"
+import { getCjsInEsmPackageWarnings } from "./api/compile/esmPackage.js"
 import { createCompileWorkerPool } from "./api/workerPools.js"
 import {
   resolveWorkersOptions,
@@ -38,11 +41,34 @@ export async function command(
 
   console.log("Compiling message catalogs…")
 
+  const namespace = options.typescript
+    ? "ts"
+    : options.namespace || config.compileNamespace
+  let catalogs: Catalog[] | undefined
+
+  // Checked once here rather than per locale, so the warning is printed once even with a worker pool
+  if (namespace === "cjs") {
+    catalogs = await getCatalogs(config)
+    const writePaths = doMerge
+      ? [await getMergedCatalogPath(config)]
+      : catalogs.map((catalog) => catalog.path)
+    const compiledFiles = config.locales.flatMap((locale) =>
+      writePaths.map((path) => getCompiledFilename(path, locale, namespace)),
+    )
+
+    for (const warning of getCjsInEsmPackageWarnings(
+      compiledFiles,
+      config.rootDir,
+    )) {
+      console.warn(styleText("yellow", warning))
+    }
+  }
+
   let errored = false
 
   if (!options.workersOptions.poolSize) {
     // single threaded
-    const catalogs = await getCatalogs(config)
+    catalogs ??= await getCatalogs(config)
 
     for (const locale of config.locales) {
       try {

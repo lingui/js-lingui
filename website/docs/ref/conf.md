@@ -333,6 +333,8 @@ Use CommonJS exports:
 /* eslint-disable */module.exports={messages: {"..."}}
 ```
 
+The file is written with a `.js` extension. If the nearest `package.json` above it has `"type": "module"`, Node loads it as an ES module and `module.exports` fails, so `lingui compile` prints a warning suggesting `es` or `ts`.
+
 #### es
 
 Use ES6 named export:
