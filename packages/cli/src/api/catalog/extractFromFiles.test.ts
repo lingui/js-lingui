@@ -1,5 +1,6 @@
 import type { ExtractedMessage } from "@lingui/conf"
 import { makeConfig } from "@lingui/conf"
+import { mockConsole } from "@lingui/test-utils"
 import { describe, expect, it, vi } from "vitest"
 import type { ExtractWorkerPool } from "../workerPools.js"
 
@@ -81,5 +82,42 @@ describe("extractFromFilesWithWorkerPool", () => {
       ["a.ts", 1],
       ["z.ts", 1],
     ])
+  })
+
+  it("reports conflicting default messages instead of throwing", async () => {
+    const config = makeConfig(
+      {
+        rootDir,
+        sourceLocale: "en",
+        locales: ["en"],
+      },
+      { skipValidation: true, resolvedConfigPath },
+    )
+
+    const paths = [`${rootDir}/a.ts`, `${rootDir}/b.ts`]
+
+    const run = vi.fn(async (filename: string) => ({
+      success: true as const,
+      messages: [
+        {
+          id: "one",
+          message: filename.endsWith("a.ts") ? "Hi" : "Hello",
+          origin: [filename, 1],
+        } satisfies ExtractedMessage,
+      ],
+    }))
+
+    const pool = { run, destroy: vi.fn() } as unknown as ExtractWorkerPool
+
+    await mockConsole(async (console) => {
+      const catalog = await extractFromFilesWithWorkerPool(pool, paths, config)
+
+      expect(catalog).toBeUndefined()
+      expect(console.error).toHaveBeenCalledWith(
+        expect.stringContaining(
+          `Cannot process file ${rootDir}/b.ts Encountered different default translations for message`,
+        ),
+      )
+    })
   })
 })
