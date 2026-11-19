@@ -122,9 +122,21 @@ export function lingui({
     const transformOptions =
       typeof macroTransform === "object" ? macroTransform : undefined
 
+    // Mirrors the approach used by rolldown plugins (e.g. @rolldown/plugin-emotion):
+    // Vite provides `config.isProduction` via `configResolved`, while non-Vite
+    // Rolldown-based tools (e.g. tsdown) don't have it, so fall back to NODE_ENV.
+    let isDev = false
+
     plugins.push({
       name: "vite-plugin-lingui-macro-transform",
       enforce: "pre",
+      configResolved(config) {
+        isDev = !config.isProduction
+      },
+      outputOptions() {
+        if ("viteVersion" in this.meta) return
+        isDev = process.env.NODE_ENV === "development"
+      },
       transform: {
         filter: {
           id: /\.(?:[jt]sx?|[cm][jt]s)(?:$|\?)/,
@@ -143,9 +155,7 @@ export function lingui({
 
           const result = await transform(code, filename, {
             macro: {
-              descriptorFields: this.environment.config.isProduction
-                ? "id-only"
-                : "all",
+              descriptorFields: isDev ? "all" : "id-only",
               ...mapMacroOptions(config, transformOptions?.macro),
             },
             parser: transformOptions?.parser,
