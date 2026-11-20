@@ -120,11 +120,9 @@ import { useLingui } from "@lingui/react/macro"
 
 function UserGreeting({ user }) {
   const { t } = useLingui()
-  const userName = ph({ name: user.name })
-  const projectName = ph({ name: "Lingui" })
 
   return (
-    <p>{t\`Hello, \${userName}! Welcome to \${projectName}.\`}</p>
+    <p>{t\`Hello, \${ph({ name: user.name })}! Welcome to \${ph({ name: "Lingui" })}.\`}</p>
   )
 }`,
   },
