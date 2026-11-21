@@ -62,15 +62,24 @@ const createI18nStore = (
   defaultComponent?: I18nDefaultComponent,
 ) => {
   let latestLocale = i18n.locale
+  let latestChangeCount = i18n.changeCount
   let context = getI18nContext(i18n, defaultComponent)
 
   const updateContext = () => {
     latestLocale = i18n.locale
+    latestChangeCount = i18n.changeCount
     context = getI18nContext(i18n, defaultComponent)
   }
 
+  // React subscribes after the first commit and reads the snapshot again
+  // right after, so the change count catches a change emitted in between.
+  // The locale check still matters when i18n comes from another copy of
+  // @lingui/core without changeCount.
   const getSnapshot = () => {
-    if (latestLocale !== i18n.locale) {
+    if (
+      latestLocale !== i18n.locale ||
+      latestChangeCount !== i18n.changeCount
+    ) {
       updateContext()
     }
 

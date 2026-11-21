@@ -222,6 +222,27 @@ describe("I18n", () => {
     })
   })
 
+  describe("I18n.changeCount", () => {
+    it("should count every change event and nothing else", () => {
+      const i18n = setupI18n({ locale: "en", messages: { en: {} } })
+      const changes = vi.fn()
+      i18n.on("change", changes)
+      const start = i18n.changeCount
+
+      i18n.load("en", { msg: "Message" })
+      i18n.loadAndActivate({ locale: "en", messages: {} })
+      i18n.activate("en")
+      i18n.setVariable("name", "World")
+      i18n.setVariables({})
+      i18n.setFormatter("upper", (value) => String(value).toUpperCase())
+      i18n.setFormatters({})
+      i18n._("missing")
+
+      expect(changes).toHaveBeenCalledTimes(7)
+      expect(i18n.changeCount).toEqual(start + 7)
+    })
+  })
+
   it("._ should format message from catalog", () => {
     const messages = {
       Hello: "Salut",

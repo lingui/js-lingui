@@ -262,6 +262,33 @@ describe("I18nProvider", () => {
     expect(getByText("Hi World")).toBeTruthy()
   })
 
+  it("picks up messages loaded after the first render but before it subscribes", () => {
+    const i18n = setupI18n({
+      locale: "en",
+      messages: { en: {} },
+    })
+
+    // A child's layout effect runs after the provider renders and before
+    // its subscription, which React attaches in a passive effect.
+    const LoadMessages = () => {
+      React.useLayoutEffect(() => {
+        i18n.load("en", { greeting: "Hello World" })
+      }, [])
+      return null
+    }
+
+    const { getByTestId } = render(
+      <I18nProvider i18n={i18n}>
+        <LoadMessages />
+        <span data-testid="greeting">
+          <Trans id="greeting" />
+        </span>
+      </I18nProvider>,
+    )
+
+    expect(getByTestId("greeting").textContent).toEqual("Hello World")
+  })
+
   it("exposes defaultComponent through context and updates it when the prop changes", () => {
     const i18n = setupI18n({
       locale: "en",
