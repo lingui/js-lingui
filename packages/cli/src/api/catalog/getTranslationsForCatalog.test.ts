@@ -142,6 +142,31 @@ describe("getTranslationsForCatalog", () => {
     `)
   })
 
+  it("Should fall back to source locale origin when target origin is empty", async () => {
+    const catalogStub = getCatalogStub({
+      en: {
+        hashid1: {
+          message: "Lorem",
+          translation: "Lorem",
+          origin: [["src/a.ts", 3]],
+        },
+      },
+      ru: {
+        hashid1: { message: "Lorem", translation: undefined, origin: [] },
+      },
+    })
+
+    const actual = await getTranslationsForCatalog(catalogStub, "ru", {
+      sourceLocale: "en",
+      fallbackLocales: {},
+      missingBehavior: "catalog",
+    })
+
+    expect(actual.missing).toEqual([
+      { id: "hashid1", source: "Lorem", origin: [["src/a.ts", 3]] },
+    ])
+  })
+
   it("Should fallback to single fallbackLocales", async () => {
     // prettier-ignore
     const catalogStub = getCatalogStub({

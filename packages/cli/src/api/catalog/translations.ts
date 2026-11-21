@@ -1,6 +1,7 @@
 import { Catalog } from "../catalog.js"
 import { toRootRelativePath } from "../utils.js"
 import type { CheckFindingBase } from "../check/types.js"
+import type { MessageOrigin } from "../types.js"
 import {
   getTranslationsForCatalog,
   TranslationMissingEvent,
@@ -10,6 +11,11 @@ import type { MissingBehavior } from "./getTranslationsForCatalog.js"
 export type MissingTranslationFinding = CheckFindingBase & {
   code: "missing_translation"
   locale: string
+  /** id of the message with the missing translation */
+  id: string
+  context?: string
+  /** places in the source code where the message is used */
+  origin?: MessageOrigin[]
 }
 
 export async function getMissingTranslationFindings(
@@ -75,5 +81,8 @@ export function createMissingTranslationFinding(
     locale,
     catalogPath,
     message: createMissingTranslationMessage(missing.id, missing.source),
+    id: missing.id,
+    ...(missing.context ? { context: missing.context } : {}),
+    ...(missing.origin?.length ? { origin: missing.origin } : {}),
   }
 }

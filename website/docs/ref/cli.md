@@ -266,12 +266,70 @@ The generated file header will look like:
 ### `check`
 
 ```shell
-lingui check <command>
+lingui check [command]
+    [--config <path>]
+    [--locale <locale, [...]>]
+    [--format <text|json>]
+    [--verbose]
+    [--workers <n>]
 ```
 
-The `check` command is a namespace for validation subcommands. Running `lingui check` without a subcommand prints help and exits without running any validation.
+The `check` command validates message catalogs without compiling them. It is useful in CI when you want to fail fast on stale catalogs or missing translations.
 
-These subcommands are useful in CI when you want to fail fast on stale catalogs or missing translations but do not need compilation artifacts yet.
+Running `lingui check` runs every enabled check one by one. `sync` and `missing` are enabled by default and fail the run on any problem, so you can use `lingui check` in CI as is. Use the [`check.rules`](/ref/conf#check) config option to turn a check off, to downgrade its problems to warnings, or to set the options of a check, so a plain `lingui check` can use them without CLI flags:
+
+```ts
+// lingui.config
+export default defineConfig({
+  // ...
+  check: {
+    rules: {
+      sync: "off",
+      missing: { level: "warn", options: { mode: "catalog" } },
+    },
+  },
+})
+```
+
+Running `lingui check <command>` runs a single check. A check runs this way even if it is turned off in the config, and the options given in the command line take precedence over the options of its rule.
+
+The exit code is non-zero only if there is a problem with the `error` level. Problems with the `warn` level are printed, but they don't fail the run.
+
+#### `--format <text|json>` {#check-format}
+
+Output format, `text` by default. With `--format json` the command prints a single JSON document to stdout and nothing else, also when the run itself fails, for example when the config can't be loaded. The document looks like this:
+
+```json
+{
+  "version": 1,
+  "passed": false,
+  "errors": [],
+  "checks": [
+    {
+      "name": "missing",
+      "level": "on",
+      "passed": false,
+      "summary": "Found 1 missing translation(s) after applying fallbackLocales.",
+      "findings": [
+        {
+          "code": "missing_translation",
+          "severity": "error",
+          "message": "mY42CM: (Hello World)",
+          "catalogPath": "locales/pl/messages.po",
+          "locale": "pl",
+          "id": "mY42CM",
+          "context": "greeting",
+          "origin": [{ "file": "src/app.ts", "line": 4 }]
+        }
+      ]
+    }
+  ]
+}
+```
+
+- `version` changes when the format changes in a breaking way.
+- `errors` lists the errors of the run itself, for example a config which can't be loaded. They are kept apart from `findings`, which describe the catalogs.
+- A finding about a message has its `id`, its `context` (if it has one) and `origin`, the places where the message is used in the source code, as they are stored in the catalog.
 
 #### `sync`
 
