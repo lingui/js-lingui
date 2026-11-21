@@ -25,7 +25,7 @@ Don't miss the [Lingui ESLint Plugin](/ref/eslint-plugin) which can help you fin
 
 > A transpiler converts code within a language, transforming newer features into older equivalents for compatibility, or expanding concise syntax into more verbose implementations.
 
-Lingui needs a transpiler to work. It's responsible for transforming Lingui's JS/JSX components into [ICU MessageFormat](/guides/message-format) and extracting message IDs. Both Babel and SWC transpilers are supported. Follow the Babel or SWC setup depending on what transpiler your project already uses. If you use Vite, you can skip this step: the [Vite plugin](#vite) transforms macros natively without Babel or SWC.
+Lingui needs a transpiler to work. It's responsible for transforming Lingui's JS/JSX components into [ICU MessageFormat](/guides/message-format) and extracting message IDs. Both Babel and SWC transpilers are supported. Follow the Babel or SWC setup depending on what transpiler your project already uses. If you use Vite or Next.js, you can skip this step: the [Vite plugin](#vite) and the [Next.js setup](#nextjs) transform macros natively without Babel or SWC.
 
 <Tabs groupId="transpiler" queryString>
 <TabItem value="babel" label="Babel" default>
@@ -286,7 +286,61 @@ plugins: [
 
 ### Next.js
 
-Next.js compiles with SWC by default, so Lingui macros need the [`@lingui/swc-plugin`](/ref/swc-plugin) registered in the Next.js config file. If your project has a Babel config, Next.js uses Babel instead and the Babel setup above applies. The Lingui configuration from the [Basic Configuration](#basic-configuration) section works unchanged.
+The recommended setup is the native macro transform from [`@lingui/loader/macro`](/ref/loader#native-macro-transform). It transforms Lingui macros before Next.js compiles the file, so you don't need `@lingui/swc-plugin` or Babel, and it doesn't depend on the `swc_core` version bundled with Next.js. It works with both Turbopack and webpack. The Lingui configuration from the [Basic Configuration](#basic-configuration) section works unchanged.
+
+1.  Install `@lingui/loader` as a development dependency:
+
+    ```bash npm2yarn
+    npm install --save-dev @lingui/loader
+    ```
+
+2.  Register the loader in the Next.js config file. The example also registers `@lingui/loader` for `.po` catalogs so you can import them directly:
+
+    ```js title="next.config.mjs"
+    /** @type {import('next').NextConfig} */
+    const nextConfig = {
+      turbopack: {
+        rules: {
+          "*.po": {
+            loaders: ["@lingui/loader"],
+            as: "*.js",
+          },
+          "*.{js,jsx,ts,tsx}": {
+            condition: {
+              all: [{ not: "foreign" }, { content: /from ['"]@lingui\/(?:react|core)\/macro['"]/ }],
+            },
+            loaders: ["@lingui/loader/macro"],
+          },
+        },
+      },
+      webpack: (config) => {
+        config.module.rules.push(
+          {
+            test: /\.po$/,
+            use: { loader: "@lingui/loader" },
+          },
+          {
+            test: /\.[cm]?[jt]sx?$/,
+            exclude: /node_modules/,
+            enforce: "pre",
+            use: { loader: "@lingui/loader/macro" },
+          }
+        );
+
+        return config;
+      },
+    };
+
+    export default nextConfig;
+    ```
+
+    You only need the section for the bundler you use. If you set custom [`macro.corePackage`](/ref/conf#macrocorepackage) or [`macro.jsxPackage`](/ref/conf#macrojsxpackage) in your Lingui config, add those packages to the Turbopack `content` condition too.
+
+If you already use `@lingui/swc-plugin`, add the loader as shown above and remove the plugin from `experimental.swcPlugins`. The transform produces the same output as the SWC plugin, so the app behaves the same.
+
+#### Transforming Macros with SWC
+
+If you prefer to keep transforming macros with the SWC compiler that Next.js uses, register the [`@lingui/swc-plugin`](/ref/swc-plugin) instead. Make sure the plugin version is [compatible](/ref/swc-plugin#swc-compatibility) with the `swc_core` version of your Next.js release. If your project has a Babel config, Next.js uses Babel instead and the Babel setup above applies.
 
 ```js title="next.config.mjs"
 import { linguiMacroSwcPlugin } from "@lingui/swc-plugin/options";
