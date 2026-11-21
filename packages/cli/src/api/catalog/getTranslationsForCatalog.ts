@@ -187,7 +187,9 @@ function getTranslation(
 
   if (isMissingTranslation) {
     // the target catalog may be stored without origins, while the source locale one keeps them
-    const origin = msg.origin ?? catalogs[sourceLocale]?.[key]?.origin
+    const origin = msg.origin?.length
+      ? msg.origin
+      : catalogs[sourceLocale]?.[key]?.origin
 
     onMissing({
       id: key,
